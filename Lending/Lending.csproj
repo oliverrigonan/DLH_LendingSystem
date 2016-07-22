@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -20,6 +21,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <TypeScriptToolsVersion>1.0</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -171,6 +174,12 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Data\Lending.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Lending.dbml</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -181,14 +190,153 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\landing-page.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.css" />
+    <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.min.css" />
+    <Content Include="fonts\font-awesome-4.6.3\fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\font-awesome-4.6.3\HELP-US-OUT.txt" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\landing-page\banner-bg.jpg" />
+    <Content Include="Images\landing-page\dog.png" />
+    <Content Include="Images\landing-page\intro-bg.jpg" />
+    <Content Include="Images\landing-page\ipad.png" />
+    <Content Include="Images\landing-page\phones.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Data\Lending.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>Lending.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\font-awesome-4.6.3\fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\font-awesome-4.6.3\fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\font-awesome-4.6.3\fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\font-awesome-4.6.3\fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\font-awesome-4.6.3\fonts\FontAwesome.otf" />
+    <Content Include="fonts\font-awesome-4.6.3\less\animated.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\bordered-pulled.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\core.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\fixed-width.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\font-awesome.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\icons.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\larger.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\list.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\mixins.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\path.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\rotated-flipped.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\screen-reader.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\stacked.less" />
+    <Content Include="fonts\font-awesome-4.6.3\less\variables.less" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\font-awesome.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_animated.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_bordered-pulled.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_core.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_fixed-width.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_icons.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_larger.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_list.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_mixins.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_path.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_rotated-flipped.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_screen-reader.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_stacked.scss" />
+    <Content Include="fonts\font-awesome-4.6.3\scss\_variables.scss" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.de.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.de.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.en-GB.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.en-GB.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.en.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.en.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.es.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.es.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.fr.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.fr.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.it.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.it.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ja.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ja.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ko.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ko.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.pt.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.pt.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ru.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ru.min.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.zh.js" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.zh.min.js" />
+    <Content Include="wijmo\controls\wijmo.chart.interaction.js" />
+    <Content Include="wijmo\controls\wijmo.chart.interaction.min.js" />
+    <Content Include="wijmo\controls\wijmo.chart.js" />
+    <Content Include="wijmo\controls\wijmo.chart.min.js" />
+    <Content Include="wijmo\controls\wijmo.gauge.js" />
+    <Content Include="wijmo\controls\wijmo.gauge.min.js" />
+    <Content Include="wijmo\controls\wijmo.grid.filter.js" />
+    <Content Include="wijmo\controls\wijmo.grid.filter.min.js" />
+    <Content Include="wijmo\controls\wijmo.grid.grouppanel.js" />
+    <Content Include="wijmo\controls\wijmo.grid.grouppanel.min.js" />
+    <Content Include="wijmo\controls\wijmo.grid.js" />
+    <Content Include="wijmo\controls\wijmo.grid.min.js" />
+    <Content Include="wijmo\controls\wijmo.input.js" />
+    <Content Include="wijmo\controls\wijmo.input.min.js" />
+    <Content Include="wijmo\controls\wijmo.js" />
+    <Content Include="wijmo\controls\wijmo.min.js" />
+    <Content Include="wijmo\interop\angular\wijmo.angular.js" />
+    <Content Include="wijmo\interop\angular\wijmo.angular.min.js" />
+    <Content Include="wijmo\interop\knockout\wijmo.knockout.js" />
+    <Content Include="wijmo\interop\knockout\wijmo.knockout.min.js" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cerulean.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cerulean.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cleandark.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cleandark.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cleanlight.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cleanlight.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cocoa.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cocoa.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.coral.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.coral.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cyborg.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cyborg.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.dark.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.dark.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.darkly.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.darkly.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.flatly.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.flatly.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.grayscale.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.grayscale.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.highcontrast.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.highcontrast.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.light.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.light.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.material.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.material.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.midnight.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.midnight.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.minimal.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.minimal.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.modern.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.modern.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.organic.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.organic.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.simplex.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.simplex.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.slate.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.slate.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.superhero.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.superhero.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.trust.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.trust.min.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.zen.css" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.zen.min.css" />
+    <Content Include="wijmo\styles\wijmo.css" />
+    <Content Include="wijmo\styles\wijmo.min.css" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -201,7 +349,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -236,8 +386,40 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="wijmo\styles\themes\mixins\chart.less" />
+    <Content Include="wijmo\styles\themes\mixins\color-functions.less" />
+    <Content Include="wijmo\styles\themes\mixins\guards.less" />
+    <Content Include="wijmo\styles\themes\mixins\styles.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cerulean.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cleandark.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cleanlight.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cocoa.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.coral.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.cyborg.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.dark.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.darkly.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.flatly.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.grayscale.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.highcontrast.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.light.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.material.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.midnight.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.minimal.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.modern.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.organic.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.simplex.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.slate.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.superhero.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.trust.less" />
+    <Content Include="wijmo\styles\themes\wijmo.theme.zen.less" />
+    <Content Include="Views\Shared\HomeHeader.cshtml" />
+    <Content Include="Views\Shared\HomeFooter.cshtml" />
+    <Content Include="Views\Shared\AccountLogin.cshtml" />
+    <Content Include="Views\Shared\AccountRegister.cshtml" />
+    <Content Include="Views\Shared\ManageIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ApiControllers\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
@@ -247,11 +429,64 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Lending.dbml.layout">
+      <DependentUpon>Lending.dbml</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.de.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.de.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.en-GB.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.en-GB.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.en.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.en.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.es.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.es.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.fr.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.fr.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.it.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.it.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.ja.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.ja.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.ko.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.ko.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.pt.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.pt.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.ru.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.ru.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.zh.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\cultures\wijmo.culture.zh.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.chart.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.chart.interaction.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.chart.interaction.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.chart.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.gauge.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.gauge.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.grid.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.grid.filter.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.grid.filter.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.grid.grouppanel.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.grid.grouppanel.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.grid.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.input.d.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.input.ts" />
+    <TypeScriptCompile Include="wijmo\controls\wijmo.ts" />
+    <TypeScriptCompile Include="wijmo\interop\angular\wijmo.angular.d.ts" />
+    <TypeScriptCompile Include="wijmo\interop\angular\wijmo.angular.ts" />
+    <TypeScriptCompile Include="wijmo\interop\knockout\wijmo.knockout.d.ts" />
+    <TypeScriptCompile Include="wijmo\interop\knockout\wijmo.knockout.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">

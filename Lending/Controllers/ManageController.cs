@@ -11,7 +11,7 @@ using Lending.Models;
 namespace Lending.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : UserController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -236,7 +236,7 @@ namespace Lending.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("ChangePassword", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);

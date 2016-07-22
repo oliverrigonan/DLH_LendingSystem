@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNet.Identity
+@using Lending.Models
+
+@if (Request.IsAuthenticated)
+{
+    <!-- Section -->
+    <section>
+        @{ Response.Redirect("~/Manage/Index");}
+    </section>
+}
+else
+{
+    <section class="account-login-section">
+        @model LoginViewModel
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h4>login</h4>
+                                    </div>
+                                    <div class="col-md-6" align="right">
+                                        <a class="btn btn-success" href="/Account/Register"><i class="fa fa-edit"></i> Register</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Username" })
+                                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        @Html.CheckBoxFor(m => m.RememberMe)
+                                        @Html.LabelFor(m => m.RememberMe)
+                                    </div>
+                                </div>
+                                @Html.ValidationMessage("LoginError", new { @class = "text-danger" })
+                            </div>
+                            <div class="panel-footer">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <input type="submit" value="Log in" class="btn btn-primary btn-lg btn-block" />
+                                    </div>
+                                </div>       
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4"></div>
+                </div>
+            </div>
+        }
+    </section>
+}

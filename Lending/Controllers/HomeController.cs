@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace Lending.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : UserController
     {
         public ActionResult Index()
         {

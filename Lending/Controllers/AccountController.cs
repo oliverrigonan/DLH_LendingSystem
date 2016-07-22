@@ -13,7 +13,7 @@ using Lending.Models;
 namespace Lending.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : UserController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -86,7 +86,7 @@ namespace Lending.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("LoginError", "Invalid Credentials");
                     return View(model);
             }
         }

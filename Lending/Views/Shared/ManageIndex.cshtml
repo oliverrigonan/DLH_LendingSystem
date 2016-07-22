@@ -1,0 +1,110 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <!-- Section -->
+    <section class="manage-section-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <label>Avatar</label>
+                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Change Avatar">
+                                <i class="fa fa-image"></i>
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <img src="~/Images/landing-page/dog.png" class="img-thumbnail" />
+                        </div>
+                        <div class="panel-footer">
+                            <a href="#" class="btn btn-primary btn-lg btn-block">Launch Software</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <label>Personal Information</label>
+                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-key fa-fw"></i> Fullname
+                                    </td>
+                                    <td>
+                                        Noah Oliver Rigonan
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-map-marker fa-fw"></i> Address
+                                    </td>
+                                    <td>
+                                        615 R.Q P. Del Rosario Ext. Cebu City
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-birthday-cake fa-fw"></i> Birth Date
+                                    </td>
+                                    <td>
+                                        November 16, 1995
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-briefcase fa-fw"></i> Title
+                                    </td>
+                                    <td>
+                                        Software Engineer
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-info fa-fw"></i> About me
+                                    </td>
+                                    <td>
+                                        Hello, I'm a web developer
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <label>Account Information</label>
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <a href="/Manage/ChangePassword" class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit">
+                                    <i class="fa fa-pencil"></i> Change Password
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-9">
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <section>
+        @{ Response.Redirect("~/Account/Login");}
+    </section>
+}
