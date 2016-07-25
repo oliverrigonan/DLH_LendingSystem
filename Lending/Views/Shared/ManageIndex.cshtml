@@ -7,24 +7,30 @@
                 <div class="col-lg-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <label>Avatar</label>
-                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Change Avatar">
+                            Avatar
+                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Change Avatar" onclick="changeAvatar()">
                                 <i class="fa fa-image"></i>
                             </button>
                         </div>
                         <div class="panel-body">
-                            <img src="~/Images/landing-page/dog.png" class="img-thumbnail" />
+                            <img src="~/Images/landing-page/banner-bg.jpg" class="img-thumbnail" />
                         </div>
                         <div class="panel-footer">
-                            <a href="#" class="btn btn-primary btn-lg btn-block">Launch Software</a>
+                            <a href="/Software" class="btn btn-primary btn-lg btn-block">Launch Software</a>
+                            <hr />
+                            <a href="#" class="btn btn-success btn-block"><i class="fa fa-bar-chart fa-fw"></i> Daily Tasks</a>
+                            <a href="#" class="btn btn-success btn-block"><i class="fa fa-print fa-fw"></i> Daily Reports</a>
+                            <a href="#" class="btn btn-danger btn-block"><i class="fa fa-file-pdf-o fa-fw"></i> Print PDF</a>
+                            <hr />
+                            <a href="#" class="btn btn-info btn-block"><i class="fa fa-users fa-fw"></i> Buddies</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <div class="panel panel-info">
+                    <div class="panel panel-default">
                         <div class="panel-heading">
-                            <label>Personal Information</label>
-                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Edit">
+                            Personal Information
+                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
                                 <i class="fa fa-edit"></i>
                             </button>
                         </div>
@@ -32,61 +38,102 @@
                             <table class="table table-responsive">
                                 <tr>
                                     <td class="td-pad">
-                                        <i class="fa fa-key fa-fw"></i> Fullname
+                                        <i class="fa fa-user fa-fw"></i> &nbsp; Name
                                     </td>
                                     <td>
-                                        Noah Oliver Rigonan
+                                        <span id="userFullName"></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="td-pad">
-                                        <i class="fa fa-map-marker fa-fw"></i> Address
+                                        <i class="fa fa-birthday-cake fa-fw"></i> &nbsp; Birthdate
                                     </td>
                                     <td>
-                                        615 R.Q P. Del Rosario Ext. Cebu City
+                                        <span id="userBirthDate"></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="td-pad">
-                                        <i class="fa fa-birthday-cake fa-fw"></i> Birth Date
+                                        <i class="fa fa-briefcase fa-fw"></i> &nbsp; Title
                                     </td>
                                     <td>
-                                        November 16, 1995
+                                        <span id="userJobTitle"></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="td-pad">
-                                        <i class="fa fa-briefcase fa-fw"></i> Title
+                                        <i class="fa fa-info fa-fw"></i> &nbsp; About me
                                     </td>
                                     <td>
-                                        Software Engineer
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-info fa-fw"></i> About me
-                                    </td>
-                                    <td>
-                                        Hello, I'm a web developer
+                                        <span id="userAboutMe"></span>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                     </div>
-                    <div class="panel panel-info">
+                    <div class="panel panel-default">
                         <div class="panel-heading">
-                            <label>Account Information</label>
+                            Contact Information
+                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Edit" onclick="editContact()">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-map-marker fa-fw"></i> &nbsp; Address
+                                    </td>
+                                    <td>
+                                        <span id="userAddressStreet"></span>
+                                        <br />
+                                        <span id="userAddressCity"></span>
+                                        <br />
+                                        <span id="userAddressZipCode"></span>, <span id="userAddressCountry"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-key fa-phone"></i> &nbsp; Contact No.
+                                    </td>
+                                    <td>
+                                        <span id="userContactNumber"></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-key fa-envelope"></i> &nbsp; Email
+                                    </td>
+                                    <td>
+                                        <span id="userEmail"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            DLH Account
                             <div class="btn-group pull-right">
                                 <button class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <a href="/Manage/ChangePassword" class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit">
+                                <a href="/Manage/ChangePassword" class="btn btn-default btn-xs" data-toggle="tooltip" title="Change your password">
                                     <i class="fa fa-pencil"></i> Change Password
                                 </a>
                             </div>
                         </div>
                         <div class="panel-body">
-
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="td-pad">
+                                        <i class="fa fa-key fa-fw"></i> &nbsp; Username
+                                    </td>
+                                    <td>
+                                        <span id="userUsername"></span>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -96,7 +143,7 @@
 
                 </div>
                 <div class="col-md-9">
-                   
+
                 </div>
             </div>
         </div>

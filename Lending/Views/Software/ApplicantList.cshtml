@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>DLH - Applicant List</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <!-- Header -->
+    @Html.Partial("HomeHeader")
+
+    <section class="software-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="list-group">
+                        <a href="/Software" class="list-group-item">
+                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                        </a>
+                        <a href="/Software/ApplicantList" class="list-group-item active">
+                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Application</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-print fa-fw"></i> &nbsp; Reports</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <h4>List of Applicants</h4>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                            <input type="text" class="form-control" placeholder="Search">
+                                        </div>
+                                    </td>
+                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                    <td align="right">
+                                        <button class="btn btn-primary">
+                                            <i class="fa fa-user-plus fa-fw"></i> New Applicant
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                            <div id="applicantListFlexGrid" class="grid"></div>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var applicants;
+        var applicantFlexGrid;
+
+        // get applicants
+        function getApplicantList() {
+
+        }
+
+        // ready function
+        window.onload = function () {
+
+            // create the grid
+            var grid = new wijmo.grid.FlexGrid('#applicantListFlexGrid', {
+                autoGenerateColumns: false,
+                columns: [
+                    { header: "Applicants", isReadOnly: true, visible: false, allowDragging: false, width: "*" },
+                    { header: "View", binding: "Button0", width: "10*", isContentHtml: true },
+                    { header: "Code", binding: "CompanyName", width: "20*" },
+                    { header: "Applicant", binding: "CompanyName", width: "50*" },
+                    { header: "Edit", binding: "Button", width: "10*", isContentHtml: true },
+                    { header: "Delete", binding: "Button2", width: "10*", isContentHtml: true },
+                ],
+            });
+
+            // store default row height
+            var rowHeight = grid.rows.defaultSize;
+
+            window.onresize = function (event) {
+                showColumns();
+                console.log("wewew");
+            };
+
+            function showColumns() {
+
+                // show/hide colummns
+                var phone = grid.hostElement.getBoundingClientRect().width < 678,
+                    cols = grid.columns;
+                for (var i = 0; i < cols.length; i++) {
+                    grid.columns[i].visible = (i == 0 ? phone : !phone);
+                }
+
+                // make rows taller on phone layout
+                grid.rows.defaultSize = phone ? rowHeight * 3 : rowHeight;
+
+            }
+
+            // show company summary on phone layout
+            grid.formatItem.addHandler(function (s, e) {
+                if (e.panel == grid.cells && e.col == 0) {
+                    var html = wijmo.format(
+
+                        '<table>' +
+                            '<tr>' +
+                               '<td style="width: 70px; padding-top: 5px;">' +
+                                    '<div class="button-item">{Button} </div>' +
+                                    '<div class="button-item">{Button2}</div>' +
+                                '</td>' +
+                                 '<td>' +
+                                    '&nbsp;&nbsp;' +
+                                '</td>' +
+                                '<td>' +
+                                    '<div class="item-header">{CompanyName}</div>' +
+                                    '<div class="item-detail">{ContactName}, {ContactTitle}</div>' +
+                                    '<div class="item-detail">{ContactName}, {ContactTitle}</div>' +
+                                '</td>' +
+                            '</tr>' +
+                        '</table>',
+                        grid.rows[e.row].dataItem);
+                    e.cell.innerHTML = html;
+                }
+            });
+
+
+            var myArray = new Array();
+
+            var text = '{ "employees" : [' +
+    '{ "firstName":"John" , "lastName":" sdfsdf sdds" },' +
+    '{ "firstName":"asdasd" , "lastName":"sfsd sdf sdf sd" },' +
+    '{ "firstName":"qweqw" , "lastName":"dfhd" },' +
+    '{ "firstName":"dfgd" , "lastName":"dfhdhdf" },' +
+    '{ "firstName":"fhfgh" , "lastName":"sdfdsfsdgdhd" },' +
+    '{ "firstName":"qwe" , "lastName":"sfsdfsd" },' +
+    '{ "firstName":"gj" , "lastName":"sdfsdf" },' +
+    '{ "firstName":"Anvnvna" , "lastName":"sdfsdf" },' +
+    '{ "firstName":"vnvn" , "lastName":"vnvbnvb" },' +
+    '{ "firstName":"vbnvnvb" , "lastName":"Jones" } ]}';
+
+            var obj = JSON.parse(text);
+
+            for (var i = 0; i < 10; i++) {
+                myArray.push({
+                    CompanyName: obj.employees[i].firstName,
+                    ContactName: obj.employees[i].lastName,
+                    Button0: "<button class='btn btn-success btn-xs btn-block'><i class='fa fa-eye'></i> View</button>",
+                    Button: "<button class='btn btn-primary btn-xs btn-block'><i class='fa fa-edit'></i> Edit</button>",
+                    Button2: "<button class='btn btn-danger btn-xs  btn-block'><i class='fa fa-trash'></i> Delete</button>",
+                });
+            }
+
+
+            grid.itemsSource = myArray;
+
+            $(window).unload(function () {
+                alert('Bye.');
+            });
+        }
+
+    </script>
+</body>
+</html>

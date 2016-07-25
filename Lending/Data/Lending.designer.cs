@@ -251,15 +251,41 @@ namespace Lending.Data
 		
 		private int _Id;
 		
+		private string _AspUserId;
+		
 		private string _Username;
 		
 		private string _Password;
 		
-		private string _Firstname;
+		private string _FirstName;
 		
-		private string _Middlename;
+		private string _MiddleName;
 		
-		private string _Lastname;
+		private string _LastName;
+		
+		private System.Nullable<System.DateTime> _BirthDate;
+		
+		private string _JobTitle;
+		
+		private string _AboutMe;
+		
+		private string _AddressStreet;
+		
+		private string _AddressCity;
+		
+		private string _AddressZip;
+		
+		private string _AddressCountry;
+		
+		private string _ContactNumber;
+		
+		private string _EmailAddress;
+		
+		private System.DateTime _CreatedDate;
+		
+		private System.DateTime _UpdatedDate;
+		
+		private EntityRef<AspNetUser> _AspNetUser;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -267,24 +293,49 @@ namespace Lending.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
+    partial void OnAspUserIdChanging(string value);
+    partial void OnAspUserIdChanged();
     partial void OnUsernameChanging(string value);
     partial void OnUsernameChanged();
     partial void OnPasswordChanging(string value);
     partial void OnPasswordChanged();
-    partial void OnFirstnameChanging(string value);
-    partial void OnFirstnameChanged();
-    partial void OnMiddlenameChanging(string value);
-    partial void OnMiddlenameChanged();
-    partial void OnLastnameChanging(string value);
-    partial void OnLastnameChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnMiddleNameChanging(string value);
+    partial void OnMiddleNameChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    partial void OnBirthDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnBirthDateChanged();
+    partial void OnJobTitleChanging(string value);
+    partial void OnJobTitleChanged();
+    partial void OnAboutMeChanging(string value);
+    partial void OnAboutMeChanged();
+    partial void OnAddressStreetChanging(string value);
+    partial void OnAddressStreetChanged();
+    partial void OnAddressCityChanging(string value);
+    partial void OnAddressCityChanged();
+    partial void OnAddressZipChanging(string value);
+    partial void OnAddressZipChanged();
+    partial void OnAddressCountryChanging(string value);
+    partial void OnAddressCountryChanged();
+    partial void OnContactNumberChanging(string value);
+    partial void OnContactNumberChanged();
+    partial void OnEmailAddressChanging(string value);
+    partial void OnEmailAddressChanged();
+    partial void OnCreatedDateChanging(System.DateTime value);
+    partial void OnCreatedDateChanged();
+    partial void OnUpdatedDateChanging(System.DateTime value);
+    partial void OnUpdatedDateChanged();
     #endregion
 		
 		public tblUser()
 		{
+			this._AspNetUser = default(EntityRef<AspNetUser>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
 		public int Id
 		{
 			get
@@ -304,7 +355,31 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AspUserId", DbType="NVarChar(128) NOT NULL", CanBeNull=false)]
+		public string AspUserId
+		{
+			get
+			{
+				return this._AspUserId;
+			}
+			set
+			{
+				if ((this._AspUserId != value))
+				{
+					if (this._AspNetUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAspUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._AspUserId = value;
+					this.SendPropertyChanged("AspUserId");
+					this.OnAspUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Username", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		public string Username
 		{
 			get
@@ -324,7 +399,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
 		public string Password
 		{
 			get
@@ -344,62 +419,316 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Firstname", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Firstname
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string FirstName
 		{
 			get
 			{
-				return this._Firstname;
+				return this._FirstName;
 			}
 			set
 			{
-				if ((this._Firstname != value))
+				if ((this._FirstName != value))
 				{
-					this.OnFirstnameChanging(value);
+					this.OnFirstNameChanging(value);
 					this.SendPropertyChanging();
-					this._Firstname = value;
-					this.SendPropertyChanged("Firstname");
-					this.OnFirstnameChanged();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Middlename", DbType="NVarChar(50)")]
-		public string Middlename
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiddleName", DbType="NVarChar(50)")]
+		public string MiddleName
 		{
 			get
 			{
-				return this._Middlename;
+				return this._MiddleName;
 			}
 			set
 			{
-				if ((this._Middlename != value))
+				if ((this._MiddleName != value))
 				{
-					this.OnMiddlenameChanging(value);
+					this.OnMiddleNameChanging(value);
 					this.SendPropertyChanging();
-					this._Middlename = value;
-					this.SendPropertyChanged("Middlename");
-					this.OnMiddlenameChanged();
+					this._MiddleName = value;
+					this.SendPropertyChanged("MiddleName");
+					this.OnMiddleNameChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Lastname", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Lastname
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string LastName
 		{
 			get
 			{
-				return this._Lastname;
+				return this._LastName;
 			}
 			set
 			{
-				if ((this._Lastname != value))
+				if ((this._LastName != value))
 				{
-					this.OnLastnameChanging(value);
+					this.OnLastNameChanging(value);
 					this.SendPropertyChanging();
-					this._Lastname = value;
-					this.SendPropertyChanged("Lastname");
-					this.OnLastnameChanged();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BirthDate", DbType="Date")]
+		public System.Nullable<System.DateTime> BirthDate
+		{
+			get
+			{
+				return this._BirthDate;
+			}
+			set
+			{
+				if ((this._BirthDate != value))
+				{
+					this.OnBirthDateChanging(value);
+					this.SendPropertyChanging();
+					this._BirthDate = value;
+					this.SendPropertyChanged("BirthDate");
+					this.OnBirthDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobTitle", DbType="NVarChar(100)")]
+		public string JobTitle
+		{
+			get
+			{
+				return this._JobTitle;
+			}
+			set
+			{
+				if ((this._JobTitle != value))
+				{
+					this.OnJobTitleChanging(value);
+					this.SendPropertyChanging();
+					this._JobTitle = value;
+					this.SendPropertyChanged("JobTitle");
+					this.OnJobTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AboutMe", DbType="NVarChar(MAX)")]
+		public string AboutMe
+		{
+			get
+			{
+				return this._AboutMe;
+			}
+			set
+			{
+				if ((this._AboutMe != value))
+				{
+					this.OnAboutMeChanging(value);
+					this.SendPropertyChanging();
+					this._AboutMe = value;
+					this.SendPropertyChanged("AboutMe");
+					this.OnAboutMeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressStreet", DbType="NVarChar(MAX)")]
+		public string AddressStreet
+		{
+			get
+			{
+				return this._AddressStreet;
+			}
+			set
+			{
+				if ((this._AddressStreet != value))
+				{
+					this.OnAddressStreetChanging(value);
+					this.SendPropertyChanging();
+					this._AddressStreet = value;
+					this.SendPropertyChanged("AddressStreet");
+					this.OnAddressStreetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressCity", DbType="NVarChar(MAX)")]
+		public string AddressCity
+		{
+			get
+			{
+				return this._AddressCity;
+			}
+			set
+			{
+				if ((this._AddressCity != value))
+				{
+					this.OnAddressCityChanging(value);
+					this.SendPropertyChanging();
+					this._AddressCity = value;
+					this.SendPropertyChanged("AddressCity");
+					this.OnAddressCityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressZip", DbType="NVarChar(MAX)")]
+		public string AddressZip
+		{
+			get
+			{
+				return this._AddressZip;
+			}
+			set
+			{
+				if ((this._AddressZip != value))
+				{
+					this.OnAddressZipChanging(value);
+					this.SendPropertyChanging();
+					this._AddressZip = value;
+					this.SendPropertyChanged("AddressZip");
+					this.OnAddressZipChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressCountry", DbType="NVarChar(MAX)")]
+		public string AddressCountry
+		{
+			get
+			{
+				return this._AddressCountry;
+			}
+			set
+			{
+				if ((this._AddressCountry != value))
+				{
+					this.OnAddressCountryChanging(value);
+					this.SendPropertyChanging();
+					this._AddressCountry = value;
+					this.SendPropertyChanged("AddressCountry");
+					this.OnAddressCountryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50)")]
+		public string ContactNumber
+		{
+			get
+			{
+				return this._ContactNumber;
+			}
+			set
+			{
+				if ((this._ContactNumber != value))
+				{
+					this.OnContactNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ContactNumber = value;
+					this.SendPropertyChanged("ContactNumber");
+					this.OnContactNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="NVarChar(50)")]
+		public string EmailAddress
+		{
+			get
+			{
+				return this._EmailAddress;
+			}
+			set
+			{
+				if ((this._EmailAddress != value))
+				{
+					this.OnEmailAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmailAddress = value;
+					this.SendPropertyChanged("EmailAddress");
+					this.OnEmailAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedDate
+		{
+			get
+			{
+				return this._CreatedDate;
+			}
+			set
+			{
+				if ((this._CreatedDate != value))
+				{
+					this.OnCreatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDate = value;
+					this.SendPropertyChanged("CreatedDate");
+					this.OnCreatedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDate", DbType="DateTime NOT NULL")]
+		public System.DateTime UpdatedDate
+		{
+			get
+			{
+				return this._UpdatedDate;
+			}
+			set
+			{
+				if ((this._UpdatedDate != value))
+				{
+					this.OnUpdatedDateChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedDate = value;
+					this.SendPropertyChanged("UpdatedDate");
+					this.OnUpdatedDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetUser_tblUser", Storage="_AspNetUser", ThisKey="AspUserId", OtherKey="Id", IsForeignKey=true)]
+		public AspNetUser AspNetUser
+		{
+			get
+			{
+				return this._AspNetUser.Entity;
+			}
+			set
+			{
+				AspNetUser previousValue = this._AspNetUser.Entity;
+				if (((previousValue != value) 
+							|| (this._AspNetUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._AspNetUser.Entity = null;
+						previousValue.tblUsers.Remove(this);
+					}
+					this._AspNetUser.Entity = value;
+					if ((value != null))
+					{
+						value.tblUsers.Add(this);
+						this._AspUserId = value.Id;
+					}
+					else
+					{
+						this._AspUserId = default(string);
+					}
+					this.SendPropertyChanged("AspNetUser");
 				}
 			}
 		}
@@ -927,27 +1256,33 @@ namespace Lending.Data
 		
 		private string _Id;
 		
-		private string _Email;
-		
-		private bool _EmailConfirmed;
+		private string _UserName;
 		
 		private string _PasswordHash;
+		
+		private string _FirstName;
+		
+		private string _LastName;
+		
+		private string _Email;
+		
+		private System.Nullable<bool> _EmailConfirmed;
 		
 		private string _SecurityStamp;
 		
 		private string _PhoneNumber;
 		
-		private bool _PhoneNumberConfirmed;
+		private System.Nullable<bool> _PhoneNumberConfirmed;
 		
-		private bool _TwoFactorEnabled;
+		private System.Nullable<bool> _TwoFactorEnabled;
 		
 		private System.Nullable<System.DateTime> _LockoutEndDateUtc;
 		
-		private bool _LockoutEnabled;
+		private System.Nullable<bool> _LockoutEnabled;
 		
-		private int _AccessFailedCount;
+		private System.Nullable<int> _AccessFailedCount;
 		
-		private string _UserName;
+		private EntitySet<tblUser> _tblUsers;
 		
 		private EntitySet<AspNetUserClaim> _AspNetUserClaims;
 		
@@ -961,32 +1296,37 @@ namespace Lending.Data
     partial void OnCreated();
     partial void OnIdChanging(string value);
     partial void OnIdChanged();
-    partial void OnEmailChanging(string value);
-    partial void OnEmailChanged();
-    partial void OnEmailConfirmedChanging(bool value);
-    partial void OnEmailConfirmedChanged();
+    partial void OnUserNameChanging(string value);
+    partial void OnUserNameChanged();
     partial void OnPasswordHashChanging(string value);
     partial void OnPasswordHashChanged();
+    partial void OnFirstNameChanging(string value);
+    partial void OnFirstNameChanged();
+    partial void OnLastNameChanging(string value);
+    partial void OnLastNameChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnEmailConfirmedChanging(System.Nullable<bool> value);
+    partial void OnEmailConfirmedChanged();
     partial void OnSecurityStampChanging(string value);
     partial void OnSecurityStampChanged();
     partial void OnPhoneNumberChanging(string value);
     partial void OnPhoneNumberChanged();
-    partial void OnPhoneNumberConfirmedChanging(bool value);
+    partial void OnPhoneNumberConfirmedChanging(System.Nullable<bool> value);
     partial void OnPhoneNumberConfirmedChanged();
-    partial void OnTwoFactorEnabledChanging(bool value);
+    partial void OnTwoFactorEnabledChanging(System.Nullable<bool> value);
     partial void OnTwoFactorEnabledChanged();
     partial void OnLockoutEndDateUtcChanging(System.Nullable<System.DateTime> value);
     partial void OnLockoutEndDateUtcChanged();
-    partial void OnLockoutEnabledChanging(bool value);
+    partial void OnLockoutEnabledChanging(System.Nullable<bool> value);
     partial void OnLockoutEnabledChanged();
-    partial void OnAccessFailedCountChanging(int value);
+    partial void OnAccessFailedCountChanging(System.Nullable<int> value);
     partial void OnAccessFailedCountChanged();
-    partial void OnUserNameChanging(string value);
-    partial void OnUserNameChanged();
     #endregion
 		
 		public AspNetUser()
 		{
+			this._tblUsers = new EntitySet<tblUser>(new Action<tblUser>(this.attach_tblUsers), new Action<tblUser>(this.detach_tblUsers));
 			this._AspNetUserClaims = new EntitySet<AspNetUserClaim>(new Action<AspNetUserClaim>(this.attach_AspNetUserClaims), new Action<AspNetUserClaim>(this.detach_AspNetUserClaims));
 			this._AspNetUserLogins = new EntitySet<AspNetUserLogin>(new Action<AspNetUserLogin>(this.attach_AspNetUserLogins), new Action<AspNetUserLogin>(this.detach_AspNetUserLogins));
 			this._AspNetUserRoles = new EntitySet<AspNetUserRole>(new Action<AspNetUserRole>(this.attach_AspNetUserRoles), new Action<AspNetUserRole>(this.detach_AspNetUserRoles));
@@ -1013,6 +1353,86 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string UserName
+		{
+			get
+			{
+				return this._UserName;
+			}
+			set
+			{
+				if ((this._UserName != value))
+				{
+					this.OnUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._UserName = value;
+					this.SendPropertyChanged("UserName");
+					this.OnUserNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordHash", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string PasswordHash
+		{
+			get
+			{
+				return this._PasswordHash;
+			}
+			set
+			{
+				if ((this._PasswordHash != value))
+				{
+					this.OnPasswordHashChanging(value);
+					this.SendPropertyChanging();
+					this._PasswordHash = value;
+					this.SendPropertyChanged("PasswordHash");
+					this.OnPasswordHashChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string FirstName
+		{
+			get
+			{
+				return this._FirstName;
+			}
+			set
+			{
+				if ((this._FirstName != value))
+				{
+					this.OnFirstNameChanging(value);
+					this.SendPropertyChanging();
+					this._FirstName = value;
+					this.SendPropertyChanged("FirstName");
+					this.OnFirstNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string LastName
+		{
+			get
+			{
+				return this._LastName;
+			}
+			set
+			{
+				if ((this._LastName != value))
+				{
+					this.OnLastNameChanging(value);
+					this.SendPropertyChanging();
+					this._LastName = value;
+					this.SendPropertyChanged("LastName");
+					this.OnLastNameChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(256)")]
 		public string Email
 		{
@@ -1033,8 +1453,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailConfirmed", DbType="Bit NOT NULL")]
-		public bool EmailConfirmed
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailConfirmed", DbType="Bit")]
+		public System.Nullable<bool> EmailConfirmed
 		{
 			get
 			{
@@ -1049,26 +1469,6 @@ namespace Lending.Data
 					this._EmailConfirmed = value;
 					this.SendPropertyChanged("EmailConfirmed");
 					this.OnEmailConfirmedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordHash", DbType="NVarChar(MAX)")]
-		public string PasswordHash
-		{
-			get
-			{
-				return this._PasswordHash;
-			}
-			set
-			{
-				if ((this._PasswordHash != value))
-				{
-					this.OnPasswordHashChanging(value);
-					this.SendPropertyChanging();
-					this._PasswordHash = value;
-					this.SendPropertyChanged("PasswordHash");
-					this.OnPasswordHashChanged();
 				}
 			}
 		}
@@ -1113,8 +1513,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumberConfirmed", DbType="Bit NOT NULL")]
-		public bool PhoneNumberConfirmed
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNumberConfirmed", DbType="Bit")]
+		public System.Nullable<bool> PhoneNumberConfirmed
 		{
 			get
 			{
@@ -1133,8 +1533,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TwoFactorEnabled", DbType="Bit NOT NULL")]
-		public bool TwoFactorEnabled
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TwoFactorEnabled", DbType="Bit")]
+		public System.Nullable<bool> TwoFactorEnabled
 		{
 			get
 			{
@@ -1173,8 +1573,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LockoutEnabled", DbType="Bit NOT NULL")]
-		public bool LockoutEnabled
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LockoutEnabled", DbType="Bit")]
+		public System.Nullable<bool> LockoutEnabled
 		{
 			get
 			{
@@ -1193,8 +1593,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessFailedCount", DbType="Int NOT NULL")]
-		public int AccessFailedCount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessFailedCount", DbType="Int")]
+		public System.Nullable<int> AccessFailedCount
 		{
 			get
 			{
@@ -1213,23 +1613,16 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		public string UserName
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="AspNetUser_tblUser", Storage="_tblUsers", ThisKey="Id", OtherKey="AspUserId")]
+		public EntitySet<tblUser> tblUsers
 		{
 			get
 			{
-				return this._UserName;
+				return this._tblUsers;
 			}
 			set
 			{
-				if ((this._UserName != value))
-				{
-					this.OnUserNameChanging(value);
-					this.SendPropertyChanging();
-					this._UserName = value;
-					this.SendPropertyChanged("UserName");
-					this.OnUserNameChanged();
-				}
+				this._tblUsers.Assign(value);
 			}
 		}
 		
@@ -1290,6 +1683,18 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_tblUsers(tblUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.AspNetUser = this;
+		}
+		
+		private void detach_tblUsers(tblUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.AspNetUser = null;
 		}
 		
 		private void attach_AspNetUserClaims(AspNetUserClaim entity)

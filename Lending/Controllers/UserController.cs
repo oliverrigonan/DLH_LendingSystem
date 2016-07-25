@@ -20,9 +20,12 @@ namespace Lending.Controllers
                 {
                     var user = context.Users.SingleOrDefault(u => u.UserName == username);
                     string email = string.Concat(new string[] { user.Email });
+                    string firstname = string.Concat(new string[] { user.FirstName });
+                    string lastname = string.Concat(new string[] { user.LastName });
                     
                     // View Data
                     ViewData.Add("Email", email);
+                    ViewData.Add("FullName", firstname + " " + lastname);
                 }
             }
             base.OnActionExecuted(filterContext);

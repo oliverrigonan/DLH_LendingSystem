@@ -7,25 +7,11 @@
 html {
     position: relative;
     min-height: 100%;
+    font-family: Tahoma;
 }
 
 body {
     margin-bottom: 150px;
-    font-family: Tahoma;
-}
-
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: 700;
-}
-
-.topnav {
-    font-size: 14px;
 }
 
 .lead {
@@ -200,5 +186,13 @@ p.copyright {
 td.td-pad {
     color: #808080;
     width: 150px;
-    height: 70px;
+}
+
+dt {
+    margin-top: 5px;
+}
+
+dd {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

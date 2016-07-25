@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>DLH - Software</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <!-- Header -->
+    @Html.Partial("HomeHeader")
+
+    <section class="software-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="list-group">
+                        <a href="/Software" class="list-group-item active">
+                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                        </a>
+                        <a href="/Software/ApplicantList" class="list-group-item">
+                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Application</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-print fa-fw"></i> &nbsp; Reports</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <h4>Dashboard</h4>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            
+                        </div>
+                        <div class="panel-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

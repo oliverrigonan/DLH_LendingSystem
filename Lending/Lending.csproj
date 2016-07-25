@@ -165,6 +165,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SoftwareController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Data\Lending.designer.cs">
       <AutoGen>True</AutoGen>
@@ -186,6 +188,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\tblUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -195,6 +198,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\landing-page.css" />
+    <Content Include="Content\software.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.css" />
     <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.min.css" />
@@ -203,6 +207,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\landing-page\me.jpg" />
     <Content Include="Images\landing-page\banner-bg.jpg" />
     <Content Include="Images\landing-page\dog.png" />
     <Content Include="Images\landing-page\intro-bg.jpg" />
@@ -417,9 +422,10 @@
     <Content Include="Views\Shared\AccountLogin.cshtml" />
     <Content Include="Views\Shared\AccountRegister.cshtml" />
     <Content Include="Views\Shared\ManageIndex.cshtml" />
+    <Content Include="Views\Software\Index.cshtml" />
+    <Content Include="Views\Software\ApplicantList.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ApiControllers\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

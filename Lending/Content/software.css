@@ -1,0 +1,19 @@
+﻿/* software custom styles */
+.software-section {
+    margin-top: 70px;
+}
+
+/* format detail cells */
+.item-header {
+    font-weight: bold;
+    font-size: 140%;    
+    margin-top: 5px;
+}
+.item-detail {
+}
+
+.button-item {
+    padding-top: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
+}

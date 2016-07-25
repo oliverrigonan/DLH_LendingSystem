@@ -236,7 +236,20 @@ namespace Lending.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("ChangePassword", new { Message = ManageMessageId.ChangePasswordSuccess });
+
+                Data.LendingDataContext db = new Data.LendingDataContext();
+
+                var tblUsers = from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d;
+                if (tblUsers.Any())
+                {
+                    var updateTblUser = tblUsers.FirstOrDefault();
+                    updateTblUser.Password = model.NewPassword;
+                    updateTblUser.UpdatedDate = DateTime.Now;
+
+                    db.SubmitChanges();
+                }
+
+                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
             }
             AddErrors(result);
             return View(model);

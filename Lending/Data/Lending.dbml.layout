@@ -1,69 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="Lending">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 13.25" name="Lending">
   <DataContextMoniker Name="/LendingDataContext" />
   <nestedChildShapes>
-    <classShape Id="9e7e4103-62f2-4642-be1e-dbd67623bad7" absoluteBounds="0.75, 0.75, 2, 1.1939925130208335">
+    <classShape Id="8decb320-0ca4-4151-b655-dd7d3d932412" absoluteBounds="3.75, 2.125, 2, 1.1939925130208335">
       <DataClassMoniker Name="/LendingDataContext/AspNetRole" />
       <nestedChildShapes>
-        <elementListCompartment Id="6c203eb5-339c-4f26-9334-ca5dff8a052e" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="45c16374-a654-431e-88d2-7c81acbcc936" absoluteBounds="3.765, 2.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="b0f7e9b6-a5ff-4251-b5eb-7b3d0a741b7c" absoluteBounds="6.75, 1.125, 2, 1.9631982421875003">
+    <classShape Id="a4ca6dee-e4f3-4f97-bc25-c687a85772d7" absoluteBounds="3.5, 8.75, 2, 4.2708154296874987">
       <DataClassMoniker Name="/LendingDataContext/tblUser" />
       <nestedChildShapes>
-        <elementListCompartment Id="d070fd19-6c8a-48fb-b3f1-0eb93d895240" absoluteBounds="6.765, 1.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="d827f70a-e2ac-428c-b127-863066b90d1a" absoluteBounds="3.515, 9.21, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="fdfd98b7-f7f9-46f9-8e91-794cfe294186" absoluteBounds="3.5, 6.625, 2, 1.5785953776041666">
+    <classShape Id="4875eb15-b0e3-431a-b3fb-3f10de1cdab9" absoluteBounds="3.5, 6.375, 2, 1.5785953776041666">
       <DataClassMoniker Name="/LendingDataContext/AspNetUserClaim" />
       <nestedChildShapes>
-        <elementListCompartment Id="debc3219-d035-4e59-afa6-bbe01f5b3231" absoluteBounds="3.515, 7.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8fc1535f-5bd9-4de8-8446-8082b54d60b0" absoluteBounds="3.515, 6.835, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="0641972e-8e54-43d9-b30b-d0cb95de490e" absoluteBounds="3.5, 4.375, 2, 1.3862939453125005">
+    <classShape Id="0c1632bb-ea2f-4d35-8101-c503918ea5a2" absoluteBounds="3.5, 4.25, 2, 1.3862939453125005">
       <DataClassMoniker Name="/LendingDataContext/AspNetUserLogin" />
       <nestedChildShapes>
-        <elementListCompartment Id="7a08f16a-e86d-4309-86fd-614c7327d4dc" absoluteBounds="3.515, 4.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="d6f55a38-119e-4506-907b-de1b33b9b40a" absoluteBounds="3.515, 4.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="1cea30b5-94e7-4361-9666-7d86e94c744a" absoluteBounds="3.5, 1.75, 2, 1.1939925130208335">
+    <classShape Id="8557fc81-db97-4208-8869-67ef3586263d" absoluteBounds="6.5, 6.125, 2, 1.1939925130208344">
       <DataClassMoniker Name="/LendingDataContext/AspNetUserRole" />
       <nestedChildShapes>
-        <elementListCompartment Id="d5c6ded6-c2fe-4021-8804-7190e7742c9d" absoluteBounds="3.515, 2.21, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="dd04923b-2230-4d61-a042-d007cad5d257" absoluteBounds="6.515, 6.585, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="d8eb6e3f-627d-4f0b-acb4-ef281b899e4b" absoluteBounds="0.75, 2.75, 2, 3.1170068359375">
+    <classShape Id="87df152e-0928-4426-85eb-7d806a182b94" absoluteBounds="0.75, 5, 2, 3.5016097005208335">
       <DataClassMoniker Name="/LendingDataContext/AspNetUser" />
       <nestedChildShapes>
-        <elementListCompartment Id="5541aa5d-dd6a-432a-aefc-ba7670942348" absoluteBounds="0.765, 3.21, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="9eb0d88f-fb97-48c9-91b6-c1ed8cd632a5" absoluteBounds="0.765, 5.46, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(1.75 : 1.94399251302083); (1.75 : 2.34699625651042); (3.5 : 2.34699625651042)]" fixedFrom="Algorithm" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(5.65625 : 3.31899251302083); (5.65625 : 6.21875); (6.5 : 6.21875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/LendingDataContext/AspNetRole/AspNetRole_AspNetUserRole" />
       <nodes>
-        <classShapeMoniker Id="9e7e4103-62f2-4642-be1e-dbd67623bad7" />
-        <classShapeMoniker Id="1cea30b5-94e7-4361-9666-7d86e94c744a" />
+        <classShapeMoniker Id="8decb320-0ca4-4151-b655-dd7d3d932412" />
+        <classShapeMoniker Id="8557fc81-db97-4208-8869-67ef3586263d" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(1.75 : 5.8670068359375); (1.75 : 7.41429768880208); (3.5 : 7.41429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(1.75 : 8.50160970052083); (1.75 : 10.8854077148437); (3.5 : 10.8854077148437)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/LendingDataContext/AspNetUser/AspNetUser_tblUser" />
+      <nodes>
+        <classShapeMoniker Id="87df152e-0928-4426-85eb-7d806a182b94" />
+        <classShapeMoniker Id="a4ca6dee-e4f3-4f97-bc25-c687a85772d7" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 7.16429768880208); (3.5 : 7.16429768880208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/LendingDataContext/AspNetUser/AspNetUser_AspNetUserClaim" />
       <nodes>
-        <classShapeMoniker Id="d8eb6e3f-627d-4f0b-acb4-ef281b899e4b" />
-        <classShapeMoniker Id="fdfd98b7-f7f9-46f9-8e91-794cfe294186" />
+        <classShapeMoniker Id="87df152e-0928-4426-85eb-7d806a182b94" />
+        <classShapeMoniker Id="4875eb15-b0e3-431a-b3fb-3f10de1cdab9" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 5.06814697265625); (3.5 : 5.06814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.75 : 5.31814697265625); (3.5 : 5.31814697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/LendingDataContext/AspNetUser/AspNetUser_AspNetUserLogin" />
       <nodes>
-        <classShapeMoniker Id="d8eb6e3f-627d-4f0b-acb4-ef281b899e4b" />
-        <classShapeMoniker Id="0641972e-8e54-43d9-b30b-d0cb95de490e" />
+        <classShapeMoniker Id="87df152e-0928-4426-85eb-7d806a182b94" />
+        <classShapeMoniker Id="0c1632bb-ea2f-4d35-8101-c503918ea5a2" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.75 : 2.75); (3.125 : 2.375); (3.125 : 3.31899251302083); (3.5 : 2.94399251302083)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.75 : 8.2588525390625); (7.5 : 8.2588525390625); (7.5 : 7.31899251302083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/LendingDataContext/AspNetUser/AspNetUser_AspNetUserRole" />
       <nodes>
-        <classShapeMoniker Id="d8eb6e3f-627d-4f0b-acb4-ef281b899e4b" />
-        <classShapeMoniker Id="1cea30b5-94e7-4361-9666-7d86e94c744a" />
+        <classShapeMoniker Id="87df152e-0928-4426-85eb-7d806a182b94" />
+        <classShapeMoniker Id="8557fc81-db97-4208-8869-67ef3586263d" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

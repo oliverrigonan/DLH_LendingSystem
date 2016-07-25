@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Lending.Models;
+using System.Diagnostics;
 
 namespace Lending.Controllers
 {
@@ -75,11 +76,12 @@ namespace Lending.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    // return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Manage");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -151,7 +153,13 @@ namespace Lending.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser 
+                { 
+                    UserName = model.Username, 
+                    FirstName = model.FirstName, 
+                    LastName = model.LastName
+                };
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -162,6 +170,32 @@ namespace Lending.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+                    Data.LendingDataContext db = new Data.LendingDataContext();
+
+                    Data.tblUser newTblUser = new Data.tblUser();
+                    newTblUser.AspUserId = user.Id;
+                    newTblUser.Username = model.Username;
+                    newTblUser.Password = model.Password;
+                    newTblUser.FirstName = model.FirstName;
+                    newTblUser.MiddleName = "";
+                    newTblUser.LastName = model.LastName;
+                    newTblUser.BirthDate = null;
+                    newTblUser.JobTitle = "N/A";
+                    newTblUser.AboutMe = "N/A";
+                    newTblUser.AddressStreet = "N/A";
+                    newTblUser.AddressCity = "N/A";
+                    newTblUser.AddressZip = "N/A";
+                    newTblUser.AddressCountry = "N/A";
+                    newTblUser.ContactNumber = "N/A";
+                    newTblUser.EmailAddress = "N/A";
+                    newTblUser.CreatedDate = DateTime.Now;
+                    newTblUser.UpdatedDate = DateTime.Now;
+
+                    db.tblUsers.InsertOnSubmit(newTblUser);
+                    db.SubmitChanges();
+
+                    Debug.WriteLine("hehe");
 
                     return RedirectToAction("Index", "Home");
                 }

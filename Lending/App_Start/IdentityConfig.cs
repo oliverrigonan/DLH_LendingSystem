@@ -44,20 +44,20 @@ namespace Lending
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
-            {
-                AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
-            };
+            //manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            //{
+            //    AllowOnlyAlphanumericUserNames = false,
+            //    RequireUniqueEmail = true
+            //};
 
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                //RequireNonLetterOrDigit = true,
                 RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                //RequireLowercase = true,
+                //RequireUppercase = true,
             };
 
             // Configure user lockout defaults
