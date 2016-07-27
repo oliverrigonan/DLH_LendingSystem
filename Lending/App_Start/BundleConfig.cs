@@ -25,7 +25,9 @@ namespace Lending
                       "~/wijmo/controls/wijmo.input.min.js",
                       "~/wijmo/controls/wijmo.grid.min.js",
                       "~/wijmo/controls/wijmo.chart.min.js",
-                      "~/Scripts/nprogress.js"));
+                      "~/Scripts/nprogress.js",
+                      "~/Scripts/toastr.min.js",
+                      "~/Scripts/custom-script.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
@@ -34,7 +36,8 @@ namespace Lending
                       "~/Content/software.css",
                       "~/fonts/font-awesome-4.6.3/css/font-awesome.min.css",
                       "~/wijmo/styles/wijmo.min.css",
-                      "~/Content/nprogress.css"));
+                      "~/Content/nprogress.css",
+                      "~/Content/toastr.min.css"));
         }
     }
 }

@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    margin-bottom: 150px;
+    margin-bottom: 50px;
 }
 
 .lead {
@@ -148,8 +148,8 @@ body {
 }
 
 footer {
-    padding: 50px 0;
-    background-color: #f8f8f8;
+    padding-top: 3px;
+    background-color: #e7e7e7;
 }
 
 p.copyright {
@@ -171,6 +171,7 @@ p.copyright {
     left: 0;
     bottom: 0;
     width: 100%;
+    height: 50px;
 }
 
 .form-value {

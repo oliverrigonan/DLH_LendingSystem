@@ -202,6 +202,8 @@
     <Content Include="Content\landing-page.css" />
     <Content Include="Content\nprogress.css" />
     <Content Include="Content\software.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.css" />
     <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.min.css" />
@@ -257,7 +259,10 @@
     <Content Include="fonts\font-awesome-4.6.3\scss\_screen-reader.scss" />
     <Content Include="fonts\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="fonts\font-awesome-4.6.3\scss\_variables.scss" />
+    <Content Include="Scripts\custom-script.js" />
     <Content Include="Scripts\nprogress.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="wijmo\controls\cultures\wijmo.culture.de.js" />
     <Content Include="wijmo\controls\cultures\wijmo.culture.de.min.js" />
     <Content Include="wijmo\controls\cultures\wijmo.culture.en-GB.js" />

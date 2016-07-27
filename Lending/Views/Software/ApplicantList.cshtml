@@ -26,14 +26,16 @@
                         <a href="/Software/ApplicantList" class="list-group-item active">
                             <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
                         </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Application</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan</a>
                         <a href="#" class="list-group-item"><i class="fa fa-print fa-fw"></i> &nbsp; Reports</a>
                         <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <h4>List of Applicants</h4>
                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>List of Applicants</h4>
+                        </div>
                         <div class="panel-heading">
                             <table style="width: 100%">
                                 <tr>
@@ -46,7 +48,7 @@
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td align="right">
                                         <button class="btn btn-success">
-                                            <i class="fa fa-user-plus fa-fw"></i> New Applicant
+                                            <i class="fa fa-user-plus fa-fw"></i>&nbsp; Add Applicant
                                         </button>
                                     </td>
                                 </tr>
@@ -82,6 +84,9 @@
         </div>
     </section>
 
+    <!-- Footer -->
+    @Html.Partial("HomeFooter")
+
     <!-- view applicant modal -->
     <div class="modal fade" id="viewApplicantModal" role="dialog">
         <div class="modal-dialog modal-lg">
@@ -92,7 +97,259 @@
                     <h4 class="modal-title">Applicant Detail</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-primary btn-sm">
+                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                        </button>
+                                        <button class="btn btn-primary btn-sm">
+                                            <i class="fa fa-edit fa-fw"></i> Edit
+                                        </button>
+                                    </td>
+                                    <td align="right">
+                                        <button class="btn btn-danger btn-sm">
+                                            <i class="fa fa-trash fa-fw"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="td-pad">
+                                        Code
+                                    </td>
+                                    <td>
+                                        0000000009
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Applicant Name
+                                    </td>
+                                    <td>
+                                        Noah Oliver Rigonan
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Age
+                                    </td>
+                                    <td>
+                                        21
+                                    </td>
 
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Date of Birth:
+                                    </td>
+                                    <td>
+                                        November 16, 1995
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Status:
+                                    </td>
+                                    <td>
+                                        Single
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        City Address
+                                    </td>
+                                    <td>
+                                        615 R.Q P.Del Rosario Ext. Cebu City
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Province Address
+                                    </td>
+                                    <td>
+                                        Cebu Province
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Residence Type
+                                    </td>
+                                    <td>
+                                        Free
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Length of stay
+                                    </td>
+                                    <td>
+                                        25 Years
+                                    </td>
+                                </tr>
+                            </table>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                        <li class="active"><a data-toggle="pill" href="#spouse-detail">Spouse Detail</a></li>
+                                        <li><a data-toggle="pill" href="#income">Income</a></li>
+                                        <li><a data-toggle="pill" href="#realPropertiesOwned">Real Properties Owned</a></li>
+                                        <li><a data-toggle="pill" href="#ApplianceOwned">Appliance Owned</a></li>
+                                    </ul>
+                                </div>
+                                <br />
+                                <div class="col-md-9">
+                                    <div class="tab-content">
+                                        <div id="spouse-detail" class="tab-pane fade in active">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Spouse Business Information
+                                                </div>
+                                                <div class="panel-body">
+                                                    <table class="table table-responsive">
+                                                        <tr>
+                                                            <td class="td-pad">
+                                                                Spouse Name
+                                                            </td>
+                                                            <td>
+                                                                Jezil Sanchez Diopilo
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="td-pad">
+                                                                Number of Children
+                                                            </td>
+                                                            <td>
+                                                                4 Children
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="td-pad">
+                                                                Studying
+                                                            </td>
+                                                            <td>
+                                                                Yes
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="td-pad">
+                                                                Schools
+                                                            </td>
+                                                            <td>
+                                                                University of San Carlos
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                    <br />
+                                                    <!-- Tab Menus -->
+                                                    <ul class="nav nav-tabs" role="tablist">
+                                                        <li class="active"><a href="#spouse-business-detail" role="tab" data-toggle="tab">Business Detail</a></li>
+                                                        <li><a href="#spouse-employee-detail" role="tab" data-toggle="tab">Employee Detail</a></li>
+                                                    </ul>
+                                                    <br />
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane" id="spouse-business-detail">
+
+                                                        </div>
+                                                        <div class="tab-pane" id="spouse-employee-detail">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="income" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Income Detail
+                                                </div>
+                                                <div class="panel-body">
+                                                    <!-- Tab Menus -->
+                                                    <ul class="nav nav-tabs" role="tablist">
+                                                        <li class="active"><a href="#business-detail" role="tab" data-toggle="tab">Business Detail</a></li>
+                                                        <li><a href="#employee-detail" role="tab" data-toggle="tab">Employee Detail</a></li>
+                                                    </ul>
+                                                    <br />
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane" id="business-detail">
+
+                                                        </div>
+                                                        <div class="tab-pane" id="employee-detail">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="realPropertiesOwned" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Real Properties Owned
+                                                </div>
+                                                <div class="panel-body">
+                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ApplianceOwned" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Applicane Owned
+                                                </div>
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="td-pad">
+                                        Created by
+                                    </td>
+                                    <td>
+                                        Administrator
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Date Created
+                                    </td>
+                                    <td>
+                                        July 27, 2016
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Updated by
+                                    </td>
+                                    <td>
+                                        Alsonny Cana
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-pad">
+                                        Date Updated
+                                    </td>
+                                    <td>
+                                        July 27, 2016
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
@@ -137,7 +394,6 @@
 
         // get applicants
         function getApplicantList() {
-            NProgress.start;
             var applicants = new wijmo.collections.ObservableArray;
             $.ajax({
                 url: '/api/applicant/list',
@@ -156,7 +412,7 @@
                                 FirstName: applicantListResult[i]["FirstName"],
                                 MiddleName: applicantListResult[i]["MiddleName"],
                                 LastName: applicantListResult[i]["LastName"],
-                                FullName: applicantListResult[i]["FirstName"] + " " + applicantListResult[i]["MiddleName"] + " " + applicantListResult[i]["LastName"],
+                                FullName: applicantListResult[i]["LastName"] + ", " + applicantListResult[i]["FirstName"] + " " + applicantListResult[i]["MiddleName"],
                                 BirthDate: applicantListResult[i]["BirthDate"],
                                 Gender: applicantListResult[i]["Gender"],
                                 Status: applicantListResult[i]["Status"],
@@ -173,9 +429,9 @@
                                 UpdatedDateTime: applicantListResult[i]["UpdatedDateTime"]
                             });
                         }
-
-                        NProgress.done;
                     }
+
+                    NProgress.done();
                 }
             });
             return applicants;
@@ -239,6 +495,9 @@
 
         // ready function
         window.onload = function () {
+            NProgress.start();
+            toastrModification();
+
             applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
             applicantCollectionView.canFilter = true;
             applicantCollectionView.pageSize = 15;

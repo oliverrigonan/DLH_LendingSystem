@@ -196,9 +196,9 @@
                     document.getElementById("editContactCountry").value = currentUserResults.AddressCountry;
                     document.getElementById("editContactNumber").value = currentUserResults.ContactNumber;
                     document.getElementById("editContactEmail").value = currentUserResults.EmailAddress;
+
+                    NProgress.done();
                 }
-            }).fail(function (xhr, textStatus, err) {
-                alert(err);
             });
         }
 
@@ -280,9 +280,10 @@
         }
 
         // ready function
-        $(document).ready(function () {
+        window.onload = function () {
+            NProgress.start();
             getCurrentLoggedInUser();
-        });
+        }
     </script>
 </body>
 </html>
