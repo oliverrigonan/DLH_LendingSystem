@@ -6,14 +6,21 @@
 /* format detail cells */
 .item-header {
     font-weight: bold;
-    font-size: 140%;    
-    margin-top: 5px;
-}
-.item-detail {
+    font-size: 100%;
 }
 
 .button-item {
-    padding-top: 5px;
+    padding-top: 2px;
     padding-left: 15px;
     padding-right: 15px;
+}
+
+.flexgridHeight {
+    height: 450px;
+}
+
+@media screen and (max-width: 768px) {
+    .flexgridHeight {
+        height: 870px;
+    }
 }
