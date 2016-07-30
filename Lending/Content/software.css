@@ -3,7 +3,6 @@
     margin-top: 70px;
 }
 
-/* format detail cells */
 .item-header {
     font-weight: bold;
     font-size: 100%;
@@ -25,10 +24,21 @@
     }
 }
 
-.td-label {
-
+.form-table {
+    width: 100%;
 }
 
-.td-data {
+td.td-label {
+    color: #808080;
+    width: 30%;
+}
 
+td.td-label, td.td-data {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.numberField {
+    text-align: right;
+    width: 50%;
 }

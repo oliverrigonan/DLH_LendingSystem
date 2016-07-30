@@ -16,9 +16,33 @@ namespace Lending.Controllers
         }
 
         [Authorize]
+        public ActionResult Forbidden()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult NotFound()
+        {
+            return View();
+        }
+
+        [Authorize]
         public ActionResult ApplicantList()
         {
             return View();
+        }
+
+        [Authorize]
+        public ActionResult ApplicantDetail(Int32? id)
+        {
+            if(id == null) {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

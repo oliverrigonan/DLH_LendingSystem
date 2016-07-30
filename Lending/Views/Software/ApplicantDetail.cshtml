@@ -1,0 +1,563 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>DLH - Applicant Detail</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <!-- Header -->
+    @Html.Partial("HomeHeader")
+
+    <section class="software-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="list-group">
+                        <a href="/Software" class="list-group-item">
+                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                        </a>
+                        <a href="/Software/ApplicantList" class="list-group-item active">
+                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-print fa-fw"></i> &nbsp; Reports</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>
+                                        <h4>Applicant Detail</h4>
+                                    </td>
+                                    <td align="right">
+                                        <button class="btn btn-success">
+                                            <i class="fa fa-save fa-fw"></i> Save
+                                        </button>
+                                        <button class="btn btn-primary">
+                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                        </button>
+                                        <button class="btn btn-danger" onclick="window.location = '/Software/ApplicantList'">
+                                            <i class="fa fa-close fa-fw"></i> Cancel
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>Applicant Photo</td>
+                                                    <td align="right">
+                                                        <button class="btn btn-default btn-xs">
+                                                            <i class="fa fa-image fa-fw"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <img class="img-responsive img-thumbnail" src="~/Images/landing-page/me.jpg" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading">
+                                            Applicant Personal Information
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="form-table">
+                                                <tr>
+                                                    <td class="td-label">Applicant Name</td>
+                                                    <td class="td-data"><input type="text" class="form-control" id="applicantFullName" placeholder="Full Name" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Birth Date</td>
+                                                    <td class="td-data">
+                                                        <div id="applicantBirthDate" style="width: 50%;"></div>
+                                                        &nbsp;
+                                                        <span id="fullDateString"></span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Civil Status</td>
+                                                    <td class="td-data">
+                                                        <div id="applicantCivilStatus"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">City Address</td>
+                                                    <td class="td-data"><textarea class="form-control" id="applicantCityAddress" placeholder="City Address"></textarea></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Province Address</td>
+                                                    <td class="td-data"><textarea class="form-control" id="applicantProvinceAddress" placeholder="Province Address"></textarea></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Residence Type</td>
+                                                    <td class="td-data">
+                                                        <div id="applicantResidenceType"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Length of Stay</td>
+                                                    <td class="td-data"><input type="text" class="form-control numberField" id="applicantLengthOfStay" placeholder="0" /></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="spouse-detail" class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Spouse Detail and Business Information
+                                        </div>
+                                        <div class="panel-body">
+                                            <table class="form-table">
+                                                <tr>
+                                                    <td class="td-label">First Name</td>
+                                                    <td class="td-data"><input type="text" class="form-control" placeholder="First Name" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Middle Name</td>
+                                                    <td class="td-data"><input type="text" class="form-control" placeholder="Middle Name" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Last Name</td>
+                                                    <td class="td-data"><input type="text" class="form-control" placeholder="Last Name" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Number of Children</td>
+                                                    <td class="td-data">
+                                                        <div id="applicantNumberOfChildren" style="width: 20%;"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">
+                                                        Studying
+                                                    </td>
+                                                    <td class="td-data">
+                                                        <div id="applicantNumberOfStudying" style="width: 20%;"></div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td-label">Schools</td>
+                                                    <td class="td-data"><textarea class="form-control" placeholder="Schools"></textarea></td>
+                                                </tr>
+                                            </table>
+                                            <br />
+                                            <!-- Tab Menus -->
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li class="active"><a href="#spouse-business-detail" role="tab" data-toggle="tab">Business Detail</a></li>
+                                                <li><a href="#spouse-employee-detail" role="tab" data-toggle="tab">Employee Detail</a></li>
+                                            </ul>
+                                            <br />
+                                            <!-- Tab panes -->
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="spouse-business-detail">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td align="right">
+                                                                <button class="btn btn-primary btn-sm">
+                                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="tab-pane" id="spouse-employee-detail">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td align="right">
+                                                                <button class="btn btn-primary btn-sm">
+                                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                        <li class="active"><a data-toggle="pill" href="#income">Applicant Income</a></li>
+                                        <li><a data-toggle="pill" href="#realPropertiesOwned">Real Properties Owned</a></li>
+                                        <li><a data-toggle="pill" href="#ApplianceOwned">Appliance Owned</a></li>
+                                    </ul>
+                                    <br />
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="tab-content">
+                                        <div id="income" class="tab-pane fade in active">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Income Detail
+                                                </div>
+                                                <div class="panel-body">
+                                                    <!-- Tab Menus -->
+                                                    <ul class="nav nav-tabs" role="tablist">
+                                                        <li class="active"><a href="#business-detail" role="tab" data-toggle="tab">Business Detail</a></li>
+                                                        <li><a href="#employee-detail" role="tab" data-toggle="tab">Employee Detail</a></li>
+                                                    </ul>
+                                                    <br />
+                                                    <!-- Tab panes -->
+                                                    <div class="tab-content">
+                                                        <div class="tab-pane active" id="business-detail">
+                                                            <table style="width: 100%">
+                                                                <tr>
+                                                                    <td align="right">
+                                                                        <button class="btn btn-primary btn-sm">
+                                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                        <div class="tab-pane" id="employee-detail">
+                                                            <table style="width: 100%">
+                                                                <tr>
+                                                                    <td align="right">
+                                                                        <button class="btn btn-primary btn-sm">
+                                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="realPropertiesOwned" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td>
+                                                                Real Properties Owned
+                                                            </td>
+                                                            <td align="right">
+                                                                <button class="btn btn-primary btn-sm">
+                                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="ApplianceOwned" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td>
+                                                                Appliance Owned
+                                                            </td>
+                                                            <td align="right">
+                                                                <button class="btn btn-primary btn-sm">
+                                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="panel-body">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    @Html.Partial("HomeFooter")
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var cboBirthDate;
+        var cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus');
+        var cboNumberOfChildren;
+        var cboNumberOfStudying;
+        var cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType');
+
+        // on load birthdate label string
+        function onLoadBirthDateLabelString(cboBirthDate) {
+            var birthDateValue = cboBirthDate.value.getMonth() + 1;
+            var month = "";
+
+            if (birthDateValue == 1) {
+                month = "January"
+            } else if (birthDateValue == 2) {
+                month = "February"
+            } else if (birthDateValue == 3) {
+                month = "March"
+            } else if (birthDateValue == 4) {
+                month = "April"
+            } else if (birthDateValue == 5) {
+                month = "May"
+            } else if (birthDateValue == 6) {
+                month = "June"
+            } else if (birthDateValue == 7) {
+                month = "July"
+            } else if (birthDateValue == 8) {
+                month = "August"
+            } else if (birthDateValue == 9) {
+                month = "September"
+            } else if (birthDateValue == 10) {
+                month = "October"
+            } else if (birthDateValue == 11) {
+                month = "November"
+            } else if (birthDateValue == 12) {
+                month = "December"
+            } else {
+                month = "";
+            }
+
+            document.getElementById("fullDateString").innerHTML = month + " " + cboBirthDate.value.getDate() + ", " + cboBirthDate.value.getFullYear();
+        }
+
+        // cbo birthdate
+        function createCboBirthDate() {
+            cboBirthDate = new wijmo.input.InputDate('#applicantBirthDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var birthDateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (birthDateValue == 1) {
+                        month = "January"
+                    } else if (birthDateValue == 2) {
+                        month = "February"
+                    } else if (birthDateValue == 3) {
+                        month = "March"
+                    } else if (birthDateValue == 4) {
+                        month = "April"
+                    } else if (birthDateValue == 5) {
+                        month = "May"
+                    } else if (birthDateValue == 6) {
+                        month = "June"
+                    } else if (birthDateValue == 7) {
+                        month = "July"
+                    } else if (birthDateValue == 8) {
+                        month = "August"
+                    } else if (birthDateValue == 9) {
+                        month = "September"
+                    } else if (birthDateValue == 10) {
+                        month = "October"
+                    } else if (birthDateValue == 11) {
+                        month = "November"
+                    } else if (birthDateValue == 12) {
+                        month = "December"
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("fullDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+                }
+            });
+
+            // on load function birthdate label string
+            onLoadBirthDateLabelString(cboBirthDate);
+        }
+
+        // cbo civil status
+        function createCboCivilStatus(civilStatusSelectedValue) {
+            var civilStatusArray = new Array();
+            $.ajax({
+                url: '/api/civilStatus/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (civilStatusResults) {
+                    var disabled = true;
+                    if (civilStatusResults.length > 0) {
+                        for (i = 0; i < civilStatusResults.length; i++) {
+                            civilStatusArray.push({
+                                Id: civilStatusResults[i]["Id"],
+                                CivilStatus: civilStatusResults[i]["CivilStatus"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    var civilStatusCollectionView = new wijmo.collections.CollectionView(civilStatusArray);
+                    var civilStatusArrayForItemSource = new Array();
+                    for (var i = 0; i < civilStatusCollectionView.items.length; i++) {
+                        civilStatusArrayForItemSource.push(civilStatusCollectionView.items[i].CivilStatus);
+                    }
+
+                    cboCivilStatus.dispose();
+                    cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: civilStatusArrayForItemSource,
+                        isEditable: false,
+                        required: true,
+                        selectedValue: civilStatusSelectedValue.toString(),
+                        onSelectedIndexChanged: function () {
+                            if (this.selectedValue == "Single") {
+                                $("#spouse-detail").hide();
+                            } else if (this.selectedValue == "Widow") {
+                                $("#spouse-detail").hide();
+                            } else {
+                                $("#spouse-detail").show();
+                            }
+                        }
+                    });
+
+                    // civil status on load selected value event
+                    if (cboCivilStatus.selectedValue == "Single") {
+                        $("#spouse-detail").hide();
+                    } else if (cboCivilStatus.selectedValue == "Widow") {
+                        $("#spouse-detail").hide();
+                    } else {
+                        $("#spouse-detail").show();
+                    }
+                }
+            });
+        }
+
+        // cbo number of Children
+        function createCboNumberOfChildren() {
+            // number of children cbo with item source
+            var cboNumberOfChildrenItemSource = new Array(20);
+            for (var i = 0; i <= 20; i++) {
+                cboNumberOfChildrenItemSource[i] = i;
+            }
+
+            cboNumberOfChildren = new wijmo.input.ComboBox('#applicantNumberOfChildren', {
+                placeholder: "Select",
+                itemsSource: cboNumberOfChildrenItemSource,
+                isEditable: false,
+                required: true,
+            });
+        }
+
+        // cbo number of studying
+        function createCboNumberOfStudying() {
+            var cboNumberOfStudyingItemSource = new Array(20);
+            for (var i = 0; i <= 20; i++) {
+                cboNumberOfStudyingItemSource[i] = i;
+            }
+
+            cboNumberOfStudying = new wijmo.input.ComboBox('#applicantNumberOfStudying', {
+                placeholder: "Select",
+                itemsSource: cboNumberOfStudyingItemSource,
+                isEditable: false,
+                required: true,
+            });
+        }
+
+        // cbo Residence Type
+        function createCboResidenceType(residenceTypeSelectedValue) {
+            var residenceTypeArray = new Array();
+            $.ajax({
+                url: '/api/residenceType/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (residenceTypeResults) {
+                    var disabled = true;
+                    if (residenceTypeResults.length > 0) {
+                        for (i = 0; i < residenceTypeResults.length; i++) {
+                            residenceTypeArray.push({
+                                Id: residenceTypeResults[i]["Id"],
+                                ResidenceType: residenceTypeResults[i]["ResidenceType"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    var residenceTypeCollectionView = new wijmo.collections.CollectionView(residenceTypeArray);
+                    var residenceTypeArrayForItemSource = new Array();
+                    for (var i = 0; i < residenceTypeCollectionView.items.length; i++) {
+                        residenceTypeArrayForItemSource.push(residenceTypeCollectionView.items[i].ResidenceType);
+                    }
+
+                    cboResidenceType.dispose();
+                    cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: residenceTypeArrayForItemSource,
+                        isEditable: false,
+                        required: true,
+                        selectedValue: residenceTypeSelectedValue.toString()
+                    });
+                }
+            });
+        }
+
+        // get Applicant Detail
+        function getApplicantDetail() {
+            $.ajax({
+                url: '/api/applicant/getById/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (applicantDetailResult) {
+                    if (applicantDetailResult != null) {
+                        createCboBirthDate();
+                        createCboNumberOfChildren();
+                        createCboNumberOfStudying();
+
+                        document.getElementById("applicantFullName").value = applicantDetailResult.FullName;
+                        cboBirthDate.value = new Date(applicantDetailResult.BirthDate);
+                        createCboCivilStatus(applicantDetailResult.CivilStatus);
+                        document.getElementById("applicantCityAddress").value = applicantDetailResult.CityAddress;
+                        document.getElementById("applicantProvinceAddress").value = applicantDetailResult.ProvinceAddress;
+                        createCboResidenceType(applicantDetailResult.ResidenceType);
+                        document.getElementById("applicantLengthOfStay").value = applicantDetailResult.LengthOfStay;
+                    } else {
+                        alert("The record you request has no data");
+                        window.history.back();
+                    }
+
+                    NProgress.done();
+                }
+            });
+        }
+
+        // on load function
+        window.onload = function () {
+            NProgress.start();
+            getApplicantDetail();
+        }
+    </script>
+</body>
+</html>

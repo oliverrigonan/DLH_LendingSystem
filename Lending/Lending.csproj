@@ -166,6 +166,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
+    <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
+    <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -190,6 +192,8 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\tblApplicant.cs" />
+    <Compile Include="Models\tblCivilStatus.cs" />
+    <Compile Include="Models\tblResidenceType.cs" />
     <Compile Include="Models\tblUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -433,6 +437,9 @@
     <Content Include="Views\Shared\ManageIndex.cshtml" />
     <Content Include="Views\Software\Index.cshtml" />
     <Content Include="Views\Software\ApplicantList.cshtml" />
+    <Content Include="Views\Software\ApplicantDetail.cshtml" />
+    <Content Include="Views\Software\Forbidden.cshtml" />
+    <Content Include="Views\Software\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
