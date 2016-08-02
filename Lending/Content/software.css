@@ -31,14 +31,27 @@
 td.td-label {
     color: #808080;
     width: 30%;
-}
-
-td.td-label, td.td-data {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .numberField {
     text-align: right;
     width: 50%;
+}
+
+dt {
+    color: #808080;
+    font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+    dt {
+        margin-top: 30px;
+    }
+
+    .numberField {
+    text-align: right;
+    width: 100%;
+}
 }

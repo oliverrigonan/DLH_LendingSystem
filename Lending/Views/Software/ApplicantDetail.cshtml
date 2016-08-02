@@ -40,14 +40,14 @@
                                         <h4>Applicant Detail</h4>
                                     </td>
                                     <td align="right">
-                                        <button class="btn btn-success">
-                                            <i class="fa fa-save fa-fw"></i> Save
+                                        <button class="btn btn-primary" id="btnSaveChanges" onclick="btnSaveChangesApplicantOnclick()">
+                                            <i class="fa fa-save fa-fw"></i> Save Changes
                                         </button>
-                                        <button class="btn btn-primary">
+                                        <button class="btn btn-primary" id="btnPDF">
                                             <i class="fa fa-file-pdf-o fa-fw"></i> PDF
                                         </button>
-                                        <button class="btn btn-danger" onclick="window.location = '/Software/ApplicantList'">
-                                            <i class="fa fa-close fa-fw"></i> Cancel
+                                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
+                                            <i class="fa fa-close fa-fw"></i> Close
                                         </button>
                                     </td>
                                 </tr>
@@ -55,196 +55,150 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>Applicant Photo</td>
-                                                    <td align="right">
-                                                        <button class="btn btn-default btn-xs">
-                                                            <i class="fa fa-image fa-fw"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="panel-body">
-                                            <img class="img-responsive img-thumbnail" src="~/Images/landing-page/me.jpg" />
-                                        </div>
-                                    </div>
+                                <div class="col-md-3">
+                                    <img class="img-responsive img-thumbnail" src="~/Images/landing-page/me.jpg" />
+                                    <hr />
+                                    <button class="btn btn-default btn-sm btn-block"><i class="fa fa-search-plus fa-fw"></i> Preview</button>
+                                    <button class="btn btn-default btn-sm btn-block"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                                    <button class="btn btn-danger btn-sm btn-block"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
+                                    <br />
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="panel panel-info">
+                                <div class="col-md-9">
+                                    <div class="panel panel-default">
                                         <div class="panel-heading">
                                             Applicant Personal Information
                                         </div>
                                         <div class="panel-body">
-                                            <table class="form-table">
-                                                <tr>
-                                                    <td class="td-label">Applicant Name</td>
-                                                    <td class="td-data"><input type="text" class="form-control" id="applicantFullName" placeholder="Full Name" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Birth Date</td>
-                                                    <td class="td-data">
-                                                        <div id="applicantBirthDate" style="width: 50%;"></div>
-                                                        &nbsp;
-                                                        <span id="fullDateString"></span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Civil Status</td>
-                                                    <td class="td-data">
-                                                        <div id="applicantCivilStatus"></div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">City Address</td>
-                                                    <td class="td-data"><textarea class="form-control" id="applicantCityAddress" placeholder="City Address"></textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Province Address</td>
-                                                    <td class="td-data"><textarea class="form-control" id="applicantProvinceAddress" placeholder="Province Address"></textarea></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Residence Type</td>
-                                                    <td class="td-data">
-                                                        <div id="applicantResidenceType"></div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Length of Stay</td>
-                                                    <td class="td-data"><input type="text" class="form-control numberField" id="applicantLengthOfStay" placeholder="0" /></td>
-                                                </tr>
-                                            </table>
+                                            <dl class="dl-horizontal">
+                                                <dt>Applicant Name</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantFullName" placeholder="Full Name" /></dd>
+                                                <dt>Birth Date</dt>
+                                                <dd>
+                                                    <div id="applicantBirthDate"></div> &nbsp; <span id="fullDateString"></span>
+                                                </dd>
+                                                <dt>Civil Status</dt>
+                                                <dd><div id="applicantCivilStatus"></div></dd>
+                                                <dt>City Address</dt>
+                                                <dd><textarea class="form-control requiredApplicantDetail" id="applicantCityAddress" placeholder="City Address"></textarea></dd>
+                                                <dt>Province Address</dt>
+                                                <dd><textarea class="form-control requiredApplicantDetail" id="applicantProvinceAddress" placeholder="Province Address"></textarea></dd>
+                                                <dt>Residence Type</dt>
+                                                <dd><div id="applicantResidenceType"></div></dd>
+                                                <dt>Length of Stay</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantLengthOfStay" placeholder="How many months, years or days?" /></dd>
+                                            </dl>
                                         </div>
                                     </div>
-                                    <div id="spouse-detail" class="panel panel-default">
+                                    <div class="panel panel-default">
                                         <div class="panel-heading">
-                                            Spouse Detail and Business Information
+                                            Business Detail
                                         </div>
                                         <div class="panel-body">
-                                            <table class="form-table">
-                                                <tr>
-                                                    <td class="td-label">First Name</td>
-                                                    <td class="td-data"><input type="text" class="form-control" placeholder="First Name" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Middle Name</td>
-                                                    <td class="td-data"><input type="text" class="form-control" placeholder="Middle Name" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Last Name</td>
-                                                    <td class="td-data"><input type="text" class="form-control" placeholder="Last Name" /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Number of Children</td>
-                                                    <td class="td-data">
-                                                        <div id="applicantNumberOfChildren" style="width: 20%;"></div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">
-                                                        Studying
-                                                    </td>
-                                                    <td class="td-data">
-                                                        <div id="applicantNumberOfStudying" style="width: 20%;"></div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="td-label">Schools</td>
-                                                    <td class="td-data"><textarea class="form-control" placeholder="Schools"></textarea></td>
-                                                </tr>
-                                            </table>
-                                            <br />
-                                            <!-- Tab Menus -->
-                                            <ul class="nav nav-tabs" role="tablist">
-                                                <li class="active"><a href="#spouse-business-detail" role="tab" data-toggle="tab">Business Detail</a></li>
-                                                <li><a href="#spouse-employee-detail" role="tab" data-toggle="tab">Employee Detail</a></li>
-                                            </ul>
-                                            <br />
-                                            <!-- Tab panes -->
-                                            <div class="tab-content">
-                                                <div class="tab-pane active" id="spouse-business-detail">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm">
-                                                                    <i class="fa fa-plus fa-fw"></i> Add
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="tab-pane" id="spouse-employee-detail">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm">
-                                                                    <i class="fa fa-plus fa-fw"></i> Add
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
+                                            <dl class="dl-horizontal">
+                                                <dt>Business Address</dt>
+                                                <dd><textarea class="form-control requiredApplicantDetail" id="applicantBusinessAddress" placeholder="Business Address"></textarea></dd>
+                                                <dt>Karatula Name</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessKaratulaName" placeholder="Karatula Name" /></dd>
+                                                <dt>Telephone Number</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessTelephoneNumber" placeholder="Telephone Number" /></dd>
+                                                <dt>Business Years</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessYears" placeholder="How long on said business" /></dd>
+                                                <dt>Merchandise</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantBBusinessMerchandise" placeholder="Business Merchandise" /></dd>
+                                                <dt>Value of Stocks</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail numberField" id="applicantValuesOfStocks" placeholder="0" /></dd>
+                                                <dt>Beginning Capital</dt>
+                                                <dd>
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantBusinessBeginningCapital" placeholder="0.00" />
+                                                    </div>
+                                                </dd>
+                                                <dt>Sales are low during</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSalesLowPeriod" placeholder="Sales are low during" /></dd>
+                                                <dt>Lowest daily sales</dt>
+                                                <dd>
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLowestDailySales" placeholder="0" />
+                                                    </div>
+                                                </dd>
+                                                <dt>Average daily sales</dt>
+                                                <dd>
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantAverageDailySales" placeholder="0" />
+                                                    </div>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            If Employed
+                                        </div>
+                                        <div class="panel-body">
+                                            <dl class="dl-horizontal">
+                                                <dt>Name of Company</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedCompanyName" placeholder="Name of Company" /></dd>
+                                                <dt>Company Address</dt>
+                                                <dd><textarea class="form-control requiredApplicantDetail" id="applicantEmployedCompanyAddress" placeholder="Company Address"></textarea></dd>
+                                                <dt>Position Occupied</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedPositionOccupied" placeholder="Position Occupied" /></dd>
+                                                <dt>Length of Service</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedLengthOfService" placeholder="Length of Service" /></dd>
+                                                <dt>Telephone Number</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedTelephoneNumber" placeholder="Telephone Number" /></dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            Spouse's Information and Income Detail
+                                        </div>
+                                        <div class="panel-body">
+                                            <dl class="dl-horizontal">
+                                                <dt>Name of Spouse</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseName" placeholder="Name of Spouse" /></dd>
+                                                <dt>Employer or Business</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseEmployerOrBusiness" placeholder="Employer or Business of Spouse" /></dd>
+                                                <dt>Business Add</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseBusinessAdd" placeholder="Employer or Business Add" /></dd>
+                                                <dt>Telephone Number</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseTelephoneNumber" placeholder="Telephone Number" /></dd>
+                                                <dt>Position Occupied</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpousePositionOccupied" placeholder="Position Occupied" /></dd>
+                                                <dt>Monthly Salary</dt>
+                                                <dd>
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantSpouseMonthlySalary" placeholder="0.00" />
+                                                    </div>
+                                                </dd>
+                                                <dt>Length of Service</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseLengthOfService" placeholder="Length of Service" /></dd>
+                                                <dt>Number of Children</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfChildren" placeholder="How many children?" /></dd>
+                                                <dt>Number of Studying</dt>
+                                                <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfStudying" placeholder="How many are studying?" /></dd>
+                                                <dt>Schools</dt>
+                                                <dd><textarea class="form-control requiredApplicantDetail" id="applicantSpouseChildrenSchools" placeholder="What Schools?"></textarea></dd>
+                                            </dl>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
-                                        <li class="active"><a data-toggle="pill" href="#income">Applicant Income</a></li>
-                                        <li><a data-toggle="pill" href="#realPropertiesOwned">Real Properties Owned</a></li>
+                                        <li class="active"><a data-toggle="pill" href="#realPropertiesOwned">Real Properties Owned</a></li>
                                         <li><a data-toggle="pill" href="#ApplianceOwned">Appliance Owned</a></li>
                                     </ul>
                                     <br />
                                 </div>
-                                <div class="col-md-8">
+                                <div class="col-md-9">
                                     <div class="tab-content">
-                                        <div id="income" class="tab-pane fade in active">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    Income Detail
-                                                </div>
-                                                <div class="panel-body">
-                                                    <!-- Tab Menus -->
-                                                    <ul class="nav nav-tabs" role="tablist">
-                                                        <li class="active"><a href="#business-detail" role="tab" data-toggle="tab">Business Detail</a></li>
-                                                        <li><a href="#employee-detail" role="tab" data-toggle="tab">Employee Detail</a></li>
-                                                    </ul>
-                                                    <br />
-                                                    <!-- Tab panes -->
-                                                    <div class="tab-content">
-                                                        <div class="tab-pane active" id="business-detail">
-                                                            <table style="width: 100%">
-                                                                <tr>
-                                                                    <td align="right">
-                                                                        <button class="btn btn-primary btn-sm">
-                                                                            <i class="fa fa-plus fa-fw"></i> Add
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                        <div class="tab-pane" id="employee-detail">
-                                                            <table style="width: 100%">
-                                                                <tr>
-                                                                    <td align="right">
-                                                                        <button class="btn btn-primary btn-sm">
-                                                                            <i class="fa fa-plus fa-fw"></i> Add
-                                                                        </button>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="realPropertiesOwned" class="tab-pane fade">
+                                        <div id="realPropertiesOwned" class="tab-pane fade in active">
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
                                                     <table style="width: 100%">
@@ -290,6 +244,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="panel-footer" align="right">
+                            <button class="btn btn-primary" id="btnSaveChangesButtom" onclick="btnSaveChangesApplicantOnclick()">
+                                <i class="fa fa-save fa-fw"></i> Save Changes
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -306,8 +265,6 @@
         // global variables
         var cboBirthDate;
         var cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus');
-        var cboNumberOfChildren;
-        var cboNumberOfStudying;
         var cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType');
 
         // on load birthdate label string
@@ -316,29 +273,29 @@
             var month = "";
 
             if (birthDateValue == 1) {
-                month = "January"
+                month = "January";
             } else if (birthDateValue == 2) {
-                month = "February"
+                month = "February";
             } else if (birthDateValue == 3) {
-                month = "March"
+                month = "March";
             } else if (birthDateValue == 4) {
-                month = "April"
+                month = "April";
             } else if (birthDateValue == 5) {
-                month = "May"
+                month = "May";
             } else if (birthDateValue == 6) {
-                month = "June"
+                month = "June";
             } else if (birthDateValue == 7) {
-                month = "July"
+                month = "July";
             } else if (birthDateValue == 8) {
-                month = "August"
+                month = "August";
             } else if (birthDateValue == 9) {
-                month = "September"
+                month = "September";
             } else if (birthDateValue == 10) {
-                month = "October"
+                month = "October";
             } else if (birthDateValue == 11) {
-                month = "November"
+                month = "November";
             } else if (birthDateValue == 12) {
-                month = "December"
+                month = "December";
             } else {
                 month = "";
             }
@@ -357,29 +314,29 @@
                     var month = "";
 
                     if (birthDateValue == 1) {
-                        month = "January"
+                        month = "January";
                     } else if (birthDateValue == 2) {
-                        month = "February"
+                        month = "February";
                     } else if (birthDateValue == 3) {
-                        month = "March"
+                        month = "March";
                     } else if (birthDateValue == 4) {
-                        month = "April"
+                        month = "April";
                     } else if (birthDateValue == 5) {
-                        month = "May"
+                        month = "May";
                     } else if (birthDateValue == 6) {
-                        month = "June"
+                        month = "June";
                     } else if (birthDateValue == 7) {
-                        month = "July"
+                        month = "July";
                     } else if (birthDateValue == 8) {
-                        month = "August"
+                        month = "August";
                     } else if (birthDateValue == 9) {
-                        month = "September"
+                        month = "September";
                     } else if (birthDateValue == 10) {
-                        month = "October"
+                        month = "October";
                     } else if (birthDateValue == 11) {
-                        month = "November"
+                        month = "November";
                     } else if (birthDateValue == 12) {
-                        month = "December"
+                        month = "December";
                     } else {
                         month = "";
                     }
@@ -414,71 +371,18 @@
                         disabled = false;
                     }
 
-                    var civilStatusCollectionView = new wijmo.collections.CollectionView(civilStatusArray);
-                    var civilStatusArrayForItemSource = new Array();
-                    for (var i = 0; i < civilStatusCollectionView.items.length; i++) {
-                        civilStatusArrayForItemSource.push(civilStatusCollectionView.items[i].CivilStatus);
-                    }
-
                     cboCivilStatus.dispose();
                     cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus', {
                         disabled: disabled,
                         placeholder: "Select",
-                        itemsSource: civilStatusArrayForItemSource,
+                        itemsSource: civilStatusArray,
                         isEditable: false,
                         required: true,
-                        selectedValue: civilStatusSelectedValue.toString(),
-                        onSelectedIndexChanged: function () {
-                            if (this.selectedValue == "Single") {
-                                $("#spouse-detail").hide();
-                            } else if (this.selectedValue == "Widow") {
-                                $("#spouse-detail").hide();
-                            } else {
-                                $("#spouse-detail").show();
-                            }
-                        }
+                        displayMemberPath: "CivilStatus",
+                        selectedValuePath: "CivilStatus",
+                        selectedValue: civilStatusSelectedValue.toString()
                     });
-
-                    // civil status on load selected value event
-                    if (cboCivilStatus.selectedValue == "Single") {
-                        $("#spouse-detail").hide();
-                    } else if (cboCivilStatus.selectedValue == "Widow") {
-                        $("#spouse-detail").hide();
-                    } else {
-                        $("#spouse-detail").show();
-                    }
                 }
-            });
-        }
-
-        // cbo number of Children
-        function createCboNumberOfChildren() {
-            // number of children cbo with item source
-            var cboNumberOfChildrenItemSource = new Array(20);
-            for (var i = 0; i <= 20; i++) {
-                cboNumberOfChildrenItemSource[i] = i;
-            }
-
-            cboNumberOfChildren = new wijmo.input.ComboBox('#applicantNumberOfChildren', {
-                placeholder: "Select",
-                itemsSource: cboNumberOfChildrenItemSource,
-                isEditable: false,
-                required: true,
-            });
-        }
-
-        // cbo number of studying
-        function createCboNumberOfStudying() {
-            var cboNumberOfStudyingItemSource = new Array(20);
-            for (var i = 0; i <= 20; i++) {
-                cboNumberOfStudyingItemSource[i] = i;
-            }
-
-            cboNumberOfStudying = new wijmo.input.ComboBox('#applicantNumberOfStudying', {
-                placeholder: "Select",
-                itemsSource: cboNumberOfStudyingItemSource,
-                isEditable: false,
-                required: true,
             });
         }
 
@@ -504,20 +408,16 @@
                         disabled = false;
                     }
 
-                    var residenceTypeCollectionView = new wijmo.collections.CollectionView(residenceTypeArray);
-                    var residenceTypeArrayForItemSource = new Array();
-                    for (var i = 0; i < residenceTypeCollectionView.items.length; i++) {
-                        residenceTypeArrayForItemSource.push(residenceTypeCollectionView.items[i].ResidenceType);
-                    }
-
                     cboResidenceType.dispose();
                     cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType', {
                         disabled: disabled,
                         placeholder: "Select",
-                        itemsSource: residenceTypeArrayForItemSource,
+                        itemsSource: residenceTypeArray,
                         isEditable: false,
                         required: true,
-                        selectedValue: residenceTypeSelectedValue.toString()
+                        displayMemberPath: "ResidenceType",
+                        selectedValuePath: "ResidenceType",
+                        selectedValue: residenceTypeSelectedValue.toString(),
                     });
                 }
             });
@@ -531,11 +431,8 @@
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (applicantDetailResult) {
+                    createCboBirthDate();
                     if (applicantDetailResult != null) {
-                        createCboBirthDate();
-                        createCboNumberOfChildren();
-                        createCboNumberOfStudying();
-
                         document.getElementById("applicantFullName").value = applicantDetailResult.FullName;
                         cboBirthDate.value = new Date(applicantDetailResult.BirthDate);
                         createCboCivilStatus(applicantDetailResult.CivilStatus);
@@ -543,6 +440,31 @@
                         document.getElementById("applicantProvinceAddress").value = applicantDetailResult.ProvinceAddress;
                         createCboResidenceType(applicantDetailResult.ResidenceType);
                         document.getElementById("applicantLengthOfStay").value = applicantDetailResult.LengthOfStay;
+                        document.getElementById("applicantBusinessAddress").value = applicantDetailResult.BusinessAddress;
+                        document.getElementById("applicantBusinessKaratulaName").value = applicantDetailResult.BusinessKaratulaName;
+                        document.getElementById("applicantBusinessTelephoneNumber").value = applicantDetailResult.BusinessTelephoneNumber;
+                        document.getElementById("applicantBusinessYears").value = applicantDetailResult.BusinessYear;
+                        document.getElementById("applicantBBusinessMerchandise").value = applicantDetailResult.BusinessMerchandise;
+                        document.getElementById("applicantValuesOfStocks").value = applicantDetailResult.BusinessStockValues;
+                        document.getElementById("applicantBusinessBeginningCapital").value = applicantDetailResult.BusinessBeginningCapital;
+                        document.getElementById("applicantSalesLowPeriod").value = applicantDetailResult.BusinessLowSalesPeriod;
+                        document.getElementById("applicantLowestDailySales").value = applicantDetailResult.BusinessLowestDailySales;
+                        document.getElementById("applicantAverageDailySales").value = applicantDetailResult.BusinessAverageDailySales;
+                        document.getElementById("applicantEmployedCompanyName").value = applicantDetailResult.EmployedCompany;
+                        document.getElementById("applicantEmployedCompanyAddress").value = applicantDetailResult.EmployedCompanyAddress;
+                        document.getElementById("applicantEmployedPositionOccupied").value = applicantDetailResult.EmployedPositionOccupied;
+                        document.getElementById("applicantEmployedLengthOfService").value = applicantDetailResult.EmployedServiceLength;
+                        document.getElementById("applicantEmployedTelephoneNumber").value = applicantDetailResult.EmployedTelephoneNumber;
+                        document.getElementById("applicantSpouseName").value = applicantDetailResult.SpouseFullName;
+                        document.getElementById("applicantSpouseEmployerOrBusiness").value = applicantDetailResult.SpouseEmployerBusiness;
+                        document.getElementById("applicantSpouseBusinessAdd").value = applicantDetailResult.SpouseEmployerBusinessAdd;
+                        document.getElementById("applicantSpouseTelephoneNumber").value = applicantDetailResult.SpouseBusinessTelephoneNumber;
+                        document.getElementById("applicantSpousePositionOccupied").value = applicantDetailResult.SpousePositionOccupied;
+                        document.getElementById("applicantSpouseMonthlySalary").value = applicantDetailResult.SpouseMonthlySalary;
+                        document.getElementById("applicantSpouseLengthOfService").value = applicantDetailResult.SpouseLengthOfService;
+                        document.getElementById("applicantSpouseNumberOfChildren").value = applicantDetailResult.NumberOfChildren;
+                        document.getElementById("applicantSpouseNumberOfStudying").value = applicantDetailResult.Studying;
+                        document.getElementById("applicantSpouseChildrenSchools").value = applicantDetailResult.Schools;
                     } else {
                         alert("The record you request has no data");
                         window.history.back();
@@ -553,11 +475,501 @@
             });
         }
 
+        // form input validation
+        function inputValidation() {
+            var isValid = true;
+            $('.requiredApplicantDetail').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // update applicant detail or update changes
+        function btnSaveChangesApplicantOnclick() {
+            if (inputValidation()) {
+                document.getElementById("btnSaveChanges").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                document.getElementById("btnSaveChangesButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+
+                $("#btnSaveChanges").prop("disabled", true);
+                $("#btnSaveChangesButtom").prop("disabled", true);
+                $("#btnPDF").prop("disabled", true);
+                $("#btnClose").prop("disabled", true);
+
+                var applicantDetailObject = new Object();
+                applicantDetailObject.FullName = document.getElementById('applicantFullName').value;
+                applicantDetailObject.BirthDate = cboBirthDate.value;
+                applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
+                applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
+                applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
+                applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
+                applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
+                applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
+                applicantDetailObject.BusinessTelephoneNumber = document.getElementById('applicantBusinessTelephoneNumber').value;
+                applicantDetailObject.BusinessYear = document.getElementById('applicantBusinessYears').value;
+                applicantDetailObject.BusinessMerchandise = document.getElementById('applicantBBusinessMerchandise').value;
+                applicantDetailObject.BusinessStockValues = document.getElementById('applicantValuesOfStocks').value;
+                applicantDetailObject.BusinessBeginningCapital = document.getElementById('applicantBusinessBeginningCapital').value;
+                applicantDetailObject.BusinessLowSalesPeriod = document.getElementById('applicantSalesLowPeriod').value;
+                applicantDetailObject.BusinessLowestDailySales = document.getElementById('applicantLowestDailySales').value;
+                applicantDetailObject.BusinessAverageDailySales = document.getElementById('applicantAverageDailySales').value;
+                applicantDetailObject.EmployedCompany = document.getElementById('applicantEmployedCompanyName').value;
+                applicantDetailObject.EmployedCompanyAddress = document.getElementById('applicantEmployedCompanyAddress').value;
+                applicantDetailObject.EmployedPositionOccupied = document.getElementById('applicantEmployedPositionOccupied').value;
+                applicantDetailObject.EmployedServiceLength = document.getElementById('applicantEmployedLengthOfService').value;
+                applicantDetailObject.EmployedTelephoneNumber = document.getElementById('applicantEmployedTelephoneNumber').value;
+                applicantDetailObject.SpouseFullName = document.getElementById('applicantSpouseName').value;
+                applicantDetailObject.SpouseEmployerBusiness = document.getElementById('applicantSpouseEmployerOrBusiness').value;
+                applicantDetailObject.SpouseEmployerBusinessAdd = document.getElementById('applicantSpouseBusinessAdd').value;
+                applicantDetailObject.SpouseBusinessTelephoneNumber = document.getElementById('applicantSpouseTelephoneNumber').value;
+                applicantDetailObject.SpousePositionOccupied = document.getElementById('applicantSpousePositionOccupied').value;
+                applicantDetailObject.SpouseMonthlySalary = document.getElementById('applicantSpouseMonthlySalary').value;
+                applicantDetailObject.SpouseLengthOfService = document.getElementById('applicantSpouseLengthOfService').value;
+                applicantDetailObject.NumberOfChildren = document.getElementById('applicantSpouseNumberOfChildren').value;
+                applicantDetailObject.Studying = document.getElementById('applicantSpouseNumberOfStudying').value;
+                applicantDetailObject.Schools = document.getElementById('applicantSpouseChildrenSchools').value;
+                var applicantDetailData = JSON.stringify(applicantDetailObject);
+
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/applicant/update/' + getUrlParameter("id"),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: applicantDetailData,
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Reloading the page...", "Update Successful");
+                            window.setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        },
+                        404: function () {
+                            document.getElementById("btnSaveChanges").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                            document.getElementById("btnSaveChangesButtom").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                            
+                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                            $("#btnSaveChanges").prop("disabled", false);
+                            $("#btnSaveChangesButtom").prop("disabled", false);
+                            $("#btnPDF").prop("disabled", false);
+                            $("#btnClose").prop("disabled", false);
+                        },
+                        400: function () {
+                            document.getElementById("btnSaveChanges").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                            document.getElementById("btnSaveChangesButtom").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+
+                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                            $("#btnSaveChanges").prop("disabled", false);
+                            $("#btnSaveChangesButtom").prop("disabled", false);
+                            $("#btnPDF").prop("disabled", false);
+                            $("#btnClose").prop("disabled", false);
+                        }
+                    }
+                });
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // get applicant real properties owned
+        function getApplicantRealPropertiesOwned() {
+
+        }
+
         // on load function
         window.onload = function () {
             NProgress.start();
+            toastrModification();
             getApplicantDetail();
         }
+
+        // Applicant key event - full name
+        $('#applicantFullName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - city address
+        $('#applicantCityAddress').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - province address
+        $('#applicantProvinceAddress').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - length of stay
+        $('#applicantLengthOfStay').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business address
+        $('#applicantBusinessAddress').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business karatula name
+        $('#applicantBusinessKaratulaName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business telephone number
+        $('#applicantBusinessTelephoneNumber').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business years
+        $('#applicantBusinessYears').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business merchandise
+        $('#applicantBBusinessMerchandise').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business values of stocks
+        $('#applicantValuesOfStocks').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business beginning capital
+        $('#applicantBusinessBeginningCapital').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business sales low period
+        $('#applicantSalesLowPeriod').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business lowest daily sales
+        $('#applicantLowestDailySales').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - business average daily sales
+        $('#applicantAverageDailySales').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - employed company
+        $('#applicantEmployedCompanyName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - employed address
+        $('#applicantEmployedCompanyAddress').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - employed position occupied
+        $('#applicantEmployedPositionOccupied').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - employed length of service
+        $('#applicantEmployedLengthOfService').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - employed tel number
+        $('#applicantEmployedTelephoneNumber').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse name
+        $('#applicantSpouseName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse employer or business
+        $('#applicantSpouseEmployerOrBusiness').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse employer or business add
+        $('#applicantSpouseBusinessAdd').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse business telephone number
+        $('#applicantSpouseTelephoneNumber').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse position occupied
+        $('#applicantSpousePositionOccupied').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse monthly salary
+        $('#applicantSpouseMonthlySalary').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse length of service
+        $('#applicantSpouseLengthOfService').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse number of children
+        $('#applicantSpouseNumberOfChildren').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse number of children are studying
+        $('#applicantSpouseNumberOfStudying').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // Applicant key event - applicant spouse childrens schools
+        $('#applicantSpouseChildrenSchools').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
     </script>
 </body>
 </html>

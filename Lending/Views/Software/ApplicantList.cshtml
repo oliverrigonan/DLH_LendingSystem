@@ -18,7 +18,7 @@
     <section class="software-section">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <div class="list-group">
                         <a href="/Software" class="list-group-item">
                             <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
@@ -31,7 +31,7 @@
                         <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
                     </div>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-lg-10">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4>List of Applicants</h4>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="row">
-                                <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                <div class="btn-group col-md-7" id="navigationPageGrid">
                                     <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
                                         <span class="glyphicon glyphicon-fast-backward"></span>
                                     </button>
@@ -469,12 +469,12 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "<i class='fa fa-trash fa-fw'></i> Delete";
+            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "Yes";
             $("#btnConfirmDeleteApplicant").prop("disabled", false);
             $("#btnCloseDeleteApplicantModal").prop("disabled", false);
         }
         function btnConfirmDeleteApplicantOnclick() {
-            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "Deleting";
             $("#btnConfirmDeleteApplicant").prop("disabled", true);
             $("#btnCloseDeleteApplicantModal").prop("disabled", true);
 
@@ -487,7 +487,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        document.getElementById("btnConfirmDeleteApplicant").innerHTML = "<i class='fa fa-trash fa-fw'></i> Delete";
+                        document.getElementById("btnConfirmDeleteApplicant").innerHTML = "Yes";
                         $("#btnConfirmDeleteApplicant").prop("disabled", false);
                         $("#btnCloseDeleteApplicantModal").prop("disabled", false);
 
@@ -538,10 +538,10 @@
         // navigation button for flexgrid
         function updateNavigateButtons() {
             if (applicantCollectionView.pageSize <= 0) {
-                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                document.getElementById('navigationPageGrid').style.display = 'none';
                 return;
             }
-            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            document.getElementById('navigationPageGrid').style.display = 'block';
             if (applicantCollectionView.pageIndex === 0) {
                 btnFirstPageGrid.setAttribute('disabled', 'disabled');
                 btnPreviousPageGrid.setAttribute('disabled', 'disabled');

@@ -54,18 +54,9 @@ namespace Lending.Data
     partial void InserttblApplicantApplianceOwned(tblApplicantApplianceOwned instance);
     partial void UpdatetblApplicantApplianceOwned(tblApplicantApplianceOwned instance);
     partial void DeletetblApplicantApplianceOwned(tblApplicantApplianceOwned instance);
-    partial void InserttblApplicantBusinessIncomeInformation(tblApplicantBusinessIncomeInformation instance);
-    partial void UpdatetblApplicantBusinessIncomeInformation(tblApplicantBusinessIncomeInformation instance);
-    partial void DeletetblApplicantBusinessIncomeInformation(tblApplicantBusinessIncomeInformation instance);
-    partial void InserttblApplicantEmployeeInformation(tblApplicantEmployeeInformation instance);
-    partial void UpdatetblApplicantEmployeeInformation(tblApplicantEmployeeInformation instance);
-    partial void DeletetblApplicantEmployeeInformation(tblApplicantEmployeeInformation instance);
     partial void InserttblApplicantRealPropertiesOwned(tblApplicantRealPropertiesOwned instance);
     partial void UpdatetblApplicantRealPropertiesOwned(tblApplicantRealPropertiesOwned instance);
     partial void DeletetblApplicantRealPropertiesOwned(tblApplicantRealPropertiesOwned instance);
-    partial void InserttblApplicantSpouse(tblApplicantSpouse instance);
-    partial void UpdatetblApplicantSpouse(tblApplicantSpouse instance);
-    partial void DeletetblApplicantSpouse(tblApplicantSpouse instance);
     partial void InserttblCivilStatus(tblCivilStatus instance);
     partial void UpdatetblCivilStatus(tblCivilStatus instance);
     partial void DeletetblCivilStatus(tblCivilStatus instance);
@@ -168,35 +159,11 @@ namespace Lending.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<tblApplicantBusinessIncomeInformation> tblApplicantBusinessIncomeInformations
-		{
-			get
-			{
-				return this.GetTable<tblApplicantBusinessIncomeInformation>();
-			}
-		}
-		
-		public System.Data.Linq.Table<tblApplicantEmployeeInformation> tblApplicantEmployeeInformations
-		{
-			get
-			{
-				return this.GetTable<tblApplicantEmployeeInformation>();
-			}
-		}
-		
 		public System.Data.Linq.Table<tblApplicantRealPropertiesOwned> tblApplicantRealPropertiesOwneds
 		{
 			get
 			{
 				return this.GetTable<tblApplicantRealPropertiesOwned>();
-			}
-		}
-		
-		public System.Data.Linq.Table<tblApplicantSpouse> tblApplicantSpouses
-		{
-			get
-			{
-				return this.GetTable<tblApplicantSpouse>();
 			}
 		}
 		
@@ -1625,7 +1592,57 @@ namespace Lending.Data
 		
 		private int _ResidenceTypeId;
 		
-		private decimal _LengthOfStay;
+		private string _LengthOfStay;
+		
+		private string _BusinessAddress;
+		
+		private string _BusinessKaratulaName;
+		
+		private string _BusinessTelephoneNumber;
+		
+		private string _BusinessYear;
+		
+		private string _BusinessMerchandise;
+		
+		private decimal _BusinessStockValues;
+		
+		private decimal _BusinessBeginningCapital;
+		
+		private string _BusinessLowSalesPeriod;
+		
+		private decimal _BusinessLowestDailySales;
+		
+		private decimal _BusinessAverageDailySales;
+		
+		private string _EmployedCompany;
+		
+		private string _EmployedCompanyAddress;
+		
+		private string _EmployedPositionOccupied;
+		
+		private string _EmployedServiceLength;
+		
+		private string _EmployedTelephoneNumber;
+		
+		private string _SpouseFullName;
+		
+		private string _SpouseEmployerBusiness;
+		
+		private string _SpouseEmployerBusinessAdd;
+		
+		private string _SpouseBusinessTelephoneNumber;
+		
+		private string _SpousePositionOccupied;
+		
+		private decimal _SpouseMonthlySalary;
+		
+		private string _SpouseLengthOfService;
+		
+		private string _NumberOfChildren;
+		
+		private string _Studying;
+		
+		private string _Schools;
 		
 		private int _CreatedByUserId;
 		
@@ -1636,10 +1653,6 @@ namespace Lending.Data
 		private System.DateTime _UpdatedDateTime;
 		
 		private EntitySet<tblApplicantApplianceOwned> _tblApplicantApplianceOwneds;
-		
-		private EntitySet<tblApplicantBusinessIncomeInformation> _tblApplicantBusinessIncomeInformations;
-		
-		private EntitySet<tblApplicantEmployeeInformation> _tblApplicantEmployeeInformations;
 		
 		private EntitySet<tblApplicantRealPropertiesOwned> _tblApplicantRealPropertiesOwneds;
 		
@@ -1671,8 +1684,58 @@ namespace Lending.Data
     partial void OnProvinceAddressChanged();
     partial void OnResidenceTypeIdChanging(int value);
     partial void OnResidenceTypeIdChanged();
-    partial void OnLengthOfStayChanging(decimal value);
+    partial void OnLengthOfStayChanging(string value);
     partial void OnLengthOfStayChanged();
+    partial void OnBusinessAddressChanging(string value);
+    partial void OnBusinessAddressChanged();
+    partial void OnBusinessKaratulaNameChanging(string value);
+    partial void OnBusinessKaratulaNameChanged();
+    partial void OnBusinessTelephoneNumberChanging(string value);
+    partial void OnBusinessTelephoneNumberChanged();
+    partial void OnBusinessYearChanging(string value);
+    partial void OnBusinessYearChanged();
+    partial void OnBusinessMerchandiseChanging(string value);
+    partial void OnBusinessMerchandiseChanged();
+    partial void OnBusinessStockValuesChanging(decimal value);
+    partial void OnBusinessStockValuesChanged();
+    partial void OnBusinessBeginningCapitalChanging(decimal value);
+    partial void OnBusinessBeginningCapitalChanged();
+    partial void OnBusinessLowSalesPeriodChanging(string value);
+    partial void OnBusinessLowSalesPeriodChanged();
+    partial void OnBusinessLowestDailySalesChanging(decimal value);
+    partial void OnBusinessLowestDailySalesChanged();
+    partial void OnBusinessAverageDailySalesChanging(decimal value);
+    partial void OnBusinessAverageDailySalesChanged();
+    partial void OnEmployedCompanyChanging(string value);
+    partial void OnEmployedCompanyChanged();
+    partial void OnEmployedCompanyAddressChanging(string value);
+    partial void OnEmployedCompanyAddressChanged();
+    partial void OnEmployedPositionOccupiedChanging(string value);
+    partial void OnEmployedPositionOccupiedChanged();
+    partial void OnEmployedServiceLengthChanging(string value);
+    partial void OnEmployedServiceLengthChanged();
+    partial void OnEmployedTelephoneNumberChanging(string value);
+    partial void OnEmployedTelephoneNumberChanged();
+    partial void OnSpouseFullNameChanging(string value);
+    partial void OnSpouseFullNameChanged();
+    partial void OnSpouseEmployerBusinessChanging(string value);
+    partial void OnSpouseEmployerBusinessChanged();
+    partial void OnSpouseEmployerBusinessAddChanging(string value);
+    partial void OnSpouseEmployerBusinessAddChanged();
+    partial void OnSpouseBusinessTelephoneNumberChanging(string value);
+    partial void OnSpouseBusinessTelephoneNumberChanged();
+    partial void OnSpousePositionOccupiedChanging(string value);
+    partial void OnSpousePositionOccupiedChanged();
+    partial void OnSpouseMonthlySalaryChanging(decimal value);
+    partial void OnSpouseMonthlySalaryChanged();
+    partial void OnSpouseLengthOfServiceChanging(string value);
+    partial void OnSpouseLengthOfServiceChanged();
+    partial void OnNumberOfChildrenChanging(string value);
+    partial void OnNumberOfChildrenChanged();
+    partial void OnStudyingChanging(string value);
+    partial void OnStudyingChanged();
+    partial void OnSchoolsChanging(string value);
+    partial void OnSchoolsChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -1686,8 +1749,6 @@ namespace Lending.Data
 		public tblApplicant()
 		{
 			this._tblApplicantApplianceOwneds = new EntitySet<tblApplicantApplianceOwned>(new Action<tblApplicantApplianceOwned>(this.attach_tblApplicantApplianceOwneds), new Action<tblApplicantApplianceOwned>(this.detach_tblApplicantApplianceOwneds));
-			this._tblApplicantBusinessIncomeInformations = new EntitySet<tblApplicantBusinessIncomeInformation>(new Action<tblApplicantBusinessIncomeInformation>(this.attach_tblApplicantBusinessIncomeInformations), new Action<tblApplicantBusinessIncomeInformation>(this.detach_tblApplicantBusinessIncomeInformations));
-			this._tblApplicantEmployeeInformations = new EntitySet<tblApplicantEmployeeInformation>(new Action<tblApplicantEmployeeInformation>(this.attach_tblApplicantEmployeeInformations), new Action<tblApplicantEmployeeInformation>(this.detach_tblApplicantEmployeeInformations));
 			this._tblApplicantRealPropertiesOwneds = new EntitySet<tblApplicantRealPropertiesOwned>(new Action<tblApplicantRealPropertiesOwned>(this.attach_tblApplicantRealPropertiesOwneds), new Action<tblApplicantRealPropertiesOwned>(this.detach_tblApplicantRealPropertiesOwneds));
 			this._tblResidenceType = default(EntityRef<tblResidenceType>);
 			this._tblCivilStatus = default(EntityRef<tblCivilStatus>);
@@ -1736,7 +1797,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string FullName
 		{
 			get
@@ -1800,7 +1861,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CityAddress", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CityAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string CityAddress
 		{
 			get
@@ -1820,7 +1881,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceAddress", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string ProvinceAddress
 		{
 			get
@@ -1864,8 +1925,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LengthOfStay", DbType="Decimal(18,0) NOT NULL")]
-		public decimal LengthOfStay
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LengthOfStay", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string LengthOfStay
 		{
 			get
 			{
@@ -1880,6 +1941,506 @@ namespace Lending.Data
 					this._LengthOfStay = value;
 					this.SendPropertyChanged("LengthOfStay");
 					this.OnLengthOfStayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessAddress
+		{
+			get
+			{
+				return this._BusinessAddress;
+			}
+			set
+			{
+				if ((this._BusinessAddress != value))
+				{
+					this.OnBusinessAddressChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessAddress = value;
+					this.SendPropertyChanged("BusinessAddress");
+					this.OnBusinessAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessKaratulaName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessKaratulaName
+		{
+			get
+			{
+				return this._BusinessKaratulaName;
+			}
+			set
+			{
+				if ((this._BusinessKaratulaName != value))
+				{
+					this.OnBusinessKaratulaNameChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessKaratulaName = value;
+					this.SendPropertyChanged("BusinessKaratulaName");
+					this.OnBusinessKaratulaNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessTelephoneNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string BusinessTelephoneNumber
+		{
+			get
+			{
+				return this._BusinessTelephoneNumber;
+			}
+			set
+			{
+				if ((this._BusinessTelephoneNumber != value))
+				{
+					this.OnBusinessTelephoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessTelephoneNumber = value;
+					this.SendPropertyChanged("BusinessTelephoneNumber");
+					this.OnBusinessTelephoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessYear", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string BusinessYear
+		{
+			get
+			{
+				return this._BusinessYear;
+			}
+			set
+			{
+				if ((this._BusinessYear != value))
+				{
+					this.OnBusinessYearChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessYear = value;
+					this.SendPropertyChanged("BusinessYear");
+					this.OnBusinessYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessMerchandise", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessMerchandise
+		{
+			get
+			{
+				return this._BusinessMerchandise;
+			}
+			set
+			{
+				if ((this._BusinessMerchandise != value))
+				{
+					this.OnBusinessMerchandiseChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessMerchandise = value;
+					this.SendPropertyChanged("BusinessMerchandise");
+					this.OnBusinessMerchandiseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessStockValues", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessStockValues
+		{
+			get
+			{
+				return this._BusinessStockValues;
+			}
+			set
+			{
+				if ((this._BusinessStockValues != value))
+				{
+					this.OnBusinessStockValuesChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessStockValues = value;
+					this.SendPropertyChanged("BusinessStockValues");
+					this.OnBusinessStockValuesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessBeginningCapital", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessBeginningCapital
+		{
+			get
+			{
+				return this._BusinessBeginningCapital;
+			}
+			set
+			{
+				if ((this._BusinessBeginningCapital != value))
+				{
+					this.OnBusinessBeginningCapitalChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessBeginningCapital = value;
+					this.SendPropertyChanged("BusinessBeginningCapital");
+					this.OnBusinessBeginningCapitalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowSalesPeriod", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessLowSalesPeriod
+		{
+			get
+			{
+				return this._BusinessLowSalesPeriod;
+			}
+			set
+			{
+				if ((this._BusinessLowSalesPeriod != value))
+				{
+					this.OnBusinessLowSalesPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessLowSalesPeriod = value;
+					this.SendPropertyChanged("BusinessLowSalesPeriod");
+					this.OnBusinessLowSalesPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowestDailySales", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessLowestDailySales
+		{
+			get
+			{
+				return this._BusinessLowestDailySales;
+			}
+			set
+			{
+				if ((this._BusinessLowestDailySales != value))
+				{
+					this.OnBusinessLowestDailySalesChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessLowestDailySales = value;
+					this.SendPropertyChanged("BusinessLowestDailySales");
+					this.OnBusinessLowestDailySalesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAverageDailySales", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessAverageDailySales
+		{
+			get
+			{
+				return this._BusinessAverageDailySales;
+			}
+			set
+			{
+				if ((this._BusinessAverageDailySales != value))
+				{
+					this.OnBusinessAverageDailySalesChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessAverageDailySales = value;
+					this.SendPropertyChanged("BusinessAverageDailySales");
+					this.OnBusinessAverageDailySalesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedCompany", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string EmployedCompany
+		{
+			get
+			{
+				return this._EmployedCompany;
+			}
+			set
+			{
+				if ((this._EmployedCompany != value))
+				{
+					this.OnEmployedCompanyChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedCompany = value;
+					this.SendPropertyChanged("EmployedCompany");
+					this.OnEmployedCompanyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedCompanyAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string EmployedCompanyAddress
+		{
+			get
+			{
+				return this._EmployedCompanyAddress;
+			}
+			set
+			{
+				if ((this._EmployedCompanyAddress != value))
+				{
+					this.OnEmployedCompanyAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedCompanyAddress = value;
+					this.SendPropertyChanged("EmployedCompanyAddress");
+					this.OnEmployedCompanyAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedPositionOccupied", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string EmployedPositionOccupied
+		{
+			get
+			{
+				return this._EmployedPositionOccupied;
+			}
+			set
+			{
+				if ((this._EmployedPositionOccupied != value))
+				{
+					this.OnEmployedPositionOccupiedChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedPositionOccupied = value;
+					this.SendPropertyChanged("EmployedPositionOccupied");
+					this.OnEmployedPositionOccupiedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedServiceLength", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string EmployedServiceLength
+		{
+			get
+			{
+				return this._EmployedServiceLength;
+			}
+			set
+			{
+				if ((this._EmployedServiceLength != value))
+				{
+					this.OnEmployedServiceLengthChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedServiceLength = value;
+					this.SendPropertyChanged("EmployedServiceLength");
+					this.OnEmployedServiceLengthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedTelephoneNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string EmployedTelephoneNumber
+		{
+			get
+			{
+				return this._EmployedTelephoneNumber;
+			}
+			set
+			{
+				if ((this._EmployedTelephoneNumber != value))
+				{
+					this.OnEmployedTelephoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedTelephoneNumber = value;
+					this.SendPropertyChanged("EmployedTelephoneNumber");
+					this.OnEmployedTelephoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseFullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseFullName
+		{
+			get
+			{
+				return this._SpouseFullName;
+			}
+			set
+			{
+				if ((this._SpouseFullName != value))
+				{
+					this.OnSpouseFullNameChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseFullName = value;
+					this.SendPropertyChanged("SpouseFullName");
+					this.OnSpouseFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployerBusiness", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseEmployerBusiness
+		{
+			get
+			{
+				return this._SpouseEmployerBusiness;
+			}
+			set
+			{
+				if ((this._SpouseEmployerBusiness != value))
+				{
+					this.OnSpouseEmployerBusinessChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseEmployerBusiness = value;
+					this.SendPropertyChanged("SpouseEmployerBusiness");
+					this.OnSpouseEmployerBusinessChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployerBusinessAdd", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseEmployerBusinessAdd
+		{
+			get
+			{
+				return this._SpouseEmployerBusinessAdd;
+			}
+			set
+			{
+				if ((this._SpouseEmployerBusinessAdd != value))
+				{
+					this.OnSpouseEmployerBusinessAddChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseEmployerBusinessAdd = value;
+					this.SendPropertyChanged("SpouseEmployerBusinessAdd");
+					this.OnSpouseEmployerBusinessAddChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseBusinessTelephoneNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string SpouseBusinessTelephoneNumber
+		{
+			get
+			{
+				return this._SpouseBusinessTelephoneNumber;
+			}
+			set
+			{
+				if ((this._SpouseBusinessTelephoneNumber != value))
+				{
+					this.OnSpouseBusinessTelephoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseBusinessTelephoneNumber = value;
+					this.SendPropertyChanged("SpouseBusinessTelephoneNumber");
+					this.OnSpouseBusinessTelephoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpousePositionOccupied", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpousePositionOccupied
+		{
+			get
+			{
+				return this._SpousePositionOccupied;
+			}
+			set
+			{
+				if ((this._SpousePositionOccupied != value))
+				{
+					this.OnSpousePositionOccupiedChanging(value);
+					this.SendPropertyChanging();
+					this._SpousePositionOccupied = value;
+					this.SendPropertyChanged("SpousePositionOccupied");
+					this.OnSpousePositionOccupiedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMonthlySalary", DbType="Decimal(18,0) NOT NULL")]
+		public decimal SpouseMonthlySalary
+		{
+			get
+			{
+				return this._SpouseMonthlySalary;
+			}
+			set
+			{
+				if ((this._SpouseMonthlySalary != value))
+				{
+					this.OnSpouseMonthlySalaryChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseMonthlySalary = value;
+					this.SendPropertyChanged("SpouseMonthlySalary");
+					this.OnSpouseMonthlySalaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseLengthOfService", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string SpouseLengthOfService
+		{
+			get
+			{
+				return this._SpouseLengthOfService;
+			}
+			set
+			{
+				if ((this._SpouseLengthOfService != value))
+				{
+					this.OnSpouseLengthOfServiceChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseLengthOfService = value;
+					this.SendPropertyChanged("SpouseLengthOfService");
+					this.OnSpouseLengthOfServiceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumberOfChildren", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string NumberOfChildren
+		{
+			get
+			{
+				return this._NumberOfChildren;
+			}
+			set
+			{
+				if ((this._NumberOfChildren != value))
+				{
+					this.OnNumberOfChildrenChanging(value);
+					this.SendPropertyChanging();
+					this._NumberOfChildren = value;
+					this.SendPropertyChanged("NumberOfChildren");
+					this.OnNumberOfChildrenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Studying", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Studying
+		{
+			get
+			{
+				return this._Studying;
+			}
+			set
+			{
+				if ((this._Studying != value))
+				{
+					this.OnStudyingChanging(value);
+					this.SendPropertyChanging();
+					this._Studying = value;
+					this.SendPropertyChanged("Studying");
+					this.OnStudyingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Schools", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Schools
+		{
+			get
+			{
+				return this._Schools;
+			}
+			set
+			{
+				if ((this._Schools != value))
+				{
+					this.OnSchoolsChanging(value);
+					this.SendPropertyChanging();
+					this._Schools = value;
+					this.SendPropertyChanged("Schools");
+					this.OnSchoolsChanged();
 				}
 			}
 		}
@@ -1982,32 +2543,6 @@ namespace Lending.Data
 			set
 			{
 				this._tblApplicantApplianceOwneds.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicant_tblApplicantBusinessIncomeInformation", Storage="_tblApplicantBusinessIncomeInformations", ThisKey="Id", OtherKey="ApplicantId")]
-		public EntitySet<tblApplicantBusinessIncomeInformation> tblApplicantBusinessIncomeInformations
-		{
-			get
-			{
-				return this._tblApplicantBusinessIncomeInformations;
-			}
-			set
-			{
-				this._tblApplicantBusinessIncomeInformations.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicant_tblApplicantEmployeeInformation", Storage="_tblApplicantEmployeeInformations", ThisKey="Id", OtherKey="ApplicantId")]
-		public EntitySet<tblApplicantEmployeeInformation> tblApplicantEmployeeInformations
-		{
-			get
-			{
-				return this._tblApplicantEmployeeInformations;
-			}
-			set
-			{
-				this._tblApplicantEmployeeInformations.Assign(value);
 			}
 		}
 		
@@ -2192,30 +2727,6 @@ namespace Lending.Data
 			entity.tblApplicant = null;
 		}
 		
-		private void attach_tblApplicantBusinessIncomeInformations(tblApplicantBusinessIncomeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicant = this;
-		}
-		
-		private void detach_tblApplicantBusinessIncomeInformations(tblApplicantBusinessIncomeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicant = null;
-		}
-		
-		private void attach_tblApplicantEmployeeInformations(tblApplicantEmployeeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicant = this;
-		}
-		
-		private void detach_tblApplicantEmployeeInformations(tblApplicantEmployeeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicant = null;
-		}
-		
 		private void attach_tblApplicantRealPropertiesOwneds(tblApplicantRealPropertiesOwned entity)
 		{
 			this.SendPropertyChanging();
@@ -2379,774 +2890,6 @@ namespace Lending.Data
 						this._ApplicantId = default(int);
 					}
 					this.SendPropertyChanged("tblApplicant");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblApplicantBusinessIncomeInformation")]
-	public partial class tblApplicantBusinessIncomeInformation : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _ApplicantId;
-		
-		private System.Nullable<int> _ApplicantSpouseId;
-		
-		private string _BusinessAddress;
-		
-		private string _KaratulaName;
-		
-		private string _TelephoneNumber;
-		
-		private decimal _BusinessYear;
-		
-		private string _Merchandise;
-		
-		private decimal _StockValues;
-		
-		private decimal _BeginningCapital;
-		
-		private string _LowSalesPeriod;
-		
-		private decimal _LowestDailySales;
-		
-		private decimal _AverageDailySales;
-		
-		private EntityRef<tblApplicant> _tblApplicant;
-		
-		private EntityRef<tblApplicantSpouse> _tblApplicantSpouse;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnApplicantIdChanging(int value);
-    partial void OnApplicantIdChanged();
-    partial void OnApplicantSpouseIdChanging(System.Nullable<int> value);
-    partial void OnApplicantSpouseIdChanged();
-    partial void OnBusinessAddressChanging(string value);
-    partial void OnBusinessAddressChanged();
-    partial void OnKaratulaNameChanging(string value);
-    partial void OnKaratulaNameChanged();
-    partial void OnTelephoneNumberChanging(string value);
-    partial void OnTelephoneNumberChanged();
-    partial void OnBusinessYearChanging(decimal value);
-    partial void OnBusinessYearChanged();
-    partial void OnMerchandiseChanging(string value);
-    partial void OnMerchandiseChanged();
-    partial void OnStockValuesChanging(decimal value);
-    partial void OnStockValuesChanged();
-    partial void OnBeginningCapitalChanging(decimal value);
-    partial void OnBeginningCapitalChanged();
-    partial void OnLowSalesPeriodChanging(string value);
-    partial void OnLowSalesPeriodChanged();
-    partial void OnLowestDailySalesChanging(decimal value);
-    partial void OnLowestDailySalesChanged();
-    partial void OnAverageDailySalesChanging(decimal value);
-    partial void OnAverageDailySalesChanged();
-    #endregion
-		
-		public tblApplicantBusinessIncomeInformation()
-		{
-			this._tblApplicant = default(EntityRef<tblApplicant>);
-			this._tblApplicantSpouse = default(EntityRef<tblApplicantSpouse>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantId", DbType="Int NOT NULL")]
-		public int ApplicantId
-		{
-			get
-			{
-				return this._ApplicantId;
-			}
-			set
-			{
-				if ((this._ApplicantId != value))
-				{
-					if (this._tblApplicant.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnApplicantIdChanging(value);
-					this.SendPropertyChanging();
-					this._ApplicantId = value;
-					this.SendPropertyChanged("ApplicantId");
-					this.OnApplicantIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantSpouseId", DbType="Int")]
-		public System.Nullable<int> ApplicantSpouseId
-		{
-			get
-			{
-				return this._ApplicantSpouseId;
-			}
-			set
-			{
-				if ((this._ApplicantSpouseId != value))
-				{
-					if (this._tblApplicantSpouse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnApplicantSpouseIdChanging(value);
-					this.SendPropertyChanging();
-					this._ApplicantSpouseId = value;
-					this.SendPropertyChanged("ApplicantSpouseId");
-					this.OnApplicantSpouseIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAddress", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string BusinessAddress
-		{
-			get
-			{
-				return this._BusinessAddress;
-			}
-			set
-			{
-				if ((this._BusinessAddress != value))
-				{
-					this.OnBusinessAddressChanging(value);
-					this.SendPropertyChanging();
-					this._BusinessAddress = value;
-					this.SendPropertyChanged("BusinessAddress");
-					this.OnBusinessAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KaratulaName", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string KaratulaName
-		{
-			get
-			{
-				return this._KaratulaName;
-			}
-			set
-			{
-				if ((this._KaratulaName != value))
-				{
-					this.OnKaratulaNameChanging(value);
-					this.SendPropertyChanging();
-					this._KaratulaName = value;
-					this.SendPropertyChanged("KaratulaName");
-					this.OnKaratulaNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TelephoneNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string TelephoneNumber
-		{
-			get
-			{
-				return this._TelephoneNumber;
-			}
-			set
-			{
-				if ((this._TelephoneNumber != value))
-				{
-					this.OnTelephoneNumberChanging(value);
-					this.SendPropertyChanging();
-					this._TelephoneNumber = value;
-					this.SendPropertyChanged("TelephoneNumber");
-					this.OnTelephoneNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessYear", DbType="Decimal(18,0) NOT NULL")]
-		public decimal BusinessYear
-		{
-			get
-			{
-				return this._BusinessYear;
-			}
-			set
-			{
-				if ((this._BusinessYear != value))
-				{
-					this.OnBusinessYearChanging(value);
-					this.SendPropertyChanging();
-					this._BusinessYear = value;
-					this.SendPropertyChanged("BusinessYear");
-					this.OnBusinessYearChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Merchandise", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		public string Merchandise
-		{
-			get
-			{
-				return this._Merchandise;
-			}
-			set
-			{
-				if ((this._Merchandise != value))
-				{
-					this.OnMerchandiseChanging(value);
-					this.SendPropertyChanging();
-					this._Merchandise = value;
-					this.SendPropertyChanged("Merchandise");
-					this.OnMerchandiseChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StockValues", DbType="Decimal(18,0) NOT NULL")]
-		public decimal StockValues
-		{
-			get
-			{
-				return this._StockValues;
-			}
-			set
-			{
-				if ((this._StockValues != value))
-				{
-					this.OnStockValuesChanging(value);
-					this.SendPropertyChanging();
-					this._StockValues = value;
-					this.SendPropertyChanged("StockValues");
-					this.OnStockValuesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BeginningCapital", DbType="Decimal(18,0) NOT NULL")]
-		public decimal BeginningCapital
-		{
-			get
-			{
-				return this._BeginningCapital;
-			}
-			set
-			{
-				if ((this._BeginningCapital != value))
-				{
-					this.OnBeginningCapitalChanging(value);
-					this.SendPropertyChanging();
-					this._BeginningCapital = value;
-					this.SendPropertyChanged("BeginningCapital");
-					this.OnBeginningCapitalChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LowSalesPeriod", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		public string LowSalesPeriod
-		{
-			get
-			{
-				return this._LowSalesPeriod;
-			}
-			set
-			{
-				if ((this._LowSalesPeriod != value))
-				{
-					this.OnLowSalesPeriodChanging(value);
-					this.SendPropertyChanging();
-					this._LowSalesPeriod = value;
-					this.SendPropertyChanged("LowSalesPeriod");
-					this.OnLowSalesPeriodChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LowestDailySales", DbType="Decimal(18,0) NOT NULL")]
-		public decimal LowestDailySales
-		{
-			get
-			{
-				return this._LowestDailySales;
-			}
-			set
-			{
-				if ((this._LowestDailySales != value))
-				{
-					this.OnLowestDailySalesChanging(value);
-					this.SendPropertyChanging();
-					this._LowestDailySales = value;
-					this.SendPropertyChanged("LowestDailySales");
-					this.OnLowestDailySalesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AverageDailySales", DbType="Decimal(18,0) NOT NULL")]
-		public decimal AverageDailySales
-		{
-			get
-			{
-				return this._AverageDailySales;
-			}
-			set
-			{
-				if ((this._AverageDailySales != value))
-				{
-					this.OnAverageDailySalesChanging(value);
-					this.SendPropertyChanging();
-					this._AverageDailySales = value;
-					this.SendPropertyChanged("AverageDailySales");
-					this.OnAverageDailySalesChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicant_tblApplicantBusinessIncomeInformation", Storage="_tblApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
-		public tblApplicant tblApplicant
-		{
-			get
-			{
-				return this._tblApplicant.Entity;
-			}
-			set
-			{
-				tblApplicant previousValue = this._tblApplicant.Entity;
-				if (((previousValue != value) 
-							|| (this._tblApplicant.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tblApplicant.Entity = null;
-						previousValue.tblApplicantBusinessIncomeInformations.Remove(this);
-					}
-					this._tblApplicant.Entity = value;
-					if ((value != null))
-					{
-						value.tblApplicantBusinessIncomeInformations.Add(this);
-						this._ApplicantId = value.Id;
-					}
-					else
-					{
-						this._ApplicantId = default(int);
-					}
-					this.SendPropertyChanged("tblApplicant");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantSpouse_tblApplicantBusinessIncomeInformation", Storage="_tblApplicantSpouse", ThisKey="ApplicantSpouseId", OtherKey="Id", IsForeignKey=true)]
-		public tblApplicantSpouse tblApplicantSpouse
-		{
-			get
-			{
-				return this._tblApplicantSpouse.Entity;
-			}
-			set
-			{
-				tblApplicantSpouse previousValue = this._tblApplicantSpouse.Entity;
-				if (((previousValue != value) 
-							|| (this._tblApplicantSpouse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tblApplicantSpouse.Entity = null;
-						previousValue.tblApplicantBusinessIncomeInformations.Remove(this);
-					}
-					this._tblApplicantSpouse.Entity = value;
-					if ((value != null))
-					{
-						value.tblApplicantBusinessIncomeInformations.Add(this);
-						this._ApplicantSpouseId = value.Id;
-					}
-					else
-					{
-						this._ApplicantSpouseId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("tblApplicantSpouse");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblApplicantEmployeeInformation")]
-	public partial class tblApplicantEmployeeInformation : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _ApplicantId;
-		
-		private System.Nullable<int> _ApplicantSpouseId;
-		
-		private string _Company;
-		
-		private string _Address;
-		
-		private string _ContactNumber;
-		
-		private string _PositionOccupied;
-		
-		private decimal _ServiceLength;
-		
-		private decimal _MonthlySalary;
-		
-		private EntityRef<tblApplicant> _tblApplicant;
-		
-		private EntityRef<tblApplicantSpouse> _tblApplicantSpouse;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnApplicantIdChanging(int value);
-    partial void OnApplicantIdChanged();
-    partial void OnApplicantSpouseIdChanging(System.Nullable<int> value);
-    partial void OnApplicantSpouseIdChanged();
-    partial void OnCompanyChanging(string value);
-    partial void OnCompanyChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
-    partial void OnContactNumberChanging(string value);
-    partial void OnContactNumberChanged();
-    partial void OnPositionOccupiedChanging(string value);
-    partial void OnPositionOccupiedChanged();
-    partial void OnServiceLengthChanging(decimal value);
-    partial void OnServiceLengthChanged();
-    partial void OnMonthlySalaryChanging(decimal value);
-    partial void OnMonthlySalaryChanged();
-    #endregion
-		
-		public tblApplicantEmployeeInformation()
-		{
-			this._tblApplicant = default(EntityRef<tblApplicant>);
-			this._tblApplicantSpouse = default(EntityRef<tblApplicantSpouse>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantId", DbType="Int NOT NULL")]
-		public int ApplicantId
-		{
-			get
-			{
-				return this._ApplicantId;
-			}
-			set
-			{
-				if ((this._ApplicantId != value))
-				{
-					if (this._tblApplicant.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnApplicantIdChanging(value);
-					this.SendPropertyChanging();
-					this._ApplicantId = value;
-					this.SendPropertyChanged("ApplicantId");
-					this.OnApplicantIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantSpouseId", DbType="Int")]
-		public System.Nullable<int> ApplicantSpouseId
-		{
-			get
-			{
-				return this._ApplicantSpouseId;
-			}
-			set
-			{
-				if ((this._ApplicantSpouseId != value))
-				{
-					if (this._tblApplicantSpouse.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnApplicantSpouseIdChanging(value);
-					this.SendPropertyChanging();
-					this._ApplicantSpouseId = value;
-					this.SendPropertyChanged("ApplicantSpouseId");
-					this.OnApplicantSpouseIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Company", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		public string Company
-		{
-			get
-			{
-				return this._Company;
-			}
-			set
-			{
-				if ((this._Company != value))
-				{
-					this.OnCompanyChanging(value);
-					this.SendPropertyChanging();
-					this._Company = value;
-					this.SendPropertyChanged("Company");
-					this.OnCompanyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Address
-		{
-			get
-			{
-				return this._Address;
-			}
-			set
-			{
-				if ((this._Address != value))
-				{
-					this.OnAddressChanging(value);
-					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string ContactNumber
-		{
-			get
-			{
-				return this._ContactNumber;
-			}
-			set
-			{
-				if ((this._ContactNumber != value))
-				{
-					this.OnContactNumberChanging(value);
-					this.SendPropertyChanging();
-					this._ContactNumber = value;
-					this.SendPropertyChanged("ContactNumber");
-					this.OnContactNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionOccupied", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		public string PositionOccupied
-		{
-			get
-			{
-				return this._PositionOccupied;
-			}
-			set
-			{
-				if ((this._PositionOccupied != value))
-				{
-					this.OnPositionOccupiedChanging(value);
-					this.SendPropertyChanging();
-					this._PositionOccupied = value;
-					this.SendPropertyChanged("PositionOccupied");
-					this.OnPositionOccupiedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ServiceLength", DbType="Decimal(18,0) NOT NULL")]
-		public decimal ServiceLength
-		{
-			get
-			{
-				return this._ServiceLength;
-			}
-			set
-			{
-				if ((this._ServiceLength != value))
-				{
-					this.OnServiceLengthChanging(value);
-					this.SendPropertyChanging();
-					this._ServiceLength = value;
-					this.SendPropertyChanged("ServiceLength");
-					this.OnServiceLengthChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MonthlySalary", DbType="Decimal(18,0) NOT NULL")]
-		public decimal MonthlySalary
-		{
-			get
-			{
-				return this._MonthlySalary;
-			}
-			set
-			{
-				if ((this._MonthlySalary != value))
-				{
-					this.OnMonthlySalaryChanging(value);
-					this.SendPropertyChanging();
-					this._MonthlySalary = value;
-					this.SendPropertyChanged("MonthlySalary");
-					this.OnMonthlySalaryChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicant_tblApplicantEmployeeInformation", Storage="_tblApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
-		public tblApplicant tblApplicant
-		{
-			get
-			{
-				return this._tblApplicant.Entity;
-			}
-			set
-			{
-				tblApplicant previousValue = this._tblApplicant.Entity;
-				if (((previousValue != value) 
-							|| (this._tblApplicant.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tblApplicant.Entity = null;
-						previousValue.tblApplicantEmployeeInformations.Remove(this);
-					}
-					this._tblApplicant.Entity = value;
-					if ((value != null))
-					{
-						value.tblApplicantEmployeeInformations.Add(this);
-						this._ApplicantId = value.Id;
-					}
-					else
-					{
-						this._ApplicantId = default(int);
-					}
-					this.SendPropertyChanged("tblApplicant");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantSpouse_tblApplicantEmployeeInformation", Storage="_tblApplicantSpouse", ThisKey="ApplicantSpouseId", OtherKey="Id", IsForeignKey=true)]
-		public tblApplicantSpouse tblApplicantSpouse
-		{
-			get
-			{
-				return this._tblApplicantSpouse.Entity;
-			}
-			set
-			{
-				tblApplicantSpouse previousValue = this._tblApplicantSpouse.Entity;
-				if (((previousValue != value) 
-							|| (this._tblApplicantSpouse.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tblApplicantSpouse.Entity = null;
-						previousValue.tblApplicantEmployeeInformations.Remove(this);
-					}
-					this._tblApplicantSpouse.Entity = value;
-					if ((value != null))
-					{
-						value.tblApplicantEmployeeInformations.Add(this);
-						this._ApplicantSpouseId = value.Id;
-					}
-					else
-					{
-						this._ApplicantSpouseId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("tblApplicantSpouse");
 				}
 			}
 		}
@@ -3392,292 +3135,6 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblApplicantSpouse")]
-	public partial class tblApplicantSpouse : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _ApplicantId;
-		
-		private string _FirstName;
-		
-		private string _MiddleName;
-		
-		private string _LastName;
-		
-		private decimal _NumberOfChildren;
-		
-		private decimal _Studying;
-		
-		private string _Schools;
-		
-		private EntitySet<tblApplicantBusinessIncomeInformation> _tblApplicantBusinessIncomeInformations;
-		
-		private EntitySet<tblApplicantEmployeeInformation> _tblApplicantEmployeeInformations;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnApplicantIdChanging(int value);
-    partial void OnApplicantIdChanged();
-    partial void OnFirstNameChanging(string value);
-    partial void OnFirstNameChanged();
-    partial void OnMiddleNameChanging(string value);
-    partial void OnMiddleNameChanged();
-    partial void OnLastNameChanging(string value);
-    partial void OnLastNameChanged();
-    partial void OnNumberOfChildrenChanging(decimal value);
-    partial void OnNumberOfChildrenChanged();
-    partial void OnStudyingChanging(decimal value);
-    partial void OnStudyingChanged();
-    partial void OnSchoolsChanging(string value);
-    partial void OnSchoolsChanged();
-    #endregion
-		
-		public tblApplicantSpouse()
-		{
-			this._tblApplicantBusinessIncomeInformations = new EntitySet<tblApplicantBusinessIncomeInformation>(new Action<tblApplicantBusinessIncomeInformation>(this.attach_tblApplicantBusinessIncomeInformations), new Action<tblApplicantBusinessIncomeInformation>(this.detach_tblApplicantBusinessIncomeInformations));
-			this._tblApplicantEmployeeInformations = new EntitySet<tblApplicantEmployeeInformation>(new Action<tblApplicantEmployeeInformation>(this.attach_tblApplicantEmployeeInformations), new Action<tblApplicantEmployeeInformation>(this.detach_tblApplicantEmployeeInformations));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantId", DbType="Int NOT NULL")]
-		public int ApplicantId
-		{
-			get
-			{
-				return this._ApplicantId;
-			}
-			set
-			{
-				if ((this._ApplicantId != value))
-				{
-					this.OnApplicantIdChanging(value);
-					this.SendPropertyChanging();
-					this._ApplicantId = value;
-					this.SendPropertyChanged("ApplicantId");
-					this.OnApplicantIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string FirstName
-		{
-			get
-			{
-				return this._FirstName;
-			}
-			set
-			{
-				if ((this._FirstName != value))
-				{
-					this.OnFirstNameChanging(value);
-					this.SendPropertyChanging();
-					this._FirstName = value;
-					this.SendPropertyChanged("FirstName");
-					this.OnFirstNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiddleName", DbType="NVarChar(50)")]
-		public string MiddleName
-		{
-			get
-			{
-				return this._MiddleName;
-			}
-			set
-			{
-				if ((this._MiddleName != value))
-				{
-					this.OnMiddleNameChanging(value);
-					this.SendPropertyChanging();
-					this._MiddleName = value;
-					this.SendPropertyChanged("MiddleName");
-					this.OnMiddleNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string LastName
-		{
-			get
-			{
-				return this._LastName;
-			}
-			set
-			{
-				if ((this._LastName != value))
-				{
-					this.OnLastNameChanging(value);
-					this.SendPropertyChanging();
-					this._LastName = value;
-					this.SendPropertyChanged("LastName");
-					this.OnLastNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumberOfChildren", DbType="Decimal(18,0) NOT NULL")]
-		public decimal NumberOfChildren
-		{
-			get
-			{
-				return this._NumberOfChildren;
-			}
-			set
-			{
-				if ((this._NumberOfChildren != value))
-				{
-					this.OnNumberOfChildrenChanging(value);
-					this.SendPropertyChanging();
-					this._NumberOfChildren = value;
-					this.SendPropertyChanged("NumberOfChildren");
-					this.OnNumberOfChildrenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Studying", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Studying
-		{
-			get
-			{
-				return this._Studying;
-			}
-			set
-			{
-				if ((this._Studying != value))
-				{
-					this.OnStudyingChanging(value);
-					this.SendPropertyChanging();
-					this._Studying = value;
-					this.SendPropertyChanged("Studying");
-					this.OnStudyingChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Schools", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Schools
-		{
-			get
-			{
-				return this._Schools;
-			}
-			set
-			{
-				if ((this._Schools != value))
-				{
-					this.OnSchoolsChanging(value);
-					this.SendPropertyChanging();
-					this._Schools = value;
-					this.SendPropertyChanged("Schools");
-					this.OnSchoolsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantSpouse_tblApplicantBusinessIncomeInformation", Storage="_tblApplicantBusinessIncomeInformations", ThisKey="Id", OtherKey="ApplicantSpouseId")]
-		public EntitySet<tblApplicantBusinessIncomeInformation> tblApplicantBusinessIncomeInformations
-		{
-			get
-			{
-				return this._tblApplicantBusinessIncomeInformations;
-			}
-			set
-			{
-				this._tblApplicantBusinessIncomeInformations.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantSpouse_tblApplicantEmployeeInformation", Storage="_tblApplicantEmployeeInformations", ThisKey="Id", OtherKey="ApplicantSpouseId")]
-		public EntitySet<tblApplicantEmployeeInformation> tblApplicantEmployeeInformations
-		{
-			get
-			{
-				return this._tblApplicantEmployeeInformations;
-			}
-			set
-			{
-				this._tblApplicantEmployeeInformations.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_tblApplicantBusinessIncomeInformations(tblApplicantBusinessIncomeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicantSpouse = this;
-		}
-		
-		private void detach_tblApplicantBusinessIncomeInformations(tblApplicantBusinessIncomeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicantSpouse = null;
-		}
-		
-		private void attach_tblApplicantEmployeeInformations(tblApplicantEmployeeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicantSpouse = this;
-		}
-		
-		private void detach_tblApplicantEmployeeInformations(tblApplicantEmployeeInformation entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblApplicantSpouse = null;
 		}
 	}
 	

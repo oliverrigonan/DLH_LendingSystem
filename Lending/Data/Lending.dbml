@@ -71,20 +71,43 @@
     <Type Name="tblApplicant">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ApplicantCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FullName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="BirthDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="CivilStatusId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CityAddress" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="ProvinceAddress" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="CityAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ProvinceAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ResidenceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LengthOfStay" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="LengthOfStay" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessKaratulaName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessTelephoneNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessYear" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessMerchandise" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessStockValues" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessBeginningCapital" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessLowSalesPeriod" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessLowestDailySales" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessAverageDailySales" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedCompany" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedCompanyAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedPositionOccupied" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedServiceLength" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedTelephoneNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseFullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseEmployerBusiness" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseEmployerBusinessAdd" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseBusinessTelephoneNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SpousePositionOccupied" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseMonthlySalary" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseLengthOfService" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NumberOfChildren" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Studying" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Schools" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="tblApplicant_tblApplicantApplianceOwned" Member="tblApplicantApplianceOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="tblApplicantApplianceOwned" />
-      <Association Name="tblApplicant_tblApplicantBusinessIncomeInformation" Member="tblApplicantBusinessIncomeInformations" ThisKey="Id" OtherKey="ApplicantId" Type="tblApplicantBusinessIncomeInformation" />
-      <Association Name="tblApplicant_tblApplicantEmployeeInformation" Member="tblApplicantEmployeeInformations" ThisKey="Id" OtherKey="ApplicantId" Type="tblApplicantEmployeeInformation" />
       <Association Name="tblApplicant_tblApplicantRealPropertiesOwned" Member="tblApplicantRealPropertiesOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="tblApplicantRealPropertiesOwned" />
       <Association Name="tblResidenceType_tblApplicant" Member="tblResidenceType" ThisKey="ResidenceTypeId" OtherKey="Id" Type="tblResidenceType" IsForeignKey="true" />
       <Association Name="tblCivilStatus_tblApplicant" Member="tblCivilStatus" ThisKey="CivilStatusId" OtherKey="Id" Type="tblCivilStatus" IsForeignKey="true" />
@@ -101,40 +124,6 @@
       <Association Name="tblApplicant_tblApplicantApplianceOwned" Member="tblApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="tblApplicant" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tblApplicantBusinessIncomeInformation" Member="tblApplicantBusinessIncomeInformations">
-    <Type Name="tblApplicantBusinessIncomeInformation">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ApplicantSpouseId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BusinessAddress" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="KaratulaName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="TelephoneNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="BusinessYear" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="Merchandise" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="StockValues" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="BeginningCapital" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="LowSalesPeriod" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="LowestDailySales" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="AverageDailySales" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicant_tblApplicantBusinessIncomeInformation" Member="tblApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="tblApplicant" IsForeignKey="true" />
-      <Association Name="tblApplicantSpouse_tblApplicantBusinessIncomeInformation" Member="tblApplicantSpouse" ThisKey="ApplicantSpouseId" OtherKey="Id" Type="tblApplicantSpouse" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tblApplicantEmployeeInformation" Member="tblApplicantEmployeeInformations">
-    <Type Name="tblApplicantEmployeeInformation">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ApplicantSpouseId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Company" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="Address" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="PositionOccupied" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="ServiceLength" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="MonthlySalary" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicant_tblApplicantEmployeeInformation" Member="tblApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="tblApplicant" IsForeignKey="true" />
-      <Association Name="tblApplicantSpouse_tblApplicantEmployeeInformation" Member="tblApplicantSpouse" ThisKey="ApplicantSpouseId" OtherKey="Id" Type="tblApplicantSpouse" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.tblApplicantRealPropertiesOwned" Member="tblApplicantRealPropertiesOwneds">
     <Type Name="tblApplicantRealPropertiesOwned">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -144,20 +133,6 @@
       <Column Name="PresentValue" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="EcumberedTo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Association Name="tblApplicant_tblApplicantRealPropertiesOwned" Member="tblApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="tblApplicant" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.tblApplicantSpouse" Member="tblApplicantSpouses">
-    <Type Name="tblApplicantSpouse">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="NumberOfChildren" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="Studying" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="Schools" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicantSpouse_tblApplicantBusinessIncomeInformation" Member="tblApplicantBusinessIncomeInformations" ThisKey="Id" OtherKey="ApplicantSpouseId" Type="tblApplicantBusinessIncomeInformation" />
-      <Association Name="tblApplicantSpouse_tblApplicantEmployeeInformation" Member="tblApplicantEmployeeInformations" ThisKey="Id" OtherKey="ApplicantSpouseId" Type="tblApplicantEmployeeInformation" />
     </Type>
   </Table>
   <Table Name="dbo.tblCivilStatus" Member="tblCivilStatus">
