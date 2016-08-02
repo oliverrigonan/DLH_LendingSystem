@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
+    <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\tblApplicant.cs" />
+    <Compile Include="Models\tblApplicantRealPropertiesOwned.cs" />
     <Compile Include="Models\tblCivilStatus.cs" />
     <Compile Include="Models\tblResidenceType.cs" />
     <Compile Include="Models\tblUser.cs" />
