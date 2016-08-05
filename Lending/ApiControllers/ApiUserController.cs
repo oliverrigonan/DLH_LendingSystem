@@ -73,6 +73,15 @@ namespace Lending.ApiControllers
                     updateUser.UpdatedDate = DateTime.Now;
                     db.SubmitChanges();
 
+                    var currentAspUser = from d in db.AspNetUsers where d.Id == User.Identity.GetUserId() select d;
+                    if (currentAspUser.Any())
+                    {
+                        var updateAspUser = currentAspUser.FirstOrDefault();
+                        updateAspUser.FirstName = user.FirstName;
+                        updateAspUser.LastName = user.LastName;
+                        db.SubmitChanges();
+                    }
+
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
                 else

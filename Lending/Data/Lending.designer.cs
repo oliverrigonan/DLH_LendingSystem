@@ -54,15 +54,18 @@ namespace Lending.Data
     partial void InserttblApplicantApplianceOwned(tblApplicantApplianceOwned instance);
     partial void UpdatetblApplicantApplianceOwned(tblApplicantApplianceOwned instance);
     partial void DeletetblApplicantApplianceOwned(tblApplicantApplianceOwned instance);
+    partial void InserttblApplicantCivilStatus(tblApplicantCivilStatus instance);
+    partial void UpdatetblApplicantCivilStatus(tblApplicantCivilStatus instance);
+    partial void DeletetblApplicantCivilStatus(tblApplicantCivilStatus instance);
     partial void InserttblApplicantRealPropertiesOwned(tblApplicantRealPropertiesOwned instance);
     partial void UpdatetblApplicantRealPropertiesOwned(tblApplicantRealPropertiesOwned instance);
     partial void DeletetblApplicantRealPropertiesOwned(tblApplicantRealPropertiesOwned instance);
-    partial void InserttblCivilStatus(tblCivilStatus instance);
-    partial void UpdatetblCivilStatus(tblCivilStatus instance);
-    partial void DeletetblCivilStatus(tblCivilStatus instance);
-    partial void InserttblResidenceType(tblResidenceType instance);
-    partial void UpdatetblResidenceType(tblResidenceType instance);
-    partial void DeletetblResidenceType(tblResidenceType instance);
+    partial void InserttblApplicantResidenceType(tblApplicantResidenceType instance);
+    partial void UpdatetblApplicantResidenceType(tblApplicantResidenceType instance);
+    partial void DeletetblApplicantResidenceType(tblApplicantResidenceType instance);
+    partial void InserttblArea(tblArea instance);
+    partial void UpdatetblArea(tblArea instance);
+    partial void DeletetblArea(tblArea instance);
     #endregion
 		
 		public LendingDataContext() : 
@@ -159,6 +162,14 @@ namespace Lending.Data
 			}
 		}
 		
+		public System.Data.Linq.Table<tblApplicantCivilStatus> tblApplicantCivilStatus
+		{
+			get
+			{
+				return this.GetTable<tblApplicantCivilStatus>();
+			}
+		}
+		
 		public System.Data.Linq.Table<tblApplicantRealPropertiesOwned> tblApplicantRealPropertiesOwneds
 		{
 			get
@@ -167,19 +178,19 @@ namespace Lending.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<tblCivilStatus> tblCivilStatus
+		public System.Data.Linq.Table<tblApplicantResidenceType> tblApplicantResidenceTypes
 		{
 			get
 			{
-				return this.GetTable<tblCivilStatus>();
+				return this.GetTable<tblApplicantResidenceType>();
 			}
 		}
 		
-		public System.Data.Linq.Table<tblResidenceType> tblResidenceTypes
+		public System.Data.Linq.Table<tblArea> tblAreas
 		{
 			get
 			{
-				return this.GetTable<tblResidenceType>();
+				return this.GetTable<tblArea>();
 			}
 		}
 	}
@@ -344,13 +355,17 @@ namespace Lending.Data
 		
 		private EntitySet<tblApplicant> _tblApplicants1;
 		
-		private EntitySet<tblCivilStatus> _tblCivilStatus;
+		private EntitySet<tblApplicantCivilStatus> _tblApplicantCivilStatus;
 		
-		private EntitySet<tblCivilStatus> _tblCivilStatus1;
+		private EntitySet<tblApplicantCivilStatus> _tblApplicantCivilStatus1;
 		
-		private EntitySet<tblResidenceType> _tblResidenceTypes;
+		private EntitySet<tblApplicantResidenceType> _tblApplicantResidenceTypes;
 		
-		private EntitySet<tblResidenceType> _tblResidenceTypes1;
+		private EntitySet<tblApplicantResidenceType> _tblApplicantResidenceTypes1;
+		
+		private EntitySet<tblArea> _tblAreas;
+		
+		private EntitySet<tblArea> _tblAreas1;
 		
 		private EntityRef<AspNetUser> _AspNetUser;
 		
@@ -400,10 +415,12 @@ namespace Lending.Data
 		{
 			this._tblApplicants = new EntitySet<tblApplicant>(new Action<tblApplicant>(this.attach_tblApplicants), new Action<tblApplicant>(this.detach_tblApplicants));
 			this._tblApplicants1 = new EntitySet<tblApplicant>(new Action<tblApplicant>(this.attach_tblApplicants1), new Action<tblApplicant>(this.detach_tblApplicants1));
-			this._tblCivilStatus = new EntitySet<tblCivilStatus>(new Action<tblCivilStatus>(this.attach_tblCivilStatus), new Action<tblCivilStatus>(this.detach_tblCivilStatus));
-			this._tblCivilStatus1 = new EntitySet<tblCivilStatus>(new Action<tblCivilStatus>(this.attach_tblCivilStatus1), new Action<tblCivilStatus>(this.detach_tblCivilStatus1));
-			this._tblResidenceTypes = new EntitySet<tblResidenceType>(new Action<tblResidenceType>(this.attach_tblResidenceTypes), new Action<tblResidenceType>(this.detach_tblResidenceTypes));
-			this._tblResidenceTypes1 = new EntitySet<tblResidenceType>(new Action<tblResidenceType>(this.attach_tblResidenceTypes1), new Action<tblResidenceType>(this.detach_tblResidenceTypes1));
+			this._tblApplicantCivilStatus = new EntitySet<tblApplicantCivilStatus>(new Action<tblApplicantCivilStatus>(this.attach_tblApplicantCivilStatus), new Action<tblApplicantCivilStatus>(this.detach_tblApplicantCivilStatus));
+			this._tblApplicantCivilStatus1 = new EntitySet<tblApplicantCivilStatus>(new Action<tblApplicantCivilStatus>(this.attach_tblApplicantCivilStatus1), new Action<tblApplicantCivilStatus>(this.detach_tblApplicantCivilStatus1));
+			this._tblApplicantResidenceTypes = new EntitySet<tblApplicantResidenceType>(new Action<tblApplicantResidenceType>(this.attach_tblApplicantResidenceTypes), new Action<tblApplicantResidenceType>(this.detach_tblApplicantResidenceTypes));
+			this._tblApplicantResidenceTypes1 = new EntitySet<tblApplicantResidenceType>(new Action<tblApplicantResidenceType>(this.attach_tblApplicantResidenceTypes1), new Action<tblApplicantResidenceType>(this.detach_tblApplicantResidenceTypes1));
+			this._tblAreas = new EntitySet<tblArea>(new Action<tblArea>(this.attach_tblAreas), new Action<tblArea>(this.detach_tblAreas));
+			this._tblAreas1 = new EntitySet<tblArea>(new Action<tblArea>(this.attach_tblAreas1), new Action<tblArea>(this.detach_tblAreas1));
 			this._AspNetUser = default(EntityRef<AspNetUser>);
 			OnCreated();
 		}
@@ -798,55 +815,81 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblCivilStatus", Storage="_tblCivilStatus", ThisKey="Id", OtherKey="CreatedByUserId")]
-		public EntitySet<tblCivilStatus> tblCivilStatus
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantCivilStatus", Storage="_tblApplicantCivilStatus", ThisKey="Id", OtherKey="CreatedByUserId")]
+		public EntitySet<tblApplicantCivilStatus> tblApplicantCivilStatus
 		{
 			get
 			{
-				return this._tblCivilStatus;
+				return this._tblApplicantCivilStatus;
 			}
 			set
 			{
-				this._tblCivilStatus.Assign(value);
+				this._tblApplicantCivilStatus.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblCivilStatus1", Storage="_tblCivilStatus1", ThisKey="Id", OtherKey="UpdatedByUserId")]
-		public EntitySet<tblCivilStatus> tblCivilStatus1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantCivilStatus1", Storage="_tblApplicantCivilStatus1", ThisKey="Id", OtherKey="UpdatedByUserId")]
+		public EntitySet<tblApplicantCivilStatus> tblApplicantCivilStatus1
 		{
 			get
 			{
-				return this._tblCivilStatus1;
+				return this._tblApplicantCivilStatus1;
 			}
 			set
 			{
-				this._tblCivilStatus1.Assign(value);
+				this._tblApplicantCivilStatus1.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblResidenceType", Storage="_tblResidenceTypes", ThisKey="Id", OtherKey="CreatedByUserId")]
-		public EntitySet<tblResidenceType> tblResidenceTypes
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantResidenceType", Storage="_tblApplicantResidenceTypes", ThisKey="Id", OtherKey="CreatedByUserId")]
+		public EntitySet<tblApplicantResidenceType> tblApplicantResidenceTypes
 		{
 			get
 			{
-				return this._tblResidenceTypes;
+				return this._tblApplicantResidenceTypes;
 			}
 			set
 			{
-				this._tblResidenceTypes.Assign(value);
+				this._tblApplicantResidenceTypes.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblResidenceType1", Storage="_tblResidenceTypes1", ThisKey="Id", OtherKey="UpdatedByUserId")]
-		public EntitySet<tblResidenceType> tblResidenceTypes1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantResidenceType1", Storage="_tblApplicantResidenceTypes1", ThisKey="Id", OtherKey="UpdatedByUserId")]
+		public EntitySet<tblApplicantResidenceType> tblApplicantResidenceTypes1
 		{
 			get
 			{
-				return this._tblResidenceTypes1;
+				return this._tblApplicantResidenceTypes1;
 			}
 			set
 			{
-				this._tblResidenceTypes1.Assign(value);
+				this._tblApplicantResidenceTypes1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblArea", Storage="_tblAreas", ThisKey="Id", OtherKey="CreatedByUserId")]
+		public EntitySet<tblArea> tblAreas
+		{
+			get
+			{
+				return this._tblAreas;
+			}
+			set
+			{
+				this._tblAreas.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblArea1", Storage="_tblAreas1", ThisKey="Id", OtherKey="UpdatedByUserId")]
+		public EntitySet<tblArea> tblAreas1
+		{
+			get
+			{
+				return this._tblAreas1;
+			}
+			set
+			{
+				this._tblAreas1.Assign(value);
 			}
 		}
 		
@@ -928,49 +971,73 @@ namespace Lending.Data
 			entity.tblUser1 = null;
 		}
 		
-		private void attach_tblCivilStatus(tblCivilStatus entity)
+		private void attach_tblApplicantCivilStatus(tblApplicantCivilStatus entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser = this;
 		}
 		
-		private void detach_tblCivilStatus(tblCivilStatus entity)
+		private void detach_tblApplicantCivilStatus(tblApplicantCivilStatus entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser = null;
 		}
 		
-		private void attach_tblCivilStatus1(tblCivilStatus entity)
+		private void attach_tblApplicantCivilStatus1(tblApplicantCivilStatus entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser1 = this;
 		}
 		
-		private void detach_tblCivilStatus1(tblCivilStatus entity)
+		private void detach_tblApplicantCivilStatus1(tblApplicantCivilStatus entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser1 = null;
 		}
 		
-		private void attach_tblResidenceTypes(tblResidenceType entity)
+		private void attach_tblApplicantResidenceTypes(tblApplicantResidenceType entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser = this;
 		}
 		
-		private void detach_tblResidenceTypes(tblResidenceType entity)
+		private void detach_tblApplicantResidenceTypes(tblApplicantResidenceType entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser = null;
 		}
 		
-		private void attach_tblResidenceTypes1(tblResidenceType entity)
+		private void attach_tblApplicantResidenceTypes1(tblApplicantResidenceType entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser1 = this;
 		}
 		
-		private void detach_tblResidenceTypes1(tblResidenceType entity)
+		private void detach_tblApplicantResidenceTypes1(tblApplicantResidenceType entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser1 = null;
+		}
+		
+		private void attach_tblAreas(tblArea entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser = this;
+		}
+		
+		private void detach_tblAreas(tblArea entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser = null;
+		}
+		
+		private void attach_tblAreas1(tblArea entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblUser1 = this;
+		}
+		
+		private void detach_tblAreas1(tblArea entity)
 		{
 			this.SendPropertyChanging();
 			entity.tblUser1 = null;
@@ -2015,7 +2082,7 @@ namespace Lending.Data
 		
 		private string _SpouseEmployerBusiness;
 		
-		private string _SpouseEmployerBusinessAdd;
+		private string _SpouseEmployerBusinessAddress;
 		
 		private string _SpouseBusinessTelephoneNumber;
 		
@@ -2047,9 +2114,9 @@ namespace Lending.Data
 		
 		private EntityRef<tblUser> _tblUser1;
 		
-		private EntityRef<tblCivilStatus> _tblCivilStatus;
+		private EntityRef<tblApplicantCivilStatus> _tblApplicantCivilStatus;
 		
-		private EntityRef<tblResidenceType> _tblResidenceType;
+		private EntityRef<tblApplicantResidenceType> _tblApplicantResidenceType;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2107,8 +2174,8 @@ namespace Lending.Data
     partial void OnSpouseFullNameChanged();
     partial void OnSpouseEmployerBusinessChanging(string value);
     partial void OnSpouseEmployerBusinessChanged();
-    partial void OnSpouseEmployerBusinessAddChanging(string value);
-    partial void OnSpouseEmployerBusinessAddChanged();
+    partial void OnSpouseEmployerBusinessAddressChanging(string value);
+    partial void OnSpouseEmployerBusinessAddressChanged();
     partial void OnSpouseBusinessTelephoneNumberChanging(string value);
     partial void OnSpouseBusinessTelephoneNumberChanged();
     partial void OnSpousePositionOccupiedChanging(string value);
@@ -2139,8 +2206,8 @@ namespace Lending.Data
 			this._tblApplicantRealPropertiesOwneds = new EntitySet<tblApplicantRealPropertiesOwned>(new Action<tblApplicantRealPropertiesOwned>(this.attach_tblApplicantRealPropertiesOwneds), new Action<tblApplicantRealPropertiesOwned>(this.detach_tblApplicantRealPropertiesOwneds));
 			this._tblUser = default(EntityRef<tblUser>);
 			this._tblUser1 = default(EntityRef<tblUser>);
-			this._tblCivilStatus = default(EntityRef<tblCivilStatus>);
-			this._tblResidenceType = default(EntityRef<tblResidenceType>);
+			this._tblApplicantCivilStatus = default(EntityRef<tblApplicantCivilStatus>);
+			this._tblApplicantResidenceType = default(EntityRef<tblApplicantResidenceType>);
 			OnCreated();
 		}
 		
@@ -2235,7 +2302,7 @@ namespace Lending.Data
 			{
 				if ((this._CivilStatusId != value))
 				{
-					if (this._tblCivilStatus.HasLoadedOrAssignedValue)
+					if (this._tblApplicantCivilStatus.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2299,7 +2366,7 @@ namespace Lending.Data
 			{
 				if ((this._ResidenceTypeId != value))
 				{
-					if (this._tblResidenceType.HasLoadedOrAssignedValue)
+					if (this._tblApplicantResidenceType.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2672,22 +2739,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployerBusinessAdd", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string SpouseEmployerBusinessAdd
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployerBusinessAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseEmployerBusinessAddress
 		{
 			get
 			{
-				return this._SpouseEmployerBusinessAdd;
+				return this._SpouseEmployerBusinessAddress;
 			}
 			set
 			{
-				if ((this._SpouseEmployerBusinessAdd != value))
+				if ((this._SpouseEmployerBusinessAddress != value))
 				{
-					this.OnSpouseEmployerBusinessAddChanging(value);
+					this.OnSpouseEmployerBusinessAddressChanging(value);
 					this.SendPropertyChanging();
-					this._SpouseEmployerBusinessAdd = value;
-					this.SendPropertyChanged("SpouseEmployerBusinessAdd");
-					this.OnSpouseEmployerBusinessAddChanged();
+					this._SpouseEmployerBusinessAddress = value;
+					this.SendPropertyChanged("SpouseEmployerBusinessAddress");
+					this.OnSpouseEmployerBusinessAddressChanged();
 				}
 			}
 		}
@@ -3014,26 +3081,26 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblCivilStatus_tblApplicant", Storage="_tblCivilStatus", ThisKey="CivilStatusId", OtherKey="Id", IsForeignKey=true)]
-		public tblCivilStatus tblCivilStatus
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantCivilStatus_tblApplicant", Storage="_tblApplicantCivilStatus", ThisKey="CivilStatusId", OtherKey="Id", IsForeignKey=true)]
+		public tblApplicantCivilStatus tblApplicantCivilStatus
 		{
 			get
 			{
-				return this._tblCivilStatus.Entity;
+				return this._tblApplicantCivilStatus.Entity;
 			}
 			set
 			{
-				tblCivilStatus previousValue = this._tblCivilStatus.Entity;
+				tblApplicantCivilStatus previousValue = this._tblApplicantCivilStatus.Entity;
 				if (((previousValue != value) 
-							|| (this._tblCivilStatus.HasLoadedOrAssignedValue == false)))
+							|| (this._tblApplicantCivilStatus.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._tblCivilStatus.Entity = null;
+						this._tblApplicantCivilStatus.Entity = null;
 						previousValue.tblApplicants.Remove(this);
 					}
-					this._tblCivilStatus.Entity = value;
+					this._tblApplicantCivilStatus.Entity = value;
 					if ((value != null))
 					{
 						value.tblApplicants.Add(this);
@@ -3043,31 +3110,31 @@ namespace Lending.Data
 					{
 						this._CivilStatusId = default(int);
 					}
-					this.SendPropertyChanged("tblCivilStatus");
+					this.SendPropertyChanged("tblApplicantCivilStatus");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblResidenceType_tblApplicant", Storage="_tblResidenceType", ThisKey="ResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
-		public tblResidenceType tblResidenceType
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantResidenceType_tblApplicant", Storage="_tblApplicantResidenceType", ThisKey="ResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
+		public tblApplicantResidenceType tblApplicantResidenceType
 		{
 			get
 			{
-				return this._tblResidenceType.Entity;
+				return this._tblApplicantResidenceType.Entity;
 			}
 			set
 			{
-				tblResidenceType previousValue = this._tblResidenceType.Entity;
+				tblApplicantResidenceType previousValue = this._tblApplicantResidenceType.Entity;
 				if (((previousValue != value) 
-							|| (this._tblResidenceType.HasLoadedOrAssignedValue == false)))
+							|| (this._tblApplicantResidenceType.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._tblResidenceType.Entity = null;
+						this._tblApplicantResidenceType.Entity = null;
 						previousValue.tblApplicants.Remove(this);
 					}
-					this._tblResidenceType.Entity = value;
+					this._tblApplicantResidenceType.Entity = value;
 					if ((value != null))
 					{
 						value.tblApplicants.Add(this);
@@ -3077,7 +3144,7 @@ namespace Lending.Data
 					{
 						this._ResidenceTypeId = default(int);
 					}
-					this.SendPropertyChanged("tblResidenceType");
+					this.SendPropertyChanged("tblApplicantResidenceType");
 				}
 			}
 		}
@@ -3299,6 +3366,298 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblApplicantCivilStatus")]
+	public partial class tblApplicantCivilStatus : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _CivilStatus;
+		
+		private int _CreatedByUserId;
+		
+		private System.DateTime _CreatedDateTime;
+		
+		private int _UpdatedByUserId;
+		
+		private System.DateTime _UpdatedDateTime;
+		
+		private EntitySet<tblApplicant> _tblApplicants;
+		
+		private EntityRef<tblUser> _tblUser;
+		
+		private EntityRef<tblUser> _tblUser1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCivilStatusChanging(string value);
+    partial void OnCivilStatusChanged();
+    partial void OnCreatedByUserIdChanging(int value);
+    partial void OnCreatedByUserIdChanged();
+    partial void OnCreatedDateTimeChanging(System.DateTime value);
+    partial void OnCreatedDateTimeChanged();
+    partial void OnUpdatedByUserIdChanging(int value);
+    partial void OnUpdatedByUserIdChanged();
+    partial void OnUpdatedDateTimeChanging(System.DateTime value);
+    partial void OnUpdatedDateTimeChanged();
+    #endregion
+		
+		public tblApplicantCivilStatus()
+		{
+			this._tblApplicants = new EntitySet<tblApplicant>(new Action<tblApplicant>(this.attach_tblApplicants), new Action<tblApplicant>(this.detach_tblApplicants));
+			this._tblUser = default(EntityRef<tblUser>);
+			this._tblUser1 = default(EntityRef<tblUser>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CivilStatus", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string CivilStatus
+		{
+			get
+			{
+				return this._CivilStatus;
+			}
+			set
+			{
+				if ((this._CivilStatus != value))
+				{
+					this.OnCivilStatusChanging(value);
+					this.SendPropertyChanging();
+					this._CivilStatus = value;
+					this.SendPropertyChanged("CivilStatus");
+					this.OnCivilStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
+		public int CreatedByUserId
+		{
+			get
+			{
+				return this._CreatedByUserId;
+			}
+			set
+			{
+				if ((this._CreatedByUserId != value))
+				{
+					if (this._tblUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedByUserId = value;
+					this.SendPropertyChanged("CreatedByUserId");
+					this.OnCreatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedDateTime
+		{
+			get
+			{
+				return this._CreatedDateTime;
+			}
+			set
+			{
+				if ((this._CreatedDateTime != value))
+				{
+					this.OnCreatedDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDateTime = value;
+					this.SendPropertyChanged("CreatedDateTime");
+					this.OnCreatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedByUserId", DbType="Int NOT NULL")]
+		public int UpdatedByUserId
+		{
+			get
+			{
+				return this._UpdatedByUserId;
+			}
+			set
+			{
+				if ((this._UpdatedByUserId != value))
+				{
+					if (this._tblUser1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUpdatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedByUserId = value;
+					this.SendPropertyChanged("UpdatedByUserId");
+					this.OnUpdatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime UpdatedDateTime
+		{
+			get
+			{
+				return this._UpdatedDateTime;
+			}
+			set
+			{
+				if ((this._UpdatedDateTime != value))
+				{
+					this.OnUpdatedDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedDateTime = value;
+					this.SendPropertyChanged("UpdatedDateTime");
+					this.OnUpdatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantCivilStatus_tblApplicant", Storage="_tblApplicants", ThisKey="Id", OtherKey="CivilStatusId")]
+		public EntitySet<tblApplicant> tblApplicants
+		{
+			get
+			{
+				return this._tblApplicants;
+			}
+			set
+			{
+				this._tblApplicants.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantCivilStatus", Storage="_tblUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public tblUser tblUser
+		{
+			get
+			{
+				return this._tblUser.Entity;
+			}
+			set
+			{
+				tblUser previousValue = this._tblUser.Entity;
+				if (((previousValue != value) 
+							|| (this._tblUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblUser.Entity = null;
+						previousValue.tblApplicantCivilStatus.Remove(this);
+					}
+					this._tblUser.Entity = value;
+					if ((value != null))
+					{
+						value.tblApplicantCivilStatus.Add(this);
+						this._CreatedByUserId = value.Id;
+					}
+					else
+					{
+						this._CreatedByUserId = default(int);
+					}
+					this.SendPropertyChanged("tblUser");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantCivilStatus1", Storage="_tblUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public tblUser tblUser1
+		{
+			get
+			{
+				return this._tblUser1.Entity;
+			}
+			set
+			{
+				tblUser previousValue = this._tblUser1.Entity;
+				if (((previousValue != value) 
+							|| (this._tblUser1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblUser1.Entity = null;
+						previousValue.tblApplicantCivilStatus1.Remove(this);
+					}
+					this._tblUser1.Entity = value;
+					if ((value != null))
+					{
+						value.tblApplicantCivilStatus1.Add(this);
+						this._UpdatedByUserId = value.Id;
+					}
+					else
+					{
+						this._UpdatedByUserId = default(int);
+					}
+					this.SendPropertyChanged("tblUser1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_tblApplicants(tblApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblApplicantCivilStatus = this;
+		}
+		
+		private void detach_tblApplicants(tblApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.tblApplicantCivilStatus = null;
 		}
 	}
 	
@@ -3525,300 +3884,8 @@ namespace Lending.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblCivilStatus")]
-	public partial class tblCivilStatus : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _CivilStatus;
-		
-		private int _CreatedByUserId;
-		
-		private System.DateTime _CreatedDateTime;
-		
-		private int _UpdatedByUserId;
-		
-		private System.DateTime _UpdatedDateTime;
-		
-		private EntitySet<tblApplicant> _tblApplicants;
-		
-		private EntityRef<tblUser> _tblUser;
-		
-		private EntityRef<tblUser> _tblUser1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCivilStatusChanging(string value);
-    partial void OnCivilStatusChanged();
-    partial void OnCreatedByUserIdChanging(int value);
-    partial void OnCreatedByUserIdChanged();
-    partial void OnCreatedDateTimeChanging(System.DateTime value);
-    partial void OnCreatedDateTimeChanged();
-    partial void OnUpdatedByUserIdChanging(int value);
-    partial void OnUpdatedByUserIdChanged();
-    partial void OnUpdatedDateTimeChanging(System.DateTime value);
-    partial void OnUpdatedDateTimeChanged();
-    #endregion
-		
-		public tblCivilStatus()
-		{
-			this._tblApplicants = new EntitySet<tblApplicant>(new Action<tblApplicant>(this.attach_tblApplicants), new Action<tblApplicant>(this.detach_tblApplicants));
-			this._tblUser = default(EntityRef<tblUser>);
-			this._tblUser1 = default(EntityRef<tblUser>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CivilStatus", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string CivilStatus
-		{
-			get
-			{
-				return this._CivilStatus;
-			}
-			set
-			{
-				if ((this._CivilStatus != value))
-				{
-					this.OnCivilStatusChanging(value);
-					this.SendPropertyChanging();
-					this._CivilStatus = value;
-					this.SendPropertyChanged("CivilStatus");
-					this.OnCivilStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
-		public int CreatedByUserId
-		{
-			get
-			{
-				return this._CreatedByUserId;
-			}
-			set
-			{
-				if ((this._CreatedByUserId != value))
-				{
-					if (this._tblUser.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCreatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedByUserId = value;
-					this.SendPropertyChanged("CreatedByUserId");
-					this.OnCreatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedDateTime
-		{
-			get
-			{
-				return this._CreatedDateTime;
-			}
-			set
-			{
-				if ((this._CreatedDateTime != value))
-				{
-					this.OnCreatedDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedDateTime = value;
-					this.SendPropertyChanged("CreatedDateTime");
-					this.OnCreatedDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedByUserId", DbType="Int NOT NULL")]
-		public int UpdatedByUserId
-		{
-			get
-			{
-				return this._UpdatedByUserId;
-			}
-			set
-			{
-				if ((this._UpdatedByUserId != value))
-				{
-					if (this._tblUser1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUpdatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UpdatedByUserId = value;
-					this.SendPropertyChanged("UpdatedByUserId");
-					this.OnUpdatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime UpdatedDateTime
-		{
-			get
-			{
-				return this._UpdatedDateTime;
-			}
-			set
-			{
-				if ((this._UpdatedDateTime != value))
-				{
-					this.OnUpdatedDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._UpdatedDateTime = value;
-					this.SendPropertyChanged("UpdatedDateTime");
-					this.OnUpdatedDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblCivilStatus_tblApplicant", Storage="_tblApplicants", ThisKey="Id", OtherKey="CivilStatusId")]
-		public EntitySet<tblApplicant> tblApplicants
-		{
-			get
-			{
-				return this._tblApplicants;
-			}
-			set
-			{
-				this._tblApplicants.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblCivilStatus", Storage="_tblUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
-		public tblUser tblUser
-		{
-			get
-			{
-				return this._tblUser.Entity;
-			}
-			set
-			{
-				tblUser previousValue = this._tblUser.Entity;
-				if (((previousValue != value) 
-							|| (this._tblUser.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tblUser.Entity = null;
-						previousValue.tblCivilStatus.Remove(this);
-					}
-					this._tblUser.Entity = value;
-					if ((value != null))
-					{
-						value.tblCivilStatus.Add(this);
-						this._CreatedByUserId = value.Id;
-					}
-					else
-					{
-						this._CreatedByUserId = default(int);
-					}
-					this.SendPropertyChanged("tblUser");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblCivilStatus1", Storage="_tblUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
-		public tblUser tblUser1
-		{
-			get
-			{
-				return this._tblUser1.Entity;
-			}
-			set
-			{
-				tblUser previousValue = this._tblUser1.Entity;
-				if (((previousValue != value) 
-							|| (this._tblUser1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._tblUser1.Entity = null;
-						previousValue.tblCivilStatus1.Remove(this);
-					}
-					this._tblUser1.Entity = value;
-					if ((value != null))
-					{
-						value.tblCivilStatus1.Add(this);
-						this._UpdatedByUserId = value.Id;
-					}
-					else
-					{
-						this._UpdatedByUserId = default(int);
-					}
-					this.SendPropertyChanged("tblUser1");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_tblApplicants(tblApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblCivilStatus = this;
-		}
-		
-		private void detach_tblApplicants(tblApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.tblCivilStatus = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblResidenceType")]
-	public partial class tblResidenceType : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblApplicantResidenceType")]
+	public partial class tblApplicantResidenceType : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -3859,7 +3926,7 @@ namespace Lending.Data
     partial void OnUpdatedDateTimeChanged();
     #endregion
 		
-		public tblResidenceType()
+		public tblApplicantResidenceType()
 		{
 			this._tblApplicants = new EntitySet<tblApplicant>(new Action<tblApplicant>(this.attach_tblApplicants), new Action<tblApplicant>(this.detach_tblApplicants));
 			this._tblUser = default(EntityRef<tblUser>);
@@ -3995,7 +4062,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblResidenceType_tblApplicant", Storage="_tblApplicants", ThisKey="Id", OtherKey="ResidenceTypeId")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblApplicantResidenceType_tblApplicant", Storage="_tblApplicants", ThisKey="Id", OtherKey="ResidenceTypeId")]
 		public EntitySet<tblApplicant> tblApplicants
 		{
 			get
@@ -4008,7 +4075,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblResidenceType", Storage="_tblUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantResidenceType", Storage="_tblUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public tblUser tblUser
 		{
 			get
@@ -4025,12 +4092,12 @@ namespace Lending.Data
 					if ((previousValue != null))
 					{
 						this._tblUser.Entity = null;
-						previousValue.tblResidenceTypes.Remove(this);
+						previousValue.tblApplicantResidenceTypes.Remove(this);
 					}
 					this._tblUser.Entity = value;
 					if ((value != null))
 					{
-						value.tblResidenceTypes.Add(this);
+						value.tblApplicantResidenceTypes.Add(this);
 						this._CreatedByUserId = value.Id;
 					}
 					else
@@ -4042,7 +4109,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblResidenceType1", Storage="_tblUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblApplicantResidenceType1", Storage="_tblUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public tblUser tblUser1
 		{
 			get
@@ -4059,12 +4126,12 @@ namespace Lending.Data
 					if ((previousValue != null))
 					{
 						this._tblUser1.Entity = null;
-						previousValue.tblResidenceTypes1.Remove(this);
+						previousValue.tblApplicantResidenceTypes1.Remove(this);
 					}
 					this._tblUser1.Entity = value;
 					if ((value != null))
 					{
-						value.tblResidenceTypes1.Add(this);
+						value.tblApplicantResidenceTypes1.Add(this);
 						this._UpdatedByUserId = value.Id;
 					}
 					else
@@ -4099,13 +4166,301 @@ namespace Lending.Data
 		private void attach_tblApplicants(tblApplicant entity)
 		{
 			this.SendPropertyChanging();
-			entity.tblResidenceType = this;
+			entity.tblApplicantResidenceType = this;
 		}
 		
 		private void detach_tblApplicants(tblApplicant entity)
 		{
 			this.SendPropertyChanging();
-			entity.tblResidenceType = null;
+			entity.tblApplicantResidenceType = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.tblArea")]
+	public partial class tblArea : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Area;
+		
+		private string _Description;
+		
+		private int _CreatedByUserId;
+		
+		private System.DateTime _CreatedDateTime;
+		
+		private int _UpdatedByUserId;
+		
+		private System.DateTime _UpdatedDateTime;
+		
+		private EntityRef<tblUser> _tblUser;
+		
+		private EntityRef<tblUser> _tblUser1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnAreaChanging(string value);
+    partial void OnAreaChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    partial void OnCreatedByUserIdChanging(int value);
+    partial void OnCreatedByUserIdChanged();
+    partial void OnCreatedDateTimeChanging(System.DateTime value);
+    partial void OnCreatedDateTimeChanged();
+    partial void OnUpdatedByUserIdChanging(int value);
+    partial void OnUpdatedByUserIdChanged();
+    partial void OnUpdatedDateTimeChanging(System.DateTime value);
+    partial void OnUpdatedDateTimeChanged();
+    #endregion
+		
+		public tblArea()
+		{
+			this._tblUser = default(EntityRef<tblUser>);
+			this._tblUser1 = default(EntityRef<tblUser>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Area", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Area
+		{
+			get
+			{
+				return this._Area;
+			}
+			set
+			{
+				if ((this._Area != value))
+				{
+					this.OnAreaChanging(value);
+					this.SendPropertyChanging();
+					this._Area = value;
+					this.SendPropertyChanged("Area");
+					this.OnAreaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
+		public int CreatedByUserId
+		{
+			get
+			{
+				return this._CreatedByUserId;
+			}
+			set
+			{
+				if ((this._CreatedByUserId != value))
+				{
+					if (this._tblUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedByUserId = value;
+					this.SendPropertyChanged("CreatedByUserId");
+					this.OnCreatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedDateTime
+		{
+			get
+			{
+				return this._CreatedDateTime;
+			}
+			set
+			{
+				if ((this._CreatedDateTime != value))
+				{
+					this.OnCreatedDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDateTime = value;
+					this.SendPropertyChanged("CreatedDateTime");
+					this.OnCreatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedByUserId", DbType="Int NOT NULL")]
+		public int UpdatedByUserId
+		{
+			get
+			{
+				return this._UpdatedByUserId;
+			}
+			set
+			{
+				if ((this._UpdatedByUserId != value))
+				{
+					if (this._tblUser1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUpdatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedByUserId = value;
+					this.SendPropertyChanged("UpdatedByUserId");
+					this.OnUpdatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime UpdatedDateTime
+		{
+			get
+			{
+				return this._UpdatedDateTime;
+			}
+			set
+			{
+				if ((this._UpdatedDateTime != value))
+				{
+					this.OnUpdatedDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedDateTime = value;
+					this.SendPropertyChanged("UpdatedDateTime");
+					this.OnUpdatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblArea", Storage="_tblUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public tblUser tblUser
+		{
+			get
+			{
+				return this._tblUser.Entity;
+			}
+			set
+			{
+				tblUser previousValue = this._tblUser.Entity;
+				if (((previousValue != value) 
+							|| (this._tblUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblUser.Entity = null;
+						previousValue.tblAreas.Remove(this);
+					}
+					this._tblUser.Entity = value;
+					if ((value != null))
+					{
+						value.tblAreas.Add(this);
+						this._CreatedByUserId = value.Id;
+					}
+					else
+					{
+						this._CreatedByUserId = default(int);
+					}
+					this.SendPropertyChanged("tblUser");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="tblUser_tblArea1", Storage="_tblUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public tblUser tblUser1
+		{
+			get
+			{
+				return this._tblUser1.Entity;
+			}
+			set
+			{
+				tblUser previousValue = this._tblUser1.Entity;
+				if (((previousValue != value) 
+							|| (this._tblUser1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._tblUser1.Entity = null;
+						previousValue.tblAreas1.Remove(this);
+					}
+					this._tblUser1.Entity = value;
+					if ((value != null))
+					{
+						value.tblAreas1.Add(this);
+						this._UpdatedByUserId = value.Id;
+					}
+					else
+					{
+						this._UpdatedByUserId = default(int);
+					}
+					this.SendPropertyChanged("tblUser1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

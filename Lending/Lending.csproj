@@ -165,10 +165,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\ApiApplicantApplianceOwnedController.cs" />
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
-    <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
-    <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
+    <Compile Include="ApiControllers\ApiApplicantCivilStatusController.cs" />
+    <Compile Include="ApiControllers\ApiApplicantResidenceTypeController.cs" />
+    <Compile Include="ApiControllers\ApiAreaController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -193,9 +195,11 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\tblApplicant.cs" />
+    <Compile Include="Models\tblApplicantApplianceOwned.cs" />
+    <Compile Include="Models\tblApplicantCivilStatus.cs" />
     <Compile Include="Models\tblApplicantRealPropertiesOwned.cs" />
-    <Compile Include="Models\tblCivilStatus.cs" />
-    <Compile Include="Models\tblResidenceType.cs" />
+    <Compile Include="Models\tblApplicantResidenceType.cs" />
+    <Compile Include="Models\tblArea.cs" />
     <Compile Include="Models\tblUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -442,6 +446,8 @@
     <Content Include="Views\Software\ApplicantDetail.cshtml" />
     <Content Include="Views\Software\Forbidden.cshtml" />
     <Content Include="Views\Software\NotFound.cshtml" />
+    <Content Include="Views\Software\LoanApplicationList.cshtml" />
+    <Content Include="Views\Software\AreaList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -44,5 +44,17 @@ namespace Lending.Controllers
                 return View();
             }
         }
+
+        [Authorize]
+        public ActionResult LoanApplicationList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult AreaList()
+        {
+            return View();
+        }
     }
 }

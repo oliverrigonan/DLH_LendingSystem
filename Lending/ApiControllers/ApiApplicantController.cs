@@ -28,11 +28,11 @@ namespace Lending.ApiControllers
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.tblCivilStatus.CivilStatus,
+                                 CivilStatus = d.tblApplicantCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
                                  ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.tblResidenceType.ResidenceType,
+                                 ResidenceType = d.tblApplicantResidenceType.ResidenceType,
                                  LengthOfStay = d.LengthOfStay,
                                  BusinessAddress = d.BusinessAddress,
                                  BusinessKaratulaName = d.BusinessKaratulaName,
@@ -51,7 +51,7 @@ namespace Lending.ApiControllers
                                  EmployedTelephoneNumber = d.EmployedTelephoneNumber,
                                  SpouseFullName = d.SpouseFullName,
                                  SpouseEmployerBusiness = d.SpouseEmployerBusiness,
-                                 SpouseEmployerBusinessAdd = d.SpouseEmployerBusinessAdd,
+                                 SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
                                  SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
                                  SpousePositionOccupied = d.SpousePositionOccupied,
                                  SpouseMonthlySalary = d.SpouseMonthlySalary,
@@ -85,11 +85,11 @@ namespace Lending.ApiControllers
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.tblCivilStatus.CivilStatus,
+                                 CivilStatus = d.tblApplicantCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
                                  ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.tblResidenceType.ResidenceType,
+                                 ResidenceType = d.tblApplicantResidenceType.ResidenceType,
                                  LengthOfStay = d.LengthOfStay,
                                  BusinessAddress = d.BusinessAddress,
                                  BusinessKaratulaName = d.BusinessKaratulaName,
@@ -108,7 +108,7 @@ namespace Lending.ApiControllers
                                  EmployedTelephoneNumber = d.EmployedTelephoneNumber,
                                  SpouseFullName = d.SpouseFullName,
                                  SpouseEmployerBusiness = d.SpouseEmployerBusiness,
-                                 SpouseEmployerBusinessAdd = d.SpouseEmployerBusinessAdd,
+                                 SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
                                  SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
                                  SpousePositionOccupied = d.SpousePositionOccupied,
                                  SpouseMonthlySalary = d.SpouseMonthlySalary,
@@ -170,10 +170,10 @@ namespace Lending.ApiControllers
                 newApplicant.ApplicantCode = applicantCode;
                 newApplicant.FullName = "NA";
                 newApplicant.BirthDate = DateTime.Today;
-                newApplicant.CivilStatusId = (from d in db.tblCivilStatus select d.Id).FirstOrDefault();
+                newApplicant.CivilStatusId = (from d in db.tblApplicantCivilStatus select d.Id).FirstOrDefault();
                 newApplicant.CityAddress = "NA";
                 newApplicant.ProvinceAddress = "NA";
-                newApplicant.ResidenceTypeId = (from d in db.tblResidenceTypes select d.Id).FirstOrDefault();
+                newApplicant.ResidenceTypeId = (from d in db.tblApplicantResidenceTypes select d.Id).FirstOrDefault();
                 newApplicant.LengthOfStay = "NA";
                 newApplicant.BusinessAddress = "NA";
                 newApplicant.BusinessKaratulaName = "NA";
@@ -192,7 +192,7 @@ namespace Lending.ApiControllers
                 newApplicant.EmployedTelephoneNumber = "NA";
                 newApplicant.SpouseFullName = "NA";
                 newApplicant.SpouseEmployerBusiness = "NA";
-                newApplicant.SpouseEmployerBusinessAdd = "NA";
+                newApplicant.SpouseEmployerBusinessAddress = "NA";
                 newApplicant.SpouseBusinessTelephoneNumber = "NA";
                 newApplicant.SpousePositionOccupied = "NA";
                 newApplicant.SpouseMonthlySalary = 0;
@@ -224,11 +224,11 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var userId = (from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
                 var applicants = from d in db.tblApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
+                    var userId = (from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
                     var updateApplicant = applicants.FirstOrDefault();
                     updateApplicant.FullName = applicant.FullName;
                     updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
@@ -254,7 +254,7 @@ namespace Lending.ApiControllers
                     updateApplicant.EmployedTelephoneNumber = applicant.EmployedTelephoneNumber;
                     updateApplicant.SpouseFullName = applicant.SpouseFullName;
                     updateApplicant.SpouseEmployerBusiness = applicant.SpouseEmployerBusiness;
-                    updateApplicant.SpouseEmployerBusinessAdd = applicant.SpouseEmployerBusinessAdd;
+                    updateApplicant.SpouseEmployerBusinessAddress = applicant.SpouseEmployerBusinessAddress;
                     updateApplicant.SpouseBusinessTelephoneNumber = applicant.SpouseBusinessTelephoneNumber;
                     updateApplicant.SpousePositionOccupied = applicant.SpousePositionOccupied;
                     updateApplicant.SpouseMonthlySalary = applicant.SpouseMonthlySalary;

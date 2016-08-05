@@ -37,7 +37,7 @@ namespace Lending.Models
         public String EmployedTelephoneNumber { get; set; }
         public String SpouseFullName { get; set; }
         public String SpouseEmployerBusiness { get; set; }
-        public String SpouseEmployerBusinessAdd { get; set; }
+        public String SpouseEmployerBusinessAddress { get; set; }
         public String SpouseBusinessTelephoneNumber { get; set; }
         public String SpousePositionOccupied { get; set; }
         public Decimal SpouseMonthlySalary { get; set; }
