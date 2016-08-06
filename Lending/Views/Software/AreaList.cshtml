@@ -73,7 +73,7 @@
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td align="right">
-                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddApplicantOnclick()">
+                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddAreaOnclick()">
                                             <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                         </button>
                                     </td>
@@ -110,6 +110,58 @@
         </div>
     </section>
 
+    <!-- Area Detail Modal -->
+    <div class="modal fade" id="areaEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Area Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Area</dt>
+                        <dd>
+                            <input type="text" class="form-control requiredArea" id="areaName" placeholder="Area" />
+                        </dd>
+                        <dt>Description</dt>
+                        <dd>
+                            <textarea type="text" class="form-control requiredArea" id="areaDescription" placeholder="Description"></textarea>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveArea" onclick="saveAreaOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseArea" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Area modal -->
+    <div class="modal fade" id="deleteConfirmationAreaModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Area</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Area?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteArea" onclick="btnConfirmDeleteAreaOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteAreaModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    @Html.Partial("HomeFooter")
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -124,6 +176,8 @@
         var btnLastPageGrid;
         var btnCurrentPageGrid;
 
+        var areaId = 0;
+
         // get areas data
         function getAreasData() {
             var areas = new wijmo.collections.ObservableArray;
@@ -136,8 +190,8 @@
                     if (areaListResult.length > 0) {
                         for (i = 0; i < areaListResult.length; i++) {
                             areas.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick=''><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick=''><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditAreaOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteAreaOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: areaListResult[i]["Id"],
                                 Area: areaListResult[i]["Area"],
                                 Description: areaListResult[i]["Description"],
@@ -157,6 +211,274 @@
             return areas;
         }
 
+        // add area
+        function btnAddAreaOnclick() {
+            $("#areaEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveArea").prop("disabled", false);
+            $("#btnCloseArea").prop("disabled", false);
+
+            areaId = 0;
+            document.getElementById("areaName").value = "NA";
+            document.getElementById("areaDescription").value = "NA";
+        }
+
+        // edit area
+        function btnEditAreaOnclick() {
+            $("#areaEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+            $("#btnSaveArea").prop("disabled", false);
+            $("#btnCloseArea").prop("disabled", false);
+
+            areaCollectionView.editItem(areaCollectionView.currentItem);
+            var currentItem = areaCollectionView.currentEditItem;
+
+            areaId = currentItem.Id;
+            document.getElementById("areaName").value = currentItem.Area;
+            document.getElementById("areaDescription").value = currentItem.Description;
+        }
+
+        // form input validation
+        function inputValidationForArea() {
+            var isValid = true;
+            $('.requiredArea').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save area
+        function saveAreaOnclick() {
+            if (inputValidationForArea()) {
+                if (areaId > 0) {
+                    document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                } else {
+                    document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                }
+
+                $("#btnSaveArea").prop("disabled", true);
+                $("#btnCloseArea").prop("disabled", true);
+
+                var areaObject = new Object();
+                areaObject.Area = document.getElementById('areaName').value;
+                areaObject.Description = document.getElementById('areaDescription').value;
+                var areaData = JSON.stringify(areaObject);
+
+                if (areaId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/area/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: areaData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully saved.", "Save Successful");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+                                areaCollectionView.canFilter = true;
+                                areaCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchArea').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    areaCollectionView.refresh();
+                                });
+
+                                areaCollectionView.filter = function (item) {
+                                    return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+                                }
+
+                                areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtons();
+                                });
+
+                                areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateStampSecurity();
+                                });
+
+                                // Flex Grid
+                                areaFlexGrid.itemsSource = areaCollectionView;
+                                areaFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#applicantDetailApplianceOwnedModal").modal("hide");
+
+                                document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveArea").prop("disabled", false);
+                                $("#btnCloseArea").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/area/update/' + areaId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: areaData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully updated.", "Update Successful");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+                                areaCollectionView.canFilter = true;
+                                areaCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchArea').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    areaCollectionView.refresh();
+                                });
+
+                                areaCollectionView.filter = function (item) {
+                                    return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+                                }
+
+                                areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtons();
+                                });
+
+                                areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateStampSecurity();
+                                });
+
+                                // Flex Grid
+                                areaFlexGrid.itemsSource = areaCollectionView;
+                                areaFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveArea").prop("disabled", false);
+                                $("#btnCloseArea").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveArea").prop("disabled", false);
+                                $("#btnCloseArea").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // delete area
+        function btnDeleteAreaOnclick() {
+            $("#deleteConfirmationAreaModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+            $("#btnConfirmDeleteArea").prop("disabled", false);
+            $("#btnCloseDeleteAreaModal").prop("disabled", false);
+        }
+
+        // delete confirm area
+        function btnConfirmDeleteAreaOnclick() {
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteArea").prop("disabled", true);
+            $("#btnCloseDeleteAreaModal").prop("disabled", true);
+
+            areaCollectionView.editItem(areaCollectionView.currentItem);
+            var currentItem = areaCollectionView.currentEditItem;
+
+            $.ajax({
+                type: "DELETE",
+                url: '/api/area/delete/' + currentItem.Id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The data was successfully deleted.", "Delete Successful");
+
+                        $("#deleteConfirmationAreaModal").modal("hide");
+
+                        areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+                        areaCollectionView.canFilter = true;
+                        areaCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchArea').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            areaCollectionView.refresh();
+                        });
+
+                        areaCollectionView.filter = function (item) {
+                            return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+                        }
+
+                        areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        areaFlexGrid.itemsSource = areaCollectionView;
+                        areaFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+
+                        $("#deleteConfirmationAreaModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                        $("#deleteConfirmationAreaModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
 
         // navigation button for flexgrid
         function updateNavigateButtons() {
@@ -344,6 +666,32 @@
 
             showColumns(rowHeight);
         }
+
+        // area key event - area name
+        $('#areaName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // area key event - area description
+        $('#areaDescription').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
     </script>
 </body>
 </html>

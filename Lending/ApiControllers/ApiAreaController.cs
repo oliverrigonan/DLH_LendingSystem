@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/area/list")]
         public List<Models.tblArea> listArea()
         {
-            var areas = from d in db.tblAreas
+            var areas = from d in db.tblAreas.OrderByDescending(d => d.Id)
                         select new Models.tblArea
                         {
                             Id = d.Id,
