@@ -516,7 +516,7 @@
         </div>
     </div>
 
-    <!-- applicant detail edit appliance owned  -->
+    <!-- applicant detail Co makers statement detail modal -->
     <div class="modal fade" id="applicantDetailCoMakersStatementModal" role="dialog">
         <div class="modal-dialog modal-lg">
             <!-- Modal content-->
@@ -695,7 +695,7 @@
                                                         Real Properties Owned
                                                     </td>
                                                     <td align="right">
-                                                        <button class="btn btn-primary btn-sm" onclick="">
+                                                        <button class="btn btn-primary btn-sm" onclick="btnAddCoMakerRealPropertiesOwnedOnclick()">
                                                             <i class="fa fa-plus fa-fw"></i> Add
                                                         </button>
                                                     </td>
@@ -716,7 +716,7 @@
                                                         Appliance Owned
                                                     </td>
                                                     <td align="right">
-                                                        <button class="btn btn-primary btn-sm" onclick="">
+                                                        <button class="btn btn-primary btn-sm" onclick="btnAddComakerApplianceOwnedOnclick()">
                                                             <i class="fa fa-plus fa-fw"></i> Add
                                                         </button>
                                                     </td>
@@ -737,6 +737,100 @@
                         <i class="fa fa-save fa-fw"></i> Save Changes
                     </button>
                     <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- applicant detail CoMaker statement edit real properties owned  -->
+    <div class="modal fade" id="applicantDetailCoMakerRealPropertiesOwnedModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Co-Maker's Real Properties Owned Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Real</dt>
+                        <dd><input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedReal" placeholder="Real" /></dd>
+                        <dt>Location</dt>
+                        <dd><input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedLocation" placeholder="Location" /></dd>
+                        <dt>Present Value</dt>
+                        <dd><input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedPresentValue" placeholder="Present Value" /></dd>
+                        <dt>Ecumbered To</dt>
+                        <dd><input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedEcumberedTo" placeholder="Ecumbered To" /></dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveApplicantDetailCoMakerRealPropertiesOwned" onclick="btnSaveApplicantDetailCoMakerRealPropertiesOwnedOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseApplicantDetailCoMakerRealPropertiesOwned" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation applicant  coMakers statement  real properties owned modal -->
+    <div class="modal fade" id="deleteConfirmationApplicantDetailCoMakerRealPropertiesOwnedModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Property</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this property?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned" onclick="btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwnedOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailCoMakerRealPropertiesOwned" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- applicant detail edit  coMakers statement  appliance owned  -->
+    <div class="modal fade" id="applicantDetailCoMakerApplianceOwnedModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Co-Maker's Appliance Owned Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Appliance Brand</dt>
+                        <dd><input type="text" class="form-control requireCoMakerApplianceOwned" id="applicantDetailCoMakerApplianceOwnedBrand" placeholder="Real" /></dd>
+                        <dt>Present Value</dt>
+                        <dd><input type="text" class="form-control requireCoMakerApplianceOwned" id="applicantDetailCoMakerApplianceOwnedPresentValue" placeholder="Present Value" /></dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveApplicantDetailCoMakerApplianceOwned" onclick="btnSaveApplicantDetailCoMakerApplianceOwnedOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseApplicantDetailCoMakerApplianceOwned" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation applicant appliance owned modal -->
+    <div class="modal fade" id="deleteConfirmationApplicantDetailApplianceOwnedModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Appliance</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this appliance?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailApplianceOwned" onclick="btnConfirmDeleteApplicantDetailApplianceOwnedOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailApplianceOwned" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -950,7 +1044,7 @@
 
                         disabled = false;
                     }
-                    
+
                     // applicant
                     cboCivilStatus.dispose();
                     cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus', {
@@ -1070,14 +1164,6 @@
                         createCboCivilStatus(applicantDetailResult.CivilStatus);
                         document.getElementById("applicantCityAddress").value = applicantDetailResult.CityAddress;
                         document.getElementById("applicantProvinceAddress").value = applicantDetailResult.ProvinceAddress;
-
-                        console.log(applicantDetailResult.ResidenceType);
-                        console.log(applicantDetailResult.LandResidenceType);
-
-
-                        console.log(applicantDetailResult.ResidenceMonthlyRentAmount);
-                        console.log(applicantDetailResult.LandResidenceMonthlyRentAmount);
-
                         createCboResidenceType(applicantDetailResult.ResidenceType, applicantDetailResult.LandResidenceType);
                         document.getElementById("applicantResidenceMonthyRent").value = applicantDetailResult.ResidenceMonthlyRentAmount.toLocaleString();
                         document.getElementById("applicantLandResidenceMonthyRent").value = applicantDetailResult.LandResidenceMonthlyRentAmount.toLocaleString();
@@ -1163,10 +1249,6 @@
                 applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
                 applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
                 applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
-
-                console.log(cboResidenceType.selectedItem["Id"]);
-                console.log(cboLandResidenceType.selectedItem["Id"]);
-
                 applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
                 applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
                 applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
@@ -1807,7 +1889,23 @@
 
         // get applicant co-makers statement
         function getApplicantCoMakerStatement() {
+           
+        }
 
+        // add real properties owned co-makers statement
+        function btnAddCoMakerRealPropertiesOwnedOnclick() {
+            $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // add appliance owned co-makers statement
+        function btnAddComakerApplianceOwnedOnclick() {
+            $("#applicantDetailCoMakerApplianceOwnedModal").modal({
+                "show": true,
+                "backdrop": "static"
+            }); 
         }
 
         // add co makers statement
@@ -1823,7 +1921,19 @@
             NProgress.start();
             toastrModification();
             getApplicantDetail();
-            $('[data-toggle="tooltip"]').tooltip();
+
+            // double modal appear
+            $(document).on('show.bs.modal', '.modal', function (event) {
+                var zIndex = 1040 + (10 * $('.modal:visible').length);
+                $(this).css('z-index', zIndex);
+                setTimeout(function () {
+                    $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+                }, 0);
+            });
+
+            $(document).on('hidden.bs.modal', '.modal', function () {
+                $('.modal:visible').length && $(document.body).addClass('modal-open');
+            });
         }
 
         // appliance owned pills and tabs
