@@ -239,7 +239,7 @@ namespace Lending.Controllers
 
                 Data.LendingDataContext db = new Data.LendingDataContext();
 
-                var tblUsers = from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d;
+                var tblUsers = from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d;
                 if (tblUsers.Any())
                 {
                     var updateTblUser = tblUsers.FirstOrDefault();

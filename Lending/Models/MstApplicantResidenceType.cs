@@ -6,12 +6,11 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class tblArea
+    public class MstApplicantResidenceType
     {
         [Key]
         public Int32 Id { get; set; }
-        public String Area { get; set; }
-        public String Description { get; set; }
+        public String ResidenceType { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

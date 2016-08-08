@@ -173,7 +173,7 @@ namespace Lending.Controllers
 
                     Data.LendingDataContext db = new Data.LendingDataContext();
 
-                    Data.tblUser newTblUser = new Data.tblUser();
+                    Data.mstUser newTblUser = new Data.mstUser();
                     newTblUser.AspUserId = user.Id;
                     newTblUser.Username = model.Username;
                     newTblUser.Password = model.Password;
@@ -192,7 +192,7 @@ namespace Lending.Controllers
                     newTblUser.CreatedDate = DateTime.Now;
                     newTblUser.UpdatedDate = DateTime.Now;
 
-                    db.tblUsers.InsertOnSubmit(newTblUser);
+                    db.mstUsers.InsertOnSubmit(newTblUser);
                     db.SubmitChanges();
 
                     Debug.WriteLine("hehe");

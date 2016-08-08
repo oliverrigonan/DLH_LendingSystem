@@ -17,11 +17,11 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/user/get/currentLoggedInUser")]
-        public Models.tblUser getCurrentLoggedInUser()
+        public Models.MstUser getCurrentLoggedInUser()
         {
-            var currentUser = from d in db.tblUsers
+            var currentUser = from d in db.mstUsers
                               where d.AspUserId == User.Identity.GetUserId()
-                              select new Models.tblUser
+                              select new Models.MstUser
                               {
                                   Id = d.Id,
                                   AspUserId = d.AspUserId,
@@ -43,18 +43,18 @@ namespace Lending.ApiControllers
                                   UpdatedDate = d.UpdatedDate.ToString()
                               };
 
-            return (Models.tblUser)currentUser.FirstOrDefault();
+            return (Models.MstUser)currentUser.FirstOrDefault();
         }
 
         // update user
         [Authorize]
         [HttpPut]
         [Route("api/user/update/currentLoggedInUser")]
-        public HttpResponseMessage updateCurrentLoggedInUser(Models.tblUser user)
+        public HttpResponseMessage updateCurrentLoggedInUser(Models.MstUser user)
         {
             try
             {
-                var currentUser = from d in db.tblUsers  where d.AspUserId == User.Identity.GetUserId() select d;
+                var currentUser = from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d;
                 if (currentUser.Any())
                 {
                     var updateUser = currentUser.FirstOrDefault();

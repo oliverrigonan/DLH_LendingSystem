@@ -16,15 +16,15 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/applicantRealPropertiesOwned/listByApplicantId/{applicantId}")]
-        public List<Models.tblApplicantRealPropertiesOwned> listApplicantRealPropertiesOwned(String applicantId)
+        public List<Models.MstApplicantRealPropertiesOwned> listApplicantRealPropertiesOwned(String applicantId)
         {
-            var applicantRealPropertiesOwneds = from d in db.tblApplicantRealPropertiesOwneds
+            var applicantRealPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds
                                                 where d.ApplicantId == Convert.ToInt32(applicantId)
-                                                select new Models.tblApplicantRealPropertiesOwned
+                                                select new Models.MstApplicantRealPropertiesOwned
                                                 {
                                                     Id = d.Id,
                                                     ApplicantId = d.ApplicantId,
-                                                    Applicant = d.tblApplicant.FullName,
+                                                    Applicant = d.mstApplicant.FullName,
                                                     Real = d.Real,
                                                     Location = d.Location,
                                                     PresentValue = d.PresentValue,
@@ -38,18 +38,18 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPost]
         [Route("api/applicantRealPropertiesOwned/add")]
-        public HttpResponseMessage addApplicantRealPropertiesOwned(Models.tblApplicantRealPropertiesOwned realPropertiesOwned)
+        public HttpResponseMessage addApplicantRealPropertiesOwned(Models.MstApplicantRealPropertiesOwned realPropertiesOwned)
         {
             try
             {
-                Data.tblApplicantRealPropertiesOwned newRealPropertiesOwned = new Data.tblApplicantRealPropertiesOwned();
+                Data.mstApplicantRealPropertiesOwned newRealPropertiesOwned = new Data.mstApplicantRealPropertiesOwned();
                 newRealPropertiesOwned.ApplicantId = realPropertiesOwned.ApplicantId;
                 newRealPropertiesOwned.Real = realPropertiesOwned.Real;
                 newRealPropertiesOwned.Location = realPropertiesOwned.Location;
                 newRealPropertiesOwned.PresentValue = realPropertiesOwned.PresentValue;
                 newRealPropertiesOwned.EcumberedTo = realPropertiesOwned.EcumberedTo;
 
-                db.tblApplicantRealPropertiesOwneds.InsertOnSubmit(newRealPropertiesOwned);
+                db.mstApplicantRealPropertiesOwneds.InsertOnSubmit(newRealPropertiesOwned);
                 db.SubmitChanges();
 
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -64,11 +64,11 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/applicantRealPropertiesOwned/update/{id}")]
-        public HttpResponseMessage updateApplicantRealPropertiesOwned(String id, Models.tblApplicantRealPropertiesOwned realPropertiesOwned)
+        public HttpResponseMessage updateApplicantRealPropertiesOwned(String id, Models.MstApplicantRealPropertiesOwned realPropertiesOwned)
         {
             try
             {
-                var realPropertiesOwneds = from d in db.tblApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
+                var realPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (realPropertiesOwneds.Any())
                 {
                     var updateRealPropertiesOwneds = realPropertiesOwneds.FirstOrDefault();
@@ -101,10 +101,10 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var realPropertiesOwneds = from d in db.tblApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
+                var realPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (realPropertiesOwneds.Any())
                 {
-                    db.tblApplicantRealPropertiesOwneds.DeleteOnSubmit(realPropertiesOwneds.First());
+                    db.mstApplicantRealPropertiesOwneds.DeleteOnSubmit(realPropertiesOwneds.First());
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);

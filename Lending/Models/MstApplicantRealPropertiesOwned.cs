@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class tblApplicantRealPropertiesOwned
+    public class MstApplicantRealPropertiesOwned
     {
         [Key]
         public Int32 Id { get; set; }

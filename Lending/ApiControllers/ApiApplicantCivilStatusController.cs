@@ -16,19 +16,13 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/civilStatus/list")]
-        public List<Models.tblApplicantCivilStatus> listApplicantCivilStatus()
+        public List<Models.MstApplicantCivilStatus> listApplicantCivilStatus()
         {
-            var civilStatus = from d in db.tblApplicantCivilStatus
-                                 select new Models.tblApplicantCivilStatus
+            var civilStatus = from d in db.mstApplicantCivilStatus
+                                 select new Models.MstApplicantCivilStatus
                                  {
                                      Id = d.Id,
-                                     CivilStatus = d.CivilStatus,
-                                     CreatedByUserId = d.CreatedByUserId,
-                                     CreatedByUser = d.tblUser.FirstName + " " + d.tblUser.MiddleName + " " + d.tblUser.LastName,
-                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                     UpdatedByUserId = d.UpdatedByUserId,
-                                     UpdatedByUser = d.tblUser1.FirstName + " " + d.tblUser1.MiddleName + " " + d.tblUser1.LastName,
-                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                     CivilStatus = d.CivilStatus
                                  };
 
             return civilStatus.ToList();

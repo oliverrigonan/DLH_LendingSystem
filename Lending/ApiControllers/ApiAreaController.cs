@@ -17,19 +17,19 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/area/list")]
-        public List<Models.tblArea> listArea()
+        public List<Models.MstArea> listArea()
         {
-            var areas = from d in db.tblAreas.OrderByDescending(d => d.Id)
-                        select new Models.tblArea
+            var areas = from d in db.mstAreas.OrderByDescending(d => d.Id)
+                        select new Models.MstArea
                         {
                             Id = d.Id,
                             Area = d.Area,
                             Description = d.Description,
                             CreatedByUserId = d.CreatedByUserId,
-                            CreatedByUser = d.tblUser.FirstName + " " + d.tblUser.MiddleName + " " + d.tblUser.LastName,
+                            CreatedByUser = d.mstUser.FirstName + " " + d.mstUser.MiddleName + " " + d.mstUser.LastName,
                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                             UpdatedByUserId = d.UpdatedByUserId,
-                            UpdatedByUser = d.tblUser1.FirstName + " " + d.tblUser1.MiddleName + " " + d.tblUser1.LastName,
+                            UpdatedByUser = d.mstUser1.FirstName + " " + d.mstUser1.MiddleName + " " + d.mstUser1.LastName,
                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                         };
 
@@ -40,13 +40,13 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPost]
         [Route("api/area/add")]
-        public HttpResponseMessage addArea(Models.tblArea area)
+        public HttpResponseMessage addArea(Models.MstArea area)
         {
             try
             {
-                var userId = (from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                Data.tblArea newArea = new Data.tblArea();
+                Data.mstArea newArea = new Data.mstArea();
                 newArea.Area = area.Area;
                 newArea.Description = area.Description;
                 newArea.CreatedByUserId = userId;
@@ -54,7 +54,7 @@ namespace Lending.ApiControllers
                 newArea.UpdatedByUserId = userId;
                 newArea.UpdatedDateTime = DateTime.Now;
 
-                db.tblAreas.InsertOnSubmit(newArea);
+                db.mstAreas.InsertOnSubmit(newArea);
                 db.SubmitChanges();
 
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -69,14 +69,14 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/area/update/{id}")]
-        public HttpResponseMessage updateArea(String id, Models.tblArea area)
+        public HttpResponseMessage updateArea(String id, Models.MstArea area)
         {
             try
             {
-                var areas = from d in db.tblAreas where d.Id == Convert.ToInt32(id) select d;
+                var areas = from d in db.mstAreas where d.Id == Convert.ToInt32(id) select d;
                 if (areas.Any())
                 {
-                    var userId = (from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                     var updateArea = areas.FirstOrDefault();
                     updateArea.Area = area.Area;
@@ -107,10 +107,10 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var areas = from d in db.tblAreas where d.Id == Convert.ToInt32(id) select d;
+                var areas = from d in db.mstAreas where d.Id == Convert.ToInt32(id) select d;
                 if (areas.Any())
                 {
-                    db.tblAreas.DeleteOnSubmit(areas.First());
+                    db.mstAreas.DeleteOnSubmit(areas.First());
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);

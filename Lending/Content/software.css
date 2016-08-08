@@ -40,6 +40,10 @@ td.td-label {
     width: 50%;
 }
 
+.wijmo-combobox-width-50 {
+    width: 50%;
+}
+
 dt {
     color: #808080;
     font-weight: 500;
@@ -51,7 +55,11 @@ dt {
     }
 
     .numberField {
-    text-align: right;
-    width: 100%;
+        text-align: right;
+        width: 100%;
+    }
 }
+
+a:hover, a:focus {
+    text-decoration: none;
 }

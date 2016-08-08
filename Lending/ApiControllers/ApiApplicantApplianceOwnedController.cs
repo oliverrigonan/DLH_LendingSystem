@@ -16,15 +16,15 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/applicantApplianceOwned/listByApplicantId/{applicantId}")]
-        public List<Models.tblApplicantApplianceOwned> listApplicantApplianceOwned(String applicantId)
+        public List<Models.MstApplicantApplianceOwned> listApplicantApplianceOwned(String applicantId)
         {
-            var applicantApplianceOwneds = from d in db.tblApplicantApplianceOwneds
+            var applicantApplianceOwneds = from d in db.mstApplicantApplianceOwneds
                                            where d.ApplicantId == Convert.ToInt32(applicantId)
-                                           select new Models.tblApplicantApplianceOwned
+                                           select new Models.MstApplicantApplianceOwned
                                            {
                                                Id = d.Id,
                                                ApplicantId = d.ApplicantId,
-                                               Applicant = d.tblApplicant.FullName,
+                                               Applicant = d.mstApplicant.FullName,
                                                ApplianceBrand = d.ApplianceBrand,
                                                PresentValue = d.PresentValue
                                            };
@@ -36,16 +36,16 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPost]
         [Route("api/applicantApplianceOwned/add")]
-        public HttpResponseMessage addApplicantApplianceOwned(Models.tblApplicantApplianceOwned applianceOwned)
+        public HttpResponseMessage addApplicantApplianceOwned(Models.MstApplicantApplianceOwned applianceOwned)
         {
             try
             {
-                Data.tblApplicantApplianceOwned newApplianceOwned = new Data.tblApplicantApplianceOwned();
+                Data.mstApplicantApplianceOwned newApplianceOwned = new Data.mstApplicantApplianceOwned();
                 newApplianceOwned.ApplicantId = applianceOwned.ApplicantId;
                 newApplianceOwned.ApplianceBrand = applianceOwned.ApplianceBrand;
                 newApplianceOwned.PresentValue = applianceOwned.PresentValue;
 
-                db.tblApplicantApplianceOwneds.InsertOnSubmit(newApplianceOwned);
+                db.mstApplicantApplianceOwneds.InsertOnSubmit(newApplianceOwned);
                 db.SubmitChanges();
 
                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -60,11 +60,11 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/applicantApplianceOwned/update/{id}")]
-        public HttpResponseMessage updateApplicantApplianceOwned(String id, Models.tblApplicantApplianceOwned applianceOwned)
+        public HttpResponseMessage updateApplicantApplianceOwned(String id, Models.MstApplicantApplianceOwned applianceOwned)
         {
             try
             {
-                var applianceOwneds = from d in db.tblApplicantApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
+                var applianceOwneds = from d in db.mstApplicantApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (applianceOwneds.Any())
                 {
                     var updateApplianceOwned = applianceOwneds.FirstOrDefault();
@@ -95,10 +95,10 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var applianceOwneds = from d in db.tblApplicantApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
+                var applianceOwneds = from d in db.mstApplicantApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (applianceOwneds.Any())
                 {
-                    db.tblApplicantApplianceOwneds.DeleteOnSubmit(applianceOwneds.First());
+                    db.mstApplicantApplianceOwneds.DeleteOnSubmit(applianceOwneds.First());
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);

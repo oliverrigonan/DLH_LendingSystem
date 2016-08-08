@@ -7,35 +7,14 @@
       <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
     </Type>
   </Table>
-  <Table Name="dbo.tblUser" Member="tblUsers">
-    <Type Name="tblUser">
+  <Table Name="dbo.trnLoanRequirements" Member="trnLoanRequirements">
+    <Type Name="trnLoanRequirement">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="AspUserId" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
-      <Column Name="Username" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
-      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="BirthDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="JobTitle" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="AboutMe" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="AddressStreet" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="AddressCity" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="AddressZip" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="AddressCountry" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="tblUser_tblApplicant" Member="tblApplicants" ThisKey="Id" OtherKey="CreatedByUserId" Type="tblApplicant" />
-      <Association Name="tblUser_tblApplicant1" Member="tblApplicants1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="tblApplicant" />
-      <Association Name="tblUser_tblApplicantCivilStatus" Member="tblApplicantCivilStatus" ThisKey="Id" OtherKey="CreatedByUserId" Type="tblApplicantCivilStatus" />
-      <Association Name="tblUser_tblApplicantCivilStatus1" Member="tblApplicantCivilStatus1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="tblApplicantCivilStatus" />
-      <Association Name="tblUser_tblApplicantResidenceType" Member="tblApplicantResidenceTypes" ThisKey="Id" OtherKey="CreatedByUserId" Type="tblApplicantResidenceType" />
-      <Association Name="tblUser_tblApplicantResidenceType1" Member="tblApplicantResidenceTypes1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="tblApplicantResidenceType" />
-      <Association Name="tblUser_tblArea" Member="tblAreas" ThisKey="Id" OtherKey="CreatedByUserId" Type="tblArea" />
-      <Association Name="tblUser_tblArea1" Member="tblAreas1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="tblArea" />
-      <Association Name="AspNetUser_tblUser" Member="AspNetUser" ThisKey="AspUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
+      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RequirementId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExpirationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsValid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="trnLoanApplication_trnLoanRequirement" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.AspNetUserClaims" Member="AspNetUserClaims">
@@ -79,22 +58,53 @@
       <Column Name="LockoutEndDateUtc" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="LockoutEnabled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="AccessFailedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="AspNetUser_tblUser" Member="tblUsers" ThisKey="Id" OtherKey="AspUserId" Type="tblUser" />
       <Association Name="AspNetUser_AspNetUserClaim" Member="AspNetUserClaims" ThisKey="Id" OtherKey="UserId" Type="AspNetUserClaim" />
       <Association Name="AspNetUser_AspNetUserLogin" Member="AspNetUserLogins" ThisKey="Id" OtherKey="UserId" Type="AspNetUserLogin" />
       <Association Name="AspNetUser_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="UserId" Type="AspNetUserRole" />
+      <Association Name="AspNetUser_mstUser" Member="mstUsers" ThisKey="Id" OtherKey="AspUserId" Type="mstUser" />
     </Type>
   </Table>
-  <Table Name="dbo.tblApplicant" Member="tblApplicants">
-    <Type Name="tblApplicant">
+  <Table Name="dbo.mstAccount" Member="mstAccounts">
+    <Type Name="mstAccount">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ApplicantCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Account" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AccountTransactionTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstAccount_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="AccountId" Type="trnJournal" />
+      <Association Name="mstAccountTransactionType_mstAccount" Member="mstAccountTransactionType" ThisKey="AccountTransactionTypeId" OtherKey="Id" Type="mstAccountTransactionType" IsForeignKey="true" />
+      <Association Name="mstUser_mstAccount" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstAccount1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstAccountTransactionType" Member="mstAccountTransactionTypes">
+    <Type Name="mstAccountTransactionType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AccountTransactionType" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstAccountTransactionType_mstAccount" Member="mstAccounts" ThisKey="Id" OtherKey="AccountTransactionTypeId" Type="mstAccount" />
+      <Association Name="mstUser_mstAccountTransactionType" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstAccountTransactionType1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstApplicant" Member="mstApplicants">
+    <Type Name="mstApplicant">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="FullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="BirthDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="CivilStatusId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CityAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ProvinceAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ResidenceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ResidenceMonthlyRentAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="LandResidenceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LandResidenceMonthlyRentAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
       <Column Name="LengthOfStay" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="BusinessAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="BusinessKaratulaName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
@@ -125,62 +135,55 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicant_tblApplicantApplianceOwned" Member="tblApplicantApplianceOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="tblApplicantApplianceOwned" />
-      <Association Name="tblApplicant_tblApplicantRealPropertiesOwned" Member="tblApplicantRealPropertiesOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="tblApplicantRealPropertiesOwned" />
-      <Association Name="tblUser_tblApplicant" Member="tblUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
-      <Association Name="tblUser_tblApplicant1" Member="tblUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
-      <Association Name="tblApplicantCivilStatus_tblApplicant" Member="tblApplicantCivilStatus" ThisKey="CivilStatusId" OtherKey="Id" Type="tblApplicantCivilStatus" IsForeignKey="true" />
-      <Association Name="tblApplicantResidenceType_tblApplicant" Member="tblApplicantResidenceType" ThisKey="ResidenceTypeId" OtherKey="Id" Type="tblApplicantResidenceType" IsForeignKey="true" />
+      <Association Name="mstApplicant_mstApplicantApplianceOwned" Member="mstApplicantApplianceOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="mstApplicantApplianceOwned" />
+      <Association Name="mstApplicant_mstApplicantRealPropertiesOwned" Member="mstApplicantRealPropertiesOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="mstApplicantRealPropertiesOwned" />
+      <Association Name="mstApplicant_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="ApplicantId" Type="trnLoanApplication" />
+      <Association Name="mstApplicantCivilStatus_mstApplicant" Member="mstApplicantCivilStatus" ThisKey="CivilStatusId" OtherKey="Id" Type="mstApplicantCivilStatus" IsForeignKey="true" />
+      <Association Name="mstApplicantResidenceType_mstApplicant" Member="mstApplicantResidenceType" ThisKey="ResidenceTypeId" OtherKey="Id" Type="mstApplicantResidenceType" IsForeignKey="true" />
+      <Association Name="mstApplicantResidenceType_mstApplicant1" Member="mstApplicantResidenceType1" ThisKey="LandResidenceTypeId" OtherKey="Id" Type="mstApplicantResidenceType" IsForeignKey="true" />
+      <Association Name="mstUser_mstApplicant" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstApplicant1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tblApplicantApplianceOwned" Member="tblApplicantApplianceOwneds">
-    <Type Name="tblApplicantApplianceOwned">
+  <Table Name="dbo.mstApplicantApplianceOwned" Member="mstApplicantApplianceOwneds">
+    <Type Name="mstApplicantApplianceOwned">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ApplianceBrand" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PresentValue" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicant_tblApplicantApplianceOwned" Member="tblApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="tblApplicant" IsForeignKey="true" />
+      <Association Name="mstApplicant_mstApplicantApplianceOwned" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tblApplicantCivilStatus" Member="tblApplicantCivilStatus">
-    <Type Name="tblApplicantCivilStatus">
+  <Table Name="dbo.mstApplicantCivilStatus" Member="mstApplicantCivilStatus">
+    <Type Name="mstApplicantCivilStatus">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="CivilStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicantCivilStatus_tblApplicant" Member="tblApplicants" ThisKey="Id" OtherKey="CivilStatusId" Type="tblApplicant" />
-      <Association Name="tblUser_tblApplicantCivilStatus" Member="tblUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
-      <Association Name="tblUser_tblApplicantCivilStatus1" Member="tblUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
+      <Association Name="mstApplicantCivilStatus_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="CivilStatusId" Type="mstApplicant" />
+      <Association Name="mstApplicantCivilStatus_mstApplicantCivilStatus" Member="mstApplicantCivilStatus2" ThisKey="Id" OtherKey="Id" Type="mstApplicantCivilStatus" Cardinality="One" />
+      <Association Name="mstApplicantCivilStatus_mstApplicantCivilStatus" Member="mstApplicantCivilStatus1" ThisKey="Id" OtherKey="Id" Type="mstApplicantCivilStatus" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tblApplicantRealPropertiesOwned" Member="tblApplicantRealPropertiesOwneds">
-    <Type Name="tblApplicantRealPropertiesOwned">
+  <Table Name="dbo.mstApplicantRealPropertiesOwned" Member="mstApplicantRealPropertiesOwneds">
+    <Type Name="mstApplicantRealPropertiesOwned">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Real" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="Location" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="PresentValue" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="EcumberedTo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicant_tblApplicantRealPropertiesOwned" Member="tblApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="tblApplicant" IsForeignKey="true" />
+      <Association Name="mstApplicant_mstApplicantRealPropertiesOwned" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.tblApplicantResidenceType" Member="tblApplicantResidenceTypes">
-    <Type Name="tblApplicantResidenceType">
+  <Table Name="dbo.mstApplicantResidenceType" Member="mstApplicantResidenceTypes">
+    <Type Name="mstApplicantResidenceType">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="ResidenceType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="tblApplicantResidenceType_tblApplicant" Member="tblApplicants" ThisKey="Id" OtherKey="ResidenceTypeId" Type="tblApplicant" />
-      <Association Name="tblUser_tblApplicantResidenceType" Member="tblUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
-      <Association Name="tblUser_tblApplicantResidenceType1" Member="tblUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
+      <Association Name="mstApplicantResidenceType_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="ResidenceTypeId" Type="mstApplicant" />
+      <Association Name="mstApplicantResidenceType_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstApplicant" />
     </Type>
   </Table>
-  <Table Name="dbo.tblArea" Member="tblAreas">
-    <Type Name="tblArea">
+  <Table Name="dbo.mstArea" Member="mstAreas">
+    <Type Name="mstArea">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Area" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
@@ -188,8 +191,135 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="tblUser_tblArea" Member="tblUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
-      <Association Name="tblUser_tblArea1" Member="tblUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="tblUser" IsForeignKey="true" />
+      <Association Name="mstArea_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="AreaId" Type="trnLoanApplication" />
+      <Association Name="mstUser_mstArea" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstArea1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstEmployee" Member="mstEmployees">
+    <Type Name="mstEmployee">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EmployeeName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployeePositionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstEmployee_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="EmployeeCollectorId" Type="trnLoanApplication" />
+      <Association Name="mstEmployeePosition_mstEmployee" Member="mstEmployeePosition" ThisKey="EmployeePositionId" OtherKey="Id" Type="mstEmployeePosition" IsForeignKey="true" />
+      <Association Name="mstUser_mstEmployee" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstEmployee1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstEmployeePosition" Member="mstEmployeePositions">
+    <Type Name="mstEmployeePosition">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="EmployeePosition" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstEmployeePosition_mstEmployee" Member="mstEmployees" ThisKey="Id" OtherKey="EmployeePositionId" Type="mstEmployee" />
+      <Association Name="mstUser_mstEmployeePosition" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstEmployeePosition1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstRequirements" Member="mstRequirements">
+    <Type Name="mstRequirement">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Requirement" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstUser_mstRequirement" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstRequirement1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstUser" Member="mstUsers">
+    <Type Name="mstUser">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AspUserId" Type="System.String" DbType="NVarChar(128) NOT NULL" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MiddleName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="BirthDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="JobTitle" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="AboutMe" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AddressStreet" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AddressCity" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AddressZip" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AddressCountry" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="EmailAddress" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstUser_mstAccount" Member="mstAccounts" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstAccount" />
+      <Association Name="mstUser_mstAccount1" Member="mstAccounts1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstAccount" />
+      <Association Name="mstUser_mstAccountTransactionType" Member="mstAccountTransactionTypes" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstAccountTransactionType" />
+      <Association Name="mstUser_mstAccountTransactionType1" Member="mstAccountTransactionTypes1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstAccountTransactionType" />
+      <Association Name="mstUser_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstApplicant" />
+      <Association Name="mstUser_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstApplicant" />
+      <Association Name="mstUser_mstArea" Member="mstAreas" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstArea" />
+      <Association Name="mstUser_mstArea1" Member="mstAreas1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstArea" />
+      <Association Name="mstUser_mstEmployee" Member="mstEmployees" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstEmployee" />
+      <Association Name="mstUser_mstEmployee1" Member="mstEmployees1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstEmployee" />
+      <Association Name="mstUser_mstEmployeePosition" Member="mstEmployeePositions" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstEmployeePosition" />
+      <Association Name="mstUser_mstEmployeePosition1" Member="mstEmployeePositions1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstEmployeePosition" />
+      <Association Name="mstUser_mstRequirement" Member="mstRequirements" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstRequirement" />
+      <Association Name="mstUser_mstRequirement1" Member="mstRequirements1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstRequirement" />
+      <Association Name="mstUser_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnLoanApplication" />
+      <Association Name="mstUser_trnLoanApplication1" Member="trnLoanApplications1" ThisKey="Id" OtherKey="VerifiedByUserId" Type="trnLoanApplication" />
+      <Association Name="mstUser_trnLoanApplication2" Member="trnLoanApplications2" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnLoanApplication" />
+      <Association Name="mstUser_trnLoanApplication3" Member="trnLoanApplications3" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnLoanApplication" />
+      <Association Name="AspNetUser_mstUser" Member="AspNetUser" ThisKey="AspUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.trnJournal" Member="trnJournals">
+    <Type Name="trnJournal">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="JournalDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="DocumentReference" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LoanId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CollectionId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DisbursementId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="mstAccount_trnJournal" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
+      <Association Name="trnLoanApplication_trnJournal" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.trnLoanApplication" Member="trnLoanApplications">
+    <Type Name="trnLoanApplication">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LoanDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AreaId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Promises" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="LoanAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployeeCollectorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VerifiedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsLogged" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="trnLoanApplication_trnLoanRequirement" Member="trnLoanRequirements" ThisKey="Id" OtherKey="LoanId" Type="trnLoanRequirement" />
+      <Association Name="trnLoanApplication_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="LoanId" Type="trnJournal" />
+      <Association Name="mstApplicant_trnLoanApplication" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
+      <Association Name="mstArea_trnLoanApplication" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" />
+      <Association Name="mstEmployee_trnLoanApplication" Member="mstEmployee" ThisKey="EmployeeCollectorId" OtherKey="Id" Type="mstEmployee" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication1" Member="mstUser1" ThisKey="VerifiedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication2" Member="mstUser2" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication3" Member="mstUser3" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

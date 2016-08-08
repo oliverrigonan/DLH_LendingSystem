@@ -18,21 +18,24 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/applicant/list")]
-        public List<Models.tblApplicant> listApplicant()
+        public List<Models.MstApplicant> listApplicant()
         {
-            var applicants = from d in db.tblApplicants.OrderByDescending(d => d.Id)
-                             select new Models.tblApplicant
+            var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
+                             select new Models.MstApplicant
                              {
                                  Id = d.Id,
-                                 ApplicantCode = d.ApplicantCode,
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.tblApplicantCivilStatus.CivilStatus,
+                                 CivilStatus = d.mstApplicantCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
                                  ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.tblApplicantResidenceType.ResidenceType,
+                                 ResidenceType = d.mstApplicantResidenceType.ResidenceType,
+                                 ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
+                                 LandResidenceTypeId = d.LandResidenceTypeId,
+                                 LandResidenceType = d.mstApplicantResidenceType1.ResidenceType,
+                                 LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
                                  LengthOfStay = d.LengthOfStay,
                                  BusinessAddress = d.BusinessAddress,
                                  BusinessKaratulaName = d.BusinessKaratulaName,
@@ -60,10 +63,10 @@ namespace Lending.ApiControllers
                                  Studying = d.Studying,
                                  Schools = d.Schools,
                                  CreatedByUserId = d.CreatedByUserId,
-                                 CreatedByUser = d.tblUser.FirstName + " " + d.tblUser.MiddleName + " " + d.tblUser.LastName,
+                                 CreatedByUser = d.mstUser.FirstName + " " + d.mstUser.MiddleName + " " + d.mstUser.LastName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                  UpdatedByUserId = d.UpdatedByUserId,
-                                 UpdatedByUser = d.tblUser1.FirstName + " " + d.tblUser1.MiddleName + " " + d.tblUser1.LastName,
+                                 UpdatedByUser = d.mstUser1.FirstName + " " + d.mstUser1.MiddleName + " " + d.mstUser1.LastName,
                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                              };
 
@@ -74,22 +77,25 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/applicant/getById/{id}")]
-        public Models.tblApplicant listApplicant(String id)
+        public Models.MstApplicant listApplicant(String id)
         {
-            var applicants = from d in db.tblApplicants
+            var applicants = from d in db.mstApplicants
                              where d.Id == Convert.ToInt32(id)
-                             select new Models.tblApplicant
+                             select new Models.MstApplicant
                              {
                                  Id = d.Id,
-                                 ApplicantCode = d.ApplicantCode,
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.tblApplicantCivilStatus.CivilStatus,
+                                 CivilStatus = d.mstApplicantCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
                                  ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.tblApplicantResidenceType.ResidenceType,
+                                 ResidenceType = d.mstApplicantResidenceType.ResidenceType,
+                                 ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
+                                 LandResidenceTypeId = d.LandResidenceTypeId,
+                                 LandResidenceType = d.mstApplicantResidenceType1.ResidenceType,
+                                 LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
                                  LengthOfStay = d.LengthOfStay,
                                  BusinessAddress = d.BusinessAddress,
                                  BusinessKaratulaName = d.BusinessKaratulaName,
@@ -117,34 +123,21 @@ namespace Lending.ApiControllers
                                  Studying = d.Studying,
                                  Schools = d.Schools,
                                  CreatedByUserId = d.CreatedByUserId,
-                                 CreatedByUser = d.tblUser.FirstName + " " + d.tblUser.MiddleName + " " + d.tblUser.LastName,
+                                 CreatedByUser = d.mstUser.FirstName + " " + d.mstUser.MiddleName + " " + d.mstUser.LastName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                  UpdatedByUserId = d.UpdatedByUserId,
-                                 UpdatedByUser = d.tblUser1.FirstName + " " + d.tblUser1.MiddleName + " " + d.tblUser1.LastName,
+                                 UpdatedByUser = d.mstUser1.FirstName + " " + d.mstUser1.MiddleName + " " + d.mstUser1.LastName,
                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                              };
 
             if (applicants.Any())
             {
-                return (Models.tblApplicant)applicants.FirstOrDefault();
+                return (Models.MstApplicant)applicants.FirstOrDefault();
             }
             else
             {
                 return null;
             }
-        }
-
-        // zero fill for code numbers
-        public String zeroFill(String number, Int32 length)
-        {
-            var result = number;
-            var pad = length - result.Length;
-            while (pad > 0)
-            {
-                result = '0' + result;
-                pad--;
-            }
-            return result;
         }
 
         // add applicant 
@@ -155,25 +148,18 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var userId = (from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                var lastApplicantCode = from d in db.tblApplicants.OrderByDescending(d => d.Id) select d;
-                var applicantCode = "0000000001";
-
-                if (lastApplicantCode.Any())
-                {
-                    var computeCode = Convert.ToInt32(lastApplicantCode.FirstOrDefault().ApplicantCode) + 0000000001;
-                    applicantCode = zeroFill(Convert.ToString(computeCode), 10);
-                }
-
-                Data.tblApplicant newApplicant = new Data.tblApplicant();
-                newApplicant.ApplicantCode = applicantCode;
+                Data.mstApplicant newApplicant = new Data.mstApplicant();
                 newApplicant.FullName = "NA";
                 newApplicant.BirthDate = DateTime.Today;
-                newApplicant.CivilStatusId = (from d in db.tblApplicantCivilStatus select d.Id).FirstOrDefault();
+                newApplicant.CivilStatusId = (from d in db.mstApplicantCivilStatus select d.Id).FirstOrDefault();
                 newApplicant.CityAddress = "NA";
                 newApplicant.ProvinceAddress = "NA";
-                newApplicant.ResidenceTypeId = (from d in db.tblApplicantResidenceTypes select d.Id).FirstOrDefault();
+                newApplicant.ResidenceTypeId = (from d in db.mstApplicantResidenceTypes select d.Id).FirstOrDefault();
+                newApplicant.ResidenceMonthlyRentAmount = 0;
+                newApplicant.LandResidenceTypeId = (from d in db.mstApplicantResidenceTypes select d.Id).FirstOrDefault();
+                newApplicant.LandResidenceMonthlyRentAmount = 0;
                 newApplicant.LengthOfStay = "NA";
                 newApplicant.BusinessAddress = "NA";
                 newApplicant.BusinessKaratulaName = "NA";
@@ -205,7 +191,7 @@ namespace Lending.ApiControllers
                 newApplicant.UpdatedByUserId = userId;
                 newApplicant.UpdatedDateTime = DateTime.Now;
 
-                db.tblApplicants.InsertOnSubmit(newApplicant);
+                db.mstApplicants.InsertOnSubmit(newApplicant);
                 db.SubmitChanges();
 
                 return newApplicant.Id;
@@ -220,14 +206,14 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/applicant/update/{id}")]
-        public HttpResponseMessage updateApplicant(String id, Models.tblApplicant applicant)
+        public HttpResponseMessage updateApplicant(String id, Models.MstApplicant applicant)
         {
             try
             {
-                var applicants = from d in db.tblApplicants where d.Id == Convert.ToInt32(id) select d;
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    var userId = (from d in db.tblUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                     var updateApplicant = applicants.FirstOrDefault();
                     updateApplicant.FullName = applicant.FullName;
@@ -236,6 +222,9 @@ namespace Lending.ApiControllers
                     updateApplicant.CityAddress = applicant.CityAddress;
                     updateApplicant.ProvinceAddress = applicant.ProvinceAddress;
                     updateApplicant.ResidenceTypeId = applicant.ResidenceTypeId;
+                    updateApplicant.ResidenceMonthlyRentAmount = applicant.ResidenceMonthlyRentAmount;
+                    updateApplicant.LandResidenceTypeId = applicant.LandResidenceTypeId;
+                    updateApplicant.LandResidenceMonthlyRentAmount = applicant.LandResidenceMonthlyRentAmount;
                     updateApplicant.LengthOfStay = applicant.LengthOfStay;
                     updateApplicant.BusinessAddress = applicant.BusinessAddress;
                     updateApplicant.BusinessKaratulaName = applicant.BusinessKaratulaName;
@@ -288,10 +277,10 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var applicants = from d in db.tblApplicants where d.Id == Convert.ToInt32(id) select d;
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    db.tblApplicants.DeleteOnSubmit(applicants.First());
+                    db.mstApplicants.DeleteOnSubmit(applicants.First());
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);

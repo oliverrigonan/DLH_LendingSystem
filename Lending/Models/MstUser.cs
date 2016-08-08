@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class tblUser
+    public class MstUser
     {
         [Key]
         public Int32 Id { get; set; }

@@ -6,11 +6,10 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class tblApplicant
+    public class MstApplicant
     {
         [Key]
         public Int32 Id { get; set; }
-        public String ApplicantCode { get; set; }
         public String FullName { get; set; }
         public String BirthDate { get; set; }
         public Int32 CivilStatusId { get; set; }
@@ -19,6 +18,10 @@ namespace Lending.Models
         public String ProvinceAddress { get; set; }
         public Int32 ResidenceTypeId { get; set; }
         public String ResidenceType { get; set; }
+        public Decimal ResidenceMonthlyRentAmount { get; set; }
+        public Int32 LandResidenceTypeId { get; set; }
+        public String LandResidenceType { get; set; }
+        public Decimal LandResidenceMonthlyRentAmount { get; set; }
         public String LengthOfStay { get; set; }
         public String BusinessAddress { get; set; }
         public String BusinessKaratulaName { get; set; }

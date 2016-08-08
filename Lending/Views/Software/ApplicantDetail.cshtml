@@ -19,22 +19,125 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item active">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Application
-                        </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-cc-visa fa-fw"></i> &nbsp; Collection</a>
-                        <a href="/Software/AreaList" class="list-group-item">
-                            <i class="fa fa-map-pin fa-fw"></i> &nbsp; Area
-                        </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
-                        <a href="#" class="list-group-item"><i class="fa fa-print fa-fw"></i> &nbsp; Reports</a>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="/Software">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-wrench fa-fw"></i> &nbsp; Set-ups
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="/Software/ApplicantList" class="list-group-item active">
+                                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicants
+                                        </a>
+                                        <a href="/Software/AreaList" class="list-group-item">
+                                            <i class="fa fa-map-pin fa-fw"></i> &nbsp; Areas
+                                        </a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-folder-open fa-fw"></i> &nbsp; Accounts</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-black-tie fa-fw"></i> &nbsp; Employees</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-bar-chart fa-fw"></i> &nbsp; Transactions
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="/Software/LoanApplicationList" class="list-group-item">
+                                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Applications
+                                        </a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursements</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collections</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-book fa-fw"></i> &nbsp; Journal Entries</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-gears fa-fw"></i> &nbsp; Systems
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item"><i class="fa fa-building fa-fw"></i> &nbsp; Company</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-print fa-fw"></i> &nbsp; Reports
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -69,9 +172,6 @@
                                         <button class="btn btn-primary" id="btnSaveChanges" onclick="btnSaveChangesApplicantOnclick()">
                                             <i class="fa fa-save fa-fw"></i> Save Changes
                                         </button>
-                                        <button class="btn btn-primary" id="btnPDF">
-                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                        </button>
                                         <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
                                             <i class="fa fa-close fa-fw"></i> Close
                                         </button>
@@ -96,24 +196,36 @@
                                         </div>
                                         <div class="panel-body">
                                             <dl class="dl-horizontal">
-                                                <dt>Applicant Code</dt>
-                                                <dd>
-                                                    <input type="text" class="form-control" id="applicantCode" />
-                                                </dd>
                                                 <dt>Applicant Name</dt>
                                                 <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantFullName" placeholder="Full Name" /></dd>
                                                 <dt>Birth Date</dt>
                                                 <dd>
-                                                    <div id="applicantBirthDate"></div> &nbsp; <span id="fullDateString"></span>
+                                                    <div id="applicantBirthDate" class="wijmo-combobox-width-50"></div> &nbsp; <span id="fullDateString"></span>
                                                 </dd>
                                                 <dt>Civil Status</dt>
-                                                <dd><div id="applicantCivilStatus"></div></dd>
+                                                <dd><div id="applicantCivilStatus" class="wijmo-combobox-width-50"></div></dd>
                                                 <dt>City Address</dt>
                                                 <dd><textarea class="form-control requiredApplicantDetail" id="applicantCityAddress" placeholder="City Address"></textarea></dd>
                                                 <dt>Province Address</dt>
                                                 <dd><textarea class="form-control requiredApplicantDetail" id="applicantProvinceAddress" placeholder="Province Address"></textarea></dd>
                                                 <dt>Residence Type</dt>
-                                                <dd><div id="applicantResidenceType"></div></dd>
+                                                <dd><div id="applicantResidenceType" class="wijmo-combobox-width-50"></div></dd>
+                                                <dt>Monthly Rent</dt>
+                                                <dd>
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantResidenceMonthyRent" placeholder="0.00" />
+                                                    </div>
+                                                </dd>
+                                                <dt>Land Residence Type</dt>
+                                                <dd><div id="applicantLandResidenceType" class="wijmo-combobox-width-50"></div></dd>
+                                                <dt>Monthly Rent</dt>
+                                                <dd>
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLandResidenceMonthyRent" placeholder="0.00" />
+                                                    </div>
+                                                </dd>
                                                 <dt>Length of Stay</dt>
                                                 <dd><input type="text" class="form-control requiredApplicantDetail" id="applicantLengthOfStay" placeholder="How many months, years or days?" /></dd>
                                             </dl>
@@ -223,6 +335,7 @@
                                     <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
                                         <li class="active"><a data-toggle="pill" href="#realPropertiesOwned" id="realPropertiesOwnedPillTab">Real Properties Owned</a></li>
                                         <li><a data-toggle="pill" href="#ApplianceOwned" id="appplianceOwnedPillTab">Appliance Owned</a></li>
+                                        <li><a data-toggle="pill" href="#Co-MakersStatement" id="co-MakersStatement">Co-Maker's Statement</a></li>
                                     </ul>
                                     <br />
                                 </div>
@@ -270,6 +383,27 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div id="Co-MakersStatement" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <table style="width: 100%">
+                                                        <tr>
+                                                            <td>
+                                                                Co-Maker's Statement
+                                                            </td>
+                                                            <td align="right">
+                                                                <button class="btn btn-primary btn-sm" onclick="btnAddApplicantDetailCoMakersStatementOnclick()">
+                                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div id="co-MakersStatement"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -277,6 +411,9 @@
                         <div class="panel-footer" align="right">
                             <button class="btn btn-primary" id="btnSaveChangesButtom" onclick="btnSaveChangesApplicantOnclick()">
                                 <i class="fa fa-save fa-fw"></i> Save Changes
+                            </button>
+                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
+                                <i class="fa fa-close fa-fw"></i> Close
                             </button>
                         </div>
                     </div>
@@ -379,6 +516,232 @@
         </div>
     </div>
 
+    <!-- applicant detail edit appliance owned  -->
+    <div class="modal fade" id="applicantDetailCoMakersStatementModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Co-Maker's Statement Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img class="img-responsive img-thumbnail" src="~/Images/landing-page/me.jpg" />
+                            <hr />
+                            <button class="btn btn-default btn-sm btn-block"><i class="fa fa-search-plus fa-fw"></i> Preview</button>
+                            <button class="btn btn-default btn-sm btn-block"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                            <button class="btn btn-danger btn-sm btn-block"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
+                            <br />
+                        </div>
+                        <div class="col-md-9">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Co-Maker's Personal Information
+                                </div>
+                                <div class="panel-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Co-Maker's Name</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerFullName" placeholder="Full Name" /></dd>
+                                        <dt>Birth Date</dt>
+                                        <dd>
+                                            <div id="coMakerBirthDate" class="wijmo-combobox-width-50"></div> &nbsp; <span id="coMakerFullDateString"></span>
+                                        </dd>
+                                        <dt>Civil Status</dt>
+                                        <dd><div id="coMakerCivilStatus" class="wijmo-combobox-width-50"></div></dd>
+                                        <dt>City Address</dt>
+                                        <dd><textarea class="form-control requiredCoMakerDetail" id="coMakerCityAddress" placeholder="City Address"></textarea></dd>
+                                        <dt>Province Address</dt>
+                                        <dd><textarea class="form-control requiredCoMakerDetail" id="coMakerProvinceAddress" placeholder="Province Address"></textarea></dd>
+                                        <dt>Residence Type</dt>
+                                        <dd><div id="coMakerResidenceType" class="wijmo-combobox-width-50"></div></dd>
+                                        <dt>Monthly Rent</dt>
+                                        <dd>
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerResidenceMonthyRent" placeholder="0.00" />
+                                            </div>
+                                        </dd>
+                                        <dt>Land Residence Type</dt>
+                                        <dd><div id="coMakerLandResidenceType" class="wijmo-combobox-width-50"></div></dd>
+                                        <dt>Monthly Rent</dt>
+                                        <dd>
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerLandResidenceMonthyRent" placeholder="0.00" />
+                                            </div>
+                                        </dd>
+                                        <dt>Length of Stay</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerLengthOfStay" placeholder="How many months, years or days?" /></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Business Detail
+                                </div>
+                                <div class="panel-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Business Address</dt>
+                                        <dd><textarea class="form-control requiredCoMakerDetail" id="coMakerBusinessAddress" placeholder="Business Address"></textarea></dd>
+                                        <dt>Karatula Name</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerBusinessKaratulaName" placeholder="Karatula Name" /></dd>
+                                        <dt>Telephone Number</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerBusinessTelephoneNumber" placeholder="Telephone Number" /></dd>
+                                        <dt>Business Years</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerBusinessYears" placeholder="How long on said business" /></dd>
+                                        <dt>Merchandise</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerBBusinessMerchandise" placeholder="Business Merchandise" /></dd>
+                                        <dt>Value of Stocks</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerValuesOfStocks" placeholder="0" /></dd>
+                                        <dt>Beginning Capital</dt>
+                                        <dd>
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerBusinessBeginningCapital" placeholder="0.00" />
+                                            </div>
+                                        </dd>
+                                        <dt>Sales are low during</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSalesLowPeriod" placeholder="Sales are low during" /></dd>
+                                        <dt>Lowest daily sales</dt>
+                                        <dd>
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerLowestDailySales" placeholder="0" />
+                                            </div>
+                                        </dd>
+                                        <dt>Average daily sales</dt>
+                                        <dd>
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerAverageDailySales" placeholder="0" />
+                                            </div>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    If Employed
+                                </div>
+                                <div class="panel-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Name of Company</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerEmployedCompanyName" placeholder="Name of Company" /></dd>
+                                        <dt>Company Address</dt>
+                                        <dd><textarea class="form-control requiredCoMakerDetail" id="coMakerEmployedCompanyAddress" placeholder="Company Address"></textarea></dd>
+                                        <dt>Position Occupied</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerEmployedPositionOccupied" placeholder="Position Occupied" /></dd>
+                                        <dt>Length of Service</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerEmployedLengthOfService" placeholder="Length of Service" /></dd>
+                                        <dt>Telephone Number</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerEmployedTelephoneNumber" placeholder="Telephone Number" /></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Spouse's Information and Income Detail
+                                </div>
+                                <div class="panel-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Name of Spouse</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpouseName" placeholder="Name of Spouse" /></dd>
+                                        <dt>Employer or Business</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpouseEmployerOrBusiness" placeholder="Employer or Business of Spouse" /></dd>
+                                        <dt>Business Address</dt>
+                                        <dd><textarea class="form-control requiredCoMakerDetail" id="coMakerSpouseBusinessAddress" placeholder="Employer or Business Address"></textarea></dd>
+                                        <dt>Telephone Number</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpouseTelephoneNumber" placeholder="Telephone Number" /></dd>
+                                        <dt>Position Occupied</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpousePositionOccupied" placeholder="Position Occupied" /></dd>
+                                        <dt>Monthly Salary</dt>
+                                        <dd>
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control requiredCoMakerDetail numberField" id="coMakerSpouseMonthlySalary" placeholder="0.00" />
+                                            </div>
+                                        </dd>
+                                        <dt>Length of Service</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpouseLengthOfService" placeholder="Length of Service" /></dd>
+                                        <dt>Number of Children</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpouseNumberOfChildren" placeholder="How many children?" /></dd>
+                                        <dt>Number of Studying</dt>
+                                        <dd><input type="text" class="form-control requiredCoMakerDetail" id="coMakerSpouseNumberOfStudying" placeholder="How many are studying?" /></dd>
+                                        <dt>Schools</dt>
+                                        <dd><textarea class="form-control requiredCoMakerDetail" id="coMakerSpouseChildrenSchools" placeholder="What Schools?"></textarea></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                <li class="active"><a data-toggle="pill" href="#comakerRealPropertiesOwned" id="comakerRealPropertiesOwnedPillTab">Real Properties Owned</a></li>
+                                <li><a data-toggle="pill" href="#comakerApplianceOwned" id="comakerApplianceOwnedPillTab">Appliance Owned</a></li>
+                            </ul>
+                            <br />
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content">
+                                <div id="comakerRealPropertiesOwned" class="tab-pane fade in active">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Real Properties Owned
+                                                    </td>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" onclick="">
+                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div id=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="comakerApplianceOwned" class="tab-pane fade">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Appliance Owned
+                                                    </td>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" onclick="">
+                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div id=""></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveChangesButtom" onclick="btnSaveChangesApplicantOnclick()">
+                        <i class="fa fa-save fa-fw"></i> Save Changes
+                    </button>
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     @Html.Partial("HomeFooter")
 
@@ -390,6 +753,7 @@
         var cboBirthDate;
         var cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus');
         var cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType');
+        var cboLandResidenceType = new wijmo.input.ComboBox('#applicantLandResidenceType');
         var applicantRealPropertiesOwnedCollectionView;
         var applicantRealPropertiesOwnedFlexGrid;
         var applicantApplianceOwnedCollectionView;
@@ -397,9 +761,19 @@
         var applicantRealPropertiesOwnedId;
         var applicantApplianceOwnedId;
 
+        var cboCoMakerBirthDate;
+        var cboCoMakerCivilStatus = new wijmo.input.ComboBox('#coMakerCivilStatus');
+        var cboCoMakerResidenceType = new wijmo.input.ComboBox('#coMakerResidenceType');
+        var cboCoMakerLandResidenceType = new wijmo.input.ComboBox('#coMakerLandResidenceType');
+        var coMakerApplicantRealPropertiesOwnedCollectionView;
+        var coMakerApplicantRealPropertiesOwnedFlexGrid;
+        var coMakerApplicantApplianceOwnedCollectionView;
+        var coMakerApplicantApplianceOwnedFlexGrid;
+        var coMakerApplicantRealPropertiesOwnedId;
+        var coMakerApplicantApplianceOwnedId;
 
         // on load birthdate label string
-        function onLoadBirthDateLabelString(cboBirthDate) {
+        function onLoadBirthDateLabelString(cboBirthDate, cboCoMakerBirthDate) {
             var birthDateValue = cboBirthDate.value.getMonth() + 1;
             var month = "";
 
@@ -432,10 +806,44 @@
             }
 
             document.getElementById("fullDateString").innerHTML = month + " " + cboBirthDate.value.getDate() + ", " + cboBirthDate.value.getFullYear();
+
+            var coMakerBirthDateValue = cboCoMakerBirthDate.value.getMonth() + 1;
+            var coMakerBirthDaymonth = "";
+
+            if (birthDateValue == 1) {
+                coMakerBirthDaymonth = "January";
+            } else if (birthDateValue == 2) {
+                coMakerBirthDaymonth = "February";
+            } else if (birthDateValue == 3) {
+                coMakerBirthDaymonth = "March";
+            } else if (birthDateValue == 4) {
+                coMakerBirthDaymonth = "April";
+            } else if (birthDateValue == 5) {
+                coMakerBirthDaymonth = "May";
+            } else if (birthDateValue == 6) {
+                coMakerBirthDaymonth = "June";
+            } else if (birthDateValue == 7) {
+                coMakerBirthDaymonth = "July";
+            } else if (birthDateValue == 8) {
+                coMakerBirthDaymonth = "August";
+            } else if (birthDateValue == 9) {
+                coMakerBirthDaymonth = "September";
+            } else if (birthDateValue == 10) {
+                coMakerBirthDaymonth = "October";
+            } else if (birthDateValue == 11) {
+                coMakerBirthDaymonth = "November";
+            } else if (birthDateValue == 12) {
+                coMakerBirthDaymonth = "December";
+            } else {
+                coMakerBirthDaymonth = "";
+            }
+
+            document.getElementById("coMakerFullDateString").innerHTML = coMakerBirthDaymonth + " " + cboCoMakerBirthDate.value.getDate() + ", " + cboCoMakerBirthDate.value.getFullYear();
         }
 
         // cbo birthdate
         function createCboBirthDate() {
+            // applicant
             cboBirthDate = new wijmo.input.InputDate('#applicantBirthDate', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
@@ -476,8 +884,49 @@
                 }
             });
 
+            // co maker statement
+            cboCoMakerBirthDate = new wijmo.input.InputDate('#coMakerBirthDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var birthDateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (birthDateValue == 1) {
+                        month = "January";
+                    } else if (birthDateValue == 2) {
+                        month = "February";
+                    } else if (birthDateValue == 3) {
+                        month = "March";
+                    } else if (birthDateValue == 4) {
+                        month = "April";
+                    } else if (birthDateValue == 5) {
+                        month = "May";
+                    } else if (birthDateValue == 6) {
+                        month = "June";
+                    } else if (birthDateValue == 7) {
+                        month = "July";
+                    } else if (birthDateValue == 8) {
+                        month = "August";
+                    } else if (birthDateValue == 9) {
+                        month = "September";
+                    } else if (birthDateValue == 10) {
+                        month = "October";
+                    } else if (birthDateValue == 11) {
+                        month = "November";
+                    } else if (birthDateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("coMakerFullDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+                }
+            });
+
             // on load function birthdate label string
-            onLoadBirthDateLabelString(cboBirthDate);
+            onLoadBirthDateLabelString(cboBirthDate, cboCoMakerBirthDate);
         }
 
         // cbo civil status
@@ -501,9 +950,23 @@
 
                         disabled = false;
                     }
-
+                    
+                    // applicant
                     cboCivilStatus.dispose();
                     cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: civilStatusArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "CivilStatus",
+                        selectedValuePath: "CivilStatus",
+                        selectedValue: civilStatusSelectedValue.toString()
+                    });
+
+                    // co makers statement
+                    cboCoMakerCivilStatus.dispose();
+                    cboCoMakerCivilStatus = new wijmo.input.ComboBox('#coMakerCivilStatus', {
                         disabled: disabled,
                         placeholder: "Select",
                         itemsSource: civilStatusArray,
@@ -518,7 +981,7 @@
         }
 
         // cbo Residence Type
-        function createCboResidenceType(residenceTypeSelectedValue) {
+        function createCboResidenceType(residenceTypeSelectedValue, landResidenceTypeSelectedValue) {
             var residenceTypeArray = new Array();
             $.ajax({
                 url: '/api/residenceType/list',
@@ -539,6 +1002,7 @@
                         disabled = false;
                     }
 
+                    // applicant
                     cboResidenceType.dispose();
                     cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType', {
                         disabled: disabled,
@@ -549,6 +1013,43 @@
                         displayMemberPath: "ResidenceType",
                         selectedValuePath: "ResidenceType",
                         selectedValue: residenceTypeSelectedValue.toString(),
+                    });
+
+                    cboLandResidenceType.dispose();
+                    cboLandResidenceType = new wijmo.input.ComboBox('#applicantLandResidenceType', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: residenceTypeArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ResidenceType",
+                        selectedValuePath: "ResidenceType",
+                        selectedValue: landResidenceTypeSelectedValue.toString(),
+                    });
+
+                    // co makers statement
+                    cboCoMakerResidenceType.dispose();
+                    cboCoMakerResidenceType = new wijmo.input.ComboBox('#coMakerResidenceType', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: residenceTypeArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ResidenceType",
+                        selectedValuePath: "ResidenceType",
+                        selectedValue: residenceTypeSelectedValue.toString(),
+                    });
+
+                    cboCoMakerLandResidenceType.dispose();
+                    cboCoMakerLandResidenceType = new wijmo.input.ComboBox('#coMakerLandResidenceType', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: residenceTypeArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ResidenceType",
+                        selectedValuePath: "ResidenceType",
+                        selectedValue: landResidenceTypeSelectedValue.toString(),
                     });
                 }
             });
@@ -564,15 +1065,22 @@
                 success: function (applicantDetailResult) {
                     createCboBirthDate();
                     if (applicantDetailResult != null) {
-                        document.getElementById("applicantCode").disabled = true;
-
-                        document.getElementById("applicantCode").value = applicantDetailResult.ApplicantCode;
                         document.getElementById("applicantFullName").value = applicantDetailResult.FullName;
                         cboBirthDate.value = new Date(applicantDetailResult.BirthDate);
                         createCboCivilStatus(applicantDetailResult.CivilStatus);
                         document.getElementById("applicantCityAddress").value = applicantDetailResult.CityAddress;
                         document.getElementById("applicantProvinceAddress").value = applicantDetailResult.ProvinceAddress;
-                        createCboResidenceType(applicantDetailResult.ResidenceType);
+
+                        console.log(applicantDetailResult.ResidenceType);
+                        console.log(applicantDetailResult.LandResidenceType);
+
+
+                        console.log(applicantDetailResult.ResidenceMonthlyRentAmount);
+                        console.log(applicantDetailResult.LandResidenceMonthlyRentAmount);
+
+                        createCboResidenceType(applicantDetailResult.ResidenceType, applicantDetailResult.LandResidenceType);
+                        document.getElementById("applicantResidenceMonthyRent").value = applicantDetailResult.ResidenceMonthlyRentAmount.toLocaleString();
+                        document.getElementById("applicantLandResidenceMonthyRent").value = applicantDetailResult.LandResidenceMonthlyRentAmount.toLocaleString();
                         document.getElementById("applicantLengthOfStay").value = applicantDetailResult.LengthOfStay;
                         document.getElementById("applicantBusinessAddress").value = applicantDetailResult.BusinessAddress;
                         document.getElementById("applicantBusinessKaratulaName").value = applicantDetailResult.BusinessKaratulaName;
@@ -580,10 +1088,10 @@
                         document.getElementById("applicantBusinessYears").value = applicantDetailResult.BusinessYear;
                         document.getElementById("applicantBBusinessMerchandise").value = applicantDetailResult.BusinessMerchandise;
                         document.getElementById("applicantValuesOfStocks").value = applicantDetailResult.BusinessStockValues;
-                        document.getElementById("applicantBusinessBeginningCapital").value = applicantDetailResult.BusinessBeginningCapital;
+                        document.getElementById("applicantBusinessBeginningCapital").value = applicantDetailResult.BusinessBeginningCapital.toLocaleString();;
                         document.getElementById("applicantSalesLowPeriod").value = applicantDetailResult.BusinessLowSalesPeriod;
-                        document.getElementById("applicantLowestDailySales").value = applicantDetailResult.BusinessLowestDailySales;
-                        document.getElementById("applicantAverageDailySales").value = applicantDetailResult.BusinessAverageDailySales;
+                        document.getElementById("applicantLowestDailySales").value = applicantDetailResult.BusinessLowestDailySales.toLocaleString();;
+                        document.getElementById("applicantAverageDailySales").value = applicantDetailResult.BusinessAverageDailySales.toLocaleString();;
                         document.getElementById("applicantEmployedCompanyName").value = applicantDetailResult.EmployedCompany;
                         document.getElementById("applicantEmployedCompanyAddress").value = applicantDetailResult.EmployedCompanyAddress;
                         document.getElementById("applicantEmployedPositionOccupied").value = applicantDetailResult.EmployedPositionOccupied;
@@ -652,6 +1160,13 @@
                 applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
                 applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
                 applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
+                applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
+                applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
+
+                console.log(cboResidenceType.selectedItem["Id"]);
+                console.log(cboLandResidenceType.selectedItem["Id"]);
+
                 applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
                 applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
                 applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
@@ -1095,7 +1610,7 @@
             applicantApplianceOwnedFlexGrid.trackChanges = true;
         }
 
-        // add appliance owned 
+        // add appliance owned
         function btnAddApplicantApplianceOwnedOnclick() {
             $("#applicantDetailApplianceOwnedModal").modal({
                 "show": true,
@@ -1111,7 +1626,7 @@
             document.getElementById('applicantDetailApplianceOwnedPresentValue').value = "";
         }
 
-        // edit appliance owned 
+        // edit appliance owned
         function editApplicantApplianceOwnedOnclick() {
             $("#applicantDetailApplianceOwnedModal").modal({
                 "show": true,
@@ -1148,7 +1663,7 @@
             return isValid;
         }
 
-        // save appliance owned 
+        // save appliance owned
         function btnSaveApplicantDetailApplianceOwnedOnclick() {
             if (inputValidationForApplicantApplianceOwned()) {
                 document.getElementById("btnSaveApplicantDetailApplianceOwned").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
@@ -1232,7 +1747,7 @@
             }
         }
 
-        // delete appliance owned 
+        // delete appliance owned
         function deleteApplicantApplianceOwnedOnclick() {
             $("#deleteConfirmationApplicantDetailApplianceOwnedModal").modal({
                 "show": true,
@@ -1244,7 +1759,7 @@
             $("#btnCloseDeleteModalApplicantDetailApplianceOwned").prop("disabled", false);
         }
 
-        // confirm delete  appliance owned 
+        // confirm delete  appliance owned
         function btnConfirmDeleteApplicantDetailApplianceOwnedOnclick() {
             document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
             $("#btnConfirmDeleteApplicantDetailApplianceOwned").prop("disabled", true);
@@ -1290,18 +1805,44 @@
             });
         }
 
+        // get applicant co-makers statement
+        function getApplicantCoMakerStatement() {
+
+        }
+
+        // add co makers statement
+        function btnAddApplicantDetailCoMakersStatementOnclick() {
+            $("#applicantDetailCoMakersStatementModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
         // on load function
         window.onload = function () {
             NProgress.start();
             toastrModification();
             getApplicantDetail();
+            $('[data-toggle="tooltip"]').tooltip();
         }
 
         // appliance owned pills and tabs
+        $('#co-MakersStatement').click(function () {
+            $("#Co-MakersStatement").show();
+            $("#realPropertiesOwned").hide();
+            $("#ApplianceOwned").hide();
+
+            applicantApplianceOwnedCollectionView = new wijmo.collections.CollectionView(getApplicantApplianceOwned());
+            applicantApplianceOwnedFlexGrid.itemsSource = applicantApplianceOwnedCollectionView;
+            applicantApplianceOwnedFlexGrid.trackChanges = true;
+        });
+
+        // appliance owned pills and tabs
         $('#appplianceOwnedPillTab').click(function () {
+            $("#Co-MakersStatement").hide();
             $("#realPropertiesOwned").hide();
             $("#ApplianceOwned").show();
-            
+
             applicantApplianceOwnedCollectionView = new wijmo.collections.CollectionView(getApplicantApplianceOwned());
             applicantApplianceOwnedFlexGrid.itemsSource = applicantApplianceOwnedCollectionView;
             applicantApplianceOwnedFlexGrid.trackChanges = true;
@@ -1309,6 +1850,7 @@
 
         // appliance real properties owned pills and tabs
         $('#realPropertiesOwnedPillTab').click(function () {
+            $("#Co-MakersStatement").hide();
             $("#realPropertiesOwned").show();
             $("#ApplianceOwned").hide();
 

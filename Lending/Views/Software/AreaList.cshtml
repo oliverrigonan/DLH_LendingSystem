@@ -19,22 +19,125 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Application
-                        </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-cc-visa fa-fw"></i> &nbsp; Collection</a>
-                        <a href="/Software/AreaList" class="list-group-item active">
-                            <i class="fa fa-map-pin fa-fw"></i> &nbsp; Area
-                        </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
-                        <a href="#" class="list-group-item"><i class="fa fa-print fa-fw"></i> &nbsp; Reports</a>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a href="/Software">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-wrench fa-fw"></i> &nbsp; Set-ups
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="/Software/ApplicantList" class="list-group-item">
+                                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicants
+                                        </a>
+                                        <a href="/Software/AreaList" class="list-group-item active">
+                                            <i class="fa fa-map-pin fa-fw"></i> &nbsp; Areas
+                                        </a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-folder-open fa-fw"></i> &nbsp; Accounts</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-black-tie fa-fw"></i> &nbsp; Employees</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-bar-chart fa-fw"></i> &nbsp; Transactions
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="/Software/LoanApplicationList" class="list-group-item">
+                                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Applications
+                                        </a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursements</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collections</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-book fa-fw"></i> &nbsp; Journal Entries</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-gears fa-fw"></i> &nbsp; Systems
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+                                        <a href="#" class="list-group-item"><i class="fa fa-building fa-fw"></i> &nbsp; Company</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                                    <table style="width: 100%;" border="0">
+                                        <tr>
+                                            <td>
+                                                <i class="fa fa-print fa-fw"></i> &nbsp; Reports
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-chevron-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="list-group">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -588,13 +691,7 @@
                                 "header": "Area",
                                 "binding": "Area",
                                 "allowSorting": true,
-                                "width": "1*",
-                            },
-                            {
-                                "header": "Description",
-                                "binding": "Description",
-                                "allowSorting": true,
-                                "width": "2*",
+                                "width": "3*",
                             }
                 ],
                 autoGenerateColumns: false,
