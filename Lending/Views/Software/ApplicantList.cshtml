@@ -171,7 +171,7 @@
                                     <td>
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                            <input type="text" id="searchApplicant" class="form-control" placeholder="Search">
+                                            <input type="text" id="searchApplicant" class="form-control" placeholder="Search" />
                                         </div>
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
@@ -302,7 +302,7 @@
             $("#btnCloseDeleteApplicantModal").prop("disabled", false);
         }
         function btnConfirmDeleteApplicantOnclick() {
-            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "Deleting";
+            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
             $("#btnConfirmDeleteApplicant").prop("disabled", true);
             $("#btnCloseDeleteApplicantModal").prop("disabled", true);
 

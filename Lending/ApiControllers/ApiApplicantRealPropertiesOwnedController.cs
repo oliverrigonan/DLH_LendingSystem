@@ -16,7 +16,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/applicantRealPropertiesOwned/listByApplicantId/{applicantId}")]
-        public List<Models.MstApplicantRealPropertiesOwned> listApplicantRealPropertiesOwned(String applicantId)
+        public List<Models.MstApplicantRealPropertiesOwned> listApplicantRealPropertiesOwnedByApplicantId(String applicantId)
         {
             var applicantRealPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds
                                                 where d.ApplicantId == Convert.ToInt32(applicantId)

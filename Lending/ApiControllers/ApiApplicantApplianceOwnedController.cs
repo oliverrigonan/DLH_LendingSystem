@@ -12,11 +12,11 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // applicant appliance owned
+        // applicant appliance owned by applicant id
         [Authorize]
         [HttpGet]
         [Route("api/applicantApplianceOwned/listByApplicantId/{applicantId}")]
-        public List<Models.MstApplicantApplianceOwned> listApplicantApplianceOwned(String applicantId)
+        public List<Models.MstApplicantApplianceOwned> listApplicantApplianceOwnedByAppplicantId(String applicantId)
         {
             var applicantApplianceOwneds = from d in db.mstApplicantApplianceOwneds
                                            where d.ApplicantId == Convert.ToInt32(applicantId)

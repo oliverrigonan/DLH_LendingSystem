@@ -60,18 +60,24 @@ namespace Lending.Data
     partial void InsertmstApplicantApplianceOwned(mstApplicantApplianceOwned instance);
     partial void UpdatemstApplicantApplianceOwned(mstApplicantApplianceOwned instance);
     partial void DeletemstApplicantApplianceOwned(mstApplicantApplianceOwned instance);
-    partial void InsertmstApplicantCivilStatus(mstApplicantCivilStatus instance);
-    partial void UpdatemstApplicantCivilStatus(mstApplicantCivilStatus instance);
-    partial void DeletemstApplicantCivilStatus(mstApplicantCivilStatus instance);
     partial void InsertmstApplicantRealPropertiesOwned(mstApplicantRealPropertiesOwned instance);
     partial void UpdatemstApplicantRealPropertiesOwned(mstApplicantRealPropertiesOwned instance);
     partial void DeletemstApplicantRealPropertiesOwned(mstApplicantRealPropertiesOwned instance);
-    partial void InsertmstApplicantResidenceType(mstApplicantResidenceType instance);
-    partial void UpdatemstApplicantResidenceType(mstApplicantResidenceType instance);
-    partial void DeletemstApplicantResidenceType(mstApplicantResidenceType instance);
     partial void InsertmstArea(mstArea instance);
     partial void UpdatemstArea(mstArea instance);
     partial void DeletemstArea(mstArea instance);
+    partial void InsertmstCivilStatus(mstCivilStatus instance);
+    partial void UpdatemstCivilStatus(mstCivilStatus instance);
+    partial void DeletemstCivilStatus(mstCivilStatus instance);
+    partial void InsertmstCoMakerStatement(mstCoMakerStatement instance);
+    partial void UpdatemstCoMakerStatement(mstCoMakerStatement instance);
+    partial void DeletemstCoMakerStatement(mstCoMakerStatement instance);
+    partial void InsertmstCoMakerStatementApplianceOwned(mstCoMakerStatementApplianceOwned instance);
+    partial void UpdatemstCoMakerStatementApplianceOwned(mstCoMakerStatementApplianceOwned instance);
+    partial void DeletemstCoMakerStatementApplianceOwned(mstCoMakerStatementApplianceOwned instance);
+    partial void InsertmstCoMakerStatementRealPropertiesOwned(mstCoMakerStatementRealPropertiesOwned instance);
+    partial void UpdatemstCoMakerStatementRealPropertiesOwned(mstCoMakerStatementRealPropertiesOwned instance);
+    partial void DeletemstCoMakerStatementRealPropertiesOwned(mstCoMakerStatementRealPropertiesOwned instance);
     partial void InsertmstEmployee(mstEmployee instance);
     partial void UpdatemstEmployee(mstEmployee instance);
     partial void DeletemstEmployee(mstEmployee instance);
@@ -81,6 +87,9 @@ namespace Lending.Data
     partial void InsertmstRequirement(mstRequirement instance);
     partial void UpdatemstRequirement(mstRequirement instance);
     partial void DeletemstRequirement(mstRequirement instance);
+    partial void InsertmstResidenceType(mstResidenceType instance);
+    partial void UpdatemstResidenceType(mstResidenceType instance);
+    partial void DeletemstResidenceType(mstResidenceType instance);
     partial void InsertmstUser(mstUser instance);
     partial void UpdatemstUser(mstUser instance);
     partial void DeletemstUser(mstUser instance);
@@ -202,14 +211,6 @@ namespace Lending.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<mstApplicantCivilStatus> mstApplicantCivilStatus
-		{
-			get
-			{
-				return this.GetTable<mstApplicantCivilStatus>();
-			}
-		}
-		
 		public System.Data.Linq.Table<mstApplicantRealPropertiesOwned> mstApplicantRealPropertiesOwneds
 		{
 			get
@@ -218,19 +219,43 @@ namespace Lending.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<mstApplicantResidenceType> mstApplicantResidenceTypes
-		{
-			get
-			{
-				return this.GetTable<mstApplicantResidenceType>();
-			}
-		}
-		
 		public System.Data.Linq.Table<mstArea> mstAreas
 		{
 			get
 			{
 				return this.GetTable<mstArea>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstCivilStatus> mstCivilStatus
+		{
+			get
+			{
+				return this.GetTable<mstCivilStatus>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstCoMakerStatement> mstCoMakerStatements
+		{
+			get
+			{
+				return this.GetTable<mstCoMakerStatement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstCoMakerStatementApplianceOwned> mstCoMakerStatementApplianceOwneds
+		{
+			get
+			{
+				return this.GetTable<mstCoMakerStatementApplianceOwned>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstCoMakerStatementRealPropertiesOwned> mstCoMakerStatementRealPropertiesOwneds
+		{
+			get
+			{
+				return this.GetTable<mstCoMakerStatementRealPropertiesOwned>();
 			}
 		}
 		
@@ -255,6 +280,14 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<mstRequirement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstResidenceType> mstResidenceTypes
+		{
+			get
+			{
+				return this.GetTable<mstResidenceType>();
 			}
 		}
 		
@@ -2339,13 +2372,15 @@ namespace Lending.Data
 		
 		private EntitySet<mstApplicantRealPropertiesOwned> _mstApplicantRealPropertiesOwneds;
 		
+		private EntitySet<mstCoMakerStatement> _mstCoMakerStatements;
+		
 		private EntitySet<trnLoanApplication> _trnLoanApplications;
 		
-		private EntityRef<mstApplicantCivilStatus> _mstApplicantCivilStatus;
+		private EntityRef<mstCivilStatus> _mstCivilStatus;
 		
-		private EntityRef<mstApplicantResidenceType> _mstApplicantResidenceType;
+		private EntityRef<mstResidenceType> _mstResidenceType;
 		
-		private EntityRef<mstApplicantResidenceType> _mstApplicantResidenceType1;
+		private EntityRef<mstResidenceType> _mstResidenceType1;
 		
 		private EntityRef<mstUser> _mstUser;
 		
@@ -2441,10 +2476,11 @@ namespace Lending.Data
 		{
 			this._mstApplicantApplianceOwneds = new EntitySet<mstApplicantApplianceOwned>(new Action<mstApplicantApplianceOwned>(this.attach_mstApplicantApplianceOwneds), new Action<mstApplicantApplianceOwned>(this.detach_mstApplicantApplianceOwneds));
 			this._mstApplicantRealPropertiesOwneds = new EntitySet<mstApplicantRealPropertiesOwned>(new Action<mstApplicantRealPropertiesOwned>(this.attach_mstApplicantRealPropertiesOwneds), new Action<mstApplicantRealPropertiesOwned>(this.detach_mstApplicantRealPropertiesOwneds));
+			this._mstCoMakerStatements = new EntitySet<mstCoMakerStatement>(new Action<mstCoMakerStatement>(this.attach_mstCoMakerStatements), new Action<mstCoMakerStatement>(this.detach_mstCoMakerStatements));
 			this._trnLoanApplications = new EntitySet<trnLoanApplication>(new Action<trnLoanApplication>(this.attach_trnLoanApplications), new Action<trnLoanApplication>(this.detach_trnLoanApplications));
-			this._mstApplicantCivilStatus = default(EntityRef<mstApplicantCivilStatus>);
-			this._mstApplicantResidenceType = default(EntityRef<mstApplicantResidenceType>);
-			this._mstApplicantResidenceType1 = default(EntityRef<mstApplicantResidenceType>);
+			this._mstCivilStatus = default(EntityRef<mstCivilStatus>);
+			this._mstResidenceType = default(EntityRef<mstResidenceType>);
+			this._mstResidenceType1 = default(EntityRef<mstResidenceType>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -2521,7 +2557,7 @@ namespace Lending.Data
 			{
 				if ((this._CivilStatusId != value))
 				{
-					if (this._mstApplicantCivilStatus.HasLoadedOrAssignedValue)
+					if (this._mstCivilStatus.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2585,7 +2621,7 @@ namespace Lending.Data
 			{
 				if ((this._ResidenceTypeId != value))
 				{
-					if (this._mstApplicantResidenceType.HasLoadedOrAssignedValue)
+					if (this._mstResidenceType.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -2629,7 +2665,7 @@ namespace Lending.Data
 			{
 				if ((this._LandResidenceTypeId != value))
 				{
-					if (this._mstApplicantResidenceType1.HasLoadedOrAssignedValue)
+					if (this._mstResidenceType1.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -3296,6 +3332,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstCoMakerStatement", Storage="_mstCoMakerStatements", ThisKey="Id", OtherKey="ApplicantId")]
+		public EntitySet<mstCoMakerStatement> mstCoMakerStatements
+		{
+			get
+			{
+				return this._mstCoMakerStatements;
+			}
+			set
+			{
+				this._mstCoMakerStatements.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_trnLoanApplication", Storage="_trnLoanApplications", ThisKey="Id", OtherKey="ApplicantId")]
 		public EntitySet<trnLoanApplication> trnLoanApplications
 		{
@@ -3309,26 +3358,26 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantCivilStatus_mstApplicant", Storage="_mstApplicantCivilStatus", ThisKey="CivilStatusId", OtherKey="Id", IsForeignKey=true)]
-		public mstApplicantCivilStatus mstApplicantCivilStatus
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCivilStatus_mstApplicant", Storage="_mstCivilStatus", ThisKey="CivilStatusId", OtherKey="Id", IsForeignKey=true)]
+		public mstCivilStatus mstCivilStatus
 		{
 			get
 			{
-				return this._mstApplicantCivilStatus.Entity;
+				return this._mstCivilStatus.Entity;
 			}
 			set
 			{
-				mstApplicantCivilStatus previousValue = this._mstApplicantCivilStatus.Entity;
+				mstCivilStatus previousValue = this._mstCivilStatus.Entity;
 				if (((previousValue != value) 
-							|| (this._mstApplicantCivilStatus.HasLoadedOrAssignedValue == false)))
+							|| (this._mstCivilStatus.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._mstApplicantCivilStatus.Entity = null;
+						this._mstCivilStatus.Entity = null;
 						previousValue.mstApplicants.Remove(this);
 					}
-					this._mstApplicantCivilStatus.Entity = value;
+					this._mstCivilStatus.Entity = value;
 					if ((value != null))
 					{
 						value.mstApplicants.Add(this);
@@ -3338,31 +3387,31 @@ namespace Lending.Data
 					{
 						this._CivilStatusId = default(int);
 					}
-					this.SendPropertyChanged("mstApplicantCivilStatus");
+					this.SendPropertyChanged("mstCivilStatus");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantResidenceType_mstApplicant", Storage="_mstApplicantResidenceType", ThisKey="ResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
-		public mstApplicantResidenceType mstApplicantResidenceType
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstApplicant", Storage="_mstResidenceType", ThisKey="ResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
+		public mstResidenceType mstResidenceType
 		{
 			get
 			{
-				return this._mstApplicantResidenceType.Entity;
+				return this._mstResidenceType.Entity;
 			}
 			set
 			{
-				mstApplicantResidenceType previousValue = this._mstApplicantResidenceType.Entity;
+				mstResidenceType previousValue = this._mstResidenceType.Entity;
 				if (((previousValue != value) 
-							|| (this._mstApplicantResidenceType.HasLoadedOrAssignedValue == false)))
+							|| (this._mstResidenceType.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._mstApplicantResidenceType.Entity = null;
+						this._mstResidenceType.Entity = null;
 						previousValue.mstApplicants.Remove(this);
 					}
-					this._mstApplicantResidenceType.Entity = value;
+					this._mstResidenceType.Entity = value;
 					if ((value != null))
 					{
 						value.mstApplicants.Add(this);
@@ -3372,31 +3421,31 @@ namespace Lending.Data
 					{
 						this._ResidenceTypeId = default(int);
 					}
-					this.SendPropertyChanged("mstApplicantResidenceType");
+					this.SendPropertyChanged("mstResidenceType");
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantResidenceType_mstApplicant1", Storage="_mstApplicantResidenceType1", ThisKey="LandResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
-		public mstApplicantResidenceType mstApplicantResidenceType1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstApplicant1", Storage="_mstResidenceType1", ThisKey="LandResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
+		public mstResidenceType mstResidenceType1
 		{
 			get
 			{
-				return this._mstApplicantResidenceType1.Entity;
+				return this._mstResidenceType1.Entity;
 			}
 			set
 			{
-				mstApplicantResidenceType previousValue = this._mstApplicantResidenceType1.Entity;
+				mstResidenceType previousValue = this._mstResidenceType1.Entity;
 				if (((previousValue != value) 
-							|| (this._mstApplicantResidenceType1.HasLoadedOrAssignedValue == false)))
+							|| (this._mstResidenceType1.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._mstApplicantResidenceType1.Entity = null;
+						this._mstResidenceType1.Entity = null;
 						previousValue.mstApplicants1.Remove(this);
 					}
-					this._mstApplicantResidenceType1.Entity = value;
+					this._mstResidenceType1.Entity = value;
 					if ((value != null))
 					{
 						value.mstApplicants1.Add(this);
@@ -3406,7 +3455,7 @@ namespace Lending.Data
 					{
 						this._LandResidenceTypeId = default(int);
 					}
-					this.SendPropertyChanged("mstApplicantResidenceType1");
+					this.SendPropertyChanged("mstResidenceType1");
 				}
 			}
 		}
@@ -3518,6 +3567,18 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstApplicantRealPropertiesOwneds(mstApplicantRealPropertiesOwned entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstApplicant = null;
+		}
+		
+		private void attach_mstCoMakerStatements(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstApplicant = this;
+		}
+		
+		private void detach_mstCoMakerStatements(mstCoMakerStatement entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstApplicant = null;
@@ -3708,193 +3769,6 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstApplicantCivilStatus")]
-	public partial class mstApplicantCivilStatus : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _CivilStatus;
-		
-		private EntitySet<mstApplicant> _mstApplicants;
-		
-		private EntityRef<mstApplicantCivilStatus> _mstApplicantCivilStatus2;
-		
-		private EntityRef<mstApplicantCivilStatus> _mstApplicantCivilStatus1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCivilStatusChanging(string value);
-    partial void OnCivilStatusChanged();
-    #endregion
-		
-		public mstApplicantCivilStatus()
-		{
-			this._mstApplicants = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants), new Action<mstApplicant>(this.detach_mstApplicants));
-			this._mstApplicantCivilStatus2 = default(EntityRef<mstApplicantCivilStatus>);
-			this._mstApplicantCivilStatus1 = default(EntityRef<mstApplicantCivilStatus>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					if (this._mstApplicantCivilStatus1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CivilStatus", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string CivilStatus
-		{
-			get
-			{
-				return this._CivilStatus;
-			}
-			set
-			{
-				if ((this._CivilStatus != value))
-				{
-					this.OnCivilStatusChanging(value);
-					this.SendPropertyChanging();
-					this._CivilStatus = value;
-					this.SendPropertyChanged("CivilStatus");
-					this.OnCivilStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantCivilStatus_mstApplicant", Storage="_mstApplicants", ThisKey="Id", OtherKey="CivilStatusId")]
-		public EntitySet<mstApplicant> mstApplicants
-		{
-			get
-			{
-				return this._mstApplicants;
-			}
-			set
-			{
-				this._mstApplicants.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantCivilStatus_mstApplicantCivilStatus", Storage="_mstApplicantCivilStatus2", ThisKey="Id", OtherKey="Id", IsUnique=true, IsForeignKey=false)]
-		public mstApplicantCivilStatus mstApplicantCivilStatus2
-		{
-			get
-			{
-				return this._mstApplicantCivilStatus2.Entity;
-			}
-			set
-			{
-				mstApplicantCivilStatus previousValue = this._mstApplicantCivilStatus2.Entity;
-				if (((previousValue != value) 
-							|| (this._mstApplicantCivilStatus2.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstApplicantCivilStatus2.Entity = null;
-						previousValue.mstApplicantCivilStatus1 = null;
-					}
-					this._mstApplicantCivilStatus2.Entity = value;
-					if ((value != null))
-					{
-						value.mstApplicantCivilStatus1 = this;
-					}
-					this.SendPropertyChanged("mstApplicantCivilStatus2");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantCivilStatus_mstApplicantCivilStatus", Storage="_mstApplicantCivilStatus1", ThisKey="Id", OtherKey="Id", IsForeignKey=true)]
-		public mstApplicantCivilStatus mstApplicantCivilStatus1
-		{
-			get
-			{
-				return this._mstApplicantCivilStatus1.Entity;
-			}
-			set
-			{
-				mstApplicantCivilStatus previousValue = this._mstApplicantCivilStatus1.Entity;
-				if (((previousValue != value) 
-							|| (this._mstApplicantCivilStatus1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstApplicantCivilStatus1.Entity = null;
-						previousValue.mstApplicantCivilStatus2 = null;
-					}
-					this._mstApplicantCivilStatus1.Entity = value;
-					if ((value != null))
-					{
-						value.mstApplicantCivilStatus2 = this;
-						this._Id = value.Id;
-					}
-					else
-					{
-						this._Id = default(int);
-					}
-					this.SendPropertyChanged("mstApplicantCivilStatus1");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_mstApplicants(mstApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicantCivilStatus = this;
-		}
-		
-		private void detach_mstApplicants(mstApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicantCivilStatus = null;
 		}
 	}
 	
@@ -4118,148 +3992,6 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstApplicantResidenceType")]
-	public partial class mstApplicantResidenceType : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _ResidenceType;
-		
-		private EntitySet<mstApplicant> _mstApplicants;
-		
-		private EntitySet<mstApplicant> _mstApplicants1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnResidenceTypeChanging(string value);
-    partial void OnResidenceTypeChanged();
-    #endregion
-		
-		public mstApplicantResidenceType()
-		{
-			this._mstApplicants = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants), new Action<mstApplicant>(this.detach_mstApplicants));
-			this._mstApplicants1 = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants1), new Action<mstApplicant>(this.detach_mstApplicants1));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceType", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string ResidenceType
-		{
-			get
-			{
-				return this._ResidenceType;
-			}
-			set
-			{
-				if ((this._ResidenceType != value))
-				{
-					this.OnResidenceTypeChanging(value);
-					this.SendPropertyChanging();
-					this._ResidenceType = value;
-					this.SendPropertyChanged("ResidenceType");
-					this.OnResidenceTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantResidenceType_mstApplicant", Storage="_mstApplicants", ThisKey="Id", OtherKey="ResidenceTypeId")]
-		public EntitySet<mstApplicant> mstApplicants
-		{
-			get
-			{
-				return this._mstApplicants;
-			}
-			set
-			{
-				this._mstApplicants.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicantResidenceType_mstApplicant1", Storage="_mstApplicants1", ThisKey="Id", OtherKey="LandResidenceTypeId")]
-		public EntitySet<mstApplicant> mstApplicants1
-		{
-			get
-			{
-				return this._mstApplicants1;
-			}
-			set
-			{
-				this._mstApplicants1.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_mstApplicants(mstApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicantResidenceType = this;
-		}
-		
-		private void detach_mstApplicants(mstApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicantResidenceType = null;
-		}
-		
-		private void attach_mstApplicants1(mstApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicantResidenceType1 = this;
-		}
-		
-		private void detach_mstApplicants1(mstApplicant entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicantResidenceType1 = null;
 		}
 	}
 	
@@ -4576,6 +4308,1765 @@ namespace Lending.Data
 		{
 			this.SendPropertyChanging();
 			entity.mstArea = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCivilStatus")]
+	public partial class mstCivilStatus : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _CivilStatus;
+		
+		private EntitySet<mstApplicant> _mstApplicants;
+		
+		private EntityRef<mstCivilStatus> _mstCivilStatus2;
+		
+		private EntitySet<mstCoMakerStatement> _mstCoMakerStatements;
+		
+		private EntityRef<mstCivilStatus> _mstCivilStatus1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCivilStatusChanging(string value);
+    partial void OnCivilStatusChanged();
+    #endregion
+		
+		public mstCivilStatus()
+		{
+			this._mstApplicants = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants), new Action<mstApplicant>(this.detach_mstApplicants));
+			this._mstCivilStatus2 = default(EntityRef<mstCivilStatus>);
+			this._mstCoMakerStatements = new EntitySet<mstCoMakerStatement>(new Action<mstCoMakerStatement>(this.attach_mstCoMakerStatements), new Action<mstCoMakerStatement>(this.detach_mstCoMakerStatements));
+			this._mstCivilStatus1 = default(EntityRef<mstCivilStatus>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					if (this._mstCivilStatus1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CivilStatus", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string CivilStatus
+		{
+			get
+			{
+				return this._CivilStatus;
+			}
+			set
+			{
+				if ((this._CivilStatus != value))
+				{
+					this.OnCivilStatusChanging(value);
+					this.SendPropertyChanging();
+					this._CivilStatus = value;
+					this.SendPropertyChanged("CivilStatus");
+					this.OnCivilStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCivilStatus_mstApplicant", Storage="_mstApplicants", ThisKey="Id", OtherKey="CivilStatusId")]
+		public EntitySet<mstApplicant> mstApplicants
+		{
+			get
+			{
+				return this._mstApplicants;
+			}
+			set
+			{
+				this._mstApplicants.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCivilStatus_mstCivilStatus", Storage="_mstCivilStatus2", ThisKey="Id", OtherKey="Id", IsUnique=true, IsForeignKey=false)]
+		public mstCivilStatus mstCivilStatus2
+		{
+			get
+			{
+				return this._mstCivilStatus2.Entity;
+			}
+			set
+			{
+				mstCivilStatus previousValue = this._mstCivilStatus2.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCivilStatus2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCivilStatus2.Entity = null;
+						previousValue.mstCivilStatus1 = null;
+					}
+					this._mstCivilStatus2.Entity = value;
+					if ((value != null))
+					{
+						value.mstCivilStatus1 = this;
+					}
+					this.SendPropertyChanged("mstCivilStatus2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCivilStatus_mstCoMakerStatement", Storage="_mstCoMakerStatements", ThisKey="Id", OtherKey="CivilStatusId")]
+		public EntitySet<mstCoMakerStatement> mstCoMakerStatements
+		{
+			get
+			{
+				return this._mstCoMakerStatements;
+			}
+			set
+			{
+				this._mstCoMakerStatements.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCivilStatus_mstCivilStatus", Storage="_mstCivilStatus1", ThisKey="Id", OtherKey="Id", IsForeignKey=true)]
+		public mstCivilStatus mstCivilStatus1
+		{
+			get
+			{
+				return this._mstCivilStatus1.Entity;
+			}
+			set
+			{
+				mstCivilStatus previousValue = this._mstCivilStatus1.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCivilStatus1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCivilStatus1.Entity = null;
+						previousValue.mstCivilStatus2 = null;
+					}
+					this._mstCivilStatus1.Entity = value;
+					if ((value != null))
+					{
+						value.mstCivilStatus2 = this;
+						this._Id = value.Id;
+					}
+					else
+					{
+						this._Id = default(int);
+					}
+					this.SendPropertyChanged("mstCivilStatus1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_mstApplicants(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCivilStatus = this;
+		}
+		
+		private void detach_mstApplicants(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCivilStatus = null;
+		}
+		
+		private void attach_mstCoMakerStatements(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCivilStatus = this;
+		}
+		
+		private void detach_mstCoMakerStatements(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCivilStatus = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCoMakerStatement")]
+	public partial class mstCoMakerStatement : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _ApplicantId;
+		
+		private string _FullName;
+		
+		private System.DateTime _BirthDate;
+		
+		private int _CivilStatusId;
+		
+		private string _CityAddress;
+		
+		private string _ProvinceAddress;
+		
+		private int _ResidenceTypeId;
+		
+		private decimal _ResidenceMonthlyRentAmount;
+		
+		private int _LandResidenceTypeId;
+		
+		private decimal _LandResidenceMonthlyRentAmount;
+		
+		private string _LengthOfStay;
+		
+		private string _BusinessAddress;
+		
+		private string _BusinessKaratulaName;
+		
+		private string _BusinessTelephoneNumber;
+		
+		private string _BusinessYear;
+		
+		private string _BusinessMerchandise;
+		
+		private decimal _BusinessStockValues;
+		
+		private decimal _BusinessBeginningCapital;
+		
+		private string _BusinessLowSalesPeriod;
+		
+		private decimal _BusinessLowestDailySales;
+		
+		private decimal _BusinessAverageDailySales;
+		
+		private string _EmployedCompany;
+		
+		private string _EmployedCompanyAddress;
+		
+		private string _EmployedPositionOccupied;
+		
+		private string _EmployedServiceLength;
+		
+		private string _EmployedTelephoneNumber;
+		
+		private string _SpouseFullName;
+		
+		private string _SpouseEmployerBusiness;
+		
+		private string _SpouseEmployerBusinessAddress;
+		
+		private string _SpouseBusinessTelephoneNumber;
+		
+		private string _SpousePositionOccupied;
+		
+		private decimal _SpouseMonthlySalary;
+		
+		private string _SpouseLengthOfService;
+		
+		private string _NumberOfChildren;
+		
+		private string _Studying;
+		
+		private string _Schools;
+		
+		private EntitySet<mstCoMakerStatementApplianceOwned> _mstCoMakerStatementApplianceOwneds;
+		
+		private EntitySet<mstCoMakerStatementRealPropertiesOwned> _mstCoMakerStatementRealPropertiesOwneds;
+		
+		private EntityRef<mstApplicant> _mstApplicant;
+		
+		private EntityRef<mstCivilStatus> _mstCivilStatus;
+		
+		private EntityRef<mstResidenceType> _mstResidenceType;
+		
+		private EntityRef<mstResidenceType> _mstResidenceType1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnApplicantIdChanging(int value);
+    partial void OnApplicantIdChanged();
+    partial void OnFullNameChanging(string value);
+    partial void OnFullNameChanged();
+    partial void OnBirthDateChanging(System.DateTime value);
+    partial void OnBirthDateChanged();
+    partial void OnCivilStatusIdChanging(int value);
+    partial void OnCivilStatusIdChanged();
+    partial void OnCityAddressChanging(string value);
+    partial void OnCityAddressChanged();
+    partial void OnProvinceAddressChanging(string value);
+    partial void OnProvinceAddressChanged();
+    partial void OnResidenceTypeIdChanging(int value);
+    partial void OnResidenceTypeIdChanged();
+    partial void OnResidenceMonthlyRentAmountChanging(decimal value);
+    partial void OnResidenceMonthlyRentAmountChanged();
+    partial void OnLandResidenceTypeIdChanging(int value);
+    partial void OnLandResidenceTypeIdChanged();
+    partial void OnLandResidenceMonthlyRentAmountChanging(decimal value);
+    partial void OnLandResidenceMonthlyRentAmountChanged();
+    partial void OnLengthOfStayChanging(string value);
+    partial void OnLengthOfStayChanged();
+    partial void OnBusinessAddressChanging(string value);
+    partial void OnBusinessAddressChanged();
+    partial void OnBusinessKaratulaNameChanging(string value);
+    partial void OnBusinessKaratulaNameChanged();
+    partial void OnBusinessTelephoneNumberChanging(string value);
+    partial void OnBusinessTelephoneNumberChanged();
+    partial void OnBusinessYearChanging(string value);
+    partial void OnBusinessYearChanged();
+    partial void OnBusinessMerchandiseChanging(string value);
+    partial void OnBusinessMerchandiseChanged();
+    partial void OnBusinessStockValuesChanging(decimal value);
+    partial void OnBusinessStockValuesChanged();
+    partial void OnBusinessBeginningCapitalChanging(decimal value);
+    partial void OnBusinessBeginningCapitalChanged();
+    partial void OnBusinessLowSalesPeriodChanging(string value);
+    partial void OnBusinessLowSalesPeriodChanged();
+    partial void OnBusinessLowestDailySalesChanging(decimal value);
+    partial void OnBusinessLowestDailySalesChanged();
+    partial void OnBusinessAverageDailySalesChanging(decimal value);
+    partial void OnBusinessAverageDailySalesChanged();
+    partial void OnEmployedCompanyChanging(string value);
+    partial void OnEmployedCompanyChanged();
+    partial void OnEmployedCompanyAddressChanging(string value);
+    partial void OnEmployedCompanyAddressChanged();
+    partial void OnEmployedPositionOccupiedChanging(string value);
+    partial void OnEmployedPositionOccupiedChanged();
+    partial void OnEmployedServiceLengthChanging(string value);
+    partial void OnEmployedServiceLengthChanged();
+    partial void OnEmployedTelephoneNumberChanging(string value);
+    partial void OnEmployedTelephoneNumberChanged();
+    partial void OnSpouseFullNameChanging(string value);
+    partial void OnSpouseFullNameChanged();
+    partial void OnSpouseEmployerBusinessChanging(string value);
+    partial void OnSpouseEmployerBusinessChanged();
+    partial void OnSpouseEmployerBusinessAddressChanging(string value);
+    partial void OnSpouseEmployerBusinessAddressChanged();
+    partial void OnSpouseBusinessTelephoneNumberChanging(string value);
+    partial void OnSpouseBusinessTelephoneNumberChanged();
+    partial void OnSpousePositionOccupiedChanging(string value);
+    partial void OnSpousePositionOccupiedChanged();
+    partial void OnSpouseMonthlySalaryChanging(decimal value);
+    partial void OnSpouseMonthlySalaryChanged();
+    partial void OnSpouseLengthOfServiceChanging(string value);
+    partial void OnSpouseLengthOfServiceChanged();
+    partial void OnNumberOfChildrenChanging(string value);
+    partial void OnNumberOfChildrenChanged();
+    partial void OnStudyingChanging(string value);
+    partial void OnStudyingChanged();
+    partial void OnSchoolsChanging(string value);
+    partial void OnSchoolsChanged();
+    #endregion
+		
+		public mstCoMakerStatement()
+		{
+			this._mstCoMakerStatementApplianceOwneds = new EntitySet<mstCoMakerStatementApplianceOwned>(new Action<mstCoMakerStatementApplianceOwned>(this.attach_mstCoMakerStatementApplianceOwneds), new Action<mstCoMakerStatementApplianceOwned>(this.detach_mstCoMakerStatementApplianceOwneds));
+			this._mstCoMakerStatementRealPropertiesOwneds = new EntitySet<mstCoMakerStatementRealPropertiesOwned>(new Action<mstCoMakerStatementRealPropertiesOwned>(this.attach_mstCoMakerStatementRealPropertiesOwneds), new Action<mstCoMakerStatementRealPropertiesOwned>(this.detach_mstCoMakerStatementRealPropertiesOwneds));
+			this._mstApplicant = default(EntityRef<mstApplicant>);
+			this._mstCivilStatus = default(EntityRef<mstCivilStatus>);
+			this._mstResidenceType = default(EntityRef<mstResidenceType>);
+			this._mstResidenceType1 = default(EntityRef<mstResidenceType>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantId", DbType="Int NOT NULL")]
+		public int ApplicantId
+		{
+			get
+			{
+				return this._ApplicantId;
+			}
+			set
+			{
+				if ((this._ApplicantId != value))
+				{
+					if (this._mstApplicant.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnApplicantIdChanging(value);
+					this.SendPropertyChanging();
+					this._ApplicantId = value;
+					this.SendPropertyChanged("ApplicantId");
+					this.OnApplicantIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string FullName
+		{
+			get
+			{
+				return this._FullName;
+			}
+			set
+			{
+				if ((this._FullName != value))
+				{
+					this.OnFullNameChanging(value);
+					this.SendPropertyChanging();
+					this._FullName = value;
+					this.SendPropertyChanged("FullName");
+					this.OnFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BirthDate", DbType="DateTime NOT NULL")]
+		public System.DateTime BirthDate
+		{
+			get
+			{
+				return this._BirthDate;
+			}
+			set
+			{
+				if ((this._BirthDate != value))
+				{
+					this.OnBirthDateChanging(value);
+					this.SendPropertyChanging();
+					this._BirthDate = value;
+					this.SendPropertyChanged("BirthDate");
+					this.OnBirthDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CivilStatusId", DbType="Int NOT NULL")]
+		public int CivilStatusId
+		{
+			get
+			{
+				return this._CivilStatusId;
+			}
+			set
+			{
+				if ((this._CivilStatusId != value))
+				{
+					if (this._mstCivilStatus.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCivilStatusIdChanging(value);
+					this.SendPropertyChanging();
+					this._CivilStatusId = value;
+					this.SendPropertyChanged("CivilStatusId");
+					this.OnCivilStatusIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CityAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string CityAddress
+		{
+			get
+			{
+				return this._CityAddress;
+			}
+			set
+			{
+				if ((this._CityAddress != value))
+				{
+					this.OnCityAddressChanging(value);
+					this.SendPropertyChanging();
+					this._CityAddress = value;
+					this.SendPropertyChanged("CityAddress");
+					this.OnCityAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProvinceAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string ProvinceAddress
+		{
+			get
+			{
+				return this._ProvinceAddress;
+			}
+			set
+			{
+				if ((this._ProvinceAddress != value))
+				{
+					this.OnProvinceAddressChanging(value);
+					this.SendPropertyChanging();
+					this._ProvinceAddress = value;
+					this.SendPropertyChanged("ProvinceAddress");
+					this.OnProvinceAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceTypeId", DbType="Int NOT NULL")]
+		public int ResidenceTypeId
+		{
+			get
+			{
+				return this._ResidenceTypeId;
+			}
+			set
+			{
+				if ((this._ResidenceTypeId != value))
+				{
+					if (this._mstResidenceType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnResidenceTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._ResidenceTypeId = value;
+					this.SendPropertyChanged("ResidenceTypeId");
+					this.OnResidenceTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceMonthlyRentAmount", DbType="Decimal(18,0) NOT NULL")]
+		public decimal ResidenceMonthlyRentAmount
+		{
+			get
+			{
+				return this._ResidenceMonthlyRentAmount;
+			}
+			set
+			{
+				if ((this._ResidenceMonthlyRentAmount != value))
+				{
+					this.OnResidenceMonthlyRentAmountChanging(value);
+					this.SendPropertyChanging();
+					this._ResidenceMonthlyRentAmount = value;
+					this.SendPropertyChanged("ResidenceMonthlyRentAmount");
+					this.OnResidenceMonthlyRentAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LandResidenceTypeId", DbType="Int NOT NULL")]
+		public int LandResidenceTypeId
+		{
+			get
+			{
+				return this._LandResidenceTypeId;
+			}
+			set
+			{
+				if ((this._LandResidenceTypeId != value))
+				{
+					if (this._mstResidenceType1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLandResidenceTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._LandResidenceTypeId = value;
+					this.SendPropertyChanged("LandResidenceTypeId");
+					this.OnLandResidenceTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LandResidenceMonthlyRentAmount", DbType="Decimal(18,0) NOT NULL")]
+		public decimal LandResidenceMonthlyRentAmount
+		{
+			get
+			{
+				return this._LandResidenceMonthlyRentAmount;
+			}
+			set
+			{
+				if ((this._LandResidenceMonthlyRentAmount != value))
+				{
+					this.OnLandResidenceMonthlyRentAmountChanging(value);
+					this.SendPropertyChanging();
+					this._LandResidenceMonthlyRentAmount = value;
+					this.SendPropertyChanged("LandResidenceMonthlyRentAmount");
+					this.OnLandResidenceMonthlyRentAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LengthOfStay", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string LengthOfStay
+		{
+			get
+			{
+				return this._LengthOfStay;
+			}
+			set
+			{
+				if ((this._LengthOfStay != value))
+				{
+					this.OnLengthOfStayChanging(value);
+					this.SendPropertyChanging();
+					this._LengthOfStay = value;
+					this.SendPropertyChanged("LengthOfStay");
+					this.OnLengthOfStayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessAddress
+		{
+			get
+			{
+				return this._BusinessAddress;
+			}
+			set
+			{
+				if ((this._BusinessAddress != value))
+				{
+					this.OnBusinessAddressChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessAddress = value;
+					this.SendPropertyChanged("BusinessAddress");
+					this.OnBusinessAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessKaratulaName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessKaratulaName
+		{
+			get
+			{
+				return this._BusinessKaratulaName;
+			}
+			set
+			{
+				if ((this._BusinessKaratulaName != value))
+				{
+					this.OnBusinessKaratulaNameChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessKaratulaName = value;
+					this.SendPropertyChanged("BusinessKaratulaName");
+					this.OnBusinessKaratulaNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessTelephoneNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string BusinessTelephoneNumber
+		{
+			get
+			{
+				return this._BusinessTelephoneNumber;
+			}
+			set
+			{
+				if ((this._BusinessTelephoneNumber != value))
+				{
+					this.OnBusinessTelephoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessTelephoneNumber = value;
+					this.SendPropertyChanged("BusinessTelephoneNumber");
+					this.OnBusinessTelephoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessYear", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string BusinessYear
+		{
+			get
+			{
+				return this._BusinessYear;
+			}
+			set
+			{
+				if ((this._BusinessYear != value))
+				{
+					this.OnBusinessYearChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessYear = value;
+					this.SendPropertyChanged("BusinessYear");
+					this.OnBusinessYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessMerchandise", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessMerchandise
+		{
+			get
+			{
+				return this._BusinessMerchandise;
+			}
+			set
+			{
+				if ((this._BusinessMerchandise != value))
+				{
+					this.OnBusinessMerchandiseChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessMerchandise = value;
+					this.SendPropertyChanged("BusinessMerchandise");
+					this.OnBusinessMerchandiseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessStockValues", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessStockValues
+		{
+			get
+			{
+				return this._BusinessStockValues;
+			}
+			set
+			{
+				if ((this._BusinessStockValues != value))
+				{
+					this.OnBusinessStockValuesChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessStockValues = value;
+					this.SendPropertyChanged("BusinessStockValues");
+					this.OnBusinessStockValuesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessBeginningCapital", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessBeginningCapital
+		{
+			get
+			{
+				return this._BusinessBeginningCapital;
+			}
+			set
+			{
+				if ((this._BusinessBeginningCapital != value))
+				{
+					this.OnBusinessBeginningCapitalChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessBeginningCapital = value;
+					this.SendPropertyChanged("BusinessBeginningCapital");
+					this.OnBusinessBeginningCapitalChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowSalesPeriod", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string BusinessLowSalesPeriod
+		{
+			get
+			{
+				return this._BusinessLowSalesPeriod;
+			}
+			set
+			{
+				if ((this._BusinessLowSalesPeriod != value))
+				{
+					this.OnBusinessLowSalesPeriodChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessLowSalesPeriod = value;
+					this.SendPropertyChanged("BusinessLowSalesPeriod");
+					this.OnBusinessLowSalesPeriodChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowestDailySales", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessLowestDailySales
+		{
+			get
+			{
+				return this._BusinessLowestDailySales;
+			}
+			set
+			{
+				if ((this._BusinessLowestDailySales != value))
+				{
+					this.OnBusinessLowestDailySalesChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessLowestDailySales = value;
+					this.SendPropertyChanged("BusinessLowestDailySales");
+					this.OnBusinessLowestDailySalesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAverageDailySales", DbType="Decimal(18,0) NOT NULL")]
+		public decimal BusinessAverageDailySales
+		{
+			get
+			{
+				return this._BusinessAverageDailySales;
+			}
+			set
+			{
+				if ((this._BusinessAverageDailySales != value))
+				{
+					this.OnBusinessAverageDailySalesChanging(value);
+					this.SendPropertyChanging();
+					this._BusinessAverageDailySales = value;
+					this.SendPropertyChanged("BusinessAverageDailySales");
+					this.OnBusinessAverageDailySalesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedCompany", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string EmployedCompany
+		{
+			get
+			{
+				return this._EmployedCompany;
+			}
+			set
+			{
+				if ((this._EmployedCompany != value))
+				{
+					this.OnEmployedCompanyChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedCompany = value;
+					this.SendPropertyChanged("EmployedCompany");
+					this.OnEmployedCompanyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedCompanyAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string EmployedCompanyAddress
+		{
+			get
+			{
+				return this._EmployedCompanyAddress;
+			}
+			set
+			{
+				if ((this._EmployedCompanyAddress != value))
+				{
+					this.OnEmployedCompanyAddressChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedCompanyAddress = value;
+					this.SendPropertyChanged("EmployedCompanyAddress");
+					this.OnEmployedCompanyAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedPositionOccupied", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string EmployedPositionOccupied
+		{
+			get
+			{
+				return this._EmployedPositionOccupied;
+			}
+			set
+			{
+				if ((this._EmployedPositionOccupied != value))
+				{
+					this.OnEmployedPositionOccupiedChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedPositionOccupied = value;
+					this.SendPropertyChanged("EmployedPositionOccupied");
+					this.OnEmployedPositionOccupiedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedServiceLength", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string EmployedServiceLength
+		{
+			get
+			{
+				return this._EmployedServiceLength;
+			}
+			set
+			{
+				if ((this._EmployedServiceLength != value))
+				{
+					this.OnEmployedServiceLengthChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedServiceLength = value;
+					this.SendPropertyChanged("EmployedServiceLength");
+					this.OnEmployedServiceLengthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmployedTelephoneNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string EmployedTelephoneNumber
+		{
+			get
+			{
+				return this._EmployedTelephoneNumber;
+			}
+			set
+			{
+				if ((this._EmployedTelephoneNumber != value))
+				{
+					this.OnEmployedTelephoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._EmployedTelephoneNumber = value;
+					this.SendPropertyChanged("EmployedTelephoneNumber");
+					this.OnEmployedTelephoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseFullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseFullName
+		{
+			get
+			{
+				return this._SpouseFullName;
+			}
+			set
+			{
+				if ((this._SpouseFullName != value))
+				{
+					this.OnSpouseFullNameChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseFullName = value;
+					this.SendPropertyChanged("SpouseFullName");
+					this.OnSpouseFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployerBusiness", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseEmployerBusiness
+		{
+			get
+			{
+				return this._SpouseEmployerBusiness;
+			}
+			set
+			{
+				if ((this._SpouseEmployerBusiness != value))
+				{
+					this.OnSpouseEmployerBusinessChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseEmployerBusiness = value;
+					this.SendPropertyChanged("SpouseEmployerBusiness");
+					this.OnSpouseEmployerBusinessChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseEmployerBusinessAddress", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpouseEmployerBusinessAddress
+		{
+			get
+			{
+				return this._SpouseEmployerBusinessAddress;
+			}
+			set
+			{
+				if ((this._SpouseEmployerBusinessAddress != value))
+				{
+					this.OnSpouseEmployerBusinessAddressChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseEmployerBusinessAddress = value;
+					this.SendPropertyChanged("SpouseEmployerBusinessAddress");
+					this.OnSpouseEmployerBusinessAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseBusinessTelephoneNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string SpouseBusinessTelephoneNumber
+		{
+			get
+			{
+				return this._SpouseBusinessTelephoneNumber;
+			}
+			set
+			{
+				if ((this._SpouseBusinessTelephoneNumber != value))
+				{
+					this.OnSpouseBusinessTelephoneNumberChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseBusinessTelephoneNumber = value;
+					this.SendPropertyChanged("SpouseBusinessTelephoneNumber");
+					this.OnSpouseBusinessTelephoneNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpousePositionOccupied", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string SpousePositionOccupied
+		{
+			get
+			{
+				return this._SpousePositionOccupied;
+			}
+			set
+			{
+				if ((this._SpousePositionOccupied != value))
+				{
+					this.OnSpousePositionOccupiedChanging(value);
+					this.SendPropertyChanging();
+					this._SpousePositionOccupied = value;
+					this.SendPropertyChanged("SpousePositionOccupied");
+					this.OnSpousePositionOccupiedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMonthlySalary", DbType="Decimal(18,0) NOT NULL")]
+		public decimal SpouseMonthlySalary
+		{
+			get
+			{
+				return this._SpouseMonthlySalary;
+			}
+			set
+			{
+				if ((this._SpouseMonthlySalary != value))
+				{
+					this.OnSpouseMonthlySalaryChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseMonthlySalary = value;
+					this.SendPropertyChanged("SpouseMonthlySalary");
+					this.OnSpouseMonthlySalaryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseLengthOfService", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string SpouseLengthOfService
+		{
+			get
+			{
+				return this._SpouseLengthOfService;
+			}
+			set
+			{
+				if ((this._SpouseLengthOfService != value))
+				{
+					this.OnSpouseLengthOfServiceChanging(value);
+					this.SendPropertyChanging();
+					this._SpouseLengthOfService = value;
+					this.SendPropertyChanged("SpouseLengthOfService");
+					this.OnSpouseLengthOfServiceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NumberOfChildren", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string NumberOfChildren
+		{
+			get
+			{
+				return this._NumberOfChildren;
+			}
+			set
+			{
+				if ((this._NumberOfChildren != value))
+				{
+					this.OnNumberOfChildrenChanging(value);
+					this.SendPropertyChanging();
+					this._NumberOfChildren = value;
+					this.SendPropertyChanged("NumberOfChildren");
+					this.OnNumberOfChildrenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Studying", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Studying
+		{
+			get
+			{
+				return this._Studying;
+			}
+			set
+			{
+				if ((this._Studying != value))
+				{
+					this.OnStudyingChanging(value);
+					this.SendPropertyChanging();
+					this._Studying = value;
+					this.SendPropertyChanged("Studying");
+					this.OnStudyingChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Schools", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Schools
+		{
+			get
+			{
+				return this._Schools;
+			}
+			set
+			{
+				if ((this._Schools != value))
+				{
+					this.OnSchoolsChanging(value);
+					this.SendPropertyChanging();
+					this._Schools = value;
+					this.SendPropertyChanged("Schools");
+					this.OnSchoolsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementApplianceOwned", Storage="_mstCoMakerStatementApplianceOwneds", ThisKey="Id", OtherKey="CoMakerId")]
+		public EntitySet<mstCoMakerStatementApplianceOwned> mstCoMakerStatementApplianceOwneds
+		{
+			get
+			{
+				return this._mstCoMakerStatementApplianceOwneds;
+			}
+			set
+			{
+				this._mstCoMakerStatementApplianceOwneds.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementRealPropertiesOwned", Storage="_mstCoMakerStatementRealPropertiesOwneds", ThisKey="Id", OtherKey="CoMakerId")]
+		public EntitySet<mstCoMakerStatementRealPropertiesOwned> mstCoMakerStatementRealPropertiesOwneds
+		{
+			get
+			{
+				return this._mstCoMakerStatementRealPropertiesOwneds;
+			}
+			set
+			{
+				this._mstCoMakerStatementRealPropertiesOwneds.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstCoMakerStatement", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
+		public mstApplicant mstApplicant
+		{
+			get
+			{
+				return this._mstApplicant.Entity;
+			}
+			set
+			{
+				mstApplicant previousValue = this._mstApplicant.Entity;
+				if (((previousValue != value) 
+							|| (this._mstApplicant.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstApplicant.Entity = null;
+						previousValue.mstCoMakerStatements.Remove(this);
+					}
+					this._mstApplicant.Entity = value;
+					if ((value != null))
+					{
+						value.mstCoMakerStatements.Add(this);
+						this._ApplicantId = value.Id;
+					}
+					else
+					{
+						this._ApplicantId = default(int);
+					}
+					this.SendPropertyChanged("mstApplicant");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCivilStatus_mstCoMakerStatement", Storage="_mstCivilStatus", ThisKey="CivilStatusId", OtherKey="Id", IsForeignKey=true)]
+		public mstCivilStatus mstCivilStatus
+		{
+			get
+			{
+				return this._mstCivilStatus.Entity;
+			}
+			set
+			{
+				mstCivilStatus previousValue = this._mstCivilStatus.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCivilStatus.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCivilStatus.Entity = null;
+						previousValue.mstCoMakerStatements.Remove(this);
+					}
+					this._mstCivilStatus.Entity = value;
+					if ((value != null))
+					{
+						value.mstCoMakerStatements.Add(this);
+						this._CivilStatusId = value.Id;
+					}
+					else
+					{
+						this._CivilStatusId = default(int);
+					}
+					this.SendPropertyChanged("mstCivilStatus");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstCoMakerStatement", Storage="_mstResidenceType", ThisKey="ResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
+		public mstResidenceType mstResidenceType
+		{
+			get
+			{
+				return this._mstResidenceType.Entity;
+			}
+			set
+			{
+				mstResidenceType previousValue = this._mstResidenceType.Entity;
+				if (((previousValue != value) 
+							|| (this._mstResidenceType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstResidenceType.Entity = null;
+						previousValue.mstCoMakerStatements.Remove(this);
+					}
+					this._mstResidenceType.Entity = value;
+					if ((value != null))
+					{
+						value.mstCoMakerStatements.Add(this);
+						this._ResidenceTypeId = value.Id;
+					}
+					else
+					{
+						this._ResidenceTypeId = default(int);
+					}
+					this.SendPropertyChanged("mstResidenceType");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstCoMakerStatement1", Storage="_mstResidenceType1", ThisKey="LandResidenceTypeId", OtherKey="Id", IsForeignKey=true)]
+		public mstResidenceType mstResidenceType1
+		{
+			get
+			{
+				return this._mstResidenceType1.Entity;
+			}
+			set
+			{
+				mstResidenceType previousValue = this._mstResidenceType1.Entity;
+				if (((previousValue != value) 
+							|| (this._mstResidenceType1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstResidenceType1.Entity = null;
+						previousValue.mstCoMakerStatements1.Remove(this);
+					}
+					this._mstResidenceType1.Entity = value;
+					if ((value != null))
+					{
+						value.mstCoMakerStatements1.Add(this);
+						this._LandResidenceTypeId = value.Id;
+					}
+					else
+					{
+						this._LandResidenceTypeId = default(int);
+					}
+					this.SendPropertyChanged("mstResidenceType1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_mstCoMakerStatementApplianceOwneds(mstCoMakerStatementApplianceOwned entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCoMakerStatement = this;
+		}
+		
+		private void detach_mstCoMakerStatementApplianceOwneds(mstCoMakerStatementApplianceOwned entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCoMakerStatement = null;
+		}
+		
+		private void attach_mstCoMakerStatementRealPropertiesOwneds(mstCoMakerStatementRealPropertiesOwned entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCoMakerStatement = this;
+		}
+		
+		private void detach_mstCoMakerStatementRealPropertiesOwneds(mstCoMakerStatementRealPropertiesOwned entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCoMakerStatement = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCoMakerStatementApplianceOwned")]
+	public partial class mstCoMakerStatementApplianceOwned : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _CoMakerId;
+		
+		private string _ApplianceBrand;
+		
+		private string _PresentValue;
+		
+		private EntityRef<mstCoMakerStatement> _mstCoMakerStatement;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCoMakerIdChanging(int value);
+    partial void OnCoMakerIdChanged();
+    partial void OnApplianceBrandChanging(string value);
+    partial void OnApplianceBrandChanged();
+    partial void OnPresentValueChanging(string value);
+    partial void OnPresentValueChanged();
+    #endregion
+		
+		public mstCoMakerStatementApplianceOwned()
+		{
+			this._mstCoMakerStatement = default(EntityRef<mstCoMakerStatement>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoMakerId", DbType="Int NOT NULL")]
+		public int CoMakerId
+		{
+			get
+			{
+				return this._CoMakerId;
+			}
+			set
+			{
+				if ((this._CoMakerId != value))
+				{
+					if (this._mstCoMakerStatement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCoMakerIdChanging(value);
+					this.SendPropertyChanging();
+					this._CoMakerId = value;
+					this.SendPropertyChanged("CoMakerId");
+					this.OnCoMakerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplianceBrand", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string ApplianceBrand
+		{
+			get
+			{
+				return this._ApplianceBrand;
+			}
+			set
+			{
+				if ((this._ApplianceBrand != value))
+				{
+					this.OnApplianceBrandChanging(value);
+					this.SendPropertyChanging();
+					this._ApplianceBrand = value;
+					this.SendPropertyChanged("ApplianceBrand");
+					this.OnApplianceBrandChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PresentValue", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string PresentValue
+		{
+			get
+			{
+				return this._PresentValue;
+			}
+			set
+			{
+				if ((this._PresentValue != value))
+				{
+					this.OnPresentValueChanging(value);
+					this.SendPropertyChanging();
+					this._PresentValue = value;
+					this.SendPropertyChanged("PresentValue");
+					this.OnPresentValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementApplianceOwned", Storage="_mstCoMakerStatement", ThisKey="CoMakerId", OtherKey="Id", IsForeignKey=true)]
+		public mstCoMakerStatement mstCoMakerStatement
+		{
+			get
+			{
+				return this._mstCoMakerStatement.Entity;
+			}
+			set
+			{
+				mstCoMakerStatement previousValue = this._mstCoMakerStatement.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCoMakerStatement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCoMakerStatement.Entity = null;
+						previousValue.mstCoMakerStatementApplianceOwneds.Remove(this);
+					}
+					this._mstCoMakerStatement.Entity = value;
+					if ((value != null))
+					{
+						value.mstCoMakerStatementApplianceOwneds.Add(this);
+						this._CoMakerId = value.Id;
+					}
+					else
+					{
+						this._CoMakerId = default(int);
+					}
+					this.SendPropertyChanged("mstCoMakerStatement");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCoMakerStatementRealPropertiesOwned")]
+	public partial class mstCoMakerStatementRealPropertiesOwned : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _CoMakerId;
+		
+		private string _Real;
+		
+		private string _Location;
+		
+		private string _PresentValue;
+		
+		private string _EcumberedTo;
+		
+		private EntityRef<mstCoMakerStatement> _mstCoMakerStatement;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCoMakerIdChanging(int value);
+    partial void OnCoMakerIdChanged();
+    partial void OnRealChanging(string value);
+    partial void OnRealChanged();
+    partial void OnLocationChanging(string value);
+    partial void OnLocationChanged();
+    partial void OnPresentValueChanging(string value);
+    partial void OnPresentValueChanged();
+    partial void OnEcumberedToChanging(string value);
+    partial void OnEcumberedToChanged();
+    #endregion
+		
+		public mstCoMakerStatementRealPropertiesOwned()
+		{
+			this._mstCoMakerStatement = default(EntityRef<mstCoMakerStatement>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoMakerId", DbType="Int NOT NULL")]
+		public int CoMakerId
+		{
+			get
+			{
+				return this._CoMakerId;
+			}
+			set
+			{
+				if ((this._CoMakerId != value))
+				{
+					if (this._mstCoMakerStatement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCoMakerIdChanging(value);
+					this.SendPropertyChanging();
+					this._CoMakerId = value;
+					this.SendPropertyChanged("CoMakerId");
+					this.OnCoMakerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Real", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string Real
+		{
+			get
+			{
+				return this._Real;
+			}
+			set
+			{
+				if ((this._Real != value))
+				{
+					this.OnRealChanging(value);
+					this.SendPropertyChanging();
+					this._Real = value;
+					this.SendPropertyChanged("Real");
+					this.OnRealChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string Location
+		{
+			get
+			{
+				return this._Location;
+			}
+			set
+			{
+				if ((this._Location != value))
+				{
+					this.OnLocationChanging(value);
+					this.SendPropertyChanging();
+					this._Location = value;
+					this.SendPropertyChanged("Location");
+					this.OnLocationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PresentValue", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string PresentValue
+		{
+			get
+			{
+				return this._PresentValue;
+			}
+			set
+			{
+				if ((this._PresentValue != value))
+				{
+					this.OnPresentValueChanging(value);
+					this.SendPropertyChanging();
+					this._PresentValue = value;
+					this.SendPropertyChanged("PresentValue");
+					this.OnPresentValueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EcumberedTo", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string EcumberedTo
+		{
+			get
+			{
+				return this._EcumberedTo;
+			}
+			set
+			{
+				if ((this._EcumberedTo != value))
+				{
+					this.OnEcumberedToChanging(value);
+					this.SendPropertyChanging();
+					this._EcumberedTo = value;
+					this.SendPropertyChanged("EcumberedTo");
+					this.OnEcumberedToChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementRealPropertiesOwned", Storage="_mstCoMakerStatement", ThisKey="CoMakerId", OtherKey="Id", IsForeignKey=true)]
+		public mstCoMakerStatement mstCoMakerStatement
+		{
+			get
+			{
+				return this._mstCoMakerStatement.Entity;
+			}
+			set
+			{
+				mstCoMakerStatement previousValue = this._mstCoMakerStatement.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCoMakerStatement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCoMakerStatement.Entity = null;
+						previousValue.mstCoMakerStatementRealPropertiesOwneds.Remove(this);
+					}
+					this._mstCoMakerStatement.Entity = value;
+					if ((value != null))
+					{
+						value.mstCoMakerStatementRealPropertiesOwneds.Add(this);
+						this._CoMakerId = value.Id;
+					}
+					else
+					{
+						this._CoMakerId = default(int);
+					}
+					this.SendPropertyChanged("mstCoMakerStatement");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -5513,6 +7004,204 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstResidenceType")]
+	public partial class mstResidenceType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _ResidenceType;
+		
+		private EntitySet<mstApplicant> _mstApplicants;
+		
+		private EntitySet<mstApplicant> _mstApplicants1;
+		
+		private EntitySet<mstCoMakerStatement> _mstCoMakerStatements;
+		
+		private EntitySet<mstCoMakerStatement> _mstCoMakerStatements1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnResidenceTypeChanging(string value);
+    partial void OnResidenceTypeChanged();
+    #endregion
+		
+		public mstResidenceType()
+		{
+			this._mstApplicants = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants), new Action<mstApplicant>(this.detach_mstApplicants));
+			this._mstApplicants1 = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants1), new Action<mstApplicant>(this.detach_mstApplicants1));
+			this._mstCoMakerStatements = new EntitySet<mstCoMakerStatement>(new Action<mstCoMakerStatement>(this.attach_mstCoMakerStatements), new Action<mstCoMakerStatement>(this.detach_mstCoMakerStatements));
+			this._mstCoMakerStatements1 = new EntitySet<mstCoMakerStatement>(new Action<mstCoMakerStatement>(this.attach_mstCoMakerStatements1), new Action<mstCoMakerStatement>(this.detach_mstCoMakerStatements1));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceType", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ResidenceType
+		{
+			get
+			{
+				return this._ResidenceType;
+			}
+			set
+			{
+				if ((this._ResidenceType != value))
+				{
+					this.OnResidenceTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ResidenceType = value;
+					this.SendPropertyChanged("ResidenceType");
+					this.OnResidenceTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstApplicant", Storage="_mstApplicants", ThisKey="Id", OtherKey="ResidenceTypeId")]
+		public EntitySet<mstApplicant> mstApplicants
+		{
+			get
+			{
+				return this._mstApplicants;
+			}
+			set
+			{
+				this._mstApplicants.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstApplicant1", Storage="_mstApplicants1", ThisKey="Id", OtherKey="LandResidenceTypeId")]
+		public EntitySet<mstApplicant> mstApplicants1
+		{
+			get
+			{
+				return this._mstApplicants1;
+			}
+			set
+			{
+				this._mstApplicants1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstCoMakerStatement", Storage="_mstCoMakerStatements", ThisKey="Id", OtherKey="ResidenceTypeId")]
+		public EntitySet<mstCoMakerStatement> mstCoMakerStatements
+		{
+			get
+			{
+				return this._mstCoMakerStatements;
+			}
+			set
+			{
+				this._mstCoMakerStatements.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstResidenceType_mstCoMakerStatement1", Storage="_mstCoMakerStatements1", ThisKey="Id", OtherKey="LandResidenceTypeId")]
+		public EntitySet<mstCoMakerStatement> mstCoMakerStatements1
+		{
+			get
+			{
+				return this._mstCoMakerStatements1;
+			}
+			set
+			{
+				this._mstCoMakerStatements1.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_mstApplicants(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType = this;
+		}
+		
+		private void detach_mstApplicants(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType = null;
+		}
+		
+		private void attach_mstApplicants1(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType1 = this;
+		}
+		
+		private void detach_mstApplicants1(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType1 = null;
+		}
+		
+		private void attach_mstCoMakerStatements(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType = this;
+		}
+		
+		private void detach_mstCoMakerStatements(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType = null;
+		}
+		
+		private void attach_mstCoMakerStatements1(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType1 = this;
+		}
+		
+		private void detach_mstCoMakerStatements1(mstCoMakerStatement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstResidenceType1 = null;
 		}
 	}
 	

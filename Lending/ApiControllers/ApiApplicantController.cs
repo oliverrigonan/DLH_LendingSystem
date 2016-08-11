@@ -27,14 +27,14 @@ namespace Lending.ApiControllers
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.mstApplicantCivilStatus.CivilStatus,
+                                 CivilStatus = d.mstCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
                                  ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.mstApplicantResidenceType.ResidenceType,
+                                 ResidenceType = d.mstResidenceType.ResidenceType,
                                  ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
                                  LandResidenceTypeId = d.LandResidenceTypeId,
-                                 LandResidenceType = d.mstApplicantResidenceType1.ResidenceType,
+                                 LandResidenceType = d.mstResidenceType1.ResidenceType,
                                  LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
                                  LengthOfStay = d.LengthOfStay,
                                  BusinessAddress = d.BusinessAddress,
@@ -87,14 +87,14 @@ namespace Lending.ApiControllers
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.mstApplicantCivilStatus.CivilStatus,
+                                 CivilStatus = d.mstCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
                                  ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.mstApplicantResidenceType.ResidenceType,
+                                 ResidenceType = d.mstResidenceType.ResidenceType,
                                  ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
                                  LandResidenceTypeId = d.LandResidenceTypeId,
-                                 LandResidenceType = d.mstApplicantResidenceType1.ResidenceType,
+                                 LandResidenceType = d.mstResidenceType1.ResidenceType,
                                  LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
                                  LengthOfStay = d.LengthOfStay,
                                  BusinessAddress = d.BusinessAddress,
@@ -130,14 +130,7 @@ namespace Lending.ApiControllers
                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                              };
 
-            if (applicants.Any())
-            {
-                return (Models.MstApplicant)applicants.FirstOrDefault();
-            }
-            else
-            {
-                return null;
-            }
+            return (Models.MstApplicant)applicants.FirstOrDefault();
         }
 
         // add applicant 
@@ -153,12 +146,12 @@ namespace Lending.ApiControllers
                 Data.mstApplicant newApplicant = new Data.mstApplicant();
                 newApplicant.FullName = "NA";
                 newApplicant.BirthDate = DateTime.Today;
-                newApplicant.CivilStatusId = (from d in db.mstApplicantCivilStatus select d.Id).FirstOrDefault();
+                newApplicant.CivilStatusId = (from d in db.mstCivilStatus select d.Id).FirstOrDefault();
                 newApplicant.CityAddress = "NA";
                 newApplicant.ProvinceAddress = "NA";
-                newApplicant.ResidenceTypeId = (from d in db.mstApplicantResidenceTypes select d.Id).FirstOrDefault();
+                newApplicant.ResidenceTypeId = (from d in db.mstResidenceTypes select d.Id).FirstOrDefault();
                 newApplicant.ResidenceMonthlyRentAmount = 0;
-                newApplicant.LandResidenceTypeId = (from d in db.mstApplicantResidenceTypes select d.Id).FirstOrDefault();
+                newApplicant.LandResidenceTypeId = (from d in db.mstResidenceTypes select d.Id).FirstOrDefault();
                 newApplicant.LandResidenceMonthlyRentAmount = 0;
                 newApplicant.LengthOfStay = "NA";
                 newApplicant.BusinessAddress = "NA";
@@ -253,7 +246,6 @@ namespace Lending.ApiControllers
                     updateApplicant.Schools = applicant.Schools;
                     updateApplicant.UpdatedByUserId = userId;
                     updateApplicant.UpdatedDateTime = DateTime.Now;
-
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);

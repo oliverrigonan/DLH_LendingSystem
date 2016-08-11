@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace Lending.ApiControllers
 {
-    public class ApiApplicantResidenceTypeController : ApiController
+    public class ApiCivilStatusController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
@@ -15,17 +15,17 @@ namespace Lending.ApiControllers
         // residence type list
         [Authorize]
         [HttpGet]
-        [Route("api/residenceType/list")]
-        public List<Models.MstApplicantResidenceType> listApplicantResidenceType()
+        [Route("api/civilStatus/list")]
+        public List<Models.MstApplicantCivilStatus> listApplicantCivilStatus()
         {
-            var residenceTypes = from d in db.mstApplicantResidenceTypes
-                                 select new Models.MstApplicantResidenceType
+            var civilStatus = from d in db.mstCivilStatus
+                                 select new Models.MstApplicantCivilStatus
                                  {
                                      Id = d.Id,
-                                     ResidenceType = d.ResidenceType
+                                     CivilStatus = d.CivilStatus
                                  };
 
-            return residenceTypes.ToList();
+            return civilStatus.ToList();
         }
     }
 }

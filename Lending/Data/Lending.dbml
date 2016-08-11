@@ -137,10 +137,11 @@
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="mstApplicant_mstApplicantApplianceOwned" Member="mstApplicantApplianceOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="mstApplicantApplianceOwned" />
       <Association Name="mstApplicant_mstApplicantRealPropertiesOwned" Member="mstApplicantRealPropertiesOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="mstApplicantRealPropertiesOwned" />
+      <Association Name="mstApplicant_mstCoMakerStatement" Member="mstCoMakerStatements" ThisKey="Id" OtherKey="ApplicantId" Type="mstCoMakerStatement" />
       <Association Name="mstApplicant_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="ApplicantId" Type="trnLoanApplication" />
-      <Association Name="mstApplicantCivilStatus_mstApplicant" Member="mstApplicantCivilStatus" ThisKey="CivilStatusId" OtherKey="Id" Type="mstApplicantCivilStatus" IsForeignKey="true" />
-      <Association Name="mstApplicantResidenceType_mstApplicant" Member="mstApplicantResidenceType" ThisKey="ResidenceTypeId" OtherKey="Id" Type="mstApplicantResidenceType" IsForeignKey="true" />
-      <Association Name="mstApplicantResidenceType_mstApplicant1" Member="mstApplicantResidenceType1" ThisKey="LandResidenceTypeId" OtherKey="Id" Type="mstApplicantResidenceType" IsForeignKey="true" />
+      <Association Name="mstCivilStatus_mstApplicant" Member="mstCivilStatus" ThisKey="CivilStatusId" OtherKey="Id" Type="mstCivilStatus" IsForeignKey="true" />
+      <Association Name="mstResidenceType_mstApplicant" Member="mstResidenceType" ThisKey="ResidenceTypeId" OtherKey="Id" Type="mstResidenceType" IsForeignKey="true" />
+      <Association Name="mstResidenceType_mstApplicant1" Member="mstResidenceType1" ThisKey="LandResidenceTypeId" OtherKey="Id" Type="mstResidenceType" IsForeignKey="true" />
       <Association Name="mstUser_mstApplicant" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstApplicant1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -154,15 +155,6 @@
       <Association Name="mstApplicant_mstApplicantApplianceOwned" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.mstApplicantCivilStatus" Member="mstApplicantCivilStatus">
-    <Type Name="mstApplicantCivilStatus">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="CivilStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="mstApplicantCivilStatus_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="CivilStatusId" Type="mstApplicant" />
-      <Association Name="mstApplicantCivilStatus_mstApplicantCivilStatus" Member="mstApplicantCivilStatus2" ThisKey="Id" OtherKey="Id" Type="mstApplicantCivilStatus" Cardinality="One" />
-      <Association Name="mstApplicantCivilStatus_mstApplicantCivilStatus" Member="mstApplicantCivilStatus1" ThisKey="Id" OtherKey="Id" Type="mstApplicantCivilStatus" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.mstApplicantRealPropertiesOwned" Member="mstApplicantRealPropertiesOwneds">
     <Type Name="mstApplicantRealPropertiesOwned">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -172,14 +164,6 @@
       <Column Name="PresentValue" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Column Name="EcumberedTo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
       <Association Name="mstApplicant_mstApplicantRealPropertiesOwned" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.mstApplicantResidenceType" Member="mstApplicantResidenceTypes">
-    <Type Name="mstApplicantResidenceType">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="ResidenceType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Association Name="mstApplicantResidenceType_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="ResidenceTypeId" Type="mstApplicant" />
-      <Association Name="mstApplicantResidenceType_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstApplicant" />
     </Type>
   </Table>
   <Table Name="dbo.mstArea" Member="mstAreas">
@@ -194,6 +178,83 @@
       <Association Name="mstArea_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="AreaId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstArea" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstArea1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstCivilStatus" Member="mstCivilStatus">
+    <Type Name="mstCivilStatus">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CivilStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="mstCivilStatus_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="CivilStatusId" Type="mstApplicant" />
+      <Association Name="mstCivilStatus_mstCivilStatus" Member="mstCivilStatus2" ThisKey="Id" OtherKey="Id" Type="mstCivilStatus" Cardinality="One" />
+      <Association Name="mstCivilStatus_mstCoMakerStatement" Member="mstCoMakerStatements" ThisKey="Id" OtherKey="CivilStatusId" Type="mstCoMakerStatement" />
+      <Association Name="mstCivilStatus_mstCivilStatus" Member="mstCivilStatus1" ThisKey="Id" OtherKey="Id" Type="mstCivilStatus" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstCoMakerStatement" Member="mstCoMakerStatements">
+    <Type Name="mstCoMakerStatement">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BirthDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CivilStatusId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CityAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ProvinceAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ResidenceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ResidenceMonthlyRentAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="LandResidenceTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LandResidenceMonthlyRentAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="LengthOfStay" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessKaratulaName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessTelephoneNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessYear" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessMerchandise" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessStockValues" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessBeginningCapital" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessLowSalesPeriod" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessLowestDailySales" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BusinessAverageDailySales" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedCompany" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedCompanyAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedPositionOccupied" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedServiceLength" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EmployedTelephoneNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseFullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseEmployerBusiness" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseEmployerBusinessAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseBusinessTelephoneNumber" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SpousePositionOccupied" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseMonthlySalary" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="SpouseLengthOfService" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NumberOfChildren" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Studying" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Schools" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="mstCoMakerStatement_mstCoMakerStatementApplianceOwned" Member="mstCoMakerStatementApplianceOwneds" ThisKey="Id" OtherKey="CoMakerId" Type="mstCoMakerStatementApplianceOwned" />
+      <Association Name="mstCoMakerStatement_mstCoMakerStatementRealPropertiesOwned" Member="mstCoMakerStatementRealPropertiesOwneds" ThisKey="Id" OtherKey="CoMakerId" Type="mstCoMakerStatementRealPropertiesOwned" />
+      <Association Name="mstApplicant_mstCoMakerStatement" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
+      <Association Name="mstCivilStatus_mstCoMakerStatement" Member="mstCivilStatus" ThisKey="CivilStatusId" OtherKey="Id" Type="mstCivilStatus" IsForeignKey="true" />
+      <Association Name="mstResidenceType_mstCoMakerStatement" Member="mstResidenceType" ThisKey="ResidenceTypeId" OtherKey="Id" Type="mstResidenceType" IsForeignKey="true" />
+      <Association Name="mstResidenceType_mstCoMakerStatement1" Member="mstResidenceType1" ThisKey="LandResidenceTypeId" OtherKey="Id" Type="mstResidenceType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstCoMakerStatementApplianceOwned" Member="mstCoMakerStatementApplianceOwneds">
+    <Type Name="mstCoMakerStatementApplianceOwned">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CoMakerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ApplianceBrand" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PresentValue" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Association Name="mstCoMakerStatement_mstCoMakerStatementApplianceOwned" Member="mstCoMakerStatement" ThisKey="CoMakerId" OtherKey="Id" Type="mstCoMakerStatement" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstCoMakerStatementRealPropertiesOwned" Member="mstCoMakerStatementRealPropertiesOwneds">
+    <Type Name="mstCoMakerStatementRealPropertiesOwned">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CoMakerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Real" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Location" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PresentValue" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="EcumberedTo" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Association Name="mstCoMakerStatement_mstCoMakerStatementRealPropertiesOwned" Member="mstCoMakerStatement" ThisKey="CoMakerId" OtherKey="Id" Type="mstCoMakerStatement" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.mstEmployee" Member="mstEmployees">
@@ -235,6 +296,16 @@
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="mstUser_mstRequirement" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstRequirement1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstResidenceType" Member="mstResidenceTypes">
+    <Type Name="mstResidenceType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ResidenceType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="mstResidenceType_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="ResidenceTypeId" Type="mstApplicant" />
+      <Association Name="mstResidenceType_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstApplicant" />
+      <Association Name="mstResidenceType_mstCoMakerStatement" Member="mstCoMakerStatements" ThisKey="Id" OtherKey="ResidenceTypeId" Type="mstCoMakerStatement" />
+      <Association Name="mstResidenceType_mstCoMakerStatement1" Member="mstCoMakerStatements1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstCoMakerStatement" />
     </Type>
   </Table>
   <Table Name="dbo.mstUser" Member="mstUsers">
