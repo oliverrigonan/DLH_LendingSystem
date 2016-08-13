@@ -6,6 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
+using System.IO;
+using System.Reflection;
+using System.Web;
+using System.Data.Linq;
 
 namespace Lending.ApiControllers
 {
@@ -63,10 +67,10 @@ namespace Lending.ApiControllers
                                  Studying = d.Studying,
                                  Schools = d.Schools,
                                  CreatedByUserId = d.CreatedByUserId,
-                                 CreatedByUser = d.mstUser.FirstName + " " + d.mstUser.MiddleName + " " + d.mstUser.LastName,
+                                 CreatedByUser = d.mstUser.FullName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                  UpdatedByUserId = d.UpdatedByUserId,
-                                 UpdatedByUser = d.mstUser1.FirstName + " " + d.mstUser1.MiddleName + " " + d.mstUser1.LastName,
+                                 UpdatedByUser = d.mstUser1.FullName,
                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                              };
 
@@ -77,13 +81,14 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/applicant/getById/{id}")]
-        public Models.MstApplicant listApplicant(String id)
+        public Models.MstApplicant getApplicantById(String id)
         {
             var applicants = from d in db.mstApplicants
                              where d.Id == Convert.ToInt32(id)
                              select new Models.MstApplicant
                              {
                                  Id = d.Id,
+                                 Photo = d.Photo.ToArray(),
                                  FullName = d.FullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
@@ -123,10 +128,10 @@ namespace Lending.ApiControllers
                                  Studying = d.Studying,
                                  Schools = d.Schools,
                                  CreatedByUserId = d.CreatedByUserId,
-                                 CreatedByUser = d.mstUser.FirstName + " " + d.mstUser.MiddleName + " " + d.mstUser.LastName,
+                                 CreatedByUser = d.mstUser.FullName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                  UpdatedByUserId = d.UpdatedByUserId,
-                                 UpdatedByUser = d.mstUser1.FirstName + " " + d.mstUser1.MiddleName + " " + d.mstUser1.LastName,
+                                 UpdatedByUser = d.mstUser1.FullName,
                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                              };
 
@@ -144,6 +149,14 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 Data.mstApplicant newApplicant = new Data.mstApplicant();
+
+                string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Images\applicantPhotoPlaceHolder.png");
+
+                Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
+                String file = Convert.ToBase64String(bytes);
+                byte[] imgarr = Convert.FromBase64String(file);
+
+                newApplicant.Photo = imgarr;
                 newApplicant.FullName = "NA";
                 newApplicant.BirthDate = DateTime.Today;
                 newApplicant.CivilStatusId = (from d in db.mstCivilStatus select d.Id).FirstOrDefault();
@@ -189,8 +202,9 @@ namespace Lending.ApiControllers
 
                 return newApplicant.Id;
             }
-            catch
+            catch(Exception e)
             {
+                Debug.WriteLine(e);
                 return 0;
             }
         }
@@ -244,6 +258,78 @@ namespace Lending.ApiControllers
                     updateApplicant.NumberOfChildren = applicant.NumberOfChildren;
                     updateApplicant.Studying = applicant.Studying;
                     updateApplicant.Schools = applicant.Schools;
+                    updateApplicant.UpdatedByUserId = userId;
+                    updateApplicant.UpdatedDateTime = DateTime.Now;
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // update applicant
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/updatePhoto/{id}")]
+        public HttpResponseMessage updateApplicantPhoto(String id, Models.MstApplicant applicant)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                    var updateApplicant = applicants.FirstOrDefault();
+                    byte[] imgarr = applicant.Photo;
+                    updateApplicant.Photo = new Binary(imgarr);
+                    updateApplicant.UpdatedByUserId = userId;
+                    updateApplicant.UpdatedDateTime = DateTime.Now;
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+
+        // update applicant
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/deletePhoto/{id}")]
+        public HttpResponseMessage deleteApplicantPhoto(String id, Models.MstApplicant applicant)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                    var updateApplicant = applicants.FirstOrDefault();
+
+                    Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
+                    String file = Convert.ToBase64String(bytes);
+                    byte[] imgarr = Convert.FromBase64String(file);
+
+                    updateApplicant.Photo = imgarr;
                     updateApplicant.UpdatedByUserId = userId;
                     updateApplicant.UpdatedDateTime = DateTime.Now;
                     db.SubmitChanges();

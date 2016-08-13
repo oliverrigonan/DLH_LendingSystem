@@ -26,10 +26,10 @@ namespace Lending.ApiControllers
                             Area = d.Area,
                             Description = d.Description,
                             CreatedByUserId = d.CreatedByUserId,
-                            CreatedByUser = d.mstUser.FirstName + " " + d.mstUser.MiddleName + " " + d.mstUser.LastName,
+                            CreatedByUser = d.mstUser.FullName,
                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                             UpdatedByUserId = d.UpdatedByUserId,
-                            UpdatedByUser = d.mstUser1.FirstName + " " + d.mstUser1.MiddleName + " " + d.mstUser1.LastName,
+                            UpdatedByUser = d.mstUser1.FullName,
                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                         };
 

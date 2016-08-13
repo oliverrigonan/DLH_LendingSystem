@@ -27,18 +27,7 @@ namespace Lending.ApiControllers
                                   AspUserId = d.AspUserId,
                                   Username = d.Username,
                                   Password = d.Password,
-                                  FirstName = d.FirstName,
-                                  MiddleName = d.MiddleName,
-                                  LastName = d.LastName,
-                                  BirthDate = d.BirthDate.ToString(),
-                                  JobTitle = d.JobTitle,
-                                  AboutMe = d.AboutMe,
-                                  AddressStreet = d.AddressStreet,
-                                  AddressCity = d.AddressCity,
-                                  AddressZip = d.AddressZip,
-                                  AddressCountry = d.AddressCountry,
-                                  ContactNumber = d.ContactNumber,
-                                  EmailAddress = d.EmailAddress,
+                                  FullName = d.FullName,
                                   CreatedDate = d.CreatedDate.ToString(),
                                   UpdatedDate = d.UpdatedDate.ToString()
                               };
@@ -58,18 +47,7 @@ namespace Lending.ApiControllers
                 if (currentUser.Any())
                 {
                     var updateUser = currentUser.FirstOrDefault();
-                    updateUser.FirstName = user.FirstName;
-                    updateUser.MiddleName = user.MiddleName;
-                    updateUser.LastName = user.LastName;
-                    updateUser.BirthDate = null;
-                    updateUser.JobTitle = user.JobTitle;
-                    updateUser.AboutMe = user.AboutMe;
-                    updateUser.AddressStreet = user.AddressStreet;
-                    updateUser.AddressCity = user.AddressCity;
-                    updateUser.AddressZip = user.AddressZip;
-                    updateUser.AddressCountry = user.AddressCountry;
-                    updateUser.ContactNumber = user.ContactNumber;
-                    updateUser.EmailAddress = user.EmailAddress;
+                    updateUser.FullName = user.FullName;
                     updateUser.UpdatedDate = DateTime.Now;
                     db.SubmitChanges();
 
@@ -77,8 +55,7 @@ namespace Lending.ApiControllers
                     if (currentAspUser.Any())
                     {
                         var updateAspUser = currentAspUser.FirstOrDefault();
-                        updateAspUser.FirstName = user.FirstName;
-                        updateAspUser.LastName = user.LastName;
+                        updateAspUser.FullName = user.FullName;
                         db.SubmitChanges();
                     }
 

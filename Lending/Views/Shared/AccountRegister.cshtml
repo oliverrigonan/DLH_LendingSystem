@@ -26,14 +26,8 @@ else
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = "First Name" })
-                                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = "Last Name" })
-                                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "First Name" })
+                                        @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <hr />

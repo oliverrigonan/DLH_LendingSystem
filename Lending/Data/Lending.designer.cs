@@ -66,6 +66,9 @@ namespace Lending.Data
     partial void InsertmstArea(mstArea instance);
     partial void UpdatemstArea(mstArea instance);
     partial void DeletemstArea(mstArea instance);
+    partial void InsertmstBranch(mstBranch instance);
+    partial void UpdatemstBranch(mstBranch instance);
+    partial void DeletemstBranch(mstBranch instance);
     partial void InsertmstCivilStatus(mstCivilStatus instance);
     partial void UpdatemstCivilStatus(mstCivilStatus instance);
     partial void DeletemstCivilStatus(mstCivilStatus instance);
@@ -78,6 +81,9 @@ namespace Lending.Data
     partial void InsertmstCoMakerStatementRealPropertiesOwned(mstCoMakerStatementRealPropertiesOwned instance);
     partial void UpdatemstCoMakerStatementRealPropertiesOwned(mstCoMakerStatementRealPropertiesOwned instance);
     partial void DeletemstCoMakerStatementRealPropertiesOwned(mstCoMakerStatementRealPropertiesOwned instance);
+    partial void InsertmstCompany(mstCompany instance);
+    partial void UpdatemstCompany(mstCompany instance);
+    partial void DeletemstCompany(mstCompany instance);
     partial void InsertmstEmployee(mstEmployee instance);
     partial void UpdatemstEmployee(mstEmployee instance);
     partial void DeletemstEmployee(mstEmployee instance);
@@ -227,6 +233,14 @@ namespace Lending.Data
 			}
 		}
 		
+		public System.Data.Linq.Table<mstBranch> mstBranches
+		{
+			get
+			{
+				return this.GetTable<mstBranch>();
+			}
+		}
+		
 		public System.Data.Linq.Table<mstCivilStatus> mstCivilStatus
 		{
 			get
@@ -256,6 +270,14 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<mstCoMakerStatementRealPropertiesOwned>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstCompany> mstCompanies
+		{
+			get
+			{
+				return this.GetTable<mstCompany>();
 			}
 		}
 		
@@ -1135,9 +1157,7 @@ namespace Lending.Data
 		
 		private string _PasswordHash;
 		
-		private string _FirstName;
-		
-		private string _LastName;
+		private string _FullName;
 		
 		private string _Email;
 		
@@ -1175,10 +1195,8 @@ namespace Lending.Data
     partial void OnUserNameChanged();
     partial void OnPasswordHashChanging(string value);
     partial void OnPasswordHashChanged();
-    partial void OnFirstNameChanging(string value);
-    partial void OnFirstNameChanged();
-    partial void OnLastNameChanging(string value);
-    partial void OnLastNameChanged();
+    partial void OnFullNameChanging(string value);
+    partial void OnFullNameChanged();
     partial void OnEmailChanging(string value);
     partial void OnEmailChanged();
     partial void OnEmailConfirmedChanging(System.Nullable<bool> value);
@@ -1268,42 +1286,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		public string FirstName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
+		public string FullName
 		{
 			get
 			{
-				return this._FirstName;
+				return this._FullName;
 			}
 			set
 			{
-				if ((this._FirstName != value))
+				if ((this._FullName != value))
 				{
-					this.OnFirstNameChanging(value);
+					this.OnFullNameChanging(value);
 					this.SendPropertyChanging();
-					this._FirstName = value;
-					this.SendPropertyChanged("FirstName");
-					this.OnFirstNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
-		public string LastName
-		{
-			get
-			{
-				return this._LastName;
-			}
-			set
-			{
-				if ((this._LastName != value))
-				{
-					this.OnLastNameChanging(value);
-					this.SendPropertyChanging();
-					this._LastName = value;
-					this.SendPropertyChanged("LastName");
-					this.OnLastNameChanged();
+					this._FullName = value;
+					this.SendPropertyChanged("FullName");
+					this.OnFullNameChanged();
 				}
 			}
 		}
@@ -2290,6 +2288,8 @@ namespace Lending.Data
 		
 		private int _Id;
 		
+		private System.Data.Linq.Binary _Photo;
+		
 		private string _FullName;
 		
 		private System.DateTime _BirthDate;
@@ -2392,6 +2392,8 @@ namespace Lending.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
+    partial void OnPhotoChanging(System.Data.Linq.Binary value);
+    partial void OnPhotoChanged();
     partial void OnFullNameChanging(string value);
     partial void OnFullNameChanged();
     partial void OnBirthDateChanging(System.DateTime value);
@@ -2502,6 +2504,26 @@ namespace Lending.Data
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="Image", UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary Photo
+		{
+			get
+			{
+				return this._Photo;
+			}
+			set
+			{
+				if ((this._Photo != value))
+				{
+					this.OnPhotoChanging(value);
+					this.SendPropertyChanging();
+					this._Photo = value;
+					this.SendPropertyChanged("Photo");
+					this.OnPhotoChanged();
 				}
 			}
 		}
@@ -4311,6 +4333,205 @@ namespace Lending.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstBranch")]
+	public partial class mstBranch : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _CompanyId;
+		
+		private string _Branch;
+		
+		private string _Address;
+		
+		private string _ContactNumber;
+		
+		private EntityRef<mstCompany> _mstCompany;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyIdChanging(int value);
+    partial void OnCompanyIdChanged();
+    partial void OnBranchChanging(string value);
+    partial void OnBranchChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnContactNumberChanging(string value);
+    partial void OnContactNumberChanged();
+    #endregion
+		
+		public mstBranch()
+		{
+			this._mstCompany = default(EntityRef<mstCompany>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="Int NOT NULL")]
+		public int CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					if (this._mstCompany.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Branch", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Branch
+		{
+			get
+			{
+				return this._Branch;
+			}
+			set
+			{
+				if ((this._Branch != value))
+				{
+					this.OnBranchChanging(value);
+					this.SendPropertyChanging();
+					this._Branch = value;
+					this.SendPropertyChanged("Branch");
+					this.OnBranchChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ContactNumber
+		{
+			get
+			{
+				return this._ContactNumber;
+			}
+			set
+			{
+				if ((this._ContactNumber != value))
+				{
+					this.OnContactNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ContactNumber = value;
+					this.SendPropertyChanged("ContactNumber");
+					this.OnContactNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstBranch", Storage="_mstCompany", ThisKey="CompanyId", OtherKey="Id", IsForeignKey=true)]
+		public mstCompany mstCompany
+		{
+			get
+			{
+				return this._mstCompany.Entity;
+			}
+			set
+			{
+				mstCompany previousValue = this._mstCompany.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCompany.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCompany.Entity = null;
+						previousValue.mstBranches.Remove(this);
+					}
+					this._mstCompany.Entity = value;
+					if ((value != null))
+					{
+						value.mstBranches.Add(this);
+						this._CompanyId = value.Id;
+					}
+					else
+					{
+						this._CompanyId = default(int);
+					}
+					this.SendPropertyChanged("mstCompany");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCivilStatus")]
 	public partial class mstCivilStatus : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -6070,6 +6291,346 @@ namespace Lending.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCompany")]
+	public partial class mstCompany : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Company;
+		
+		private string _Address;
+		
+		private string _ContactNumber;
+		
+		private int _CreatedByUserId;
+		
+		private System.DateTime _CreatedDateTime;
+		
+		private int _UpdatedByUserId;
+		
+		private System.DateTime _UpdatedDateTime;
+		
+		private EntitySet<mstBranch> _mstBranches;
+		
+		private EntityRef<mstUser> _mstUser;
+		
+		private EntityRef<mstUser> _mstUser1;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCompanyChanging(string value);
+    partial void OnCompanyChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnContactNumberChanging(string value);
+    partial void OnContactNumberChanged();
+    partial void OnCreatedByUserIdChanging(int value);
+    partial void OnCreatedByUserIdChanged();
+    partial void OnCreatedDateTimeChanging(System.DateTime value);
+    partial void OnCreatedDateTimeChanged();
+    partial void OnUpdatedByUserIdChanging(int value);
+    partial void OnUpdatedByUserIdChanged();
+    partial void OnUpdatedDateTimeChanging(System.DateTime value);
+    partial void OnUpdatedDateTimeChanged();
+    #endregion
+		
+		public mstCompany()
+		{
+			this._mstBranches = new EntitySet<mstBranch>(new Action<mstBranch>(this.attach_mstBranches), new Action<mstBranch>(this.detach_mstBranches));
+			this._mstUser = default(EntityRef<mstUser>);
+			this._mstUser1 = default(EntityRef<mstUser>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Company", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Company
+		{
+			get
+			{
+				return this._Company;
+			}
+			set
+			{
+				if ((this._Company != value))
+				{
+					this.OnCompanyChanging(value);
+					this.SendPropertyChanging();
+					this._Company = value;
+					this.SendPropertyChanged("Company");
+					this.OnCompanyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Address
+		{
+			get
+			{
+				return this._Address;
+			}
+			set
+			{
+				if ((this._Address != value))
+				{
+					this.OnAddressChanging(value);
+					this.SendPropertyChanging();
+					this._Address = value;
+					this.SendPropertyChanged("Address");
+					this.OnAddressChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ContactNumber
+		{
+			get
+			{
+				return this._ContactNumber;
+			}
+			set
+			{
+				if ((this._ContactNumber != value))
+				{
+					this.OnContactNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ContactNumber = value;
+					this.SendPropertyChanged("ContactNumber");
+					this.OnContactNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
+		public int CreatedByUserId
+		{
+			get
+			{
+				return this._CreatedByUserId;
+			}
+			set
+			{
+				if ((this._CreatedByUserId != value))
+				{
+					if (this._mstUser.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCreatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedByUserId = value;
+					this.SendPropertyChanged("CreatedByUserId");
+					this.OnCreatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedDateTime
+		{
+			get
+			{
+				return this._CreatedDateTime;
+			}
+			set
+			{
+				if ((this._CreatedDateTime != value))
+				{
+					this.OnCreatedDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedDateTime = value;
+					this.SendPropertyChanged("CreatedDateTime");
+					this.OnCreatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedByUserId", DbType="Int NOT NULL")]
+		public int UpdatedByUserId
+		{
+			get
+			{
+				return this._UpdatedByUserId;
+			}
+			set
+			{
+				if ((this._UpdatedByUserId != value))
+				{
+					if (this._mstUser1.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUpdatedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedByUserId = value;
+					this.SendPropertyChanged("UpdatedByUserId");
+					this.OnUpdatedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime UpdatedDateTime
+		{
+			get
+			{
+				return this._UpdatedDateTime;
+			}
+			set
+			{
+				if ((this._UpdatedDateTime != value))
+				{
+					this.OnUpdatedDateTimeChanging(value);
+					this.SendPropertyChanging();
+					this._UpdatedDateTime = value;
+					this.SendPropertyChanged("UpdatedDateTime");
+					this.OnUpdatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstBranch", Storage="_mstBranches", ThisKey="Id", OtherKey="CompanyId")]
+		public EntitySet<mstBranch> mstBranches
+		{
+			get
+			{
+				return this._mstBranches;
+			}
+			set
+			{
+				this._mstBranches.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCompany", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public mstUser mstUser
+		{
+			get
+			{
+				return this._mstUser.Entity;
+			}
+			set
+			{
+				mstUser previousValue = this._mstUser.Entity;
+				if (((previousValue != value) 
+							|| (this._mstUser.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstUser.Entity = null;
+						previousValue.mstCompanies.Remove(this);
+					}
+					this._mstUser.Entity = value;
+					if ((value != null))
+					{
+						value.mstCompanies.Add(this);
+						this._CreatedByUserId = value.Id;
+					}
+					else
+					{
+						this._CreatedByUserId = default(int);
+					}
+					this.SendPropertyChanged("mstUser");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCompany1", Storage="_mstUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public mstUser mstUser1
+		{
+			get
+			{
+				return this._mstUser1.Entity;
+			}
+			set
+			{
+				mstUser previousValue = this._mstUser1.Entity;
+				if (((previousValue != value) 
+							|| (this._mstUser1.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstUser1.Entity = null;
+						previousValue.mstCompanies1.Remove(this);
+					}
+					this._mstUser1.Entity = value;
+					if ((value != null))
+					{
+						value.mstCompanies1.Add(this);
+						this._UpdatedByUserId = value.Id;
+					}
+					else
+					{
+						this._UpdatedByUserId = default(int);
+					}
+					this.SendPropertyChanged("mstUser1");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_mstBranches(mstBranch entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCompany = this;
+		}
+		
+		private void detach_mstBranches(mstBranch entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCompany = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstEmployee")]
 	public partial class mstEmployee : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -7219,29 +7780,7 @@ namespace Lending.Data
 		
 		private string _Password;
 		
-		private string _FirstName;
-		
-		private string _MiddleName;
-		
-		private string _LastName;
-		
-		private System.Nullable<System.DateTime> _BirthDate;
-		
-		private string _JobTitle;
-		
-		private string _AboutMe;
-		
-		private string _AddressStreet;
-		
-		private string _AddressCity;
-		
-		private string _AddressZip;
-		
-		private string _AddressCountry;
-		
-		private string _ContactNumber;
-		
-		private string _EmailAddress;
+		private string _FullName;
 		
 		private System.DateTime _CreatedDate;
 		
@@ -7262,6 +7801,10 @@ namespace Lending.Data
 		private EntitySet<mstArea> _mstAreas;
 		
 		private EntitySet<mstArea> _mstAreas1;
+		
+		private EntitySet<mstCompany> _mstCompanies;
+		
+		private EntitySet<mstCompany> _mstCompanies1;
 		
 		private EntitySet<mstEmployee> _mstEmployees;
 		
@@ -7297,30 +7840,8 @@ namespace Lending.Data
     partial void OnUsernameChanged();
     partial void OnPasswordChanging(string value);
     partial void OnPasswordChanged();
-    partial void OnFirstNameChanging(string value);
-    partial void OnFirstNameChanged();
-    partial void OnMiddleNameChanging(string value);
-    partial void OnMiddleNameChanged();
-    partial void OnLastNameChanging(string value);
-    partial void OnLastNameChanged();
-    partial void OnBirthDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnBirthDateChanged();
-    partial void OnJobTitleChanging(string value);
-    partial void OnJobTitleChanged();
-    partial void OnAboutMeChanging(string value);
-    partial void OnAboutMeChanged();
-    partial void OnAddressStreetChanging(string value);
-    partial void OnAddressStreetChanged();
-    partial void OnAddressCityChanging(string value);
-    partial void OnAddressCityChanged();
-    partial void OnAddressZipChanging(string value);
-    partial void OnAddressZipChanged();
-    partial void OnAddressCountryChanging(string value);
-    partial void OnAddressCountryChanged();
-    partial void OnContactNumberChanging(string value);
-    partial void OnContactNumberChanged();
-    partial void OnEmailAddressChanging(string value);
-    partial void OnEmailAddressChanged();
+    partial void OnFullNameChanging(string value);
+    partial void OnFullNameChanged();
     partial void OnCreatedDateChanging(System.DateTime value);
     partial void OnCreatedDateChanged();
     partial void OnUpdatedDateChanging(System.DateTime value);
@@ -7337,6 +7858,8 @@ namespace Lending.Data
 			this._mstApplicants1 = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants1), new Action<mstApplicant>(this.detach_mstApplicants1));
 			this._mstAreas = new EntitySet<mstArea>(new Action<mstArea>(this.attach_mstAreas), new Action<mstArea>(this.detach_mstAreas));
 			this._mstAreas1 = new EntitySet<mstArea>(new Action<mstArea>(this.attach_mstAreas1), new Action<mstArea>(this.detach_mstAreas1));
+			this._mstCompanies = new EntitySet<mstCompany>(new Action<mstCompany>(this.attach_mstCompanies), new Action<mstCompany>(this.detach_mstCompanies));
+			this._mstCompanies1 = new EntitySet<mstCompany>(new Action<mstCompany>(this.attach_mstCompanies1), new Action<mstCompany>(this.detach_mstCompanies1));
 			this._mstEmployees = new EntitySet<mstEmployee>(new Action<mstEmployee>(this.attach_mstEmployees), new Action<mstEmployee>(this.detach_mstEmployees));
 			this._mstEmployees1 = new EntitySet<mstEmployee>(new Action<mstEmployee>(this.attach_mstEmployees1), new Action<mstEmployee>(this.detach_mstEmployees1));
 			this._mstEmployeePositions = new EntitySet<mstEmployeePosition>(new Action<mstEmployeePosition>(this.attach_mstEmployeePositions), new Action<mstEmployeePosition>(this.detach_mstEmployeePositions));
@@ -7435,242 +7958,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FirstName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string FirstName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string FullName
 		{
 			get
 			{
-				return this._FirstName;
+				return this._FullName;
 			}
 			set
 			{
-				if ((this._FirstName != value))
+				if ((this._FullName != value))
 				{
-					this.OnFirstNameChanging(value);
+					this.OnFullNameChanging(value);
 					this.SendPropertyChanging();
-					this._FirstName = value;
-					this.SendPropertyChanged("FirstName");
-					this.OnFirstNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MiddleName", DbType="NVarChar(50)")]
-		public string MiddleName
-		{
-			get
-			{
-				return this._MiddleName;
-			}
-			set
-			{
-				if ((this._MiddleName != value))
-				{
-					this.OnMiddleNameChanging(value);
-					this.SendPropertyChanging();
-					this._MiddleName = value;
-					this.SendPropertyChanged("MiddleName");
-					this.OnMiddleNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastName", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string LastName
-		{
-			get
-			{
-				return this._LastName;
-			}
-			set
-			{
-				if ((this._LastName != value))
-				{
-					this.OnLastNameChanging(value);
-					this.SendPropertyChanging();
-					this._LastName = value;
-					this.SendPropertyChanged("LastName");
-					this.OnLastNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BirthDate", DbType="Date")]
-		public System.Nullable<System.DateTime> BirthDate
-		{
-			get
-			{
-				return this._BirthDate;
-			}
-			set
-			{
-				if ((this._BirthDate != value))
-				{
-					this.OnBirthDateChanging(value);
-					this.SendPropertyChanging();
-					this._BirthDate = value;
-					this.SendPropertyChanged("BirthDate");
-					this.OnBirthDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_JobTitle", DbType="NVarChar(100)")]
-		public string JobTitle
-		{
-			get
-			{
-				return this._JobTitle;
-			}
-			set
-			{
-				if ((this._JobTitle != value))
-				{
-					this.OnJobTitleChanging(value);
-					this.SendPropertyChanging();
-					this._JobTitle = value;
-					this.SendPropertyChanged("JobTitle");
-					this.OnJobTitleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AboutMe", DbType="NVarChar(MAX)")]
-		public string AboutMe
-		{
-			get
-			{
-				return this._AboutMe;
-			}
-			set
-			{
-				if ((this._AboutMe != value))
-				{
-					this.OnAboutMeChanging(value);
-					this.SendPropertyChanging();
-					this._AboutMe = value;
-					this.SendPropertyChanged("AboutMe");
-					this.OnAboutMeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressStreet", DbType="NVarChar(MAX)")]
-		public string AddressStreet
-		{
-			get
-			{
-				return this._AddressStreet;
-			}
-			set
-			{
-				if ((this._AddressStreet != value))
-				{
-					this.OnAddressStreetChanging(value);
-					this.SendPropertyChanging();
-					this._AddressStreet = value;
-					this.SendPropertyChanged("AddressStreet");
-					this.OnAddressStreetChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressCity", DbType="NVarChar(MAX)")]
-		public string AddressCity
-		{
-			get
-			{
-				return this._AddressCity;
-			}
-			set
-			{
-				if ((this._AddressCity != value))
-				{
-					this.OnAddressCityChanging(value);
-					this.SendPropertyChanging();
-					this._AddressCity = value;
-					this.SendPropertyChanged("AddressCity");
-					this.OnAddressCityChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressZip", DbType="NVarChar(MAX)")]
-		public string AddressZip
-		{
-			get
-			{
-				return this._AddressZip;
-			}
-			set
-			{
-				if ((this._AddressZip != value))
-				{
-					this.OnAddressZipChanging(value);
-					this.SendPropertyChanging();
-					this._AddressZip = value;
-					this.SendPropertyChanged("AddressZip");
-					this.OnAddressZipChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddressCountry", DbType="NVarChar(MAX)")]
-		public string AddressCountry
-		{
-			get
-			{
-				return this._AddressCountry;
-			}
-			set
-			{
-				if ((this._AddressCountry != value))
-				{
-					this.OnAddressCountryChanging(value);
-					this.SendPropertyChanging();
-					this._AddressCountry = value;
-					this.SendPropertyChanged("AddressCountry");
-					this.OnAddressCountryChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50)")]
-		public string ContactNumber
-		{
-			get
-			{
-				return this._ContactNumber;
-			}
-			set
-			{
-				if ((this._ContactNumber != value))
-				{
-					this.OnContactNumberChanging(value);
-					this.SendPropertyChanging();
-					this._ContactNumber = value;
-					this.SendPropertyChanged("ContactNumber");
-					this.OnContactNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailAddress", DbType="NVarChar(50)")]
-		public string EmailAddress
-		{
-			get
-			{
-				return this._EmailAddress;
-			}
-			set
-			{
-				if ((this._EmailAddress != value))
-				{
-					this.OnEmailAddressChanging(value);
-					this.SendPropertyChanging();
-					this._EmailAddress = value;
-					this.SendPropertyChanged("EmailAddress");
-					this.OnEmailAddressChanged();
+					this._FullName = value;
+					this.SendPropertyChanged("FullName");
+					this.OnFullNameChanged();
 				}
 			}
 		}
@@ -7816,6 +8119,32 @@ namespace Lending.Data
 			set
 			{
 				this._mstAreas1.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCompany", Storage="_mstCompanies", ThisKey="Id", OtherKey="CreatedByUserId")]
+		public EntitySet<mstCompany> mstCompanies
+		{
+			get
+			{
+				return this._mstCompanies;
+			}
+			set
+			{
+				this._mstCompanies.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCompany1", Storage="_mstCompanies1", ThisKey="Id", OtherKey="UpdatedByUserId")]
+		public EntitySet<mstCompany> mstCompanies1
+		{
+			get
+			{
+				return this._mstCompanies1;
+			}
+			set
+			{
+				this._mstCompanies1.Assign(value);
 			}
 		}
 		
@@ -8094,6 +8423,30 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstAreas1(mstArea entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstUser1 = null;
+		}
+		
+		private void attach_mstCompanies(mstCompany entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstUser = this;
+		}
+		
+		private void detach_mstCompanies(mstCompany entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstUser = null;
+		}
+		
+		private void attach_mstCompanies1(mstCompany entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstUser1 = this;
+		}
+		
+		private void detach_mstCompanies1(mstCompany entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstUser1 = null;

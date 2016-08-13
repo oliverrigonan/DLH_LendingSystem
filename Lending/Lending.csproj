@@ -168,7 +168,9 @@
     <Compile Include="ApiControllers\ApiApplicantApplianceOwnedController.cs" />
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
+    <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
+    <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementApplianceOwnedController.cs" />
@@ -203,9 +205,11 @@
     <Compile Include="Models\MstApplicantRealPropertiesOwned.cs" />
     <Compile Include="Models\MstApplicantResidenceType.cs" />
     <Compile Include="Models\MstArea.cs" />
+    <Compile Include="Models\MstBranch.cs" />
     <Compile Include="Models\MstCoMakerStatement.cs" />
     <Compile Include="Models\MstCoMakerStatementApplianceOwned.cs" />
     <Compile Include="Models\MstCoMakerStatementRealPropertiesOwned.cs" />
+    <Compile Include="Models\MstCompany.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -228,6 +232,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\applicantPhotoPlaceHolder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\landing-page\me.jpg" />
     <Content Include="Images\landing-page\banner-bg.jpg" />
     <Content Include="Images\landing-page\dog.png" />
@@ -453,7 +460,9 @@
     <Content Include="Views\Software\Forbidden.cshtml" />
     <Content Include="Views\Software\NotFound.cshtml" />
     <Content Include="Views\Software\LoanApplicationList.cshtml" />
-    <Content Include="Views\Software\AreaList.cshtml" />
+    <Content Include="Views\Software\SystemTables.cshtml" />
+    <Content Include="Views\Software\CompanyList.cshtml" />
+    <Content Include="Views\Software\CompanyDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

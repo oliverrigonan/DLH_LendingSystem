@@ -23,10 +23,15 @@
                 <div class="col-lg-9">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Personal Information
-                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
-                                <i class="fa fa-edit"></i>
-                            </button>
+                            User Detail
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
+                                    <i class="fa fa-edit"></i> Edit
+                                </button>
+                                <a href="/Manage/ChangePassword" class="btn btn-default btn-xs" data-toggle="tooltip" title="Change your password">
+                                    <i class="fa fa-pencil"></i> Change Password
+                                </a>
+                            </div>
                         </div>
                         <div class="panel-body">
                             <table class="table table-responsive">
@@ -38,87 +43,6 @@
                                         <span id="userFullName"></span>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-birthday-cake fa-fw"></i> &nbsp; Birthdate
-                                    </td>
-                                    <td>
-                                        <span id="userBirthDate"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-briefcase fa-fw"></i> &nbsp; Title
-                                    </td>
-                                    <td>
-                                        <span id="userJobTitle"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-info fa-fw"></i> &nbsp; About me
-                                    </td>
-                                    <td>
-                                        <span id="userAboutMe"></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Contact Information
-                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Edit" onclick="editContact()">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-responsive">
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-map-marker fa-fw"></i> &nbsp; Address
-                                    </td>
-                                    <td>
-                                        <span id="userAddressStreet"></span>
-                                        <br />
-                                        <span id="userAddressCity"></span>
-                                        <br />
-                                        <span id="userAddressZipCode"></span>, <span id="userAddressCountry"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-key fa-phone"></i> &nbsp; Contact No.
-                                    </td>
-                                    <td>
-                                        <span id="userContactNumber"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-key fa-envelope"></i> &nbsp; Email
-                                    </td>
-                                    <td>
-                                        <span id="userEmail"></span>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            DLH Account
-                            <div class="btn-group pull-right">
-                                <button class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit">
-                                    <i class="fa fa-edit"></i>
-                                </button>
-                                <a href="/Manage/ChangePassword" class="btn btn-default btn-xs" data-toggle="tooltip" title="Change your password">
-                                    <i class="fa fa-pencil"></i> Change Password
-                                </a>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-responsive">
                                 <tr>
                                     <td class="td-pad">
                                         <i class="fa fa-key fa-fw"></i> &nbsp; Username

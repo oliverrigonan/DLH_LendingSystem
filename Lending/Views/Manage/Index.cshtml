@@ -52,24 +52,8 @@
                 </div>
                 <div class="modal-body">
                     <dl class="dl-horizontal">
-                        <dt>First Name</dt>
-                        <dd><input type="text" class="form-control requiredUser" id="editFirstName" placeholder="First Name" /></dd>
-                        <dt>Middle Name</dt>
-                        <dd><input type="text" class="form-control" id="editMiddleName" placeholder="Middle Name" /></dd>
-                        <dt>Last Name</dt>
-                        <dd><input type="text" class="form-control requiredUser" id="editLastName" placeholder="Last Name" /></dd>
-                    </dl>
-                    <hr />
-                    <dl class="dl-horizontal">
-                        <dt>BirthDate</dt>
-                        <dd><input type="date" class="form-control" /></dd>
-                        <dt>Job Title</dt>
-                        <dd><input type="text" class="form-control" id="editJobTitle" placeholder="Job Title" /></dd>
-                    </dl>
-                    <hr />
-                    <dl class="dl-horizontal">
-                        <dt>About me</dt>
-                        <dd><textarea class="form-control" id="editAboutMe" placeholder="About me"></textarea></dd>
+                        <dt>Full Name</dt>
+                        <dd><input type="text" class="form-control requiredUser" id="editFullName" placeholder="First Name" /></dd>
                     </dl>
                 </div>
                 <div class="modal-footer">
@@ -91,22 +75,6 @@
                 </div>
                 <div class="modal-body">
                     <dl class="dl-horizontal">
-                        <dt>Street</dt>
-                        <dd><input type="text" class="form-control" id="editContactStreet" placeholder="Street" /></dd>
-                        <dt>City</dt>
-                        <dd><input type="text" class="form-control" id="editContactCity" placeholder="City" /></dd>
-                        <dt>Zip / Country</dt>
-                        <dd>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="editContactZip" placeholder="Zip Code" style="width: 30%" />
-                                <input type="text" class="form-control" id="editContactCountry" placeholder="Country" style="width: 70%" />
-                            </div>
-                        </dd>
-                    </dl>
-                    <hr />
-                    <dl class="dl-horizontal">
-                        <dt>Contact No.</dt>
-                        <dd><input type="text" class="form-control" id="editContactNumber" placeholder="Contact Number" /></dd>
                         <dt>Email</dt>
                         <dd><input type="text" class="form-control" id="editContactEmail" placeholder="Email Address" /></dd>
                     </dl>
@@ -134,67 +102,11 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (currentUserResults) {
                     // Read info
-                    document.getElementById("userFullName").innerHTML = currentUserResults.FirstName + " " + currentUserResults.MiddleName + " " + currentUserResults.LastName;
-
-                    if (currentUserResults.BirthDate != null) {
-                        var birthDate = new Date(currentUserResults.BirthDate);
-                        var birthDateValue = birthDate.getMonth() + 1;
-                        var month = "";
-
-                        if (birthDateValue == 1) {
-                            month = "January"
-                        } else if (birthDateValue == 2) {
-                            month = "February"
-                        } else if (birthDateValue == 3) {
-                            month = "March"
-                        } else if (birthDateValue == 4) {
-                            month = "April"
-                        } else if (birthDateValue == 5) {
-                            month = "May"
-                        } else if (birthDateValue == 6) {
-                            month = "June"
-                        } else if (birthDateValue == 7) {
-                            month = "July"
-                        } else if (birthDateValue == 8) {
-                            month = "August"
-                        } else if (birthDateValue == 9) {
-                            month = "September"
-                        } else if (birthDateValue == 10) {
-                            month = "October"
-                        } else if (birthDateValue == 11) {
-                            month = "November"
-                        } else if (birthDateValue == 12) {
-                            month = "December"
-                        } else {
-                            month = "";
-                        }
-
-                        document.getElementById("userBirthDate").innerHTML = month + " " + birthDate.getDate() + ", " + birthDate.getFullYear();
-                    } else {
-                        document.getElementById("userBirthDate").innerHTML = "N/A";
-                    }
-                   
-                    document.getElementById("userJobTitle").innerHTML = currentUserResults.JobTitle;
-                    document.getElementById("userAboutMe").innerHTML = currentUserResults.AboutMe;
                     document.getElementById("userUsername").innerHTML = currentUserResults.Username;
-                    document.getElementById("userAddressStreet").innerHTML = currentUserResults.AddressStreet;
-                    document.getElementById("userAddressCity").innerHTML = currentUserResults.AddressCity;
-                    document.getElementById("userAddressZipCode").innerHTML = currentUserResults.AddressZip;
-                    document.getElementById("userAddressCountry").innerHTML = currentUserResults.AddressCountry;
-                    document.getElementById("userContactNumber").innerHTML = currentUserResults.ContactNumber;
-                    document.getElementById("userEmail").innerHTML = currentUserResults.EmailAddress;
+                    document.getElementById("userFullName").innerHTML = currentUserResults.FullName;
 
                     // Edit Info
-                    document.getElementById("editFirstName").value = currentUserResults.FirstName;
-                    document.getElementById("editMiddleName").value = currentUserResults.MiddleName;
-                    document.getElementById("editLastName").value = currentUserResults.LastName;
-                    document.getElementById("editJobTitle").value = currentUserResults.JobTitle;
-                    document.getElementById("editAboutMe").value = currentUserResults.AboutMe;
-                    document.getElementById("editContactStreet").value = currentUserResults.AddressStreet;
-                    document.getElementById("editContactCity").value = currentUserResults.AddressCity;
-                    document.getElementById("editContactZip").value = currentUserResults.AddressZip;
-                    document.getElementById("editContactCountry").value = currentUserResults.AddressCountry;
-                    document.getElementById("editContactNumber").value = currentUserResults.ContactNumber;
+                    document.getElementById("editFullName").value = currentUserResults.FullName;
                     document.getElementById("editContactEmail").value = currentUserResults.EmailAddress;
 
                     NProgress.done();
@@ -229,17 +141,7 @@
         // update profile user
         function updateCurrentUserLoggedIn() {
             var personalInformationObject = new Object();
-            personalInformationObject.FirstName = document.getElementById("editFirstName").value;
-            personalInformationObject.MiddleName = document.getElementById("editMiddleName").value;
-            personalInformationObject.LastName = document.getElementById("editLastName").value;
-            //personalInformationObject.BirthDate = "NULL";
-            personalInformationObject.JobTitle = document.getElementById("editJobTitle").value;
-            personalInformationObject.AboutMe = document.getElementById("editAboutMe").value;
-            personalInformationObject.AddressStreet = document.getElementById("editContactStreet").value;
-            personalInformationObject.AddressCity = document.getElementById("editContactCity").value;
-            personalInformationObject.AddressZip = document.getElementById("editContactZip").value;
-            personalInformationObject.AddressCountry = document.getElementById("editContactCountry").value;
-            personalInformationObject.ContactNumber = document.getElementById("editContactNumber").value;
+            personalInformationObject.FullName = document.getElementById("editFullName").value;
             personalInformationObject.EmailAddress = document.getElementById("editContactEmail").value;
             var personalInformationData = JSON.stringify(personalInformationObject);
 

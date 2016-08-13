@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Title -->
-    <title>DLH - Area List</title>
+    <title>DLH - System Tables</title>
 
     <!-- Styles -->
     @Styles.Render("~/Content/css")
@@ -48,16 +48,12 @@
                                     </table>
                                 </a>
                             </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
+                            <div id="collapseOne" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="list-group">
                                         <a href="/Software/ApplicantList" class="list-group-item">
                                             <i class="fa fa-users fa-fw"></i> &nbsp; Applicants
                                         </a>
-                                        <a href="/Software/AreaList" class="list-group-item active">
-                                            <i class="fa fa-map-pin fa-fw"></i> &nbsp; Areas
-                                        </a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-folder-open fa-fw"></i> &nbsp; Accounts</a>
                                         <a href="#" class="list-group-item"><i class="fa fa-black-tie fa-fw"></i> &nbsp; Employees</a>
                                     </div>
                                 </div>
@@ -84,8 +80,8 @@
                                         <a href="/Software/LoanApplicationList" class="list-group-item">
                                             <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Applications
                                         </a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursements</a>
                                         <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collections</a>
+                                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursements</a>
                                         <a href="#" class="list-group-item"><i class="fa fa-book fa-fw"></i> &nbsp; Journal Entries</a>
                                     </div>
                                 </div>
@@ -106,11 +102,14 @@
                                     </table>
                                 </a>
                             </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
+                            <div id="collapseThree" class="panel-collapse collapse in">
                                 <div class="panel-body">
                                     <div class="list-group">
-                                        <a href="#" class="list-group-item"><i class="fa fa-building fa-fw"></i> &nbsp; Company</a>
+                                        <a href="/Software/CompanyList" class="list-group-item">
+                                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
+                                        </a>
                                         <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
+                                        <a href="/Software/SystemTables" class="list-group-item active"><i class="fa fa-table fa-fw"></i> &nbsp; Tables</a>
                                     </div>
                                 </div>
                             </div>
@@ -163,47 +162,95 @@
                 <div class="col-lg-9">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4>List of Areas</h4>
-                        </div>
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                            <input type="text" id="searchArea" class="form-control" placeholder="Search" />
-                                        </div>
-                                    </td>
-                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="right">
-                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddAreaOnclick()">
-                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
+                            <h4>System Tables</h4>
                         </div>
                         <div class="panel-body">
-                            <div class="flexgridHeight">
-                                <div id="areaFlexGrid" class="grid"></div>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="row">
-                                <div class="btn-group col-md-7" id="navigationPageGrid">
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                    </button>
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#Areas" data-toggle="tab">
+                                        Areas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#LoanRequirements" data-toggle="tab">
+                                        Loan Requirements
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#PayType" data-toggle="tab">
+                                        Pay Type
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Penalties" data-toggle="tab">
+                                        Penalties
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Accounts" data-toggle="tab">
+                                        Accounts
+                                    </a>
+                                </li>
+                            </ul>
+                            <br />
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade in active" id="Areas">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                            <input type="text" id="searchArea" class="form-control" placeholder="Search" />
+                                                        </div>
+                                                    </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td align="right">
+                                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddAreaOnclick()">
+                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="flexgridHeight">
+                                                <div id="areaFlexGrid" class="grid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="btn-group col-md-7" id="navigationPageGrid">
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                                        <span class="glyphicon glyphicon-step-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                                        <span class="glyphicon glyphicon-step-forward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="LoanRequirements">
+
+                                </div>
+                                <div class="tab-pane fade" id="PayType">
+
+                                </div>
+                                <div class="tab-pane fade" id="Penalties">
+
+                                </div>
+                                <div class="tab-pane fade" id="Accounts">
+
                                 </div>
                             </div>
                         </div>
@@ -261,9 +308,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

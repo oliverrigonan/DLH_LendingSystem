@@ -10,6 +10,7 @@ namespace Lending.Models
     {
         [Key]
         public Int32 Id { get; set; }
+        public byte[] Photo { get; set; }
         public String FullName { get; set; }
         public String BirthDate { get; set; }
         public Int32 CivilStatusId { get; set; }

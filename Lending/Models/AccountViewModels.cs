@@ -74,13 +74,9 @@ namespace Lending.Models
         //public string Email { get; set; }
 
         [Required]
-        [Display(Name = "First name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [Display(Name = "Last name")]
-        public string LastName { get; set; }
-
+        [Display(Name = "Fullname")]
+        public string FullName { get; set; }
+        
         [Required]
         [Display(Name = "Username")]
         public string Username { get; set; }

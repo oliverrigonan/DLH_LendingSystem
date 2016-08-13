@@ -156,8 +156,7 @@ namespace Lending.Controllers
                 var user = new ApplicationUser 
                 { 
                     UserName = model.Username, 
-                    FirstName = model.FirstName, 
-                    LastName = model.LastName
+                    FullName = model.FullName
                 };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
@@ -177,18 +176,7 @@ namespace Lending.Controllers
                     newTblUser.AspUserId = user.Id;
                     newTblUser.Username = model.Username;
                     newTblUser.Password = model.Password;
-                    newTblUser.FirstName = model.FirstName;
-                    newTblUser.MiddleName = "";
-                    newTblUser.LastName = model.LastName;
-                    newTblUser.BirthDate = null;
-                    newTblUser.JobTitle = "N/A";
-                    newTblUser.AboutMe = "N/A";
-                    newTblUser.AddressStreet = "N/A";
-                    newTblUser.AddressCity = "N/A";
-                    newTblUser.AddressZip = "N/A";
-                    newTblUser.AddressCountry = "N/A";
-                    newTblUser.ContactNumber = "N/A";
-                    newTblUser.EmailAddress = "N/A";
+                    newTblUser.FullName = model.FullName;
                     newTblUser.CreatedDate = DateTime.Now;
                     newTblUser.UpdatedDate = DateTime.Now;
 

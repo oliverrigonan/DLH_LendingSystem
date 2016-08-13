@@ -52,9 +52,28 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult AreaList()
+        public ActionResult SystemTables()
         {
             return View();
+        }
+
+        [Authorize]
+        public ActionResult CompanyList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult CompanyDetail(Int32? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }
