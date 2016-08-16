@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
+using System.Data.Linq;
 
 namespace Lending.ApiControllers
 {
@@ -25,6 +26,7 @@ namespace Lending.ApiControllers
                                     select new Models.MstCoMakerStatement
                                     {
                                         Id = d.Id,
+                                        Photo = d.Photo.ToArray(),
                                         ApplicantId = d.ApplicantId,
                                         Applicant = d.mstApplicant.FullName,
                                         FullName = d.FullName,
@@ -81,6 +83,9 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 Data.mstCoMakerStatement newCoMakerStatement = new Data.mstCoMakerStatement();
+
+                byte[] imgarr = coMakerStatement.Photo;
+                newCoMakerStatement.Photo = new Binary(imgarr);
                 newCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
                 newCoMakerStatement.FullName = coMakerStatement.FullName;
                 newCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
@@ -144,6 +149,8 @@ namespace Lending.ApiControllers
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                     var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
+                    byte[] imgarr = coMakerStatement.Photo;
+                    updateCoMakerStatement.Photo = new Binary(imgarr);
                     updateCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
                     updateCoMakerStatement.FullName = coMakerStatement.FullName;
                     updateCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
@@ -196,7 +203,7 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update co - makers statement
+        // delete co - makers statement
         [Authorize]
         [HttpDelete]
         [Route("api/coMakerStatement/delete/{id}")]

@@ -18,7 +18,7 @@ namespace Lending.ApiControllers
         [Route("api/residenceType/list")]
         public List<Models.MstApplicantResidenceType> listApplicantResidenceType()
         {
-            var residenceTypes = from d in db.mstResidenceTypes
+            var residenceTypes = from d in db.mstResidenceTypes.OrderByDescending(d => d.Id)
                                  select new Models.MstApplicantResidenceType
                                  {
                                      Id = d.Id,

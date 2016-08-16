@@ -451,7 +451,7 @@
                         <img id="imageDisplay" src="#" class="img-responsive img-thumbnail" />
                         <hr />
                     </div>
-                    <input type="file" class="form-control requiredVideoke" id="product_Image">
+                    <input type="file" class="form-control" id="applicantImage">
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnOkChangePhoto" onclick="btnOkChangePhotoOnclick()"><i class="fa fa-check fa-fw"></i> Update</button>
@@ -480,7 +480,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- applicant detail edit real properties owned  -->
     <div class="modal fade" id="applicantDetailRealPropertiesOwnedModal" role="dialog">
@@ -588,11 +587,11 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="img-responsive img-thumbnail" src="~/Images/landing-page/me.jpg" />
+                            <div id="coMakerPhotoDiv" style="width: 100%" align="center"></div>
+                            <img class="img-responsive img-thumbnail" id="coMakerPhoto" src="~/Images/applicantPhotoPlaceHolder.png" />
                             <hr />
-                            <button class="btn btn-default btn-sm btn-block"><i class="fa fa-search-plus fa-fw"></i> Preview</button>
-                            <button class="btn btn-default btn-sm btn-block"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                            <button class="btn btn-danger btn-sm btn-block"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
+                            <button class="btn btn-default btn-sm btn-block" id="btnChangeCoMakerStatementPhoto" onclick="btnChangeCoMakerStatementPhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                            <button class="btn btn-danger btn-sm btn-block" id="btnDeleteCoMakerStatementPhoto"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
                             <br />
                         </div>
                         <div class="col-md-9">
@@ -812,6 +811,50 @@
                         <i class="fa fa-save fa-fw"></i> Save Changes
                     </button>
                     <button class="btn btn-danger" id="btnCoMakersStatementCancelChangesButton" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- co maker statement change photo -->
+    <div class="modal fade" id="coMakerStatementChangePhotoModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change Photo</h4>
+                </div>
+                <div class="modal-body">
+                    <div align="center" id="divCoMakerStatementImage">
+                        <img id="coMakerStatementImageDisplay" src="#" class="img-responsive img-thumbnail" />
+                        <hr />
+                    </div>
+                    <input type="file" class="form-control" id="coMakerStatementImage">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnOkChangeCoMakerStatementPhoto" onclick="btnOkChangeCoMakerStatementPhotoOnclick()"><i class="fa fa-check fa-fw"></i> Ok</button>
+                    <button class="btn btn-danger" id="btnCloseChangeCoMakerStatementPhoto" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation co Maker Statement photo modal -->
+    <div class="modal fade" id="deleteConfirmatioCoMakerStatementPhotoModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Photo</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this photo?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteCoMakerStatementPhoto" onclick="btnConfirmDeleteCoMakerStatementPhotoOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseCoMakerStatementPhoto" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -2036,6 +2079,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCoMakerStatementOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCoMakerStatementOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: applicantDetailCoMakersStatementResult[i]["Id"],
+                                Photo: applicantDetailCoMakersStatementResult[i]["Photo"],
                                 ApplicantId: applicantDetailCoMakersStatementResult[i]["ApplicantId"],
                                 Applicant: applicantDetailCoMakersStatementResult[i]["Applicant"],
                                 FullName: applicantDetailCoMakersStatementResult[i]["FullName"],
@@ -2433,11 +2477,18 @@
                 });
             });
 
+            var coMakerPhoto = document.getElementById("coMakerPhoto");
+            coMakerPhoto.src = "../Images/applicantPhotoPlaceHolder.png";
+
+            $("#coMakerPhoto").show();
+            $("#coMakerPhotoDiv").hide();
+
             $("#btnAddComakerApplianceOwned").prop("disabled", true);
             $("#btnAddCoMakerRealPropertiesOwned").prop("disabled", true);
             $("#btnCoMakersStatementSaveChangesButton").prop("disabled", false);
             $("#btnCoMakersStatementCancelChangesButton").prop("disabled", false);
-            document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-save fa-fw'></i> Save"
+            document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnDeleteCoMakerStatementPhoto").prop("disabled", true);
 
             coMakerStatementId = 0;
             document.getElementById("coMakerFullName").value = "NA";
@@ -2499,14 +2550,32 @@
                 });
             });
 
+            $("#coMakerPhoto").hide();
+            $("#coMakerPhotoDiv").show();
+
             $("#btnAddComakerApplianceOwned").prop("disabled", false);
             $("#btnAddCoMakerRealPropertiesOwned").prop("disabled", false);
             $("#btnCoMakersStatementSaveChangesButton").prop("disabled", false);
             $("#btnCoMakersStatementCancelChangesButton").prop("disabled", false);
             document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes"
+            $("#btnDeleteCoMakerStatementPhoto").prop("disabled", false);
 
             coMakerStatementCollectionView.editItem(coMakerStatementCollectionView.currentItem);
             var coMakerStatement = coMakerStatementCollectionView.currentEditItem;
+
+            $('#coMakerPhotoDiv').children("images").remove();
+
+            // applicant Image
+            var coMakerImageElement = document.createElement("images");
+            var coMakerImageData = new Image();
+            coMakerImageData.src = "data:image/jpeg;base64," + coMakerStatement.Photo;
+            coMakerImageData.className = "img-responsive img-thumbnail";
+            coMakerImageElement.appendChild(coMakerImageData);
+
+            var photoCoMakerDivElement = document.createElement("DIV");
+            var photoCoMakerDiv = document.getElementById("coMakerPhotoDiv").appendChild(coMakerImageElement);
+            photoCoMakerDiv.appendChild(photoCoMakerDivElement);
+
             coMakerStatementId = coMakerStatement.Id;
             document.getElementById("coMakerFullName").value = coMakerStatement.FullName;
             cboCoMakerBirthDate.value = new Date(coMakerStatement.BirthDate);
@@ -2582,6 +2651,7 @@
                 document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes"
 
                 var coMakerObject = new Object();
+                coMakerObject.Photo = $('#coMakerPhoto').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
                 coMakerObject.ApplicantId = getUrlParameter("id");
                 coMakerObject.FullName = document.getElementById('coMakerFullName').value;
                 coMakerObject.BirthDate = cboCoMakerBirthDate.value;
@@ -3135,7 +3205,7 @@
         }
 
         // onload image
-        document.querySelector('#product_Image').addEventListener('change', function () {
+        document.querySelector('#applicantImage').addEventListener('change', function () {
             var reader = new FileReader();
             reader.onload = function () {
                 var binaryString = this.result;
@@ -3149,11 +3219,72 @@
             return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
         }
 
+        // co maker statement change photo
+        function btnChangeCoMakerStatementPhotoOnclick() {
+            $("#coMakerStatementChangePhotoModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Ok";
+            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
+            $("#divCoMakerStatementImage").hide();
+        }
+
+        // Read URL image
+        function readCoMakerStatementImageURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#divCoMakerStatementImage").show();
+                    $('#coMakerStatementImageDisplay').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // onload image
+        document.querySelector('#coMakerStatementImage').addEventListener('change', function () {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var binaryString = this.result;
+            }
+            reader.readAsBinaryString(this.files[0]);
+        }, false);
+
+        // Read URL image
+        function readCoMakerStatementImageURLDetail(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#coMakerPhoto').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // ok photo
+        function btnOkChangeCoMakerStatementPhotoOnclick() {
+            $("#coMakerPhoto").show();
+            $("#coMakerPhotoDiv").hide();
+
+            var coMakerImage = document.getElementById("coMakerStatementImage");
+            readCoMakerStatementImageURLDetail(coMakerImage);
+            $("#coMakerStatementChangePhotoModal").modal("hide");
+            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Changing Picture"
+            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", true);
+        }
+
         // on load function
         window.onload = function () {
-            $("#product_Image").change(function () {
+            $("#applicantImage").change(function () {
                 readURL(this);
                 $('#imageDisplay').show();
+            });
+
+            $("#coMakerStatementImage").change(function () {
+                readCoMakerStatementImageURL(this);
+                $('#coMakerStatementImageDisplay').show();
             });
 
             NProgress.start();
