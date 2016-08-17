@@ -1,0 +1,2527 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>DLH - Set-up Master Tables</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <!-- Header -->
+    @Html.Partial("HomeHeader")
+
+    <section class="software-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="list-group">
+                        <a href="/Software" class="list-group-item">
+                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                        </a>
+                        <a href="/Software/ApplicantList" class="list-group-item">
+                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
+                        </a>
+                        <a href="/Software/LoanApplicationList" class="list-group-item">
+                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collection</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement</a>
+                        <a href="/Software/Tables" class="list-group-item active">
+                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
+                        </a>
+                        <a href="/Software/CompanyList" class="list-group-item">
+                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            User security stamp
+                        </div>
+                        <div class="panel-body">
+                            <p>Created by:</p>
+                            <div style="padding-left: 10px;">
+                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                <br />
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                            <hr />
+                            <p>Updated by:</p>
+                            <div style="padding-left: 10px;">
+                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                <br />
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4>Set-up Master Tables</h4>
+                        </div>
+                        <div class="panel-body">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#Areas" data-toggle="tab" id="areaTab">
+                                        Areas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Collectors" data-toggle="tab" id="collectorsTab">
+                                        Collectors
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
+                                        Requirements
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#PayType" data-toggle="tab" id="payTypeTab">
+                                        Pay Type
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#Accounts" data-toggle="tab" id="accountTab">
+                                        Accounts
+                                    </a>
+                                </li>
+                            </ul>
+                            <br />
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade in active" id="Areas">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                            <input type="text" id="searchArea" class="form-control" placeholder="Search" />
+                                                        </div>
+                                                    </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td align="right">
+                                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddAreaOnclick()">
+                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="flexgridHeight">
+                                                <div id="areaFlexGrid" class="grid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="btn-group col-md-7" id="navigationPageGrid">
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                                        <span class="glyphicon glyphicon-step-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                                        <span class="glyphicon glyphicon-step-forward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="Collectors">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                            <input type="text" id="searchCollector" class="form-control" placeholder="Search" />
+                                                        </div>
+                                                    </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td align="right">
+                                                        <button class="btn btn-success" id="btnAddCollector" onclick="btnAddCollectorOnclick()">
+                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="flexgridHeight">
+                                                <div id="collectorListFlexGrid" class="grid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="btn-group col-md-7" id="navigationPageGridCollector">
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollector">
+                                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollector">
+                                                        <span class="glyphicon glyphicon-step-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollector"></button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollector">
+                                                        <span class="glyphicon glyphicon-step-forward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollector">
+                                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="Requirements">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                            <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
+                                                        </div>
+                                                    </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td align="right">
+                                                        <button class="btn btn-success" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
+                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="flexgridHeight">
+                                                <div id="RequirementsListFlexGrid" class="grid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="btn-group col-md-7" id="navigationPageGridRequirements">
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridRequirements">
+                                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridRequirements">
+                                                        <span class="glyphicon glyphicon-step-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridRequirements"></button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridRequirements">
+                                                        <span class="glyphicon glyphicon-step-forward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridRequirements">
+                                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="PayType">
+                                    
+                                </div>
+                                <div class="tab-pane fade" id="Accounts">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                            <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
+                                                        </div>
+                                                    </td>
+                                                    <td>&nbsp;&nbsp;&nbsp;</td>
+                                                    <td align="right">
+                                                        <button class="btn btn-success" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
+                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="flexgridHeight">
+                                                <div id="AccountsListFlexGrid" class="grid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <div class="row">
+                                                <div class="btn-group col-md-7" id="navigationPageGridAccounts">
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridAccounts">
+                                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridAccounts">
+                                                        <span class="glyphicon glyphicon-step-backward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridAccounts"></button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridAccounts">
+                                                        <span class="glyphicon glyphicon-step-forward"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridAccounts">
+                                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Area Detail Modal -->
+    <div class="modal fade" id="areaEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Area Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Area</dt>
+                        <dd>
+                            <input type="text" class="form-control requiredArea" id="areaName" placeholder="Area" />
+                        </dd>
+                        <dt>Description</dt>
+                        <dd>
+                            <textarea type="text" class="form-control requiredArea" id="areaDescription" placeholder="Description"></textarea>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveArea" onclick="saveAreaOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseArea" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Area modal -->
+    <div class="modal fade" id="deleteConfirmationAreaModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Area</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Area?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteArea" onclick="btnConfirmDeleteAreaOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteAreaModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collector Detail Modal -->
+    <div class="modal fade" id="collectorEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Collector Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Collector</dt>
+                        <dd>
+                            <input type="text" class="form-control requiredCollector" id="collectorName" placeholder="Collector Name" />
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveCollector" onclick="saveCollectorOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseCollector" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Collector modal -->
+    <div class="modal fade" id="deleteConfirmationCollectorModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Collector</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Collector?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteCollector" onclick="btnConfirmDeleteCollectorOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteCollectorModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--   Requirements Detail Modal -->
+    <div class="modal fade" id="RequirementsEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Requirement Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Requirement</dt>
+                        <dd>
+                            <input type="text" class="form-control requiredRequirements" id="requirementName" placeholder="Requirement" />
+                        </dd>
+                        <dt>Description</dt>
+                        <dd>
+                            <textarea class="form-control requiredRequirements" id="requirementDescription" placeholder="Description"></textarea>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveRequirements" onclick="saveRequirementsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseRequirements" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation  Requirements modal -->
+    <div class="modal fade" id="deleteConfirmationRequirementsModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Requirements</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Requirement?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteRequirements" onclick="btnConfirmDeleteRequirementsOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteRequirementsModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--   Accounts Detail Modal -->
+    <div class="modal fade" id="AccountsEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Requirement Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Account</dt>
+                        <dd>
+                            <input type="text" class="form-control requiredAccounts" id="accountName" placeholder="Requirement" />
+                        </dd>
+                        <dt>Description</dt>
+                        <dd>
+                            <textarea class="form-control requiredAccounts" id="accountDescription" placeholder="Description"></textarea>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveAccounts" onclick="saveAccountsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseAccounts" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation  Accounts modal -->
+    <div class="modal fade" id="deleteConfirmationAccountsModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Accounts</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Account?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteAccounts" onclick="btnConfirmDeleteAccountsOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteAccountsModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var areaCollectionView;
+        var areaFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
+        var areaId = 0;
+
+        var collectorCollectionView;
+        var collectorFlexGrid;
+        var btnFirstPageGridCollector;
+        var btnPreviousPageGridCollector;
+        var btnNextPageGridCollector;
+        var btnLastPageGridCollector;
+        var btnCurrentPageGridCollector;
+        var collectorId = 0;
+
+        var requirementsCollectionView;
+        var requirementsFlexGrid;
+        var btnFirstPageGridRequirements;
+        var btnPreviousPageGridRequirements;
+        var btnNextPageGridRequirements;
+        var btnLastPageGridRequirements;
+        var btnCurrentPageGridRequirements;
+        var requirementId = 0;
+
+        var accountsCollectionView;
+        var accountsFlexGrid;
+        var btnFirstPageGridAccounts;
+        var btnPreviousPageGridAccounts;
+        var btnNextPageGridAccounts;
+        var btnLastPageGridAccounts;
+        var btnCurrentPageGridAccounts;
+        var accountId = 0;
+
+        // get areas data
+        function getAreasData() {
+            var areas = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (areaListResult) {
+                    if (areaListResult.length > 0) {
+                        for (i = 0; i < areaListResult.length; i++) {
+                            areas.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditAreaOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteAreaOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: areaListResult[i]["Id"],
+                                Area: areaListResult[i]["Area"],
+                                Description: areaListResult[i]["Description"],
+                                CreatedByUserId: areaListResult[i]["CreatedByUserId"],
+                                CreatedByUser: areaListResult[i]["CreatedByUser"],
+                                CreatedDateTime: areaListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: areaListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: areaListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: areaListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return areas;
+        }
+
+        // add area
+        function btnAddAreaOnclick() {
+            $("#areaEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveArea").prop("disabled", false);
+            $("#btnCloseArea").prop("disabled", false);
+
+            areaId = 0;
+            document.getElementById("areaName").value = "NA";
+            document.getElementById("areaDescription").value = "NA";
+        }
+
+        // edit area
+        function btnEditAreaOnclick() {
+            $("#areaEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+            $("#btnSaveArea").prop("disabled", false);
+            $("#btnCloseArea").prop("disabled", false);
+
+            areaCollectionView.editItem(areaCollectionView.currentItem);
+            var currentItem = areaCollectionView.currentEditItem;
+
+            areaId = currentItem.Id;
+            document.getElementById("areaName").value = currentItem.Area;
+            document.getElementById("areaDescription").value = currentItem.Description;
+        }
+
+        // form input validation
+        function inputValidationForArea() {
+            var isValid = true;
+            $('.requiredArea').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save area
+        function saveAreaOnclick() {
+            if (inputValidationForArea()) {
+                if (areaId > 0) {
+                    document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                } else {
+                    document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                }
+
+                $("#btnSaveArea").prop("disabled", true);
+                $("#btnCloseArea").prop("disabled", true);
+
+                var areaObject = new Object();
+                areaObject.Area = document.getElementById('areaName').value;
+                areaObject.Description = document.getElementById('areaDescription').value;
+                var areaData = JSON.stringify(areaObject);
+
+                if (areaId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/area/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: areaData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully saved.", "Save Successful");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+                                areaCollectionView.canFilter = true;
+                                areaCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchArea').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    areaCollectionView.refresh();
+                                });
+
+                                areaCollectionView.filter = function (item) {
+                                    return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+                                }
+
+                                areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtons();
+                                });
+
+                                areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateStampSecurity();
+                                });
+
+                                // Flex Grid
+                                areaFlexGrid.itemsSource = areaCollectionView;
+                                areaFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#applicantDetailApplianceOwnedModal").modal("hide");
+
+                                document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveArea").prop("disabled", false);
+                                $("#btnCloseArea").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/area/update/' + areaId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: areaData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully updated.", "Update Successful");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+                                areaCollectionView.canFilter = true;
+                                areaCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchArea').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    areaCollectionView.refresh();
+                                });
+
+                                areaCollectionView.filter = function (item) {
+                                    return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+                                }
+
+                                areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtons();
+                                });
+
+                                areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateStampSecurity();
+                                });
+
+                                // Flex Grid
+                                areaFlexGrid.itemsSource = areaCollectionView;
+                                areaFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveArea").prop("disabled", false);
+                                $("#btnCloseArea").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#areaEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveArea").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveArea").prop("disabled", false);
+                                $("#btnCloseArea").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // delete area
+        function btnDeleteAreaOnclick() {
+            $("#deleteConfirmationAreaModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+            $("#btnConfirmDeleteArea").prop("disabled", false);
+            $("#btnCloseDeleteAreaModal").prop("disabled", false);
+        }
+
+        // delete confirm area
+        function btnConfirmDeleteAreaOnclick() {
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteArea").prop("disabled", true);
+            $("#btnCloseDeleteAreaModal").prop("disabled", true);
+
+            areaCollectionView.editItem(areaCollectionView.currentItem);
+            var currentItem = areaCollectionView.currentEditItem;
+
+            $.ajax({
+                type: "DELETE",
+                url: '/api/area/delete/' + currentItem.Id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The data was successfully deleted.", "Delete Successful");
+
+                        $("#deleteConfirmationAreaModal").modal("hide");
+
+                        areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+                        areaCollectionView.canFilter = true;
+                        areaCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchArea').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            areaCollectionView.refresh();
+                        });
+
+                        areaCollectionView.filter = function (item) {
+                            return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+                        }
+
+                        areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        areaFlexGrid.itemsSource = areaCollectionView;
+                        areaFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+
+                        $("#deleteConfirmationAreaModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                        $("#deleteConfirmationAreaModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // navigation button for flexgrid
+        function updateNavigateButtons() {
+            if (areaCollectionView.pageSize <= 0) {
+                document.getElementById('navigationPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('navigationPageGrid').style.display = 'block';
+            if (areaCollectionView.pageIndex === 0) {
+                btnFirstPageGrid.setAttribute('disabled', 'disabled');
+                btnPreviousPageGrid.setAttribute('disabled', 'disabled');
+                btnNextPageGrid.removeAttribute('disabled');
+                btnLastPageGrid.removeAttribute('disabled');
+            } else if (areaCollectionView.pageIndex === (areaCollectionView.pageCount - 1)) {
+                btnFirstPageGrid.removeAttribute('disabled');
+                btnPreviousPageGrid.removeAttribute('disabled');
+                btnLastPageGrid.setAttribute('disabled', 'disabled');
+                btnNextPageGrid.setAttribute('disabled', 'disabled');
+            } else {
+                btnFirstPageGrid.removeAttribute('disabled');
+                btnPreviousPageGrid.removeAttribute('disabled');
+                btnNextPageGrid.removeAttribute('disabled');
+                btnLastPageGrid.removeAttribute('disabled');
+            }
+            btnCurrentPageGrid.innerHTML = (areaCollectionView.pageIndex + 1) + ' / ' + areaCollectionView.pageCount;
+        }
+
+        // stamp security
+        function updateStampSecurity() {
+            var item = areaCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        // area flexgrid
+        function createAreaFlexGrid() {
+            areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+            areaCollectionView.canFilter = true;
+            areaCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchArea').keyup(function () {
+                filterText = this.value.toLowerCase();
+                areaCollectionView.refresh();
+            });
+
+            areaCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+            }
+
+            areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
+
+            areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateStampSecurity();
+            });
+
+            // Flex Grid
+            areaFlexGrid = new wijmo.grid.FlexGrid('#areaFlexGrid');
+            areaFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Areas",
+                                "isReadOnly": true,
+                                "visible": false,
+                                "allowDragging": false,
+                                "width": "*"
+                            },
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": "3*",
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: areaCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            areaFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtons();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                areaCollectionView.moveToFirstPage();
+                updateNavigateButtons();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                areaCollectionView.moveToPreviousPage();
+                updateNavigateButtons();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                areaCollectionView.moveToNextPage();
+                updateNavigateButtons();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                areaCollectionView.moveToLastPage();
+                updateNavigateButtons();
+            });
+        }
+
+        // area tab
+        $('#areaTab').click(function () {
+            NProgress.start();
+            $("#Areas").show();
+            $("#Collectors").hide();
+            $("#Requirements").hide();
+            $("#Accounts").hide();
+
+            areaCollectionView = new wijmo.collections.CollectionView(getAreasData());
+            areaCollectionView.canFilter = true;
+            areaCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchArea').keyup(function () {
+                filterText = this.value.toLowerCase();
+                areaCollectionView.refresh();
+            });
+
+            areaCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);;
+            }
+
+            areaCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
+
+            areaCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateStampSecurity();
+            });
+
+            // Flex Grid
+            areaFlexGrid.itemsSource = areaCollectionView;
+            areaFlexGrid.trackChanges = true;
+        });
+
+        // area key event - area name
+        $('#areaName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // area key event - area description
+        $('#areaDescription').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // get collectors
+        function getCollectorList() {
+            var collectors = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/collector/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectorListResult) {
+                    if (collectorListResult.length > 0) {
+                        for (i = 0; i < collectorListResult.length; i++) {
+                            collectors.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editCollectorOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteCollectorOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: collectorListResult[i]["Id"],
+                                CollectorName: collectorListResult[i]["CollectorName"],
+                                CreatedByUserId: collectorListResult[i]["CreatedByUserId"],
+                                CreatedByUser: collectorListResult[i]["CreatedByUser"],
+                                CreatedDateTime: collectorListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: collectorListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: collectorListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: collectorListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return collectors;
+        }
+
+        // add new collector
+        function btnAddCollectorOnclick() {
+            $("#collectorEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollector").prop("disabled", false);
+            $("#btnCloseCollector").prop("disabled", false);
+
+            collectorId = 0;
+            document.getElementById("collectorName").value = "NA";
+        }
+
+        // edit collector
+        function editCollectorOnclick() {
+            $("#collectorEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+            $("#btnSaveCollector").prop("disabled", false);
+            $("#btnCloseCollector").prop("disabled", false);
+
+            collectorCollectionView.editItem(collectorCollectionView.currentItem);
+            var collectorCurrentEditItem = collectorCollectionView.currentEditItem;
+
+            collectorId = collectorCurrentEditItem.Id;
+            document.getElementById("collectorName").value = collectorCurrentEditItem.CollectorName;
+        }
+
+        // form input validation
+        function inputValidationForCollector() {
+            var isValid = true;
+            $('.requiredCollector').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save collector
+        function saveCollectorOnclick() {
+            if (inputValidationForCollector()) {
+                if (collectorId > 0) {
+                    document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                } else {
+                    document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                }
+
+                $("#btnSaveCollector").prop("disabled", true);
+                $("#btnCloseCollector").prop("disabled", true);
+
+                var collectorObject = new Object();
+                collectorObject.CollectorName = document.getElementById('collectorName').value;
+                var collectorData = JSON.stringify(collectorObject);
+
+                if (collectorId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/collector/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: collectorData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully saved.", "Save Successful");
+
+                                $("#collectorEditDetailModal").modal("hide");
+
+                                collectorCollectionView = new wijmo.collections.CollectionView(getCollectorList());
+                                collectorCollectionView.canFilter = true;
+                                collectorCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchCollector').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    collectorCollectionView.refresh();
+                                });
+
+                                collectorCollectionView.filter = function (item) {
+                                    return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsCollector();
+                                });
+
+                                collectorCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateCollectorStampSecurity();
+                                });
+
+                                // Flex Grid
+                                collectorFlexGrid.itemsSource = collectorCollectionView;
+                                collectorFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#collectorEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollector").prop("disabled", false);
+                                $("#btnCloseCollector").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/collector/update/' + collectorId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: collectorData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully updated.", "Update Successful");
+
+                                $("#collectorEditDetailModal").modal("hide");
+
+                                collectorCollectionView = new wijmo.collections.CollectionView(getCollectorList());
+                                collectorCollectionView.canFilter = true;
+                                collectorCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchCollector').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    collectorCollectionView.refresh();
+                                });
+
+                                collectorCollectionView.filter = function (item) {
+                                    return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsCollector();
+                                });
+
+                                collectorCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateCollectorStampSecurity();
+                                });
+
+                                // Flex Grid
+                                collectorFlexGrid.itemsSource = collectorCollectionView;
+                                collectorFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                                $("#collectorEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollector").prop("disabled", false);
+                                $("#btnCloseCollector").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#collectorEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveCollector").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollector").prop("disabled", false);
+                                $("#btnCloseCollector").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // delete collector
+        function deleteCollectorOnclick() {
+            $("#deleteConfirmationCollectorModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteCollector").innerHTML = "Yes";
+            $("#btnConfirmDeleteCollector").prop("disabled", false);
+            $("#btnCloseDeleteCollectorModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteCollectorOnclick() {
+            document.getElementById("btnConfirmDeleteCollector").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteCollector").prop("disabled", true);
+            $("#btnCloseDeleteCollectorModal").prop("disabled", true);
+
+            collectorCollectionView.editItem(collectorCollectionView.currentItem);
+            var id = collectorCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/collector/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The record was successfully deleted.", "Delete Successful");
+
+                        $('#deleteConfirmationCollectorModal').modal('hide');
+
+                        collectorCollectionView = new wijmo.collections.CollectionView(getCollectorList());
+                        collectorCollectionView.canFilter = true;
+                        collectorCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchCollector').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            collectorCollectionView.refresh();
+                        });
+
+                        collectorCollectionView.filter = function (item) {
+                            return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        // Flex Grid
+                        collectorFlexGrid.itemsSource = collectorCollectionView;
+                        collectorFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        $('#deleteConfirmationCollectorModal').modal('hide');
+                        $("#btnConfirmDeleteCollector").prop("disabled", false);
+                        $("#btnCloseDeleteCollectorModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        $('#deleteConfirmationCollectorModal').modal('hide');
+                        $("#btnConfirmDeleteCollector").prop("disabled", false);
+                        $("#btnCloseDeleteCollectorModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // navigation button for flexgrid
+        function updateNavigateButtonsCollector() {
+            if (collectorCollectionView.pageSize <= 0) {
+                document.getElementById('navigationPageGridCollector').style.display = 'none';
+                return;
+            }
+            document.getElementById('navigationPageGridCollector').style.display = 'block';
+            if (collectorCollectionView.pageIndex === 0) {
+                btnFirstPageGridCollector.setAttribute('disabled', 'disabled');
+                btnPreviousPageGridCollector.setAttribute('disabled', 'disabled');
+                btnNextPageGridCollector.removeAttribute('disabled');
+                btnLastPageGridCollector.removeAttribute('disabled');
+            } else if (collectorCollectionView.pageIndex === (collectorCollectionView.pageCount - 1)) {
+                btnFirstPageGridCollector.removeAttribute('disabled');
+                btnPreviousPageGridCollector.removeAttribute('disabled');
+                btnLastPageGridCollector.setAttribute('disabled', 'disabled');
+                btnNextPageGridCollector.setAttribute('disabled', 'disabled');
+            } else {
+                btnFirstPageGridCollector.removeAttribute('disabled');
+                btnPreviousPageGridCollector.removeAttribute('disabled');
+                btnNextPageGridCollector.removeAttribute('disabled');
+                btnLastPageGridCollector.removeAttribute('disabled');
+            }
+            btnCurrentPageGridCollector.innerHTML = (collectorCollectionView.pageIndex + 1) + ' / ' + collectorCollectionView.pageCount;
+        }
+
+        // stamp security
+        function updateCollectorStampSecurity() {
+            var item = collectorCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        // collector flexgrid
+        function createCollectorFlexGrid() {
+            NProgress.start();
+            toastrModification();
+
+            collectorCollectionView = new wijmo.collections.CollectionView(getCollectorList());
+            collectorCollectionView.canFilter = true;
+            collectorCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchCollector').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectorCollectionView.refresh();
+            });
+
+            collectorCollectionView.filter = function (item) {
+                return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollector();
+            });
+
+            collectorCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateCollectorStampSecurity();
+            });
+
+            // Flex Grid
+            collectorFlexGrid = new wijmo.grid.FlexGrid('#collectorListFlexGrid');
+            collectorFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Collectors",
+                                "isReadOnly": true,
+                                "visible": false,
+                                "allowDragging": false,
+                                "width": "*"
+                            },
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Collector",
+                                "binding": "CollectorName",
+                                "allowSorting": true,
+                                "width": "3*"
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: collectorCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            collectorFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollector = document.getElementById('btnMoveToFirstPageGridCollector');
+            btnPreviousPageGridCollector = document.getElementById('btnMoveToPreviousPageGridCollector');
+            btnNextPageGridCollector = document.getElementById('btnMoveToNextPageGridCollector');
+            btnLastPageGridCollector = document.getElementById('btnMoveToLastPageGridCollector');
+            btnCurrentPageGridCollector = document.getElementById('btnCurrentPageGridCollector');
+
+            updateNavigateButtonsCollector();
+
+            btnFirstPageGridCollector.addEventListener('click', function () {
+                collectorCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollector();
+            });
+            btnPreviousPageGridCollector.addEventListener('click', function () {
+                collectorCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollector();
+            });
+            btnNextPageGridCollector.addEventListener('click', function () {
+                collectorCollectionView.moveToNextPage();
+                updateNavigateButtonsCollector();
+            });
+            btnLastPageGridCollector.addEventListener('click', function () {
+                collectorCollectionView.moveToLastPage();
+                updateNavigateButtonsCollector();
+            });
+        }
+
+        // collector tab
+        $('#collectorsTab').click(function () {
+            NProgress.start();
+            $("#Areas").hide();
+            $("#Collectors").show();
+            $("#Requirements").hide();
+            $("#Accounts").hide();
+
+            createCollectorFlexGrid();
+            window.createCollectorFlexGrid = function () {
+                return true;
+            }
+
+            collectorCollectionView = new wijmo.collections.CollectionView(getCollectorList());
+            collectorCollectionView.canFilter = true;
+            collectorCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchCollector').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectorCollectionView.refresh();
+            });
+
+            collectorCollectionView.filter = function (item) {
+                return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollector();
+            });
+
+            collectorCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateCollectorStampSecurity();
+            });
+
+            // Flex Grid
+            collectorFlexGrid.itemsSource = collectorCollectionView;
+            collectorFlexGrid.trackChanges = true;
+        });
+
+        // collector key event - area name
+        $('#collectorName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // get   Requirements
+        function getRequirementsList() {
+            var requirements = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/requirements/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (requirementsListResult) {
+                    if (requirementsListResult.length > 0) {
+                        for (i = 0; i < requirementsListResult.length; i++) {
+                            requirements.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editRequirementsOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteRequirementsOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: requirementsListResult[i]["Id"],
+                                Requirement: requirementsListResult[i]["Requirement"],
+                                Description: requirementsListResult[i]["Description"],
+                                CreatedByUserId: requirementsListResult[i]["CreatedByUserId"],
+                                CreatedByUser: requirementsListResult[i]["CreatedByUser"],
+                                CreatedDateTime: requirementsListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: requirementsListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: requirementsListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: requirementsListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return requirements;
+        }
+
+        // add new   Requirements
+        function btnAddRequirementsOnclick() {
+            $("#RequirementsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveRequirements").prop("disabled", false);
+            $("#btnCloseRequirements").prop("disabled", false);
+
+            requirementId = 0;
+            document.getElementById("requirementName").value = "NA";
+            document.getElementById("requirementDescription").value = "NA";
+        }
+
+        // edit   Requirements
+        function editRequirementsOnclick() {
+            $("#RequirementsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+            $("#btnSaveRequirements").prop("disabled", false);
+            $("#btnCloseRequirements").prop("disabled", false);
+
+            requirementsCollectionView.editItem(requirementsCollectionView.currentItem);
+            var requirementCurrentEditItem = requirementsCollectionView.currentEditItem;
+
+            requirementId = requirementCurrentEditItem.Id;
+            document.getElementById("requirementName").value = requirementCurrentEditItem.Requirement;
+            document.getElementById("requirementDescription").value = requirementCurrentEditItem.Description;
+        }
+
+        // form input validation
+        function inputValidationForRequirements() {
+            var isValid = true;
+            $('.requiredRequirements').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save   Requirements
+        function saveRequirementsOnclick() {
+            if (inputValidationForRequirements()) {
+                if (requirementId > 0) {
+                    document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                } else {
+                    document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                }
+
+                $("#btnSaveRequirements").prop("disabled", true);
+                $("#btnCloseRequirements").prop("disabled", true);
+
+                var RequirementsObject = new Object();
+                RequirementsObject.Requirement = document.getElementById('requirementName').value;
+                RequirementsObject.Description = document.getElementById('requirementDescription').value;
+                var RequirementsData = JSON.stringify(RequirementsObject);
+
+                if (requirementId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/Requirements/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: RequirementsData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully saved.", "Save Successful");
+
+                                $("#RequirementsEditDetailModal").modal("hide");
+
+                                requirementsCollectionView = new wijmo.collections.CollectionView(getRequirementsList());
+                                requirementsCollectionView.canFilter = true;
+                                requirementsCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchRequirements').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    requirementsCollectionView.refresh();
+                                });
+
+                                requirementsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsRequirements();
+                                });
+
+                                requirementsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateRequirementsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                requirementsFlexGrid.itemsSource = requirementsCollectionView;
+                                requirementsFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#RequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveRequirements").prop("disabled", false);
+                                $("#btnCloseRequirements").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/Requirements/update/' + requirementId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: RequirementsData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully updated.", "Update Successful");
+
+                                $("#RequirementsEditDetailModal").modal("hide");
+
+                                requirementsCollectionView = new wijmo.collections.CollectionView(getRequirementsList());
+                                requirementsCollectionView.canFilter = true;
+                                requirementsCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchRequirements').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    requirementsCollectionView.refresh();
+                                });
+
+                                requirementsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsRequirements();
+                                });
+
+                                requirementsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateRequirementsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                requirementsFlexGrid.itemsSource = requirementsCollectionView;
+                                requirementsFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                                $("#RequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveRequirements").prop("disabled", false);
+                                $("#btnCloseRequirements").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#RequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveRequirements").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveRequirements").prop("disabled", false);
+                                $("#btnCloseRequirements").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // delete   Requirements
+        function deleteRequirementsOnclick() {
+            $("#deleteConfirmationRequirementsModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteRequirements").innerHTML = "Yes";
+            $("#btnConfirmDeleteRequirements").prop("disabled", false);
+            $("#btnCloseDeleteRequirementsModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteRequirementsOnclick() {
+            document.getElementById("btnConfirmDeleteRequirements").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteRequirements").prop("disabled", true);
+            $("#btnCloseDeleteRequirementsModal").prop("disabled", true);
+
+            requirementsCollectionView.editItem(requirementsCollectionView.currentItem);
+            var id = requirementsCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/Requirements/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The record was successfully deleted.", "Delete Successful");
+
+                        $('#deleteConfirmationRequirementsModal').modal('hide');
+
+                        requirementsCollectionView = new wijmo.collections.CollectionView(getRequirementsList());
+                        requirementsCollectionView.canFilter = true;
+                        requirementsCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchRequirements').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            requirementsCollectionView.refresh();
+                        });
+
+                        requirementsCollectionView.filter = function (item) {
+                            return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsRequirements();
+                        });
+
+                        requirementsCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateRequirementsStampSecurity();
+                        });
+
+                        // Flex Grid
+                        requirementsFlexGrid.itemsSource = requirementsCollectionView;
+                        requirementsFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        $('#deleteConfirmationRequirementsModal').modal('hide');
+                        $("#btnConfirmDeleteRequirements").prop("disabled", false);
+                        $("#btnCloseDeleteRequirementsModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        $('#deleteConfirmationRequirementsModal').modal('hide');
+                        $("#btnConfirmDeleteRequirements").prop("disabled", false);
+                        $("#btnCloseDeleteRequirementsModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // navigation button for flexgrid
+        function updateNavigateButtonsRequirements() {
+            if (requirementsCollectionView.pageSize <= 0) {
+                document.getElementById('navigationPageGridRequirements').style.display = 'none';
+                return;
+            }
+            document.getElementById('navigationPageGridRequirements').style.display = 'block';
+            if (requirementsCollectionView.pageIndex === 0) {
+                btnFirstPageGridRequirements.setAttribute('disabled', 'disabled');
+                btnPreviousPageGridRequirements.setAttribute('disabled', 'disabled');
+                btnNextPageGridRequirements.removeAttribute('disabled');
+                btnLastPageGridRequirements.removeAttribute('disabled');
+            } else if (requirementsCollectionView.pageIndex === (requirementsCollectionView.pageCount - 1)) {
+                btnFirstPageGridRequirements.removeAttribute('disabled');
+                btnPreviousPageGridRequirements.removeAttribute('disabled');
+                btnLastPageGridRequirements.setAttribute('disabled', 'disabled');
+                btnNextPageGridRequirements.setAttribute('disabled', 'disabled');
+            } else {
+                btnFirstPageGridRequirements.removeAttribute('disabled');
+                btnPreviousPageGridRequirements.removeAttribute('disabled');
+                btnNextPageGridRequirements.removeAttribute('disabled');
+                btnLastPageGridRequirements.removeAttribute('disabled');
+            }
+            btnCurrentPageGridRequirements.innerHTML = (requirementsCollectionView.pageIndex + 1) + ' / ' + requirementsCollectionView.pageCount;
+        }
+
+        // stamp security
+        function updateRequirementsStampSecurity() {
+            var item = requirementsCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        //   Requirements flexgrid
+        function createRequirementFlexGrid() {
+            NProgress.start();
+            toastrModification();
+
+            requirementsCollectionView = new wijmo.collections.CollectionView(getRequirementsList());
+            requirementsCollectionView.canFilter = true;
+            requirementsCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchRequirements').keyup(function () {
+                filterText = this.value.toLowerCase();
+                requirementsCollectionView.refresh();
+            });
+
+            requirementsCollectionView.filter = function (item) {
+                return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsRequirements();
+            });
+
+            requirementsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateRequirementsStampSecurity();
+            });
+
+            // Flex Grid
+            requirementsFlexGrid = new wijmo.grid.FlexGrid('#RequirementsListFlexGrid');
+            requirementsFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Requirements",
+                                "isReadOnly": true,
+                                "visible": false,
+                                "allowDragging": false,
+                                "width": "*"
+                            },
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Requirement",
+                                "binding": "Requirement",
+                                "allowSorting": true,
+                                "width": "3*"
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: requirementsCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            requirementsFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridRequirements = document.getElementById('btnMoveToFirstPageGridRequirements');
+            btnPreviousPageGridRequirements = document.getElementById('btnMoveToPreviousPageGridRequirements');
+            btnNextPageGridRequirements = document.getElementById('btnMoveToNextPageGridRequirements');
+            btnLastPageGridRequirements = document.getElementById('btnMoveToLastPageGridRequirements');
+            btnCurrentPageGridRequirements = document.getElementById('btnCurrentPageGridRequirements');
+
+            updateNavigateButtonsRequirements();
+
+            btnFirstPageGridRequirements.addEventListener('click', function () {
+                requirementsCollectionView.moveToFirstPage();
+                updateNavigateButtonsRequirements();
+            });
+            btnPreviousPageGridRequirements.addEventListener('click', function () {
+                requirementsCollectionView.moveToPreviousPage();
+                updateNavigateButtonsRequirements();
+            });
+            btnNextPageGridRequirements.addEventListener('click', function () {
+                requirementsCollectionView.moveToNextPage();
+                updateNavigateButtonsRequirements();
+            });
+            btnLastPageGridRequirements.addEventListener('click', function () {
+                requirementsCollectionView.moveToLastPage();
+                updateNavigateButtonsRequirements();
+            });
+
+            // show company summary on phone layout
+            requirementsFlexGrid.formatItem.addHandler(function (s, e) {
+                if (e.panel == requirementsFlexGrid.cells && e.col == 0) {
+                    var html = wijmo.format(
+                        '<table style="width: 100%">' +
+                            '<tr>' +
+                                '<td align="right" style="width: 20%" valign="middle">' +
+                                    '<div class="button-item">{EditButton}</div>' +
+                                    '<div class="button-item">{DeleteButton} </div>' +
+                                '</td>' +
+                                '<td>' +
+                                    '<div class="item-header">{Requirement}</div>' +
+                                    '<div class="item-detail">{Description}</div>' +
+                                '</td>' +
+                            '</tr>' +
+                        '</table>',
+                        requirementsFlexGrid.rows[e.row].dataItem);
+                    e.cell.innerHTML = html;
+                }
+            });
+        }
+
+        //   Requirements tab
+        $('#RequirementsTab').click(function () {
+            NProgress.start();
+            $("#Areas").hide();
+            $("#Collectors").hide();
+            $("#Requirements").show();
+            $("#Accounts").hide();
+
+            createRequirementFlexGrid();
+            window.createRequirementFlexGrid = function () {
+                return true;
+            }
+
+            requirementsCollectionView = new wijmo.collections.CollectionView(getRequirementsList());
+            requirementsCollectionView.canFilter = true;
+            requirementsCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchRequirements').keyup(function () {
+                filterText = this.value.toLowerCase();
+                requirementsCollectionView.refresh();
+            });
+
+            requirementsCollectionView.filter = function (item) {
+                return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsRequirements();
+            });
+
+            requirementsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateRequirementsStampSecurity();
+            });
+
+            // Flex Grid
+            requirementsFlexGrid.itemsSource = requirementsCollectionView;
+            requirementsFlexGrid.trackChanges = true;
+        });
+
+        // requirements key event - area name
+        $('#requirementName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // requirements key event - area name
+        $('#requirementDescription').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+
+        /// ===============================================
+
+
+
+        // get   Accounts
+        function getAccountsList() {
+            var Accounts = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/account/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (AccountsListResult) {
+                    if (AccountsListResult.length > 0) {
+                        for (i = 0; i < AccountsListResult.length; i++) {
+                            Accounts.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editAccountsOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteAccountsOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: AccountsListResult[i]["Id"],
+                                Account: AccountsListResult[i]["Account"],
+                                Description: AccountsListResult[i]["Description"],
+                                CreatedByUserId: AccountsListResult[i]["CreatedByUserId"],
+                                CreatedByUser: AccountsListResult[i]["CreatedByUser"],
+                                CreatedDateTime: AccountsListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: AccountsListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: AccountsListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: AccountsListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return Accounts;
+        }
+
+        // add new   Accounts
+        function btnAddAccountsOnclick() {
+            $("#AccountsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveAccounts").prop("disabled", false);
+            $("#btnCloseAccounts").prop("disabled", false);
+
+            accountId = 0;
+            document.getElementById("accountName").value = "NA";
+            document.getElementById("accountDescription").value = "NA";
+        }
+
+        // edit   Accounts
+        function editAccountsOnclick() {
+            $("#AccountsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+            $("#btnSaveAccounts").prop("disabled", false);
+            $("#btnCloseAccounts").prop("disabled", false);
+
+            accountsCollectionView.editItem(accountsCollectionView.currentItem);
+            var accountCurrentEditItem = accountsCollectionView.currentEditItem;
+
+            accountId = accountCurrentEditItem.Id;
+            document.getElementById("accountName").value = accountCurrentEditItem.Account;
+            document.getElementById("accountDescription").value = accountCurrentEditItem.Description;
+        }
+
+        // form input validation
+        function inputValidationForAccounts() {
+            var isValid = true;
+            $('.requiredAccounts').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save   Accounts
+        function saveAccountsOnclick() {
+            if (inputValidationForAccounts()) {
+                if (accountId > 0) {
+                    document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                } else {
+                    document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                }
+
+                $("#btnSaveAccounts").prop("disabled", true);
+                $("#btnCloseAccounts").prop("disabled", true);
+
+                var AccountsObject = new Object();
+                AccountsObject.Account = document.getElementById('accountName').value;
+                AccountsObject.Description = document.getElementById('accountDescription').value;
+                var AccountsData = JSON.stringify(AccountsObject);
+
+                if (accountId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/account/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: AccountsData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully saved.", "Save Successful");
+
+                                $("#AccountsEditDetailModal").modal("hide");
+
+                                accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
+                                accountsCollectionView.canFilter = true;
+                                accountsCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchAccounts').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    accountsCollectionView.refresh();
+                                });
+
+                                accountsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsAccounts();
+                                });
+
+                                accountsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateAccountsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                accountsFlexGrid.itemsSource = accountsCollectionView;
+                                accountsFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#AccountsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveAccounts").prop("disabled", false);
+                                $("#btnCloseAccounts").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/account/update/' + accountId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: AccountsData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully updated.", "Update Successful");
+
+                                $("#AccountsEditDetailModal").modal("hide");
+
+                                accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
+                                accountsCollectionView.canFilter = true;
+                                accountsCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchAccounts').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    accountsCollectionView.refresh();
+                                });
+
+                                accountsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsAccounts();
+                                });
+
+                                accountsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateAccountsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                accountsFlexGrid.itemsSource = accountsCollectionView;
+                                accountsFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                                $("#AccountsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveAccounts").prop("disabled", false);
+                                $("#btnCloseAccounts").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#AccountsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveAccounts").prop("disabled", false);
+                                $("#btnCloseAccounts").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // delete   Accounts
+        function deleteAccountsOnclick() {
+            $("#deleteConfirmationAccountsModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteAccounts").innerHTML = "Yes";
+            $("#btnConfirmDeleteAccounts").prop("disabled", false);
+            $("#btnCloseDeleteAccountsModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteAccountsOnclick() {
+            document.getElementById("btnConfirmDeleteAccounts").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteAccounts").prop("disabled", true);
+            $("#btnCloseDeleteAccountsModal").prop("disabled", true);
+
+            accountsCollectionView.editItem(accountsCollectionView.currentItem);
+            var id = accountsCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/account/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The record was successfully deleted.", "Delete Successful");
+
+                        $('#deleteConfirmationAccountsModal').modal('hide');
+
+                        accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
+                        accountsCollectionView.canFilter = true;
+                        accountsCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchAccounts').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            accountsCollectionView.refresh();
+                        });
+
+                        accountsCollectionView.filter = function (item) {
+                            return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsAccounts();
+                        });
+
+                        accountsCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateAccountsStampSecurity();
+                        });
+
+                        // Flex Grid
+                        accountsFlexGrid.itemsSource = accountsCollectionView;
+                        accountsFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        $('#deleteConfirmationAccountsModal').modal('hide');
+                        $("#btnConfirmDeleteAccounts").prop("disabled", false);
+                        $("#btnCloseDeleteAccountsModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        $('#deleteConfirmationAccountsModal').modal('hide');
+                        $("#btnConfirmDeleteAccounts").prop("disabled", false);
+                        $("#btnCloseDeleteAccountsModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // navigation button for flexgrid
+        function updateNavigateButtonsAccounts() {
+            if (accountsCollectionView.pageSize <= 0) {
+                document.getElementById('navigationPageGridAccounts').style.display = 'none';
+                return;
+            }
+            document.getElementById('navigationPageGridAccounts').style.display = 'block';
+            if (accountsCollectionView.pageIndex === 0) {
+                btnFirstPageGridAccounts.setAttribute('disabled', 'disabled');
+                btnPreviousPageGridAccounts.setAttribute('disabled', 'disabled');
+                btnNextPageGridAccounts.removeAttribute('disabled');
+                btnLastPageGridAccounts.removeAttribute('disabled');
+            } else if (accountsCollectionView.pageIndex === (accountsCollectionView.pageCount - 1)) {
+                btnFirstPageGridAccounts.removeAttribute('disabled');
+                btnPreviousPageGridAccounts.removeAttribute('disabled');
+                btnLastPageGridAccounts.setAttribute('disabled', 'disabled');
+                btnNextPageGridAccounts.setAttribute('disabled', 'disabled');
+            } else {
+                btnFirstPageGridAccounts.removeAttribute('disabled');
+                btnPreviousPageGridAccounts.removeAttribute('disabled');
+                btnNextPageGridAccounts.removeAttribute('disabled');
+                btnLastPageGridAccounts.removeAttribute('disabled');
+            }
+            btnCurrentPageGridAccounts.innerHTML = (accountsCollectionView.pageIndex + 1) + ' / ' + accountsCollectionView.pageCount;
+        }
+
+        // stamp security
+        function updateAccountsStampSecurity() {
+            var item = accountsCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        //   Accounts flexgrid
+        function createAccountFlexGrid() {
+            NProgress.start();
+            toastrModification();
+
+            accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
+            accountsCollectionView.canFilter = true;
+            accountsCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchAccounts').keyup(function () {
+                filterText = this.value.toLowerCase();
+                accountsCollectionView.refresh();
+            });
+
+            accountsCollectionView.filter = function (item) {
+                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsAccounts();
+            });
+
+            accountsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateAccountsStampSecurity();
+            });
+
+            // Flex Grid
+            accountsFlexGrid = new wijmo.grid.FlexGrid('#AccountsListFlexGrid');
+            accountsFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Accounts",
+                                "isReadOnly": true,
+                                "visible": false,
+                                "allowDragging": false,
+                                "width": "*"
+                            },
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Account",
+                                "binding": "Account",
+                                "allowSorting": true,
+                                "width": "3*"
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: accountsCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            accountsFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridAccounts = document.getElementById('btnMoveToFirstPageGridAccounts');
+            btnPreviousPageGridAccounts = document.getElementById('btnMoveToPreviousPageGridAccounts');
+            btnNextPageGridAccounts = document.getElementById('btnMoveToNextPageGridAccounts');
+            btnLastPageGridAccounts = document.getElementById('btnMoveToLastPageGridAccounts');
+            btnCurrentPageGridAccounts = document.getElementById('btnCurrentPageGridAccounts');
+
+            updateNavigateButtonsAccounts();
+
+            btnFirstPageGridAccounts.addEventListener('click', function () {
+                accountsCollectionView.moveToFirstPage();
+                updateNavigateButtonsAccounts();
+            });
+            btnPreviousPageGridAccounts.addEventListener('click', function () {
+                accountsCollectionView.moveToPreviousPage();
+                updateNavigateButtonsAccounts();
+            });
+            btnNextPageGridAccounts.addEventListener('click', function () {
+                accountsCollectionView.moveToNextPage();
+                updateNavigateButtonsAccounts();
+            });
+            btnLastPageGridAccounts.addEventListener('click', function () {
+                accountsCollectionView.moveToLastPage();
+                updateNavigateButtonsAccounts();
+            });
+
+            // show company summary on phone layout
+            accountsFlexGrid.formatItem.addHandler(function (s, e) {
+                if (e.panel == accountsFlexGrid.cells && e.col == 0) {
+                    var html = wijmo.format(
+                        '<table style="width: 100%">' +
+                            '<tr>' +
+                                '<td align="right" style="width: 20%" valign="middle">' +
+                                    '<div class="button-item">{EditButton}</div>' +
+                                    '<div class="button-item">{DeleteButton} </div>' +
+                                '</td>' +
+                                '<td>' +
+                                    '<div class="item-header">{Account}</div>' +
+                                    '<div class="item-detail">{Description}</div>' +
+                                '</td>' +
+                            '</tr>' +
+                        '</table>',
+                        accountsFlexGrid.rows[e.row].dataItem);
+                    e.cell.innerHTML = html;
+                }
+            });
+        }
+
+        //   Accounts tab
+        $('#accountTab').click(function () {
+            NProgress.start();
+            $("#Areas").hide();
+            $("#Collectors").hide();
+            $("#Requirements").hide();
+            $("#Accounts").show();
+            
+            createAccountFlexGrid();
+            window.createAccountFlexGrid = function () {
+                return true;
+            }
+
+            accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
+            accountsCollectionView.canFilter = true;
+            accountsCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchAccounts').keyup(function () {
+                filterText = this.value.toLowerCase();
+                accountsCollectionView.refresh();
+            });
+
+            accountsCollectionView.filter = function (item) {
+                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsAccounts();
+            });
+
+            accountsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateAccountsStampSecurity();
+            });
+
+            // Flex Grid
+            accountsFlexGrid.itemsSource = accountsCollectionView;
+            accountsFlexGrid.trackChanges = true;
+        });
+
+        // accounts key event - area name
+        $('#accountName').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // accounts key event - area name
+        $('#accountDescription').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+
+        // ready function
+        window.onload = function () {
+            NProgress.start();
+            toastrModification();
+
+            createAreaFlexGrid();
+        }
+    </script>
+</body>
+</html>

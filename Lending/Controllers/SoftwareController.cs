@@ -52,7 +52,7 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult SystemTables()
+        public ActionResult Tables()
         {
             return View();
         }

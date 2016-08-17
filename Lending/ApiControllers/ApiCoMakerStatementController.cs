@@ -7,6 +7,8 @@ using System.Web.Http;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
 using System.Data.Linq;
+using System.IO;
+using System.Web;
 
 namespace Lending.ApiControllers
 {
@@ -199,6 +201,70 @@ namespace Lending.ApiControllers
             catch(Exception e)
             {
                 Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // update photo co - makers statement
+        [Authorize]
+        [HttpPut]
+        [Route("api/coMakerStatement/updatePhoto/{id}")]
+        public HttpResponseMessage updateCoMakerStatementPhoto(String id, Models.MstCoMakerStatement coMakerStatement)
+        {
+            try
+            {
+                var coMakerStatements = from d in db.mstCoMakerStatements where d.Id == Convert.ToInt32(id) select d;
+                if (coMakerStatements.Any())
+                {
+                    var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
+
+                    byte[] imgarr = coMakerStatement.Photo;
+                    updateCoMakerStatement.Photo = new Binary(imgarr);
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // delete photo co - makers statement
+        [Authorize]
+        [HttpPut]
+        [Route("api/coMakerStatement/deletePhoto/{id}")]
+        public HttpResponseMessage deleteCoMakerStatementPhoto(String id)
+        {
+            try
+            {
+                var coMakerStatements = from d in db.mstCoMakerStatements where d.Id == Convert.ToInt32(id) select d;
+                if (coMakerStatements.Any())
+                {
+                    var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
+
+                    Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
+                    String file = Convert.ToBase64String(bytes);
+                    byte[] imgarr = Convert.FromBase64String(file);
+
+                    updateCoMakerStatement.Photo = imgarr;
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }

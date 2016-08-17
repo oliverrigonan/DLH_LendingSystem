@@ -202,9 +202,8 @@ namespace Lending.ApiControllers
 
                 return newApplicant.Id;
             }
-            catch(Exception e)
+            catch
             {
-                Debug.WriteLine(e);
                 return 0;
             }
         }
@@ -269,14 +268,13 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound);
                 }
             }
-            catch(Exception e)
+            catch
             {
-                Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 
-        // update applicant
+        // update applicant photo
         [Authorize]
         [HttpPut]
         [Route("api/applicant/updatePhoto/{id}")]
@@ -303,19 +301,17 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound);
                 }
             }
-            catch(Exception e)
+            catch
             {
-                Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 
-
-        // update applicant
+        // delete anton applicant
         [Authorize]
         [HttpPut]
         [Route("api/applicant/deletePhoto/{id}")]
-        public HttpResponseMessage deleteApplicantPhoto(String id, Models.MstApplicant applicant)
+        public HttpResponseMessage deleteApplicantPhoto(String id)
         {
             try
             {

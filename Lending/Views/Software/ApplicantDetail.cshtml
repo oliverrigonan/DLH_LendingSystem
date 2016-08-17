@@ -19,126 +19,29 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="panel-group" id="accordion">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a href="/Software">
-                                    <table style="width: 100%;" border="0">
-                                        <tr>
-                                            <td>
-                                                <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                    <table style="width: 100%;" border="0">
-                                        <tr>
-                                            <td>
-                                                <i class="fa fa-wrench fa-fw"></i> &nbsp; Set-ups
-                                            </td>
-                                            <td align="right">
-                                                <i class="fa fa-chevron-down fa-fw"></i>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </div>
-                            <div id="collapseOne" class="panel-collapse collapse in">
-                                <div class="panel-body">
-                                    <div class="list-group">
-                                        <a href="/Software/ApplicantList" class="list-group-item active">
-                                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicants
-                                        </a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-black-tie fa-fw"></i> &nbsp; Employees</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                    <table style="width: 100%;" border="0">
-                                        <tr>
-                                            <td>
-                                                <i class="fa fa-bar-chart fa-fw"></i> &nbsp; Transactions
-                                            </td>
-                                            <td align="right">
-                                                <i class="fa fa-chevron-down fa-fw"></i>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </div>
-                            <div id="collapseTwo" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="list-group">
-                                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan Applications
-                                        </a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collections</a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursements</a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-book fa-fw"></i> &nbsp; Journal Entries</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                    <table style="width: 100%;" border="0">
-                                        <tr>
-                                            <td>
-                                                <i class="fa fa-gears fa-fw"></i> &nbsp; Systems
-                                            </td>
-                                            <td align="right">
-                                                <i class="fa fa-chevron-down fa-fw"></i>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="list-group">
-                                        <a href="/Software/CompanyList" class="list-group-item">
-                                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                                        </a>
-                                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
-                                        <a href="/Software/SystemTables" class="list-group-item">
-                                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
-                                    <table style="width: 100%;" border="0">
-                                        <tr>
-                                            <td>
-                                                <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                                            </td>
-                                            <td align="right">
-                                                <i class="fa fa-chevron-down fa-fw"></i>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </a>
-                            </div>
-                            <div id="collapseFour" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div class="list-group">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="list-group">
+                        <a href="/Software" class="list-group-item">
+                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                        </a>
+                        <a href="/Software/ApplicantList" class="list-group-item active">
+                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
+                        </a>
+                        <a href="/Software/LoanApplicationList" class="list-group-item">
+                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collection</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement</a>
+                        <a href="/Software/Tables" class="list-group-item">
+                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
+                        </a>
+                        <a href="/Software/CompanyList" class="list-group-item">
+                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -591,7 +494,7 @@
                             <img class="img-responsive img-thumbnail" id="coMakerPhoto" src="~/Images/applicantPhotoPlaceHolder.png" />
                             <hr />
                             <button class="btn btn-default btn-sm btn-block" id="btnChangeCoMakerStatementPhoto" onclick="btnChangeCoMakerStatementPhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                            <button class="btn btn-danger btn-sm btn-block" id="btnDeleteCoMakerStatementPhoto"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
+                            <button class="btn btn-danger btn-sm btn-block" id="btnDeleteCoMakerStatementPhoto" onclick="btnDeleteCoMakerStatementPhotoOnclick()"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
                             <br />
                         </div>
                         <div class="col-md-9">
@@ -2116,11 +2019,7 @@
                                 SpouseLengthOfService: applicantDetailCoMakersStatementResult[i]["SpouseLengthOfService"],
                                 NumberOfChildren: applicantDetailCoMakersStatementResult[i]["NumberOfChildren"],
                                 Studying: applicantDetailCoMakersStatementResult[i]["Studying"],
-                                Schools: applicantDetailCoMakersStatementResult[i]["Schools"],
-                                CreatedByUser: applicantDetailCoMakersStatementResult[i]["CreatedByUser"],
-                                CreatedDateTime: applicantDetailCoMakersStatementResult[i]["CreatedDateTime"],
-                                UpdatedByUser: applicantDetailCoMakersStatementResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: applicantDetailCoMakersStatementResult[i]["UpdatedDateTime"]
+                                Schools: applicantDetailCoMakersStatementResult[i]["Schools"]
                             });
                         }
                     }
@@ -3267,12 +3166,110 @@
         function btnOkChangeCoMakerStatementPhotoOnclick() {
             $("#coMakerPhoto").show();
             $("#coMakerPhotoDiv").hide();
-
+            
             var coMakerImage = document.getElementById("coMakerStatementImage");
             readCoMakerStatementImageURLDetail(coMakerImage);
-            $("#coMakerStatementChangePhotoModal").modal("hide");
+
             document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Changing Picture"
             $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", true);
+
+            var coMakerObject = new Object();
+            coMakerObject.Photo = $('#coMakerStatementImageDisplay').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
+            var coMakerData = JSON.stringify(coMakerObject);
+
+            if (coMakerStatementId > 0) {
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/coMakerStatement/updatePhoto/' + coMakerStatementId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: coMakerData,
+                    statusCode: {
+                        200: function () {
+                            $("#coMakerStatementChangePhotoModal").modal("hide");
+                            toastr.success("The photo was successfuly uploaded.", "Upload Successful");
+
+                            coMakerStatementCollectionView = new wijmo.collections.CollectionView(getApplicantCoMakerStatement());
+                            coMakerStatementFlexGrid.itemsSource = coMakerStatementCollectionView;
+                            coMakerStatementFlexGrid.trackChanges = true;
+                        },
+                        404: function () {
+                            toastr.error("The photo that you're updating is not found in database", "Record Not Found");
+
+                            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
+                            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
+                            $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                        },
+                        400: function () {
+                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
+                            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
+                            $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                        }
+                    }
+                });
+            } else {
+                $("#coMakerStatementChangePhotoModal").modal("hide");
+            }
+        }
+
+        // btn delete photo image
+        function btnDeleteCoMakerStatementPhotoOnclick() {
+            $("#deleteConfirmatioCoMakerStatementPhotoModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteCoMakerStatementPhoto").innerHTML = "Yes";
+            $("#btnConfirmDeleteCoMakerStatementPhoto").prop("disabled", false);
+            $("#btnCloseCoMakerStatementPhoto").prop("disabled", false);
+        }
+
+        // btn confirm delete photo image
+        function btnConfirmDeleteCoMakerStatementPhotoOnclick() {
+            document.getElementById("btnConfirmDeleteCoMakerStatementPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Changing to Default Photo";
+            $("#btnConfirmDeleteCoMakerStatementPhoto").prop("disabled", true);
+            $("#btnCloseCoMakerStatementPhoto").prop("disabled", true);
+            $("#deleteConfirmatioCoMakerStatementPhotoModal").modal("hide");
+
+            $.ajax({
+                type: "PUT",
+                url: '/api/coMakerStatement/deletePhoto/' + coMakerStatementId,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The photo was successfuly deleted.", "Delete Successful");
+                       
+                        //var coMakerPhoto = document.getElementById("coMakerPhoto");
+                        //coMakerPhoto.src = "../Images/applicantPhotoPlaceHolder.png";
+                        //$('#coMakerPhotoDiv').children("images").remove();
+                        $("#applicantDetailCoMakersStatementModal").modal("hide");
+
+                        $("#coMakerPhoto").show();
+                        $("#coMakerPhotoDiv").hide();
+
+                        coMakerStatementCollectionView = new wijmo.collections.CollectionView(getApplicantCoMakerStatement());
+                        coMakerStatementFlexGrid.itemsSource = coMakerStatementCollectionView;
+                        coMakerStatementFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The photo that you're updating is not found in database", "Record Not Found");
+
+                        document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
+                        $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
+                        $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                        document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
+                        $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
+                        $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                    }
+                }
+            });
         }
 
         // on load function
