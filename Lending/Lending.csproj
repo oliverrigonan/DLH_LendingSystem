@@ -41,6 +41,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="itextsharp, Version=5.5.7.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.7\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -173,6 +177,7 @@
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectorController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
+    <Compile Include="ApiControllers\ApiLoanApplicationLinesController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
@@ -219,6 +224,7 @@
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
+    <Compile Include="Models\TrnLoanApplicationLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -324,6 +324,12 @@
                 "backdrop": "static"
             });
 
+            $('.requiredBranch').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
             document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
             $("#btnSaveBranch").prop("disabled", false);
             $("#btnCancelBranch").prop("disabled", false);
@@ -341,6 +347,12 @@
                 "backdrop": "static"
             });
 
+            $('.requiredBranch').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
             document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
             $("#btnSaveBranch").prop("disabled", false);
             $("#btnCancelBranch").prop("disabled", false);
@@ -353,7 +365,6 @@
             document.getElementById("branchAddress").value = branchCuurentItem.Address;
             document.getElementById("branchContactNumber").value = branchCuurentItem.ContactNumber;
         }
-
 
         // form input validation
         function inputValidationForBranch() {
@@ -474,7 +485,7 @@
 
         // confirm delete branch
         function btnConfirmDeleteBranchOnclick() {
-            document.getElementById("btnConfirmDeleteBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Deleting";
+            document.getElementById("btnConfirmDeleteBranch").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
             $("#btnConfirmDeleteBranch").prop("disabled", true);
             $("#btnConfirmCloseBranch").prop("disabled", true);
 

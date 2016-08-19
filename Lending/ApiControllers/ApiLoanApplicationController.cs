@@ -144,8 +144,8 @@ namespace Lending.ApiControllers
                 newLoanApplication.PaidAmount = 0;
                 newLoanApplication.BalanceAmount = 0;
                 newLoanApplication.CollectorId = (from d in db.mstCollectors select d.Id).FirstOrDefault();
-                newLoanApplication.PreparedByUserId = (from d in db.mstUsers select d.Id).FirstOrDefault();
-                newLoanApplication.VerifiedByUserId = (from d in db.mstUsers select d.Id).FirstOrDefault();
+                newLoanApplication.PreparedByUserId = userId;
+                newLoanApplication.VerifiedByUserId = userId;
                 newLoanApplication.IsLocked = false;
                 newLoanApplication.CreatedByUserId = userId;
                 newLoanApplication.CreatedDateTime = DateTime.Now;
@@ -175,7 +175,13 @@ namespace Lending.ApiControllers
                 if (loanApplications.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                    Decimal totalLoanAmount = 0;
                     var loanApplicationLines = from d in db.trnLoanApplicationLines where d.LoanId == Convert.ToInt32(id) select d;
+                    if (loanApplicationLines.Any())
+                    {
+                        totalLoanAmount = loanApplicationLines.Sum(d => d.Amount);
+                    }
 
                     var lockLoanApplication = loanApplications.FirstOrDefault();
                     lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
@@ -185,9 +191,9 @@ namespace Lending.ApiControllers
                     lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                     lockLoanApplication.AreaId = loanApplication.AreaId;
                     lockLoanApplication.Promises = loanApplication.Promises;
-                    lockLoanApplication.LoanAmount = loanApplicationLines.Sum(d => d.Amount);
+                    lockLoanApplication.LoanAmount = totalLoanAmount;
                     lockLoanApplication.PaidAmount = 0;
-                    lockLoanApplication.BalanceAmount = loanApplicationLines.Sum(d => d.Amount) - 0; // total loan applicantion lines minus the paid amount
+                    lockLoanApplication.BalanceAmount = totalLoanAmount - 0; // total loan applicantion lines minus the paid amount
                     lockLoanApplication.CollectorId = loanApplication.CollectorId;
                     lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
                     lockLoanApplication.VerifiedByUserId = loanApplication.VerifiedByUserId;
@@ -213,7 +219,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/loanApplication/unlock/{id}")]
-        public HttpResponseMessage unlockLoanApplication(String id, Models.TrnLoanApplication loanApplication)
+        public HttpResponseMessage unlockLoanApplication(String id)
         {
             try
             {
