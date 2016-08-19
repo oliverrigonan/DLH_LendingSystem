@@ -23,7 +23,8 @@ namespace Lending.ApiControllers
                              select new Models.MstCollector
                              {
                                  Id = d.Id,
-                                 CollectorName = d.CollectorName,
+                                 Collector = d.Collector,
+                                 ContactNumber = d.ContactNumber,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -47,7 +48,8 @@ namespace Lending.ApiControllers
 
                 Data.mstCollector newCollector = new Data.mstCollector();
 
-                newCollector.CollectorName = collector.CollectorName;
+                newCollector.Collector = collector.Collector;
+                newCollector.ContactNumber = collector.ContactNumber;
                 newCollector.CreatedByUserId = userId;
                 newCollector.CreatedDateTime = DateTime.Now;
                 newCollector.UpdatedByUserId = userId;
@@ -79,7 +81,8 @@ namespace Lending.ApiControllers
 
                     var updateCollector = collectors.FirstOrDefault();
 
-                    updateCollector.CollectorName = collector.CollectorName;
+                    updateCollector.Collector = collector.Collector;
+                    updateCollector.ContactNumber = collector.ContactNumber;
                     updateCollector.UpdatedByUserId = userId;
                     updateCollector.UpdatedDateTime = DateTime.Now;
                     db.SubmitChanges();

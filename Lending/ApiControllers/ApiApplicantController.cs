@@ -28,7 +28,7 @@ namespace Lending.ApiControllers
                              select new Models.MstApplicant
                              {
                                  Id = d.Id,
-                                 FullName = d.FullName,
+                                 ApplicantFullName = d.ApplicantFullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
                                  CivilStatus = d.mstCivilStatus.CivilStatus,
@@ -89,7 +89,7 @@ namespace Lending.ApiControllers
                              {
                                  Id = d.Id,
                                  Photo = d.Photo.ToArray(),
-                                 FullName = d.FullName,
+                                 ApplicantFullName = d.ApplicantFullName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
                                  CivilStatus = d.mstCivilStatus.CivilStatus,
@@ -157,7 +157,7 @@ namespace Lending.ApiControllers
                 byte[] imgarr = Convert.FromBase64String(file);
 
                 newApplicant.Photo = imgarr;
-                newApplicant.FullName = "NA";
+                newApplicant.ApplicantFullName = "NA";
                 newApplicant.BirthDate = DateTime.Today;
                 newApplicant.CivilStatusId = (from d in db.mstCivilStatus select d.Id).FirstOrDefault();
                 newApplicant.CityAddress = "NA";
@@ -222,7 +222,7 @@ namespace Lending.ApiControllers
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                     var updateApplicant = applicants.FirstOrDefault();
-                    updateApplicant.FullName = applicant.FullName;
+                    updateApplicant.ApplicantFullName = applicant.ApplicantFullName;
                     updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
                     updateApplicant.CivilStatusId = applicant.CivilStatusId;
                     updateApplicant.CityAddress = applicant.CityAddress;

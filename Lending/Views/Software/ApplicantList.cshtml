@@ -169,7 +169,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: applicantListResult[i]["Id"],
-                                FullName: applicantListResult[i]["FullName"],
+                                ApplicantFullName: applicantListResult[i]["ApplicantFullName"],
                                 CityAddress: applicantListResult[i]["CityAddress"],
                                 CreatedByUserId: applicantListResult[i]["CreatedByUserId"],
                                 CreatedByUser: applicantListResult[i]["CreatedByUser"],
@@ -371,7 +371,7 @@
                             },
                             {
                                 "header": "Applicant",
-                                "binding": "FullName",
+                                "binding": "ApplicantFullName",
                                 "allowSorting": true,
                                 "width": "3*"
                             },

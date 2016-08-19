@@ -180,6 +180,7 @@
     <Compile Include="ApiControllers\ApiCoMakerStatementController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
+    <Compile Include="ApiControllers\ApiLoanApplicationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -217,6 +218,7 @@
     <Compile Include="Models\MstCompany.cs" />
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstUser.cs" />
+    <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -470,6 +472,7 @@
     <Content Include="Views\Software\Tables.cshtml" />
     <Content Include="Views\Software\CompanyList.cshtml" />
     <Content Include="Views\Software\CompanyDetail.cshtml" />
+    <Content Include="Views\Software\LoanApplicationDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1217,7 +1217,7 @@
                         var photoDiv = document.getElementById("photoDiv").appendChild(imageElement);
                         photoDiv.appendChild(photoDivElement);
 
-                        document.getElementById("applicantFullName").value = applicantDetailResult.FullName;
+                        document.getElementById("applicantFullName").value = applicantDetailResult.ApplicantFullName;
                         cboBirthDate.value = new Date(applicantDetailResult.BirthDate);
                         createCboCivilStatus(applicantDetailResult.CivilStatus);
                         document.getElementById("applicantCityAddress").value = applicantDetailResult.CityAddress;
@@ -1985,7 +1985,7 @@
                                 Photo: applicantDetailCoMakersStatementResult[i]["Photo"],
                                 ApplicantId: applicantDetailCoMakersStatementResult[i]["ApplicantId"],
                                 Applicant: applicantDetailCoMakersStatementResult[i]["Applicant"],
-                                FullName: applicantDetailCoMakersStatementResult[i]["FullName"],
+                                CoMakerFullName: applicantDetailCoMakersStatementResult[i]["CoMakerFullName"],
                                 BirthDate: applicantDetailCoMakersStatementResult[i]["BirthDate"],
                                 CivilStatus: applicantDetailCoMakersStatementResult[i]["CivilStatus"],
                                 CityAddress: applicantDetailCoMakersStatementResult[i]["CityAddress"],
@@ -2061,7 +2061,7 @@
                             },
                             {
                                 "header": "Co Maker",
-                                "binding": "FullName",
+                                "binding": "CoMakerFullName",
                                 "allowSorting": true,
                                 "width": "2*",
                             }
@@ -2476,7 +2476,7 @@
             photoCoMakerDiv.appendChild(photoCoMakerDivElement);
 
             coMakerStatementId = coMakerStatement.Id;
-            document.getElementById("coMakerFullName").value = coMakerStatement.FullName;
+            document.getElementById("coMakerFullName").value = coMakerStatement.CoMakerFullName;
             cboCoMakerBirthDate.value = new Date(coMakerStatement.BirthDate);
             cboCoMakerCivilStatus.selectedValue = coMakerStatement.CivilStatus.toString();
             document.getElementById("coMakerCityAddress").value = coMakerStatement.CityAddress;
@@ -2552,7 +2552,7 @@
                 var coMakerObject = new Object();
                 coMakerObject.Photo = $('#coMakerPhoto').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
                 coMakerObject.ApplicantId = getUrlParameter("id");
-                coMakerObject.FullName = document.getElementById('coMakerFullName').value;
+                coMakerObject.CoMakerFullName = document.getElementById('coMakerFullName').value;
                 coMakerObject.BirthDate = cboCoMakerBirthDate.value;
                 coMakerObject.CivilStatusId = cboCoMakerCivilStatus.selectedItem["Id"];
                 coMakerObject.CityAddress = document.getElementById('coMakerCityAddress').value;

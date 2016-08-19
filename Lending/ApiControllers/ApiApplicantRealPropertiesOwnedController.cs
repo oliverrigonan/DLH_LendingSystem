@@ -24,7 +24,7 @@ namespace Lending.ApiControllers
                                                 {
                                                     Id = d.Id,
                                                     ApplicantId = d.ApplicantId,
-                                                    Applicant = d.mstApplicant.FullName,
+                                                    Applicant = d.mstApplicant.ApplicantFullName,
                                                     Real = d.Real,
                                                     Location = d.Location,
                                                     PresentValue = d.PresentValue,

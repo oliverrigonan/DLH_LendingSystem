@@ -30,8 +30,8 @@ namespace Lending.ApiControllers
                                         Id = d.Id,
                                         Photo = d.Photo.ToArray(),
                                         ApplicantId = d.ApplicantId,
-                                        Applicant = d.mstApplicant.FullName,
-                                        FullName = d.FullName,
+                                        Applicant = d.mstApplicant.ApplicantFullName,
+                                        CoMakerFullName = d.CoMakerFullName,
                                         BirthDate = d.BirthDate.ToShortDateString(),
                                         CivilStatusId = d.CivilStatusId,
                                         CivilStatus = d.mstCivilStatus.CivilStatus,
@@ -89,7 +89,7 @@ namespace Lending.ApiControllers
                 byte[] imgarr = coMakerStatement.Photo;
                 newCoMakerStatement.Photo = new Binary(imgarr);
                 newCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
-                newCoMakerStatement.FullName = coMakerStatement.FullName;
+                newCoMakerStatement.CoMakerFullName = coMakerStatement.CoMakerFullName;
                 newCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
                 newCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
                 newCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
@@ -154,7 +154,7 @@ namespace Lending.ApiControllers
                     byte[] imgarr = coMakerStatement.Photo;
                     updateCoMakerStatement.Photo = new Binary(imgarr);
                     updateCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
-                    updateCoMakerStatement.FullName = coMakerStatement.FullName;
+                    updateCoMakerStatement.CoMakerFullName = coMakerStatement.CoMakerFullName;
                     updateCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
                     updateCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
                     updateCoMakerStatement.CityAddress = coMakerStatement.CityAddress;

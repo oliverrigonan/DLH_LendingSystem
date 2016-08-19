@@ -1,0 +1,641 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>DLH - Applicant Detail</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <!-- Header -->
+    @Html.Partial("HomeHeader")
+
+    <section class="software-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="list-group">
+                        <a href="/Software" class="list-group-item">
+                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
+                        </a>
+                        <a href="/Software/ApplicantList" class="list-group-item">
+                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
+                        </a>
+                        <a href="/Software/LoanApplicationList" class="list-group-item active">
+                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collection</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement</a>
+                        <a href="/Software/Tables" class="list-group-item">
+                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
+                        </a>
+                        <a href="#" class="list-group-item">
+                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
+                        </a>
+                        <a href="/Software/CompanyList" class="list-group-item">
+                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
+                        </a>
+                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
+                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            User security stamp
+                        </div>
+                        <div class="panel-body">
+                            <p>Created by:</p>
+                            <div style="padding-left: 10px;">
+                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                <br />
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                            <hr />
+                            <p>Updated by:</p>
+                            <div style="padding-left: 10px;">
+                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                <br />
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>
+                                        <h4>Loan Detail</h4>
+                                    </td>
+                                    <td align="right">
+                                        <button class="btn btn-primary" id="btnLock" onclick="">
+                                            <i class="fa fa-lock fa-fw"></i> Lock
+                                        </button>
+                                        <button class="btn btn-primary" id="btnUnlock" onclick="">
+                                            <i class="fa fa-unlock fa-fw"></i> Unlock
+                                        </button>
+                                        <button class="btn btn-primary" id="btnPrint" onclick="">
+                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                        </button>
+                                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/LoanApplicationList'">
+                                            <i class="fa fa-close fa-fw"></i> Close
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                            <dl class="dl-horizontal">
+                                <dt>Loan Number</dt>
+                                <dd><input type="text" class="form-control" id="loanApplicationNumber" placeholder="Loan Number" /></dd>
+                                <dt>Loan Date</dt>
+                                <dd><div id="loanApplicationLoanDate"></div> &nbsp; <span id="loanApplicationLoanDateString"></span></dd>
+                                <dt>Maturity Date</dt>
+                                <dd><div id="loanApplicationMaturityDate"></div> &nbsp; <span id="loanApplicationMaturityDateString"></span></dd>
+                                <dt>Branch</dt>
+                                <dd><div id="loanApplicationBranch"></div></dd>
+                                <dt>Account</dt>
+                                <dd><div id="loanApplicationAccount"></div></dd>
+                                <dt>Applicant</dt>
+                                <dd><div id="loanApplicationApplicant"></div></dd>
+                                <dt>Area</dt>
+                                <dd><div id="loanApplicationArea"></div></dd>
+                                <dt>Promise</dt>
+                                <dd><textarea class="form-control" id="loanApplicationPromise" placeholder="Promise"></textarea></dd>
+                                <dt>Collector</dt>
+                                <dd><div id="loanApplicationCollector"></div></dd>
+                                <dt>Prepared by</dt>
+                                <dd><div id="loanApplicationPreparedBy"></div></dd>
+                                <dt>Verified by</dt>
+                                <dd><div id="loanApplicationVerifiedBy"></div></dd>
+                            </dl>
+                        </div>
+                        <div class="panel-footer" align="right">
+                            <button class="btn btn-primary" id="btnLockButtom" onclick="">
+                                <i class="fa fa-lock fa-fw"></i> Lock
+                            </button>
+                            <button class="btn btn-primary" id="btnUnlockButtom" onclick="">
+                                <i class="fa fa-unlock fa-fw"></i> Unlock
+                            </button>
+                            <button class="btn btn-primary" id="btnPrintButtom" onclick="">
+                                <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                            </button>
+                            <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/LoanApplicationList'">
+                                <i class="fa fa-close fa-fw"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    @Html.Partial("HomeFooter")
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // Global Variables
+        var loanApplicationLoanDate;
+        var loanApplicationMaturityDate;
+        var cboloanApplicationBranch;
+        var cboloanApplicationAccount;
+        var cboloanApplicationApplicant;
+        var cboloanApplicationArea;
+        var cboloanApplicationCollector;
+        var cboloanApplicationPreparedBy;
+        var cboloanApplicationVerifiedBy;
+
+        // create loan Application Loan Date
+        function createloanApplicationLoanDate() {
+            loanApplicationLoanDate = new wijmo.input.InputDate('#loanApplicationLoanDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("loanApplicationLoanDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+                }
+            });
+
+            var dateValue = loanApplicationLoanDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("loanApplicationLoanDateString").innerHTML = month + " " + loanApplicationLoanDate.value.getDate() + ", " + loanApplicationLoanDate.value.getFullYear();
+            createloanApplicationMaturityDate();
+        }
+
+        // create loan Application Maturity Date
+        function createloanApplicationMaturityDate() {
+            loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("loanApplicationMaturityDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+                }
+            });
+
+            var dateValue = loanApplicationLoanDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("loanApplicationMaturityDateString").innerHTML = month + " " + loanApplicationLoanDate.value.getDate() + ", " + loanApplicationLoanDate.value.getFullYear();
+            cboloanApplicationBranch = new wijmo.input.ComboBox('#loanApplicationBranch');
+            getBranch();
+        }
+
+        // get branch
+        function getBranch() {
+            var branchArray = new Array();
+            $.ajax({
+                url: '/api/branch/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (branchResults) {
+                    var disabled = true;
+                    if (branchResults.length > 0) {
+                        for (i = 0; i < branchResults.length; i++) {
+                            branchArray.push({
+                                Id: branchResults[i]["Id"],
+                                Branch: branchResults[i]["Branch"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboloanApplicationAccount = new wijmo.input.ComboBox('#loanApplicationAccount');
+                        getAccount();
+                    } else {
+                        cboloanApplicationAccount = new wijmo.input.ComboBox('#loanApplicationAccount');
+                        getAccount();
+                    }
+
+                    cboloanApplicationBranch.dispose();
+                    cboloanApplicationBranch = new wijmo.input.ComboBox('#loanApplicationBranch', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: branchArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Branch",
+                        selectedValuePath: "Branch"
+                    });
+                }
+            });
+        }
+
+        // get account
+        function getAccount() {
+            var accountArray = new Array();
+            $.ajax({
+                url: '/api/account/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (accountResults) {
+                    var disabled = true;
+                    if (accountResults.length > 0) {
+                        for (i = 0; i < accountResults.length; i++) {
+                            accountArray.push({
+                                Id: accountResults[i]["Id"],
+                                Account: accountResults[i]["Account"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant');
+                        getApplicant();
+                    } else {
+                        cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant');
+                        getApplicant();
+                    }
+
+                    cboloanApplicationAccount.dispose();
+                    cboloanApplicationAccount = new wijmo.input.ComboBox('#loanApplicationAccount', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: accountArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Account",
+                        selectedValuePath: "Account"
+                    });
+                }
+            });
+        }
+
+        // get applicant
+        function getApplicant() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/applicant/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                Id: applicantResults[i]["Id"],
+                                ApplicantFullName: applicantResults[i]["ApplicantFullName"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea');
+                        getArea();
+                    } else {
+                        cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea');
+                        getArea();
+                    }
+
+                    cboloanApplicationApplicant.dispose();
+                    cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ApplicantFullName",
+                        selectedValuePath: "ApplicantFullName"
+                    });
+                }
+            });
+        }
+
+        // get area
+        function getArea() {
+            var areaArray = new Array();
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (areaResults) {
+                    var disabled = true;
+                    if (areaResults.length > 0) {
+                        for (i = 0; i < areaResults.length; i++) {
+                            areaArray.push({
+                                Id: areaResults[i]["Id"],
+                                Area: areaResults[i]["Area"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboloanApplicationCollector = new wijmo.input.ComboBox('#loanApplicationCollector');
+                        getCollector();
+                    } else {
+                        cboloanApplicationCollector = new wijmo.input.ComboBox('#loanApplicationCollector');
+                        getCollector();
+                    }
+
+                    cboloanApplicationArea.dispose();
+                    cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area"
+                    });
+                }
+            });
+        }
+
+        // get area
+        function getCollector() {
+            var collectorArray = new Array();
+            $.ajax({
+                url: '/api/collector/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (collectorResults) {
+                    var disabled = true;
+                    if (collectorResults.length > 0) {
+                        for (i = 0; i < collectorResults.length; i++) {
+                            collectorArray.push({
+                                Id: collectorResults[i]["Id"],
+                                Collector: collectorResults[i]["Collector"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
+                        cboloanApplicationVerifiedBy = new wijmo.input.ComboBox('#loanApplicationVerifiedBy');
+                        getUser();
+                    } else {
+                        cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
+                        cboloanApplicationVerifiedBy = new wijmo.input.ComboBox('#loanApplicationVerifiedBy');
+                        getUser();
+                    }
+
+                    cboloanApplicationCollector.dispose();
+                    cboloanApplicationCollector = new wijmo.input.ComboBox('#loanApplicationCollector', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: collectorArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Collector",
+                        selectedValuePath: "Collector"
+                    });
+                }
+            });
+        }
+
+        // get users
+        function getUser() {
+            var userArray = new Array();
+            $.ajax({
+                url: '/api/user/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (userrResults) {
+                    var disabled = true;
+                    if (userrResults.length > 0) {
+                        for (i = 0; i < userrResults.length; i++) {
+                            userArray.push({
+                                Id: userrResults[i]["Id"],
+                                FullName: userrResults[i]["FullName"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        getLoanApplicationById();
+                    } else {
+                        getLoanApplicationById();
+                    }
+
+                    cboloanApplicationPreparedBy.dispose();
+                    cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: userArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "FullName",
+                        selectedValuePath: "FullName"
+                    });
+
+                    cboloanApplicationVerifiedBy.dispose();
+                    cboloanApplicationVerifiedBy = new wijmo.input.ComboBox('#loanApplicationVerifiedBy', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: userArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "FullName",
+                        selectedValuePath: "FullName"
+                    });
+                }
+            });
+        }
+
+        // get loan application by id
+        function getLoanApplicationById() {
+            $.ajax({
+                url: '/api/loanApplication/getById/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (loanApplicationResult) {
+                    if (loanApplicationResult != null) {
+                        document.getElementById("loanApplicationNumber").disabled = true;
+                        document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
+                        loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
+                        loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
+                        cboloanApplicationBranch.selectedValue = loanApplicationResult.Branch;
+                        cboloanApplicationAccount.selectedValue = loanApplicationResult.Account;
+                        cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
+                        cboloanApplicationArea.selectedValue = loanApplicationResult.Area;
+                        document.getElementById("loanApplicationPromise").value = loanApplicationResult.Promises;
+                        cboloanApplicationCollector.selectedValue = loanApplicationResult.Collector;
+                        cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
+                        cboloanApplicationVerifiedBy.selectedValue = loanApplicationResult.VerifiedByUser;
+                        document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
+                        document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
+                        document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
+                        document.getElementById('stampUpdatedDate').innerHTML = loanApplicationResult.UpdatedDateTime;
+
+                        if (loanApplicationResult.IsLocked == true) {
+                            $("#btnLock").prop("disabled", true);
+                            $("#btnLockButtom").prop("disabled", true);
+                            
+                            loanApplicationLoanDate.disabled = true;
+                            loanApplicationMaturityDate.disabled = true;
+                            cboloanApplicationBranch.disabled = true;
+                            cboloanApplicationAccount.disabled = true;
+                            cboloanApplicationApplicant.disabled = true;
+                            cboloanApplicationArea.disabled = true;
+                            cboloanApplicationCollector.disabled = true;
+                            cboloanApplicationPreparedBy.disabled = true;
+                            cboloanApplicationVerifiedBy.disabled = true;
+                            document.getElementById("loanApplicationPromise").disabled = true;
+                        } else {
+                            $("#btnUnlock").prop("disabled", true);
+                            $("#btnPrint").prop("disabled", true);
+                            $("#btnUnlockButtom").prop("disabled", true);
+                            $("#btnPrintButtom").prop("disabled", true);
+                        }
+
+
+
+                    } else {
+                        alert("The record you'd requested has no data");
+                        window.history.back();
+                    }
+
+                    NProgress.done();
+                }
+            });
+        }
+
+        // on load page
+        window.onload = function () {
+            NProgress.start();
+            createloanApplicationLoanDate();
+        }
+    </script>
+</body>
+</html>

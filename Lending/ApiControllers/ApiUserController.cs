@@ -35,6 +35,27 @@ namespace Lending.ApiControllers
             return (Models.MstUser)currentUser.FirstOrDefault();
         }
 
+        // user list
+        [Authorize]
+        [HttpGet]
+        [Route("api/user/list")]
+        public List<Models.MstUser> listUser()
+        {
+            var users = from d in db.mstUsers.OrderByDescending(d => d.Id)
+                              select new Models.MstUser
+                              {
+                                  Id = d.Id,
+                                  AspUserId = d.AspUserId,
+                                  Username = d.Username,
+                                  Password = d.Password,
+                                  FullName = d.FullName,
+                                  CreatedDate = d.CreatedDate.ToString(),
+                                  UpdatedDate = d.UpdatedDate.ToString()
+                              };
+
+            return users.ToList();
+        }
+
         // update user
         [Authorize]
         [HttpPut]

@@ -13,7 +13,7 @@ namespace Lending.Models
         public byte[] Photo { get; set; }
         public Int32 ApplicantId { get; set; }
         public String Applicant { get; set; }
-        public String FullName { get; set; }
+        public String CoMakerFullName { get; set; }
         public String BirthDate { get; set; }
         public Int32 CivilStatusId { get; set; }
         public String CivilStatus { get; set; }

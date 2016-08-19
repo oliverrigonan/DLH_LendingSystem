@@ -10,7 +10,8 @@ namespace Lending.Models
     {
         [Key]
         public Int32 Id { get; set; }
-        public String CollectorName { get; set; }
+        public String Collector { get; set; }
+        public String ContactNumber { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

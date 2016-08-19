@@ -358,6 +358,10 @@
                         <dd>
                             <input type="text" class="form-control requiredCollector" id="collectorName" placeholder="Collector Name" />
                         </dd>
+                        <dt>Contact Number</dt>
+                        <dd>
+                            <input type="text" class="form-control requiredCollector" id="collectorContactNumber" placeholder="Contact Number" />
+                        </dd>
                     </dl>
                 </div>
                 <div class="modal-footer">
@@ -894,13 +898,6 @@
             areaFlexGrid.initialize({
                 columns: [
                             {
-                                "header": "Areas",
-                                "isReadOnly": true,
-                                "visible": false,
-                                "allowDragging": false,
-                                "width": "*"
-                            },
-                            {
                                 "header": "Edit",
                                 "binding": "EditButton",
                                 "width": 80,
@@ -1037,7 +1034,8 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editCollectorOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteCollectorOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: collectorListResult[i]["Id"],
-                                CollectorName: collectorListResult[i]["CollectorName"],
+                                Collector: collectorListResult[i]["Collector"],
+                                ContactNumber: collectorListResult[i]["ContactNumber"],
                                 CreatedByUserId: collectorListResult[i]["CreatedByUserId"],
                                 CreatedByUser: collectorListResult[i]["CreatedByUser"],
                                 CreatedDateTime: collectorListResult[i]["CreatedDateTime"],
@@ -1067,6 +1065,7 @@
 
             collectorId = 0;
             document.getElementById("collectorName").value = "NA";
+            document.getElementById("collectorContactNumber").value = "NA";
         }
 
         // edit collector
@@ -1083,8 +1082,9 @@
             collectorCollectionView.editItem(collectorCollectionView.currentItem);
             var collectorCurrentEditItem = collectorCollectionView.currentEditItem;
 
-            collectorId = collectorCurrentEditItem.Id;
-            document.getElementById("collectorName").value = collectorCurrentEditItem.CollectorName;
+            collectorId = collectorCurrentEditItem.Id; 
+            document.getElementById("collectorName").value = collectorCurrentEditItem.Collector;
+            document.getElementById("collectorContactNumber").value = collectorCurrentEditItem.ContactNumber;
         }
 
         // form input validation
@@ -1119,7 +1119,8 @@
                 $("#btnCloseCollector").prop("disabled", true);
 
                 var collectorObject = new Object();
-                collectorObject.CollectorName = document.getElementById('collectorName').value;
+                collectorObject.Collector = document.getElementById('collectorName').value;
+                collectorObject.ContactNumber = document.getElementById('collectorContactNumber').value;
                 var collectorData = JSON.stringify(collectorObject);
 
                 if (collectorId == 0) {
@@ -1371,13 +1372,6 @@
             collectorFlexGrid.initialize({
                 columns: [
                             {
-                                "header": "Collectors",
-                                "isReadOnly": true,
-                                "visible": false,
-                                "allowDragging": false,
-                                "width": "*"
-                            },
-                            {
                                 "header": "Edit",
                                 "binding": "EditButton",
                                 "width": 80,
@@ -1395,7 +1389,7 @@
                             },
                             {
                                 "header": "Collector",
-                                "binding": "CollectorName",
+                                "binding": "Collector",
                                 "allowSorting": true,
                                 "width": "3*"
                             },
@@ -1477,7 +1471,7 @@
             collectorFlexGrid.trackChanges = true;
         });
 
-        // collector key event - area name
+        // collector key event - collector name
         $('#collectorName').keyup(function () {
             if ($.trim($(this).val()) == '') {
                 $(this).css({
@@ -1490,6 +1484,19 @@
             }
         });
 
+        // collector key event - collector contact number
+        $('#collectorContactNumber').keyup(function () {
+            if ($.trim($(this).val()) == '') {
+                $(this).css({
+                    "border": "1px solid red"
+                });
+            } else {
+                $(this).css({
+                    "border": "",
+                });
+            }
+        });
+        
         // get   Requirements
         function getRequirementsList() {
             var requirements = new wijmo.collections.ObservableArray;
@@ -1847,13 +1854,6 @@
             requirementsFlexGrid.initialize({
                 columns: [
                             {
-                                "header": "Requirements",
-                                "isReadOnly": true,
-                                "visible": false,
-                                "allowDragging": false,
-                                "width": "*"
-                            },
-                            {
                                 "header": "Edit",
                                 "binding": "EditButton",
                                 "width": 80,
@@ -1911,27 +1911,6 @@
                 requirementsCollectionView.moveToLastPage();
                 updateNavigateButtonsRequirements();
             });
-
-            // show company summary on phone layout
-            requirementsFlexGrid.formatItem.addHandler(function (s, e) {
-                if (e.panel == requirementsFlexGrid.cells && e.col == 0) {
-                    var html = wijmo.format(
-                        '<table style="width: 100%">' +
-                            '<tr>' +
-                                '<td align="right" style="width: 20%" valign="middle">' +
-                                    '<div class="button-item">{EditButton}</div>' +
-                                    '<div class="button-item">{DeleteButton} </div>' +
-                                '</td>' +
-                                '<td>' +
-                                    '<div class="item-header">{Requirement}</div>' +
-                                    '<div class="item-detail">{Description}</div>' +
-                                '</td>' +
-                            '</tr>' +
-                        '</table>',
-                        requirementsFlexGrid.rows[e.row].dataItem);
-                    e.cell.innerHTML = html;
-                }
-            });
         }
 
         //   Requirements tab
@@ -1974,7 +1953,7 @@
             requirementsFlexGrid.trackChanges = true;
         });
 
-        // requirements key event - area name
+        // requirements key event - requirements name
         $('#requirementName').keyup(function () {
             if ($.trim($(this).val()) == '') {
                 $(this).css({
@@ -1987,7 +1966,7 @@
             }
         });
 
-        // requirements key event - area name
+        // requirements key event - requirements description
         $('#requirementDescription').keyup(function () {
             if ($.trim($(this).val()) == '') {
                 $(this).css({
@@ -2000,12 +1979,7 @@
             }
         });
 
-
-        /// ===============================================
-
-
-
-        // get   Accounts
+        // get Accounts
         function getAccountsList() {
             var Accounts = new wijmo.collections.ObservableArray;
             $.ajax({
@@ -2362,13 +2336,6 @@
             accountsFlexGrid.initialize({
                 columns: [
                             {
-                                "header": "Accounts",
-                                "isReadOnly": true,
-                                "visible": false,
-                                "allowDragging": false,
-                                "width": "*"
-                            },
-                            {
                                 "header": "Edit",
                                 "binding": "EditButton",
                                 "width": 80,
@@ -2426,27 +2393,6 @@
                 accountsCollectionView.moveToLastPage();
                 updateNavigateButtonsAccounts();
             });
-
-            // show company summary on phone layout
-            accountsFlexGrid.formatItem.addHandler(function (s, e) {
-                if (e.panel == accountsFlexGrid.cells && e.col == 0) {
-                    var html = wijmo.format(
-                        '<table style="width: 100%">' +
-                            '<tr>' +
-                                '<td align="right" style="width: 20%" valign="middle">' +
-                                    '<div class="button-item">{EditButton}</div>' +
-                                    '<div class="button-item">{DeleteButton} </div>' +
-                                '</td>' +
-                                '<td>' +
-                                    '<div class="item-header">{Account}</div>' +
-                                    '<div class="item-detail">{Description}</div>' +
-                                '</td>' +
-                            '</tr>' +
-                        '</table>',
-                        accountsFlexGrid.rows[e.row].dataItem);
-                    e.cell.innerHTML = html;
-                }
-            });
         }
 
         //   Accounts tab
@@ -2489,7 +2435,7 @@
             accountsFlexGrid.trackChanges = true;
         });
 
-        // accounts key event - area name
+        // accounts key event - accounts name
         $('#accountName').keyup(function () {
             if ($.trim($(this).val()) == '') {
                 $(this).css({
@@ -2502,7 +2448,7 @@
             }
         });
 
-        // accounts key event - area name
+        // accounts key event - accounts description
         $('#accountDescription').keyup(function () {
             if ($.trim($(this).val()) == '') {
                 $(this).css({

@@ -52,9 +52,16 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult Tables()
+        public ActionResult LoanApplicationDetail(Int32? id)
         {
-            return View();
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [Authorize]
@@ -75,5 +82,12 @@ namespace Lending.Controllers
                 return View();
             }
         }
+
+        [Authorize]
+        public ActionResult Tables()
+        {
+            return View();
+        }
+
     }
 }

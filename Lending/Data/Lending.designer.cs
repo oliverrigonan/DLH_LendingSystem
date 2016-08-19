@@ -1950,7 +1950,7 @@ namespace Lending.Data
 		
 		private System.Data.Linq.Binary _Photo;
 		
-		private string _FullName;
+		private string _ApplicantFullName;
 		
 		private System.DateTime _BirthDate;
 		
@@ -2054,8 +2054,8 @@ namespace Lending.Data
     partial void OnIdChanged();
     partial void OnPhotoChanging(System.Data.Linq.Binary value);
     partial void OnPhotoChanged();
-    partial void OnFullNameChanging(string value);
-    partial void OnFullNameChanged();
+    partial void OnApplicantFullNameChanging(string value);
+    partial void OnApplicantFullNameChanged();
     partial void OnBirthDateChanging(System.DateTime value);
     partial void OnBirthDateChanged();
     partial void OnCivilStatusIdChanging(int value);
@@ -2188,22 +2188,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string FullName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantFullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string ApplicantFullName
 		{
 			get
 			{
-				return this._FullName;
+				return this._ApplicantFullName;
 			}
 			set
 			{
-				if ((this._FullName != value))
+				if ((this._ApplicantFullName != value))
 				{
-					this.OnFullNameChanging(value);
+					this.OnApplicantFullNameChanging(value);
 					this.SendPropertyChanging();
-					this._FullName = value;
-					this.SendPropertyChanged("FullName");
-					this.OnFullNameChanged();
+					this._ApplicantFullName = value;
+					this.SendPropertyChanged("ApplicantFullName");
+					this.OnApplicantFullNameChanged();
 				}
 			}
 		}
@@ -4443,7 +4443,9 @@ namespace Lending.Data
 		
 		private int _Id;
 		
-		private string _CollectorName;
+		private string _Collector;
+		
+		private string _ContactNumber;
 		
 		private int _CreatedByUserId;
 		
@@ -4465,8 +4467,10 @@ namespace Lending.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnCollectorNameChanging(string value);
-    partial void OnCollectorNameChanged();
+    partial void OnCollectorChanging(string value);
+    partial void OnCollectorChanged();
+    partial void OnContactNumberChanging(string value);
+    partial void OnContactNumberChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -4505,22 +4509,42 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectorName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string CollectorName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Collector", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Collector
 		{
 			get
 			{
-				return this._CollectorName;
+				return this._Collector;
 			}
 			set
 			{
-				if ((this._CollectorName != value))
+				if ((this._Collector != value))
 				{
-					this.OnCollectorNameChanging(value);
+					this.OnCollectorChanging(value);
 					this.SendPropertyChanging();
-					this._CollectorName = value;
-					this.SendPropertyChanged("CollectorName");
-					this.OnCollectorNameChanged();
+					this._Collector = value;
+					this.SendPropertyChanged("Collector");
+					this.OnCollectorChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string ContactNumber
+		{
+			get
+			{
+				return this._ContactNumber;
+			}
+			set
+			{
+				if ((this._ContactNumber != value))
+				{
+					this.OnContactNumberChanging(value);
+					this.SendPropertyChanging();
+					this._ContactNumber = value;
+					this.SendPropertyChanged("ContactNumber");
+					this.OnContactNumberChanged();
 				}
 			}
 		}
@@ -4739,7 +4763,7 @@ namespace Lending.Data
 		
 		private int _ApplicantId;
 		
-		private string _FullName;
+		private string _CoMakerFullName;
 		
 		private System.DateTime _BirthDate;
 		
@@ -4831,8 +4855,8 @@ namespace Lending.Data
     partial void OnPhotoChanged();
     partial void OnApplicantIdChanging(int value);
     partial void OnApplicantIdChanged();
-    partial void OnFullNameChanging(string value);
-    partial void OnFullNameChanged();
+    partial void OnCoMakerFullNameChanging(string value);
+    partial void OnCoMakerFullNameChanged();
     partial void OnBirthDateChanging(System.DateTime value);
     partial void OnBirthDateChanged();
     partial void OnCivilStatusIdChanging(int value);
@@ -4978,22 +5002,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string FullName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CoMakerFullName", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string CoMakerFullName
 		{
 			get
 			{
-				return this._FullName;
+				return this._CoMakerFullName;
 			}
 			set
 			{
-				if ((this._FullName != value))
+				if ((this._CoMakerFullName != value))
 				{
-					this.OnFullNameChanging(value);
+					this.OnCoMakerFullNameChanging(value);
 					this.SendPropertyChanging();
-					this._FullName = value;
-					this.SendPropertyChanged("FullName");
-					this.OnFullNameChanged();
+					this._CoMakerFullName = value;
+					this.SendPropertyChanged("CoMakerFullName");
+					this.OnCoMakerFullNameChanged();
 				}
 			}
 		}
