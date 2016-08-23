@@ -73,8 +73,11 @@
                                         <h4>Applicant Detail</h4>
                                     </td>
                                     <td align="right">
-                                        <button class="btn btn-primary" id="btnSaveChanges" onclick="btnSaveChangesApplicantOnclick()">
-                                            <i class="fa fa-save fa-fw"></i> Save Changes
+                                        <button class="btn btn-primary" id="btnLockApplicant" onclick="btnLockApplicantOnclick()">
+                                            <i class="fa fa-lock fa-fw"></i> Lock
+                                        </button>
+                                        <button class="btn btn-primary" id="btnUnlockApplicant" onclick="btnUnlockApplicantOnclick()">
+                                            <i class="fa fa-unlock fa-fw"></i> Unlock
                                         </button>
                                         <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
                                             <i class="fa fa-close fa-fw"></i> Close
@@ -88,8 +91,8 @@
                                 <div class="col-md-3">
                                     <div id="photoDiv" style="width: 100%" align="center"></div>
                                     <hr />
-                                    <button class="btn btn-default btn-sm btn-block" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                                    <button class="btn btn-danger btn-sm btn-block" onclick="btnApplicantDeletePhotoOnclick()"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
+                                    <button class="btn btn-default btn-sm btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                                    <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
                                     <br />
                                 </div>
                                 <div class="col-md-9">
@@ -263,7 +266,7 @@
                                                                                     Real Properties Owned
                                                                                 </td>
                                                                                 <td align="right">
-                                                                                    <button class="btn btn-primary btn-sm" onclick="btnAddApplicantRealPropertiesOwnedOnclick()">
+                                                                                    <button class="btn btn-primary btn-sm" id="btnAddApplicantRealPropertiesOwned" onclick="btnAddApplicantRealPropertiesOwnedOnclick()">
                                                                                         <i class="fa fa-plus fa-fw"></i> Add
                                                                                     </button>
                                                                                 </td>
@@ -284,7 +287,7 @@
                                                                                     Appliance Owned
                                                                                 </td>
                                                                                 <td align="right">
-                                                                                    <button class="btn btn-primary btn-sm" onclick="btnAddApplicantApplianceOwnedOnclick()">
+                                                                                    <button class="btn btn-primary btn-sm" id="btnAddApplicantApplianceOwned" onclick="btnAddApplicantApplianceOwnedOnclick()">
                                                                                         <i class="fa fa-plus fa-fw"></i> Add
                                                                                     </button>
                                                                                 </td>
@@ -305,7 +308,7 @@
                                                                                     Co-Maker's Statement
                                                                                 </td>
                                                                                 <td align="right">
-                                                                                    <button class="btn btn-primary btn-sm" onclick="btnAddApplicantDetailCoMakersStatementOnclick()">
+                                                                                    <button class="btn btn-primary btn-sm" id="btnAddApplicantDetailCoMakersStatement" onclick="btnAddApplicantDetailCoMakersStatementOnclick()">
                                                                                         <i class="fa fa-plus fa-fw"></i> Add
                                                                                     </button>
                                                                                 </td>
@@ -327,10 +330,13 @@
                             </div>
                         </div>
                         <div class="panel-footer" align="right">
-                            <button class="btn btn-primary" id="btnSaveChangesButtom" onclick="btnSaveChangesApplicantOnclick()">
-                                <i class="fa fa-save fa-fw"></i> Save Changes
+                            <button class="btn btn-primary" id="btnLockApplicantButtom" onclick="btnLockApplicantOnclick()">
+                                <i class="fa fa-lock fa-fw"></i> Lock
                             </button>
-                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
+                            <button class="btn btn-primary" id="btnUnlockApplicantButtom" onclick="btnUnlockApplicantOnclick()">
+                                <i class="fa fa-unlock fa-fw"></i> Unlock
+                            </button>
+                            <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/ApplicantList'">
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>
                         </div>
@@ -489,15 +495,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <div id="coMakerPhotoDiv" style="width: 100%" align="center"></div>
-                            <img class="img-responsive img-thumbnail" id="coMakerPhoto" src="~/Images/applicantPhotoPlaceHolder.png" />
-                            <hr />
-                            <button class="btn btn-default btn-sm btn-block" id="btnChangeCoMakerStatementPhoto" onclick="btnChangeCoMakerStatementPhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                            <button class="btn btn-danger btn-sm btn-block" id="btnDeleteCoMakerStatementPhoto" onclick="btnDeleteCoMakerStatementPhotoOnclick()"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
-                            <br />
-                        </div>
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <ul id="myTab" class="nav nav-tabs">
                                 <li class="active">
                                     <a href="#coMakerDetail" id="" data-toggle="tab">Co-Maker Statement Detail </a>
@@ -719,50 +717,6 @@
         </div>
     </div>
 
-    <!-- co maker statement change photo -->
-    <div class="modal fade" id="coMakerStatementChangePhotoModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Change Photo</h4>
-                </div>
-                <div class="modal-body">
-                    <div align="center" id="divCoMakerStatementImage">
-                        <img id="coMakerStatementImageDisplay" src="#" class="img-responsive img-thumbnail" />
-                        <hr />
-                    </div>
-                    <input type="file" class="form-control" id="coMakerStatementImage">
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnOkChangeCoMakerStatementPhoto" onclick="btnOkChangeCoMakerStatementPhotoOnclick()"><i class="fa fa-check fa-fw"></i> Ok</button>
-                    <button class="btn btn-danger" id="btnCloseChangeCoMakerStatementPhoto" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- delete confirmation co Maker Statement photo modal -->
-    <div class="modal fade" id="deleteConfirmatioCoMakerStatementPhotoModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Photo</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure that you want to delete this photo?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteCoMakerStatementPhoto" onclick="btnConfirmDeleteCoMakerStatementPhotoOnclick()">Yes</button>
-                    <button class="btn btn-default" id="btnCloseCoMakerStatementPhoto" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- delete confirmation coMakers statement  -->
     <div class="modal fade" id="deleteConfirmationApplicantDetailCoMakerStatementModal" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -899,18 +853,16 @@
         var cboCoMakerCivilStatus = new wijmo.input.ComboBox('#coMakerCivilStatus');
         var cboCoMakerResidenceType = new wijmo.input.ComboBox('#coMakerResidenceType');
         var cboCoMakerLandResidenceType = new wijmo.input.ComboBox('#coMakerLandResidenceType');
-
         var coMakerApplicantRealPropertiesOwnedCollectionView;
         var coMakerApplicantRealPropertiesOwnedFlexGrid;
         var coMakerApplicantApplianceOwnedCollectionView;
         var coMakerApplicantApplianceOwnedFlexGrid;
-
         var coMakerStatementCollectionView;
         var coMakerStatementFlexGrid;
         var coMakerStatementId = 0;
-
         var applicantDetailCoMakerRealPropertiesOwnedId = 0;
         var coMakerApplicantApplianceOwnedId = 0;
+        var isLocked = false;
 
         // on load birthdate label string
         function onLoadBirthDateLabelString(cboBirthDate, cboCoMakerBirthDate) {
@@ -1070,7 +1022,8 @@
         }
 
         // cbo civil status
-        function createCboCivilStatus(civilStatusSelectedValue) {
+        function createCboCivilStatus() {
+            createCboBirthDate()
             var civilStatusArray = new Array();
             $.ajax({
                 url: '/api/civilStatus/list',
@@ -1100,8 +1053,7 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "CivilStatus",
-                        selectedValuePath: "CivilStatus",
-                        selectedValue: civilStatusSelectedValue.toString()
+                        selectedValuePath: "CivilStatus"
                     });
 
                     // co makers statement
@@ -1113,15 +1065,15 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "CivilStatus",
-                        selectedValuePath: "CivilStatus",
-                        selectedValue: civilStatusSelectedValue.toString()
+                        selectedValuePath: "CivilStatus"
                     });
                 }
             });
         }
 
         // cbo Residence Type
-        function createCboResidenceType(residenceTypeSelectedValue, landResidenceTypeSelectedValue) {
+        function createCboResidenceType() {
+            createCboCivilStatus();
             var residenceTypeArray = new Array();
             $.ajax({
                 url: '/api/residenceType/list',
@@ -1151,8 +1103,7 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "ResidenceType",
-                        selectedValuePath: "ResidenceType",
-                        selectedValue: residenceTypeSelectedValue.toString(),
+                        selectedValuePath: "ResidenceType"
                     });
 
                     cboLandResidenceType.dispose();
@@ -1163,8 +1114,7 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "ResidenceType",
-                        selectedValuePath: "ResidenceType",
-                        selectedValue: landResidenceTypeSelectedValue.toString(),
+                        selectedValuePath: "ResidenceType"
                     });
 
                     // co makers statement
@@ -1176,8 +1126,7 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "ResidenceType",
-                        selectedValuePath: "ResidenceType",
-                        selectedValue: residenceTypeSelectedValue.toString(),
+                        selectedValuePath: "ResidenceType"
                     });
 
                     cboCoMakerLandResidenceType.dispose();
@@ -1188,8 +1137,7 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "ResidenceType",
-                        selectedValuePath: "ResidenceType",
-                        selectedValue: landResidenceTypeSelectedValue.toString(),
+                        selectedValuePath: "ResidenceType"
                     });
                 }
             });
@@ -1197,32 +1145,31 @@
 
         // get Applicant Detail
         function getApplicantDetail() {
+            createCboResidenceType();
             $.ajax({
                 url: '/api/applicant/getById/' + getUrlParameter("id"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (applicantDetailResult) {
-                    createCboBirthDate();
                     if (applicantDetailResult != null) {
-
                         // applicant Image
                         var imageElement = document.createElement("images");
                         var imageData = new Image();
                         imageData.src = "data:image/jpeg;base64," + applicantDetailResult.Photo;
                         imageData.className = "img-responsive img-thumbnail";
                         imageElement.appendChild(imageData);
-
                         var photoDivElement = document.createElement("DIV");
                         var photoDiv = document.getElementById("photoDiv").appendChild(imageElement);
                         photoDiv.appendChild(photoDivElement);
 
                         document.getElementById("applicantFullName").value = applicantDetailResult.ApplicantFullName;
                         cboBirthDate.value = new Date(applicantDetailResult.BirthDate);
-                        createCboCivilStatus(applicantDetailResult.CivilStatus);
+                        cboCivilStatus.selectedValue = applicantDetailResult.CivilStatus;
+                        cboResidenceType.selectedValue = applicantDetailResult.ResidenceType;
+                        cboLandResidenceType.selectedValue = applicantDetailResult.LandResidenceType;
                         document.getElementById("applicantCityAddress").value = applicantDetailResult.CityAddress;
                         document.getElementById("applicantProvinceAddress").value = applicantDetailResult.ProvinceAddress;
-                        createCboResidenceType(applicantDetailResult.ResidenceType, applicantDetailResult.LandResidenceType);
                         document.getElementById("applicantResidenceMonthyRent").value = applicantDetailResult.ResidenceMonthlyRentAmount.toLocaleString();
                         document.getElementById("applicantLandResidenceMonthyRent").value = applicantDetailResult.LandResidenceMonthlyRentAmount.toLocaleString();
                         document.getElementById("applicantLengthOfStay").value = applicantDetailResult.LengthOfStay;
@@ -1255,15 +1202,65 @@
                         document.getElementById('stampCreatedDate').innerHTML = applicantDetailResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = applicantDetailResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = applicantDetailResult.UpdatedDateTime;
+
+                        if (applicantDetailResult.IsLocked) {
+                            $("#btnLockApplicant").prop("disabled", true);
+                            $("#btnLockApplicantButtom").prop("disabled", true);
+                            $("#btnApplicantChangePhoto").prop("disabled", true);
+                            $("#btnApplicantDeletePhoto").prop("disabled", true);
+
+                            document.getElementById("applicantFullName").disabled = true;
+                            cboBirthDate.disabled = true;
+                            cboCivilStatus.disabled = true;
+                            cboResidenceType.disabled = true;
+                            cboLandResidenceType.disabled = true;
+
+                            document.getElementById("applicantCityAddress").disabled = true;
+                            document.getElementById("applicantProvinceAddress").disabled = true;
+                            document.getElementById("applicantResidenceMonthyRent").disabled = true;
+                            document.getElementById("applicantLandResidenceMonthyRent").disabled = true;
+                            document.getElementById("applicantLengthOfStay").disabled = true;
+                            document.getElementById("applicantBusinessAddress").disabled = true;
+                            document.getElementById("applicantBusinessKaratulaName").disabled = true;
+                            document.getElementById("applicantBusinessTelephoneNumber").disabled = true;
+                            document.getElementById("applicantBusinessYears").disabled = true;
+                            document.getElementById("applicantBBusinessMerchandise").disabled = true;
+                            document.getElementById("applicantValuesOfStocks").disabled = true;
+                            document.getElementById("applicantBusinessBeginningCapital").disabled = true;
+                            document.getElementById("applicantSalesLowPeriod").disabled = true;
+                            document.getElementById("applicantLowestDailySales").disabled = true;
+                            document.getElementById("applicantAverageDailySales").disabled = true;
+                            document.getElementById("applicantEmployedCompanyName").disabled = true;
+                            document.getElementById("applicantEmployedCompanyAddress").disabled = true;
+                            document.getElementById("applicantEmployedPositionOccupied").disabled = true;
+                            document.getElementById("applicantEmployedLengthOfService").disabled = true;
+                            document.getElementById("applicantEmployedTelephoneNumber").disabled = true;
+                            document.getElementById("applicantSpouseName").disabled = true;
+                            document.getElementById("applicantSpouseEmployerOrBusiness").disabled = true;
+                            document.getElementById("applicantSpouseBusinessAddress").disabled = true;
+                            document.getElementById("applicantSpouseTelephoneNumber").disabled = true;
+                            document.getElementById("applicantSpousePositionOccupied").disabled = true;
+                            document.getElementById("applicantSpouseMonthlySalary").disabled = true;
+                            document.getElementById("applicantSpouseLengthOfService").disabled = true;
+                            document.getElementById("applicantSpouseNumberOfChildren").disabled = true;
+                            document.getElementById("applicantSpouseNumberOfStudying").disabled = true;
+                            document.getElementById("applicantSpouseChildrenSchools").disabled = true;
+
+                            $("#btnAddApplicantRealPropertiesOwned").prop("disabled", true);
+                            $("#btnAddApplicantApplianceOwned").prop("disabled", true);
+                            $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", true);
+                            isLocked = true;
+                        } else {
+                            $("#btnUnlockApplicant").prop("disabled", true);
+                            $("#btnUnlockApplicantButtom").prop("disabled", true);
+                            isLocked = false;
+                        }
+
                         createFlexGridApplicantRealPropertiesOwned();
-                        createFlexGridApplicantApplianceOwned();
-                        createFlexGridCoMakerStatement();
                     } else {
                         alert("The record you'd requested has no data");
                         window.history.back();
                     }
-
-                    NProgress.done();
                 }
             });
         }
@@ -1290,15 +1287,8 @@
         // update applicant detail or update changes
         function btnSaveChangesApplicantOnclick() {
             if (inputValidation()) {
-                document.getElementById("btnSaveChanges").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
-                document.getElementById("btnSaveChangesButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
-
-                $("#btnSaveChanges").prop("disabled", true);
-                $("#btnSaveChangesButtom").prop("disabled", true);
-                $("#btnClose").prop("disabled", true);
-
                 var applicantDetailObject = new Object();
-                applicantDetailObject.FullName = document.getElementById('applicantFullName').value;
+                applicantDetailObject.ApplicantFullName = document.getElementById('applicantFullName').value;
                 applicantDetailObject.BirthDate = cboBirthDate.value;
                 applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
                 applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
@@ -1343,30 +1333,15 @@
                     data: applicantDetailData,
                     statusCode: {
                         200: function () {
-                            toastr.success("Reloading the page...", "Update Successful");
                             window.setTimeout(function () {
                                 location.reload();
                             }, 1500);
                         },
                         404: function () {
-                            document.getElementById("btnSaveChanges").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
-                            document.getElementById("btnSaveChangesButtom").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
-
                             toastr.error("The record that you're updating is not found in database", "Record Not Found");
-
-                            $("#btnSaveChanges").prop("disabled", false);
-                            $("#btnSaveChangesButtom").prop("disabled", false);
-                            $("#btnClose").prop("disabled", false);
                         },
                         400: function () {
-                            document.getElementById("btnSaveChanges").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
-                            document.getElementById("btnSaveChangesButtom").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
-
                             toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
-
-                            $("#btnSaveChanges").prop("disabled", false);
-                            $("#btnSaveChangesButtom").prop("disabled", false);
-                            $("#btnClose").prop("disabled", false);
                         }
                     }
                 });
@@ -1386,9 +1361,16 @@
                 success: function (applicantRealPropertiesOwnedResult) {
                     if (applicantRealPropertiesOwnedResult.length > 0) {
                         for (i = 0; i < applicantRealPropertiesOwnedResult.length; i++) {
+                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            if (isLocked) {
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantRealPropertiesOwnedOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            }
+
                             applicantRealPropertiesOwnedArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                EditButton: btnEditButton,
+                                DeleteButton: btnDeleteButton,
                                 Id: applicantRealPropertiesOwnedResult[i]["Id"],
                                 ApplicantId: applicantRealPropertiesOwnedResult[i]["ApplicantId"],
                                 Applicant: applicantRealPropertiesOwnedResult[i]["Applicant"],
@@ -1399,6 +1381,8 @@
                             });
                         }
                     }
+
+                    NProgress.done();
                 }
             });
             return applicantRealPropertiesOwnedArray;
@@ -1406,6 +1390,8 @@
 
         // create flexgrid for applicant real properties owned
         function createFlexGridApplicantRealPropertiesOwned() {
+            createFlexGridApplicantApplianceOwned();
+
             applicantRealPropertiesOwnedCollectionView = new wijmo.collections.CollectionView(getApplicantRealPropertiesOwned());
 
             // Flex Grid
@@ -1689,9 +1675,16 @@
                 success: function (applicantApplianceOwnedResult) {
                     if (applicantApplianceOwnedResult.length > 0) {
                         for (i = 0; i < applicantApplianceOwnedResult.length; i++) {
+                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantApplianceOwnedOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantApplianceOwnedOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            if (isLocked) {
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantApplianceOwnedOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantApplianceOwnedOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            }
+
                             applicantApplianceOwnedArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantApplianceOwnedOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantApplianceOwnedOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                EditButton: btnEditButton,
+                                DeleteButton: btnDeleteButton,
                                 Id: applicantApplianceOwnedResult[i]["Id"],
                                 ApplicantId: applicantApplianceOwnedResult[i]["ApplicantId"],
                                 Applicant: applicantApplianceOwnedResult[i]["Applicant"],
@@ -1700,6 +1693,8 @@
                             });
                         }
                     }
+
+                    NProgress.done();
                 }
             });
             return applicantApplianceOwnedArray;
@@ -1707,6 +1702,8 @@
 
         // create flexgrid for applicant appliance owned
         function createFlexGridApplicantApplianceOwned() {
+            createFlexGridCoMakerStatement();
+
             applicantApplianceOwnedCollectionView = new wijmo.collections.CollectionView(getApplicantApplianceOwned());
 
             // Flex Grid
@@ -1978,9 +1975,16 @@
                 success: function (applicantDetailCoMakersStatementResult) {
                     if (applicantDetailCoMakersStatementResult.length > 0) {
                         for (i = 0; i < applicantDetailCoMakersStatementResult.length; i++) {
+                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCoMakerStatementOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteCoMakerStatementOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            if (isLocked) {
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCoMakerStatementOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteCoMakerStatementOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            }
+
                             coMakerStatementArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCoMakerStatementOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCoMakerStatementOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                EditButton: btnEditButton,
+                                DeleteButton: btnDeleteButton,
                                 Id: applicantDetailCoMakersStatementResult[i]["Id"],
                                 Photo: applicantDetailCoMakersStatementResult[i]["Photo"],
                                 ApplicantId: applicantDetailCoMakersStatementResult[i]["ApplicantId"],
@@ -2023,6 +2027,8 @@
                             });
                         }
                     }
+
+                    NProgress.done();
                 }
             });
             return coMakerStatementArray;
@@ -2103,6 +2109,8 @@
                             });
                         }
                     }
+
+                    NProgress.done();
                 }
             });
             return coMakerRealPropertiesOwnedArray;
@@ -2388,18 +2396,11 @@
                 });
             });
 
-            var coMakerPhoto = document.getElementById("coMakerPhoto");
-            coMakerPhoto.src = "../Images/applicantPhotoPlaceHolder.png";
-
-            $("#coMakerPhoto").show();
-            $("#coMakerPhotoDiv").hide();
-
             $("#btnAddComakerApplianceOwned").prop("disabled", true);
             $("#btnAddCoMakerRealPropertiesOwned").prop("disabled", true);
             $("#btnCoMakersStatementSaveChangesButton").prop("disabled", false);
             $("#btnCoMakersStatementCancelChangesButton").prop("disabled", false);
             document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnDeleteCoMakerStatementPhoto").prop("disabled", true);
 
             coMakerStatementId = 0;
             document.getElementById("coMakerFullName").value = "NA";
@@ -2461,32 +2462,14 @@
                 });
             });
 
-            $("#coMakerPhoto").hide();
-            $("#coMakerPhotoDiv").show();
-
             $("#btnAddComakerApplianceOwned").prop("disabled", false);
             $("#btnAddCoMakerRealPropertiesOwned").prop("disabled", false);
             $("#btnCoMakersStatementSaveChangesButton").prop("disabled", false);
             $("#btnCoMakersStatementCancelChangesButton").prop("disabled", false);
             document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes"
-            $("#btnDeleteCoMakerStatementPhoto").prop("disabled", false);
 
             coMakerStatementCollectionView.editItem(coMakerStatementCollectionView.currentItem);
             var coMakerStatement = coMakerStatementCollectionView.currentEditItem;
-
-            $('#coMakerPhotoDiv').children("images").remove();
-
-            // applicant Image
-            var coMakerImageElement = document.createElement("images");
-            var coMakerImageData = new Image();
-            coMakerImageData.src = "data:image/jpeg;base64," + coMakerStatement.Photo;
-            coMakerImageData.className = "img-responsive img-thumbnail";
-            coMakerImageElement.appendChild(coMakerImageData);
-
-            var photoCoMakerDivElement = document.createElement("DIV");
-            var photoCoMakerDiv = document.getElementById("coMakerPhotoDiv").appendChild(coMakerImageElement);
-            photoCoMakerDiv.appendChild(photoCoMakerDivElement);
-
             coMakerStatementId = coMakerStatement.Id;
             document.getElementById("coMakerFullName").value = coMakerStatement.CoMakerFullName;
             cboCoMakerBirthDate.value = new Date(coMakerStatement.BirthDate);
@@ -2562,7 +2545,6 @@
                 document.getElementById("btnCoMakersStatementSaveChangesButton").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes"
 
                 var coMakerObject = new Object();
-                coMakerObject.Photo = $('#coMakerPhoto').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
                 coMakerObject.ApplicantId = getUrlParameter("id");
                 coMakerObject.CoMakerFullName = document.getElementById('coMakerFullName').value;
                 coMakerObject.BirthDate = cboCoMakerBirthDate.value;
@@ -2752,6 +2734,8 @@
                             });
                         }
                     }
+
+                    NProgress.done();
                 }
             });
             return coMakerApplianceOwnedArray;
@@ -3050,10 +3034,8 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("Reloading the page...", "Delete Successful");
-                        window.setTimeout(function () {
-                            location.reload();
-                        }, 1500);
+                        toastr.success("The photo was successfully deleted. Reloading the page.", "Delete Successful");
+                        btnSaveChangesApplicantOnclick();
                     },
                     404: function () {
                         toastr.error("The photo that you're updating is not found in database", "Record Not Found");
@@ -3075,44 +3057,102 @@
 
         // save image
         function btnOkChangePhotoOnclick() {
-            document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
-            $("#btnOkChangePhoto").prop("disabled", true);
-            $("#btnCloseChangePhoto").prop("disabled", true);
+            if (inputValidation()) {
+                document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
+                $("#btnOkChangePhoto").prop("disabled", true);
+                $("#btnCloseChangePhoto").prop("disabled", true);
 
-            var applicantDetailObject = new Object();
+                var applicantDetailObject = new Object();
+                applicantDetailObject.ApplicantFullName = document.getElementById('applicantFullName').value;
+                applicantDetailObject.BirthDate = cboBirthDate.value;
+                applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
+                applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
+                applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
+                applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
+                applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
+                applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
+                applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
+                applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
+                applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
+                applicantDetailObject.BusinessTelephoneNumber = document.getElementById('applicantBusinessTelephoneNumber').value;
+                applicantDetailObject.BusinessYear = document.getElementById('applicantBusinessYears').value;
+                applicantDetailObject.BusinessMerchandise = document.getElementById('applicantBBusinessMerchandise').value;
+                applicantDetailObject.BusinessStockValues = document.getElementById('applicantValuesOfStocks').value;
+                applicantDetailObject.BusinessBeginningCapital = document.getElementById('applicantBusinessBeginningCapital').value;
+                applicantDetailObject.BusinessLowSalesPeriod = document.getElementById('applicantSalesLowPeriod').value;
+                applicantDetailObject.BusinessLowestDailySales = document.getElementById('applicantLowestDailySales').value;
+                applicantDetailObject.BusinessAverageDailySales = document.getElementById('applicantAverageDailySales').value;
+                applicantDetailObject.EmployedCompany = document.getElementById('applicantEmployedCompanyName').value;
+                applicantDetailObject.EmployedCompanyAddress = document.getElementById('applicantEmployedCompanyAddress').value;
+                applicantDetailObject.EmployedPositionOccupied = document.getElementById('applicantEmployedPositionOccupied').value;
+                applicantDetailObject.EmployedServiceLength = document.getElementById('applicantEmployedLengthOfService').value;
+                applicantDetailObject.EmployedTelephoneNumber = document.getElementById('applicantEmployedTelephoneNumber').value;
+                applicantDetailObject.SpouseFullName = document.getElementById('applicantSpouseName').value;
+                applicantDetailObject.SpouseEmployerBusiness = document.getElementById('applicantSpouseEmployerOrBusiness').value;
+                applicantDetailObject.SpouseEmployerBusinessAddress = document.getElementById('applicantSpouseBusinessAddress').value;
+                applicantDetailObject.SpouseBusinessTelephoneNumber = document.getElementById('applicantSpouseTelephoneNumber').value;
+                applicantDetailObject.SpousePositionOccupied = document.getElementById('applicantSpousePositionOccupied').value;
+                applicantDetailObject.SpouseMonthlySalary = document.getElementById('applicantSpouseMonthlySalary').value;
+                applicantDetailObject.SpouseLengthOfService = document.getElementById('applicantSpouseLengthOfService').value;
+                applicantDetailObject.NumberOfChildren = document.getElementById('applicantSpouseNumberOfChildren').value;
+                applicantDetailObject.Studying = document.getElementById('applicantSpouseNumberOfStudying').value;
+                applicantDetailObject.Schools = document.getElementById('applicantSpouseChildrenSchools').value;
+                var applicantDetailData = JSON.stringify(applicantDetailObject);
 
-            applicantDetailObject.Photo = $('#imageDisplay').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
-            var applicantDetailData = JSON.stringify(applicantDetailObject);
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/applicant/update/' + getUrlParameter("id"),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: applicantDetailData,
+                    statusCode: {
+                        200: function () {
+                            var applicantDetailPhotoObject = new Object();
+                            applicantDetailPhotoObject.Photo = $('#imageDisplay').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
+                            var applicantDetailPhotoData = JSON.stringify(applicantDetailPhotoObject);
 
-            $.ajax({
-                type: "PUT",
-                url: '/api/applicant/updatePhoto/' + getUrlParameter("id"),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: applicantDetailData,
-                statusCode: {
-                    200: function () {
-                        toastr.success("Reloading the page...", "Update Successful");
-                        window.setTimeout(function () {
-                            location.reload();
-                        }, 1500);
-                    },
-                    404: function () {
-                        toastr.error("The photo that you're updating is not found in database", "Record Not Found");
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/applicant/updatePhoto/' + getUrlParameter("id"),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: applicantDetailPhotoData,
+                                statusCode: {
+                                    200: function () {
+                                        toastr.success("The photo was successfully uploaded. Reloading the page.", "Update Photo Successful");
+                                        window.setTimeout(function () {
+                                            location.reload();
+                                        }, 1500);
+                                    },
+                                    404: function () {
+                                        toastr.error("The photo that you're updating is not found in database", "Record Not Found");
 
-                        document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
-                        $("#btnOkChangePhoto").prop("disabled", false);
-                        $("#btnCloseChangePhoto").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                        document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
+                                        $("#btnOkChangePhoto").prop("disabled", false);
+                                        $("#btnCloseChangePhoto").prop("disabled", false);
+                                    },
+                                    400: function () {
+                                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
 
-                        document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
-                        $("#btnOkChangePhoto").prop("disabled", false);
-                        $("#btnCloseChangePhoto").prop("disabled", false);
+                                        document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
+                                        $("#btnOkChangePhoto").prop("disabled", false);
+                                        $("#btnCloseChangePhoto").prop("disabled", false);
+                                    }
+                                }
+                            });
+                        },
+                        404: function () {
+                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                        },
+                        400: function () {
+                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
         }
 
         // Read URL image
@@ -3138,159 +3178,175 @@
 
         // convert image to hex
         function hexToBase64(str) {
-            console.log(str)
             return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
         }
 
-        // co maker statement change photo
-        function btnChangeCoMakerStatementPhotoOnclick() {
-            $("#coMakerStatementChangePhotoModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+        // lock
+        function btnLockApplicantOnclick() {
+            if (inputValidation()) {
+                $("#btnLockApplicant").prop("disabled", true);
+                $("#btnLockApplicantButtom").prop("disabled", true);
+                document.getElementById("btnLockApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
+                document.getElementById("btnLockApplicantButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
 
-            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Ok";
-            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
-            $("#divCoMakerStatementImage").hide();
-        }
+                $("#btnClose").prop("disabled", true);
+                $("#btnCloseButtom").prop("disabled", true);
+                $("#btnAddApplicantRealPropertiesOwned").prop("disabled", true);
+                $("#btnAddApplicantApplianceOwned").prop("disabled", true);
+                $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", true);
+                $("#btnApplicantChangePhoto").prop("disabled", true);
+                $("#btnApplicantDeletePhoto").prop("disabled", true);
 
-        // Read URL image
-        function readCoMakerStatementImageURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $("#divCoMakerStatementImage").show();
-                    $('#coMakerStatementImageDisplay').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+                var applicantDetailObject = new Object();
+                applicantDetailObject.ApplicantFullName = document.getElementById('applicantFullName').value;
+                applicantDetailObject.BirthDate = cboBirthDate.value;
+                applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
+                applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
+                applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
+                applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
+                applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
+                applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
+                applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
+                applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
+                applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
+                applicantDetailObject.BusinessTelephoneNumber = document.getElementById('applicantBusinessTelephoneNumber').value;
+                applicantDetailObject.BusinessYear = document.getElementById('applicantBusinessYears').value;
+                applicantDetailObject.BusinessMerchandise = document.getElementById('applicantBBusinessMerchandise').value;
+                applicantDetailObject.BusinessStockValues = document.getElementById('applicantValuesOfStocks').value;
+                applicantDetailObject.BusinessBeginningCapital = document.getElementById('applicantBusinessBeginningCapital').value;
+                applicantDetailObject.BusinessLowSalesPeriod = document.getElementById('applicantSalesLowPeriod').value;
+                applicantDetailObject.BusinessLowestDailySales = document.getElementById('applicantLowestDailySales').value;
+                applicantDetailObject.BusinessAverageDailySales = document.getElementById('applicantAverageDailySales').value;
+                applicantDetailObject.EmployedCompany = document.getElementById('applicantEmployedCompanyName').value;
+                applicantDetailObject.EmployedCompanyAddress = document.getElementById('applicantEmployedCompanyAddress').value;
+                applicantDetailObject.EmployedPositionOccupied = document.getElementById('applicantEmployedPositionOccupied').value;
+                applicantDetailObject.EmployedServiceLength = document.getElementById('applicantEmployedLengthOfService').value;
+                applicantDetailObject.EmployedTelephoneNumber = document.getElementById('applicantEmployedTelephoneNumber').value;
+                applicantDetailObject.SpouseFullName = document.getElementById('applicantSpouseName').value;
+                applicantDetailObject.SpouseEmployerBusiness = document.getElementById('applicantSpouseEmployerOrBusiness').value;
+                applicantDetailObject.SpouseEmployerBusinessAddress = document.getElementById('applicantSpouseBusinessAddress').value;
+                applicantDetailObject.SpouseBusinessTelephoneNumber = document.getElementById('applicantSpouseTelephoneNumber').value;
+                applicantDetailObject.SpousePositionOccupied = document.getElementById('applicantSpousePositionOccupied').value;
+                applicantDetailObject.SpouseMonthlySalary = document.getElementById('applicantSpouseMonthlySalary').value;
+                applicantDetailObject.SpouseLengthOfService = document.getElementById('applicantSpouseLengthOfService').value;
+                applicantDetailObject.NumberOfChildren = document.getElementById('applicantSpouseNumberOfChildren').value;
+                applicantDetailObject.Studying = document.getElementById('applicantSpouseNumberOfStudying').value;
+                applicantDetailObject.Schools = document.getElementById('applicantSpouseChildrenSchools').value;
+                var applicantDetailData = JSON.stringify(applicantDetailObject);
 
-        // onload image
-        document.querySelector('#coMakerStatementImage').addEventListener('change', function () {
-            var reader = new FileReader();
-            reader.onload = function () {
-                var binaryString = this.result;
-            }
-            reader.readAsBinaryString(this.files[0]);
-        }, false);
-
-        // Read URL image
-        function readCoMakerStatementImageURLDetail(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#coMakerPhoto').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        // ok photo
-        function btnOkChangeCoMakerStatementPhotoOnclick() {
-            $("#coMakerPhoto").show();
-            $("#coMakerPhotoDiv").hide();
-            
-            var coMakerImage = document.getElementById("coMakerStatementImage");
-            readCoMakerStatementImageURLDetail(coMakerImage);
-
-            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Changing Picture"
-            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", true);
-
-            var coMakerObject = new Object();
-            coMakerObject.Photo = $('#coMakerStatementImageDisplay').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
-            var coMakerData = JSON.stringify(coMakerObject);
-
-            if (coMakerStatementId > 0) {
                 $.ajax({
                     type: "PUT",
-                    url: '/api/coMakerStatement/updatePhoto/' + coMakerStatementId,
+                    url: '/api/applicant/update/' + getUrlParameter("id"),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: coMakerData,
+                    data: applicantDetailData,
                     statusCode: {
                         200: function () {
-                            $("#coMakerStatementChangePhotoModal").modal("hide");
-                            toastr.success("The photo was successfuly uploaded.", "Upload Successful");
-
-                            coMakerStatementCollectionView = new wijmo.collections.CollectionView(getApplicantCoMakerStatement());
-                            coMakerStatementFlexGrid.itemsSource = coMakerStatementCollectionView;
-                            coMakerStatementFlexGrid.trackChanges = true;
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/applicant/lock/' + getUrlParameter("id"),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                statusCode: {
+                                    200: function () {
+                                        toastr.success("The data was successfully updated and Locked. Reloading the page.", "Lock Successful");
+                                        window.setTimeout(function () {
+                                            location.reload();
+                                        }, 1500);
+                                    },
+                                    404: function () {
+                                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                        $("#btnLockApplicant").prop("disabled", false);
+                                        $("#btnLockApplicantButtom").prop("disabled", false);
+                                        document.getElementById("btnLockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
+                                        document.getElementById("btnLockApplicantButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Lock";
+                                        $("#btnClose").prop("disabled", false);
+                                        $("#btnCloseButtom").prop("disabled", false);
+                                        $("#btnAddApplicantRealPropertiesOwned").prop("disabled", false);
+                                        $("#btnAddApplicantApplianceOwned").prop("disabled", false);
+                                        $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", false);
+                                        $("#btnApplicantChangePhoto").prop("disabled", true);
+                                        $("#btnApplicantDeletePhoto").prop("disabled", true);
+                                    },
+                                    400: function () {
+                                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                        $("#btnLockApplicant").prop("disabled", false);
+                                        $("#btnLockApplicantButtom").prop("disabled", false);
+                                        document.getElementById("btnLockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
+                                        document.getElementById("btnLockApplicantButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Lock";
+                                        $("#btnClose").prop("disabled", false);
+                                        $("#btnCloseButtom").prop("disabled", false);
+                                        $("#btnAddApplicantRealPropertiesOwned").prop("disabled", false);
+                                        $("#btnAddApplicantApplianceOwned").prop("disabled", false);
+                                        $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", false);
+                                        $("#btnApplicantChangePhoto").prop("disabled", false);
+                                        $("#btnApplicantDeletePhoto").prop("disabled", false);
+                                    }
+                                }
+                            });
                         },
                         404: function () {
-                            toastr.error("The photo that you're updating is not found in database", "Record Not Found");
-
-                            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
-                            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
-                            $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
                         },
                         400: function () {
                             toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
-
-                            document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
-                            $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
-                            $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
                         }
                     }
                 });
             } else {
-                $("#coMakerStatementChangePhotoModal").modal("hide");
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
             }
         }
 
-        // btn delete photo image
-        function btnDeleteCoMakerStatementPhotoOnclick() {
-            $("#deleteConfirmatioCoMakerStatementPhotoModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+        // Unlock
+        function btnUnlockApplicantOnclick() {
+            $("#btnUnlockApplicant").prop("disabled", true);
+            $("#btnUnlockApplicantButtom").prop("disabled", true);
+            document.getElementById("btnUnlockApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
+            document.getElementById("btnUnlockApplicantButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
 
-            document.getElementById("btnConfirmDeleteCoMakerStatementPhoto").innerHTML = "Yes";
-            $("#btnConfirmDeleteCoMakerStatementPhoto").prop("disabled", false);
-            $("#btnCloseCoMakerStatementPhoto").prop("disabled", false);
-        }
-
-        // btn confirm delete photo image
-        function btnConfirmDeleteCoMakerStatementPhotoOnclick() {
-            document.getElementById("btnConfirmDeleteCoMakerStatementPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Changing to Default Photo";
-            $("#btnConfirmDeleteCoMakerStatementPhoto").prop("disabled", true);
-            $("#btnCloseCoMakerStatementPhoto").prop("disabled", true);
-            $("#deleteConfirmatioCoMakerStatementPhotoModal").modal("hide");
+            $("#btnClose").prop("disabled", true);
+            $("#btnCloseButtom").prop("disabled", true);
+            $("#btnAddApplicantRealPropertiesOwned").prop("disabled", true);
+            $("#btnAddApplicantApplianceOwned").prop("disabled", true);
+            $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",
-                url: '/api/coMakerStatement/deletePhoto/' + coMakerStatementId,
+                url: '/api/applicant/unlock/' + getUrlParameter("id"),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The photo was successfuly deleted.", "Delete Successful");
-                       
-                        //var coMakerPhoto = document.getElementById("coMakerPhoto");
-                        //coMakerPhoto.src = "../Images/applicantPhotoPlaceHolder.png";
-                        //$('#coMakerPhotoDiv').children("images").remove();
-                        $("#applicantDetailCoMakersStatementModal").modal("hide");
-
-                        $("#coMakerPhoto").show();
-                        $("#coMakerPhotoDiv").hide();
-
-                        coMakerStatementCollectionView = new wijmo.collections.CollectionView(getApplicantCoMakerStatement());
-                        coMakerStatementFlexGrid.itemsSource = coMakerStatementCollectionView;
-                        coMakerStatementFlexGrid.trackChanges = true;
+                        toastr.success("The data was successfully updated and unlocked. Reloading the page.", "Unlock Successful");
+                        window.setTimeout(function () {
+                            location.reload();
+                        }, 1500);
                     },
                     404: function () {
-                        toastr.error("The photo that you're updating is not found in database", "Record Not Found");
-
-                        document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
-                        $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
-                        $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                        $("#btnUnlockApplicant").prop("disabled", false);
+                        $("#btnUnlockApplicantButtom").prop("disabled", false);
+                        document.getElementById("btnUnlockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Unlock";
+                        document.getElementById("btnUnlockApplicantButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                        $("#btnClose").prop("disabled", false);
+                        $("#btnCloseButtom").prop("disabled", false);
+                        $("#btnAddApplicantRealPropertiesOwned").prop("disabled", false);
+                        $("#btnAddApplicantApplianceOwned").prop("disabled", false);
+                        $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", false);
                     },
                     400: function () {
                         toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
-
-                        document.getElementById("btnOkChangeCoMakerStatementPhoto").innerHTML = "Yes";
-                        $("#btnOkChangeCoMakerStatementPhoto").prop("disabled", false);
-                        $("#btnCloseChangeCoMakerStatementPhoto").prop("disabled", false);
+                        $("#btnUnlockApplicant").prop("disabled", false);
+                        $("#btnUnlockApplicantButtom").prop("disabled", false);
+                        document.getElementById("btnUnlockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Unlock";
+                        document.getElementById("btnUnlockApplicantButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                        $("#btnClose").prop("disabled", false);
+                        $("#btnCloseButtom").prop("disabled", false);
+                        $("#btnAddApplicantRealPropertiesOwned").prop("disabled", false);
+                        $("#btnAddApplicantApplianceOwned").prop("disabled", false);
+                        $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", false);
                     }
                 }
             });
@@ -3301,11 +3357,6 @@
             $("#applicantImage").change(function () {
                 readURL(this);
                 $('#imageDisplay').show();
-            });
-
-            $("#coMakerStatementImage").change(function () {
-                readCoMakerStatementImageURL(this);
-                $('#coMakerStatementImageDisplay').show();
             });
 
             NProgress.start();
@@ -3328,6 +3379,7 @@
 
         // co maker appliance owned pills and tabs
         $('#comakerRealPropertiesOwnedPillTab').click(function () {
+            NProgress.start();
             $("#comakerRealPropertiesOwned").show();
             $("#comakerApplianceOwned").hide();
 
@@ -3338,6 +3390,7 @@
 
         // co maker appliance owned pills and tabs
         $('#comakerApplianceOwnedPillTab').click(function () {
+            NProgress.start();
             $("#comakerRealPropertiesOwned").hide();
             $("#comakerApplianceOwned").show();
 
@@ -3348,6 +3401,7 @@
 
         // appliance owned pills and tabs
         $('#co-MakersStatement').click(function () {
+            NProgress.start();
             $("#Co-MakersStatement").show();
             $("#realPropertiesOwned").hide();
             $("#ApplianceOwned").hide();
@@ -3359,6 +3413,7 @@
 
         // appliance owned pills and tabs
         $('#appplianceOwnedPillTab').click(function () {
+            NProgress.start();
             $("#Co-MakersStatement").hide();
             $("#realPropertiesOwned").hide();
             $("#ApplianceOwned").show();
@@ -3370,6 +3425,7 @@
 
         // appliance real properties owned pills and tabs
         $('#realPropertiesOwnedPillTab').click(function () {
+            NProgress.start();
             $("#Co-MakersStatement").hide();
             $("#realPropertiesOwned").show();
             $("#ApplianceOwned").hide();
@@ -3381,6 +3437,7 @@
 
         // appliance real properties owned pills and tabs
         $('#propertiesAndAppliancesTab').click(function () {
+            NProgress.start();
             $("#coMakerApplianceOwnedsGridData").hide();
             setTimeout(function () {
                 $("#coMakerApplianceOwnedsGridData").show();
@@ -3392,6 +3449,7 @@
 
         // comakers real properties owned pills and tabs
         $('#coMakerPropertiesAndAppliancesTab').click(function () {
+            NProgress.start();
             $("#coMakerPropertiesAndAppliancesGridData").hide();
             setTimeout(function () {
                 $("#coMakerPropertiesAndAppliancesGridData").show();

@@ -144,7 +144,6 @@
         // global variables
         var companyCollectionView;
         var companyFlexGrid;
-
         var btnFirstPageGrid;
         var btnPreviousPageGrid;
         var btnNextPageGrid;
@@ -169,6 +168,7 @@
                                 Company: companyListResult[i]["Company"],
                                 Address: companyListResult[i]["Address"],
                                 ContactNumber: companyListResult[i]["ContactNumber"],
+                                IsLocked: companyListResult[i]["IsLocked"],
                                 CreatedByUserId: companyListResult[i]["CreatedByUserId"],
                                 CreatedByUser: companyListResult[i]["CreatedByUser"],
                                 CreatedDateTime: companyListResult[i]["CreatedDateTime"],
@@ -256,7 +256,6 @@
 
                         companyCollectionView.filter = function (item) {
                             return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Address.toLowerCase().indexOf(filterText) > -1)
                                                || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
@@ -346,7 +345,6 @@
 
             companyCollectionView.filter = function (item) {
                 return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Address.toLowerCase().indexOf(filterText) > -1)
                                    || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
@@ -386,10 +384,22 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Area",
+                                "header": "Company",
                                 "binding": "Company",
                                 "allowSorting": true,
                                 "width": "3*",
+                            },
+                            {
+                                "header": "Contact Number",
+                                "binding": "ContactNumber",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": "0.4*",
                             }
                 ],
                 autoGenerateColumns: false,

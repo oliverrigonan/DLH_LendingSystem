@@ -26,6 +26,7 @@ namespace Lending.ApiControllers
                                 Company = d.Company,
                                 Address = d.Address,
                                 ContactNumber = d.ContactNumber,
+                                IsLocked = d.IsLocked,
                                 CreatedByUserId = d.CreatedByUserId,
                                 CreatedByUser = d.mstUser.FullName,
                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -51,6 +52,7 @@ namespace Lending.ApiControllers
                               Company = d.Company,
                               Address = d.Address,
                               ContactNumber = d.ContactNumber,
+                              IsLocked = d.IsLocked,
                               CreatedByUserId = d.CreatedByUserId,
                               CreatedByUser = d.mstUser.FullName,
                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -92,11 +94,11 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update company
+        // lock company
         [Authorize]
         [HttpPut]
-        [Route("api/company/update/{id}")]
-        public HttpResponseMessage updateCompany(String id, Models.MstCompany company)
+        [Route("api/company/lock/{id}")]
+        public HttpResponseMessage lockCompany(String id, Models.MstCompany company)
         {
             try
             {
@@ -109,6 +111,40 @@ namespace Lending.ApiControllers
                     updateCompany.Company = company.Company;
                     updateCompany.Address = company.Address;
                     updateCompany.ContactNumber = company.ContactNumber;
+                    updateCompany.IsLocked = true;
+                    updateCompany.UpdatedByUserId = userId;
+                    updateCompany.UpdatedDateTime = DateTime.Now;
+
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // unlock company
+        [Authorize]
+        [HttpPut]
+        [Route("api/company/unlock/{id}")]
+        public HttpResponseMessage unlockCompany(String id, Models.MstCompany company)
+        {
+            try
+            {
+                var companies = from d in db.mstCompanies where d.Id == Convert.ToInt32(id) select d;
+                if (companies.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                    var updateCompany = companies.FirstOrDefault();
+                    updateCompany.IsLocked = false;
                     updateCompany.UpdatedByUserId = userId;
                     updateCompany.UpdatedDateTime = DateTime.Now;
 

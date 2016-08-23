@@ -21,26 +21,6 @@
     <!-- Footer -->
     @Html.Partial("HomeFooter")
 
-    <!-- user Avatar Modal -->
-    <div class="modal fade" id="userAvatarModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Change your Avatar</h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="" onclick=""><i class="fa fa-check fa-fw"></i> Ok</button>
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- user Personal Information Modal -->
     <div class="modal fade" id="userEditDetailModal" role="dialog">
         <div class="modal-dialog">
@@ -54,29 +34,6 @@
                     <dl class="dl-horizontal">
                         <dt>Full Name</dt>
                         <dd><input type="text" class="form-control requiredUser" id="editFullName" placeholder="First Name" /></dd>
-                    </dl>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" id="" onclick="updateCurrentUserLoggedIn()"><i class="fa fa-check fa-fw"></i> Update</button>
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- user Contact Information Modal -->
-    <div class="modal fade" id="userContactInformationModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Edit Contact Information</h4>
-                </div>
-                <div class="modal-body">
-                    <dl class="dl-horizontal">
-                        <dt>Email</dt>
-                        <dd><input type="text" class="form-control" id="editContactEmail" placeholder="Email Address" /></dd>
                     </dl>
                 </div>
                 <div class="modal-footer">
@@ -107,32 +64,15 @@
 
                     // Edit Info
                     document.getElementById("editFullName").value = currentUserResults.FullName;
-                    document.getElementById("editContactEmail").value = currentUserResults.EmailAddress;
 
                     NProgress.done();
                 }
             });
         }
 
-        // modal change avatar
-        function changeAvatar() {
-            $("#userAvatarModal").modal({
-                "show": true,
-                "backdrop": "static"
-            })
-        }
-
         // modal edit personal information
         function editPerosnalInformation() {
             $("#userEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            })
-        }
-
-        // modal edit contact
-        function editContact() {
-            $("#userContactInformationModal").modal({
                 "show": true,
                 "backdrop": "static"
             })

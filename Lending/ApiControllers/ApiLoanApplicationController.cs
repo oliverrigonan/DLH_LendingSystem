@@ -202,6 +202,9 @@ namespace Lending.ApiControllers
                     lockLoanApplication.UpdatedDateTime = DateTime.Now;
                     db.SubmitChanges();
 
+                    Business.Journal journal = new Business.Journal();
+                    journal.postLoanJournal(Convert.ToInt32(id));
+
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }
                 else
@@ -233,6 +236,9 @@ namespace Lending.ApiControllers
                     unlockLoanApplication.UpdatedByUserId = userId;
                     unlockLoanApplication.UpdatedDateTime = DateTime.Now;
                     db.SubmitChanges();
+
+                    Business.Journal journal = new Business.Journal();
+                    journal.deleteLoanJournal(Convert.ToInt32(id));
 
                     return Request.CreateResponse(HttpStatusCode.OK);
                 }

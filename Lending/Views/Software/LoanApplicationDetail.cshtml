@@ -79,7 +79,7 @@
                                         <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
                                             <i class="fa fa-unlock fa-fw"></i> Unlock
                                         </button>
-                                        <button class="btn btn-primary" id="btnPrint" onclick="">
+                                        <button class="btn btn-primary" id="btnPrint" onclick="btnPrintOnClick()">
                                             <i class="fa fa-file-pdf-o fa-fw"></i> PDF
                                         </button>
                                         <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/LoanApplicationList'">
@@ -165,7 +165,7 @@
                                                         Applicant Requirements
                                                     </td>
                                                     <td align="right">
-                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                        <button class="btn btn-primary btn-sm" id="btnAddLoanRequirements" onclick="btnAddLoanRequirementsOnclick()">
                                                             <i class="fa fa-plus fa-fw"></i> Add
                                                         </button>
                                                     </td>
@@ -186,7 +186,7 @@
                             <button class="btn btn-primary" id="btnUnlockButtom" onclick="btnUnlockOnClick()">
                                 <i class="fa fa-unlock fa-fw"></i> Unlock
                             </button>
-                            <button class="btn btn-primary" id="btnPrintButtom" onclick="">
+                            <button class="btn btn-primary" id="btnPrintButtom" onclick="btnPrintOnClick()">
                                 <i class="fa fa-file-pdf-o fa-fw"></i> PDF
                             </button>
                             <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/LoanApplicationList'">
@@ -212,7 +212,7 @@
                     <dl class="dl-horizontal">
                         <dt>Particulars</dt>
                         <dd>
-                            <input type="text" class="form-control requiredLoanApplicationLines" id="loanApplicationLinesParticulars" placeholder="Area" />
+                            <textarea class="form-control requiredLoanApplicationLines" id="loanApplicationLinesParticulars" placeholder="Particulars"></textarea>
                         </dd>
                         <dt>Amount</dt>
                         <dd>
@@ -251,6 +251,64 @@
         </div>
     </div>
 
+    <!-- loan requirement Detail Modal -->
+    <div class="modal fade" id="loanRequirementsEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Loan Requirement Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <dl class="dl-horizontal">
+                        <dt>Requirement</dt>
+                        <dd>
+                            <div id="loanRequiremenstName"></div>
+                        </dd>
+                        <dt>Expiration Date</dt>
+                        <dd>
+                            <div id="loanRequiremensExpirationDate"></div>  &nbsp; <span id="loanRequiremensExpirationDateString"></span>
+                        </dd>
+                        <dt>Is Valid</dt>
+                        <dd>
+                            <input type="checkbox" id="loanRequiremensIsValid" />
+                        </dd>
+                       
+                        <dt>Note</dt>
+                        <dd>
+                            <textarea class="form-control requiredLoanRequirements" id="loanRequirementsNote"></textarea>
+                        </dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveLoanRequirement" onclick="saveLoanRequirementOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseLoanRequirement" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Loan Requirement modal -->
+    <div class="modal fade" id="deleteConfirmationLoanRequirementModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Loan Requirement</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Loan Requirement?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="btnConfirmDeleteLoanRequirement" onclick="btnConfirmDeleteLoanRequirementOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteLoanRequirementModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     @Html.Partial("HomeFooter")
 
@@ -272,6 +330,11 @@
         var loanApplicationLinesFlexGrid;
         var isLocked = false;
         var loanApplicationLineId = 0;
+        var loanRequirementCollectionView;
+        var loanRequirementFlexGrid;
+        var expirationDate;
+        var cboRequirementName;
+        var loanRequirementId = 0;
 
         // create loan Application Loan Date
         function createloanApplicationLoanDate() {
@@ -516,7 +579,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/applicant/list',
+                url: '/api/applicant/listByLocked',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -733,6 +796,7 @@
                             cboloanApplicationVerifiedBy.disabled = true;
                             document.getElementById("loanApplicationPromise").disabled = true;
                             $("#btnAddLoanApplicationLines").prop("disabled", true);
+                            $("#btnAddLoanRequirements").prop("disabled", true);
                             isLocked = true;
                         } else {
                             $("#btnUnlock").prop("disabled", true);
@@ -833,8 +897,8 @@
 
             loanApplicationLineId = currentItem.Id;
             document.getElementById("loanApplicationLinesParticulars").value = currentItem.Particulars;
-            document.getElementById("loanApplicationLinesAmount").value = currentItem.Amount;
-        } 
+            document.getElementById("loanApplicationLinesAmount").value = currentItem.Amount.toLocaleString();
+        }
 
         // form input validation
         function inputValidationForLoanApplicationLines() {
@@ -1171,6 +1235,437 @@
             });
         }
 
+        // get loan requirements by loan id
+        function getLoanRequirementsByLoanId() {
+            var loanRequirementArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loanRequirements/listByLoanId/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanRequirementsResult) {
+                    if (loanRequirementsResult.length > 0) {
+                        for (i = 0; i < loanRequirementsResult.length; i++) {
+                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanRequirementsOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanRequirementsOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            if (isLocked) {
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanRequirementsOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanRequirementsOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            }
+
+                            loanRequirementArray.push({
+                                EditButton: btnEditButton,
+                                DeleteButton: btnDeleteButton,
+                                Id: loanRequirementsResult[i]["Id"],
+                                LoanId: loanRequirementsResult[i]["LoanId"],
+                                RequirementId: loanRequirementsResult[i]["RequirementId"],
+                                Requirement: loanRequirementsResult[i]["Requirement"],
+                                ExpirationDate: loanRequirementsResult[i]["ExpirationDate"],
+                                IsValid: loanRequirementsResult[i]["IsValid"],
+                                Note: loanRequirementsResult[i]["Note"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return loanRequirementArray;
+        }
+
+        // cbo expiration date
+        function createCboExpirationDate() {
+            expirationDate.dispose();
+            expirationDate = new wijmo.input.InputDate('#loanRequiremensExpirationDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("loanRequiremensExpirationDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+                }
+            });
+
+            var dateValue = expirationDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("loanRequiremensExpirationDateString").innerHTML = month + " " + expirationDate.value.getDate() + ", " + expirationDate.value.getFullYear();
+        }
+
+        // get requirements
+        function getRequirements(requirementSelectedValue) {
+            var requirementArray = new Array();
+            $.ajax({
+                url: '/api/requirements/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (requirementResults) {
+                    var disabled = true;
+                    if (requirementResults.length > 0) {
+                        for (i = 0; i < requirementResults.length; i++) {
+                            requirementArray.push({
+                                Id: requirementResults[i]["Id"],
+                                Requirement: requirementResults[i]["Requirement"],
+                            });
+                        }
+
+                        disabled = false;
+                    } 
+
+                    cboRequirementName.dispose();
+                    cboRequirementName = new wijmo.input.ComboBox('#loanRequiremenstName', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: requirementArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Requirement",
+                        selectedValuePath: "Requirement",
+                        selectedValue: requirementSelectedValue.toString()
+                    });
+                }
+            });
+        }
+
+        // add loan requirement
+        function btnAddLoanRequirementsOnclick() {
+            $("#loanRequirementsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredLoanRequirements').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveLoanRequirement").prop("disabled", false);
+            $("#btnCloseLoanRequirement").prop("disabled", false);
+
+            loanRequirementId = 0;
+            getRequirements("");
+            createCboExpirationDate();
+            document.getElementById("loanRequiremensIsValid").checked = false;
+            document.getElementById("loanRequirementsNote").value = "NA";
+        }
+
+        // edit loan requirement
+        function btnEditLoanRequirementsOnclick() {
+            $("#loanRequirementsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredLoanRequirements').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+            $("#btnSaveLoanRequirement").prop("disabled", false);
+            $("#btnCloseLoanRequirement").prop("disabled", false);
+
+            loanRequirementCollectionView.editItem(loanRequirementCollectionView.currentItem);
+            var currentItem = loanRequirementCollectionView.currentEditItem;
+
+            loanRequirementId = currentItem.Id;
+            getRequirements(currentItem.Requirement);
+            createCboExpirationDate();
+            expirationDate.value = new Date(currentItem.ExpirationDate);
+            document.getElementById("loanRequiremensIsValid").checked = currentItem.IsValid;
+            document.getElementById("loanRequirementsNote").value = currentItem.Note;
+        }
+
+        // form input validation
+        function inputValidationForLoanRequirements() {
+            var isValid = true;
+            $('.requiredLoanRequirements').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save loan requirements
+        function saveLoanRequirementOnclick() {
+            if (inputValidationForLoanRequirements()) {
+                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
+                $("#btnSaveLoanRequirement").prop("disabled", true);
+                $("#btnCloseLoanRequirement").prop("disabled", true);
+
+                var loanRequirementObject = new Object();
+                loanRequirementObject.LoanId = getUrlParameter("id");
+                loanRequirementObject.RequirementId = cboRequirementName.selectedItem["Id"];
+                loanRequirementObject.ExpirationDate = expirationDate.value;
+                loanRequirementObject.IsValid = document.getElementById('loanRequiremensIsValid').checked;
+                loanRequirementObject.Note = document.getElementById('loanRequirementsNote').value;
+                var loanRequirementData = JSON.stringify(loanRequirementObject);
+
+                if (loanRequirementId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/loanRequirements/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: loanRequirementData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully saved.", "Save Successful");
+
+                                $("#loanRequirementsEditDetailModal").modal("hide");
+
+                                loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
+                                loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
+                                loanRequirementFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#loanRequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveLoanRequirement").prop("disabled", false);
+                                $("#btnCloseLoanRequirement").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/loanRequirements/update/' + loanRequirementId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: loanRequirementData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("The data was successfully updated.", "Update Successful");
+
+                                $("#loanRequirementsEditDetailModal").modal("hide");
+
+                                loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
+                                loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
+                                loanRequirementFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                                $("#loanRequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveLoanRequirement").prop("disabled", false);
+                                $("#btnCloseLoanRequirement").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                                $("#loanRequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveLoanRequirement").prop("disabled", false);
+                                $("#btnCloseLoanRequirement").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+            }
+        }
+
+        // delete loan requirements
+        function btnDeleteLoanRequirementsOnclick() {
+            $("#deleteConfirmationLoanRequirementModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Yes";
+            $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
+            $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteLoanRequirementOnclick() {
+            document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteLoanRequirement").prop("disabled", true);
+            $("#btnCloseDeleteLoanRequirementModal").prop("disabled", true);
+
+            loanRequirementCollectionView.editItem(loanRequirementCollectionView.currentItem);
+            var currentItem = loanRequirementCollectionView.currentEditItem;
+
+            $.ajax({
+                type: "DELETE",
+                url: '/api/loanRequirements/delete/' + currentItem.Id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("The data was successfully deleted.", "Delete Successful");
+
+                        $("#deleteConfirmationLoanRequirementModal").modal("hide");
+
+                        loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
+                        loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
+                        loanRequirementFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+
+                        $("#deleteConfirmationLoanRequirementModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Yes";
+                        $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
+                        $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                        $("#deleteConfirmationLoanRequirementModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Yes";
+                        $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
+                        $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+
+        // create loan requirements flexgrid
+        function createloanRequirementsFlexGrid() {
+            cboRequirementName = new wijmo.input.ComboBox('#loanRequiremenstName');
+            expirationDate = new wijmo.input.InputDate('#loanRequiremensExpirationDate');
+            loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
+
+            loanRequirementFlexGrid = new wijmo.grid.FlexGrid('#loanRequirementsFlexGrid');
+            loanRequirementFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Requirement",
+                                "binding": "Requirement",
+                                "allowSorting": true,
+                                "width": "2.5*",
+                            },
+                            {
+                                "header": "Expiration Date",
+                                "binding": "ExpirationDate",
+                                "allowSorting": true,
+                                "width": "1*",
+                            },
+                            {
+                                "header": "Is Valid",
+                                "binding": "IsValid",
+                                "allowSorting": true,
+                                "width": "0.5*",
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanRequirementCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            loanRequirementFlexGrid.trackChanges = true;
+        }
+
+        // pdf 
+        function btnPrintOnClick() {
+            $("#btnPrint").prop("disabled", true);
+            $("#btnPrintButtom").prop("disabled", true);
+            document.getElementById("btnPrint").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
+            document.getElementById("btnPrintButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
+            window.location = "/RepLoanApplicationDetail/loanApplicationDetail?loanId=" + getUrlParameter("id");
+        }
+
         // on load page
         window.onload = function () {
             NProgress.start();
@@ -1194,6 +1689,15 @@
             NProgress.start();
             $("#loanApplicationLines").hide();
             $("#loanRequirements").show();
+
+            createloanRequirementsFlexGrid();
+            window.createloanRequirementsFlexGrid = function () {
+                return true;
+            }
+
+            loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
+            loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
+            loanRequirementFlexGrid.trackChanges = true;
         });
     </script>
 </body>

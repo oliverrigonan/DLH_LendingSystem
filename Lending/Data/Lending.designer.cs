@@ -457,6 +457,10 @@ namespace Lending.Data
 		
 		private bool _IsValid;
 		
+		private string _Note;
+		
+		private EntityRef<mstRequirement> _mstRequirement;
+		
 		private EntityRef<trnLoanApplication> _trnLoanApplication;
 		
     #region Extensibility Method Definitions
@@ -473,10 +477,13 @@ namespace Lending.Data
     partial void OnExpirationDateChanged();
     partial void OnIsValidChanging(bool value);
     partial void OnIsValidChanged();
+    partial void OnNoteChanging(string value);
+    partial void OnNoteChanged();
     #endregion
 		
 		public trnLoanRequirement()
 		{
+			this._mstRequirement = default(EntityRef<mstRequirement>);
 			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
 			OnCreated();
 		}
@@ -536,6 +543,10 @@ namespace Lending.Data
 			{
 				if ((this._RequirementId != value))
 				{
+					if (this._mstRequirement.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnRequirementIdChanging(value);
 					this.SendPropertyChanging();
 					this._RequirementId = value;
@@ -585,7 +596,61 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanRequirement", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Note", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string Note
+		{
+			get
+			{
+				return this._Note;
+			}
+			set
+			{
+				if ((this._Note != value))
+				{
+					this.OnNoteChanging(value);
+					this.SendPropertyChanging();
+					this._Note = value;
+					this.SendPropertyChanged("Note");
+					this.OnNoteChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstRequirement_trnLoanRequirement", Storage="_mstRequirement", ThisKey="RequirementId", OtherKey="Id", IsForeignKey=true)]
+		public mstRequirement mstRequirement
+		{
+			get
+			{
+				return this._mstRequirement.Entity;
+			}
+			set
+			{
+				mstRequirement previousValue = this._mstRequirement.Entity;
+				if (((previousValue != value) 
+							|| (this._mstRequirement.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstRequirement.Entity = null;
+						previousValue.trnLoanRequirements.Remove(this);
+					}
+					this._mstRequirement.Entity = value;
+					if ((value != null))
+					{
+						value.trnLoanRequirements.Add(this);
+						this._RequirementId = value.Id;
+					}
+					else
+					{
+						this._RequirementId = default(int);
+					}
+					this.SendPropertyChanged("mstRequirement");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanRequirement", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoanApplication trnLoanApplication
 		{
 			get
@@ -2020,6 +2085,8 @@ namespace Lending.Data
 		
 		private string _Schools;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedByUserId;
 		
 		private System.DateTime _CreatedDateTime;
@@ -2124,6 +2191,8 @@ namespace Lending.Data
     partial void OnStudyingChanged();
     partial void OnSchoolsChanging(string value);
     partial void OnSchoolsChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -2900,6 +2969,26 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
 		public int CreatedByUserId
 		{
@@ -3399,7 +3488,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstApplicantApplianceOwned", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstApplicantApplianceOwned", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstApplicant mstApplicant
 		{
 			get
@@ -3622,7 +3711,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstApplicantRealPropertiesOwned", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstApplicantRealPropertiesOwned", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstApplicant mstApplicant
 		{
 			get
@@ -4009,6 +4098,8 @@ namespace Lending.Data
 		
 		private string _ContactNumber;
 		
+		private EntitySet<trnJournal> _trnJournals;
+		
 		private EntitySet<trnLoanApplication> _trnLoanApplications;
 		
 		private EntityRef<mstCompany> _mstCompany;
@@ -4031,6 +4122,7 @@ namespace Lending.Data
 		
 		public mstBranch()
 		{
+			this._trnJournals = new EntitySet<trnJournal>(new Action<trnJournal>(this.attach_trnJournals), new Action<trnJournal>(this.detach_trnJournals));
 			this._trnLoanApplications = new EntitySet<trnLoanApplication>(new Action<trnLoanApplication>(this.attach_trnLoanApplications), new Action<trnLoanApplication>(this.detach_trnLoanApplications));
 			this._mstCompany = default(EntityRef<mstCompany>);
 			OnCreated();
@@ -4140,6 +4232,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstBranch_trnJournal", Storage="_trnJournals", ThisKey="Id", OtherKey="BranchId")]
+		public EntitySet<trnJournal> trnJournals
+		{
+			get
+			{
+				return this._trnJournals;
+			}
+			set
+			{
+				this._trnJournals.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstBranch_trnLoanApplication", Storage="_trnLoanApplications", ThisKey="Id", OtherKey="BranchId")]
 		public EntitySet<trnLoanApplication> trnLoanApplications
 		{
@@ -4205,6 +4310,18 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_trnJournals(trnJournal entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstBranch = this;
+		}
+		
+		private void detach_trnJournals(trnJournal entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstBranch = null;
 		}
 		
 		private void attach_trnLoanApplications(trnLoanApplication entity)
@@ -4759,8 +4876,6 @@ namespace Lending.Data
 		
 		private int _Id;
 		
-		private System.Data.Linq.Binary _Photo;
-		
 		private int _ApplicantId;
 		
 		private string _CoMakerFullName;
@@ -4851,8 +4966,6 @@ namespace Lending.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnPhotoChanging(System.Data.Linq.Binary value);
-    partial void OnPhotoChanged();
     partial void OnApplicantIdChanging(int value);
     partial void OnApplicantIdChanged();
     partial void OnCoMakerFullNameChanging(string value);
@@ -4954,26 +5067,6 @@ namespace Lending.Data
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Photo", DbType="VarBinary(MAX)", UpdateCheck=UpdateCheck.Never)]
-		public System.Data.Linq.Binary Photo
-		{
-			get
-			{
-				return this._Photo;
-			}
-			set
-			{
-				if ((this._Photo != value))
-				{
-					this.OnPhotoChanging(value);
-					this.SendPropertyChanging();
-					this._Photo = value;
-					this.SendPropertyChanged("Photo");
-					this.OnPhotoChanged();
 				}
 			}
 		}
@@ -5740,7 +5833,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstCoMakerStatement", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstCoMakerStatement", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstApplicant mstApplicant
 		{
 			get
@@ -6041,7 +6134,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementApplianceOwned", Storage="_mstCoMakerStatement", ThisKey="CoMakerId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementApplianceOwned", Storage="_mstCoMakerStatement", ThisKey="CoMakerId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstCoMakerStatement mstCoMakerStatement
 		{
 			get
@@ -6264,7 +6357,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementRealPropertiesOwned", Storage="_mstCoMakerStatement", ThisKey="CoMakerId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCoMakerStatement_mstCoMakerStatementRealPropertiesOwned", Storage="_mstCoMakerStatement", ThisKey="CoMakerId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstCoMakerStatement mstCoMakerStatement
 		{
 			get
@@ -6333,6 +6426,8 @@ namespace Lending.Data
 		
 		private string _ContactNumber;
 		
+		private bool _IsLocked;
+		
 		private int _CreatedByUserId;
 		
 		private System.DateTime _CreatedDateTime;
@@ -6359,6 +6454,8 @@ namespace Lending.Data
     partial void OnAddressChanged();
     partial void OnContactNumberChanging(string value);
     partial void OnContactNumberChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -6453,6 +6550,26 @@ namespace Lending.Data
 					this._ContactNumber = value;
 					this.SendPropertyChanged("ContactNumber");
 					this.OnContactNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
 				}
 			}
 		}
@@ -6679,6 +6796,8 @@ namespace Lending.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private EntitySet<trnLoanRequirement> _trnLoanRequirements;
+		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -6705,6 +6824,7 @@ namespace Lending.Data
 		
 		public mstRequirement()
 		{
+			this._trnLoanRequirements = new EntitySet<trnLoanRequirement>(new Action<trnLoanRequirement>(this.attach_trnLoanRequirements), new Action<trnLoanRequirement>(this.detach_trnLoanRequirements));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -6858,6 +6978,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstRequirement_trnLoanRequirement", Storage="_trnLoanRequirements", ThisKey="Id", OtherKey="RequirementId")]
+		public EntitySet<trnLoanRequirement> trnLoanRequirements
+		{
+			get
+			{
+				return this._trnLoanRequirements;
+			}
+			set
+			{
+				this._trnLoanRequirements.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstRequirement", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public mstUser mstUser
 		{
@@ -6944,6 +7077,18 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_trnLoanRequirements(trnLoanRequirement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstRequirement = this;
+		}
+		
+		private void detach_trnLoanRequirements(trnLoanRequirement entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstRequirement = null;
 		}
 	}
 	
@@ -7850,6 +7995,8 @@ namespace Lending.Data
 		
 		private System.DateTime _JournalDate;
 		
+		private int _BranchId;
+		
 		private int _AccountId;
 		
 		private string _Particulars;
@@ -7866,6 +8013,8 @@ namespace Lending.Data
 		
 		private EntityRef<mstAccount> _mstAccount;
 		
+		private EntityRef<mstBranch> _mstBranch;
+		
 		private EntityRef<trnLoanApplication> _trnLoanApplication;
 		
     #region Extensibility Method Definitions
@@ -7876,6 +8025,8 @@ namespace Lending.Data
     partial void OnIdChanged();
     partial void OnJournalDateChanging(System.DateTime value);
     partial void OnJournalDateChanged();
+    partial void OnBranchIdChanging(int value);
+    partial void OnBranchIdChanged();
     partial void OnAccountIdChanging(int value);
     partial void OnAccountIdChanged();
     partial void OnParticularsChanging(string value);
@@ -7895,6 +8046,7 @@ namespace Lending.Data
 		public trnJournal()
 		{
 			this._mstAccount = default(EntityRef<mstAccount>);
+			this._mstBranch = default(EntityRef<mstBranch>);
 			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
 			OnCreated();
 		}
@@ -7935,6 +8087,30 @@ namespace Lending.Data
 					this._JournalDate = value;
 					this.SendPropertyChanged("JournalDate");
 					this.OnJournalDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchId", DbType="Int NOT NULL")]
+		public int BranchId
+		{
+			get
+			{
+				return this._BranchId;
+			}
+			set
+			{
+				if ((this._BranchId != value))
+				{
+					if (this._mstBranch.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIdChanging(value);
+					this.SendPropertyChanging();
+					this._BranchId = value;
+					this.SendPropertyChanged("BranchId");
+					this.OnBranchIdChanged();
 				}
 			}
 		}
@@ -8117,6 +8293,40 @@ namespace Lending.Data
 						this._AccountId = default(int);
 					}
 					this.SendPropertyChanged("mstAccount");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstBranch_trnJournal", Storage="_mstBranch", ThisKey="BranchId", OtherKey="Id", IsForeignKey=true)]
+		public mstBranch mstBranch
+		{
+			get
+			{
+				return this._mstBranch.Entity;
+			}
+			set
+			{
+				mstBranch previousValue = this._mstBranch.Entity;
+				if (((previousValue != value) 
+							|| (this._mstBranch.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstBranch.Entity = null;
+						previousValue.trnJournals.Remove(this);
+					}
+					this._mstBranch.Entity = value;
+					if ((value != null))
+					{
+						value.trnJournals.Add(this);
+						this._BranchId = value.Id;
+					}
+					else
+					{
+						this._BranchId = default(int);
+					}
+					this.SendPropertyChanged("mstBranch");
 				}
 			}
 		}
@@ -9267,7 +9477,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanApplicationLine", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanApplicationLine", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoanApplication trnLoanApplication
 		{
 			get

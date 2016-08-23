@@ -7,15 +7,9 @@
                 <div class="col-lg-3">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Avatar
-                            <button class="btn btn-default btn-xs pull-right" data-toggle="tooltip" title="Change Avatar" onclick="changeAvatar()">
-                                <i class="fa fa-image"></i>
-                            </button>
+                            <h4>Launch Software</h4>
                         </div>
                         <div class="panel-body">
-                            <img src="~/Images/landing-page/banner-bg.jpg" class="img-thumbnail" />
-                        </div>
-                        <div class="panel-footer">
                             <a href="/Software" class="btn btn-primary btn-lg btn-block">Launch Software</a>
                         </div>
                     </div>
@@ -23,15 +17,21 @@
                 <div class="col-lg-9">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            User Detail
-                            <div class="btn-group pull-right">
-                                <button class="btn btn-default btn-xs" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
-                                    <i class="fa fa-edit"></i> Edit
-                                </button>
-                                <a href="/Manage/ChangePassword" class="btn btn-default btn-xs" data-toggle="tooltip" title="Change your password">
-                                    <i class="fa fa-pencil"></i> Change Password
-                                </a>
-                            </div>
+                            <table style="width: 100%" border="0">
+                                <tr>
+                                    <td>
+                                        <h4>Manage Settings</h4>
+                                    </td>
+                                    <td align="right">
+                                        <button class="btn btn-default" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </button>
+                                        <a href="/Manage/ChangePassword" class="btn btn-default" data-toggle="tooltip" title="Change your password">
+                                            <i class="fa fa-pencil"></i> Change Password
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="panel-body">
                             <table class="table table-responsive">

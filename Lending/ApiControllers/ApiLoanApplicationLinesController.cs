@@ -137,14 +137,14 @@ namespace Lending.ApiControllers
                     var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
                     if (loanApplications.Any())
                     {
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
                         Decimal totalLoanAmount = 0;
                         var loanApplicationLinesForAmounts = from d in db.trnLoanApplicationLines where d.LoanId == Convert.ToInt32(loanId) select d;
                         if (loanApplicationLinesForAmounts.Any())
                         {
-                            totalLoanAmount = loanApplicationLines.Sum(d => d.Amount);
+                            totalLoanAmount = loanApplicationLinesForAmounts.Sum(d => d.Amount);
                         }
+
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                         var updateLoanAmounts = loanApplications.FirstOrDefault();
                         updateLoanAmounts.LoanAmount = totalLoanAmount;

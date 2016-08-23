@@ -66,6 +66,69 @@ namespace Lending.ApiControllers
                                  NumberOfChildren = d.NumberOfChildren,
                                  Studying = d.Studying,
                                  Schools = d.Schools,
+                                 IsLocked = d.IsLocked,
+                                 CreatedByUserId = d.CreatedByUserId,
+                                 CreatedByUser = d.mstUser.FullName,
+                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                 UpdatedByUserId = d.UpdatedByUserId,
+                                 UpdatedByUser = d.mstUser1.FullName,
+                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                             };
+
+            return applicants.ToList();
+        }
+
+
+        // applicant list
+        [Authorize]
+        [HttpGet]
+        [Route("api/applicant/listByLocked")]
+        public List<Models.MstApplicant> listApplicantByLocked()
+        {
+            var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
+                             where d.IsLocked == true
+                             select new Models.MstApplicant
+                             {
+                                 Id = d.Id,
+                                 ApplicantFullName = d.ApplicantFullName,
+                                 BirthDate = d.BirthDate.ToShortDateString(),
+                                 CivilStatusId = d.CivilStatusId,
+                                 CivilStatus = d.mstCivilStatus.CivilStatus,
+                                 CityAddress = d.CityAddress,
+                                 ProvinceAddress = d.ProvinceAddress,
+                                 ResidenceTypeId = d.ResidenceTypeId,
+                                 ResidenceType = d.mstResidenceType.ResidenceType,
+                                 ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
+                                 LandResidenceTypeId = d.LandResidenceTypeId,
+                                 LandResidenceType = d.mstResidenceType1.ResidenceType,
+                                 LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
+                                 LengthOfStay = d.LengthOfStay,
+                                 BusinessAddress = d.BusinessAddress,
+                                 BusinessKaratulaName = d.BusinessKaratulaName,
+                                 BusinessTelephoneNumber = d.BusinessTelephoneNumber,
+                                 BusinessYear = d.BusinessYear,
+                                 BusinessMerchandise = d.BusinessMerchandise,
+                                 BusinessStockValues = d.BusinessStockValues,
+                                 BusinessBeginningCapital = d.BusinessBeginningCapital,
+                                 BusinessLowSalesPeriod = d.BusinessLowSalesPeriod,
+                                 BusinessLowestDailySales = d.BusinessLowestDailySales,
+                                 BusinessAverageDailySales = d.BusinessAverageDailySales,
+                                 EmployedCompany = d.EmployedCompany,
+                                 EmployedCompanyAddress = d.EmployedCompanyAddress,
+                                 EmployedPositionOccupied = d.EmployedPositionOccupied,
+                                 EmployedServiceLength = d.EmployedServiceLength,
+                                 EmployedTelephoneNumber = d.EmployedTelephoneNumber,
+                                 SpouseFullName = d.SpouseFullName,
+                                 SpouseEmployerBusiness = d.SpouseEmployerBusiness,
+                                 SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
+                                 SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
+                                 SpousePositionOccupied = d.SpousePositionOccupied,
+                                 SpouseMonthlySalary = d.SpouseMonthlySalary,
+                                 SpouseLengthOfService = d.SpouseLengthOfService,
+                                 NumberOfChildren = d.NumberOfChildren,
+                                 Studying = d.Studying,
+                                 Schools = d.Schools,
+                                 IsLocked = d.IsLocked,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -127,6 +190,7 @@ namespace Lending.ApiControllers
                                  NumberOfChildren = d.NumberOfChildren,
                                  Studying = d.Studying,
                                  Schools = d.Schools,
+                                 IsLocked = d.IsLocked,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -192,6 +256,7 @@ namespace Lending.ApiControllers
                 newApplicant.NumberOfChildren = "NA";
                 newApplicant.Studying = "NA";
                 newApplicant.Schools = "NA";
+                newApplicant.IsLocked = false;
                 newApplicant.CreatedByUserId = userId;
                 newApplicant.CreatedDateTime = DateTime.Now;
                 newApplicant.UpdatedByUserId = userId;
@@ -205,6 +270,70 @@ namespace Lending.ApiControllers
             catch
             {
                 return 0;
+            }
+        }
+
+        // lock applicant
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/lock/{id}")]
+        public HttpResponseMessage lockApplicant(String id, Models.MstApplicant applicant)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                    var lockApplicant = applicants.FirstOrDefault();
+                    lockApplicant.IsLocked = true;
+                    lockApplicant.UpdatedByUserId = userId;
+                    lockApplicant.UpdatedDateTime = DateTime.Now;
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // unlock applicant
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/unlock/{id}")]
+        public HttpResponseMessage unlockApplicant(String id, Models.MstApplicant applicant)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                    var unlockApplicant = applicants.FirstOrDefault();
+                    unlockApplicant.IsLocked = false;
+                    unlockApplicant.UpdatedByUserId = userId;
+                    unlockApplicant.UpdatedDateTime = DateTime.Now;
+                    db.SubmitChanges();
+
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 

@@ -147,7 +147,6 @@
         // glebal variable
         var applicantCollectionView;
         var applicantFlexGrid;
-
         var btnFirstPageGrid;
         var btnPreviousPageGrid;
         var btnNextPageGrid;
@@ -165,12 +164,18 @@
                 success: function (applicantListResult) {
                     if (applicantListResult.length > 0) {
                         for (i = 0; i < applicantListResult.length; i++) {
+                            var isLocked = false;
+                            if (applicantListResult[i]["IsLocked"]) {
+                                isLocked = true;
+                            }
+
                             applicants.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: applicantListResult[i]["Id"],
                                 ApplicantFullName: applicantListResult[i]["ApplicantFullName"],
                                 CityAddress: applicantListResult[i]["CityAddress"],
+                                IsLocked: applicantListResult[i]["IsLocked"],
                                 CreatedByUserId: applicantListResult[i]["CreatedByUserId"],
                                 CreatedByUser: applicantListResult[i]["CreatedByUser"],
                                 CreatedDateTime: applicantListResult[i]["CreatedDateTime"],
@@ -195,16 +200,21 @@
         }
 
         // delete applicant
-        function deleteApplicantOnclick() {
-            $("#deleteConfirmationApplicantModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+        function deleteApplicantOnclick(isLocked) {
+            if (isLocked) {
+                toastr.warning("Sorry, cannot delete if record is locked.", "Record Lock");
+            } else {
+                $("#deleteConfirmationApplicantModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
 
-            document.getElementById("btnConfirmDeleteApplicant").innerHTML = "Yes";
-            $("#btnConfirmDeleteApplicant").prop("disabled", false);
-            $("#btnCloseDeleteApplicantModal").prop("disabled", false);
+                document.getElementById("btnConfirmDeleteApplicant").innerHTML = "Yes";
+                $("#btnConfirmDeleteApplicant").prop("disabled", false);
+                $("#btnCloseDeleteApplicantModal").prop("disabled", false);
+            }
         }
+
         function btnConfirmDeleteApplicantOnclick() {
             document.getElementById("btnConfirmDeleteApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
             $("#btnConfirmDeleteApplicant").prop("disabled", true);
@@ -375,6 +385,12 @@
                                 "allowSorting": true,
                                 "width": "3*"
                             },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": "0.2*"
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: applicantCollectionView,

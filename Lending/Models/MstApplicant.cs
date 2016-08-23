@@ -49,6 +49,7 @@ namespace Lending.Models
         public String NumberOfChildren { get; set; }
         public String Studying { get; set; }
         public String Schools { get; set; }
+        public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

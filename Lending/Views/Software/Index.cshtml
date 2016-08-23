@@ -17,66 +17,96 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item active">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
-                        </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-money fa-fw"></i> &nbsp; Collection</a>
-                        <a href="#" class="list-group-item"><i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement</a>
-                        <a href="/Software/Tables" class="list-group-item">
-                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                        </a>
-                        <a href="#" class="list-group-item">
-                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                        </a>
-                        <a href="/Software/CompanyList" class="list-group-item">
-                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                        </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
-                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            User security stamp
-                        </div>
-                        <div class="panel-body">
-                            <p>Created by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                            <hr />
-                            <p>Updated by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                        </div>
-                    </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Start Menu</h4>
                 </div>
-                <div class="col-lg-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Dashboard</h4>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="/Software/ApplicantList" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-users fa-4x fa-fw"></i>
+                                <br /><br />
+                                Applicant
+                            </a>
+                            <br />
                         </div>
-                        <div class="panel-body">
-
+                        <div class="col-md-4">
+                            <a href="/Software/LoanApplicationList" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-file-text-o fa-4x fa-fw"></i>
+                                <br /><br />
+                                Loan
+                            </a>
+                            <br />
+                        </div>
+                        <div class="col-md-4">
+                            <a href="#" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-money fa-4x fa-fw"></i>
+                                <br /><br />
+                                Collection
+                            </a>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="#" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-credit-card fa-4x fa-fw"></i>
+                                <br /><br />
+                                Disbursement
+                            </a>
+                            <br />
+                        </div>
+                        <div class="col-md-4">
+                            <a href="/Software/Tables" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-table fa-4x fa-fw"></i>
+                                <br /><br />
+                                Tables
+                            </a>
+                            <br />
+                        </div>
+                        <div class="col-md-4">
+                            <a href="#" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-print fa-4x fa-fw"></i>
+                                <br /><br />
+                                Reports
+                            </a>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a href="/Software/CompanyList" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-building fa-4x fa-fw"></i>
+                                <br /><br />
+                                Company
+                            </a>
+                            <br />
+                        </div>
+                        <div class="col-md-4">
+                            <a href="#" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-key fa-4x fa-fw"></i>
+                                <br /><br />
+                                Users
+                            </a>
+                            <br />
+                        </div>
+                        <div class="col-md-4">
+                            <a href="#" class="btn btn-primary btn-lg btn-block">
+                                <i class="fa fa-gears fa-4x fa-fw"></i>
+                                <br /><br />
+                                Settings
+                            </a>
+                            <br />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    @Html.Partial("HomeFooter")
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

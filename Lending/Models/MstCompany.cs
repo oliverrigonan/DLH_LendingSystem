@@ -13,6 +13,7 @@ namespace Lending.Models
         public String Company { get; set; }
         public String Address { get; set; }
         public String ContactNumber { get; set; }
+        public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

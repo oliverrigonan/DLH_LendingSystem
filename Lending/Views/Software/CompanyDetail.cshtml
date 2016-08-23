@@ -73,8 +73,11 @@
                                         <h4>Company Detail</h4>
                                     </td>
                                     <td align="right">
-                                        <button class="btn btn-primary" id="btnSaveChangesCompany" onclick="btnSaveChangesCompanyOnclick()">
-                                            <i class="fa fa-save fa-fw"></i> Save Changes
+                                        <button class="btn btn-primary" id="btnLockCompany" onclick="btnLockCompanyOnclick()">
+                                            <i class="fa fa-lock fa-fw"></i> Lock
+                                        </button>
+                                        <button class="btn btn-primary" id="btnUnlockCompany" onclick="btnUnlockCompanyOnclick()">
+                                            <i class="fa fa-unlock fa-fw"></i> Unlock
                                         </button>
                                         <button class="btn btn-danger" id="btnCloseCompany" onclick="window.location = '/Software/CompanyList'">
                                             <i class="fa fa-close fa-fw"></i> Close
@@ -84,49 +87,38 @@
                             </table>
                         </div>
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <img class="img-responsive img-thumbnail" src="~/Images/buildingPlaceHolder.png" />
-                                    <hr />
-                                    <button class="btn btn-default btn-sm btn-block"><i class="fa fa-image fa-fw"></i> Change Logo</button>
-                                    <button class="btn btn-danger btn-sm btn-block"><i class="fa fa-trash fa-fw"></i> Delete this Logo</button>
-                                    <br />
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Company Information and Detail
                                 </div>
-                                <div class="col-md-9">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            Company Information and Detail
-                                        </div>
-                                        <div class="panel-body">
-                                            <dl class="dl-horizontal">
-                                                <dt>Company Name</dt>
-                                                <dd><input type="text" class="form-control requiredCompany" id="companyName" placeholder="Company Name" /></dd>
-                                                <dt>Address</dt>
-                                                <dd><textarea class="form-control requiredCompany" id="companyAddress" placeholder="Company Address"></textarea></dd>
-                                                <dt>Contact Number</dt>
-                                                <dd><input type="text" class="form-control requiredCompany" id="companyContactNumber" placeholder="Contact Number" /></dd>
-                                            </dl>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        List of Branches
-                                                    </td>
-                                                    <td align="right">
-                                                        <button class="btn btn-primary btn-sm" id="btnAddBranch" onclick="btnAddBranchOnclick()">
-                                                            <i class="fa fa-plus fa-fw"></i> Add
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div id="branchFlexGrid" class="grid"></div>
-                                        </div>
-                                    </div>
+                                <div class="panel-body">
+                                    <dl class="dl-horizontal">
+                                        <dt>Company Name</dt>
+                                        <dd><input type="text" class="form-control requiredCompany" id="companyName" placeholder="Company Name" /></dd>
+                                        <dt>Address</dt>
+                                        <dd><textarea class="form-control requiredCompany" id="companyAddress" placeholder="Company Address"></textarea></dd>
+                                        <dt>Contact Number</dt>
+                                        <dd><input type="text" class="form-control requiredCompany" id="companyContactNumber" placeholder="Contact Number" /></dd>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                List of Branches
+                                            </td>
+                                            <td align="right">
+                                                <button class="btn btn-primary btn-sm" id="btnAddBranch" onclick="btnAddBranchOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i> Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="branchFlexGrid" class="grid"></div>
                                 </div>
                             </div>
                         </div>
@@ -190,8 +182,8 @@
         // global variables
         var branchCollectionView;
         var branchFlexGrid;
-
         var branchId = 0;
+        var isLocked = false;
 
         // get company data
         function getCompanyDetailData() {
@@ -210,6 +202,19 @@
                         document.getElementById('stampUpdatedBy').innerHTML = companyDetailResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = companyDetailResult.UpdatedDateTime;
                         createBranchFlexGrid();
+
+                        if (companyDetailResult.IsLocked) {
+                            document.getElementById("companyName").disabled = true;
+                            document.getElementById("companyAddress").disabled = true;
+                            document.getElementById("companyContactNumber").disabled = true;
+
+                            $("#btnLockCompany").prop("disabled", true);
+                            $("#btnAddBranch").prop("disabled", true);
+
+                            isLocked = true;
+                        } else {
+                            $("#btnUnlockCompany").prop("disabled", true);
+                        }
                     } else {
                         alert("The record you'd requested has no data");
                         window.history.back();
@@ -238,12 +243,14 @@
             return isValid;
         }
 
-        // save changes company detail
-        function btnSaveChangesCompanyOnclick() {
+        // lock company detail
+        function btnLockCompanyOnclick() {
             if (inputValidation()) {
-                document.getElementById("btnSaveChangesCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving Changes";
-                $("#btnSaveChangesCompany").prop("disabled", true);
+                document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
+                $("#btnLockCompany").prop("disabled", true);
+                $("#btnUnlockCompany").prop("disabled", true);
                 $("#btnCloseCompany").prop("disabled", true);
+                $("#btnAddBranch").prop("disabled", true);
 
                 var companyDetailObject = new Object();
                 companyDetailObject.Company = document.getElementById('companyName').value;
@@ -253,31 +260,31 @@
 
                 $.ajax({
                     type: "PUT",
-                    url: '/api/company/update/' + getUrlParameter("id"),
+                    url: '/api/company/lock/' + getUrlParameter("id"),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: companyDetailData,
                     statusCode: {
                         200: function () {
-                            toastr.success("Reloading the page...", "Update Successful");
+                            toastr.success("Reloading the page...", "Lock Successful");
                             window.setTimeout(function () {
                                 location.reload();
                             }, 1500);
                         },
                         404: function () {
-                            document.getElementById("btnSaveChangesCompany").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                            document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
 
                             toastr.error("The record that you're updating is not found in database", "Record Not Found");
 
-                            $("#btnSaveChangesCompany").prop("disabled", false);
+                            $("#btnLockCompany").prop("disabled", false);
                             $("#btnCloseCompany").prop("disabled", false);
                         },
                         400: function () {
-                            document.getElementById("btnSaveChangesCompany").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                            document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
 
                             toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
 
-                            $("#btnSaveChangesCompany").prop("disabled", false);
+                            $("#btnLockCompany").prop("disabled", false);
                             $("#btnCloseCompany").prop("disabled", false);
                         }
                     }
@@ -286,6 +293,47 @@
                 toastr.error("Please fill out the empty fields.", "Invalid Entry");
             }
         }
+
+        // save changes company detail
+        function btnUnlockCompanyOnclick() {
+            document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
+            $("#btnUnlockCompany").prop("disabled", true);
+            $("#btnLockCompany").prop("disabled", true);
+            $("#btnCloseCompany").prop("disabled", true);
+            $("#btnAddBranch").prop("disabled", true);
+
+            $.ajax({
+                type: "PUT",
+                url: '/api/company/unlock/' + getUrlParameter("id"),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Reloading the page...", "Unlock Successful");
+                        window.setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    },
+                    404: function () {
+                        document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+
+                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+
+                        $("#btnUnlockCompany").prop("disabled", true);
+                        $("#btnCloseCompany").prop("disabled", true);
+                    },
+                    400: function () {
+                        document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+
+                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+
+                        $("#btnUnlockCompany").prop("disabled", true);
+                        $("#btnCloseCompany").prop("disabled", true);
+                    }
+                }
+            });
+        }
+
 
         // get branch list by company id
         function getBranchListByCompanyId() {
@@ -298,9 +346,16 @@
                 success: function (branchListResult) {
                     if (branchListResult.length > 0) {
                         for (i = 0; i < branchListResult.length; i++) {
+                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            if (isLocked) {
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            }
+
                             branchesArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteBranchOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                EditButton: btnEditButton,
+                                DeleteButton: btnDeleteButton,
                                 Id: branchListResult[i]["Id"],
                                 CompanyId: branchListResult[i]["CompanyId"],
                                 Company: branchListResult[i]["Company"],

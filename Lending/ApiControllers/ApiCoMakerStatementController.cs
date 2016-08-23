@@ -28,7 +28,6 @@ namespace Lending.ApiControllers
                                     select new Models.MstCoMakerStatement
                                     {
                                         Id = d.Id,
-                                        Photo = d.Photo.ToArray(),
                                         ApplicantId = d.ApplicantId,
                                         Applicant = d.mstApplicant.ApplicantFullName,
                                         CoMakerFullName = d.CoMakerFullName,
@@ -86,8 +85,6 @@ namespace Lending.ApiControllers
 
                 Data.mstCoMakerStatement newCoMakerStatement = new Data.mstCoMakerStatement();
 
-                byte[] imgarr = coMakerStatement.Photo;
-                newCoMakerStatement.Photo = new Binary(imgarr);
                 newCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
                 newCoMakerStatement.CoMakerFullName = coMakerStatement.CoMakerFullName;
                 newCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
@@ -151,8 +148,6 @@ namespace Lending.ApiControllers
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                     var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
-                    byte[] imgarr = coMakerStatement.Photo;
-                    updateCoMakerStatement.Photo = new Binary(imgarr);
                     updateCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
                     updateCoMakerStatement.CoMakerFullName = coMakerStatement.CoMakerFullName;
                     updateCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
@@ -189,71 +184,6 @@ namespace Lending.ApiControllers
                     updateCoMakerStatement.NumberOfChildren = coMakerStatement.NumberOfChildren;
                     updateCoMakerStatement.Studying = coMakerStatement.Studying;
                     updateCoMakerStatement.Schools = coMakerStatement.Schools;
-                    db.SubmitChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
-
-        // update photo co - makers statement
-        [Authorize]
-        [HttpPut]
-        [Route("api/coMakerStatement/updatePhoto/{id}")]
-        public HttpResponseMessage updateCoMakerStatementPhoto(String id, Models.MstCoMakerStatement coMakerStatement)
-        {
-            try
-            {
-                var coMakerStatements = from d in db.mstCoMakerStatements where d.Id == Convert.ToInt32(id) select d;
-                if (coMakerStatements.Any())
-                {
-                    var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
-
-                    byte[] imgarr = coMakerStatement.Photo;
-                    updateCoMakerStatement.Photo = new Binary(imgarr);
-                    db.SubmitChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-        }
-
-        // delete photo co - makers statement
-        [Authorize]
-        [HttpPut]
-        [Route("api/coMakerStatement/deletePhoto/{id}")]
-        public HttpResponseMessage deleteCoMakerStatementPhoto(String id)
-        {
-            try
-            {
-                var coMakerStatements = from d in db.mstCoMakerStatements where d.Id == Convert.ToInt32(id) select d;
-                if (coMakerStatements.Any())
-                {
-                    var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
-
-                    Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
-                    String file = Convert.ToBase64String(bytes);
-                    byte[] imgarr = Convert.FromBase64String(file);
-
-                    updateCoMakerStatement.Photo = imgarr;
                     db.SubmitChanges();
 
                     return Request.CreateResponse(HttpStatusCode.OK);
