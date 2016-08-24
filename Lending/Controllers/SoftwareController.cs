@@ -89,5 +89,24 @@ namespace Lending.Controllers
             return View();
         }
 
+        [Authorize]
+        public ActionResult CollectionList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult CollectionDetail(Int32? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
     }
 }

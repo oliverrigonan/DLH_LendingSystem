@@ -483,6 +483,8 @@
     <Content Include="Views\Software\CompanyList.cshtml" />
     <Content Include="Views\Software\CompanyDetail.cshtml" />
     <Content Include="Views\Software\LoanApplicationDetail.cshtml" />
+    <Content Include="Views\Software\CollectionList.cshtml" />
+    <Content Include="Views\Software\CollectionDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
