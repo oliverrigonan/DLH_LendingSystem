@@ -92,7 +92,9 @@
                                     <div id="photoDiv" style="width: 100%" align="center"></div>
                                     <hr />
                                     <button class="btn btn-default btn-sm btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                                    <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()"><i class="fa fa-trash fa-fw"></i> Delete this photo</button>
+                                    <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()">
+                                        <i class="fa fa-trash fa-fw"></i> Rmove and Set to <br /> Default Photo
+                                    </button>
                                     <br />
                                 </div>
                                 <div class="col-md-9">
@@ -1338,15 +1340,15 @@
                             }, 1500);
                         },
                         404: function () {
-                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                            toastr.error("Not Found");
                         },
                         400: function () {
-                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                            toastr.error("Bad Request");
                         }
                     }
                 });
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1538,7 +1540,7 @@
                         data: applicantDetailRealPropertiesOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#applicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1549,7 +1551,7 @@
                                 applicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1568,7 +1570,7 @@
                         data: applicantDetailRealPropertiesOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#applicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1579,7 +1581,7 @@
                                 applicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#applicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1588,7 +1590,7 @@
                                 $("#btnCloseApplicantDetailRealPropertiesOwned").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1600,7 +1602,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1632,7 +1634,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationApplicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1643,7 +1645,7 @@
                         applicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationApplicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1652,7 +1654,7 @@
                         $("#btnCloseDeleteModalApplicantDetailRealPropertiesOwned").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationApplicantDetailRealPropertiesOwnedModal").modal("hide");
 
@@ -1844,7 +1846,7 @@
                         data: applicantDetailApplianceOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#applicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1853,7 +1855,7 @@
                                 applicantApplianceOwnedFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1872,7 +1874,7 @@
                         data: applicantDetailApplianceOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#applicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1881,7 +1883,7 @@
                                 applicantApplianceOwnedFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#applicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1890,7 +1892,7 @@
                                 $("#btnCloseApplicantDetailApplianceOwned").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1902,7 +1904,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1934,7 +1936,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationApplicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1943,7 +1945,7 @@
                         applicantApplianceOwnedFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationApplicantDetailApplianceOwnedModal").modal("hide");
 
@@ -1952,7 +1954,7 @@
                         $("#btnCloseDeleteModalApplicantDetailApplianceOwned").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationApplicantDetailApplianceOwnedModal").modal("hide");
 
@@ -2263,7 +2265,7 @@
                         data: applicantDetailCoMakerRealPropertiesOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2272,7 +2274,7 @@
                                 coMakerApplicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2291,7 +2293,7 @@
                         data: applicantDetailCoMakerRealPropertiesOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2300,7 +2302,7 @@
                                 coMakerApplicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2309,7 +2311,7 @@
                                 $("#btnCloseApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2321,7 +2323,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -2353,7 +2355,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationApplicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2362,7 +2364,7 @@
                         coMakerApplicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationApplicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2371,7 +2373,7 @@
                         $("#btnCloseDeleteModalApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationApplicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
@@ -2592,7 +2594,7 @@
                         data: coMakerData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#applicantDetailCoMakersStatementModal").modal("hide");
 
@@ -2601,7 +2603,7 @@
                                 coMakerStatementFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailCoMakersStatementModal").modal("hide");
 
@@ -2620,7 +2622,7 @@
                         data: coMakerData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#applicantDetailCoMakersStatementModal").modal("hide");
 
@@ -2629,7 +2631,7 @@
                                 coMakerStatementFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#applicantDetailCoMakersStatementModal").modal("hide");
 
@@ -2638,7 +2640,7 @@
                                 document.getElementById("btnSaveApplicantDetailApplianceOwned").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailCoMakersStatementModal").modal("hide");
 
@@ -2650,7 +2652,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -2682,7 +2684,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationApplicantDetailCoMakerStatementModal").modal("hide");
 
@@ -2691,7 +2693,7 @@
                         coMakerStatementFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationApplicantDetailCoMakerStatementModal").modal("hide");
 
@@ -2700,7 +2702,7 @@
                         $("#btnCloseDeleteModalApplicantDetailCoMakerStatement").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationApplicantDetailCoMakerStatementModal").modal("hide");
 
@@ -2883,7 +2885,7 @@
                         data: coMakerApplicantApplianceOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#applicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2892,7 +2894,7 @@
                                 coMakerApplicantApplianceOwnedFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2911,7 +2913,7 @@
                         data: coMakerApplicantApplianceOwnedData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#applicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2920,7 +2922,7 @@
                                 coMakerApplicantApplianceOwnedFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#applicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2929,7 +2931,7 @@
                                 $("#btnCloseApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2941,7 +2943,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -2973,7 +2975,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationApplicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2982,7 +2984,7 @@
                         coMakerApplicantApplianceOwnedFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationApplicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -2991,7 +2993,7 @@
                         $("#btnCloseDeleteModalApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationApplicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
@@ -3023,36 +3025,95 @@
 
         // btn confirm delete photo image
         function btnConfirmDeleteApplicantDetailPhotoOnclick() {
-            document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", true);
-            $("#btnCloseApplicantDetailPhoto").prop("disabled", true);
+            if (inputValidation()) {
+                document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+                $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", true);
+                $("#btnCloseApplicantDetailPhoto").prop("disabled", true);
 
-            $.ajax({
-                type: "PUT",
-                url: '/api/applicant/deletePhoto/' + getUrlParameter("id"),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("The photo was successfully deleted. Reloading the page.", "Delete Successful");
-                        btnSaveChangesApplicantOnclick();
-                    },
-                    404: function () {
-                        toastr.error("The photo that you're updating is not found in database", "Record Not Found");
+                var applicantDetailObject = new Object();
+                applicantDetailObject.ApplicantFullName = document.getElementById('applicantFullName').value;
+                applicantDetailObject.BirthDate = cboBirthDate.value;
+                applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
+                applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
+                applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
+                applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
+                applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
+                applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
+                applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
+                applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
+                applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
+                applicantDetailObject.BusinessTelephoneNumber = document.getElementById('applicantBusinessTelephoneNumber').value;
+                applicantDetailObject.BusinessYear = document.getElementById('applicantBusinessYears').value;
+                applicantDetailObject.BusinessMerchandise = document.getElementById('applicantBBusinessMerchandise').value;
+                applicantDetailObject.BusinessStockValues = document.getElementById('applicantValuesOfStocks').value;
+                applicantDetailObject.BusinessBeginningCapital = document.getElementById('applicantBusinessBeginningCapital').value;
+                applicantDetailObject.BusinessLowSalesPeriod = document.getElementById('applicantSalesLowPeriod').value;
+                applicantDetailObject.BusinessLowestDailySales = document.getElementById('applicantLowestDailySales').value;
+                applicantDetailObject.BusinessAverageDailySales = document.getElementById('applicantAverageDailySales').value;
+                applicantDetailObject.EmployedCompany = document.getElementById('applicantEmployedCompanyName').value;
+                applicantDetailObject.EmployedCompanyAddress = document.getElementById('applicantEmployedCompanyAddress').value;
+                applicantDetailObject.EmployedPositionOccupied = document.getElementById('applicantEmployedPositionOccupied').value;
+                applicantDetailObject.EmployedServiceLength = document.getElementById('applicantEmployedLengthOfService').value;
+                applicantDetailObject.EmployedTelephoneNumber = document.getElementById('applicantEmployedTelephoneNumber').value;
+                applicantDetailObject.SpouseFullName = document.getElementById('applicantSpouseName').value;
+                applicantDetailObject.SpouseEmployerBusiness = document.getElementById('applicantSpouseEmployerOrBusiness').value;
+                applicantDetailObject.SpouseEmployerBusinessAddress = document.getElementById('applicantSpouseBusinessAddress').value;
+                applicantDetailObject.SpouseBusinessTelephoneNumber = document.getElementById('applicantSpouseTelephoneNumber').value;
+                applicantDetailObject.SpousePositionOccupied = document.getElementById('applicantSpousePositionOccupied').value;
+                applicantDetailObject.SpouseMonthlySalary = document.getElementById('applicantSpouseMonthlySalary').value;
+                applicantDetailObject.SpouseLengthOfService = document.getElementById('applicantSpouseLengthOfService').value;
+                applicantDetailObject.NumberOfChildren = document.getElementById('applicantSpouseNumberOfChildren').value;
+                applicantDetailObject.Studying = document.getElementById('applicantSpouseNumberOfStudying').value;
+                applicantDetailObject.Schools = document.getElementById('applicantSpouseChildrenSchools').value;
+                var applicantDetailData = JSON.stringify(applicantDetailObject);
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Yes";
-                        $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
-                        $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/applicant/update/' + getUrlParameter("id"),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: applicantDetailData,
+                    statusCode: {
+                        200: function () {
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/applicant/deletePhoto/' + getUrlParameter("id"),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                statusCode: {
+                                    200: function () {
+                                        toastr.success("Reloading the page", "Remove Photo Successful");
+                                        btnSaveChangesApplicantOnclick();
+                                    },
+                                    404: function () {
+                                        toastr.error("Not Found");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Yes";
-                        $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
-                        $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
+                                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Yes";
+                                        $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
+                                        $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
+                                    },
+                                    400: function () {
+                                        toastr.error("Bad Request");
+
+                                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Yes";
+                                        $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
+                                        $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
+                                    }
+                                }
+                            });
+                        },
+                        404: function () {
+                            toastr.error("Not Found");
+                        },
+                        400: function () {
+                            toastr.error("Bad Request");
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                toastr.error("Invalid Entry");
+            }
         }
 
         // save image
@@ -3120,20 +3181,20 @@
                                 data: applicantDetailPhotoData,
                                 statusCode: {
                                     200: function () {
-                                        toastr.success("The photo was successfully uploaded. Reloading the page.", "Update Photo Successful");
+                                        toastr.success("Reloading the page", "Update Photo Successful");
                                         window.setTimeout(function () {
                                             location.reload();
                                         }, 1500);
                                     },
                                     404: function () {
-                                        toastr.error("The photo that you're updating is not found in database", "Record Not Found");
+                                        toastr.error("Not Found");
 
                                         document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
                                         $("#btnOkChangePhoto").prop("disabled", false);
                                         $("#btnCloseChangePhoto").prop("disabled", false);
                                     },
                                     400: function () {
-                                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                        toastr.error("Bad Request");
 
                                         document.getElementById("btnOkChangePhoto").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
                                         $("#btnOkChangePhoto").prop("disabled", false);
@@ -3143,15 +3204,15 @@
                             });
                         },
                         404: function () {
-                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                            toastr.error("Not Found");
                         },
                         400: function () {
-                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                            toastr.error("Bad Request");
                         }
                     }
                 });
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -3250,13 +3311,13 @@
                                 dataType: "json",
                                 statusCode: {
                                     200: function () {
-                                        toastr.success("The data was successfully updated and Locked. Reloading the page.", "Lock Successful");
+                                        toastr.success("Reloading the page", "Lock Successful");
                                         window.setTimeout(function () {
                                             location.reload();
                                         }, 1500);
                                     },
                                     404: function () {
-                                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                        toastr.error("Not Found");
                                         $("#btnLockApplicant").prop("disabled", false);
                                         $("#btnLockApplicantButtom").prop("disabled", false);
                                         document.getElementById("btnLockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -3270,7 +3331,7 @@
                                         $("#btnApplicantDeletePhoto").prop("disabled", true);
                                     },
                                     400: function () {
-                                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                        toastr.error("Bad Request");
                                         $("#btnLockApplicant").prop("disabled", false);
                                         $("#btnLockApplicantButtom").prop("disabled", false);
                                         document.getElementById("btnLockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -3287,15 +3348,15 @@
                             });
                         },
                         404: function () {
-                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                            toastr.error("Not Found");
                         },
                         400: function () {
-                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                            toastr.error("Bad Request");
                         }
                     }
                 });
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -3319,13 +3380,13 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully updated and unlocked. Reloading the page.", "Unlock Successful");
+                        toastr.success("Reloading the page", "Unlock Successful");
                         window.setTimeout(function () {
                             location.reload();
                         }, 1500);
                     },
                     404: function () {
-                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                        toastr.error("Record Not Found");
                         $("#btnUnlockApplicant").prop("disabled", false);
                         $("#btnUnlockApplicantButtom").prop("disabled", false);
                         document.getElementById("btnUnlockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Unlock";
@@ -3337,7 +3398,7 @@
                         $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
                         $("#btnUnlockApplicant").prop("disabled", false);
                         $("#btnUnlockApplicantButtom").prop("disabled", false);
                         document.getElementById("btnUnlockApplicant").innerHTML = "<i class='fa fa-lock fa-fw'></i> Unlock";

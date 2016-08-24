@@ -80,7 +80,7 @@
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td align="right">
-                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddApplicantOnclick()">
+                                        <button class="btn btn-primary" id="btnAddApplicant" onclick="btnAddApplicantOnclick()">
                                             <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                         </button>
                                     </td>
@@ -202,7 +202,7 @@
         // delete applicant
         function deleteApplicantOnclick(isLocked) {
             if (isLocked) {
-                toastr.warning("Sorry, cannot delete if record is locked.", "Record Lock");
+                toastr.info("Record Locked");
             } else {
                 $("#deleteConfirmationApplicantModal").modal({
                     "show": true,
@@ -229,7 +229,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The record was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $('#deleteConfirmationApplicantModal').modal('hide');
 
@@ -256,13 +256,13 @@
                         applicantFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        toastr.error("Delete Not Found");
                         $('#deleteConfirmationApplicantModal').modal('hide');
                         $("#btnConfirmDeleteApplicant").prop("disabled", false);
                         $("#btnCloseDeleteApplicantModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        toastr.error("Bad Request");
                         $('#deleteConfirmationApplicantModal').modal('hide');
                         $("#btnConfirmDeleteApplicant").prop("disabled", false);
                         $("#btnCloseDeleteApplicantModal").prop("disabled", false);
@@ -310,7 +310,7 @@
                     if (id > 0) {
                         window.location = '/Software/ApplicantDetail?id=' + id;
                     } else {
-                        toastr.error("Please contact the administrator to fix this problem", "Internal Server Error");
+                        toastr.error("Internal Server Error");
                     }
                 }
             });

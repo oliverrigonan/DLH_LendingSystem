@@ -67,7 +67,7 @@
                 <div class="col-lg-9">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4>Set-up Master Tables</h4>
+                            <h4>Set-up Tables</h4>
                         </div>
                         <div class="panel-body">
                             <ul id="myTab" class="nav nav-tabs">
@@ -656,7 +656,7 @@
                         data: areaData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#areaEditDetailModal").modal("hide");
 
@@ -688,7 +688,7 @@
                                 areaFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#applicantDetailApplianceOwnedModal").modal("hide");
 
@@ -707,7 +707,7 @@
                         data: areaData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#areaEditDetailModal").modal("hide");
 
@@ -739,7 +739,7 @@
                                 areaFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#areaEditDetailModal").modal("hide");
 
@@ -748,7 +748,7 @@
                                 $("#btnCloseArea").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#areaEditDetailModal").modal("hide");
 
@@ -760,7 +760,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -792,7 +792,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationAreaModal").modal("hide");
 
@@ -824,7 +824,7 @@
                         areaFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationAreaModal").modal("hide");
 
@@ -833,7 +833,7 @@
                         $("#btnCloseDeleteAreaModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationAreaModal").modal("hide");
 
@@ -928,6 +928,12 @@
                             {
                                 "header": "Area",
                                 "binding": "Area",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Description",
+                                "binding": "Description",
                                 "allowSorting": true,
                                 "width": "3*",
                             }
@@ -1130,7 +1136,7 @@
                         data: collectorData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#collectorEditDetailModal").modal("hide");
 
@@ -1145,7 +1151,8 @@
                                 });
 
                                 collectorCollectionView.filter = function (item) {
-                                    return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                                    return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
                                 }
 
                                 collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1161,7 +1168,7 @@
                                 collectorFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#collectorEditDetailModal").modal("hide");
 
@@ -1180,7 +1187,7 @@
                         data: collectorData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#collectorEditDetailModal").modal("hide");
 
@@ -1195,7 +1202,8 @@
                                 });
 
                                 collectorCollectionView.filter = function (item) {
-                                    return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                                    return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
                                 }
 
                                 collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1211,7 +1219,7 @@
                                 collectorFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#collectorEditDetailModal").modal("hide");
 
@@ -1220,7 +1228,7 @@
                                 $("#btnCloseCollector").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#collectorEditDetailModal").modal("hide");
 
@@ -1232,7 +1240,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1261,7 +1269,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The record was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $('#deleteConfirmationCollectorModal').modal('hide');
 
@@ -1276,7 +1284,8 @@
                         });
 
                         collectorCollectionView.filter = function (item) {
-                            return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                            return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1288,13 +1297,13 @@
                         collectorFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        toastr.error("Not Found");
                         $('#deleteConfirmationCollectorModal').modal('hide');
                         $("#btnConfirmDeleteCollector").prop("disabled", false);
                         $("#btnCloseDeleteCollectorModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        toastr.error("Bad Request");
                         $('#deleteConfirmationCollectorModal').modal('hide');
                         $("#btnConfirmDeleteCollector").prop("disabled", false);
                         $("#btnCloseDeleteCollectorModal").prop("disabled", false);
@@ -1354,7 +1363,8 @@
             });
 
             collectorCollectionView.filter = function (item) {
-                return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1391,6 +1401,12 @@
                                 "allowSorting": true,
                                 "width": "3*"
                             },
+                            {
+                                "header": "Contact Number",
+                                "binding": "ContactNumber",
+                                "allowSorting": true,
+                                "width": "2*"
+                            }, 
                 ],
                 autoGenerateColumns: false,
                 itemsSource: collectorCollectionView,
@@ -1453,7 +1469,8 @@
             });
 
             collectorCollectionView.filter = function (item) {
-                return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.CollectorName.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectorCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1594,7 +1611,7 @@
                         data: RequirementsData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#RequirementsEditDetailModal").modal("hide");
 
@@ -1609,7 +1626,8 @@
                                 });
 
                                 requirementsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                                    return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
 
                                 requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1625,7 +1643,7 @@
                                 requirementsFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#RequirementsEditDetailModal").modal("hide");
 
@@ -1644,7 +1662,7 @@
                         data: RequirementsData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#RequirementsEditDetailModal").modal("hide");
 
@@ -1659,7 +1677,8 @@
                                 });
 
                                 requirementsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                                    return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
 
                                 requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1675,7 +1694,7 @@
                                 requirementsFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#RequirementsEditDetailModal").modal("hide");
 
@@ -1684,7 +1703,7 @@
                                 $("#btnCloseRequirements").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#RequirementsEditDetailModal").modal("hide");
 
@@ -1696,7 +1715,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1725,7 +1744,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The record was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $('#deleteConfirmationRequirementsModal').modal('hide');
 
@@ -1740,7 +1759,8 @@
                         });
 
                         requirementsCollectionView.filter = function (item) {
-                            return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                            return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1756,13 +1776,13 @@
                         requirementsFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        toastr.error("Not Found");
                         $('#deleteConfirmationRequirementsModal').modal('hide');
                         $("#btnConfirmDeleteRequirements").prop("disabled", false);
                         $("#btnCloseDeleteRequirementsModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        toastr.error("Bad Request");
                         $('#deleteConfirmationRequirementsModal').modal('hide');
                         $("#btnConfirmDeleteRequirements").prop("disabled", false);
                         $("#btnCloseDeleteRequirementsModal").prop("disabled", false);
@@ -1822,7 +1842,8 @@
             });
 
             requirementsCollectionView.filter = function (item) {
-                return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
             }
 
             requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1857,8 +1878,14 @@
                                 "header": "Requirement",
                                 "binding": "Requirement",
                                 "allowSorting": true,
-                                "width": "3*"
+                                "width": "2*"
                             },
+                            {
+                                "header": "Description",
+                                "binding": "Description",
+                                "allowSorting": true,
+                                "width": "3*"
+                            } 
                 ],
                 autoGenerateColumns: false,
                 itemsSource: requirementsCollectionView,
@@ -1921,7 +1948,8 @@
             });
 
             requirementsCollectionView.filter = function (item) {
-                return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.Requirement.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
             }
 
             requirementsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2062,7 +2090,7 @@
                         data: AccountsData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#AccountsEditDetailModal").modal("hide");
 
@@ -2077,7 +2105,8 @@
                                 });
 
                                 accountsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
 
                                 accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2093,7 +2122,7 @@
                                 accountsFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#AccountsEditDetailModal").modal("hide");
 
@@ -2112,7 +2141,7 @@
                         data: AccountsData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#AccountsEditDetailModal").modal("hide");
 
@@ -2127,7 +2156,8 @@
                                 });
 
                                 accountsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
 
                                 accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2143,7 +2173,7 @@
                                 accountsFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#AccountsEditDetailModal").modal("hide");
 
@@ -2152,7 +2182,7 @@
                                 $("#btnCloseAccounts").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#AccountsEditDetailModal").modal("hide");
 
@@ -2164,7 +2194,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -2193,7 +2223,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The record was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $('#deleteConfirmationAccountsModal').modal('hide');
 
@@ -2208,7 +2238,8 @@
                         });
 
                         accountsCollectionView.filter = function (item) {
-                            return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                            return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2224,13 +2255,13 @@
                         accountsFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The data was not found when deleting the record.", "Delete Not Found");
+                        toastr.error("Not Found");
                         $('#deleteConfirmationAccountsModal').modal('hide');
                         $("#btnConfirmDeleteAccounts").prop("disabled", false);
                         $("#btnCloseDeleteAccountsModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Deleting the record was unsuccessful. The record is might be used in another table or transaction", "Bad Request");
+                        toastr.error("Bad Request");
                         $('#deleteConfirmationAccountsModal').modal('hide');
                         $("#btnConfirmDeleteAccounts").prop("disabled", false);
                         $("#btnCloseDeleteAccountsModal").prop("disabled", false);
@@ -2290,7 +2321,8 @@
             });
 
             accountsCollectionView.filter = function (item) {
-                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
             }
 
             accountsCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2325,8 +2357,14 @@
                                 "header": "Account",
                                 "binding": "Account",
                                 "allowSorting": true,
-                                "width": "3*"
+                                "width": "2*"
                             },
+                            {
+                                "header": "Description",
+                                "binding": "Description",
+                                "allowSorting": true,
+                                "width": "3*"
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: accountsCollectionView,
@@ -2389,7 +2427,8 @@
             });
 
             accountsCollectionView.filter = function (item) {
-                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
             }
 
             accountsCollectionView.collectionChanged.addHandler(function (sender, args) {

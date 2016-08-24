@@ -266,7 +266,7 @@
                     data: companyDetailData,
                     statusCode: {
                         200: function () {
-                            toastr.success("Reloading the page...", "Lock Successful");
+                            toastr.success("Reloading the page", "Lock Successful");
                             window.setTimeout(function () {
                                 location.reload();
                             }, 1500);
@@ -274,7 +274,7 @@
                         404: function () {
                             document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
 
-                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                            toastr.error("Not Found");
 
                             $("#btnLockCompany").prop("disabled", false);
                             $("#btnCloseCompany").prop("disabled", false);
@@ -282,7 +282,7 @@
                         400: function () {
                             document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
 
-                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                            toastr.error("Bad Request");
 
                             $("#btnLockCompany").prop("disabled", false);
                             $("#btnCloseCompany").prop("disabled", false);
@@ -290,7 +290,7 @@
                     }
                 });
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -309,7 +309,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("Reloading the page...", "Unlock Successful");
+                        toastr.success("Reloading the page", "Unlock Successful");
                         window.setTimeout(function () {
                             location.reload();
                         }, 1500);
@@ -317,7 +317,7 @@
                     404: function () {
                         document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
 
-                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#btnUnlockCompany").prop("disabled", true);
                         $("#btnCloseCompany").prop("disabled", true);
@@ -325,7 +325,7 @@
                     400: function () {
                         document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
 
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#btnUnlockCompany").prop("disabled", true);
                         $("#btnCloseCompany").prop("disabled", true);
@@ -464,7 +464,7 @@
                         data: branchDetailData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#companyDetailBranchEditModal").modal("hide");
 
@@ -473,7 +473,7 @@
                                 branchFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#companyDetailBranchEditModal").modal("hide");
 
@@ -492,7 +492,7 @@
                         data: branchDetailData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#companyDetailBranchEditModal").modal("hide");
 
@@ -501,7 +501,7 @@
                                 branchFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#companyDetailBranchEditModal").modal("hide");
 
@@ -510,7 +510,7 @@
                                 $("#btnCancelBranch").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#companyDetailBranchEditModal").modal("hide");
 
@@ -522,7 +522,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -554,7 +554,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationCompanyDetailBranchModal").modal("hide");
 
@@ -563,7 +563,7 @@
                         branchFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Record Not Found");
 
                         $("#deleteConfirmationCompanyDetailBranchModal").modal("hide");
 
@@ -572,7 +572,7 @@
                         $("#btnConfirmCloseBranch").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationCompanyDetailBranchModal").modal("hide");
 

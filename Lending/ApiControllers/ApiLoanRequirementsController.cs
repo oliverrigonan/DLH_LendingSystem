@@ -26,8 +26,6 @@ namespace Lending.ApiControllers
                                        LoanId = d.LoanId,
                                        RequirementId = d.RequirementId,
                                        Requirement = d.mstRequirement.Requirement,
-                                       ExpirationDate = d.ExpirationDate.ToShortDateString(),
-                                       IsValid = d.IsValid,
                                        Note = d.Note,
                                    };
 
@@ -45,8 +43,6 @@ namespace Lending.ApiControllers
                 Data.trnLoanRequirement newLoanRequirement = new Data.trnLoanRequirement();
                 newLoanRequirement.LoanId = loanRequirement.LoanId;
                 newLoanRequirement.RequirementId = loanRequirement.RequirementId;
-                newLoanRequirement.ExpirationDate = Convert.ToDateTime(loanRequirement.ExpirationDate);
-                newLoanRequirement.IsValid = loanRequirement.IsValid;
                 newLoanRequirement.Note = loanRequirement.Note;
                 db.trnLoanRequirements.InsertOnSubmit(newLoanRequirement);
                 db.SubmitChanges();
@@ -73,8 +69,6 @@ namespace Lending.ApiControllers
                     var updateLoanRequirement = loanRequirements.FirstOrDefault();
                     updateLoanRequirement.LoanId = loanRequirement.LoanId;
                     updateLoanRequirement.RequirementId = loanRequirement.RequirementId;
-                    updateLoanRequirement.ExpirationDate = Convert.ToDateTime(loanRequirement.ExpirationDate);
-                    updateLoanRequirement.IsValid = loanRequirement.IsValid;
                     updateLoanRequirement.Note = loanRequirement.Note;
                     db.SubmitChanges();
 

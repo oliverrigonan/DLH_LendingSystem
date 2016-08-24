@@ -80,7 +80,7 @@
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td align="right">
-                                        <button class="btn btn-success" id="btnAddNewCompany" onclick="btnAddNewCompanyOnclick()">
+                                        <button class="btn btn-primary" id="btnAddNewCompany" onclick="btnAddNewCompanyOnclick()">
                                             <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                         </button>
                                     </td>
@@ -198,7 +198,7 @@
                     if (id > 0) {
                         window.location = '/Software/CompanyDetail?id=' + id;
                     } else {
-                        toastr.error("Please contact the administrator to fix this problem", "Internal Server Error");
+                        toastr.error("Internal Server Error");
                     }
                 }
             });
@@ -240,7 +240,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationCompanyModal").modal("hide");
 
@@ -272,7 +272,7 @@
                         companyFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationCompanyModal").modal("hide");
 
@@ -281,7 +281,7 @@
                         $("#btnCloseDeleteCompanyModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationCompanyModal").modal("hide");
 

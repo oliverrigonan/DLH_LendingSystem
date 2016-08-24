@@ -102,7 +102,7 @@
                                 <dt>Account</dt>
                                 <dd><div id="loanApplicationAccount"></div></dd>
                                 <dt>Applicant</dt>
-                                <dd><div id="loanApplicationApplicant"></div></dd>
+                                <dd><div id="loanApplicationApplicant"></div><span style="color: red" id="noApplicant"></span></dd>
                                 <dt>Area</dt>
                                 <dd><div id="loanApplicationArea"></div></dd>
                                 <dt>Promise</dt>
@@ -266,15 +266,6 @@
                         <dd>
                             <div id="loanRequiremenstName"></div>
                         </dd>
-                        <dt>Expiration Date</dt>
-                        <dd>
-                            <div id="loanRequiremensExpirationDate"></div>  &nbsp; <span id="loanRequiremensExpirationDateString"></span>
-                        </dd>
-                        <dt>Is Valid</dt>
-                        <dd>
-                            <input type="checkbox" id="loanRequiremensIsValid" />
-                        </dd>
-                       
                         <dt>Note</dt>
                         <dd>
                             <textarea class="form-control requiredLoanRequirements" id="loanRequirementsNote"></textarea>
@@ -601,6 +592,12 @@
                     } else {
                         cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea');
                         getArea();
+
+                        $("#btnLock").prop("disabled", true);
+                        $("#btnLockButtom").prop("disabled", true);
+                        $("#btnAddLoanApplicationLines").prop("disabled", true);
+                        $("#btnAddLoanRequirements").prop("disabled", true);
+                        document.getElementById("noApplicant").innerHTML = "&nbsp; <i class='fa fa-info fa-fw'></i> Applicant Record is Empty or Unlocked";
                     }
 
                     cboloanApplicationApplicant.dispose();
@@ -613,6 +610,20 @@
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName"
                     });
+
+                    if (applicantResults.length > 0) {
+                        $('#loanApplicationApplicant').each(function () {
+                            $(this).css({
+                                "border": ""
+                            });
+                        });
+                    } else {
+                        $('#loanApplicationApplicant').each(function () {
+                            $(this).css({
+                                "border": "1px solid red"
+                            });
+                        });
+                    }
                 }
             });
         }
@@ -941,7 +952,7 @@
                         data: loanApplicationLineData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#loanApplicationLineEditDetailModal").modal("hide");
 
@@ -950,7 +961,7 @@
                                 loanApplicationLinesFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#loanApplicationLineEditDetailModal").modal("hide");
 
@@ -969,7 +980,7 @@
                         data: loanApplicationLineData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#loanApplicationLineEditDetailModal").modal("hide");
 
@@ -978,7 +989,7 @@
                                 loanApplicationLinesFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Not Found");
 
                                 $("#loanApplicationLineEditDetailModal").modal("hide");
 
@@ -987,7 +998,7 @@
                                 $("#btnCloseLoanApplicationLine").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#loanApplicationLineEditDetailModal").modal("hide");
 
@@ -999,7 +1010,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1029,7 +1040,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationLoanApplicationLineModal").modal("hide");
 
@@ -1038,7 +1049,7 @@
                         loanApplicationLinesFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
 
                         $("#deleteConfirmationLoanApplicationLineModal").modal("hide");
 
@@ -1047,7 +1058,7 @@
                         $("#btnCloseDeleteLoanApplicationLineModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationLoanApplicationLineModal").modal("hide");
 
@@ -1157,13 +1168,13 @@
                     data: loanApplicationData,
                     statusCode: {
                         200: function () {
-                            toastr.success("The data was successfully updated.", "Lock Successful");
+                            toastr.success("Reloading the page", "Lock Successful");
                             window.setTimeout(function () {
                                 location.reload();
                             }, 1500);
                         },
                         404: function () {
-                            toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                            toastr.error("Not Found");
                             $("#btnLock").prop("disabled", false);
                             $("#btnLockButtom").prop("disabled", false);
                             document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -1172,7 +1183,7 @@
                             $("#btnCloseButtom").prop("disabled", false);
                         },
                         400: function () {
-                            toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                            toastr.error("Bad Request");
                             $("#btnLock").prop("disabled", false);
                             $("#btnLockButtom").prop("disabled", false);
                             document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -1183,7 +1194,7 @@
                     }
                 });
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1206,13 +1217,13 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully updated.", "Unlock Successful");
+                        toastr.success("Reloading the page", "Unlock Successful");
                         window.setTimeout(function () {
                             location.reload();
                         }, 1500);
                     },
                     404: function () {
-                        toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                        toastr.error("Not Found");
                         $("#btnUnlock").prop("disabled", false);
                         $("#btnPrint").prop("disabled", false);
                         $("#btnUnlockButtom").prop("disabled", false);
@@ -1223,7 +1234,7 @@
                         document.getElementById("btnUnlockButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
                         $("#btnLock").prop("disabled", false);
                         $("#btnLockButtom").prop("disabled", false);
                         document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -1260,8 +1271,6 @@
                                 LoanId: loanRequirementsResult[i]["LoanId"],
                                 RequirementId: loanRequirementsResult[i]["RequirementId"],
                                 Requirement: loanRequirementsResult[i]["Requirement"],
-                                ExpirationDate: loanRequirementsResult[i]["ExpirationDate"],
-                                IsValid: loanRequirementsResult[i]["IsValid"],
                                 Note: loanRequirementsResult[i]["Note"]
                             });
                         }
@@ -1272,83 +1281,6 @@
             });
 
             return loanRequirementArray;
-        }
-
-        // cbo expiration date
-        function createCboExpirationDate() {
-            expirationDate.dispose();
-            expirationDate = new wijmo.input.InputDate('#loanRequiremensExpirationDate', {
-                format: 'MM-dd-yyyy',
-                value: new Date(),
-                mask: '99-99-9999',
-                onValueChanged: function () {
-                    var dateValue = this.value.getMonth() + 1;
-                    var month = "";
-
-                    if (dateValue == 1) {
-                        month = "January";
-                    } else if (dateValue == 2) {
-                        month = "February";
-                    } else if (dateValue == 3) {
-                        month = "March";
-                    } else if (dateValue == 4) {
-                        month = "April";
-                    } else if (dateValue == 5) {
-                        month = "May";
-                    } else if (dateValue == 6) {
-                        month = "June";
-                    } else if (dateValue == 7) {
-                        month = "July";
-                    } else if (dateValue == 8) {
-                        month = "August";
-                    } else if (dateValue == 9) {
-                        month = "September";
-                    } else if (dateValue == 10) {
-                        month = "October";
-                    } else if (dateValue == 11) {
-                        month = "November";
-                    } else if (dateValue == 12) {
-                        month = "December";
-                    } else {
-                        month = "";
-                    }
-
-                    document.getElementById("loanRequiremensExpirationDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
-                }
-            });
-
-            var dateValue = expirationDate.value.getMonth() + 1;
-            var month = "";
-
-            if (dateValue == 1) {
-                month = "January";
-            } else if (dateValue == 2) {
-                month = "February";
-            } else if (dateValue == 3) {
-                month = "March";
-            } else if (dateValue == 4) {
-                month = "April";
-            } else if (dateValue == 5) {
-                month = "May";
-            } else if (dateValue == 6) {
-                month = "June";
-            } else if (dateValue == 7) {
-                month = "July";
-            } else if (dateValue == 8) {
-                month = "August";
-            } else if (dateValue == 9) {
-                month = "September";
-            } else if (dateValue == 10) {
-                month = "October";
-            } else if (dateValue == 11) {
-                month = "November";
-            } else if (dateValue == 12) {
-                month = "December";
-            } else {
-                month = "";
-            }
-
-            document.getElementById("loanRequiremensExpirationDateString").innerHTML = month + " " + expirationDate.value.getDate() + ", " + expirationDate.value.getFullYear();
         }
 
         // get requirements
@@ -1371,7 +1303,7 @@
                         }
 
                         disabled = false;
-                    } 
+                    }
 
                     cboRequirementName.dispose();
                     cboRequirementName = new wijmo.input.ComboBox('#loanRequiremenstName', {
@@ -1407,8 +1339,6 @@
 
             loanRequirementId = 0;
             getRequirements("");
-            createCboExpirationDate();
-            document.getElementById("loanRequiremensIsValid").checked = false;
             document.getElementById("loanRequirementsNote").value = "NA";
         }
 
@@ -1434,9 +1364,6 @@
 
             loanRequirementId = currentItem.Id;
             getRequirements(currentItem.Requirement);
-            createCboExpirationDate();
-            expirationDate.value = new Date(currentItem.ExpirationDate);
-            document.getElementById("loanRequiremensIsValid").checked = currentItem.IsValid;
             document.getElementById("loanRequirementsNote").value = currentItem.Note;
         }
 
@@ -1469,8 +1396,6 @@
                 var loanRequirementObject = new Object();
                 loanRequirementObject.LoanId = getUrlParameter("id");
                 loanRequirementObject.RequirementId = cboRequirementName.selectedItem["Id"];
-                loanRequirementObject.ExpirationDate = expirationDate.value;
-                loanRequirementObject.IsValid = document.getElementById('loanRequiremensIsValid').checked;
                 loanRequirementObject.Note = document.getElementById('loanRequirementsNote').value;
                 var loanRequirementData = JSON.stringify(loanRequirementObject);
 
@@ -1483,7 +1408,7 @@
                         data: loanRequirementData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully saved.", "Save Successful");
+                                toastr.success("Save Successful");
 
                                 $("#loanRequirementsEditDetailModal").modal("hide");
 
@@ -1492,7 +1417,7 @@
                                 loanRequirementFlexGrid.trackChanges = true;
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#loanRequirementsEditDetailModal").modal("hide");
 
@@ -1511,7 +1436,7 @@
                         data: loanRequirementData,
                         statusCode: {
                             200: function () {
-                                toastr.success("The data was successfully updated.", "Update Successful");
+                                toastr.success("Update Successful");
 
                                 $("#loanRequirementsEditDetailModal").modal("hide");
 
@@ -1520,7 +1445,7 @@
                                 loanRequirementFlexGrid.trackChanges = true;
                             },
                             404: function () {
-                                toastr.error("The record that you're updating is not found in database", "Record Not Found");
+                                toastr.error("Record Not Found");
 
                                 $("#loanRequirementsEditDetailModal").modal("hide");
 
@@ -1529,7 +1454,7 @@
                                 $("#btnCloseLoanRequirement").prop("disabled", false);
                             },
                             400: function () {
-                                toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                                toastr.error("Bad Request");
 
                                 $("#loanRequirementsEditDetailModal").modal("hide");
 
@@ -1541,7 +1466,7 @@
                     });
                 }
             } else {
-                toastr.error("Please fill out the empty fields.", "Invalid Entry");
+                toastr.error("Invalid Entry");
             }
         }
 
@@ -1571,7 +1496,7 @@
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("The data was successfully deleted.", "Delete Successful");
+                        toastr.success("Delete Successful");
 
                         $("#deleteConfirmationLoanRequirementModal").modal("hide");
 
@@ -1580,7 +1505,7 @@
                         loanRequirementFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("The record that you're deleting is not found in database", "Record Not Found");
+                        toastr.error("Record Not Found");
 
                         $("#deleteConfirmationLoanRequirementModal").modal("hide");
 
@@ -1589,7 +1514,7 @@
                         $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
                     },
                     400: function () {
-                        toastr.error("Invalid entry or Internal Server Error occured.", "Bad Request");
+                        toastr.error("Bad Request");
 
                         $("#deleteConfirmationLoanRequirementModal").modal("hide");
 
@@ -1605,7 +1530,6 @@
         // create loan requirements flexgrid
         function createloanRequirementsFlexGrid() {
             cboRequirementName = new wijmo.input.ComboBox('#loanRequiremenstName');
-            expirationDate = new wijmo.input.InputDate('#loanRequiremensExpirationDate');
             loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
 
             loanRequirementFlexGrid = new wijmo.grid.FlexGrid('#loanRequirementsFlexGrid');
@@ -1631,20 +1555,14 @@
                                 "header": "Requirement",
                                 "binding": "Requirement",
                                 "allowSorting": true,
-                                "width": "2.5*",
+                                "width": "2*",
                             },
                             {
-                                "header": "Expiration Date",
-                                "binding": "ExpirationDate",
+                                "header": "Note",
+                                "binding": "Note",
                                 "allowSorting": true,
-                                "width": "1*",
-                            },
-                            {
-                                "header": "Is Valid",
-                                "binding": "IsValid",
-                                "allowSorting": true,
-                                "width": "0.5*",
-                            },
+                                "width": "3*",
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanRequirementCollectionView,
@@ -1657,7 +1575,7 @@
             loanRequirementFlexGrid.trackChanges = true;
         }
 
-        // pdf 
+        // pdf
         function btnPrintOnClick() {
             $("#btnPrint").prop("disabled", true);
             $("#btnPrintButtom").prop("disabled", true);

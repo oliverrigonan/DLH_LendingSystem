@@ -12,8 +12,6 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RequirementId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ExpirationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="IsValid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Note" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Association Name="mstRequirement_trnLoanRequirement" Member="mstRequirement" ThisKey="RequirementId" OtherKey="Id" Type="mstRequirement" IsForeignKey="true" />
       <Association Name="trnLoanApplication_trnLoanRequirement" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />

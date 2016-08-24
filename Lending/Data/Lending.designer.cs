@@ -453,10 +453,6 @@ namespace Lending.Data
 		
 		private int _RequirementId;
 		
-		private System.DateTime _ExpirationDate;
-		
-		private bool _IsValid;
-		
 		private string _Note;
 		
 		private EntityRef<mstRequirement> _mstRequirement;
@@ -473,10 +469,6 @@ namespace Lending.Data
     partial void OnLoanIdChanged();
     partial void OnRequirementIdChanging(int value);
     partial void OnRequirementIdChanged();
-    partial void OnExpirationDateChanging(System.DateTime value);
-    partial void OnExpirationDateChanged();
-    partial void OnIsValidChanging(bool value);
-    partial void OnIsValidChanged();
     partial void OnNoteChanging(string value);
     partial void OnNoteChanged();
     #endregion
@@ -552,46 +544,6 @@ namespace Lending.Data
 					this._RequirementId = value;
 					this.SendPropertyChanged("RequirementId");
 					this.OnRequirementIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpirationDate", DbType="DateTime NOT NULL")]
-		public System.DateTime ExpirationDate
-		{
-			get
-			{
-				return this._ExpirationDate;
-			}
-			set
-			{
-				if ((this._ExpirationDate != value))
-				{
-					this.OnExpirationDateChanging(value);
-					this.SendPropertyChanging();
-					this._ExpirationDate = value;
-					this.SendPropertyChanged("ExpirationDate");
-					this.OnExpirationDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsValid", DbType="Bit NOT NULL")]
-		public bool IsValid
-		{
-			get
-			{
-				return this._IsValid;
-			}
-			set
-			{
-				if ((this._IsValid != value))
-				{
-					this.OnIsValidChanging(value);
-					this.SendPropertyChanging();
-					this._IsValid = value;
-					this.SendPropertyChanged("IsValid");
-					this.OnIsValidChanged();
 				}
 			}
 		}

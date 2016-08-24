@@ -111,5 +111,12 @@
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // on load page
+        window.onload = function () {
+            NProgress.start();
+            NProgress.done();
+        }
+    </script>
 </body>
 </html>
