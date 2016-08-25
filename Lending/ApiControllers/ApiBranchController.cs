@@ -62,16 +62,31 @@ namespace Lending.ApiControllers
         {
             try
             {
-                Data.mstBranch newBranch = new Data.mstBranch();
-                newBranch.CompanyId = branch.CompanyId;
-                newBranch.Branch = branch.Branch;
-                newBranch.Address = branch.Address;
-                newBranch.ContactNumber = branch.ContactNumber;
+                var companies = from d in db.mstCompanies where d.Id == branch.CompanyId select d;
+                if (companies.Any())
+                {
+                    if (!companies.FirstOrDefault().IsLocked)
+                    {
+                        Data.mstBranch newBranch = new Data.mstBranch();
+                        newBranch.CompanyId = branch.CompanyId;
+                        newBranch.Branch = branch.Branch;
+                        newBranch.Address = branch.Address;
+                        newBranch.ContactNumber = branch.ContactNumber;
 
-                db.mstBranches.InsertOnSubmit(newBranch);
-                db.SubmitChanges();
+                        db.mstBranches.InsertOnSubmit(newBranch);
+                        db.SubmitChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -87,18 +102,33 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var branches = from d in db.mstBranches where d.Id == Convert.ToInt32(id) select d;
-                if (branches.Any())
+                var companies = from d in db.mstCompanies where d.Id == branch.CompanyId select d;
+                if (companies.Any())
                 {
-                    var updateBranch = branches.FirstOrDefault();
-                    updateBranch.CompanyId = branch.CompanyId;
-                    updateBranch.Branch = branch.Branch;
-                    updateBranch.Address = branch.Address;
-                    updateBranch.ContactNumber = branch.ContactNumber;
+                    if(!companies.FirstOrDefault().IsLocked) 
+                    {
+                        var branches = from d in db.mstBranches where d.Id == Convert.ToInt32(id) select d;
+                        if (branches.Any())
+                        {
+                            var updateBranch = branches.FirstOrDefault();
+                            updateBranch.CompanyId = branch.CompanyId;
+                            updateBranch.Branch = branch.Branch;
+                            updateBranch.Address = branch.Address;
+                            updateBranch.ContactNumber = branch.ContactNumber;
 
-                    db.SubmitChanges();
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -122,10 +152,25 @@ namespace Lending.ApiControllers
                 var branches = from d in db.mstBranches where d.Id == Convert.ToInt32(id) select d;
                 if (branches.Any())
                 {
-                    db.mstBranches.DeleteOnSubmit(branches.First());
-                    db.SubmitChanges();
+                    var companies = from d in db.mstCompanies where d.Id == branches.FirstOrDefault().CompanyId select d;
+                    if (companies.Any())
+                    {
+                        if (!companies.FirstOrDefault().IsLocked)
+                        {
+                            db.mstBranches.DeleteOnSubmit(branches.First());
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

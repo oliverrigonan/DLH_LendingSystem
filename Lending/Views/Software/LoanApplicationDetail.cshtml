@@ -962,6 +962,15 @@
                                 loanApplicationLinesFlexGrid.itemsSource = loanApplicationLineCollectionView;
                                 loanApplicationLinesFlexGrid.trackChanges = true;
                             },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#loanApplicationLineEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveLoanApplicationLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                                $("#btnSaveLoanApplicationLine").prop("disabled", false);
+                                $("#btnCloseLoanApplicationLine").prop("disabled", false);
+                            },
                             400: function () {
                                 toastr.error("Bad Request");
 
@@ -1417,6 +1426,15 @@
                                 loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
                                 loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
                                 loanRequirementFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Record Not Found");
+
+                                $("#loanRequirementsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveLoanRequirement").prop("disabled", false);
+                                $("#btnCloseLoanRequirement").prop("disabled", false);
                             },
                             400: function () {
                                 toastr.error("Bad Request");

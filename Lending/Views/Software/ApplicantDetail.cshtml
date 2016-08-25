@@ -1552,6 +1552,15 @@
                                 applicantRealPropertiesOwnedFlexGrid.itemsSource = applicantRealPropertiesOwnedCollectionView;
                                 applicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                             },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#applicantDetailRealPropertiesOwnedModal").modal("hide");
+
+                                document.getElementById("btnSaveApplicantDetailRealPropertiesOwned").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveApplicantDetailRealPropertiesOwned").prop("disabled", false);
+                                $("#btnCloseApplicantDetailRealPropertiesOwned").prop("disabled", false);
+                            },
                             400: function () {
                                 toastr.error("Bad Request");
 
@@ -1855,6 +1864,15 @@
                                 applicantApplianceOwnedCollectionView = new wijmo.collections.CollectionView(getApplicantApplianceOwned());
                                 applicantApplianceOwnedFlexGrid.itemsSource = applicantApplianceOwnedCollectionView;
                                 applicantApplianceOwnedFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#applicantDetailApplianceOwnedModal").modal("hide");
+
+                                document.getElementById("btnSaveApplicantDetailApplianceOwned").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveApplicantDetailApplianceOwned").prop("disabled", false);
+                                $("#btnCloseApplicantDetailApplianceOwned").prop("disabled", false);
                             },
                             400: function () {
                                 toastr.error("Bad Request");
@@ -2275,6 +2293,15 @@
                                 coMakerApplicantRealPropertiesOwnedFlexGrid.itemsSource = coMakerApplicantRealPropertiesOwnedCollectionView;
                                 coMakerApplicantRealPropertiesOwnedFlexGrid.trackChanges = true;
                             },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#applicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
+
+                                document.getElementById("btnSaveApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                                $("#btnSaveApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
+                                $("#btnCloseApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
+                            },
                             400: function () {
                                 toastr.error("Bad Request");
 
@@ -2604,6 +2631,15 @@
                                 coMakerStatementFlexGrid.itemsSource = coMakerStatementCollectionView;
                                 coMakerStatementFlexGrid.trackChanges = true;
                             },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#applicantDetailCoMakersStatementModal").modal("hide");
+
+                                $("#btnSaveApplicantDetailApplianceOwned").prop("disabled", false);
+                                $("#btnCloseApplicantDetailApplianceOwned").prop("disabled", false);
+                                document.getElementById("btnSaveApplicantDetailApplianceOwned").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                            },
                             400: function () {
                                 toastr.error("Bad Request");
 
@@ -2894,6 +2930,15 @@
                                 coMakerApplicantApplianceOwnedCollectionView = new wijmo.collections.CollectionView(getCoMakerApplianceOwned());
                                 coMakerApplicantApplianceOwnedFlexGrid.itemsSource = coMakerApplicantApplianceOwnedCollectionView;
                                 coMakerApplicantApplianceOwnedFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#applicantDetailCoMakerApplianceOwnedModal").modal("hide");
+
+                                document.getElementById("btnSaveApplicantDetailCoMakerApplianceOwned").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                                $("#btnSaveApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
+                                $("#btnCloseApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                             },
                             400: function () {
                                 toastr.error("Bad Request");

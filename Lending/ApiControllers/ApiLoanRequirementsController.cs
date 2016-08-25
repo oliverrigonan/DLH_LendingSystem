@@ -40,14 +40,29 @@ namespace Lending.ApiControllers
         {
             try
             {
-                Data.trnLoanRequirement newLoanRequirement = new Data.trnLoanRequirement();
-                newLoanRequirement.LoanId = loanRequirement.LoanId;
-                newLoanRequirement.RequirementId = loanRequirement.RequirementId;
-                newLoanRequirement.Note = loanRequirement.Note;
-                db.trnLoanRequirements.InsertOnSubmit(newLoanRequirement);
-                db.SubmitChanges();
+                var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirement.LoanId select d;
+                if (loanApplications.Any())
+                {
+                    if (!loanApplications.FirstOrDefault().IsLocked)
+                    {
+                        Data.trnLoanRequirement newLoanRequirement = new Data.trnLoanRequirement();
+                        newLoanRequirement.LoanId = loanRequirement.LoanId;
+                        newLoanRequirement.RequirementId = loanRequirement.RequirementId;
+                        newLoanRequirement.Note = loanRequirement.Note;
+                        db.trnLoanRequirements.InsertOnSubmit(newLoanRequirement);
+                        db.SubmitChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -63,16 +78,31 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var loanRequirements = from d in db.trnLoanRequirements where d.Id == Convert.ToInt32(id) select d;
-                if (loanRequirements.Any())
+                var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirement.LoanId select d;
+                if (loanApplications.Any())
                 {
-                    var updateLoanRequirement = loanRequirements.FirstOrDefault();
-                    updateLoanRequirement.LoanId = loanRequirement.LoanId;
-                    updateLoanRequirement.RequirementId = loanRequirement.RequirementId;
-                    updateLoanRequirement.Note = loanRequirement.Note;
-                    db.SubmitChanges();
+                    if(!loanApplications.FirstOrDefault().IsLocked) 
+                    {
+                        var loanRequirements = from d in db.trnLoanRequirements where d.Id == Convert.ToInt32(id) select d;
+                        if (loanRequirements.Any())
+                        {
+                            var updateLoanRequirement = loanRequirements.FirstOrDefault();
+                            updateLoanRequirement.LoanId = loanRequirement.LoanId;
+                            updateLoanRequirement.RequirementId = loanRequirement.RequirementId;
+                            updateLoanRequirement.Note = loanRequirement.Note;
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -96,10 +126,25 @@ namespace Lending.ApiControllers
                 var loanRequirements = from d in db.trnLoanRequirements where d.Id == Convert.ToInt32(id) select d;
                 if (loanRequirements.Any())
                 {
-                    db.trnLoanRequirements.DeleteOnSubmit(loanRequirements.First());
-                    db.SubmitChanges();
+                    var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirements.FirstOrDefault().LoanId select d;
+                    if (loanApplications.Any())
+                    {
+                        if(!loanApplications.FirstOrDefault().IsLocked)
+                        {
+                            db.trnLoanRequirements.DeleteOnSubmit(loanRequirements.First());
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
                 }
                 else
                 {

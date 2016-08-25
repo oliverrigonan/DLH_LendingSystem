@@ -40,15 +40,30 @@ namespace Lending.ApiControllers
         {
             try
             {
-                Data.mstCoMakerStatementApplianceOwned newCoMakerApplianceOwned = new Data.mstCoMakerStatementApplianceOwned();
-                newCoMakerApplianceOwned.CoMakerId = coMakerApplianceOwned.CoMakerId;
-                newCoMakerApplianceOwned.ApplianceBrand = coMakerApplianceOwned.ApplianceBrand;
-                newCoMakerApplianceOwned.PresentValue = coMakerApplianceOwned.PresentValue;
+                var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakerApplianceOwned.CoMakerId select d;
+                if (applicants.Any())
+                {
+                    if(!applicants.FirstOrDefault().IsLocked) 
+                    {
+                        Data.mstCoMakerStatementApplianceOwned newCoMakerApplianceOwned = new Data.mstCoMakerStatementApplianceOwned();
+                        newCoMakerApplianceOwned.CoMakerId = coMakerApplianceOwned.CoMakerId;
+                        newCoMakerApplianceOwned.ApplianceBrand = coMakerApplianceOwned.ApplianceBrand;
+                        newCoMakerApplianceOwned.PresentValue = coMakerApplianceOwned.PresentValue;
 
-                db.mstCoMakerStatementApplianceOwneds.InsertOnSubmit(newCoMakerApplianceOwned);
-                db.SubmitChanges();
+                        db.mstCoMakerStatementApplianceOwneds.InsertOnSubmit(newCoMakerApplianceOwned);
+                        db.SubmitChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -65,17 +80,32 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var coMakerApplianceOwneds = from d in db.mstCoMakerStatementApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
-                if (coMakerApplianceOwneds.Any())
+                var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakerApplianceOwned.CoMakerId select d;
+                if (applicants.Any())
                 {
-                    var updateCoMakerApplianceOwned = coMakerApplianceOwneds.FirstOrDefault();
-                    updateCoMakerApplianceOwned.CoMakerId = coMakerApplianceOwned.CoMakerId;
-                    updateCoMakerApplianceOwned.ApplianceBrand = coMakerApplianceOwned.ApplianceBrand;
-                    updateCoMakerApplianceOwned.PresentValue = coMakerApplianceOwned.PresentValue;
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var coMakerApplianceOwneds = from d in db.mstCoMakerStatementApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
+                        if (coMakerApplianceOwneds.Any())
+                        {
+                            var updateCoMakerApplianceOwned = coMakerApplianceOwneds.FirstOrDefault();
+                            updateCoMakerApplianceOwned.CoMakerId = coMakerApplianceOwned.CoMakerId;
+                            updateCoMakerApplianceOwned.ApplianceBrand = coMakerApplianceOwned.ApplianceBrand;
+                            updateCoMakerApplianceOwned.PresentValue = coMakerApplianceOwned.PresentValue;
 
-                    db.SubmitChanges();
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -99,10 +129,25 @@ namespace Lending.ApiControllers
                 var coMakerApplianceOwneds = from d in db.mstCoMakerStatementApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (coMakerApplianceOwneds.Any())
                 {
-                    db.mstCoMakerStatementApplianceOwneds.DeleteOnSubmit(coMakerApplianceOwneds.First());
-                    db.SubmitChanges();
+                    var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakerApplianceOwneds.FirstOrDefault().CoMakerId select d;
+                    if (applicants.Any())
+                    {
+                        if (!applicants.FirstOrDefault().IsLocked)
+                        {
+                            db.mstCoMakerStatementApplianceOwneds.DeleteOnSubmit(coMakerApplianceOwneds.First());
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
                 }
                 else
                 {

@@ -474,6 +474,15 @@
                                 branchFlexGrid.itemsSource = branchCollectionView;
                                 branchFlexGrid.trackChanges = true;
                             },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#companyDetailBranchEditModal").modal("hide");
+
+                                document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save Changes";
+                                $("#btnSaveBranch").prop("disabled", false);
+                                $("#btnCancelBranch").prop("disabled", false);
+                            },
                             400: function () {
                                 toastr.error("Bad Request");
 

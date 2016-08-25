@@ -42,17 +42,32 @@ namespace Lending.ApiControllers
         {
             try
             {
-                Data.mstApplicantRealPropertiesOwned newRealPropertiesOwned = new Data.mstApplicantRealPropertiesOwned();
-                newRealPropertiesOwned.ApplicantId = realPropertiesOwned.ApplicantId;
-                newRealPropertiesOwned.Real = realPropertiesOwned.Real;
-                newRealPropertiesOwned.Location = realPropertiesOwned.Location;
-                newRealPropertiesOwned.PresentValue = realPropertiesOwned.PresentValue;
-                newRealPropertiesOwned.EcumberedTo = realPropertiesOwned.EcumberedTo;
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(realPropertiesOwned.ApplicantId) select d;
+                if (applicants.Any())
+                {
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        Data.mstApplicantRealPropertiesOwned newRealPropertiesOwned = new Data.mstApplicantRealPropertiesOwned();
+                        newRealPropertiesOwned.ApplicantId = realPropertiesOwned.ApplicantId;
+                        newRealPropertiesOwned.Real = realPropertiesOwned.Real;
+                        newRealPropertiesOwned.Location = realPropertiesOwned.Location;
+                        newRealPropertiesOwned.PresentValue = realPropertiesOwned.PresentValue;
+                        newRealPropertiesOwned.EcumberedTo = realPropertiesOwned.EcumberedTo;
 
-                db.mstApplicantRealPropertiesOwneds.InsertOnSubmit(newRealPropertiesOwned);
-                db.SubmitChanges();
+                        db.mstApplicantRealPropertiesOwneds.InsertOnSubmit(newRealPropertiesOwned);
+                        db.SubmitChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -68,19 +83,35 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var realPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
-                if (realPropertiesOwneds.Any())
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(realPropertiesOwned.ApplicantId) select d;
+                if (applicants.Any())
                 {
-                    var updateRealPropertiesOwneds = realPropertiesOwneds.FirstOrDefault();
-                    updateRealPropertiesOwneds.ApplicantId = realPropertiesOwned.ApplicantId;
-                    updateRealPropertiesOwneds.Real = realPropertiesOwned.Real;
-                    updateRealPropertiesOwneds.Location = realPropertiesOwned.Location;
-                    updateRealPropertiesOwneds.PresentValue = realPropertiesOwned.PresentValue;
-                    updateRealPropertiesOwneds.EcumberedTo = realPropertiesOwned.EcumberedTo;
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var realPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
+                        if (realPropertiesOwneds.Any())
+                        {
 
-                    db.SubmitChanges();
+                            var updateRealPropertiesOwneds = realPropertiesOwneds.FirstOrDefault();
+                            updateRealPropertiesOwneds.ApplicantId = realPropertiesOwned.ApplicantId;
+                            updateRealPropertiesOwneds.Real = realPropertiesOwned.Real;
+                            updateRealPropertiesOwneds.Location = realPropertiesOwned.Location;
+                            updateRealPropertiesOwneds.PresentValue = realPropertiesOwned.PresentValue;
+                            updateRealPropertiesOwneds.EcumberedTo = realPropertiesOwned.EcumberedTo;
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -104,10 +135,25 @@ namespace Lending.ApiControllers
                 var realPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (realPropertiesOwneds.Any())
                 {
-                    db.mstApplicantRealPropertiesOwneds.DeleteOnSubmit(realPropertiesOwneds.First());
-                    db.SubmitChanges();
+                    var applicants = from d in db.mstApplicants where d.Id == realPropertiesOwneds.FirstOrDefault().ApplicantId select d;
+                    if (applicants.Any())
+                    {
+                        if (!applicants.FirstOrDefault().IsLocked)
+                        {
+                            db.mstApplicantRealPropertiesOwneds.DeleteOnSubmit(realPropertiesOwneds.First());
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
                 }
                 else
                 {

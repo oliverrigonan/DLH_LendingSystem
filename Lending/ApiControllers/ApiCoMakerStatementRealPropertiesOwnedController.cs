@@ -42,17 +42,32 @@ namespace Lending.ApiControllers
         {
             try
             {
-                Data.mstCoMakerStatementRealPropertiesOwned newCoMakerRealPropertiesOwned = new Data.mstCoMakerStatementRealPropertiesOwned();
-                newCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
-                newCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
-                newCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
-                newCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
-                newCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
+                var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakersRealPropertiesOwned.CoMakerId select d;
+                if (applicants.Any())
+                {
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        Data.mstCoMakerStatementRealPropertiesOwned newCoMakerRealPropertiesOwned = new Data.mstCoMakerStatementRealPropertiesOwned();
+                        newCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
+                        newCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
+                        newCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
+                        newCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
+                        newCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
 
-                db.mstCoMakerStatementRealPropertiesOwneds.InsertOnSubmit(newCoMakerRealPropertiesOwned);
-                db.SubmitChanges();
+                        db.mstCoMakerStatementRealPropertiesOwneds.InsertOnSubmit(newCoMakerRealPropertiesOwned);
+                        db.SubmitChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -68,19 +83,34 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var coMakeRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
-                if (coMakeRealPropertiesOwneds.Any())
+                var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakersRealPropertiesOwned.CoMakerId select d;
+                if (applicants.Any())
                 {
-                    var updateCoMakerRealPropertiesOwned = coMakeRealPropertiesOwneds.FirstOrDefault();
-                    updateCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
-                    updateCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
-                    updateCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
-                    updateCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
-                    updateCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var coMakeRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
+                        if (coMakeRealPropertiesOwneds.Any())
+                        {
+                            var updateCoMakerRealPropertiesOwned = coMakeRealPropertiesOwneds.FirstOrDefault();
+                            updateCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
+                            updateCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
+                            updateCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
+                            updateCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
+                            updateCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
 
-                    db.SubmitChanges();
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -104,10 +134,25 @@ namespace Lending.ApiControllers
                 var coMakeRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
                 if (coMakeRealPropertiesOwneds.Any())
                 {
-                    db.mstCoMakerStatementRealPropertiesOwneds.DeleteOnSubmit(coMakeRealPropertiesOwneds.First());
-                    db.SubmitChanges();
+                    var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakeRealPropertiesOwneds.FirstOrDefault().CoMakerId select d;
+                    if (applicants.Any())
+                    {
+                        if (!applicants.FirstOrDefault().IsLocked)
+                        {
+                            db.mstCoMakerStatementRealPropertiesOwneds.DeleteOnSubmit(coMakeRealPropertiesOwneds.First());
+                            db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
                 }
                 else
                 {

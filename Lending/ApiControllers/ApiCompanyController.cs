@@ -105,19 +105,26 @@ namespace Lending.ApiControllers
                 var companies = from d in db.mstCompanies where d.Id == Convert.ToInt32(id) select d;
                 if (companies.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (!companies.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var updateCompany = companies.FirstOrDefault();
-                    updateCompany.Company = company.Company;
-                    updateCompany.Address = company.Address;
-                    updateCompany.ContactNumber = company.ContactNumber;
-                    updateCompany.IsLocked = true;
-                    updateCompany.UpdatedByUserId = userId;
-                    updateCompany.UpdatedDateTime = DateTime.Now;
+                        var updateCompany = companies.FirstOrDefault();
+                        updateCompany.Company = company.Company;
+                        updateCompany.Address = company.Address;
+                        updateCompany.ContactNumber = company.ContactNumber;
+                        updateCompany.IsLocked = true;
+                        updateCompany.UpdatedByUserId = userId;
+                        updateCompany.UpdatedDateTime = DateTime.Now;
 
-                    db.SubmitChanges();
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -141,16 +148,23 @@ namespace Lending.ApiControllers
                 var companies = from d in db.mstCompanies where d.Id == Convert.ToInt32(id) select d;
                 if (companies.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (!companies.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var updateCompany = companies.FirstOrDefault();
-                    updateCompany.IsLocked = false;
-                    updateCompany.UpdatedByUserId = userId;
-                    updateCompany.UpdatedDateTime = DateTime.Now;
+                        var updateCompany = companies.FirstOrDefault();
+                        updateCompany.IsLocked = false;
+                        updateCompany.UpdatedByUserId = userId;
+                        updateCompany.UpdatedDateTime = DateTime.Now;
 
-                    db.SubmitChanges();
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -174,10 +188,17 @@ namespace Lending.ApiControllers
                 var companies = from d in db.mstCompanies where d.Id == Convert.ToInt32(id) select d;
                 if (companies.Any())
                 {
-                    db.mstCompanies.DeleteOnSubmit(companies.First());
-                    db.SubmitChanges();
+                    if (!companies.FirstOrDefault().IsLocked)
+                    {
+                        db.mstCompanies.DeleteOnSubmit(companies.First());
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

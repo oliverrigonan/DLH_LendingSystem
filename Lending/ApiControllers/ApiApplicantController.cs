@@ -284,15 +284,22 @@ namespace Lending.ApiControllers
                 var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var lockApplicant = applicants.FirstOrDefault();
-                    lockApplicant.IsLocked = true;
-                    lockApplicant.UpdatedByUserId = userId;
-                    lockApplicant.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        var lockApplicant = applicants.FirstOrDefault();
+                        lockApplicant.IsLocked = true;
+                        lockApplicant.UpdatedByUserId = userId;
+                        lockApplicant.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -316,15 +323,22 @@ namespace Lending.ApiControllers
                 var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var unlockApplicant = applicants.FirstOrDefault();
-                    unlockApplicant.IsLocked = false;
-                    unlockApplicant.UpdatedByUserId = userId;
-                    unlockApplicant.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        var unlockApplicant = applicants.FirstOrDefault();
+                        unlockApplicant.IsLocked = false;
+                        unlockApplicant.UpdatedByUserId = userId;
+                        unlockApplicant.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -348,49 +362,56 @@ namespace Lending.ApiControllers
                 var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var updateApplicant = applicants.FirstOrDefault();
-                    updateApplicant.ApplicantFullName = applicant.ApplicantFullName;
-                    updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
-                    updateApplicant.CivilStatusId = applicant.CivilStatusId;
-                    updateApplicant.CityAddress = applicant.CityAddress;
-                    updateApplicant.ProvinceAddress = applicant.ProvinceAddress;
-                    updateApplicant.ResidenceTypeId = applicant.ResidenceTypeId;
-                    updateApplicant.ResidenceMonthlyRentAmount = applicant.ResidenceMonthlyRentAmount;
-                    updateApplicant.LandResidenceTypeId = applicant.LandResidenceTypeId;
-                    updateApplicant.LandResidenceMonthlyRentAmount = applicant.LandResidenceMonthlyRentAmount;
-                    updateApplicant.LengthOfStay = applicant.LengthOfStay;
-                    updateApplicant.BusinessAddress = applicant.BusinessAddress;
-                    updateApplicant.BusinessKaratulaName = applicant.BusinessKaratulaName;
-                    updateApplicant.BusinessTelephoneNumber = applicant.BusinessTelephoneNumber;
-                    updateApplicant.BusinessYear = applicant.BusinessYear;
-                    updateApplicant.BusinessMerchandise = applicant.BusinessMerchandise;
-                    updateApplicant.BusinessStockValues = applicant.BusinessStockValues;
-                    updateApplicant.BusinessBeginningCapital = applicant.BusinessBeginningCapital;
-                    updateApplicant.BusinessLowSalesPeriod = applicant.BusinessLowSalesPeriod;
-                    updateApplicant.BusinessLowestDailySales = applicant.BusinessLowestDailySales;
-                    updateApplicant.BusinessAverageDailySales = applicant.BusinessAverageDailySales;
-                    updateApplicant.EmployedCompany = applicant.EmployedCompany;
-                    updateApplicant.EmployedCompanyAddress = applicant.EmployedCompanyAddress;
-                    updateApplicant.EmployedPositionOccupied = applicant.EmployedPositionOccupied;
-                    updateApplicant.EmployedServiceLength = applicant.EmployedServiceLength;
-                    updateApplicant.EmployedTelephoneNumber = applicant.EmployedTelephoneNumber;
-                    updateApplicant.SpouseFullName = applicant.SpouseFullName;
-                    updateApplicant.SpouseEmployerBusiness = applicant.SpouseEmployerBusiness;
-                    updateApplicant.SpouseEmployerBusinessAddress = applicant.SpouseEmployerBusinessAddress;
-                    updateApplicant.SpouseBusinessTelephoneNumber = applicant.SpouseBusinessTelephoneNumber;
-                    updateApplicant.SpousePositionOccupied = applicant.SpousePositionOccupied;
-                    updateApplicant.SpouseMonthlySalary = applicant.SpouseMonthlySalary;
-                    updateApplicant.SpouseLengthOfService = applicant.SpouseLengthOfService;
-                    updateApplicant.NumberOfChildren = applicant.NumberOfChildren;
-                    updateApplicant.Studying = applicant.Studying;
-                    updateApplicant.Schools = applicant.Schools;
-                    updateApplicant.UpdatedByUserId = userId;
-                    updateApplicant.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        var updateApplicant = applicants.FirstOrDefault();
+                        updateApplicant.ApplicantFullName = applicant.ApplicantFullName;
+                        updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
+                        updateApplicant.CivilStatusId = applicant.CivilStatusId;
+                        updateApplicant.CityAddress = applicant.CityAddress;
+                        updateApplicant.ProvinceAddress = applicant.ProvinceAddress;
+                        updateApplicant.ResidenceTypeId = applicant.ResidenceTypeId;
+                        updateApplicant.ResidenceMonthlyRentAmount = applicant.ResidenceMonthlyRentAmount;
+                        updateApplicant.LandResidenceTypeId = applicant.LandResidenceTypeId;
+                        updateApplicant.LandResidenceMonthlyRentAmount = applicant.LandResidenceMonthlyRentAmount;
+                        updateApplicant.LengthOfStay = applicant.LengthOfStay;
+                        updateApplicant.BusinessAddress = applicant.BusinessAddress;
+                        updateApplicant.BusinessKaratulaName = applicant.BusinessKaratulaName;
+                        updateApplicant.BusinessTelephoneNumber = applicant.BusinessTelephoneNumber;
+                        updateApplicant.BusinessYear = applicant.BusinessYear;
+                        updateApplicant.BusinessMerchandise = applicant.BusinessMerchandise;
+                        updateApplicant.BusinessStockValues = applicant.BusinessStockValues;
+                        updateApplicant.BusinessBeginningCapital = applicant.BusinessBeginningCapital;
+                        updateApplicant.BusinessLowSalesPeriod = applicant.BusinessLowSalesPeriod;
+                        updateApplicant.BusinessLowestDailySales = applicant.BusinessLowestDailySales;
+                        updateApplicant.BusinessAverageDailySales = applicant.BusinessAverageDailySales;
+                        updateApplicant.EmployedCompany = applicant.EmployedCompany;
+                        updateApplicant.EmployedCompanyAddress = applicant.EmployedCompanyAddress;
+                        updateApplicant.EmployedPositionOccupied = applicant.EmployedPositionOccupied;
+                        updateApplicant.EmployedServiceLength = applicant.EmployedServiceLength;
+                        updateApplicant.EmployedTelephoneNumber = applicant.EmployedTelephoneNumber;
+                        updateApplicant.SpouseFullName = applicant.SpouseFullName;
+                        updateApplicant.SpouseEmployerBusiness = applicant.SpouseEmployerBusiness;
+                        updateApplicant.SpouseEmployerBusinessAddress = applicant.SpouseEmployerBusinessAddress;
+                        updateApplicant.SpouseBusinessTelephoneNumber = applicant.SpouseBusinessTelephoneNumber;
+                        updateApplicant.SpousePositionOccupied = applicant.SpousePositionOccupied;
+                        updateApplicant.SpouseMonthlySalary = applicant.SpouseMonthlySalary;
+                        updateApplicant.SpouseLengthOfService = applicant.SpouseLengthOfService;
+                        updateApplicant.NumberOfChildren = applicant.NumberOfChildren;
+                        updateApplicant.Studying = applicant.Studying;
+                        updateApplicant.Schools = applicant.Schools;
+                        updateApplicant.UpdatedByUserId = userId;
+                        updateApplicant.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -414,16 +435,23 @@ namespace Lending.ApiControllers
                 var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var updateApplicant = applicants.FirstOrDefault();
-                    byte[] imgarr = applicant.Photo;
-                    updateApplicant.Photo = new Binary(imgarr);
-                    updateApplicant.UpdatedByUserId = userId;
-                    updateApplicant.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        var updateApplicant = applicants.FirstOrDefault();
+                        byte[] imgarr = applicant.Photo;
+                        updateApplicant.Photo = new Binary(imgarr);
+                        updateApplicant.UpdatedByUserId = userId;
+                        updateApplicant.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -447,20 +475,27 @@ namespace Lending.ApiControllers
                 var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var updateApplicant = applicants.FirstOrDefault();
+                        var updateApplicant = applicants.FirstOrDefault();
 
-                    Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
-                    String file = Convert.ToBase64String(bytes);
-                    byte[] imgarr = Convert.FromBase64String(file);
+                        Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
+                        String file = Convert.ToBase64String(bytes);
+                        byte[] imgarr = Convert.FromBase64String(file);
 
-                    updateApplicant.Photo = imgarr;
-                    updateApplicant.UpdatedByUserId = userId;
-                    updateApplicant.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        updateApplicant.Photo = imgarr;
+                        updateApplicant.UpdatedByUserId = userId;
+                        updateApplicant.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -484,10 +519,17 @@ namespace Lending.ApiControllers
                 var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
                 if (applicants.Any())
                 {
-                    db.mstApplicants.DeleteOnSubmit(applicants.First());
-                    db.SubmitChanges();
+                    if (applicants.FirstOrDefault().IsLocked != true)
+                    {
+                        db.mstApplicants.DeleteOnSubmit(applicants.First());
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

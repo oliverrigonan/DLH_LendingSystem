@@ -40,35 +40,46 @@ namespace Lending.ApiControllers
         {
             try
             {
-                Data.trnLoanApplicationLine newLoanApplicationLine = new Data.trnLoanApplicationLine();
-                newLoanApplicationLine.LoanId = loanApplicationLine.LoanId;
-                newLoanApplicationLine.Particulars = loanApplicationLine.Particulars;
-                newLoanApplicationLine.Amount = loanApplicationLine.Amount;
-                db.trnLoanApplicationLines.InsertOnSubmit(newLoanApplicationLine);
-                db.SubmitChanges();
-
                 var loanApplications = from d in db.trnLoanApplications where d.Id == loanApplicationLine.LoanId select d;
                 if (loanApplications.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
-                    Decimal totalLoanAmount = 0;
-                    var loanApplicationLines = from d in db.trnLoanApplicationLines where d.LoanId == loanApplicationLine.LoanId select d;
-                    if (loanApplicationLines.Any())
+                    if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        totalLoanAmount = loanApplicationLines.Sum(d => d.Amount);
+                        Data.trnLoanApplicationLine newLoanApplicationLine = new Data.trnLoanApplicationLine();
+                        newLoanApplicationLine.LoanId = loanApplicationLine.LoanId;
+                        newLoanApplicationLine.Particulars = loanApplicationLine.Particulars;
+                        newLoanApplicationLine.Amount = loanApplicationLine.Amount;
+                        db.trnLoanApplicationLines.InsertOnSubmit(newLoanApplicationLine);
+                        db.SubmitChanges();
+
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                        Decimal totalLoanAmount = 0;
+                        var loanApplicationLines = from d in db.trnLoanApplicationLines where d.LoanId == loanApplicationLine.LoanId select d;
+                        if (loanApplicationLines.Any())
+                        {
+                            totalLoanAmount = loanApplicationLines.Sum(d => d.Amount);
+                        }
+
+                        var updateLoanAmounts = loanApplications.FirstOrDefault();
+                        updateLoanAmounts.LoanAmount = totalLoanAmount;
+                        updateLoanAmounts.PaidAmount = 0;
+                        updateLoanAmounts.BalanceAmount = totalLoanAmount - 0; // total loan applicantion lines minus the paid amount
+                        updateLoanAmounts.UpdatedByUserId = userId;
+                        updateLoanAmounts.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
                     }
-
-                    var updateLoanAmounts = loanApplications.FirstOrDefault();
-                    updateLoanAmounts.LoanAmount = totalLoanAmount;
-                    updateLoanAmounts.PaidAmount = 0;
-                    updateLoanAmounts.BalanceAmount = totalLoanAmount - 0; // total loan applicantion lines minus the paid amount
-                    updateLoanAmounts.UpdatedByUserId = userId;
-                    updateLoanAmounts.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
-
-                return Request.CreateResponse(HttpStatusCode.OK);
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -84,30 +95,41 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var loanApplicationLines = from d in db.trnLoanApplicationLines where d.Id == Convert.ToInt32(id) select d;
-                if (loanApplicationLines.Any())
+                var loanApplications = from d in db.trnLoanApplications where d.Id == loanApplicationLine.LoanId select d;
+                if (loanApplications.Any())
                 {
-                    var updateLoanApplicationLine = loanApplicationLines.FirstOrDefault();
-                    updateLoanApplicationLine.LoanId = loanApplicationLine.LoanId;
-                    updateLoanApplicationLine.Particulars = loanApplicationLine.Particulars;
-                    updateLoanApplicationLine.Amount = loanApplicationLine.Amount;
-                    db.SubmitChanges();
-
-                    var loanApplications = from d in db.trnLoanApplications where d.Id == loanApplicationLine.LoanId select d;
-                    if (loanApplications.Any())
+                    if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var loanApplicationLines = from d in db.trnLoanApplicationLines where d.Id == Convert.ToInt32(id) select d;
+                        if (loanApplicationLines.Any())
+                        {
+                            var updateLoanApplicationLine = loanApplicationLines.FirstOrDefault();
+                            updateLoanApplicationLine.LoanId = loanApplicationLine.LoanId;
+                            updateLoanApplicationLine.Particulars = loanApplicationLine.Particulars;
+                            updateLoanApplicationLine.Amount = loanApplicationLine.Amount;
+                            db.SubmitChanges();
 
-                        var updateLoanAmounts = loanApplications.FirstOrDefault();
-                        updateLoanAmounts.LoanAmount = loanApplicationLines.Sum(d => d.Amount);
-                        updateLoanAmounts.PaidAmount = 0;
-                        updateLoanAmounts.BalanceAmount = loanApplicationLines.Sum(d => d.Amount) - 0; // total loan applicantion lines minus the paid amount
-                        updateLoanAmounts.UpdatedByUserId = userId;
-                        updateLoanAmounts.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                            var updateLoanAmounts = loanApplications.FirstOrDefault();
+                            updateLoanAmounts.LoanAmount = loanApplicationLines.Sum(d => d.Amount);
+                            updateLoanAmounts.PaidAmount = 0;
+                            updateLoanAmounts.BalanceAmount = loanApplicationLines.Sum(d => d.Amount) - 0; // total loan applicantion lines minus the paid amount
+                            updateLoanAmounts.UpdatedByUserId = userId;
+                            updateLoanAmounts.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
                     }
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -128,34 +150,41 @@ namespace Lending.ApiControllers
         {
             try
             {
-                var loanApplicationLines = from d in db.trnLoanApplicationLines where d.Id == Convert.ToInt32(id) select d;
-                if (loanApplicationLines.Any())
+                var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+                if (loanApplications.Any())
                 {
-                    db.trnLoanApplicationLines.DeleteOnSubmit(loanApplicationLines.First());
-                    db.SubmitChanges();
-
-                    var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
-                    if (loanApplications.Any())
+                    if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        Decimal totalLoanAmount = 0;
-                        var loanApplicationLinesForAmounts = from d in db.trnLoanApplicationLines where d.LoanId == Convert.ToInt32(loanId) select d;
-                        if (loanApplicationLinesForAmounts.Any())
+                        var loanApplicationLines = from d in db.trnLoanApplicationLines where d.Id == Convert.ToInt32(id) select d;
+                        if (loanApplicationLines.Any())
                         {
-                            totalLoanAmount = loanApplicationLinesForAmounts.Sum(d => d.Amount);
+                            db.trnLoanApplicationLines.DeleteOnSubmit(loanApplicationLines.First());
+                            db.SubmitChanges();
+
+                            Decimal totalLoanAmount = 0;
+                            var loanApplicationLinesForAmounts = from d in db.trnLoanApplicationLines where d.LoanId == Convert.ToInt32(loanId) select d;
+                            if (loanApplicationLinesForAmounts.Any())
+                            {
+                                totalLoanAmount = loanApplicationLinesForAmounts.Sum(d => d.Amount);
+                            }
+
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                            var updateLoanAmounts = loanApplications.FirstOrDefault();
+                            updateLoanAmounts.LoanAmount = totalLoanAmount;
+                            updateLoanAmounts.PaidAmount = 0;
+                            updateLoanAmounts.BalanceAmount = totalLoanAmount - 0; // total loan applicantion lines minus the paid amount
+                            updateLoanAmounts.UpdatedByUserId = userId;
+                            updateLoanAmounts.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
                         }
 
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
-                        var updateLoanAmounts = loanApplications.FirstOrDefault();
-                        updateLoanAmounts.LoanAmount = totalLoanAmount;
-                        updateLoanAmounts.PaidAmount = 0;
-                        updateLoanAmounts.BalanceAmount = totalLoanAmount - 0; // total loan applicantion lines minus the paid amount
-                        updateLoanAmounts.UpdatedByUserId = userId;
-                        updateLoanAmounts.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        return Request.CreateResponse(HttpStatusCode.OK);
                     }
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
