@@ -44,11 +44,6 @@ td.td-label {
     width: 50%;
 }
 
-dt {
-    color: #808080;
-    font-weight: 500;
-}
-
 @media screen and (max-width: 768px) {
     dt {
         margin-top: 30px;

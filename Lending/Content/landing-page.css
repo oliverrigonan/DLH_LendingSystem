@@ -37,6 +37,7 @@ body {
         margin: 0;
         text-shadow: 2px 2px 3px rgba(0,0,0,0.6);
         font-size: 5em;
+        font-weight: 600;
     }
 
 .intro-divider {
@@ -196,4 +197,8 @@ dt {
 dd {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+.navbar {
+    font-weight: bold;
 }

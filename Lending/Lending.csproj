@@ -179,6 +179,7 @@
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationLinesController.cs" />
     <Compile Include="ApiControllers\ApiLoanRequirementsController.cs" />
+    <Compile Include="ApiControllers\ApiPayTypeController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\MstCoMakerStatementApplianceOwned.cs" />
     <Compile Include="Models\MstCoMakerStatementRealPropertiesOwned.cs" />
     <Compile Include="Models\MstCompany.cs" />
+    <Compile Include="Models\MstPayType.cs" />
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
