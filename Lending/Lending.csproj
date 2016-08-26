@@ -175,6 +175,8 @@
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
+    <Compile Include="ApiControllers\ApiCollectionController.cs" />
+    <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
     <Compile Include="ApiControllers\ApiCollectorController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationLinesController.cs" />
@@ -227,6 +229,8 @@
     <Compile Include="Models\MstPayType.cs" />
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstUser.cs" />
+    <Compile Include="Models\TrnCollection.cs" />
+    <Compile Include="Models\TrnCollectionLines.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanApplicationLines.cs" />
     <Compile Include="Models\TrnLoanRequirements.cs" />

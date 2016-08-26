@@ -172,6 +172,7 @@
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     if (isLoanDateClicked == true) {
+                        NProgress.start();
                         loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
                         loanApplicationCollectionView.canFilter = true;
                         loanApplicationCollectionView.pageSize = 15;
@@ -435,7 +436,7 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Loan Date",
+                                "header": "Date",
                                 "binding": "LoanDate",
                                 "allowSorting": true,
                                 "width": "1.2*",

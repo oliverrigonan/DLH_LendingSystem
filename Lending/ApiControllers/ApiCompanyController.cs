@@ -109,13 +109,13 @@ namespace Lending.ApiControllers
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                        var updateCompany = companies.FirstOrDefault();
-                        updateCompany.Company = company.Company;
-                        updateCompany.Address = company.Address;
-                        updateCompany.ContactNumber = company.ContactNumber;
-                        updateCompany.IsLocked = true;
-                        updateCompany.UpdatedByUserId = userId;
-                        updateCompany.UpdatedDateTime = DateTime.Now;
+                        var lockCompany = companies.FirstOrDefault();
+                        lockCompany.Company = company.Company;
+                        lockCompany.Address = company.Address;
+                        lockCompany.ContactNumber = company.ContactNumber;
+                        lockCompany.IsLocked = true;
+                        lockCompany.UpdatedByUserId = userId;
+                        lockCompany.UpdatedDateTime = DateTime.Now;
 
                         db.SubmitChanges();
 
@@ -148,14 +148,14 @@ namespace Lending.ApiControllers
                 var companies = from d in db.mstCompanies where d.Id == Convert.ToInt32(id) select d;
                 if (companies.Any())
                 {
-                    if (!companies.FirstOrDefault().IsLocked)
+                    if (companies.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                        var updateCompany = companies.FirstOrDefault();
-                        updateCompany.IsLocked = false;
-                        updateCompany.UpdatedByUserId = userId;
-                        updateCompany.UpdatedDateTime = DateTime.Now;
+                        var unlockCompany = companies.FirstOrDefault();
+                        unlockCompany.IsLocked = false;
+                        unlockCompany.UpdatedByUserId = userId;
+                        unlockCompany.UpdatedDateTime = DateTime.Now;
 
                         db.SubmitChanges();
 
