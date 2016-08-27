@@ -35,6 +35,10 @@ namespace Lending.ApiControllers
                                   Particulars = d.Particulars,
                                   PaidAmount = d.PaidAmount,
                                   IsCleared = d.IsCleared,
+                                  PreparedByUserId = d.PreparedByUserId,
+                                  PreparedByUser = d.mstUser2.FullName,
+                                  VerifiedByUserId = d.VerifiedByUserId,
+                                  VerifiedByUser = d.mstUser3.FullName,
                                   IsLocked = d.IsLocked,
                                   CreatedByUserId = d.CreatedByUserId,
                                   CreatedByUser = d.mstUser.FullName,
@@ -69,6 +73,10 @@ namespace Lending.ApiControllers
                                  Particulars = d.Particulars,
                                  PaidAmount = d.PaidAmount,
                                  IsCleared = d.IsCleared,
+                                 PreparedByUserId = d.PreparedByUserId,
+                                 PreparedByUser = d.mstUser2.FullName,
+                                 VerifiedByUserId = d.VerifiedByUserId,
+                                 VerifiedByUser = d.mstUser3.FullName,
                                  IsLocked = d.IsLocked,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
@@ -122,6 +130,8 @@ namespace Lending.ApiControllers
                 newCollection.Particulars = "NA";
                 newCollection.PaidAmount = 0;
                 newCollection.IsCleared = false;
+                newCollection.PreparedByUserId = userId;
+                newCollection.VerifiedByUserId = userId;
                 newCollection.IsLocked = false;
                 newCollection.CreatedByUserId = userId;
                 newCollection.CreatedDateTime = DateTime.Now;
@@ -162,6 +172,8 @@ namespace Lending.ApiControllers
                         lockCollection.Particulars = collection.Particulars;
                         lockCollection.PaidAmount = collection.PaidAmount;
                         lockCollection.IsCleared = collection.IsCleared;
+                        lockCollection.PreparedByUserId = collection.PreparedByUserId;
+                        lockCollection.VerifiedByUserId = collection.VerifiedByUserId;
                         lockCollection.IsLocked = true;
                         lockCollection.UpdatedByUserId = userId;
                         lockCollection.UpdatedDateTime = DateTime.Now;

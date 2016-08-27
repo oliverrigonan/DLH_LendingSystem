@@ -202,6 +202,7 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstCollector_trnCollectionLine" Member="trnCollectionLines" ThisKey="Id" OtherKey="CollectedByCollectorId" Type="trnCollectionLine" />
       <Association Name="mstCollector_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="CollectorId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstCollector" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstCollector1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -353,6 +354,8 @@
       <Association Name="mstUser_mstRequirement1" Member="mstRequirements1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstRequirement" />
       <Association Name="mstUser_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnCollection" />
       <Association Name="mstUser_trnCollection1" Member="trnCollections1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnCollection" />
+      <Association Name="mstUser_trnCollection2" Member="trnCollections2" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnCollection" />
+      <Association Name="mstUser_trnCollection3" Member="trnCollections3" ThisKey="Id" OtherKey="VerifiedByUserId" Type="trnCollection" />
       <Association Name="mstUser_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnLoanApplication" />
       <Association Name="mstUser_trnLoanApplication1" Member="trnLoanApplications1" ThisKey="Id" OtherKey="VerifiedByUserId" Type="trnLoanApplication" />
       <Association Name="mstUser_trnLoanApplication2" Member="trnLoanApplications2" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnLoanApplication" />
@@ -371,6 +374,8 @@
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
       <Column Name="IsCleared" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VerifiedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -382,6 +387,8 @@
       <Association Name="mstBranch_trnCollection" Member="mstBranch" ThisKey="BranchId" OtherKey="Id" Type="mstBranch" IsForeignKey="true" />
       <Association Name="mstUser_trnCollection" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnCollection1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnCollection2" Member="mstUser2" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnCollection3" Member="mstUser3" ThisKey="VerifiedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnCollectionLines" Member="trnCollectionLines">
@@ -396,7 +403,9 @@
       <Column Name="CheckBank" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="CollectedByCollectorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="mstAccount_trnCollectionLine" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="mstCollector_trnCollectionLine" Member="mstCollector" ThisKey="CollectedByCollectorId" OtherKey="Id" Type="mstCollector" IsForeignKey="true" />
       <Association Name="mstPayType_trnCollectionLine" Member="mstPayType" ThisKey="PaytypeId" OtherKey="Id" Type="mstPayType" IsForeignKey="true" />
       <Association Name="trnCollection_trnCollectionLine" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="trnLoanApplication_trnCollectionLine" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />

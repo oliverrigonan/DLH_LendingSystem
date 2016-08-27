@@ -21,5 +21,7 @@ namespace Lending.Models
         public String CheckBank { get; set; }
         public String Particulars { get; set; }
         public Decimal Amount { get; set; }
+        public Int32 CollectedByCollectorId { get; set; }
+        public String CollectedByCollector { get; set; }
     }
 }

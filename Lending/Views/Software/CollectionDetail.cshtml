@@ -84,7 +84,7 @@
                                         <button class="btn btn-primary" id="btnPrint" onclick="btnPrintOnClick()">
                                             <i class="fa fa-file-pdf-o fa-fw"></i> PDF
                                         </button>
-                                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/LoanApplicationList'">
+                                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/CollectionList'">
                                             <i class="fa fa-close fa-fw"></i> Close
                                         </button>
                                     </td>
@@ -99,25 +99,23 @@
                                 <div class="panel-body">
                                     <dl class="dl-horizontal">
                                         <dt>Collection Number</dt>
-                                        <dd><input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" /></dd>
+                                        <dd><input type="text" class="form-control requiredCollection" id="collectionNumber" placeholder="Collection Number" /></dd>
                                         <dt>Collection Date</dt>
-                                        <dd><div id="loanApplicationLoanDate"></div> &nbsp; <span id="loanApplicationLoanDateString"></span></dd>
+                                        <dd><div id="collectionDate"></div> &nbsp; <span id="collectionDateString"></span></dd>
                                         <dt>Branch</dt>
-                                        <dd><div id="loanApplicationBranch"></div></dd>
+                                        <dd><div id="collectionBranch"></div></dd>
                                         <dt>Account</dt>
-                                        <dd><div id="loanApplicationAccount"></div></dd>
+                                        <dd><div id="collectionAccount"></div></dd>
                                         <dt>Applicant</dt>
-                                        <dd><div id="loanApplicationApplicant"></div><span style="color: red" id="noApplicant"></span></dd>
+                                        <dd><div id="collectionApplicant"></div><span style="color: red" id="noApplicant"></span></dd>
                                         <dt>Particulars</dt>
-                                        <dd><textarea class="form-control requiredLoanApplication" id="loanApplicationPromise" placeholder="Promise"></textarea></dd>
-                                        <dt>Collector</dt>
-                                        <dd><div id="loanApplicationCollector"></div></dd>
+                                        <dd><textarea class="form-control requiredCollection" id="collectionParticulars" placeholder="Particulars"></textarea></dd>
                                         <dt>Prepared by</dt>
-                                        <dd><div id="loanApplicationPreparedBy"></div></dd>
+                                        <dd><div id="collectionPreparedBy"></div></dd>
                                         <dt>Verified by</dt>
-                                        <dd><div id="loanApplicationVerifiedBy"></div></dd>
+                                        <dd><div id="collectionVerifiedBy"></div></dd>
                                     </dl>
-                                </div> <!-- last code part ... to be continue -->
+                                </div>
                             </div>
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -127,15 +125,18 @@
                                                 Collection Lines (Collect/Paid Amount)
                                             </td>
                                             <td align="right">
-                                                <button class="btn btn-primary btn-sm" id="btnAddLoanApplicationLines" onclick="btnAddLoanApplicationLinesOnclick()">
+                                                <button class="btn btn-primary btn-sm" id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
                                                     <i class="fa fa-plus fa-fw"></i> Add
+                                                </button>
+                                                <button class="btn btn-primary btn-sm" id="btnAddCollectables">
+                                                    <i class="fa fa-list fa-fw"></i> Collectables
                                                 </button>
                                             </td>
                                         </tr>
                                     </table>
                                 </div>
                                 <div class="panel-body">
-                                    <div id="loanApplicationLinesFlexGrid" class="grid"></div>
+                                    <div id="collectionLinesFlexGrid" class="grid"></div>
                                 </div>
                                 <div class="panel-footer">
                                     <table style="width: 100%" border="0">
@@ -144,7 +145,7 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon">Total Amount</span>
                                                     <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" id="totalLoanAmount" class="form-control numberField" placeholder="0.00">
+                                                    <input type="text" id="totalCollectionAmount" class="form-control numberField" placeholder="0.00">
                                                 </div>
                                             </td>
                                             <td width="60%"></td>
@@ -163,7 +164,7 @@
                             <button class="btn btn-primary" id="btnPrintButtom" onclick="btnPrintOnClick()">
                                 <i class="fa fa-file-pdf-o fa-fw"></i> PDF
                             </button>
-                            <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/LoanApplicationList'">
+                            <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/CollectionList'">
                                 <i class="fa fa-close fa-fw"></i> Close
                             </button>
                         </div>
@@ -173,53 +174,53 @@
         </div>
     </section>
 
-    <!-- locan application lines Detail Modal -->
-    <div class="modal fade" id="loanApplicationLineEditDetailModal" role="dialog">
+    <!-- collection lines Detail Modal -->
+    <div class="modal fade" id="collectionLineEditDetailModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Loan Application Line Detail</h4>
+                    <h4 class="modal-title">Collection Line Detail</h4>
                 </div>
                 <div class="modal-body">
                     <dl class="dl-horizontal">
                         <dt>Particulars</dt>
                         <dd>
-                            <textarea class="form-control requiredLoanApplicationLines" id="loanApplicationLinesParticulars" placeholder="Particulars"></textarea>
+                            <textarea class="form-control" id="collectionLinesParticulars" placeholder="Particulars"></textarea>
                         </dd>
                         <dt>Amount</dt>
                         <dd>
                             <div class="input-group numberField">
                                 <span class="input-group-addon">&#8369;</span>
-                                <input type="text" id="loanApplicationLinesAmount" class="form-control numberField requiredLoanApplicationLines" placeholder="0.00">
+                                <input type="text" id="collectionLinesAmount" class="form-control numberField" placeholder="0.00">
                             </div>
                         </dd>
                     </dl>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSaveLoanApplicationLine" onclick="saveLoanApplicationLineOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
-                    <button class="btn btn-danger" id="btnCloseLoanApplicationLine" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                    <button class="btn btn-primary" id="btnSaveCollectionLine" onclick="saveCollectionLineOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseCollectionLine" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- delete confirmation Loan Application Line modal -->
-    <div class="modal fade" id="deleteConfirmationLoanApplicationLineModal" role="dialog">
+    <!-- delete confirmation Collection Line modal -->
+    <div class="modal fade" id="deleteConfirmationCollectionLineModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Loan Amount</h4>
+                    <h4 class="modal-title">Delete Collection Line (Paid Amount)</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Loan Application Line (Loan Amount)?
+                    Are you sure that you want to delete this Collection Line (Loan Amount)?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteLoanApplicationLine" onclick="btnConfirmDeleteLoanApplicationLineOnclick()">Yes</button>
-                    <button class="btn btn-default" id="btnCloseDeleteLoanApplicationLineModal" data-dismiss="modal">No</button>
+                    <button class="btn btn-default" id="btnConfirmDeleteCollectionLine" onclick="btnConfirmDeleteCollectionLineOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnCloseDeleteCollectionLineModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -231,5 +232,358 @@
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global varibles
+        var cboCollectionDate;
+        var cboCollectionBranch;
+        var cboCollectionAccount;
+        var cboCollectionApplicant;
+        var cboCollectionPreparedByUser;
+        var cboCollectionVerifiedBy;
+        var isLocked = false;
+
+        // create collection Date
+        function createCollectionDate() {
+            cboCollectionDate = new wijmo.input.InputDate('#collectionDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("collectionDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+                }
+            });
+
+            var dateValue = cboCollectionDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("collectionDateString").innerHTML = month + " " + cboCollectionDate.value.getDate() + ", " + cboCollectionDate.value.getFullYear();
+
+            cboCollectionBranch = new wijmo.input.ComboBox('#collectionBranch');
+            getBranch();
+        }
+
+        // get branch
+        function getBranch() {
+            var branchArray = new Array();
+            $.ajax({
+                url: '/api/branch/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (branchResults) {
+                    var disabled = true;
+                    if (branchResults.length > 0) {
+                        for (i = 0; i < branchResults.length; i++) {
+                            branchArray.push({
+                                Id: branchResults[i]["Id"],
+                                Branch: branchResults[i]["Branch"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboCollectionAccount = new wijmo.input.ComboBox('#collectionAccount');
+                        getAccount();
+                    } else {
+
+                        cboCollectionAccount = new wijmo.input.ComboBox('#collectionAccount');
+                        getAccount();
+                    }
+
+                    cboCollectionBranch.dispose();
+                    cboCollectionBranch = new wijmo.input.ComboBox('#collectionBranch', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: branchArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Branch",
+                        selectedValuePath: "Branch"
+                    });
+                }
+            });
+        }
+
+        // get account
+        function getAccount() {
+            var accountArray = new Array();
+            $.ajax({
+                url: '/api/account/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (accountResults) {
+                    var disabled = true;
+                    if (accountResults.length > 0) {
+                        for (i = 0; i < accountResults.length; i++) {
+                            accountArray.push({
+                                Id: accountResults[i]["Id"],
+                                Account: accountResults[i]["Account"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboCollectionApplicant = new wijmo.input.ComboBox('#collectionApplicant');
+                        getApplicant();
+                    } else {
+                        cboCollectionApplicant = new wijmo.input.ComboBox('#collectionApplicant');
+                        getApplicant();
+                    }
+
+                    cboCollectionAccount.dispose();
+                    cboCollectionAccount = new wijmo.input.ComboBox('#collectionAccount', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: accountArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Account",
+                        selectedValuePath: "Account"
+                    });
+                }
+            });
+        }
+
+        // get applicant
+        function getApplicant() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/applicant/listByLocked',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                Id: applicantResults[i]["Id"],
+                                ApplicantFullName: applicantResults[i]["ApplicantFullName"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboCollectionPreparedByUser = new wijmo.input.ComboBox('#collectionPreparedBy');
+                        cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy');
+                        getUser();
+
+                    } else {
+                        cboCollectionPreparedByUser = new wijmo.input.ComboBox('#collectionPreparedBy');
+                        cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy');
+                        getUser();
+
+                        //cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea');
+                        //getArea();
+
+                        //$("#btnLock").prop("disabled", true);
+                        //$("#btnLockButtom").prop("disabled", true);
+                        //$("#btnAddLoanApplicationLines").prop("disabled", true);
+                        //$("#btnAddLoanRequirements").prop("disabled", true);
+                        //document.getElementById("noApplicant").innerHTML = "&nbsp; <i class='fa fa-info fa-fw'></i> Applicant Record is Empty or Unlocked";
+                    }
+
+                    cboCollectionApplicant.dispose();
+                    cboCollectionApplicant = new wijmo.input.ComboBox('#collectionApplicant', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ApplicantFullName",
+                        selectedValuePath: "ApplicantFullName"
+                    });
+
+                    //if (applicantResults.length > 0) {
+                    //    $('#loanApplicationApplicant').each(function () {
+                    //        $(this).css({
+                    //            "border": ""
+                    //        });
+                    //    });
+                    //} else {
+                    //    $('#loanApplicationApplicant').each(function () {
+                    //        $(this).css({
+                    //            "border": "1px solid red"
+                    //        });
+                    //    });
+                    //}
+                }
+            });
+        }
+
+        // get users
+        function getUser() {
+            var userArray = new Array();
+            $.ajax({
+                url: '/api/user/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (userrResults) {
+                    var disabled = true;
+                    if (userrResults.length > 0) {
+                        for (i = 0; i < userrResults.length; i++) {
+                            userArray.push({
+                                Id: userrResults[i]["Id"],
+                                FullName: userrResults[i]["FullName"],
+                            });
+                        }
+
+                        disabled = false;
+                    } 
+
+                    cboCollectionPreparedByUser.dispose();
+                    cboCollectionPreparedByUser = new wijmo.input.ComboBox('#collectionPreparedBy', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: userArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "FullName",
+                        selectedValuePath: "FullName"
+                    });
+
+                    cboCollectionVerifiedBy.dispose();
+                    cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: userArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "FullName",
+                        selectedValuePath: "FullName"
+                    });
+                }
+            });
+
+            getCollectionById();
+        }
+
+        // get loan application by id
+        function getCollectionById() {
+            $.ajax({
+                url: '/api/collection/getById/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (collectionResult) {
+                    if (collectionResult != null) {
+                        document.getElementById("collectionNumber").disabled = true;
+                        document.getElementById("collectionNumber").value = collectionResult.CollectionNumber;
+                        cboCollectionDate.value = new Date(collectionResult.CollectionDate);
+                        cboCollectionBranch.selectedValue = collectionResult.Branch;
+                        cboCollectionAccount.selectedValue = collectionResult.Account;
+                        cboCollectionApplicant.selectedValue = collectionResult.Applicant;
+                        document.getElementById("collectionParticulars").value = collectionResult.Particulars;
+                        cboCollectionPreparedByUser.selectedValue = collectionResult.PreparedByUser;
+                        cboCollectionVerifiedBy.selectedValue = collectionResult.VerifiedByUser;
+                        document.getElementById('stampCreatedBy').innerHTML = collectionResult.CreatedByUser;
+                        document.getElementById('stampCreatedDate').innerHTML = collectionResult.CreatedDateTime;
+                        document.getElementById('stampUpdatedBy').innerHTML = collectionResult.UpdatedByUser;
+                        document.getElementById('stampUpdatedDate').innerHTML = collectionResult.UpdatedDateTime;
+
+                        if (collectionResult.IsLocked) {
+                            $("#btnLock").prop("disabled", true);
+                            $("#btnLockButtom").prop("disabled", true);
+
+                            cboCollectionDate.disabled = true;
+                            cboCollectionBranch.disabled = true;
+                            cboCollectionAccount.disabled = true;
+                            cboCollectionApplicant.disabled = true;
+                            cboCollectionPreparedByUser.disabled = true;
+                            cboCollectionVerifiedBy.disabled = true;
+
+                            document.getElementById("collectionParticulars").disabled = true;
+                            $("#btnAddCollectionLines").prop("disabled", true);
+                            $("#btnAddCollectables").prop("disabled", true);
+
+                            isLocked = true;
+                        } else {
+                            $("#btnUnlock").prop("disabled", true);
+                            $("#btnPrint").prop("disabled", true);
+                            $("#btnUnlockButtom").prop("disabled", true);
+                            $("#btnPrintButtom").prop("disabled", true);
+                        }
+                    } else {
+                        alert("The record you'd requested has no data");
+                        window.history.back();
+                    }
+
+                    NProgress.done();
+                }
+            });
+        }
+
+        // onload page
+        window.onload = function () {
+            NProgress.start();
+            createCollectionDate();
+        }
+    </script>
 </body>
 </html>
