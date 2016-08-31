@@ -28,13 +28,17 @@ namespace Lending.ApiControllers
                                            AccountId = d.AccountId,
                                            Account = d.mstAccount.Account,
                                            LoanId = d.LoanId,
+                                           LoanNumber = d.trnLoanApplication.LoanNumber,
+                                           LoanDate =  d.trnLoanApplication.LoanDate.ToShortDateString(),
                                            PaytypeId = d.PaytypeId,
                                            Paytype = d.mstPayType.PayType,
                                            CheckNumber = d.CheckNumber,
                                            CheckDate = d.CheckDate.ToShortDateString(),
                                            CheckBank = d.CheckBank,
                                            Particulars = d.Particulars,
-                                           Amount = d.Amount
+                                           Amount = d.Amount,
+                                           CollectedByCollectorId = d.CollectedByCollectorId,
+                                           CollectedByCollector = d.mstCollector.Collector
                                        };
 
             return collectionLines.ToList();
@@ -63,6 +67,7 @@ namespace Lending.ApiControllers
                         newCollectionLine.CheckBank = collectionLine.CheckBank;
                         newCollectionLine.Particulars = collectionLine.Particulars;
                         newCollectionLine.Amount = collectionLine.Amount;
+                        newCollectionLine.CollectedByCollectorId = collectionLine.CollectedByCollectorId;
                         db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
                         db.SubmitChanges();
 
@@ -125,6 +130,7 @@ namespace Lending.ApiControllers
                             updateCollectionApplicationLine.CheckBank = collectionLine.CheckBank;
                             updateCollectionApplicationLine.Particulars = collectionLine.Particulars;
                             updateCollectionApplicationLine.Amount = collectionLine.Amount;
+                            updateCollectionApplicationLine.CollectedByCollectorId = collectionLine.CollectedByCollectorId;
                             db.SubmitChanges();
 
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();

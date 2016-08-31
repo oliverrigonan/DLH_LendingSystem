@@ -164,13 +164,37 @@ namespace Lending.ApiControllers
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
+                        var collectionLines = from d in db.trnCollectionLines
+                                              where d.CollectionId == Convert.ToInt32(id)
+                                              select new Models.TrnCollectionLines
+                                              {
+                                                  Id = d.Id,
+                                                  CollectionId = d.CollectionId,
+                                                  AccountId = d.AccountId,
+                                                  Account = d.mstAccount.Account,
+                                                  LoanId = d.LoanId,
+                                                  PaytypeId = d.PaytypeId,
+                                                  Paytype = d.mstPayType.PayType,
+                                                  CheckNumber = d.CheckNumber,
+                                                  CheckDate = d.CheckDate.ToShortDateString(),
+                                                  CheckBank = d.CheckBank,
+                                                  Particulars = d.Particulars,
+                                                  Amount = d.Amount
+                                              };
+
+                        Decimal totalCollectionLinesPaidAmount = 0;
+                        if (collectionLines.Any())
+                        {
+                            totalCollectionLinesPaidAmount += collectionLines.Sum(d => d.Amount);
+                        }
+
                         var lockCollection = collections.FirstOrDefault();
                         lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
                         lockCollection.BranchId = collection.BranchId;
                         lockCollection.AccountId = collection.AccountId;
                         lockCollection.ApplicantId = collection.ApplicantId;
                         lockCollection.Particulars = collection.Particulars;
-                        lockCollection.PaidAmount = collection.PaidAmount;
+                        lockCollection.PaidAmount = totalCollectionLinesPaidAmount;
                         lockCollection.IsCleared = collection.IsCleared;
                         lockCollection.PreparedByUserId = collection.PreparedByUserId;
                         lockCollection.VerifiedByUserId = collection.VerifiedByUserId;
@@ -179,7 +203,26 @@ namespace Lending.ApiControllers
                         lockCollection.UpdatedDateTime = DateTime.Now;
                         db.SubmitChanges();
 
+                        if (collectionLines.Any())
+                        {
+                            foreach (var collectionLine in collectionLines)
+                            {
+                                if (collectionLine.Amount > 0)
+                                {
+                                    var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                    if (loanApplications.Any())
+                                    {
+                                        var updateLoanAmount = loanApplications.FirstOrDefault();
+                                        updateLoanAmount.PaidAmount = collectionLine.Amount;
+                                        updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - collectionLine.Amount;
+                                        db.SubmitChanges();
+                                    }
+                                }
+                            }
+                        }
 
+                        Business.Journal journal = new Business.Journal();
+                        journal.postCollectionJournal(Convert.ToInt32(id));
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
@@ -220,6 +263,42 @@ namespace Lending.ApiControllers
                         unlockCollection.UpdatedDateTime = DateTime.Now;
                         db.SubmitChanges();
 
+                        var collectionLines = from d in db.trnCollectionLines
+                                              where d.CollectionId == Convert.ToInt32(id)
+                                              select new Models.TrnCollectionLines
+                                              {
+                                                  Id = d.Id,
+                                                  CollectionId = d.CollectionId,
+                                                  AccountId = d.AccountId,
+                                                  Account = d.mstAccount.Account,
+                                                  LoanId = d.LoanId,
+                                                  PaytypeId = d.PaytypeId,
+                                                  Paytype = d.mstPayType.PayType,
+                                                  CheckNumber = d.CheckNumber,
+                                                  CheckDate = d.CheckDate.ToShortDateString(),
+                                                  CheckBank = d.CheckBank,
+                                                  Particulars = d.Particulars,
+                                                  Amount = d.Amount
+                                              };
+
+                        if (collectionLines.Any())
+                        {
+                            foreach (var collectionLine in collectionLines)
+                            {
+                                var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                if (loanApplications.Any())
+                                {
+                                    var updateLoanAmount = loanApplications.FirstOrDefault();
+                                    updateLoanAmount.PaidAmount = 0;
+                                    updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - 0;
+                                    db.SubmitChanges();
+                                }
+                            }
+                        }
+
+                        Business.Journal journal = new Business.Journal();
+                        journal.deleteCollectionJournal(Convert.ToInt32(id));
+
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                     else
@@ -253,6 +332,42 @@ namespace Lending.ApiControllers
                     {
                         db.trnCollections.DeleteOnSubmit(collections.First());
                         db.SubmitChanges();
+
+                        var collectionLines = from d in db.trnCollectionLines
+                                              where d.CollectionId == Convert.ToInt32(id)
+                                              select new Models.TrnCollectionLines
+                                              {
+                                                  Id = d.Id,
+                                                  CollectionId = d.CollectionId,
+                                                  AccountId = d.AccountId,
+                                                  Account = d.mstAccount.Account,
+                                                  LoanId = d.LoanId,
+                                                  PaytypeId = d.PaytypeId,
+                                                  Paytype = d.mstPayType.PayType,
+                                                  CheckNumber = d.CheckNumber,
+                                                  CheckDate = d.CheckDate.ToShortDateString(),
+                                                  CheckBank = d.CheckBank,
+                                                  Particulars = d.Particulars,
+                                                  Amount = d.Amount
+                                              };
+
+                        if (collectionLines.Any())
+                        {
+                            foreach (var collectionLine in collectionLines)
+                            {
+                                var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                if (loanApplications.Any())
+                                {
+                                    var updateLoanAmount = loanApplications.FirstOrDefault();
+                                    updateLoanAmount.PaidAmount = 0;
+                                    updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - 0;
+                                    db.SubmitChanges();
+                                }
+                            }
+                        }
+
+                        Business.Journal journal = new Business.Journal();
+                        journal.deleteCollectionJournal(Convert.ToInt32(id));
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }

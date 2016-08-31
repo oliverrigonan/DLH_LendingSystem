@@ -57,7 +57,7 @@ namespace Lending.ApiControllers
             return loanApplications.ToList();
         }
 
-        // loan application list
+        // loan application get by id
         [Authorize]
         [HttpGet]
         [Route("api/loanApplication/getById/{id}")]
@@ -100,6 +100,53 @@ namespace Lending.ApiControllers
 
             return (Models.TrnLoanApplication)loanApplication.FirstOrDefault();
         }
+
+        // loan application list by applicantId
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanApplication/listByApplicantId/{applicantId}")]
+        public List<Models.TrnLoanApplication> listLoanApplicationByApplicantId(String applicantId)
+        {
+            var loanApplication = from d in db.trnLoanApplications
+                                  where d.ApplicantId == Convert.ToInt32(applicantId)
+                                  && d.IsLocked == true
+                                  && d.BalanceAmount > 0
+                                  select new Models.TrnLoanApplication
+                                  {
+                                      Id = d.Id,
+                                      LoanNumber = d.LoanNumber,
+                                      LoanDate = d.LoanDate.ToShortDateString(),
+                                      MaturityDate = d.MaturityDate.ToShortDateString(),
+                                      BranchId = d.BranchId,
+                                      Branch = d.mstBranch.Branch,
+                                      AccountId = d.AccountId,
+                                      Account = d.mstAccount.Account,
+                                      ApplicantId = d.ApplicantId,
+                                      Applicant = d.mstApplicant.ApplicantFullName,
+                                      AreaId = d.AreaId,
+                                      Area = d.mstArea.Area,
+                                      Promises = d.Promises,
+                                      LoanAmount = d.LoanAmount,
+                                      PaidAmount = d.PaidAmount,
+                                      BalanceAmount = d.BalanceAmount,
+                                      CollectorId = d.CollectorId,
+                                      Collector = d.mstCollector.Collector,
+                                      PreparedByUserId = d.PreparedByUserId,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      VerifiedByUserId = d.VerifiedByUserId,
+                                      VerifiedByUser = d.mstUser1.FullName,
+                                      IsLocked = d.IsLocked,
+                                      CreatedByUserId = d.CreatedByUserId,
+                                      CreatedByUser = d.mstUser2.FullName,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedByUserId = d.UpdatedByUserId,
+                                      UpdatedByUser = d.mstUser3.FullName,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
+
+            return loanApplication.ToList();
+        }
+
 
         // zero fill
         public String zeroFill(Int32 number, Int32 length)

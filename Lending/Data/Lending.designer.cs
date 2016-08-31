@@ -9854,7 +9854,9 @@ namespace Lending.Data
 		
 		private string _Particulars;
 		
-		private decimal _Amount;
+		private decimal _ReleasedAmount;
+		
+		private decimal _ReceivedAmount;
 		
 		private string _DocumentReference;
 		
@@ -9884,8 +9886,10 @@ namespace Lending.Data
     partial void OnAccountIdChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
-    partial void OnAmountChanging(decimal value);
-    partial void OnAmountChanged();
+    partial void OnReleasedAmountChanging(decimal value);
+    partial void OnReleasedAmountChanged();
+    partial void OnReceivedAmountChanging(decimal value);
+    partial void OnReceivedAmountChanged();
     partial void OnDocumentReferenceChanging(string value);
     partial void OnDocumentReferenceChanged();
     partial void OnLoanIdChanging(System.Nullable<int> value);
@@ -10012,22 +10016,42 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal Amount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReleasedAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal ReleasedAmount
 		{
 			get
 			{
-				return this._Amount;
+				return this._ReleasedAmount;
 			}
 			set
 			{
-				if ((this._Amount != value))
+				if ((this._ReleasedAmount != value))
 				{
-					this.OnAmountChanging(value);
+					this.OnReleasedAmountChanging(value);
 					this.SendPropertyChanging();
-					this._Amount = value;
-					this.SendPropertyChanged("Amount");
-					this.OnAmountChanged();
+					this._ReleasedAmount = value;
+					this.SendPropertyChanged("ReleasedAmount");
+					this.OnReleasedAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReceivedAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal ReceivedAmount
+		{
+			get
+			{
+				return this._ReceivedAmount;
+			}
+			set
+			{
+				if ((this._ReceivedAmount != value))
+				{
+					this.OnReceivedAmountChanging(value);
+					this.SendPropertyChanging();
+					this._ReceivedAmount = value;
+					this.SendPropertyChanged("ReceivedAmount");
+					this.OnReceivedAmountChanged();
 				}
 			}
 		}

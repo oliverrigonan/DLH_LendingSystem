@@ -14,6 +14,8 @@ namespace Lending.Models
         public Int32 AccountId { get; set; }
         public String Account { get; set; }
         public Int32 LoanId { get; set; }
+        public String LoanNumber { get; set; }
+        public String LoanDate { get; set; }
         public Int32 PaytypeId { get; set; }
         public String Paytype { get; set; }
         public String CheckNumber { get; set; }
