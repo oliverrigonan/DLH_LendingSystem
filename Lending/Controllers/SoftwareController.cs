@@ -108,5 +108,10 @@ namespace Lending.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult Reports()
+        {
+            return View();
+        }
     }
 }

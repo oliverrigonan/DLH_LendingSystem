@@ -235,6 +235,7 @@
     <Compile Include="Models\TrnLoanApplicationLines.cs" />
     <Compile Include="Models\TrnLoanRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\RepCollectionDetailController.cs" />
     <Compile Include="Reports\RepLoanApplicationDetailController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -491,6 +492,7 @@
     <Content Include="Views\Software\LoanApplicationDetail.cshtml" />
     <Content Include="Views\Software\CollectionList.cshtml" />
     <Content Include="Views\Software\CollectionDetail.cshtml" />
+    <Content Include="Views\Software\Reports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

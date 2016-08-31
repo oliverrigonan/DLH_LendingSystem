@@ -36,7 +36,7 @@
                         <a href="/Software/Tables" class="list-group-item">
                             <i class="fa fa-table fa-fw"></i> &nbsp; Tables
                         </a>
-                        <a href="#" class="list-group-item">
+                        <a href="/Software/Reports" class="list-group-item">
                             <i class="fa fa-print fa-fw"></i> &nbsp; Reports
                         </a>
                         <a href="/Software/CompanyList" class="list-group-item">
@@ -1318,6 +1318,15 @@
                     NProgress.done();
                 }
             });
+        }
+
+        // pdf
+        function btnPrintOnClick() {
+            $("#btnPrint").prop("disabled", true);
+            $("#btnPrintButtom").prop("disabled", true);
+            document.getElementById("btnPrint").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
+            document.getElementById("btnPrintButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
+            window.location = "/RepCollectionDetail/collectionDetail?collectionId=" + getUrlParameter("id");
         }
 
         // onload page
