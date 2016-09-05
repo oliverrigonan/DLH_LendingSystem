@@ -97,26 +97,42 @@
                                     Collection Header Form
                                 </div>
                                 <div class="panel-body">
-                                    <dl class="dl-horizontal">
-                                        <dt>Collection Number</dt>
-                                        <dd><input type="text" class="form-control requiredCollection" id="collectionNumber" placeholder="Collection Number" /></dd>
-                                        <dt>Collection Date</dt>
-                                        <dd><div id="collectionDate"></div> &nbsp; <span id="collectionDateString"></span></dd>
-                                        <dt>Branch</dt>
-                                        <dd><div id="collectionBranch"></div></dd>
-                                        <dt>Account</dt>
-                                        <dd><div id="collectionAccount"></div></dd>
-                                        <dt>Applicant</dt>
-                                        <dd><div id="collectionApplicant"></div><span style="color: red" id="noApplicant"></span></dd>
-                                        <dt>Particulars</dt>
-                                        <dd><textarea class="form-control requiredCollection" id="collectionParticulars" placeholder="Particulars"></textarea></dd>
-                                        <dt>Prepared by</dt>
-                                        <dd><div id="collectionPreparedBy"></div></dd>
-                                        <dt>Verified by</dt>
-                                        <dd><div id="collectionVerifiedBy"></div></dd>
-                                        <dt>Is Cleared</dt>
-                                        <dd><input type="checkbox" id="collectionIsCleared" /></dd>
-                                    </dl>
+                                    <div class="form-group">
+                                        <label>Collection Number</label><br />
+                                        <input type="text" class="form-control requiredCollection" id="collectionNumber" placeholder="Collection Number" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Collection Date</label><br />
+                                        <div id="collectionDate"></div> &nbsp; <span id="collectionDateString"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Branch</label><br />
+                                        <div id="collectionBranch"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Account</label><br />
+                                        <div id="collectionAccount"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Applicant</label><br />
+                                        <div id="collectionApplicant"></div><span style="color: red" id="noApplicant"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Particulars</label><br />
+                                        <textarea class="form-control requiredCollection" rows="5" id="collectionParticulars" placeholder="Particulars"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Prepared by</label><br />
+                                        <div id="collectionPreparedBy"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Verified by</label><br />
+                                        <div id="collectionVerifiedBy"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Is Cleared</label><br />
+                                        <input type="checkbox" id="collectionIsCleared" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
@@ -186,33 +202,45 @@
                     <h4 class="modal-title">Collection Line Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <dl class="dl-horizontal">
-                        <dt>Account</dt>
-                        <dd><div id="collectionLinesAccount"></div></dd>
-                        <dt>Pay Type</dt>
-                        <dd><div id="collectionLinesPayType"></div></dd>
-                        <dt>Check Number</dt>
-                        <dd><input type="text" class="form-control requiredCollectionLines" id="collectionLineCheckNumber" placeholder="Collection Number" /></dd>
-                        <dt>Check Date</dt>
-                        <dd><div id="collectionLinesCheckDate"></div> &nbsp; <span id="collectionLineCheckDateString"></span></dd>
-                        <dt>Check Bank</dt>
-                        <dd><input type="text" class="form-control requiredCollectionLines" id="collectionLineCheckBank" placeholder="Collection Number" /></dd>
-                        <dt>Particulars</dt>
-                        <dd>
-                            <textarea class="form-control requiredCollectionLines" id="collectionLinesParticulars" placeholder="Particulars"></textarea>
-                        </dd>
-                        <dt>Loan Number</dt>
-                        <dd><div id="collectionLinesLoanNumber"></div></dd>
-                        <dt>Amount</dt>
-                        <dd>
-                            <div class="input-group numberField">
-                                <span class="input-group-addon">&#8369;</span>
-                                <input type="text" id="collectionLinesAmount" class="form-control numberField requiredCollectionLines" placeholder="0.00">
-                            </div>
-                        </dd>
-                        <dt>Collector</dt>
-                        <dd><div id="collectionLinesCollector"></div></dd>
-                    </dl>
+                    <div class="form-group">
+                        <label>Account</label><br />
+                        <div id="collectionLinesAccount"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Pay Type</label><br />
+                        <div id="collectionLinesPayType"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Check Number</label><br />
+                        <input type="text" class="form-control requiredCollectionLines" id="collectionLineCheckNumber" placeholder="Collection Number" />
+                    </div>
+                    <div class="form-group">
+                        <label>Check Date</label><br />
+                        <div id="collectionLinesCheckDate"></div> &nbsp; <span id="collectionLineCheckDateString"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Check Bank</label><br />
+                        <input type="text" class="form-control requiredCollectionLines" id="collectionLineCheckBank" placeholder="Collection Number" />
+                    </div>
+                    <div class="form-group">
+                        <label>Particulars</label><br />
+                        <textarea class="form-control requiredCollectionLines" rows="5" id="collectionLinesParticulars" placeholder="Particulars"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Loan Number</label><br />
+                        <div id="collectionLinesLoanNumber"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" id="collectionLinesAmount" class="form-control numberField requiredCollectionLines" placeholder="0.00">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Collector</label><br />
+                        <div id="collectionLinesCollector"></div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveCollectionLine" onclick="saveCollectionLineOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>

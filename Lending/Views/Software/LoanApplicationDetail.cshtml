@@ -97,30 +97,50 @@
                                     Loan Application Header Form
                                 </div>
                                 <div class="panel-body">
-                                    <dl class="dl-horizontal">
-                                        <dt>Loan Number</dt>
-                                        <dd><input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" /></dd>
-                                        <dt>Loan Date</dt>
-                                        <dd><div id="loanApplicationLoanDate"></div> &nbsp; <span id="loanApplicationLoanDateString"></span></dd>
-                                        <dt>Maturity Date</dt>
-                                        <dd><div id="loanApplicationMaturityDate"></div> &nbsp; <span id="loanApplicationMaturityDateString"></span></dd>
-                                        <dt>Branch</dt>
-                                        <dd><div id="loanApplicationBranch"></div></dd>
-                                        <dt>Account</dt>
-                                        <dd><div id="loanApplicationAccount"></div></dd>
-                                        <dt>Applicant</dt>
-                                        <dd><div id="loanApplicationApplicant"></div><span style="color: red" id="noApplicant"></span></dd>
-                                        <dt>Area</dt>
-                                        <dd><div id="loanApplicationArea"></div></dd>
-                                        <dt>Promise</dt>
-                                        <dd><textarea class="form-control requiredLoanApplication" id="loanApplicationPromise" placeholder="Promise"></textarea></dd>
-                                        <dt>Collector</dt>
-                                        <dd><div id="loanApplicationCollector"></div></dd>
-                                        <dt>Prepared by</dt>
-                                        <dd><div id="loanApplicationPreparedBy"></div></dd>
-                                        <dt>Verified by</dt>
-                                        <dd><div id="loanApplicationVerifiedBy"></div></dd>
-                                    </dl>
+                                    <div class="form-group">
+                                        <label>Loan Number</label><br />
+                                        <input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Loan Date</label><br />
+                                        <div id="loanApplicationLoanDate"></div> &nbsp; <span id="loanApplicationLoanDateString"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Maturity Date</label><br />
+                                        <div id="loanApplicationMaturityDate"></div> &nbsp; <span id="loanApplicationMaturityDateString"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Branch</label><br />
+                                        <div id="loanApplicationBranch"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Account</label><br />
+                                        <div id="loanApplicationAccount"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Applicant</label><br />
+                                        <div id="loanApplicationApplicant"></div><span style="color: red" id="noApplicant"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Area</label><br />
+                                        <div id="loanApplicationArea"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Promise</label><br />
+                                        <textarea class="form-control requiredLoanApplication" rows="5" id="loanApplicationPromise" placeholder="Promise"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Collector</label><br />
+                                        <div id="loanApplicationCollector"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Prepared by</label><br />
+                                        <div id="loanApplicationPreparedBy"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Verified by</label><br />
+                                        <div id="loanApplicationVerifiedBy"></div>
+                                    </div>
                                 </div>
                             </div>
                             <br />
@@ -218,19 +238,17 @@
                     <h4 class="modal-title">Loan Application Line Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <dl class="dl-horizontal">
-                        <dt>Particulars</dt>
-                        <dd>
-                            <textarea class="form-control requiredLoanApplicationLines" id="loanApplicationLinesParticulars" placeholder="Particulars"></textarea>
-                        </dd>
-                        <dt>Amount</dt>
-                        <dd>
-                            <div class="input-group numberField">
-                                <span class="input-group-addon">&#8369;</span>
-                                <input type="text" id="loanApplicationLinesAmount" class="form-control numberField requiredLoanApplicationLines" placeholder="0.00">
-                            </div>
-                        </dd>
-                    </dl>
+                    <div class="form-group">
+                        <label>Particulars</label><br />
+                        <textarea class="form-control requiredLoanApplicationLines" rows="5" id="loanApplicationLinesParticulars" placeholder="Particulars"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" id="loanApplicationLinesAmount" class="form-control numberField requiredLoanApplicationLines" placeholder="0.00">
+                        </div>    
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveLoanApplicationLine" onclick="saveLoanApplicationLineOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -270,16 +288,14 @@
                     <h4 class="modal-title">Loan Applicant's Requirement Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <dl class="dl-horizontal">
-                        <dt>Requirement</dt>
-                        <dd>
-                            <div id="loanRequiremenstName"></div>
-                        </dd>
-                        <dt>Note</dt>
-                        <dd>
-                            <textarea class="form-control requiredLoanRequirements" id="loanRequirementsNote"></textarea>
-                        </dd>
-                    </dl>
+                    <div class="form-group">
+                        <label>Requirement</label><br />
+                        <div id="loanRequiremenstName"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Note</label><br />
+                        <textarea class="form-control requiredLoanRequirements" rows="5" id="loanRequirementsNote"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveLoanRequirement" onclick="saveLoanRequirementOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>

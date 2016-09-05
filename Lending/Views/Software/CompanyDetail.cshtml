@@ -94,14 +94,18 @@
                                     Company Information and Detail
                                 </div>
                                 <div class="panel-body">
-                                    <dl class="dl-horizontal">
-                                        <dt>Company Name</dt>
-                                        <dd><input type="text" class="form-control requiredCompany" id="companyName" placeholder="Company Name" /></dd>
-                                        <dt>Address</dt>
-                                        <dd><textarea class="form-control requiredCompany" id="companyAddress" placeholder="Company Address"></textarea></dd>
-                                        <dt>Contact Number</dt>
-                                        <dd><input type="text" class="form-control requiredCompany" id="companyContactNumber" placeholder="Contact Number" /></dd>
-                                    </dl>
+                                    <div class="form-group">
+                                        <label>Company Name</label><br />
+                                        <input type="text" class="form-control requiredCompany" id="companyName" placeholder="Company Name" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Address</label><br />
+                                        <textarea class="form-control requiredCompany" rows="5" id="companyAddress" placeholder="Company Address"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Contact Number</label><br />
+                                        <input type="text" class="form-control requiredCompany" id="companyContactNumber" placeholder="Contact Number" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
@@ -140,14 +144,18 @@
                     <h4 class="modal-title">Branch Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <dl class="dl-horizontal">
-                        <dt>Branch</dt>
-                        <dd><input type="text" class="form-control requiredBranch" id="branchName" placeholder="Branch Name" /></dd>
-                        <dt>Address</dt>
-                        <dd><textarea class="form-control requiredBranch" id="branchAddress" placeholder="Branch Address"></textarea></dd>
-                        <dt>Contact Number</dt>
-                        <dd><input type="text" class="form-control requiredBranch" id="branchContactNumber" placeholder="Branch Contact Number" /></dd>
-                    </dl>
+                    <div class="form-group">
+                        <label>Branch</label><br />
+                        <input type="text" class="form-control requiredBranch" id="branchName" placeholder="Branch Name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label><br />
+                        <textarea class="form-control requiredBranch" rows="5" id="branchAddress" placeholder="Branch Address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label><br />
+                        <input type="text" class="form-control requiredBranch" id="branchContactNumber" placeholder="Branch Contact Number" />
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveBranch" onclick="btnSaveBranchOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
