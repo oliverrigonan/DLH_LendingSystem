@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace Lending.ApiControllers
 {
@@ -34,7 +35,6 @@ namespace Lending.ApiControllers
                                   Applicant = d.mstApplicant.ApplicantFullName,
                                   Particulars = d.Particulars,
                                   PaidAmount = d.PaidAmount,
-                                  IsCleared = d.IsCleared,
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser2.FullName,
                                   VerifiedByUserId = d.VerifiedByUserId,
@@ -72,7 +72,6 @@ namespace Lending.ApiControllers
                                  Applicant = d.mstApplicant.ApplicantFullName,
                                  Particulars = d.Particulars,
                                  PaidAmount = d.PaidAmount,
-                                 IsCleared = d.IsCleared,
                                  PreparedByUserId = d.PreparedByUserId,
                                  PreparedByUser = d.mstUser2.FullName,
                                  VerifiedByUserId = d.VerifiedByUserId,
@@ -129,7 +128,6 @@ namespace Lending.ApiControllers
                 newCollection.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newCollection.Particulars = "NA";
                 newCollection.PaidAmount = 0;
-                newCollection.IsCleared = false;
                 newCollection.PreparedByUserId = userId;
                 newCollection.VerifiedByUserId = userId;
                 newCollection.IsLocked = false;
@@ -195,7 +193,6 @@ namespace Lending.ApiControllers
                         lockCollection.ApplicantId = collection.ApplicantId;
                         lockCollection.Particulars = collection.Particulars;
                         lockCollection.PaidAmount = totalCollectionLinesPaidAmount;
-                        lockCollection.IsCleared = collection.IsCleared;
                         lockCollection.PreparedByUserId = collection.PreparedByUserId;
                         lockCollection.VerifiedByUserId = collection.VerifiedByUserId;
                         lockCollection.IsLocked = true;
@@ -212,9 +209,16 @@ namespace Lending.ApiControllers
                                     var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
                                     if (loanApplications.Any())
                                     {
+                                        Decimal paidAmount = 0;
+                                        var loanApplicationForPaidAmount = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                        if (loanApplicationForPaidAmount.Any())
+                                        {
+                                            paidAmount = loanApplicationForPaidAmount.FirstOrDefault().PaidAmount;
+                                        }
+
                                         var updateLoanAmount = loanApplications.FirstOrDefault();
-                                        updateLoanAmount.PaidAmount = collectionLine.Amount;
-                                        updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - collectionLine.Amount;
+                                        updateLoanAmount.PaidAmount = paidAmount + collectionLine.Amount;
+                                        updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - (paidAmount + collectionLine.Amount);
                                         db.SubmitChanges();
                                     }
                                 }
@@ -288,9 +292,16 @@ namespace Lending.ApiControllers
                                 var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
                                 if (loanApplications.Any())
                                 {
+                                    Decimal paidAmount = 0;
+                                    var loanApplicationForPaidAmount = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                    if (loanApplicationForPaidAmount.Any())
+                                    {
+                                        paidAmount = loanApplicationForPaidAmount.FirstOrDefault().PaidAmount;
+                                    }
+
                                     var updateLoanAmount = loanApplications.FirstOrDefault();
-                                    updateLoanAmount.PaidAmount = 0;
-                                    updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - 0;
+                                    updateLoanAmount.PaidAmount = paidAmount - collectionLine.Amount;
+                                    updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - (paidAmount - collectionLine.Amount);
                                     db.SubmitChanges();
                                 }
                             }

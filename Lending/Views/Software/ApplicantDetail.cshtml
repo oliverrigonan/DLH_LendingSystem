@@ -408,11 +408,14 @@
                     <h4 class="modal-title">Change Photo</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label>Choose an image file</label><br />
+                        <input type="file" class="form-control" id="applicantImage">
+                    </div>
                     <div align="center" id="divImage">
                         <img id="imageDisplay" src="#" class="img-responsive img-thumbnail" />
                         <hr />
                     </div>
-                    <input type="file" class="form-control" id="applicantImage">
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnOkChangePhoto" onclick="btnOkChangePhotoOnclick()"><i class="fa fa-check fa-fw"></i> Update</button>

@@ -102,7 +102,6 @@ namespace Lending.Business
                                   Applicant = d.mstApplicant.ApplicantFullName,
                                   Particulars = d.Particulars,
                                   PaidAmount = d.PaidAmount,
-                                  IsCleared = d.IsCleared,
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser2.FullName,
                                   VerifiedByUserId = d.VerifiedByUserId,

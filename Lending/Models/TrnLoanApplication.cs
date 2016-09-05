@@ -22,6 +22,7 @@ namespace Lending.Models
         public Int32 AreaId { get; set; }
         public String Area { get; set; }
         public String Promises { get; set; }
+        public String Particulars { get; set; }
         public Decimal LoanAmount { get; set; }
         public Decimal PaidAmount { get; set; }
         public Decimal BalanceAmount { get; set; }

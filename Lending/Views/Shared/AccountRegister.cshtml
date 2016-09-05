@@ -26,29 +26,34 @@ else
                             <div class="panel-body">
                                 <div class="form-group">
                                     <div class="col-md-12">
-                                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "First Name" })
+                                        <label>Full name</label><br />
+                                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", @placeholder = "Full Name" })
                                         @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <hr />
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Username</label><br />
                                         @Html.TextBoxFor(m => m.Username, new { @class = "form-control", @placeholder = "Username" })
                                         @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Password</label><br />
                                         @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
                                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-md-12">
+                                        <label>Confirm Password</label><br />
                                         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password" })
                                         @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+                            </div>
+                            <div class="panel-footer">
                                 <div class="form-group">
                                     <div class="col-md-12">
                                         <input type="submit" class="btn btn-success btn-lg btn-block" value="Register" />

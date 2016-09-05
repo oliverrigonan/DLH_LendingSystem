@@ -108,9 +108,6 @@ namespace Lending.Data
     partial void InserttrnLoanApplication(trnLoanApplication instance);
     partial void UpdatetrnLoanApplication(trnLoanApplication instance);
     partial void DeletetrnLoanApplication(trnLoanApplication instance);
-    partial void InserttrnLoanApplicationLine(trnLoanApplicationLine instance);
-    partial void UpdatetrnLoanApplicationLine(trnLoanApplicationLine instance);
-    partial void DeletetrnLoanApplicationLine(trnLoanApplicationLine instance);
     #endregion
 		
 		public LendingDataContext() : 
@@ -348,14 +345,6 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<trnLoanApplication>();
-			}
-		}
-		
-		public System.Data.Linq.Table<trnLoanApplicationLine> trnLoanApplicationLines
-		{
-			get
-			{
-				return this.GetTable<trnLoanApplicationLine>();
 			}
 		}
 	}
@@ -8616,8 +8605,6 @@ namespace Lending.Data
 		
 		private decimal _PaidAmount;
 		
-		private bool _IsCleared;
-		
 		private int _PreparedByUserId;
 		
 		private int _VerifiedByUserId;
@@ -8668,8 +8655,6 @@ namespace Lending.Data
     partial void OnParticularsChanged();
     partial void OnPaidAmountChanging(decimal value);
     partial void OnPaidAmountChanged();
-    partial void OnIsClearedChanging(bool value);
-    partial void OnIsClearedChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
     partial void OnVerifiedByUserIdChanging(int value);
@@ -8867,26 +8852,6 @@ namespace Lending.Data
 					this._PaidAmount = value;
 					this.SendPropertyChanged("PaidAmount");
 					this.OnPaidAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCleared", DbType="Bit NOT NULL")]
-		public bool IsCleared
-		{
-			get
-			{
-				return this._IsCleared;
-			}
-			set
-			{
-				if ((this._IsCleared != value))
-				{
-					this.OnIsClearedChanging(value);
-					this.SendPropertyChanging();
-					this._IsCleared = value;
-					this.SendPropertyChanged("IsCleared");
-					this.OnIsClearedChanged();
 				}
 			}
 		}
@@ -10287,6 +10252,8 @@ namespace Lending.Data
 		
 		private string _Promises;
 		
+		private string _Particulars;
+		
 		private decimal _LoanAmount;
 		
 		private decimal _PaidAmount;
@@ -10314,8 +10281,6 @@ namespace Lending.Data
 		private EntitySet<trnCollectionLine> _trnCollectionLines;
 		
 		private EntitySet<trnJournal> _trnJournals;
-		
-		private EntitySet<trnLoanApplicationLine> _trnLoanApplicationLines;
 		
 		private EntityRef<mstAccount> _mstAccount;
 		
@@ -10357,6 +10322,8 @@ namespace Lending.Data
     partial void OnAreaIdChanged();
     partial void OnPromisesChanging(string value);
     partial void OnPromisesChanged();
+    partial void OnParticularsChanging(string value);
+    partial void OnParticularsChanged();
     partial void OnLoanAmountChanging(decimal value);
     partial void OnLoanAmountChanged();
     partial void OnPaidAmountChanging(decimal value);
@@ -10386,7 +10353,6 @@ namespace Lending.Data
 			this._trnLoanRequirements = new EntitySet<trnLoanRequirement>(new Action<trnLoanRequirement>(this.attach_trnLoanRequirements), new Action<trnLoanRequirement>(this.detach_trnLoanRequirements));
 			this._trnCollectionLines = new EntitySet<trnCollectionLine>(new Action<trnCollectionLine>(this.attach_trnCollectionLines), new Action<trnCollectionLine>(this.detach_trnCollectionLines));
 			this._trnJournals = new EntitySet<trnJournal>(new Action<trnJournal>(this.attach_trnJournals), new Action<trnJournal>(this.detach_trnJournals));
-			this._trnLoanApplicationLines = new EntitySet<trnLoanApplicationLine>(new Action<trnLoanApplicationLine>(this.attach_trnLoanApplicationLines), new Action<trnLoanApplicationLine>(this.detach_trnLoanApplicationLines));
 			this._mstAccount = default(EntityRef<mstAccount>);
 			this._mstApplicant = default(EntityRef<mstApplicant>);
 			this._mstArea = default(EntityRef<mstArea>);
@@ -10591,6 +10557,26 @@ namespace Lending.Data
 					this._Promises = value;
 					this.SendPropertyChanged("Promises");
 					this.OnPromisesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Particulars", DbType="NVarChar(255)")]
+		public string Particulars
+		{
+			get
+			{
+				return this._Particulars;
+			}
+			set
+			{
+				if ((this._Particulars != value))
+				{
+					this.OnParticularsChanging(value);
+					this.SendPropertyChanging();
+					this._Particulars = value;
+					this.SendPropertyChanged("Particulars");
+					this.OnParticularsChanged();
 				}
 			}
 		}
@@ -10871,19 +10857,6 @@ namespace Lending.Data
 			set
 			{
 				this._trnJournals.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanApplicationLine", Storage="_trnLoanApplicationLines", ThisKey="Id", OtherKey="LoanId")]
-		public EntitySet<trnLoanApplicationLine> trnLoanApplicationLines
-		{
-			get
-			{
-				return this._trnLoanApplicationLines;
-			}
-			set
-			{
-				this._trnLoanApplicationLines.Assign(value);
 			}
 		}
 		
@@ -11247,193 +11220,6 @@ namespace Lending.Data
 		{
 			this.SendPropertyChanging();
 			entity.trnLoanApplication = null;
-		}
-		
-		private void attach_trnLoanApplicationLines(trnLoanApplicationLine entity)
-		{
-			this.SendPropertyChanging();
-			entity.trnLoanApplication = this;
-		}
-		
-		private void detach_trnLoanApplicationLines(trnLoanApplicationLine entity)
-		{
-			this.SendPropertyChanging();
-			entity.trnLoanApplication = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanApplicationLines")]
-	public partial class trnLoanApplicationLine : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _LoanId;
-		
-		private string _Particulars;
-		
-		private decimal _Amount;
-		
-		private EntityRef<trnLoanApplication> _trnLoanApplication;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnLoanIdChanging(int value);
-    partial void OnLoanIdChanged();
-    partial void OnParticularsChanging(string value);
-    partial void OnParticularsChanged();
-    partial void OnAmountChanging(decimal value);
-    partial void OnAmountChanged();
-    #endregion
-		
-		public trnLoanApplicationLine()
-		{
-			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoanId", DbType="Int NOT NULL")]
-		public int LoanId
-		{
-			get
-			{
-				return this._LoanId;
-			}
-			set
-			{
-				if ((this._LoanId != value))
-				{
-					if (this._trnLoanApplication.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnLoanIdChanging(value);
-					this.SendPropertyChanging();
-					this._LoanId = value;
-					this.SendPropertyChanged("LoanId");
-					this.OnLoanIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Particulars", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string Particulars
-		{
-			get
-			{
-				return this._Particulars;
-			}
-			set
-			{
-				if ((this._Particulars != value))
-				{
-					this.OnParticularsChanging(value);
-					this.SendPropertyChanging();
-					this._Particulars = value;
-					this.SendPropertyChanged("Particulars");
-					this.OnParticularsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,0) NOT NULL")]
-		public decimal Amount
-		{
-			get
-			{
-				return this._Amount;
-			}
-			set
-			{
-				if ((this._Amount != value))
-				{
-					this.OnAmountChanging(value);
-					this.SendPropertyChanging();
-					this._Amount = value;
-					this.SendPropertyChanged("Amount");
-					this.OnAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanApplicationLine", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public trnLoanApplication trnLoanApplication
-		{
-			get
-			{
-				return this._trnLoanApplication.Entity;
-			}
-			set
-			{
-				trnLoanApplication previousValue = this._trnLoanApplication.Entity;
-				if (((previousValue != value) 
-							|| (this._trnLoanApplication.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._trnLoanApplication.Entity = null;
-						previousValue.trnLoanApplicationLines.Remove(this);
-					}
-					this._trnLoanApplication.Entity = value;
-					if ((value != null))
-					{
-						value.trnLoanApplicationLines.Add(this);
-						this._LoanId = value.Id;
-					}
-					else
-					{
-						this._LoanId = default(int);
-					}
-					this.SendPropertyChanged("trnLoanApplication");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 }

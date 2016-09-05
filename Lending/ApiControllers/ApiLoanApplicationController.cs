@@ -36,6 +36,7 @@ namespace Lending.ApiControllers
                                        AreaId = d.AreaId,
                                        Area = d.mstArea.Area,
                                        Promises = d.Promises,
+                                       Particulars = d.Particulars,
                                        LoanAmount = d.LoanAmount,
                                        PaidAmount = d.PaidAmount,
                                        BalanceAmount = d.BalanceAmount,
@@ -80,6 +81,7 @@ namespace Lending.ApiControllers
                                       AreaId = d.AreaId,
                                       Area = d.mstArea.Area,
                                       Promises = d.Promises,
+                                      Particulars = d.Particulars,
                                       LoanAmount = d.LoanAmount,
                                       PaidAmount = d.PaidAmount,
                                       BalanceAmount = d.BalanceAmount,
@@ -126,6 +128,7 @@ namespace Lending.ApiControllers
                                       AreaId = d.AreaId,
                                       Area = d.mstArea.Area,
                                       Promises = d.Promises,
+                                      Particulars = d.Particulars,
                                       LoanAmount = d.LoanAmount,
                                       PaidAmount = d.PaidAmount,
                                       BalanceAmount = d.BalanceAmount,
@@ -187,6 +190,7 @@ namespace Lending.ApiControllers
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newLoanApplication.AreaId = (from d in db.mstAreas select d.Id).FirstOrDefault();
                 newLoanApplication.Promises = "NA";
+                newLoanApplication.Particulars = "NA";
                 newLoanApplication.LoanAmount = 0;
                 newLoanApplication.PaidAmount = 0;
                 newLoanApplication.BalanceAmount = 0;
@@ -225,13 +229,6 @@ namespace Lending.ApiControllers
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                        Decimal totalLoanApplicationLinesAmount = 0;
-                        var loanApplicationLines = from d in db.trnLoanApplicationLines where d.LoanId == Convert.ToInt32(id) select d;
-                        if (loanApplicationLines.Any())
-                        {
-                            totalLoanApplicationLinesAmount = loanApplicationLines.Sum(d => d.Amount);
-                        }
-
                         Decimal totalCollectionLinesPaidAmount = 0;
                         var collectionLines = from d in db.trnCollectionLines where d.LoanId == Convert.ToInt32(id) where d.trnCollection.IsLocked == true select d;
                         if (collectionLines.Any())
@@ -247,9 +244,10 @@ namespace Lending.ApiControllers
                         lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                         lockLoanApplication.AreaId = loanApplication.AreaId;
                         lockLoanApplication.Promises = loanApplication.Promises;
-                        lockLoanApplication.LoanAmount = totalLoanApplicationLinesAmount;
+                        lockLoanApplication.Particulars = loanApplication.Particulars;
+                        lockLoanApplication.LoanAmount = loanApplication.LoanAmount;
                         lockLoanApplication.PaidAmount = totalCollectionLinesPaidAmount;
-                        lockLoanApplication.BalanceAmount = totalLoanApplicationLinesAmount - totalCollectionLinesPaidAmount;
+                        lockLoanApplication.BalanceAmount = loanApplication.LoanAmount - totalCollectionLinesPaidAmount;
                         lockLoanApplication.CollectorId = loanApplication.CollectorId;
                         lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
                         lockLoanApplication.VerifiedByUserId = loanApplication.VerifiedByUserId;

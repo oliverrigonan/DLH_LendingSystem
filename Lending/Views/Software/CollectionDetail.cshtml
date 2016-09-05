@@ -129,10 +129,6 @@
                                         <label>Verified by</label><br />
                                         <div id="collectionVerifiedBy"></div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Is Cleared</label><br />
-                                        <input type="checkbox" id="collectionIsCleared" />
-                                    </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
@@ -614,7 +610,6 @@
                 collectionObject.AccountId = cboCollectionAccount.selectedItem["Id"];
                 collectionObject.ApplicantId = cboCollectionApplicant.selectedItem["Id"];
                 collectionObject.Particulars = document.getElementById("collectionParticulars").value;
-                collectionObject.IsCleared = document.getElementById("collectionIsCleared").checked;
                 collectionObject.PreparedByUserId = cboCollectionPreparedByUser.selectedItem["Id"];
                 collectionObject.VerifiedByUserId = cboCollectionVerifiedBy.selectedItem["Id"];
                 var collectionData = JSON.stringify(collectionObject);
@@ -1308,7 +1303,6 @@
                         document.getElementById("collectionParticulars").value = collectionResult.Particulars;
                         cboCollectionPreparedByUser.selectedValue = collectionResult.PreparedByUser;
                         cboCollectionVerifiedBy.selectedValue = collectionResult.VerifiedByUser;
-                        document.getElementById("collectionIsCleared").checked = collectionResult.IsCleared;
                         document.getElementById('stampCreatedBy').innerHTML = collectionResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = collectionResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = collectionResult.UpdatedByUser;
@@ -1325,7 +1319,6 @@
                             cboCollectionPreparedByUser.disabled = true;
                             cboCollectionVerifiedBy.disabled = true;
                             document.getElementById("collectionParticulars").disabled = true;
-                            document.getElementById("collectionIsCleared").disabled = true;
 
                             $("#btnAddCollectionLines").prop("disabled", true);
                             $("#btnAddCollectables").prop("disabled", true);

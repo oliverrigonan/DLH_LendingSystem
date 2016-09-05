@@ -59,37 +59,41 @@ namespace Lending.Reports
                 if (collections.Any())
                 {
                     // table data
-                    PdfPTable collectionData = new PdfPTable(2);
-                    float[] collectionDataWidthCells = new float[] { 20f, 80f };
+                    PdfPTable collectionData = new PdfPTable(4);
+                    float[] collectionDataWidthCells = new float[] { 15f, 45, 20f, 20f };
                     collectionData.SetWidths(collectionDataWidthCells);
                     collectionData.WidthPercentage = 100;
                     collectionData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f });
                     collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstApplicant.ApplicantFullName, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Number", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionNumber, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Date", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionDate.ToLongDateString(), fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Number", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionNumber, fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f });
                     collectionData.AddCell(new PdfPCell(new Phrase("Branch", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstBranch.Branch, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Date", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionDate.ToLongDateString(), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().Particulars, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
                     document.Add(collectionData);
 
                     document.Add(Chunk.NEWLINE);
 
                     // table collection lines data
-                    PdfPTable collectionLinesData = new PdfPTable(5);
-                    float[] collectionLinesDataWidthCells = new float[] { 15f, 15f, 25f, 25f, 20f };
+                    PdfPTable collectionLinesData = new PdfPTable(7);
+                    float[] collectionLinesDataWidthCells = new float[] { 12f, 10f, 19f, 14f, 15f, 15f, 15f };
                     collectionLinesData.SetWidths(collectionLinesDataWidthCells);
                     collectionLinesData.WidthPercentage = 100;
                     collectionLinesData.AddCell(new PdfPCell(new Phrase("Loan Number", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     collectionLinesData.AddCell(new PdfPCell(new Phrase("Loan Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     collectionLinesData.AddCell(new PdfPCell(new Phrase("Collected By", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     collectionLinesData.AddCell(new PdfPCell(new Phrase("Pay Type", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionLinesData.AddCell(new PdfPCell(new Phrase("Loan Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     collectionLinesData.AddCell(new PdfPCell(new Phrase("Paid Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionLinesData.AddCell(new PdfPCell(new Phrase("Balance", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
                     // collection lines
-                    var collectionLines = from d in db.trnCollectionLines
+                    var collectionLines = from d in db.trnCollectionLines.OrderByDescending(d => d.Id)
                                           where d.CollectionId == collectionId
                                           select new Models.TrnCollectionLines
                                           {
@@ -107,11 +111,16 @@ namespace Lending.Reports
                                               CheckBank = d.CheckBank,
                                               Particulars = d.Particulars,
                                               Amount = d.Amount,
+                                              LoanAmount = d.trnLoanApplication.LoanAmount,
+                                              PaidAmount = d.trnLoanApplication.PaidAmount,
+                                              Balance = d.trnLoanApplication.BalanceAmount,
                                               CollectedByCollectorId = d.CollectedByCollectorId,
                                               CollectedByCollector = d.mstCollector.Collector
                                           };
 
+                    Decimal totalLoanAmount = 0;
                     Decimal totalPaidAmount = 0;
+                    Decimal totalBalanceAmount = 0;
 
                     if (collectionLines.Any())
                     {
@@ -121,9 +130,14 @@ namespace Lending.Reports
                             collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.LoanDate, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
                             collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.CollectedByCollector, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
                             collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.Paytype, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
-                            collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.Amount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                            collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.LoanAmount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                            collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.PaidAmount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                            collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.Balance.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
 
-                            totalPaidAmount += collectionLine.Amount;
+                            totalLoanAmount += collectionLine.LoanAmount;
+                            totalPaidAmount += collectionLine.PaidAmount;
+                            totalBalanceAmount += collectionLine.Balance;
+                            
                         }
                     }
 
@@ -131,35 +145,19 @@ namespace Lending.Reports
 
                     document.Add(Chunk.NEWLINE);
 
-                    // table collection lines total paid amount
-                    PdfPTable collectionLinesTotalAmount = new PdfPTable(2);
-                    float[] collectionLinesTotalAmountWidthCells = new float[] { 80f, 20f };
-                    collectionLinesTotalAmount.SetWidths(collectionLinesTotalAmountWidthCells);
-                    collectionLinesTotalAmount.WidthPercentage = 100;
-                    collectionLinesTotalAmount.AddCell(new PdfPCell(new Phrase("Total", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                    collectionLinesTotalAmount.AddCell(new PdfPCell(new Phrase(totalPaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
-                    document.Add(collectionLinesTotalAmount);
-
-                    document.Add(line);
-
-                    document.Add(Chunk.NEWLINE);
-
-                    var loanApplications = from d in db.trnLoanApplications where d.ApplicantId == collections.FirstOrDefault().ApplicantId select d;
-
-                    if (loanApplications.Any())
-                    {
-                        PdfPTable collectionBalance = new PdfPTable(2);
-                        float[] collectionBalanceWidthCells = new float[] { 80f, 20f };
-                        collectionBalance.SetWidths(collectionBalanceWidthCells);
-                        collectionBalance.WidthPercentage = 100;
-                        collectionBalance.AddCell(new PdfPCell(new Phrase("Total Loan Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                        collectionBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().LoanAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                        collectionBalance.AddCell(new PdfPCell(new Phrase("Total Collected / Paid Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                        collectionBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().PaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                        collectionBalance.AddCell(new PdfPCell(new Phrase("Balance Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f });
-                        collectionBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().BalanceAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f });
-                        document.Add(collectionBalance);
-                    }
+                    // table collection lines total data
+                    PdfPTable collectionLinesTotalData = new PdfPTable(7);
+                    float[] collectionLinesTotalDataWidthCells = new float[] { 12f, 10f, 19f, 14f, 15f, 15f, 15f };
+                    collectionLinesTotalData.SetWidths(collectionLinesTotalDataWidthCells);
+                    collectionLinesTotalData.WidthPercentage = 100;
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase("", fontArial12)) {Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase("Total", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase(totalLoanAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase(totalPaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    collectionLinesTotalData.AddCell(new PdfPCell(new Phrase(totalBalanceAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    document.Add(collectionLinesTotalData);
 
                     document.Add(Chunk.NEWLINE);
 
