@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -18,6 +20,18 @@ namespace Lending
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            //Thread thread = new Thread(DoMyBackgroundWorkOnNewThread);
+            //thread.Start();
+        }
+
+        private Data.LendingDataContext db = new Data.LendingDataContext();
+        public void DoMyBackgroundWorkOnNewThread()
+        {
+            //while (true)
+            //{
+            //    Thread.Sleep(5000);
+            //}
         }
     }
 }

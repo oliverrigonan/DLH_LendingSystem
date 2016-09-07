@@ -35,6 +35,7 @@ namespace Lending.Reports
                 Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
                 Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
                 Font fontArial12 = FontFactory.GetFont("Arial", 12);
+                Font fontArial12White = FontFactory.GetFont("Arial", 13, BaseColor.WHITE);
 
                 // line
                 Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
@@ -52,7 +53,15 @@ namespace Lending.Reports
                 collectionHeader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
                 document.Add(collectionHeader);
 
+                // table collection lines data
+                PdfPTable collectionHeaderLabel = new PdfPTable(1);
+                float[] collectionHeaderLabelWidthCells = new float[] { 100f };
+                collectionHeaderLabel.SetWidths(collectionHeaderLabelWidthCells);
+                collectionHeaderLabel.WidthPercentage = 100;
+                collectionHeaderLabel.AddCell(new PdfPCell(new Phrase("Header Detail", fontArial12White)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 9f, PaddingLeft = 5f, BackgroundColor = BaseColor.BLACK });
+
                 document.Add(line);
+                document.Add(collectionHeaderLabel);
 
                 // queries
                 var collections = from d in db.trnCollections where d.Id == collectionId select d;
@@ -60,24 +69,22 @@ namespace Lending.Reports
                 {
                     // table data
                     PdfPTable collectionData = new PdfPTable(4);
-                    float[] collectionDataWidthCells = new float[] { 15f, 45, 20f, 20f };
+                    float[] collectionDataWidthCells = new float[] { 15f, 40, 20f, 25f };
                     collectionData.SetWidths(collectionDataWidthCells);
                     collectionData.WidthPercentage = 100;
-                    collectionData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstApplicant.ApplicantFullName, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Number", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionNumber, fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Branch", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstBranch.Branch, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Date", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionDate.ToLongDateString(), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().Particulars, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstApplicant.ApplicantFullName, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Number", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionNumber, fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Branch", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstBranch.Branch, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Collection Date", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionDate.ToLongDateString(), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().Particulars, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                     document.Add(collectionData);
-
-                    document.Add(Chunk.NEWLINE);
 
                     // table collection lines data
                     PdfPTable collectionLinesData = new PdfPTable(7);
@@ -141,6 +148,18 @@ namespace Lending.Reports
                         }
                     }
 
+                    document.Add(Chunk.NEWLINE);
+                    document.Add(line);
+
+                    // table collection lines data
+                    PdfPTable collectionHeader2Label = new PdfPTable(1);
+                    float[] collectionHeaderLabel2WidthCells = new float[] { 100f };
+                    collectionHeader2Label.SetWidths(collectionHeaderLabel2WidthCells);
+                    collectionHeader2Label.WidthPercentage = 100;
+                    collectionHeader2Label.AddCell(new PdfPCell(new Phrase("Paid Amounts", fontArial12White)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 9f, PaddingLeft = 5f, BackgroundColor = BaseColor.BLACK });
+
+                    document.Add(collectionHeader2Label);
+                    document.Add(line);
                     document.Add(collectionLinesData);
 
                     document.Add(Chunk.NEWLINE);
@@ -174,17 +193,17 @@ namespace Lending.Reports
                     tableFooter.WidthPercentage = 100;
                     float[] widthsCells2 = new float[] { 40, 20, 40 };
                     tableFooter.SetWidths(widthsCells2);
-                    tableFooter.AddCell(new PdfPCell(new Phrase("Prepared by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
+                    tableFooter.AddCell(new PdfPCell(new Phrase("Prepared by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingLeft = 5f, PaddingRight = 5f });
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0 });
-                    tableFooter.AddCell(new PdfPCell(new Phrase("Verified by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
+                    tableFooter.AddCell(new PdfPCell(new Phrase("Verified by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingLeft = 5f, PaddingRight = 5f });
 
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 10f, PaddingBottom = 10f });
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 10f, PaddingBottom = 10f });
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 10f, PaddingBottom = 10f });
 
-                    tableFooter.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstUser.FullName)) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
+                    tableFooter.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstUser.FullName)) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 5f });
-                    tableFooter.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstUser1.FullName)) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
+                    tableFooter.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstUser1.FullName)) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                     document.Add(tableFooter);
                 }
 
