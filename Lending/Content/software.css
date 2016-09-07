@@ -58,3 +58,18 @@ td.td-label {
 a:hover, a:focus {
     text-decoration: none;
 }
+
+button,
+.btn,
+input,
+textarea,
+.panel,
+.wj-control,
+.input-group-addon,
+.modal-content,
+img,
+.nav-pills > li > a,
+.nav-tabs > li > a,
+.list-group > a {
+    border-radius: 0 !important;
+}
