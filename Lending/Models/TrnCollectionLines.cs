@@ -11,6 +11,9 @@ namespace Lending.Models
         [Key]
         public Int32 Id { get; set; }
         public Int32 CollectionId { get; set; }
+        public String CollectionNumber { get; set; }
+        public String CollectionDate { get; set; }
+        public Int32 BranchId { get; set; }
         public Int32 AccountId { get; set; }
         public String Account { get; set; }
         public Int32 LoanId { get; set; }

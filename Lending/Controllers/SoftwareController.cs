@@ -109,6 +109,25 @@ namespace Lending.Controllers
         }
 
         [Authorize]
+        public ActionResult DisbursementList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult DisbursementDetail(Int32? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [Authorize]
         public ActionResult Reports()
         {
             return View();

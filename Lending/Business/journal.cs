@@ -58,7 +58,7 @@ namespace Lending.Business
                         newLoanJournal.JournalDate = Convert.ToDateTime(loanApplication.LoanDate);
                         newLoanJournal.BranchId = loanApplication.BranchId;
                         newLoanJournal.AccountId = loanApplication.AccountId;
-                        newLoanJournal.Particulars = "NA";
+                        newLoanJournal.Particulars = loanApplication.Particulars;
                         newLoanJournal.ReleasedAmount = loanApplication.LoanAmount;
                         newLoanJournal.ReceivedAmount = 0;
                         newLoanJournal.DocumentReference = "Loan - " + loanApplication.LoanNumber;
@@ -87,48 +87,45 @@ namespace Lending.Business
         // collection journal
         public void postCollectionJournal(Int32 collectionId)
         {
-            var collections = from d in db.trnCollections
-                              where d.Id == collectionId
-                              select new Models.TrnCollection
-                              {
-                                  Id = d.Id,
-                                  CollectionNumber = d.CollectionNumber,
-                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  BranchId = d.BranchId,
-                                  Branch = d.mstBranch.Branch,
-                                  AccountId = d.AccountId,
-                                  Account = d.mstAccount.Account,
-                                  ApplicantId = d.ApplicantId,
-                                  Applicant = d.mstApplicant.ApplicantFullName,
-                                  Particulars = d.Particulars,
-                                  PaidAmount = d.PaidAmount,
-                                  PreparedByUserId = d.PreparedByUserId,
-                                  PreparedByUser = d.mstUser2.FullName,
-                                  VerifiedByUserId = d.VerifiedByUserId,
-                                  VerifiedByUser = d.mstUser3.FullName,
-                                  IsLocked = d.IsLocked,
-                                  CreatedByUserId = d.CreatedByUserId,
-                                  CreatedByUser = d.mstUser.FullName,
-                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                  UpdatedByUserId = d.UpdatedByUserId,
-                                  UpdatedByUser = d.mstUser1.FullName,
-                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                              };
+            var collectionLines = from d in db.trnCollectionLines
+                                  where d.CollectionId == collectionId
+                                  select new Models.TrnCollectionLines
+                                  {
+                                      Id = d.Id,
+                                      CollectionId = d.CollectionId,
+                                      CollectionNumber = d.trnCollection.CollectionNumber,
+                                      CollectionDate = d.trnCollection.CollectionDate.ToShortDateString(),
+                                      BranchId = d.trnCollection.BranchId,
+                                      AccountId = d.AccountId,
+                                      Account = d.mstAccount.Account,
+                                      LoanId = d.LoanId,
+                                      LoanNumber = d.trnLoanApplication.LoanNumber,
+                                      LoanDate = d.trnLoanApplication.LoanDate.ToShortDateString(),
+                                      PaytypeId = d.PaytypeId,
+                                      Paytype = d.mstPayType.PayType,
+                                      CheckNumber = d.CheckNumber,
+                                      CheckDate = d.CheckDate.ToShortDateString(),
+                                      CheckBank = d.CheckBank,
+                                      Particulars = d.Particulars,
+                                      Amount = d.Amount,
+                                      CollectedByCollectorId = d.CollectedByCollectorId,
+                                      CollectedByCollector = d.mstCollector.Collector
+                                  };
 
-            if (collections.Any())
+            if (collectionLines.Any())
             {
-                foreach (var collection in collections)
+                foreach (var collectionLine in collectionLines)
                 {
-                    if (collection.PaidAmount > 0)
+                    if (collectionLine.Amount > 0)
                     {
                         Data.trnJournal newCollectionJournal = new Data.trnJournal();
-                        newCollectionJournal.JournalDate = Convert.ToDateTime(collection.CollectionDate);
-                        newCollectionJournal.BranchId = collection.BranchId;
-                        newCollectionJournal.AccountId = collection.AccountId;
-                        newCollectionJournal.Particulars = "NA";
+                        newCollectionJournal.JournalDate = Convert.ToDateTime(collectionLine.CollectionDate);
+                        newCollectionJournal.BranchId = collectionLine.BranchId;
+                        newCollectionJournal.AccountId = collectionLine.AccountId;
+                        newCollectionJournal.Particulars = collectionLine.Particulars;
                         newCollectionJournal.ReleasedAmount = 0;
-                        newCollectionJournal.ReceivedAmount = collection.PaidAmount;
-                        newCollectionJournal.DocumentReference = "Collection - " + collection.CollectionNumber;
+                        newCollectionJournal.ReceivedAmount = collectionLine.Amount;
+                        newCollectionJournal.DocumentReference = "Collection - " + collectionLine.CollectionNumber;
                         newCollectionJournal.LoanId = null;
                         newCollectionJournal.CollectionId = collectionId;
                         newCollectionJournal.DisbursementId = null;

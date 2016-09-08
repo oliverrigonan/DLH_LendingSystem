@@ -71,21 +71,6 @@ namespace Lending.ApiControllers
                         db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
                         db.SubmitChanges();
 
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
-                        Decimal totalCollectionPaidAmount = 0;
-                        var collectionLinesForTotalPaidAmount = from d in db.trnCollectionLines where d.CollectionId == collectionLine.CollectionId select d;
-                        if (collectionLinesForTotalPaidAmount.Any())
-                        {
-                            totalCollectionPaidAmount = collectionLinesForTotalPaidAmount.Sum(d => d.Amount);
-                        }
-
-                        var updateCollectionPaidAmount = collection.FirstOrDefault();
-                        updateCollectionPaidAmount.PaidAmount = totalCollectionPaidAmount;
-                        updateCollectionPaidAmount.UpdatedByUserId = userId;
-                        updateCollectionPaidAmount.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
-
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                     else
@@ -133,21 +118,6 @@ namespace Lending.ApiControllers
                             updateCollectionApplicationLine.CollectedByCollectorId = collectionLine.CollectedByCollectorId;
                             db.SubmitChanges();
 
-                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
-                            Decimal totalCollectionPaidAmount = 0;
-                            var collectionLinesForTotalPaidAmount = from d in db.trnCollectionLines where d.CollectionId == collectionLine.CollectionId select d;
-                            if (collectionLinesForTotalPaidAmount.Any())
-                            {
-                                totalCollectionPaidAmount = collectionLinesForTotalPaidAmount.Sum(d => d.Amount);
-                            }
-
-                            var updateCollectionPaidAmount = collection.FirstOrDefault();
-                            updateCollectionPaidAmount.PaidAmount = totalCollectionPaidAmount;
-                            updateCollectionPaidAmount.UpdatedByUserId = userId;
-                            updateCollectionPaidAmount.UpdatedDateTime = DateTime.Now;
-                            db.SubmitChanges();
-
                             return Request.CreateResponse(HttpStatusCode.OK);
                         }
                         else
@@ -188,21 +158,6 @@ namespace Lending.ApiControllers
                         if (collectionLines.Any())
                         {
                             db.trnCollectionLines.DeleteOnSubmit(collectionLines.First());
-                            db.SubmitChanges();
-
-                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
-                            Decimal totalCollectionPaidAmount = 0;
-                            var collectionLinesForTotalPaidAmount = from d in db.trnCollectionLines where d.CollectionId == Convert.ToInt32(collectionId) select d;
-                            if (collectionLinesForTotalPaidAmount.Any())
-                            {
-                                totalCollectionPaidAmount = collectionLinesForTotalPaidAmount.Sum(d => d.Amount);
-                            }
-
-                            var updateCollectionPaidAmount = collection.FirstOrDefault();
-                            updateCollectionPaidAmount.PaidAmount = totalCollectionPaidAmount;
-                            updateCollectionPaidAmount.UpdatedByUserId = userId;
-                            updateCollectionPaidAmount.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();
                         }
 

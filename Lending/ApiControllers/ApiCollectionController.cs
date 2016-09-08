@@ -14,6 +14,27 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
+        // get total amount in collection lines
+        public Decimal getTotalPaidAmount(Int32 collectionId) 
+        {
+            Decimal totalPaidAmount = 0;
+
+            var collections = from d in db.trnCollections where d.Id == collectionId select d;
+            if (collections.Any())
+            {
+                if (collections.FirstOrDefault().IsLocked)
+                {
+                    var collectionLines = from d in db.trnCollectionLines where d.CollectionId == collectionId select d;
+                    if (collectionLines.Any())
+                    {
+                        totalPaidAmount = collectionLines.Sum(d => d.Amount);
+                    }
+                }
+            }
+
+            return totalPaidAmount;
+        }
+
         // collection list
         [Authorize]
         [HttpGet]
@@ -29,12 +50,10 @@ namespace Lending.ApiControllers
                                   CollectionDate = d.CollectionDate.ToShortDateString(),
                                   BranchId = d.BranchId,
                                   Branch = d.mstBranch.Branch,
-                                  AccountId = d.AccountId,
-                                  Account = d.mstAccount.Account,
                                   ApplicantId = d.ApplicantId,
                                   Applicant = d.mstApplicant.ApplicantFullName,
                                   Particulars = d.Particulars,
-                                  PaidAmount = d.PaidAmount,
+                                  PaidAmount = getTotalPaidAmount(d.Id),
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser2.FullName,
                                   VerifiedByUserId = d.VerifiedByUserId,
@@ -66,12 +85,10 @@ namespace Lending.ApiControllers
                                  CollectionDate = d.CollectionDate.ToShortDateString(),
                                  BranchId = d.BranchId,
                                  Branch = d.mstBranch.Branch,
-                                 AccountId = d.AccountId,
-                                 Account = d.mstAccount.Account,
                                  ApplicantId = d.ApplicantId,
                                  Applicant = d.mstApplicant.ApplicantFullName,
                                  Particulars = d.Particulars,
-                                 PaidAmount = d.PaidAmount,
+                                 PaidAmount = getTotalPaidAmount(d.Id),
                                  PreparedByUserId = d.PreparedByUserId,
                                  PreparedByUser = d.mstUser2.FullName,
                                  VerifiedByUserId = d.VerifiedByUserId,
@@ -124,10 +141,8 @@ namespace Lending.ApiControllers
                 newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10); ;
                 newCollection.CollectionDate = DateTime.Today;
                 newCollection.BranchId = (from d in db.mstBranches select d.Id).FirstOrDefault();
-                newCollection.AccountId = (from d in db.mstAccounts select d.Id).FirstOrDefault();
                 newCollection.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newCollection.Particulars = "NA";
-                newCollection.PaidAmount = 0;
                 newCollection.PreparedByUserId = userId;
                 newCollection.VerifiedByUserId = userId;
                 newCollection.IsLocked = false;
@@ -162,6 +177,18 @@ namespace Lending.ApiControllers
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
+                        var lockCollection = collections.FirstOrDefault();
+                        lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                        lockCollection.BranchId = collection.BranchId;
+                        lockCollection.ApplicantId = collection.ApplicantId;
+                        lockCollection.Particulars = collection.Particulars;
+                        lockCollection.PreparedByUserId = collection.PreparedByUserId;
+                        lockCollection.VerifiedByUserId = collection.VerifiedByUserId;
+                        lockCollection.IsLocked = true;
+                        lockCollection.UpdatedByUserId = userId;
+                        lockCollection.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
+
                         var collectionLines = from d in db.trnCollectionLines
                                               where d.CollectionId == Convert.ToInt32(id)
                                               select new Models.TrnCollectionLines
@@ -179,26 +206,6 @@ namespace Lending.ApiControllers
                                                   Particulars = d.Particulars,
                                                   Amount = d.Amount
                                               };
-
-                        Decimal totalCollectionLinesPaidAmount = 0;
-                        if (collectionLines.Any())
-                        {
-                            totalCollectionLinesPaidAmount += collectionLines.Sum(d => d.Amount);
-                        }
-
-                        var lockCollection = collections.FirstOrDefault();
-                        lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                        lockCollection.BranchId = collection.BranchId;
-                        lockCollection.AccountId = collection.AccountId;
-                        lockCollection.ApplicantId = collection.ApplicantId;
-                        lockCollection.Particulars = collection.Particulars;
-                        lockCollection.PaidAmount = totalCollectionLinesPaidAmount;
-                        lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                        lockCollection.VerifiedByUserId = collection.VerifiedByUserId;
-                        lockCollection.IsLocked = true;
-                        lockCollection.UpdatedByUserId = userId;
-                        lockCollection.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
 
                         if (collectionLines.Any())
                         {

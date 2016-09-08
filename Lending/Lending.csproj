@@ -491,6 +491,8 @@
     <Content Include="Views\Software\CollectionList.cshtml" />
     <Content Include="Views\Software\CollectionDetail.cshtml" />
     <Content Include="Views\Software\Reports.cshtml" />
+    <Content Include="Views\Software\DisbursementList.cshtml" />
+    <Content Include="Views\Software\DisbursementDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
