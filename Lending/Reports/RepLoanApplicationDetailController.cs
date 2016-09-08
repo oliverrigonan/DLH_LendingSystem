@@ -113,11 +113,11 @@ namespace Lending.Reports
                     float[] loanApplicationBalanceWidthCells = new float[] { 80f, 20f };
                     loanApplicationBalance.SetWidths(loanApplicationBalanceWidthCells);
                     loanApplicationBalance.WidthPercentage = 100;
-                    loanApplicationBalance.AddCell(new PdfPCell(new Phrase("Total Loan Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanApplicationBalance.AddCell(new PdfPCell(new Phrase("TOTAL LOAN AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanApplicationBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().LoanAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    loanApplicationBalance.AddCell(new PdfPCell(new Phrase("Total Collected / Paid Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanApplicationBalance.AddCell(new PdfPCell(new Phrase("TOTAL COLLECTED / PAID AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanApplicationBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().PaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    loanApplicationBalance.AddCell(new PdfPCell(new Phrase("Balance Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanApplicationBalance.AddCell(new PdfPCell(new Phrase("BALANCE AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanApplicationBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().BalanceAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     document.Add(loanApplicationBalance);
 
