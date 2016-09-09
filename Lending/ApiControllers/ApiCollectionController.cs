@@ -15,21 +15,13 @@ namespace Lending.ApiControllers
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
         // get total amount in collection lines
-        public Decimal getTotalPaidAmount(Int32 collectionId) 
+        public Decimal getTotalPaidAmount(Int32 collectionId)
         {
             Decimal totalPaidAmount = 0;
-
-            var collections = from d in db.trnCollections where d.Id == collectionId select d;
-            if (collections.Any())
+            var collectionLines = from d in db.trnCollectionLines where d.CollectionId == collectionId select d;
+            if (collectionLines.Any())
             {
-                if (collections.FirstOrDefault().IsLocked)
-                {
-                    var collectionLines = from d in db.trnCollectionLines where d.CollectionId == collectionId select d;
-                    if (collectionLines.Any())
-                    {
-                        totalPaidAmount = collectionLines.Sum(d => d.Amount);
-                    }
-                }
+                totalPaidAmount = collectionLines.Sum(d => d.Amount);
             }
 
             return totalPaidAmount;

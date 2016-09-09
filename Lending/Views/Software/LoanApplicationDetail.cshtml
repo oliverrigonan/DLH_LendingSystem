@@ -121,7 +121,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Applicant</label><br />
-                                        <div id="loanApplicationApplicant"></div><span style="color: red" id="noApplicant"></span>
+                                        <div id="loanApplicationApplicant"></div>
                                     </div>
                                     <div class="form-group">
                                         <label>Area</label><br />
@@ -137,10 +137,6 @@
                                             <span class="input-group-addon">&#8369;</span>
                                             <input type="text" id="loanApplicationLoanAmount" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Promise</label><br />
-                                        <textarea class="form-control requiredLoanApplication" rows="5" id="loanApplicationPromise" placeholder="Promise"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label>Collector</label><br />
@@ -513,7 +509,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/applicant/listByLocked',
+                url: '/api/applicant/list',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -535,12 +531,6 @@
                     } else {
                         cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea');
                         getArea();
-
-                        $("#btnLock").prop("disabled", true);
-                        $("#btnLockButtom").prop("disabled", true);
-                        $("#btnAddLoanApplicationLines").prop("disabled", true);
-                        $("#btnAddLoanRequirements").prop("disabled", true);
-                        document.getElementById("noApplicant").innerHTML = "&nbsp; <i class='fa fa-info fa-fw'></i> Applicant Record is Empty or Unlocked";
                     }
 
                     cboloanApplicationApplicant.dispose();
@@ -553,20 +543,6 @@
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName"
                     });
-
-                    if (applicantResults.length > 0) {
-                        $('#loanApplicationApplicant').each(function () {
-                            $(this).css({
-                                "border": ""
-                            });
-                        });
-                    } else {
-                        $('#loanApplicationApplicant').each(function () {
-                            $(this).css({
-                                "border": "1px solid red"
-                            });
-                        });
-                    }
                 }
             });
         }
@@ -726,7 +702,6 @@
                         cboloanApplicationAccount.selectedValue = loanApplicationResult.Account;
                         cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
                         cboloanApplicationArea.selectedValue = loanApplicationResult.Area;
-                        document.getElementById("loanApplicationPromise").value = loanApplicationResult.Promises;
                         document.getElementById("loanApplicationParticulars").value = loanApplicationResult.Particulars;
                         document.getElementById("loanApplicationLoanAmount").value = loanApplicationResult.LoanAmount.toLocaleString();
                         cboloanApplicationCollector.selectedValue = loanApplicationResult.Collector;
@@ -750,10 +725,8 @@
                             cboloanApplicationCollector.disabled = true;
                             cboloanApplicationPreparedBy.disabled = true;
                             cboloanApplicationVerifiedBy.disabled = true;
-                            document.getElementById("loanApplicationPromise").disabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById("loanApplicationLoanAmount").disabled = true;
-                            $("#btnAddLoanApplicationLines").prop("disabled", true);
                             $("#btnAddLoanRequirements").prop("disabled", true);
                             isLocked = true;
                         } else {
@@ -800,7 +773,6 @@
                 document.getElementById("btnLockButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                 $("#btnClose").prop("disabled", true);
                 $("#btnCloseButtom").prop("disabled", true);
-                $("#btnAddLoanApplicationLines").prop("disabled", true);
 
                 var loanApplicationObject = new Object();
                 loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
@@ -809,7 +781,6 @@
                 loanApplicationObject.AccountId = cboloanApplicationAccount.selectedItem["Id"];
                 loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                 loanApplicationObject.AreaId = cboloanApplicationArea.selectedItem["Id"];
-                loanApplicationObject.Promises = document.getElementById("loanApplicationPromise").value;
                 loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
                 loanApplicationObject.LoanAmount = document.getElementById("loanApplicationLoanAmount").value;
                 loanApplicationObject.CollectorId = cboloanApplicationCollector.selectedItem["Id"];
@@ -865,7 +836,6 @@
             $("#btnCloseButtom").prop("disabled", true);
             document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
             document.getElementById("btnUnlockButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
-            $("#btnAddLoanApplicationLines").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",

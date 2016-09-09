@@ -78,68 +78,6 @@ namespace Lending.ApiControllers
             return applicants.ToList();
         }
 
-
-        // applicant list
-        [Authorize]
-        [HttpGet]
-        [Route("api/applicant/listByLocked")]
-        public List<Models.MstApplicant> listApplicantByLocked()
-        {
-            var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
-                             where d.IsLocked == true
-                             select new Models.MstApplicant
-                             {
-                                 Id = d.Id,
-                                 ApplicantFullName = d.ApplicantFullName,
-                                 BirthDate = d.BirthDate.ToShortDateString(),
-                                 CivilStatusId = d.CivilStatusId,
-                                 CivilStatus = d.mstCivilStatus.CivilStatus,
-                                 CityAddress = d.CityAddress,
-                                 ProvinceAddress = d.ProvinceAddress,
-                                 ResidenceTypeId = d.ResidenceTypeId,
-                                 ResidenceType = d.mstResidenceType.ResidenceType,
-                                 ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
-                                 LandResidenceTypeId = d.LandResidenceTypeId,
-                                 LandResidenceType = d.mstResidenceType1.ResidenceType,
-                                 LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
-                                 LengthOfStay = d.LengthOfStay,
-                                 BusinessAddress = d.BusinessAddress,
-                                 BusinessKaratulaName = d.BusinessKaratulaName,
-                                 BusinessTelephoneNumber = d.BusinessTelephoneNumber,
-                                 BusinessYear = d.BusinessYear,
-                                 BusinessMerchandise = d.BusinessMerchandise,
-                                 BusinessStockValues = d.BusinessStockValues,
-                                 BusinessBeginningCapital = d.BusinessBeginningCapital,
-                                 BusinessLowSalesPeriod = d.BusinessLowSalesPeriod,
-                                 BusinessLowestDailySales = d.BusinessLowestDailySales,
-                                 BusinessAverageDailySales = d.BusinessAverageDailySales,
-                                 EmployedCompany = d.EmployedCompany,
-                                 EmployedCompanyAddress = d.EmployedCompanyAddress,
-                                 EmployedPositionOccupied = d.EmployedPositionOccupied,
-                                 EmployedServiceLength = d.EmployedServiceLength,
-                                 EmployedTelephoneNumber = d.EmployedTelephoneNumber,
-                                 SpouseFullName = d.SpouseFullName,
-                                 SpouseEmployerBusiness = d.SpouseEmployerBusiness,
-                                 SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
-                                 SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
-                                 SpousePositionOccupied = d.SpousePositionOccupied,
-                                 SpouseMonthlySalary = d.SpouseMonthlySalary,
-                                 SpouseLengthOfService = d.SpouseLengthOfService,
-                                 NumberOfChildren = d.NumberOfChildren,
-                                 Studying = d.Studying,
-                                 Schools = d.Schools,
-                                 IsLocked = d.IsLocked,
-                                 CreatedByUserId = d.CreatedByUserId,
-                                 CreatedByUser = d.mstUser.FullName,
-                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                 UpdatedByUserId = d.UpdatedByUserId,
-                                 UpdatedByUser = d.mstUser1.FullName,
-                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                             };
-
-            return applicants.ToList();
-        }
-
         // get applicant
         [Authorize]
         [HttpGet]

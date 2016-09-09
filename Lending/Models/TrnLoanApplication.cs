@@ -21,7 +21,6 @@ namespace Lending.Models
         public String Applicant { get; set; }
         public Int32 AreaId { get; set; }
         public String Area { get; set; }
-        public String Promises { get; set; }
         public String Particulars { get; set; }
         public Decimal LoanAmount { get; set; }
         public Decimal PaidAmount { get; set; }

@@ -35,7 +35,6 @@ namespace Lending.ApiControllers
                                        Applicant = d.mstApplicant.ApplicantFullName,
                                        AreaId = d.AreaId,
                                        Area = d.mstArea.Area,
-                                       Promises = d.Promises,
                                        Particulars = d.Particulars,
                                        LoanAmount = d.LoanAmount,
                                        PaidAmount = d.PaidAmount,
@@ -80,7 +79,6 @@ namespace Lending.ApiControllers
                                       Applicant = d.mstApplicant.ApplicantFullName,
                                       AreaId = d.AreaId,
                                       Area = d.mstArea.Area,
-                                      Promises = d.Promises,
                                       Particulars = d.Particulars,
                                       LoanAmount = d.LoanAmount,
                                       PaidAmount = d.PaidAmount,
@@ -111,8 +109,6 @@ namespace Lending.ApiControllers
         {
             var loanApplication = from d in db.trnLoanApplications
                                   where d.ApplicantId == Convert.ToInt32(applicantId)
-                                  && d.IsLocked == true
-                                  && d.BalanceAmount > 0
                                   select new Models.TrnLoanApplication
                                   {
                                       Id = d.Id,
@@ -127,7 +123,6 @@ namespace Lending.ApiControllers
                                       Applicant = d.mstApplicant.ApplicantFullName,
                                       AreaId = d.AreaId,
                                       Area = d.mstArea.Area,
-                                      Promises = d.Promises,
                                       Particulars = d.Particulars,
                                       LoanAmount = d.LoanAmount,
                                       PaidAmount = d.PaidAmount,
@@ -189,7 +184,6 @@ namespace Lending.ApiControllers
                 newLoanApplication.AccountId = (from d in db.mstAccounts select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newLoanApplication.AreaId = (from d in db.mstAreas select d.Id).FirstOrDefault();
-                newLoanApplication.Promises = "NA";
                 newLoanApplication.Particulars = "NA";
                 newLoanApplication.LoanAmount = 0;
                 newLoanApplication.PaidAmount = 0;
@@ -243,7 +237,6 @@ namespace Lending.ApiControllers
                         lockLoanApplication.AccountId = loanApplication.AccountId;
                         lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                         lockLoanApplication.AreaId = loanApplication.AreaId;
-                        lockLoanApplication.Promises = loanApplication.Promises;
                         lockLoanApplication.Particulars = loanApplication.Particulars;
                         lockLoanApplication.LoanAmount = loanApplication.LoanAmount;
                         lockLoanApplication.PaidAmount = totalCollectionLinesPaidAmount;

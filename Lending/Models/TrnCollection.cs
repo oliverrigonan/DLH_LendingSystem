@@ -20,7 +20,6 @@ namespace Lending.Models
         public String Applicant { get; set; }
         public String Particulars { get; set; }
         public Decimal PaidAmount { get; set; }
-        public Boolean IsCleared { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Int32 VerifiedByUserId { get; set; }

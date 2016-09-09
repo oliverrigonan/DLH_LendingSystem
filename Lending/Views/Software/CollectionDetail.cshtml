@@ -113,7 +113,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Applicant</label><br />
-                                        <div id="collectionApplicant"></div><span style="color: red" id="noApplicant"></span>
+                                        <div id="collectionApplicant"></div>
                                     </div>
                                     <div class="form-group">
                                         <label>Particulars</label><br />
@@ -412,7 +412,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/applicant/listByLocked',
+                url: '/api/applicant/list',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -437,15 +437,6 @@
                         cboCollectionPreparedByUser = new wijmo.input.ComboBox('#collectionPreparedBy');
                         cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy');
                         getUser();
-
-                        //cboloanApplicationArea = new wijmo.input.ComboBox('#loanApplicationArea');
-                        //getArea();
-
-                        //$("#btnLock").prop("disabled", true);
-                        //$("#btnLockButtom").prop("disabled", true);
-                        //$("#btnAddLoanApplicationLines").prop("disabled", true);
-                        //$("#btnAddLoanRequirements").prop("disabled", true);
-                        //document.getElementById("noApplicant").innerHTML = "&nbsp; <i class='fa fa-info fa-fw'></i> Applicant Record is Empty or Unlocked";
                     }
 
                     cboCollectionApplicant.dispose();
@@ -461,20 +452,6 @@
                             createCollectionLinesLoanNumber();
                         }
                     });
-
-                    //if (applicantResults.length > 0) {
-                    //    $('#loanApplicationApplicant').each(function () {
-                    //        $(this).css({
-                    //            "border": ""
-                    //        });
-                    //    });
-                    //} else {
-                    //    $('#loanApplicationApplicant').each(function () {
-                    //        $(this).css({
-                    //            "border": "1px solid red"
-                    //        });
-                    //    });
-                    //}
                 }
             });
         }
@@ -825,6 +802,8 @@
                             });
                         }
                         disabled = false;
+                    } else {
+                        $("#btnSaveCollectionLine").prop("disabled", true);
                     }
 
                     cboCollectionLineLoanNumber.dispose();
@@ -841,7 +820,25 @@
                         }
                     });
 
-                    document.getElementById("collectionLinesAmount").value = cboCollectionLineLoanNumber.selectedItem["BalanceAmount"];
+                    if (cboCollectionLineLoanNumber.itemsSource.length > 0) {
+                        document.getElementById("collectionLinesAmount").value = cboCollectionLineLoanNumber.selectedItem["BalanceAmount"];
+                    } else {
+                        document.getElementById("collectionLinesAmount").value = 0;
+                    }
+
+                    if (loanNumberResults.length > 0) {
+                        $('#collectionLinesLoanNumber').each(function () {
+                            $(this).css({
+                                "border": ""
+                            });
+                        });
+                    } else {
+                        $('#collectionLinesLoanNumber').each(function () {
+                            $(this).css({
+                                "border": "1px solid red"
+                            });
+                        });
+                    }
                 }
             });
         }

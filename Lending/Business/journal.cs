@@ -29,7 +29,7 @@ namespace Lending.Business
                                        Applicant = d.mstApplicant.ApplicantFullName,
                                        AreaId = d.AreaId,
                                        Area = d.mstArea.Area,
-                                       Promises = d.Promises,
+                                       Particulars = d.Particulars,
                                        LoanAmount = d.LoanAmount,
                                        PaidAmount = d.PaidAmount,
                                        BalanceAmount = d.BalanceAmount,
