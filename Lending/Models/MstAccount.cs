@@ -12,6 +12,8 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public String Account { get; set; }
         public String Description { get; set; }
+        public Int32 AccountTransactionTypeId { get; set; }
+        public String AccountTransactionType { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

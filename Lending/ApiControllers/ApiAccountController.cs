@@ -25,6 +25,8 @@ namespace Lending.ApiControllers
                             Id = d.Id,
                             Account = d.Account,
                             Description = d.Description,
+                            AccountTransactionTypeId = d.AccountTransactionTypeId,
+                            AccountTransactionType = d.mstTransactionType.TransactionType,
                             CreatedByUserId = d.CreatedByUserId,
                             CreatedByUser = d.mstUser.FullName,
                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -32,6 +34,32 @@ namespace Lending.ApiControllers
                             UpdatedByUser = d.mstUser1.FullName,
                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                         };
+
+            return accounts.ToList();
+        }
+
+        // account list by Account Transaction Type Id
+        [Authorize]
+        [HttpGet]
+        [Route("api/account/listAccountTransactionTypeId/{accountTransactionTypeId}")]
+        public List<Models.MstAccount> listAccountByAccountTransactionTypeId(String accountTransactionTypeId)
+        {
+            var accounts = from d in db.mstAccounts
+                           where d.AccountTransactionTypeId == Convert.ToInt32(accountTransactionTypeId)
+                           select new Models.MstAccount
+                           {
+                               Id = d.Id,
+                               Account = d.Account,
+                               Description = d.Description,
+                               AccountTransactionTypeId = d.AccountTransactionTypeId,
+                               AccountTransactionType = d.mstTransactionType.TransactionType,
+                               CreatedByUserId = d.CreatedByUserId,
+                               CreatedByUser = d.mstUser.FullName,
+                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                               UpdatedByUserId = d.UpdatedByUserId,
+                               UpdatedByUser = d.mstUser1.FullName,
+                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                           };
 
             return accounts.ToList();
         }
@@ -49,6 +77,7 @@ namespace Lending.ApiControllers
                 Data.mstAccount newAccount = new Data.mstAccount();
                 newAccount.Account = account.Account;
                 newAccount.Description = account.Description;
+                newAccount.AccountTransactionTypeId = account.AccountTransactionTypeId;
                 newAccount.CreatedByUserId = userId;
                 newAccount.CreatedDateTime = DateTime.Now;
                 newAccount.UpdatedByUserId = userId;
@@ -81,6 +110,7 @@ namespace Lending.ApiControllers
                     var updateAccount = accounts.FirstOrDefault();
                     updateAccount.Account = account.Account;
                     updateAccount.Description = account.Description;
+                    updateAccount.AccountTransactionTypeId = account.AccountTransactionTypeId;
                     updateAccount.UpdatedByUserId = userId;
                     updateAccount.UpdatedDateTime = DateTime.Now;
 

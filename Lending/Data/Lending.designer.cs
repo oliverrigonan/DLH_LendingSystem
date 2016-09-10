@@ -93,6 +93,9 @@ namespace Lending.Data
     partial void InsertmstResidenceType(mstResidenceType instance);
     partial void UpdatemstResidenceType(mstResidenceType instance);
     partial void DeletemstResidenceType(mstResidenceType instance);
+    partial void InsertmstTransactionType(mstTransactionType instance);
+    partial void UpdatemstTransactionType(mstTransactionType instance);
+    partial void DeletemstTransactionType(mstTransactionType instance);
     partial void InsertmstUser(mstUser instance);
     partial void UpdatemstUser(mstUser instance);
     partial void DeletemstUser(mstUser instance);
@@ -308,6 +311,14 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<mstResidenceType>();
+			}
+		}
+		
+		public System.Data.Linq.Table<mstTransactionType> mstTransactionTypes
+		{
+			get
+			{
+				return this.GetTable<mstTransactionType>();
 			}
 		}
 		
@@ -1658,6 +1669,8 @@ namespace Lending.Data
 		
 		private string _Description;
 		
+		private int _AccountTransactionTypeId;
+		
 		private int _CreatedByUserId;
 		
 		private System.DateTime _CreatedDateTime;
@@ -1674,6 +1687,8 @@ namespace Lending.Data
 		
 		private EntitySet<trnLoanApplication> _trnLoanApplications;
 		
+		private EntityRef<mstTransactionType> _mstTransactionType;
+		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -1688,6 +1703,8 @@ namespace Lending.Data
     partial void OnAccountChanged();
     partial void OnDescriptionChanging(string value);
     partial void OnDescriptionChanged();
+    partial void OnAccountTransactionTypeIdChanging(int value);
+    partial void OnAccountTransactionTypeIdChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -1704,6 +1721,7 @@ namespace Lending.Data
 			this._trnDisbursements = new EntitySet<trnDisbursement>(new Action<trnDisbursement>(this.attach_trnDisbursements), new Action<trnDisbursement>(this.detach_trnDisbursements));
 			this._trnJournals = new EntitySet<trnJournal>(new Action<trnJournal>(this.attach_trnJournals), new Action<trnJournal>(this.detach_trnJournals));
 			this._trnLoanApplications = new EntitySet<trnLoanApplication>(new Action<trnLoanApplication>(this.attach_trnLoanApplications), new Action<trnLoanApplication>(this.detach_trnLoanApplications));
+			this._mstTransactionType = default(EntityRef<mstTransactionType>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -1765,6 +1783,30 @@ namespace Lending.Data
 					this._Description = value;
 					this.SendPropertyChanged("Description");
 					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccountTransactionTypeId", DbType="Int NOT NULL")]
+		public int AccountTransactionTypeId
+		{
+			get
+			{
+				return this._AccountTransactionTypeId;
+			}
+			set
+			{
+				if ((this._AccountTransactionTypeId != value))
+				{
+					if (this._mstTransactionType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAccountTransactionTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._AccountTransactionTypeId = value;
+					this.SendPropertyChanged("AccountTransactionTypeId");
+					this.OnAccountTransactionTypeIdChanged();
 				}
 			}
 		}
@@ -1906,6 +1948,40 @@ namespace Lending.Data
 			set
 			{
 				this._trnLoanApplications.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstTransactionType_mstAccount", Storage="_mstTransactionType", ThisKey="AccountTransactionTypeId", OtherKey="Id", IsForeignKey=true)]
+		public mstTransactionType mstTransactionType
+		{
+			get
+			{
+				return this._mstTransactionType.Entity;
+			}
+			set
+			{
+				mstTransactionType previousValue = this._mstTransactionType.Entity;
+				if (((previousValue != value) 
+							|| (this._mstTransactionType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstTransactionType.Entity = null;
+						previousValue.mstAccounts.Remove(this);
+					}
+					this._mstTransactionType.Entity = value;
+					if ((value != null))
+					{
+						value.mstAccounts.Add(this);
+						this._AccountTransactionTypeId = value.Id;
+					}
+					else
+					{
+						this._AccountTransactionTypeId = default(int);
+					}
+					this.SendPropertyChanged("mstTransactionType");
+				}
 			}
 		}
 		
@@ -7784,6 +7860,120 @@ namespace Lending.Data
 		{
 			this.SendPropertyChanging();
 			entity.mstResidenceType1 = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstTransactionType")]
+	public partial class mstTransactionType : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _TransactionType;
+		
+		private EntitySet<mstAccount> _mstAccounts;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnTransactionTypeChanging(string value);
+    partial void OnTransactionTypeChanged();
+    #endregion
+		
+		public mstTransactionType()
+		{
+			this._mstAccounts = new EntitySet<mstAccount>(new Action<mstAccount>(this.attach_mstAccounts), new Action<mstAccount>(this.detach_mstAccounts));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransactionType", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string TransactionType
+		{
+			get
+			{
+				return this._TransactionType;
+			}
+			set
+			{
+				if ((this._TransactionType != value))
+				{
+					this.OnTransactionTypeChanging(value);
+					this.SendPropertyChanging();
+					this._TransactionType = value;
+					this.SendPropertyChanged("TransactionType");
+					this.OnTransactionTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstTransactionType_mstAccount", Storage="_mstAccounts", ThisKey="Id", OtherKey="AccountTransactionTypeId")]
+		public EntitySet<mstAccount> mstAccounts
+		{
+			get
+			{
+				return this._mstAccounts;
+			}
+			set
+			{
+				this._mstAccounts.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_mstAccounts(mstAccount entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstTransactionType = this;
+		}
+		
+		private void detach_mstAccounts(mstAccount entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstTransactionType = null;
 		}
 	}
 	

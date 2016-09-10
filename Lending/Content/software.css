@@ -73,3 +73,7 @@ img,
 .list-group > a {
     border-radius: 0 !important;
 }
+
+textarea {
+    resize: vertical;
+}

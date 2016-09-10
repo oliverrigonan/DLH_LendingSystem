@@ -181,7 +181,7 @@ namespace Lending.ApiControllers
                 newLoanApplication.LoanDate = DateTime.Today;
                 newLoanApplication.MaturityDate = DateTime.Today;
                 newLoanApplication.BranchId = (from d in db.mstBranches select d.Id).FirstOrDefault();
-                newLoanApplication.AccountId = (from d in db.mstAccounts select d.Id).FirstOrDefault();
+                newLoanApplication.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newLoanApplication.AreaId = (from d in db.mstAreas select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";

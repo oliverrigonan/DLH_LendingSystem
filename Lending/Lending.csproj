@@ -188,6 +188,7 @@
     <Compile Include="ApiControllers\ApiCoMakerStatementApplianceOwnedController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementRealPropertiesOwnedController.cs" />
+    <Compile Include="ApiControllers\ApiTransactionTypeController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Models\MstCompany.cs" />
     <Compile Include="Models\MstPayType.cs" />
     <Compile Include="Models\MstRequirements.cs" />
+    <Compile Include="Models\MstTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
     <Compile Include="Models\TrnCollectionLines.cs" />

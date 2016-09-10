@@ -93,6 +93,8 @@ namespace Lending.Reports
                             disbursementData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                             document.Add(disbursementData);
 
+                            document.Add(Chunk.NEWLINE);
+
                             // table collection lines data
                             PdfPTable loanHeader2Label = new PdfPTable(1);
                             float[] loanHeaderLabel2WidthCells = new float[] { 100f };
@@ -107,7 +109,7 @@ namespace Lending.Reports
                             float[] disbursementAmountWidthCells = new float[] { 80f, 20f };
                             disbursementAmount.SetWidths(disbursementAmountWidthCells);
                             disbursementAmount.WidthPercentage = 100;
-                            disbursementAmount.AddCell(new PdfPCell(new Phrase("Disburse AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            disbursementAmount.AddCell(new PdfPCell(new Phrase("DISBURSE AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             disbursementAmount.AddCell(new PdfPCell(new Phrase(disbursements.FirstOrDefault().Amount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             document.Add(disbursementAmount);
 

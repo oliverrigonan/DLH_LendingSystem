@@ -133,7 +133,7 @@ namespace Lending.ApiControllers
                 newDisbursement.DisbursementNumber = zeroFill(Convert.ToInt32(disbursementNumber), 10);
                 newDisbursement.DisbursementDate = DateTime.Today;
                 newDisbursement.BranchId = (from d in db.mstBranches select d.Id).FirstOrDefault();
-                newDisbursement.AccountId = (from d in db.mstAccounts select d.Id).FirstOrDefault();
+                newDisbursement.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
                 newDisbursement.Payee = "NA";
                 newDisbursement.PayTypeId = (from d in db.mstPayTypes select d.Id).FirstOrDefault();
                 newDisbursement.CheckNumber = "NA";

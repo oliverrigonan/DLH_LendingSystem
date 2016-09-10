@@ -68,6 +68,7 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Account" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AccountTransactionTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -76,6 +77,7 @@
       <Association Name="mstAccount_trnDisbursement" Member="trnDisbursements" ThisKey="Id" OtherKey="AccountId" Type="trnDisbursement" />
       <Association Name="mstAccount_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="AccountId" Type="trnJournal" />
       <Association Name="mstAccount_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="AccountId" Type="trnLoanApplication" />
+      <Association Name="mstTransactionType_mstAccount" Member="mstTransactionType" ThisKey="AccountTransactionTypeId" OtherKey="Id" Type="mstTransactionType" IsForeignKey="true" />
       <Association Name="mstUser_mstAccount" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstAccount1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -329,6 +331,13 @@
       <Association Name="mstResidenceType_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstApplicant" />
       <Association Name="mstResidenceType_mstCoMakerStatement" Member="mstCoMakerStatements" ThisKey="Id" OtherKey="ResidenceTypeId" Type="mstCoMakerStatement" />
       <Association Name="mstResidenceType_mstCoMakerStatement1" Member="mstCoMakerStatements1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstCoMakerStatement" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstTransactionType" Member="mstTransactionTypes">
+    <Type Name="mstTransactionType">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TransactionType" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Association Name="mstTransactionType_mstAccount" Member="mstAccounts" ThisKey="Id" OtherKey="AccountTransactionTypeId" Type="mstAccount" />
     </Type>
   </Table>
   <Table Name="dbo.mstUser" Member="mstUsers">
