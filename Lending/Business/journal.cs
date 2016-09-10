@@ -147,5 +147,77 @@ namespace Lending.Business
                 db.SubmitChanges();
             }
         }
+
+        // disbursement journal
+        public void postDisbursementJournal(Int32 disbursementId)
+        {
+            var disbursements = from d in db.trnDisbursements
+                               where d.Id == disbursementId
+                               select new Models.TrnDisbursement
+                               {
+                                   Id = d.Id,
+                                   DisbursementNumber = d.DisbursementNumber,
+                                   DisbursementDate = d.DisbursementDate.ToShortDateString(),
+                                   BranchId = d.BranchId,
+                                   Branch = d.mstBranch.Branch,
+                                   AccountId = d.AccountId,
+                                   Account = d.mstAccount.Account,
+                                   Payee = d.Payee,
+                                   PayTypeId = d.PayTypeId,
+                                   PayType = d.mstPayType.PayType,
+                                   CheckNumber = d.CheckNumber,
+                                   CheckDate = d.CheckDate.ToShortDateString(),
+                                   CheckBank = d.CheckBank,
+                                   Particulars = d.Particulars,
+                                   Amount = d.Amount,
+                                   IsCleared = d.IsCleared,
+                                   PreparedByUserId = d.PreparedByUserId,
+                                   PreparedByUser = d.mstUser.FullName,
+                                   VerifiedByUserId = d.VerifiedByUserId,
+                                   VerifiedByUser = d.mstUser1.FullName,
+                                   IsLocked = d.IsLocked,
+                                   CreatedByUserId = d.CreatedByUserId,
+                                   CreatedByUser = d.mstUser2.FullName,
+                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                   UpdatedByUserId = d.UpdatedByUserId,
+                                   UpdatedByUser = d.mstUser3.FullName,
+                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                               };
+
+            if (disbursements.Any())
+            {
+                foreach (var disbursement in disbursements)
+                {
+                    if (disbursement.Amount > 0)
+                    {
+                        Data.trnJournal newLoanJournal = new Data.trnJournal();
+                        newLoanJournal.JournalDate = Convert.ToDateTime(disbursement.DisbursementDate);
+                        newLoanJournal.BranchId = disbursement.BranchId;
+                        newLoanJournal.AccountId = disbursement.AccountId;
+                        newLoanJournal.Particulars = disbursement.Particulars;
+                        newLoanJournal.ReleasedAmount = disbursement.Amount;
+                        newLoanJournal.ReceivedAmount = 0;
+                        newLoanJournal.DocumentReference = "Disbursement - " + disbursement.DisbursementNumber;
+                        newLoanJournal.LoanId = null;
+                        newLoanJournal.CollectionId = null;
+                        newLoanJournal.DisbursementId = disbursementId;
+
+                        db.trnJournals.InsertOnSubmit(newLoanJournal);
+                        db.SubmitChanges();
+                    }
+                }
+            }
+        }
+
+        // delete disbursement journal
+        public void deleteDisbursementJournal(Int32 disbursementId)
+        {
+            var journals = from d in db.trnJournals where d.DisbursementId == disbursementId select d;
+            if (journals.Any())
+            {
+                db.trnJournals.DeleteAllOnSubmit(journals);
+                db.SubmitChanges();
+            }
+        }
     }
 }

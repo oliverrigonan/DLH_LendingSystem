@@ -249,7 +249,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/collection/unlock/{id}")]
-        public HttpResponseMessage unlockCollection(String id, Models.TrnCollection collection)
+        public HttpResponseMessage unlockCollection(String id)
         {
             try
             {

@@ -132,5 +132,24 @@ namespace Lending.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public ActionResult UserList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult UserDetail(Int32? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }

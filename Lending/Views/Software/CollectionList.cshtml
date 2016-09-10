@@ -44,8 +44,12 @@
                         <a href="/Software/CompanyList" class="list-group-item">
                             <i class="fa fa-building fa-fw"></i> &nbsp; Company
                         </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
-                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                        <a href="/Software/UserList" class="list-group-item">
+                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
+                        </a>
+                        <a href="/Manage/Index" class="list-group-item">
+                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
+                        </a>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -237,7 +241,7 @@
                                 ApplicantId: collectionListResult[i]["ApplicantId"],
                                 Applicant: collectionListResult[i]["Applicant"],
                                 Particulars: collectionListResult[i]["Particulars"],
-                                PaidAmount: collectionListResult[i]["PaidAmount"],
+                                CollectedAmount: collectionListResult[i]["PaidAmount"],
                                 IsLocked: collectionListResult[i]["IsLocked"],
                                 CreatedByUserId: collectionListResult[i]["CreatedByUserId"],
                                 CreatedByUser: collectionListResult[i]["CreatedByUser"],
@@ -458,8 +462,8 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "Paid Amount",
-                                "binding": "PaidAmount",
+                                "header": "Collected Amount",
+                                "binding": "CollectedAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },

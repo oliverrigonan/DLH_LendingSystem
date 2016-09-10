@@ -14,7 +14,6 @@ namespace Lending.Reports
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-
         // loan application detail
         [Authorize]
         public ActionResult collectionDetail(Int32? collectionId)

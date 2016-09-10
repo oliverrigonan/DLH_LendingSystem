@@ -44,8 +44,12 @@
                         <a href="/Software/CompanyList" class="list-group-item">
                             <i class="fa fa-building fa-fw"></i> &nbsp; Company
                         </a>
-                        <a href="#" class="list-group-item"><i class="fa fa-key fa-fw"></i> &nbsp; Users</a>
-                        <a href="#" class="list-group-item"><i class="fa fa-gears fa-fw"></i> &nbsp; Settings</a>
+                        <a href="/Software/UserList" class="list-group-item">
+                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
+                        </a>
+                        <a href="/Manage/Index" class="list-group-item">
+                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
+                        </a>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -1235,7 +1239,7 @@
             collectionLinesFlexGrid.trackChanges = true;
         }
 
-        // get loan application by id
+        // get collection by id
         function getCollectionById() {
             $.ajax({
                 url: '/api/collection/getById/' + getUrlParameter("id"),

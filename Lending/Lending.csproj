@@ -179,6 +179,7 @@
     <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
     <Compile Include="ApiControllers\ApiCollectorController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
+    <Compile Include="ApiControllers\ApiDisbursementController.cs" />
     <Compile Include="ApiControllers\ApiLoanRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiPayTypeController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
@@ -230,10 +231,12 @@
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
     <Compile Include="Models\TrnCollectionLines.cs" />
+    <Compile Include="Models\TrnDisbursement.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\RepCollectionDetailController.cs" />
+    <Compile Include="Reports\RepDisbursementDetailController.cs" />
     <Compile Include="Reports\RepLoanApplicationDetailController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -493,6 +496,8 @@
     <Content Include="Views\Software\Reports.cshtml" />
     <Content Include="Views\Software\DisbursementList.cshtml" />
     <Content Include="Views\Software\DisbursementDetail.cshtml" />
+    <Content Include="Views\Software\UserDetail.cshtml" />
+    <Content Include="Views\Software\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
