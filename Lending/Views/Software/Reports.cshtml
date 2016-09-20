@@ -58,10 +58,202 @@
                             <h4>Reports</h4>
                         </div>
                         <div class="panel-body">
-                           
-                        </div>
-                        <div class="panel-footer">
-                            
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#loanReports" data-toggle="tab" id="loanReportTab">
+                                        Loan Reports
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#collectionReports" data-toggle="tab" id="collectionReportTab">
+                                        Collection Reports
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#disbursementReports" data-toggle="tab" id="disbursementReportTab">
+                                        Disbursement Reports
+                                    </a>
+                                </li>
+                            </ul>
+                            <br />
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade in active" id="loanReports">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                                        <li class="active"><a data-toggle="pill" href="#loanReportPill" id="">Loan Report</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="tab-content">
+                                                        <div id="loanReportPill" class="tab-pane fade in active">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td align="right">
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-eye fa-fw"></i> View
+                                                                                </button>
+                                                                                <button class="btn btn-success btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-excel-o fa-fw"></i> CSV
+                                                                                </button>
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="form-group">
+                                                                        <label>Start Date</label><br />
+                                                                        <div id="cboLoanReportStartDate"></div> &nbsp; <span id="cboLoanReportStartDateString"></span>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>End Date</label><br />
+                                                                        <div id="cboLoanReportEndDate"></div> &nbsp; <span id="cboLoanReportEndDateString"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="collectionReports">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                                        <li class="active"><a data-toggle="pill" href="#collectionSummaryReportPill" id="">Collection Summary Report</a></li>
+                                                        <li><a data-toggle="pill" href="#collectionDetailReportPill" id="">Collection Detail Report</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="tab-content">
+                                                        <div id="collectionSummaryReportPill" class="tab-pane fade in active">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td align="right">
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-eye fa-fw"></i> View
+                                                                                </button>
+                                                                                <button class="btn btn-success btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-excel-o fa-fw"></i> CSV
+                                                                                </button>
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="form-group">
+                                                                        <label>Start Date</label><br />
+                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>End Date</label><br />
+                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div id="collectionDetailReportPill" class="tab-pane fade in">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td align="right">
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-eye fa-fw"></i> View
+                                                                                </button>
+                                                                                <button class="btn btn-success btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-excel-o fa-fw"></i> CSV
+                                                                                </button>
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="form-group">
+                                                                        <label>Start Date</label><br />
+                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>End Date</label><br />
+                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="disbursementReports">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                                        <li class="active"><a data-toggle="pill" href="#disbursementReportPill" id="">Disbursement Report</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="tab-content">
+                                                        <div id="disbursementReportPill" class="tab-pane fade in active">
+                                                            <div class="panel panel-default">
+                                                                <div class="panel-heading">
+                                                                    <table style="width: 100%">
+                                                                        <tr>
+                                                                            <td align="right">
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-eye fa-fw"></i> View
+                                                                                </button>
+                                                                                <button class="btn btn-success btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-excel-o fa-fw"></i> CSV
+                                                                                </button>
+                                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                                                </button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="form-group">
+                                                                        <label>Start Date</label><br />
+                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>End Date</label><br />
+                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -75,5 +267,193 @@
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // Global Variable
+        var cboLoanReportStartDate;
+        var cboLoanReportEndDate;
+
+        var newDate = new Date();
+        var loanReportStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var loanReportEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+
+        // create cbo loan start date
+        function createCboLoanReportStartDate() {
+            cboLoanReportStartDate.dispose();
+            cboLoanReportStartDate = new wijmo.input.InputDate('#cboLoanReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(loanReportStartDateValue),
+                mask: '99-99-9999',
+                max: new Date(loanReportEndDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboLoanReportStartDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    loanReportStartDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboLoanReportEndDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboLoanReportStartDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboLoanReportStartDateString").innerHTML = month + " " + cboLoanReportStartDate.value.getDate() + ", " + cboLoanReportStartDate.value.getFullYear();
+        }
+
+        // create cbo loan end date
+        function createCboLoanReportEndDate() {
+            cboLoanReportEndDate.dispose();
+            cboLoanReportEndDate = new wijmo.input.InputDate('#cboLoanReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(loanReportEndDateValue),
+                mask: '99-99-9999',
+                min: new Date(loanReportStartDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboLoanReportEndDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    loanReportEndDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboLoanReportStartDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboLoanReportEndDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboLoanReportEndDateString").innerHTML = month + " " + cboLoanReportEndDate.value.getDate() + ", " + cboLoanReportEndDate.value.getFullYear();
+        }
+
+        // on load page
+        window.onload = function () {
+            cboLoanReportStartDate = new wijmo.input.InputDate('#cboLoanReportStartDate');
+            cboLoanReportEndDate = new wijmo.input.InputDate('#cboLoanReportEndDate');
+
+            createCboLoanReportStartDate();
+            createCboLoanReportEndDate();
+        }
+    </script>
 </body>
 </html>

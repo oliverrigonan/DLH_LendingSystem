@@ -31,14 +31,8 @@ namespace Lending.ApiControllers
                                     AccountId = d.AccountId,
                                     Account = d.mstAccount.Account,
                                     Payee = d.Payee,
-                                    PayTypeId = d.PayTypeId,
-                                    PayType = d.mstPayType.PayType,
-                                    CheckNumber = d.CheckNumber,
-                                    CheckDate = d.CheckDate.ToShortDateString(),
-                                    CheckBank = d.CheckBank,
                                     Particulars = d.Particulars,
                                     Amount = d.Amount,
-                                    IsCleared = d.IsCleared,
                                     PreparedByUserId = d.PreparedByUserId,
                                     PreparedByUser = d.mstUser.FullName,
                                     VerifiedByUserId = d.VerifiedByUserId,
@@ -73,14 +67,8 @@ namespace Lending.ApiControllers
                                    AccountId = d.AccountId,
                                    Account = d.mstAccount.Account,
                                    Payee = d.Payee,
-                                   PayTypeId = d.PayTypeId,
-                                   PayType = d.mstPayType.PayType,
-                                   CheckNumber = d.CheckNumber,
-                                   CheckDate = d.CheckDate.ToShortDateString(),
-                                   CheckBank = d.CheckBank,
                                    Particulars = d.Particulars,
                                    Amount = d.Amount,
-                                   IsCleared = d.IsCleared,
                                    PreparedByUserId = d.PreparedByUserId,
                                    PreparedByUser = d.mstUser.FullName,
                                    VerifiedByUserId = d.VerifiedByUserId,
@@ -135,13 +123,8 @@ namespace Lending.ApiControllers
                 newDisbursement.BranchId = (from d in db.mstBranches select d.Id).FirstOrDefault();
                 newDisbursement.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
                 newDisbursement.Payee = "NA";
-                newDisbursement.PayTypeId = (from d in db.mstPayTypes select d.Id).FirstOrDefault();
-                newDisbursement.CheckNumber = "NA";
-                newDisbursement.CheckDate = DateTime.Today;
-                newDisbursement.CheckBank = "NA";
                 newDisbursement.Particulars = "NA";
                 newDisbursement.Amount = 0;
-                newDisbursement.IsCleared = false;
                 newDisbursement.PreparedByUserId = userId;
                 newDisbursement.VerifiedByUserId = userId;
                 newDisbursement.IsLocked = false;
@@ -181,13 +164,8 @@ namespace Lending.ApiControllers
                         lockDisbursement.BranchId = disbursement.BranchId;
                         lockDisbursement.AccountId = disbursement.AccountId;
                         lockDisbursement.Payee = disbursement.Payee;
-                        lockDisbursement.PayTypeId = disbursement.PayTypeId;
-                        lockDisbursement.CheckNumber = disbursement.CheckNumber;
-                        lockDisbursement.CheckDate = Convert.ToDateTime(disbursement.CheckDate);
-                        lockDisbursement.CheckBank = disbursement.CheckBank;
                         lockDisbursement.Particulars = disbursement.Particulars;
                         lockDisbursement.Amount = disbursement.Amount;
-                        lockDisbursement.IsCleared = disbursement.IsCleared;
                         lockDisbursement.PreparedByUserId = disbursement.PreparedByUserId;
                         lockDisbursement.VerifiedByUserId = disbursement.VerifiedByUserId;
                         lockDisbursement.IsLocked = true;

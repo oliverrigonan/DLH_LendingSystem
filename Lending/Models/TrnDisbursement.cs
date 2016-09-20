@@ -17,14 +17,8 @@ namespace Lending.Models
         public Int32 AccountId { get; set; }
         public String Account { get; set; }
         public String Payee { get; set; }
-        public Int32 PayTypeId { get; set; }
-        public String PayType { get; set; }
-        public String CheckNumber { get; set; }
-        public String CheckDate { get; set; }
-        public String CheckBank { get; set; }
         public String Particulars { get; set; }
         public Decimal Amount { get; set; }
-        public Boolean IsCleared { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Int32 VerifiedByUserId { get; set; }

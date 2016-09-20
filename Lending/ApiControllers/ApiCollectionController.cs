@@ -190,11 +190,6 @@ namespace Lending.ApiControllers
                                                   AccountId = d.AccountId,
                                                   Account = d.mstAccount.Account,
                                                   LoanId = d.LoanId,
-                                                  PaytypeId = d.PaytypeId,
-                                                  Paytype = d.mstPayType.PayType,
-                                                  CheckNumber = d.CheckNumber,
-                                                  CheckDate = d.CheckDate.ToShortDateString(),
-                                                  CheckBank = d.CheckBank,
                                                   Particulars = d.Particulars,
                                                   Amount = d.Amount
                                               };
@@ -275,11 +270,6 @@ namespace Lending.ApiControllers
                                                   AccountId = d.AccountId,
                                                   Account = d.mstAccount.Account,
                                                   LoanId = d.LoanId,
-                                                  PaytypeId = d.PaytypeId,
-                                                  Paytype = d.mstPayType.PayType,
-                                                  CheckNumber = d.CheckNumber,
-                                                  CheckDate = d.CheckDate.ToShortDateString(),
-                                                  CheckBank = d.CheckBank,
                                                   Particulars = d.Particulars,
                                                   Amount = d.Amount
                                               };
@@ -352,11 +342,6 @@ namespace Lending.ApiControllers
                                                   AccountId = d.AccountId,
                                                   Account = d.mstAccount.Account,
                                                   LoanId = d.LoanId,
-                                                  PaytypeId = d.PaytypeId,
-                                                  Paytype = d.mstPayType.PayType,
-                                                  CheckNumber = d.CheckNumber,
-                                                  CheckDate = d.CheckDate.ToShortDateString(),
-                                                  CheckBank = d.CheckBank,
                                                   Particulars = d.Particulars,
                                                   Amount = d.Amount
                                               };

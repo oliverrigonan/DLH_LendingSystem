@@ -84,9 +84,6 @@ namespace Lending.Data
     partial void InsertmstCompany(mstCompany instance);
     partial void UpdatemstCompany(mstCompany instance);
     partial void DeletemstCompany(mstCompany instance);
-    partial void InsertmstPayType(mstPayType instance);
-    partial void UpdatemstPayType(mstPayType instance);
-    partial void DeletemstPayType(mstPayType instance);
     partial void InsertmstRequirement(mstRequirement instance);
     partial void UpdatemstRequirement(mstRequirement instance);
     partial void DeletemstRequirement(mstRequirement instance);
@@ -287,14 +284,6 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<mstCompany>();
-			}
-		}
-		
-		public System.Data.Linq.Table<mstPayType> mstPayTypes
-		{
-			get
-			{
-				return this.GetTable<mstPayType>();
 			}
 		}
 		
@@ -7005,350 +6994,6 @@ namespace Lending.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstPayType")]
-	public partial class mstPayType : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _PayType;
-		
-		private string _Description;
-		
-		private int _CreatedByUserId;
-		
-		private System.DateTime _CreatedDateTime;
-		
-		private int _UpdatedByUserId;
-		
-		private System.DateTime _UpdatedDateTime;
-		
-		private EntitySet<trnCollectionLine> _trnCollectionLines;
-		
-		private EntitySet<trnDisbursement> _trnDisbursements;
-		
-		private EntityRef<mstUser> _mstUser;
-		
-		private EntityRef<mstUser> _mstUser1;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnPayTypeChanging(string value);
-    partial void OnPayTypeChanged();
-    partial void OnDescriptionChanging(string value);
-    partial void OnDescriptionChanged();
-    partial void OnCreatedByUserIdChanging(int value);
-    partial void OnCreatedByUserIdChanged();
-    partial void OnCreatedDateTimeChanging(System.DateTime value);
-    partial void OnCreatedDateTimeChanged();
-    partial void OnUpdatedByUserIdChanging(int value);
-    partial void OnUpdatedByUserIdChanged();
-    partial void OnUpdatedDateTimeChanging(System.DateTime value);
-    partial void OnUpdatedDateTimeChanged();
-    #endregion
-		
-		public mstPayType()
-		{
-			this._trnCollectionLines = new EntitySet<trnCollectionLine>(new Action<trnCollectionLine>(this.attach_trnCollectionLines), new Action<trnCollectionLine>(this.detach_trnCollectionLines));
-			this._trnDisbursements = new EntitySet<trnDisbursement>(new Action<trnDisbursement>(this.attach_trnDisbursements), new Action<trnDisbursement>(this.detach_trnDisbursements));
-			this._mstUser = default(EntityRef<mstUser>);
-			this._mstUser1 = default(EntityRef<mstUser>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayType", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string PayType
-		{
-			get
-			{
-				return this._PayType;
-			}
-			set
-			{
-				if ((this._PayType != value))
-				{
-					this.OnPayTypeChanging(value);
-					this.SendPropertyChanging();
-					this._PayType = value;
-					this.SendPropertyChanged("PayType");
-					this.OnPayTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string Description
-		{
-			get
-			{
-				return this._Description;
-			}
-			set
-			{
-				if ((this._Description != value))
-				{
-					this.OnDescriptionChanging(value);
-					this.SendPropertyChanging();
-					this._Description = value;
-					this.SendPropertyChanged("Description");
-					this.OnDescriptionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
-		public int CreatedByUserId
-		{
-			get
-			{
-				return this._CreatedByUserId;
-			}
-			set
-			{
-				if ((this._CreatedByUserId != value))
-				{
-					if (this._mstUser.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCreatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedByUserId = value;
-					this.SendPropertyChanged("CreatedByUserId");
-					this.OnCreatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedDateTime
-		{
-			get
-			{
-				return this._CreatedDateTime;
-			}
-			set
-			{
-				if ((this._CreatedDateTime != value))
-				{
-					this.OnCreatedDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedDateTime = value;
-					this.SendPropertyChanged("CreatedDateTime");
-					this.OnCreatedDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedByUserId", DbType="Int NOT NULL")]
-		public int UpdatedByUserId
-		{
-			get
-			{
-				return this._UpdatedByUserId;
-			}
-			set
-			{
-				if ((this._UpdatedByUserId != value))
-				{
-					if (this._mstUser1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUpdatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UpdatedByUserId = value;
-					this.SendPropertyChanged("UpdatedByUserId");
-					this.OnUpdatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime UpdatedDateTime
-		{
-			get
-			{
-				return this._UpdatedDateTime;
-			}
-			set
-			{
-				if ((this._UpdatedDateTime != value))
-				{
-					this.OnUpdatedDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._UpdatedDateTime = value;
-					this.SendPropertyChanged("UpdatedDateTime");
-					this.OnUpdatedDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstPayType_trnCollectionLine", Storage="_trnCollectionLines", ThisKey="Id", OtherKey="PaytypeId")]
-		public EntitySet<trnCollectionLine> trnCollectionLines
-		{
-			get
-			{
-				return this._trnCollectionLines;
-			}
-			set
-			{
-				this._trnCollectionLines.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstPayType_trnDisbursement", Storage="_trnDisbursements", ThisKey="Id", OtherKey="PayTypeId")]
-		public EntitySet<trnDisbursement> trnDisbursements
-		{
-			get
-			{
-				return this._trnDisbursements;
-			}
-			set
-			{
-				this._trnDisbursements.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstPayType", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
-		public mstUser mstUser
-		{
-			get
-			{
-				return this._mstUser.Entity;
-			}
-			set
-			{
-				mstUser previousValue = this._mstUser.Entity;
-				if (((previousValue != value) 
-							|| (this._mstUser.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstUser.Entity = null;
-						previousValue.mstPayTypes.Remove(this);
-					}
-					this._mstUser.Entity = value;
-					if ((value != null))
-					{
-						value.mstPayTypes.Add(this);
-						this._CreatedByUserId = value.Id;
-					}
-					else
-					{
-						this._CreatedByUserId = default(int);
-					}
-					this.SendPropertyChanged("mstUser");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstPayType1", Storage="_mstUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
-		public mstUser mstUser1
-		{
-			get
-			{
-				return this._mstUser1.Entity;
-			}
-			set
-			{
-				mstUser previousValue = this._mstUser1.Entity;
-				if (((previousValue != value) 
-							|| (this._mstUser1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstUser1.Entity = null;
-						previousValue.mstPayTypes1.Remove(this);
-					}
-					this._mstUser1.Entity = value;
-					if ((value != null))
-					{
-						value.mstPayTypes1.Add(this);
-						this._UpdatedByUserId = value.Id;
-					}
-					else
-					{
-						this._UpdatedByUserId = default(int);
-					}
-					this.SendPropertyChanged("mstUser1");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_trnCollectionLines(trnCollectionLine entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstPayType = this;
-		}
-		
-		private void detach_trnCollectionLines(trnCollectionLine entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstPayType = null;
-		}
-		
-		private void attach_trnDisbursements(trnDisbursement entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstPayType = this;
-		}
-		
-		private void detach_trnDisbursements(trnDisbursement entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstPayType = null;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstRequirements")]
 	public partial class mstRequirement : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -8017,10 +7662,6 @@ namespace Lending.Data
 		
 		private EntitySet<mstCompany> _mstCompanies1;
 		
-		private EntitySet<mstPayType> _mstPayTypes;
-		
-		private EntitySet<mstPayType> _mstPayTypes1;
-		
 		private EntitySet<mstRequirement> _mstRequirements;
 		
 		private EntitySet<mstRequirement> _mstRequirements1;
@@ -8083,8 +7724,6 @@ namespace Lending.Data
 			this._mstCollectors1 = new EntitySet<mstCollector>(new Action<mstCollector>(this.attach_mstCollectors1), new Action<mstCollector>(this.detach_mstCollectors1));
 			this._mstCompanies = new EntitySet<mstCompany>(new Action<mstCompany>(this.attach_mstCompanies), new Action<mstCompany>(this.detach_mstCompanies));
 			this._mstCompanies1 = new EntitySet<mstCompany>(new Action<mstCompany>(this.attach_mstCompanies1), new Action<mstCompany>(this.detach_mstCompanies1));
-			this._mstPayTypes = new EntitySet<mstPayType>(new Action<mstPayType>(this.attach_mstPayTypes), new Action<mstPayType>(this.detach_mstPayTypes));
-			this._mstPayTypes1 = new EntitySet<mstPayType>(new Action<mstPayType>(this.attach_mstPayTypes1), new Action<mstPayType>(this.detach_mstPayTypes1));
 			this._mstRequirements = new EntitySet<mstRequirement>(new Action<mstRequirement>(this.attach_mstRequirements), new Action<mstRequirement>(this.detach_mstRequirements));
 			this._mstRequirements1 = new EntitySet<mstRequirement>(new Action<mstRequirement>(this.attach_mstRequirements1), new Action<mstRequirement>(this.detach_mstRequirements1));
 			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
@@ -8374,32 +8013,6 @@ namespace Lending.Data
 			set
 			{
 				this._mstCompanies1.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstPayType", Storage="_mstPayTypes", ThisKey="Id", OtherKey="CreatedByUserId")]
-		public EntitySet<mstPayType> mstPayTypes
-		{
-			get
-			{
-				return this._mstPayTypes;
-			}
-			set
-			{
-				this._mstPayTypes.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstPayType1", Storage="_mstPayTypes1", ThisKey="Id", OtherKey="UpdatedByUserId")]
-		public EntitySet<mstPayType> mstPayTypes1
-		{
-			get
-			{
-				return this._mstPayTypes1;
-			}
-			set
-			{
-				this._mstPayTypes1.Assign(value);
 			}
 		}
 		
@@ -8754,30 +8367,6 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstCompanies1(mstCompany entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser1 = null;
-		}
-		
-		private void attach_mstPayTypes(mstPayType entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser = this;
-		}
-		
-		private void detach_mstPayTypes(mstPayType entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser = null;
-		}
-		
-		private void attach_mstPayTypes1(mstPayType entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser1 = this;
-		}
-		
-		private void detach_mstPayTypes1(mstPayType entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstUser1 = null;
@@ -9590,14 +9179,6 @@ namespace Lending.Data
 		
 		private int _LoanId;
 		
-		private int _PaytypeId;
-		
-		private string _CheckNumber;
-		
-		private System.DateTime _CheckDate;
-		
-		private string _CheckBank;
-		
 		private string _Particulars;
 		
 		private decimal _Amount;
@@ -9607,8 +9188,6 @@ namespace Lending.Data
 		private EntityRef<mstAccount> _mstAccount;
 		
 		private EntityRef<mstCollector> _mstCollector;
-		
-		private EntityRef<mstPayType> _mstPayType;
 		
 		private EntityRef<trnCollection> _trnCollection;
 		
@@ -9626,14 +9205,6 @@ namespace Lending.Data
     partial void OnAccountIdChanged();
     partial void OnLoanIdChanging(int value);
     partial void OnLoanIdChanged();
-    partial void OnPaytypeIdChanging(int value);
-    partial void OnPaytypeIdChanged();
-    partial void OnCheckNumberChanging(string value);
-    partial void OnCheckNumberChanged();
-    partial void OnCheckDateChanging(System.DateTime value);
-    partial void OnCheckDateChanged();
-    partial void OnCheckBankChanging(string value);
-    partial void OnCheckBankChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
     partial void OnAmountChanging(decimal value);
@@ -9646,7 +9217,6 @@ namespace Lending.Data
 		{
 			this._mstAccount = default(EntityRef<mstAccount>);
 			this._mstCollector = default(EntityRef<mstCollector>);
-			this._mstPayType = default(EntityRef<mstPayType>);
 			this._trnCollection = default(EntityRef<trnCollection>);
 			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
 			OnCreated();
@@ -9740,90 +9310,6 @@ namespace Lending.Data
 					this._LoanId = value;
 					this.SendPropertyChanged("LoanId");
 					this.OnLoanIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaytypeId", DbType="Int NOT NULL")]
-		public int PaytypeId
-		{
-			get
-			{
-				return this._PaytypeId;
-			}
-			set
-			{
-				if ((this._PaytypeId != value))
-				{
-					if (this._mstPayType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPaytypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._PaytypeId = value;
-					this.SendPropertyChanged("PaytypeId");
-					this.OnPaytypeIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string CheckNumber
-		{
-			get
-			{
-				return this._CheckNumber;
-			}
-			set
-			{
-				if ((this._CheckNumber != value))
-				{
-					this.OnCheckNumberChanging(value);
-					this.SendPropertyChanging();
-					this._CheckNumber = value;
-					this.SendPropertyChanged("CheckNumber");
-					this.OnCheckNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckDate", DbType="DateTime NOT NULL")]
-		public System.DateTime CheckDate
-		{
-			get
-			{
-				return this._CheckDate;
-			}
-			set
-			{
-				if ((this._CheckDate != value))
-				{
-					this.OnCheckDateChanging(value);
-					this.SendPropertyChanging();
-					this._CheckDate = value;
-					this.SendPropertyChanged("CheckDate");
-					this.OnCheckDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string CheckBank
-		{
-			get
-			{
-				return this._CheckBank;
-			}
-			set
-			{
-				if ((this._CheckBank != value))
-				{
-					this.OnCheckBankChanging(value);
-					this.SendPropertyChanging();
-					this._CheckBank = value;
-					this.SendPropertyChanged("CheckBank");
-					this.OnCheckBankChanged();
 				}
 			}
 		}
@@ -9960,40 +9446,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstPayType_trnCollectionLine", Storage="_mstPayType", ThisKey="PaytypeId", OtherKey="Id", IsForeignKey=true)]
-		public mstPayType mstPayType
-		{
-			get
-			{
-				return this._mstPayType.Entity;
-			}
-			set
-			{
-				mstPayType previousValue = this._mstPayType.Entity;
-				if (((previousValue != value) 
-							|| (this._mstPayType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstPayType.Entity = null;
-						previousValue.trnCollectionLines.Remove(this);
-					}
-					this._mstPayType.Entity = value;
-					if ((value != null))
-					{
-						value.trnCollectionLines.Add(this);
-						this._PaytypeId = value.Id;
-					}
-					else
-					{
-						this._PaytypeId = default(int);
-					}
-					this.SendPropertyChanged("mstPayType");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnCollection_trnCollectionLine", Storage="_trnCollection", ThisKey="CollectionId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnCollection trnCollection
 		{
@@ -10101,19 +9553,9 @@ namespace Lending.Data
 		
 		private string _Payee;
 		
-		private int _PayTypeId;
-		
-		private string _CheckNumber;
-		
-		private System.DateTime _CheckDate;
-		
-		private string _CheckBank;
-		
 		private string _Particulars;
 		
 		private decimal _Amount;
-		
-		private bool _IsCleared;
 		
 		private int _PreparedByUserId;
 		
@@ -10132,8 +9574,6 @@ namespace Lending.Data
 		private EntityRef<mstAccount> _mstAccount;
 		
 		private EntityRef<mstBranch> _mstBranch;
-		
-		private EntityRef<mstPayType> _mstPayType;
 		
 		private EntityRef<mstUser> _mstUser;
 		
@@ -10159,20 +9599,10 @@ namespace Lending.Data
     partial void OnAccountIdChanged();
     partial void OnPayeeChanging(string value);
     partial void OnPayeeChanged();
-    partial void OnPayTypeIdChanging(int value);
-    partial void OnPayTypeIdChanged();
-    partial void OnCheckNumberChanging(string value);
-    partial void OnCheckNumberChanged();
-    partial void OnCheckDateChanging(System.DateTime value);
-    partial void OnCheckDateChanged();
-    partial void OnCheckBankChanging(string value);
-    partial void OnCheckBankChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
     partial void OnAmountChanging(decimal value);
     partial void OnAmountChanged();
-    partial void OnIsClearedChanging(bool value);
-    partial void OnIsClearedChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
     partial void OnVerifiedByUserIdChanging(int value);
@@ -10193,7 +9623,6 @@ namespace Lending.Data
 		{
 			this._mstAccount = default(EntityRef<mstAccount>);
 			this._mstBranch = default(EntityRef<mstBranch>);
-			this._mstPayType = default(EntityRef<mstPayType>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			this._mstUser2 = default(EntityRef<mstUser>);
@@ -10329,90 +9758,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayTypeId", DbType="Int NOT NULL")]
-		public int PayTypeId
-		{
-			get
-			{
-				return this._PayTypeId;
-			}
-			set
-			{
-				if ((this._PayTypeId != value))
-				{
-					if (this._mstPayType.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPayTypeIdChanging(value);
-					this.SendPropertyChanging();
-					this._PayTypeId = value;
-					this.SendPropertyChanged("PayTypeId");
-					this.OnPayTypeIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string CheckNumber
-		{
-			get
-			{
-				return this._CheckNumber;
-			}
-			set
-			{
-				if ((this._CheckNumber != value))
-				{
-					this.OnCheckNumberChanging(value);
-					this.SendPropertyChanging();
-					this._CheckNumber = value;
-					this.SendPropertyChanged("CheckNumber");
-					this.OnCheckNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckDate", DbType="DateTime NOT NULL")]
-		public System.DateTime CheckDate
-		{
-			get
-			{
-				return this._CheckDate;
-			}
-			set
-			{
-				if ((this._CheckDate != value))
-				{
-					this.OnCheckDateChanging(value);
-					this.SendPropertyChanging();
-					this._CheckDate = value;
-					this.SendPropertyChanged("CheckDate");
-					this.OnCheckDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CheckBank", DbType="NChar(10) NOT NULL", CanBeNull=false)]
-		public string CheckBank
-		{
-			get
-			{
-				return this._CheckBank;
-			}
-			set
-			{
-				if ((this._CheckBank != value))
-				{
-					this.OnCheckBankChanging(value);
-					this.SendPropertyChanging();
-					this._CheckBank = value;
-					this.SendPropertyChanged("CheckBank");
-					this.OnCheckBankChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Particulars", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
 		public string Particulars
 		{
@@ -10449,26 +9794,6 @@ namespace Lending.Data
 					this._Amount = value;
 					this.SendPropertyChanged("Amount");
 					this.OnAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCleared", DbType="Bit NOT NULL")]
-		public bool IsCleared
-		{
-			get
-			{
-				return this._IsCleared;
-			}
-			set
-			{
-				if ((this._IsCleared != value))
-				{
-					this.OnIsClearedChanging(value);
-					this.SendPropertyChanging();
-					this._IsCleared = value;
-					this.SendPropertyChanged("IsCleared");
-					this.OnIsClearedChanged();
 				}
 			}
 		}
@@ -10693,40 +10018,6 @@ namespace Lending.Data
 						this._BranchId = default(int);
 					}
 					this.SendPropertyChanged("mstBranch");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstPayType_trnDisbursement", Storage="_mstPayType", ThisKey="PayTypeId", OtherKey="Id", IsForeignKey=true)]
-		public mstPayType mstPayType
-		{
-			get
-			{
-				return this._mstPayType.Entity;
-			}
-			set
-			{
-				mstPayType previousValue = this._mstPayType.Entity;
-				if (((previousValue != value) 
-							|| (this._mstPayType.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstPayType.Entity = null;
-						previousValue.trnDisbursements.Remove(this);
-					}
-					this._mstPayType.Entity = value;
-					if ((value != null))
-					{
-						value.trnDisbursements.Add(this);
-						this._PayTypeId = value.Id;
-					}
-					else
-					{
-						this._PayTypeId = default(int);
-					}
-					this.SendPropertyChanged("mstPayType");
 				}
 			}
 		}

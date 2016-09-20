@@ -30,11 +30,6 @@ namespace Lending.ApiControllers
                                            LoanId = d.LoanId,
                                            LoanNumber = d.trnLoanApplication.LoanNumber,
                                            LoanDate =  d.trnLoanApplication.LoanDate.ToShortDateString(),
-                                           PaytypeId = d.PaytypeId,
-                                           Paytype = d.mstPayType.PayType,
-                                           CheckNumber = d.CheckNumber,
-                                           CheckDate = d.CheckDate.ToShortDateString(),
-                                           CheckBank = d.CheckBank,
                                            Particulars = d.Particulars,
                                            Amount = d.Amount,
                                            CollectedByCollectorId = d.CollectedByCollectorId,
@@ -61,10 +56,6 @@ namespace Lending.ApiControllers
                         newCollectionLine.CollectionId = collectionLine.CollectionId;
                         newCollectionLine.AccountId = collectionLine.AccountId;
                         newCollectionLine.LoanId = collectionLine.LoanId;
-                        newCollectionLine.PaytypeId = collectionLine.PaytypeId;
-                        newCollectionLine.CheckNumber = collectionLine.CheckNumber;
-                        newCollectionLine.CheckDate = Convert.ToDateTime(collectionLine.CheckDate);
-                        newCollectionLine.CheckBank = collectionLine.CheckBank;
                         newCollectionLine.Particulars = collectionLine.Particulars;
                         newCollectionLine.Amount = collectionLine.Amount;
                         newCollectionLine.CollectedByCollectorId = collectionLine.CollectedByCollectorId;
@@ -109,10 +100,6 @@ namespace Lending.ApiControllers
                             updateCollectionApplicationLine.CollectionId = collectionLine.CollectionId;
                             updateCollectionApplicationLine.AccountId = collectionLine.AccountId;
                             updateCollectionApplicationLine.LoanId = collectionLine.LoanId;
-                            updateCollectionApplicationLine.PaytypeId = collectionLine.PaytypeId;
-                            updateCollectionApplicationLine.CheckNumber = collectionLine.CheckNumber;
-                            updateCollectionApplicationLine.CheckDate = Convert.ToDateTime(collectionLine.CheckDate);
-                            updateCollectionApplicationLine.CheckBank = collectionLine.CheckBank;
                             updateCollectionApplicationLine.Particulars = collectionLine.Particulars;
                             updateCollectionApplicationLine.Amount = collectionLine.Amount;
                             updateCollectionApplicationLine.CollectedByCollectorId = collectionLine.CollectedByCollectorId;
