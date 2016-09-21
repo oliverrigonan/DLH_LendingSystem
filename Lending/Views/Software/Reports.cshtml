@@ -159,11 +159,11 @@
                                                                 <div class="panel-body">
                                                                     <div class="form-group">
                                                                         <label>Start Date</label><br />
-                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                        <div id="cboCollectionSummaryReportStartDate"></div> &nbsp; <span id="cboCollectionSummaryReportStartDateString"></span>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label>End Date</label><br />
-                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                        <div id="cboCollectionSummaryReportEndDate"></div> &nbsp; <span id="cboCollectionSummaryReportEndDateString"></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -190,11 +190,11 @@
                                                                 <div class="panel-body">
                                                                     <div class="form-group">
                                                                         <label>Start Date</label><br />
-                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                        <div id="cboCollectionDetailReportStartDate"></div> &nbsp; <span id="cboCollectionDetailReportStartDateString"></span>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label>End Date</label><br />
-                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                        <div id="cboCollectionDetailReportEndDate"></div> &nbsp; <span id="cboCollectionDetailReportEndDateString"></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -238,11 +238,11 @@
                                                                 <div class="panel-body">
                                                                     <div class="form-group">
                                                                         <label>Start Date</label><br />
-                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                        <div id="cboDisbursementReportStartDate"></div> &nbsp; <span id="cboDisbursementReportStartDateString"></span>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label>End Date</label><br />
-                                                                        <div id=""></div> &nbsp; <span id=""></span>
+                                                                        <div id="cboDisbursementReportEndDate"></div> &nbsp; <span id="cboDisbursementReportEndDateString"></span>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -269,12 +269,23 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         // Global Variable
+        var newDate = new Date();
         var cboLoanReportStartDate;
         var cboLoanReportEndDate;
-
-        var newDate = new Date();
         var loanReportStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
         var loanReportEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboCollectionSummaryReportStartDate;
+        var cboCollectionSummaryReportEndDate;
+        var collectionSummaryReportStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var collectionSummaryReportEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboCollectionDetailReportStartDate;
+        var cboCollectionDetailReportEndDate;
+        var collectionDetailReportStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var collectionDetailReportEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboDisbursementReportStartDate;
+        var cboDisbursementReportEndDate;
+        var disbursementReportStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var disbursementReportEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
 
         // create cbo loan start date
         function createCboLoanReportStartDate() {
@@ -446,6 +457,516 @@
             document.getElementById("cboLoanReportEndDateString").innerHTML = month + " " + cboLoanReportEndDate.value.getDate() + ", " + cboLoanReportEndDate.value.getFullYear();
         }
 
+        // create cbo collectionSummary start date
+        function createCboCollectionSummaryReportStartDate() {
+            cboCollectionSummaryReportStartDate.dispose();
+            cboCollectionSummaryReportStartDate = new wijmo.input.InputDate('#cboCollectionSummaryReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(collectionSummaryReportStartDateValue),
+                mask: '99-99-9999',
+                max: new Date(collectionSummaryReportEndDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboCollectionSummaryReportStartDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    collectionSummaryReportStartDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboCollectionSummaryReportEndDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboCollectionSummaryReportStartDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboCollectionSummaryReportStartDateString").innerHTML = month + " " + cboCollectionSummaryReportStartDate.value.getDate() + ", " + cboCollectionSummaryReportStartDate.value.getFullYear();
+        }
+
+        // create cbo collectionSummary end date
+        function createCboCollectionSummaryReportEndDate() {
+            cboCollectionSummaryReportEndDate.dispose();
+            cboCollectionSummaryReportEndDate = new wijmo.input.InputDate('#cboCollectionSummaryReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(collectionSummaryReportEndDateValue),
+                mask: '99-99-9999',
+                min: new Date(collectionSummaryReportStartDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboCollectionSummaryReportEndDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    collectionSummaryReportEndDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboCollectionSummaryReportStartDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboCollectionSummaryReportEndDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboCollectionSummaryReportEndDateString").innerHTML = month + " " + cboCollectionSummaryReportEndDate.value.getDate() + ", " + cboCollectionSummaryReportEndDate.value.getFullYear();
+        }
+
+        // create cbo collectionDetail start date
+        function createCboCollectionDetailReportStartDate() {
+            cboCollectionDetailReportStartDate.dispose();
+            cboCollectionDetailReportStartDate = new wijmo.input.InputDate('#cboCollectionDetailReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(collectionDetailReportStartDateValue),
+                mask: '99-99-9999',
+                max: new Date(collectionDetailReportEndDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboCollectionDetailReportStartDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    collectionDetailReportStartDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboCollectionDetailReportEndDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboCollectionDetailReportStartDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboCollectionDetailReportStartDateString").innerHTML = month + " " + cboCollectionDetailReportStartDate.value.getDate() + ", " + cboCollectionDetailReportStartDate.value.getFullYear();
+        }
+
+        // create cbo collectionDetail end date
+        function createCboCollectionDetailReportEndDate() {
+            cboCollectionDetailReportEndDate.dispose();
+            cboCollectionDetailReportEndDate = new wijmo.input.InputDate('#cboCollectionDetailReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(collectionDetailReportEndDateValue),
+                mask: '99-99-9999',
+                min: new Date(collectionDetailReportStartDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboCollectionDetailReportEndDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    collectionDetailReportEndDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboCollectionDetailReportStartDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboCollectionDetailReportEndDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboCollectionDetailReportEndDateString").innerHTML = month + " " + cboCollectionDetailReportEndDate.value.getDate() + ", " + cboCollectionDetailReportEndDate.value.getFullYear();
+        }
+
+        // create cbo disbursement start date
+        function createCboDisbursementReportStartDate() {
+            cboDisbursementReportStartDate.dispose();
+            cboDisbursementReportStartDate = new wijmo.input.InputDate('#cboDisbursementReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(disbursementReportStartDateValue),
+                mask: '99-99-9999',
+                max: new Date(disbursementReportEndDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboDisbursementReportStartDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    disbursementReportStartDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboDisbursementReportEndDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboDisbursementReportStartDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboDisbursementReportStartDateString").innerHTML = month + " " + cboDisbursementReportStartDate.value.getDate() + ", " + cboDisbursementReportStartDate.value.getFullYear();
+        }
+
+        // create cbo disbursement end date
+        function createCboDisbursementReportEndDate() {
+            cboDisbursementReportEndDate.dispose();
+            cboDisbursementReportEndDate = new wijmo.input.InputDate('#cboDisbursementReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(disbursementReportEndDateValue),
+                mask: '99-99-9999',
+                min: new Date(disbursementReportStartDateValue),
+                onValueChanged: function () {
+                    var dateValue = this.value.getMonth() + 1;
+                    var month = "";
+
+                    if (dateValue == 1) {
+                        month = "January";
+                    } else if (dateValue == 2) {
+                        month = "February";
+                    } else if (dateValue == 3) {
+                        month = "March";
+                    } else if (dateValue == 4) {
+                        month = "April";
+                    } else if (dateValue == 5) {
+                        month = "May";
+                    } else if (dateValue == 6) {
+                        month = "June";
+                    } else if (dateValue == 7) {
+                        month = "July";
+                    } else if (dateValue == 8) {
+                        month = "August";
+                    } else if (dateValue == 9) {
+                        month = "September";
+                    } else if (dateValue == 10) {
+                        month = "October";
+                    } else if (dateValue == 11) {
+                        month = "November";
+                    } else if (dateValue == 12) {
+                        month = "December";
+                    } else {
+                        month = "";
+                    }
+
+                    document.getElementById("cboDisbursementReportEndDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
+
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    disbursementReportEndDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCboDisbursementReportStartDate();
+                    }, 50);
+                }
+            });
+
+            var dateValue = cboDisbursementReportEndDate.value.getMonth() + 1;
+            var month = "";
+
+            if (dateValue == 1) {
+                month = "January";
+            } else if (dateValue == 2) {
+                month = "February";
+            } else if (dateValue == 3) {
+                month = "March";
+            } else if (dateValue == 4) {
+                month = "April";
+            } else if (dateValue == 5) {
+                month = "May";
+            } else if (dateValue == 6) {
+                month = "June";
+            } else if (dateValue == 7) {
+                month = "July";
+            } else if (dateValue == 8) {
+                month = "August";
+            } else if (dateValue == 9) {
+                month = "September";
+            } else if (dateValue == 10) {
+                month = "October";
+            } else if (dateValue == 11) {
+                month = "November";
+            } else if (dateValue == 12) {
+                month = "December";
+            } else {
+                month = "";
+            }
+
+            document.getElementById("cboDisbursementReportEndDateString").innerHTML = month + " " + cboDisbursementReportEndDate.value.getDate() + ", " + cboDisbursementReportEndDate.value.getFullYear();
+        }
+
         // on load page
         window.onload = function () {
             cboLoanReportStartDate = new wijmo.input.InputDate('#cboLoanReportStartDate');
@@ -453,6 +974,24 @@
 
             createCboLoanReportStartDate();
             createCboLoanReportEndDate();
+
+            cboCollectionSummaryReportStartDate = new wijmo.input.InputDate('#cboCollectionSummaryReportStartDate');
+            cboCollectionSummaryReportEndDate = new wijmo.input.InputDate('#cboCollectionSummaryReportEndDate');
+
+            createCboCollectionSummaryReportStartDate();
+            createCboCollectionSummaryReportEndDate();
+
+            cboCollectionDetailReportStartDate = new wijmo.input.InputDate('#cboCollectionDetailReportStartDate');
+            cboCollectionDetailReportEndDate = new wijmo.input.InputDate('#cboCollectionDetailReportEndDate');
+
+            createCboCollectionDetailReportStartDate();
+            createCboCollectionDetailReportEndDate();
+
+            cboDisbursementReportStartDate = new wijmo.input.InputDate('#cboDisbursementReportStartDate');
+            cboDisbursementReportEndDate = new wijmo.input.InputDate('#cboDisbursementReportEndDate');
+
+            createCboDisbursementReportStartDate();
+            createCboDisbursementReportEndDate();
         }
     </script>
 </body>
