@@ -132,8 +132,8 @@ namespace Lending.ApiControllers
                 Data.trnCollection newCollection = new Data.trnCollection();
                 newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10); ;
                 newCollection.CollectionDate = DateTime.Today;
-                newCollection.BranchId = (from d in db.mstBranches select d.Id).FirstOrDefault();
-                newCollection.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
+                newCollection.BranchId = (from d in db.mstBranches.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newCollection.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newCollection.Particulars = "NA";
                 newCollection.PreparedByUserId = userId;
                 newCollection.VerifiedByUserId = userId;

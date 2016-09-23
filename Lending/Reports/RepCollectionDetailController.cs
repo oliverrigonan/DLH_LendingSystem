@@ -134,7 +134,7 @@ namespace Lending.Reports
                                 foreach (var collectionLine in collectionLines)
                                 {
                                     collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.LoanNumber, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                                    collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.LoanDate, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                                    collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.LoanDate, fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
                                     collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.CollectedByCollector, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
                                     collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.Amount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
                                     collectionLinesData.AddCell(new PdfPCell(new Phrase(collectionLine.LoanAmount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });

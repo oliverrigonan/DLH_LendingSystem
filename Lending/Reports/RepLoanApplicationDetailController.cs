@@ -50,7 +50,7 @@ namespace Lending.Reports
                         loanApplicationheader.SetWidths(loanApplicationheaderWidthCells);
                         loanApplicationheader.WidthPercentage = 100;
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("DLH Incorporated", fontArial17Bold)) { Border = 0 });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Loan Detail Report", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Applicants' Loan Detail Report", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("Pardo", fontArial12)) { Border = 0, PaddingTop = 5f });
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("0932-444-1234", fontArial12)) { Border = 0, PaddingTop = 5f });

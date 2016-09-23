@@ -120,8 +120,8 @@ namespace Lending.ApiControllers
                 Data.trnDisbursement newDisbursement = new Data.trnDisbursement();
                 newDisbursement.DisbursementNumber = zeroFill(Convert.ToInt32(disbursementNumber), 10);
                 newDisbursement.DisbursementDate = DateTime.Today;
-                newDisbursement.BranchId = (from d in db.mstBranches select d.Id).FirstOrDefault();
-                newDisbursement.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
+                newDisbursement.BranchId = (from d in db.mstBranches.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newDisbursement.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
                 newDisbursement.Payee = "NA";
                 newDisbursement.Particulars = "NA";
                 newDisbursement.Amount = 0;
