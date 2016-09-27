@@ -26,8 +26,6 @@ namespace Lending.ApiControllers
                                     Id = d.Id,
                                     DisbursementNumber = d.DisbursementNumber,
                                     DisbursementDate = d.DisbursementDate.ToShortDateString(),
-                                    BranchId = d.BranchId,
-                                    Branch = d.mstBranch.Branch,
                                     AccountId = d.AccountId,
                                     Account = d.mstAccount.Account,
                                     Payee = d.Payee,
@@ -35,14 +33,12 @@ namespace Lending.ApiControllers
                                     Amount = d.Amount,
                                     PreparedByUserId = d.PreparedByUserId,
                                     PreparedByUser = d.mstUser.FullName,
-                                    VerifiedByUserId = d.VerifiedByUserId,
-                                    VerifiedByUser = d.mstUser1.FullName,
                                     IsLocked = d.IsLocked,
                                     CreatedByUserId = d.CreatedByUserId,
-                                    CreatedByUser = d.mstUser2.FullName,
+                                    CreatedByUser = d.mstUser1.FullName,
                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                     UpdatedByUserId = d.UpdatedByUserId,
-                                    UpdatedByUser = d.mstUser3.FullName,
+                                    UpdatedByUser = d.mstUser2.FullName,
                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                 };
 
@@ -62,8 +58,6 @@ namespace Lending.ApiControllers
                                    Id = d.Id,
                                    DisbursementNumber = d.DisbursementNumber,
                                    DisbursementDate = d.DisbursementDate.ToShortDateString(),
-                                   BranchId = d.BranchId,
-                                   Branch = d.mstBranch.Branch,
                                    AccountId = d.AccountId,
                                    Account = d.mstAccount.Account,
                                    Payee = d.Payee,
@@ -71,14 +65,12 @@ namespace Lending.ApiControllers
                                    Amount = d.Amount,
                                    PreparedByUserId = d.PreparedByUserId,
                                    PreparedByUser = d.mstUser.FullName,
-                                   VerifiedByUserId = d.VerifiedByUserId,
-                                   VerifiedByUser = d.mstUser1.FullName,
                                    IsLocked = d.IsLocked,
                                    CreatedByUserId = d.CreatedByUserId,
-                                   CreatedByUser = d.mstUser2.FullName,
+                                   CreatedByUser = d.mstUser1.FullName,
                                    CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                    UpdatedByUserId = d.UpdatedByUserId,
-                                   UpdatedByUser = d.mstUser3.FullName,
+                                   UpdatedByUser = d.mstUser2.FullName,
                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                };
 
@@ -120,13 +112,11 @@ namespace Lending.ApiControllers
                 Data.trnDisbursement newDisbursement = new Data.trnDisbursement();
                 newDisbursement.DisbursementNumber = zeroFill(Convert.ToInt32(disbursementNumber), 10);
                 newDisbursement.DisbursementDate = DateTime.Today;
-                newDisbursement.BranchId = (from d in db.mstBranches.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newDisbursement.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
                 newDisbursement.Payee = "NA";
                 newDisbursement.Particulars = "NA";
                 newDisbursement.Amount = 0;
                 newDisbursement.PreparedByUserId = userId;
-                newDisbursement.VerifiedByUserId = userId;
                 newDisbursement.IsLocked = false;
                 newDisbursement.CreatedByUserId = userId;
                 newDisbursement.CreatedDateTime = DateTime.Now;
@@ -161,13 +151,11 @@ namespace Lending.ApiControllers
 
                         var lockDisbursement = disbursements.FirstOrDefault();
                         lockDisbursement.DisbursementDate = Convert.ToDateTime(disbursement.DisbursementDate);
-                        lockDisbursement.BranchId = disbursement.BranchId;
                         lockDisbursement.AccountId = disbursement.AccountId;
                         lockDisbursement.Payee = disbursement.Payee;
                         lockDisbursement.Particulars = disbursement.Particulars;
                         lockDisbursement.Amount = disbursement.Amount;
                         lockDisbursement.PreparedByUserId = disbursement.PreparedByUserId;
-                        lockDisbursement.VerifiedByUserId = disbursement.VerifiedByUserId;
                         lockDisbursement.IsLocked = true;
                         lockDisbursement.UpdatedByUserId = userId;
                         lockDisbursement.UpdatedDateTime = DateTime.Now;

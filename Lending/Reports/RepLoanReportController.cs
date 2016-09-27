@@ -29,8 +29,6 @@ namespace Lending.Reports
                                            LoanNumber = d.LoanNumber,
                                            LoanDate = d.LoanDate.ToShortDateString(),
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
-                                           BranchId = d.BranchId,
-                                           Branch = d.mstBranch.Branch,
                                            AccountId = d.AccountId,
                                            Account = d.mstAccount.Account,
                                            ApplicantId = d.ApplicantId,
@@ -45,14 +43,12 @@ namespace Lending.Reports
                                            Collector = d.mstCollector.Collector,
                                            PreparedByUserId = d.PreparedByUserId,
                                            PreparedByUser = d.mstUser.FullName,
-                                           VerifiedByUserId = d.VerifiedByUserId,
-                                           VerifiedByUser = d.mstUser1.FullName,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
-                                           CreatedByUser = d.mstUser2.FullName,
+                                           CreatedByUser = d.mstUser1.FullName,
                                            CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                            UpdatedByUserId = d.UpdatedByUserId,
-                                           UpdatedByUser = d.mstUser3.FullName,
+                                           UpdatedByUser = d.mstUser2.FullName,
                                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                        };
 

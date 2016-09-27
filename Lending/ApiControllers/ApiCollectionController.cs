@@ -40,16 +40,12 @@ namespace Lending.ApiControllers
                                   Id = d.Id,
                                   CollectionNumber = d.CollectionNumber,
                                   CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  BranchId = d.BranchId,
-                                  Branch = d.mstBranch.Branch,
                                   ApplicantId = d.ApplicantId,
                                   Applicant = d.mstApplicant.ApplicantFullName,
                                   Particulars = d.Particulars,
                                   PaidAmount = getTotalPaidAmount(d.Id),
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser2.FullName,
-                                  VerifiedByUserId = d.VerifiedByUserId,
-                                  VerifiedByUser = d.mstUser3.FullName,
                                   IsLocked = d.IsLocked,
                                   CreatedByUserId = d.CreatedByUserId,
                                   CreatedByUser = d.mstUser.FullName,
@@ -75,16 +71,12 @@ namespace Lending.ApiControllers
                                  Id = d.Id,
                                  CollectionNumber = d.CollectionNumber,
                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                 BranchId = d.BranchId,
-                                 Branch = d.mstBranch.Branch,
                                  ApplicantId = d.ApplicantId,
                                  Applicant = d.mstApplicant.ApplicantFullName,
                                  Particulars = d.Particulars,
                                  PaidAmount = getTotalPaidAmount(d.Id),
                                  PreparedByUserId = d.PreparedByUserId,
                                  PreparedByUser = d.mstUser2.FullName,
-                                 VerifiedByUserId = d.VerifiedByUserId,
-                                 VerifiedByUser = d.mstUser3.FullName,
                                  IsLocked = d.IsLocked,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
@@ -132,11 +124,9 @@ namespace Lending.ApiControllers
                 Data.trnCollection newCollection = new Data.trnCollection();
                 newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10); ;
                 newCollection.CollectionDate = DateTime.Today;
-                newCollection.BranchId = (from d in db.mstBranches.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newCollection.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newCollection.Particulars = "NA";
                 newCollection.PreparedByUserId = userId;
-                newCollection.VerifiedByUserId = userId;
                 newCollection.IsLocked = false;
                 newCollection.CreatedByUserId = userId;
                 newCollection.CreatedDateTime = DateTime.Now;
@@ -171,11 +161,9 @@ namespace Lending.ApiControllers
 
                         var lockCollection = collections.FirstOrDefault();
                         lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                        lockCollection.BranchId = collection.BranchId;
                         lockCollection.ApplicantId = collection.ApplicantId;
                         lockCollection.Particulars = collection.Particulars;
                         lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                        lockCollection.VerifiedByUserId = collection.VerifiedByUserId;
                         lockCollection.IsLocked = true;
                         lockCollection.UpdatedByUserId = userId;
                         lockCollection.UpdatedDateTime = DateTime.Now;

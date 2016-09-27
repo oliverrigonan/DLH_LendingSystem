@@ -27,8 +27,6 @@ namespace Lending.ApiControllers
                                        LoanNumber = d.LoanNumber,
                                        LoanDate = d.LoanDate.ToShortDateString(),
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       BranchId = d.BranchId,
-                                       Branch = d.mstBranch.Branch,
                                        AccountId = d.AccountId,
                                        Account = d.mstAccount.Account,
                                        ApplicantId = d.ApplicantId,
@@ -43,14 +41,12 @@ namespace Lending.ApiControllers
                                        Collector = d.mstCollector.Collector,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       VerifiedByUserId = d.VerifiedByUserId,
-                                       VerifiedByUser = d.mstUser1.FullName,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
-                                       CreatedByUser = d.mstUser2.FullName,
+                                       CreatedByUser = d.mstUser1.FullName,
                                        CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                        UpdatedByUserId = d.UpdatedByUserId,
-                                       UpdatedByUser = d.mstUser3.FullName,
+                                       UpdatedByUser = d.mstUser2.FullName,
                                        UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                    };
 
@@ -71,8 +67,6 @@ namespace Lending.ApiControllers
                                       LoanNumber = d.LoanNumber,
                                       LoanDate = d.LoanDate.ToShortDateString(),
                                       MaturityDate = d.MaturityDate.ToShortDateString(),
-                                      BranchId = d.BranchId,
-                                      Branch = d.mstBranch.Branch,
                                       AccountId = d.AccountId,
                                       Account = d.mstAccount.Account,
                                       ApplicantId = d.ApplicantId,
@@ -87,14 +81,12 @@ namespace Lending.ApiControllers
                                       Collector = d.mstCollector.Collector,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
-                                      VerifiedByUserId = d.VerifiedByUserId,
-                                      VerifiedByUser = d.mstUser1.FullName,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
-                                      CreatedByUser = d.mstUser2.FullName,
+                                      CreatedByUser = d.mstUser1.FullName,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                       UpdatedByUserId = d.UpdatedByUserId,
-                                      UpdatedByUser = d.mstUser3.FullName,
+                                      UpdatedByUser = d.mstUser2.FullName,
                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                   };
 
@@ -115,8 +107,6 @@ namespace Lending.ApiControllers
                                       LoanNumber = d.LoanNumber,
                                       LoanDate = d.LoanDate.ToShortDateString(),
                                       MaturityDate = d.MaturityDate.ToShortDateString(),
-                                      BranchId = d.BranchId,
-                                      Branch = d.mstBranch.Branch,
                                       AccountId = d.AccountId,
                                       Account = d.mstAccount.Account,
                                       ApplicantId = d.ApplicantId,
@@ -131,14 +121,12 @@ namespace Lending.ApiControllers
                                       Collector = d.mstCollector.Collector,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
-                                      VerifiedByUserId = d.VerifiedByUserId,
-                                      VerifiedByUser = d.mstUser1.FullName,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
-                                      CreatedByUser = d.mstUser2.FullName,
+                                      CreatedByUser = d.mstUser1.FullName,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                       UpdatedByUserId = d.UpdatedByUserId,
-                                      UpdatedByUser = d.mstUser3.FullName,
+                                      UpdatedByUser = d.mstUser2.FullName,
                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                   };
 
@@ -180,7 +168,6 @@ namespace Lending.ApiControllers
                 newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                 newLoanApplication.LoanDate = DateTime.Today;
                 newLoanApplication.MaturityDate = DateTime.Today;
-                newLoanApplication.BranchId = (from d in db.mstBranches.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.AreaId = (from d in db.mstAreas.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
@@ -190,7 +177,6 @@ namespace Lending.ApiControllers
                 newLoanApplication.BalanceAmount = 0;
                 newLoanApplication.CollectorId = (from d in db.mstCollectors select d.Id).FirstOrDefault();
                 newLoanApplication.PreparedByUserId = userId;
-                newLoanApplication.VerifiedByUserId = userId;
                 newLoanApplication.IsLocked = false;
                 newLoanApplication.CreatedByUserId = userId;
                 newLoanApplication.CreatedDateTime = DateTime.Now;
@@ -233,7 +219,6 @@ namespace Lending.ApiControllers
                         var lockLoanApplication = loanApplications.FirstOrDefault();
                         lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
                         lockLoanApplication.MaturityDate = Convert.ToDateTime(loanApplication.MaturityDate);
-                        lockLoanApplication.BranchId = loanApplication.BranchId;
                         lockLoanApplication.AccountId = loanApplication.AccountId;
                         lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                         lockLoanApplication.AreaId = loanApplication.AreaId;
@@ -243,7 +228,6 @@ namespace Lending.ApiControllers
                         lockLoanApplication.BalanceAmount = loanApplication.LoanAmount - totalCollectionLinesPaidAmount;
                         lockLoanApplication.CollectorId = loanApplication.CollectorId;
                         lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
-                        lockLoanApplication.VerifiedByUserId = loanApplication.VerifiedByUserId;
                         lockLoanApplication.IsLocked = true;
                         lockLoanApplication.UpdatedByUserId = userId;
                         lockLoanApplication.UpdatedDateTime = DateTime.Now;

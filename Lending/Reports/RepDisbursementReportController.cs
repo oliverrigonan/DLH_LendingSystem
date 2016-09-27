@@ -28,8 +28,6 @@ namespace Lending.Reports
                                         Id = d.Id,
                                         DisbursementNumber = d.DisbursementNumber,
                                         DisbursementDate = d.DisbursementDate.ToShortDateString(),
-                                        BranchId = d.BranchId,
-                                        Branch = d.mstBranch.Branch,
                                         AccountId = d.AccountId,
                                         Account = d.mstAccount.Account,
                                         Payee = d.Payee,
@@ -37,14 +35,12 @@ namespace Lending.Reports
                                         Amount = d.Amount,
                                         PreparedByUserId = d.PreparedByUserId,
                                         PreparedByUser = d.mstUser.FullName,
-                                        VerifiedByUserId = d.VerifiedByUserId,
-                                        VerifiedByUser = d.mstUser1.FullName,
                                         IsLocked = d.IsLocked,
                                         CreatedByUserId = d.CreatedByUserId,
-                                        CreatedByUser = d.mstUser2.FullName,
+                                        CreatedByUser = d.mstUser1.FullName,
                                         CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                         UpdatedByUserId = d.UpdatedByUserId,
-                                        UpdatedByUser = d.mstUser3.FullName,
+                                        UpdatedByUser = d.mstUser2.FullName,
                                         UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                     };
 

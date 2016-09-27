@@ -21,8 +21,6 @@ namespace Lending.Business
                                        LoanNumber = d.LoanNumber,
                                        LoanDate = d.LoanDate.ToShortDateString(),
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       BranchId = d.BranchId,
-                                       Branch = d.mstBranch.Branch,
                                        AccountId = d.AccountId,
                                        Account = d.mstAccount.Account,
                                        ApplicantId = d.ApplicantId,
@@ -37,14 +35,12 @@ namespace Lending.Business
                                        Collector = d.mstCollector.Collector,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       VerifiedByUserId = d.VerifiedByUserId,
-                                       VerifiedByUser = d.mstUser1.FullName,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
-                                       CreatedByUser = d.mstUser2.FullName,
+                                       CreatedByUser = d.mstUser1.FullName,
                                        CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                        UpdatedByUserId = d.UpdatedByUserId,
-                                       UpdatedByUser = d.mstUser3.FullName,
+                                       UpdatedByUser = d.mstUser2.FullName,
                                        UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                    };
 
@@ -56,7 +52,6 @@ namespace Lending.Business
                     {
                         Data.trnJournal newLoanJournal = new Data.trnJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(loanApplication.LoanDate);
-                        newLoanJournal.BranchId = loanApplication.BranchId;
                         newLoanJournal.AccountId = loanApplication.AccountId;
                         newLoanJournal.Particulars = loanApplication.Particulars;
                         newLoanJournal.ReleasedAmount = loanApplication.LoanAmount;
@@ -95,7 +90,6 @@ namespace Lending.Business
                                       CollectionId = d.CollectionId,
                                       CollectionNumber = d.trnCollection.CollectionNumber,
                                       CollectionDate = d.trnCollection.CollectionDate.ToShortDateString(),
-                                      BranchId = d.trnCollection.BranchId,
                                       AccountId = d.AccountId,
                                       Account = d.mstAccount.Account,
                                       LoanId = d.LoanId,
@@ -115,7 +109,6 @@ namespace Lending.Business
                     {
                         Data.trnJournal newCollectionJournal = new Data.trnJournal();
                         newCollectionJournal.JournalDate = Convert.ToDateTime(collectionLine.CollectionDate);
-                        newCollectionJournal.BranchId = collectionLine.BranchId;
                         newCollectionJournal.AccountId = collectionLine.AccountId;
                         newCollectionJournal.Particulars = collectionLine.Particulars;
                         newCollectionJournal.ReleasedAmount = 0;
@@ -153,8 +146,6 @@ namespace Lending.Business
                                    Id = d.Id,
                                    DisbursementNumber = d.DisbursementNumber,
                                    DisbursementDate = d.DisbursementDate.ToShortDateString(),
-                                   BranchId = d.BranchId,
-                                   Branch = d.mstBranch.Branch,
                                    AccountId = d.AccountId,
                                    Account = d.mstAccount.Account,
                                    Payee = d.Payee,
@@ -162,14 +153,12 @@ namespace Lending.Business
                                    Amount = d.Amount,
                                    PreparedByUserId = d.PreparedByUserId,
                                    PreparedByUser = d.mstUser.FullName,
-                                   VerifiedByUserId = d.VerifiedByUserId,
-                                   VerifiedByUser = d.mstUser1.FullName,
                                    IsLocked = d.IsLocked,
                                    CreatedByUserId = d.CreatedByUserId,
-                                   CreatedByUser = d.mstUser2.FullName,
+                                   CreatedByUser = d.mstUser1.FullName,
                                    CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                    UpdatedByUserId = d.UpdatedByUserId,
-                                   UpdatedByUser = d.mstUser3.FullName,
+                                   UpdatedByUser = d.mstUser2.FullName,
                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                };
 
@@ -181,7 +170,6 @@ namespace Lending.Business
                     {
                         Data.trnJournal newLoanJournal = new Data.trnJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(disbursement.DisbursementDate);
-                        newLoanJournal.BranchId = disbursement.BranchId;
                         newLoanJournal.AccountId = disbursement.AccountId;
                         newLoanJournal.Particulars = disbursement.Particulars;
                         newLoanJournal.ReleasedAmount = disbursement.Amount;

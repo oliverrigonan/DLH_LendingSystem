@@ -99,9 +99,6 @@
                         </div>
                         <div class="panel-body">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Disbursement Header Form
-                                </div>
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label>Disbursement Number</label><br />
@@ -109,11 +106,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Disbursement Date</label><br />
-                                        <div id="disbursementDate"></div> &nbsp; <span id="disbursementDateString"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Branch</label><br />
-                                        <div id="disbursementBranch"></div>
+                                        <div id="disbursementDate"></div>
                                     </div>
                                     <div class="form-group">
                                         <label>Account</label><br />
@@ -137,10 +130,6 @@
                                     <div class="form-group">
                                         <label>Prepared by</label><br />
                                         <div id="disbursementPreparedBy"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Verified by</label><br />
-                                        <div id="disbursementVerifiedBy"></div>
                                     </div>
                                 </div>
                             </div>
@@ -174,130 +163,19 @@
     <script type="text/javascript">
         // global varibles
         var cboDisbursementDate;
-        var cboDisbursementBranch;
         var cboDisbursementAccount;
         var cboDisbursementPreparedBy;
-        var cboDisbursementVerifiedBy;
 
         // create disbursement Date
         function createDisbursementDate() {
             cboDisbursementDate = new wijmo.input.InputDate('#disbursementDate', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
-                mask: '99-99-9999',
-                onValueChanged: function () {
-                    var dateValue = this.value.getMonth() + 1;
-                    var month = "";
-
-                    if (dateValue == 1) {
-                        month = "January";
-                    } else if (dateValue == 2) {
-                        month = "February";
-                    } else if (dateValue == 3) {
-                        month = "March";
-                    } else if (dateValue == 4) {
-                        month = "April";
-                    } else if (dateValue == 5) {
-                        month = "May";
-                    } else if (dateValue == 6) {
-                        month = "June";
-                    } else if (dateValue == 7) {
-                        month = "July";
-                    } else if (dateValue == 8) {
-                        month = "August";
-                    } else if (dateValue == 9) {
-                        month = "September";
-                    } else if (dateValue == 10) {
-                        month = "October";
-                    } else if (dateValue == 11) {
-                        month = "November";
-                    } else if (dateValue == 12) {
-                        month = "December";
-                    } else {
-                        month = "";
-                    }
-
-                    document.getElementById("disbursementDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
-                }
+                mask: '99-99-9999'
             });
 
-            var dateValue = cboDisbursementDate.value.getMonth() + 1;
-            var month = "";
-
-            if (dateValue == 1) {
-                month = "January";
-            } else if (dateValue == 2) {
-                month = "February";
-            } else if (dateValue == 3) {
-                month = "March";
-            } else if (dateValue == 4) {
-                month = "April";
-            } else if (dateValue == 5) {
-                month = "May";
-            } else if (dateValue == 6) {
-                month = "June";
-            } else if (dateValue == 7) {
-                month = "July";
-            } else if (dateValue == 8) {
-                month = "August";
-            } else if (dateValue == 9) {
-                month = "September";
-            } else if (dateValue == 10) {
-                month = "October";
-            } else if (dateValue == 11) {
-                month = "November";
-            } else if (dateValue == 12) {
-                month = "December";
-            } else {
-                month = "";
-            }
-
-            document.getElementById("disbursementDateString").innerHTML = month + " " + cboDisbursementDate.value.getDate() + ", " + cboDisbursementDate.value.getFullYear();
-
-            cboDisbursementBranch = new wijmo.input.ComboBox('#disbursementBranch');
-            getBranch();
-        }
-
-        // get branch
-        function getBranch() {
-            var branchArray = new Array();
-            $.ajax({
-                url: '/api/branch/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (branchResults) {
-                    var disabled = true;
-                    if (branchResults.length > 0) {
-                        for (i = 0; i < branchResults.length; i++) {
-                            branchArray.push({
-                                Id: branchResults[i]["Id"],
-                                Branch: branchResults[i]["Branch"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboDisbursementAccount = new wijmo.input.ComboBox('#disbursementAccount');
-                        getAccount();
-                    } else {
-                        cboDisbursementAccount = new wijmo.input.ComboBox('#disbursementAccount');
-                        getAccount();
-                    }
-
-                    cboDisbursementBranch.dispose();
-                    cboDisbursementBranch = new wijmo.input.ComboBox('#disbursementBranch', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: branchArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "Branch",
-                        selectedValuePath: "Branch"
-                    });
-                }
-            });
+            cboDisbursementAccount = new wijmo.input.ComboBox('#disbursementAccount');
+            getAccount();
         }
 
         // get account
@@ -322,11 +200,9 @@
                         disabled = false;
 
                         cboDisbursementPreparedBy = new wijmo.input.ComboBox('#disbursementPreparedBy');
-                        cboDisbursementVerifiedBy = new wijmo.input.ComboBox('#disbursementVerifiedBy');
                         getUser();
                     } else {
                         cboDisbursementPreparedBy = new wijmo.input.ComboBox('#disbursementPreparedBy');
-                        cboDisbursementVerifiedBy = new wijmo.input.ComboBox('#disbursementVerifiedBy');
                         getUser();
                     }
 
@@ -377,17 +253,6 @@
                         selectedValuePath: "FullName"
                     });
 
-                    cboDisbursementVerifiedBy.dispose();
-                    cboDisbursementVerifiedBy = new wijmo.input.ComboBox('#disbursementVerifiedBy', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: userArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "FullName",
-                        selectedValuePath: "FullName"
-                    });
-
                     getDisbursementById();
                 }
             });
@@ -406,13 +271,11 @@
                         document.getElementById("disbursementNumber").disabled = true;
                         document.getElementById("disbursementNumber").value = disbursementResult.DisbursementNumber;
                         cboDisbursementDate.value = new Date(disbursementResult.DisbursementDate);
-                        cboDisbursementBranch.selectedValue = disbursementResult.Branch;
                         cboDisbursementAccount.selectedValue = disbursementResult.Account;
                         document.getElementById("disbursementPayee").value = disbursementResult.Payee;
                         document.getElementById("disbursementParticulars").value = disbursementResult.Particulars;
                         document.getElementById("disbursementAmount").value = disbursementResult.Amount.toLocaleString();
                         cboDisbursementPreparedBy.selectedValue = disbursementResult.PreparedByUser;
-                        cboDisbursementVerifiedBy.selectedValue = disbursementResult.VerifiedByUser;
                         document.getElementById('stampCreatedBy').innerHTML = disbursementResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = disbursementResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = disbursementResult.UpdatedByUser;
@@ -423,10 +286,8 @@
                             $("#btnLockButtom").prop("disabled", true);
 
                             cboDisbursementDate.disabled = true;
-                            cboDisbursementBranch.disabled = true;
                             cboDisbursementAccount.disabled = true;
                             cboDisbursementPreparedBy.disabled = true;
-                            cboDisbursementVerifiedBy.disabled = true;
                             document.getElementById("disbursementPayee").disabled = true;
                             document.getElementById("disbursementParticulars").disabled = true;
                             document.getElementById("disbursementAmount").disabled = true;
@@ -479,13 +340,11 @@
 
                 var disbursementObject = new Object();
                 disbursementObject.DisbursementDate = cboDisbursementDate.value;
-                disbursementObject.BranchId = cboDisbursementBranch.selectedItem["Id"];
                 disbursementObject.AccountId = cboDisbursementAccount.selectedItem["Id"];
                 disbursementObject.Payee = document.getElementById("disbursementPayee").value;
                 disbursementObject.Particulars = document.getElementById("disbursementParticulars").value;
                 disbursementObject.Amount = document.getElementById("disbursementAmount").value;
                 disbursementObject.PreparedByUserId = cboDisbursementPreparedBy.selectedItem["Id"];
-                disbursementObject.VerifiedByUserId = cboDisbursementVerifiedBy.selectedItem["Id"];
                 var disbursementData = JSON.stringify(disbursementObject);
 
                 $.ajax({

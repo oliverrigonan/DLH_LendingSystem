@@ -99,9 +99,6 @@
                         </div>
                         <div class="panel-body">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Collection Header Form
-                                </div>
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label>Collection Number</label><br />
@@ -109,11 +106,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Collection Date</label><br />
-                                        <div id="collectionDate"></div> &nbsp; <span id="collectionDateString"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Branch</label><br />
-                                        <div id="collectionBranch"></div>
+                                        <div id="collectionDate"></div>
                                     </div>
                                     <div class="form-group">
                                         <label>Applicant</label><br />
@@ -127,10 +120,6 @@
                                         <label>Prepared by</label><br />
                                         <div id="collectionPreparedBy"></div>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Verified by</label><br />
-                                        <div id="collectionVerifiedBy"></div>
-                                    </div>
                                 </div>
                             </div>
                             <div class="panel panel-default">
@@ -143,9 +132,6 @@
                                             <td align="right">
                                                 <button class="btn btn-primary btn-sm" id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
                                                     <i class="fa fa-plus fa-fw"></i> Add
-                                                </button>
-                                                <button class="btn btn-primary btn-sm" id="btnAddCollectables">
-                                                    <i class="fa fa-list fa-fw"></i> Collectables
                                                 </button>
                                             </td>
                                         </tr>
@@ -261,10 +247,8 @@
     <script type="text/javascript">
         // global varibles
         var cboCollectionDate;
-        var cboCollectionBranch;
         var cboCollectionApplicant;
         var cboCollectionPreparedByUser;
-        var cboCollectionVerifiedBy;
         var isLocked = false;
         var collectionLinesCollectionView;
         var collectionLinesFlexGrid;
@@ -277,121 +261,11 @@
             cboCollectionDate = new wijmo.input.InputDate('#collectionDate', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
-                mask: '99-99-9999',
-                onValueChanged: function () {
-                    var dateValue = this.value.getMonth() + 1;
-                    var month = "";
-
-                    if (dateValue == 1) {
-                        month = "January";
-                    } else if (dateValue == 2) {
-                        month = "February";
-                    } else if (dateValue == 3) {
-                        month = "March";
-                    } else if (dateValue == 4) {
-                        month = "April";
-                    } else if (dateValue == 5) {
-                        month = "May";
-                    } else if (dateValue == 6) {
-                        month = "June";
-                    } else if (dateValue == 7) {
-                        month = "July";
-                    } else if (dateValue == 8) {
-                        month = "August";
-                    } else if (dateValue == 9) {
-                        month = "September";
-                    } else if (dateValue == 10) {
-                        month = "October";
-                    } else if (dateValue == 11) {
-                        month = "November";
-                    } else if (dateValue == 12) {
-                        month = "December";
-                    } else {
-                        month = "";
-                    }
-
-                    document.getElementById("collectionDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
-                }
+                mask: '99-99-9999'
             });
 
-            var dateValue = cboCollectionDate.value.getMonth() + 1;
-            var month = "";
-
-            if (dateValue == 1) {
-                month = "January";
-            } else if (dateValue == 2) {
-                month = "February";
-            } else if (dateValue == 3) {
-                month = "March";
-            } else if (dateValue == 4) {
-                month = "April";
-            } else if (dateValue == 5) {
-                month = "May";
-            } else if (dateValue == 6) {
-                month = "June";
-            } else if (dateValue == 7) {
-                month = "July";
-            } else if (dateValue == 8) {
-                month = "August";
-            } else if (dateValue == 9) {
-                month = "September";
-            } else if (dateValue == 10) {
-                month = "October";
-            } else if (dateValue == 11) {
-                month = "November";
-            } else if (dateValue == 12) {
-                month = "December";
-            } else {
-                month = "";
-            }
-
-            document.getElementById("collectionDateString").innerHTML = month + " " + cboCollectionDate.value.getDate() + ", " + cboCollectionDate.value.getFullYear();
-
-            cboCollectionBranch = new wijmo.input.ComboBox('#collectionBranch');
-            getBranch();
-        }
-
-        // get branch
-        function getBranch() {
-            var branchArray = new Array();
-            $.ajax({
-                url: '/api/branch/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (branchResults) {
-                    var disabled = true;
-                    if (branchResults.length > 0) {
-                        for (i = 0; i < branchResults.length; i++) {
-                            branchArray.push({
-                                Id: branchResults[i]["Id"],
-                                Branch: branchResults[i]["Branch"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboCollectionApplicant = new wijmo.input.ComboBox('#collectionApplicant');
-                        getApplicant();
-                    } else {
-
-                        cboCollectionApplicant = new wijmo.input.ComboBox('#collectionApplicant');
-                        getApplicant();
-                    }
-
-                    cboCollectionBranch.dispose();
-                    cboCollectionBranch = new wijmo.input.ComboBox('#collectionBranch', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: branchArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "Branch",
-                        selectedValuePath: "Branch"
-                    });
-                }
-            });
+            cboCollectionApplicant = new wijmo.input.ComboBox('#collectionApplicant');
+            getApplicant();
         }
 
         // get applicant
@@ -416,12 +290,10 @@
                         disabled = false;
 
                         cboCollectionPreparedByUser = new wijmo.input.ComboBox('#collectionPreparedBy');
-                        cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy');
                         getUser();
 
                     } else {
                         cboCollectionPreparedByUser = new wijmo.input.ComboBox('#collectionPreparedBy');
-                        cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy');
                         getUser();
                     }
 
@@ -474,17 +346,6 @@
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });
-
-                    cboCollectionVerifiedBy.dispose();
-                    cboCollectionVerifiedBy = new wijmo.input.ComboBox('#collectionVerifiedBy', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: userArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "FullName",
-                        selectedValuePath: "FullName"
-                    });
                 }
             });
 
@@ -520,15 +381,12 @@
                 $("#btnClose").prop("disabled", true);
                 $("#btnCloseButtom").prop("disabled", true);
                 $("#btnAddCollectionLines").prop("disabled", true);
-                $("#btnAddCollectables").prop("disabled", true);
 
                 var collectionObject = new Object();
                 collectionObject.CollectionDate = cboCollectionDate.value;
-                collectionObject.BranchId = cboCollectionBranch.selectedItem["Id"];
                 collectionObject.ApplicantId = cboCollectionApplicant.selectedItem["Id"];
                 collectionObject.Particulars = document.getElementById("collectionParticulars").value;
                 collectionObject.PreparedByUserId = cboCollectionPreparedByUser.selectedItem["Id"];
-                collectionObject.VerifiedByUserId = cboCollectionVerifiedBy.selectedItem["Id"];
                 var collectionData = JSON.stringify(collectionObject);
 
                 $.ajax({
@@ -580,7 +438,6 @@
             document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
             document.getElementById("btnUnlockButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
             $("#btnAddCollectionLines").prop("disabled", true);
-            $("#btnAddCollectables").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",
@@ -1095,11 +952,9 @@
                         document.getElementById("collectionNumber").disabled = true;
                         document.getElementById("collectionNumber").value = collectionResult.CollectionNumber;
                         cboCollectionDate.value = new Date(collectionResult.CollectionDate);
-                        cboCollectionBranch.selectedValue = collectionResult.Branch;
                         cboCollectionApplicant.selectedValue = collectionResult.Applicant;
                         document.getElementById("collectionParticulars").value = collectionResult.Particulars;
                         cboCollectionPreparedByUser.selectedValue = collectionResult.PreparedByUser;
-                        cboCollectionVerifiedBy.selectedValue = collectionResult.VerifiedByUser;
                         document.getElementById('stampCreatedBy').innerHTML = collectionResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = collectionResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = collectionResult.UpdatedByUser;
@@ -1110,14 +965,11 @@
                             $("#btnLockButtom").prop("disabled", true);
 
                             cboCollectionDate.disabled = true;
-                            cboCollectionBranch.disabled = true;
                             cboCollectionApplicant.disabled = true;
                             cboCollectionPreparedByUser.disabled = true;
-                            cboCollectionVerifiedBy.disabled = true;
                             document.getElementById("collectionParticulars").disabled = true;
 
                             $("#btnAddCollectionLines").prop("disabled", true);
-                            $("#btnAddCollectables").prop("disabled", true);
 
                             isLocked = true;
                         } else {

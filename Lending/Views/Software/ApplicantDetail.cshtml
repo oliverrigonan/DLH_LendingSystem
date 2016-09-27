@@ -118,9 +118,6 @@
                                     <div id="myTabContent" class="tab-content">
                                         <div class="tab-pane fade in active" id="applicantDetail">
                                             <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    Applicant Personal Information
-                                                </div>
                                                 <div class="panel-body">
                                                     <div class="form-group">
                                                         <label>Applicant Name</label><br />
@@ -128,7 +125,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Birth Date</label><br />
-                                                        <div id="applicantBirthDate"></div> &nbsp; <span id="fullDateString"></span>
+                                                        <div id="applicantBirthDate"></div>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Civil Status</label><br />
@@ -587,7 +584,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Birth Date</label><br />
-                                                <div id="coMakerBirthDate"></div> &nbsp; <span id="coMakerFullDateString"></span>
+                                                <div id="coMakerBirthDate"></div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Civil Status</label><br />
@@ -989,161 +986,21 @@
         var coMakerApplicantApplianceOwnedId = 0;
         var isLocked = false;
 
-        // on load birthdate label string
-        function onLoadBirthDateLabelString(cboBirthDate, cboCoMakerBirthDate) {
-            var birthDateValue = cboBirthDate.value.getMonth() + 1;
-            var month = "";
-
-            if (birthDateValue == 1) {
-                month = "January";
-            } else if (birthDateValue == 2) {
-                month = "February";
-            } else if (birthDateValue == 3) {
-                month = "March";
-            } else if (birthDateValue == 4) {
-                month = "April";
-            } else if (birthDateValue == 5) {
-                month = "May";
-            } else if (birthDateValue == 6) {
-                month = "June";
-            } else if (birthDateValue == 7) {
-                month = "July";
-            } else if (birthDateValue == 8) {
-                month = "August";
-            } else if (birthDateValue == 9) {
-                month = "September";
-            } else if (birthDateValue == 10) {
-                month = "October";
-            } else if (birthDateValue == 11) {
-                month = "November";
-            } else if (birthDateValue == 12) {
-                month = "December";
-            } else {
-                month = "";
-            }
-
-            document.getElementById("fullDateString").innerHTML = month + " " + cboBirthDate.value.getDate() + ", " + cboBirthDate.value.getFullYear();
-
-            var coMakerBirthDateValue = cboCoMakerBirthDate.value.getMonth() + 1;
-            var coMakerBirthDaymonth = "";
-
-            if (birthDateValue == 1) {
-                coMakerBirthDaymonth = "January";
-            } else if (birthDateValue == 2) {
-                coMakerBirthDaymonth = "February";
-            } else if (birthDateValue == 3) {
-                coMakerBirthDaymonth = "March";
-            } else if (birthDateValue == 4) {
-                coMakerBirthDaymonth = "April";
-            } else if (birthDateValue == 5) {
-                coMakerBirthDaymonth = "May";
-            } else if (birthDateValue == 6) {
-                coMakerBirthDaymonth = "June";
-            } else if (birthDateValue == 7) {
-                coMakerBirthDaymonth = "July";
-            } else if (birthDateValue == 8) {
-                coMakerBirthDaymonth = "August";
-            } else if (birthDateValue == 9) {
-                coMakerBirthDaymonth = "September";
-            } else if (birthDateValue == 10) {
-                coMakerBirthDaymonth = "October";
-            } else if (birthDateValue == 11) {
-                coMakerBirthDaymonth = "November";
-            } else if (birthDateValue == 12) {
-                coMakerBirthDaymonth = "December";
-            } else {
-                coMakerBirthDaymonth = "";
-            }
-
-            document.getElementById("coMakerFullDateString").innerHTML = coMakerBirthDaymonth + " " + cboCoMakerBirthDate.value.getDate() + ", " + cboCoMakerBirthDate.value.getFullYear();
-        }
-
         // cbo birthdate
         function createCboBirthDate() {
             // applicant
             cboBirthDate = new wijmo.input.InputDate('#applicantBirthDate', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
-                mask: '99-99-9999',
-                onValueChanged: function () {
-                    var birthDateValue = this.value.getMonth() + 1;
-                    var month = "";
-
-                    if (birthDateValue == 1) {
-                        month = "January";
-                    } else if (birthDateValue == 2) {
-                        month = "February";
-                    } else if (birthDateValue == 3) {
-                        month = "March";
-                    } else if (birthDateValue == 4) {
-                        month = "April";
-                    } else if (birthDateValue == 5) {
-                        month = "May";
-                    } else if (birthDateValue == 6) {
-                        month = "June";
-                    } else if (birthDateValue == 7) {
-                        month = "July";
-                    } else if (birthDateValue == 8) {
-                        month = "August";
-                    } else if (birthDateValue == 9) {
-                        month = "September";
-                    } else if (birthDateValue == 10) {
-                        month = "October";
-                    } else if (birthDateValue == 11) {
-                        month = "November";
-                    } else if (birthDateValue == 12) {
-                        month = "December";
-                    } else {
-                        month = "";
-                    }
-
-                    document.getElementById("fullDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
-                }
+                mask: '99-99-9999'
             });
 
             // co maker statement
             cboCoMakerBirthDate = new wijmo.input.InputDate('#coMakerBirthDate', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
-                mask: '99-99-9999',
-                onValueChanged: function () {
-                    var birthDateValue = this.value.getMonth() + 1;
-                    var month = "";
-
-                    if (birthDateValue == 1) {
-                        month = "January";
-                    } else if (birthDateValue == 2) {
-                        month = "February";
-                    } else if (birthDateValue == 3) {
-                        month = "March";
-                    } else if (birthDateValue == 4) {
-                        month = "April";
-                    } else if (birthDateValue == 5) {
-                        month = "May";
-                    } else if (birthDateValue == 6) {
-                        month = "June";
-                    } else if (birthDateValue == 7) {
-                        month = "July";
-                    } else if (birthDateValue == 8) {
-                        month = "August";
-                    } else if (birthDateValue == 9) {
-                        month = "September";
-                    } else if (birthDateValue == 10) {
-                        month = "October";
-                    } else if (birthDateValue == 11) {
-                        month = "November";
-                    } else if (birthDateValue == 12) {
-                        month = "December";
-                    } else {
-                        month = "";
-                    }
-
-                    document.getElementById("coMakerFullDateString").innerHTML = month + " " + this.value.getDate() + ", " + this.value.getFullYear();
-                }
+                mask: '99-99-9999'
             });
-
-            // on load function birthdate label string
-            onLoadBirthDateLabelString(cboBirthDate, cboCoMakerBirthDate);
         }
 
         // cbo civil status
