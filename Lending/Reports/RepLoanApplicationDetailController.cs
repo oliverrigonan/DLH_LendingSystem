@@ -50,9 +50,9 @@ namespace Lending.Reports
                         loanApplicationheader.SetWidths(loanApplicationheaderWidthCells);
                         loanApplicationheader.WidthPercentage = 100;
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("DLH Incorporated", fontArial17Bold)) { Border = 0 });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Applicants' Loan Detail Report", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Pardo", fontArial12)) { Border = 0, PaddingTop = 5f });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Cash Voucher", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Genes Compound Brgy. Quiot Pardo Cebu City", fontArial12)) { Border = 0, PaddingTop = 5f });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Quiot Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("0932-444-1234", fontArial12)) { Border = 0, PaddingTop = 5f });
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
                         document.Add(loanApplicationheader);
@@ -90,6 +90,8 @@ namespace Lending.Reports
                             loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().MaturityDate.ToLongDateString(), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                             loanApplicationData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                             loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().Particulars, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationData.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                             document.Add(loanApplicationData);
 
                             document.Add(Chunk.NEWLINE);
@@ -99,22 +101,83 @@ namespace Lending.Reports
                             float[] loanHeaderLabel2WidthCells = new float[] { 100f };
                             loanHeader2Label.SetWidths(loanHeaderLabel2WidthCells);
                             loanHeader2Label.WidthPercentage = 100;
-                            loanHeader2Label.AddCell(new PdfPCell(new Phrase("Loan, Paid and Balance (Amounts)", fontArial12White)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 9f, PaddingLeft = 5f, BackgroundColor = BaseColor.BLACK });
+                            loanHeader2Label.AddCell(new PdfPCell(new Phrase("Loan Amount and Deductions", fontArial12White)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 9f, PaddingLeft = 5f, BackgroundColor = BaseColor.BLACK });
 
                             document.Add(line);
                             document.Add(loanHeader2Label);
 
-                            PdfPTable loanApplicationBalance = new PdfPTable(2);
-                            float[] loanApplicationBalanceWidthCells = new float[] { 80f, 20f };
-                            loanApplicationBalance.SetWidths(loanApplicationBalanceWidthCells);
-                            loanApplicationBalance.WidthPercentage = 100;
-                            loanApplicationBalance.AddCell(new PdfPCell(new Phrase("TOTAL LOAN AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            loanApplicationBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().LoanAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            loanApplicationBalance.AddCell(new PdfPCell(new Phrase("TOTAL COLLECTED / PAID AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            loanApplicationBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().PaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            loanApplicationBalance.AddCell(new PdfPCell(new Phrase("BALANCE AMOUNT", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            loanApplicationBalance.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().BalanceAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 30f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            document.Add(loanApplicationBalance);
+                            PdfPTable loanApplicationPrincipal = new PdfPTable(4);
+                            float[] loanApplicationPrincipalWidthCells = new float[] { 20f, 5f, 15f, 60f };
+                            loanApplicationPrincipal.SetWidths(loanApplicationPrincipalWidthCells);
+                            loanApplicationPrincipal.WidthPercentage = 100;
+                            loanApplicationPrincipal.AddCell(new PdfPCell(new Phrase("Principal Amount", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationPrincipal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationPrincipal.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().PrincipalAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationPrincipal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            document.Add(loanApplicationPrincipal);
+
+                            PdfPTable loanApplicationDeductionsLabel = new PdfPTable(3);
+                            float[] loanApplicationDeductionsLabelWidthCells = new float[] { 15f, 35f, 50f };
+                            loanApplicationDeductionsLabel.SetWidths(loanApplicationDeductionsLabelWidthCells);
+                            loanApplicationDeductionsLabel.WidthPercentage = 100;
+                            loanApplicationDeductionsLabel.AddCell(new PdfPCell(new Phrase("Deductions", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductionsLabel.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductionsLabel.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            document.Add(loanApplicationDeductionsLabel);
+
+                            PdfPTable loanApplicationDeductions = new PdfPTable(4);
+                            float[] loanApplicationDeductionsWidthCells = new float[] { 5f, 20f, 15f, 60f };
+                            loanApplicationDeductions.SetWidths(loanApplicationDeductionsWidthCells);
+                            loanApplicationDeductions.WidthPercentage = 100;
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("3% Processing Fee", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().ProcessingFee.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Passbook", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().Passbook.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Balance", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("0.00", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Penalty", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().Penalty.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Late Int.", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().LateInt.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Adv.", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().Advance.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Requirements", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().Requirements.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Insurance / IPI", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().InsuranceIPI.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("Insurance / PPI", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().InsurancePPI.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationDeductions.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            document.Add(loanApplicationDeductions);
+
+                            document.Add(Chunk.NEWLINE);
+
+                            PdfPTable loanApplicationTotal = new PdfPTable(4);
+                            float[] loanApplicationTotalWidthCells = new float[] { 5f, 20f, 15f, 60f };
+                            loanApplicationTotal.SetWidths(loanApplicationTotalWidthCells);
+                            loanApplicationTotal.WidthPercentage = 100;
+                            loanApplicationTotal.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationTotal.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial12Bold)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationTotal.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().LoanAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanApplicationTotal.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                            document.Add(loanApplicationTotal);
 
                             document.Add(Chunk.NEWLINE);
 
@@ -122,26 +185,29 @@ namespace Lending.Reports
 
                             document.Add(Chunk.NEWLINE);
                             document.Add(Chunk.NEWLINE);
-                            document.Add(Chunk.NEWLINE);
-                            document.Add(Chunk.NEWLINE);
-                            document.Add(Chunk.NEWLINE);
 
                             // Table for Footer
-                            PdfPTable tableFooter = new PdfPTable(3);
+                            PdfPTable tableFooter = new PdfPTable(5);
                             tableFooter.WidthPercentage = 100;
-                            float[] widthsCells2 = new float[] { 40, 20, 40 };
+                            float[] widthsCells2 = new float[] { 20f, 5f, 20f, 5f, 20f };
                             tableFooter.SetWidths(widthsCells2);
                             tableFooter.AddCell(new PdfPCell(new Phrase("Prepared by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
                             tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0 });
-                            tableFooter.AddCell(new PdfPCell(new Phrase("Verified by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
+                            tableFooter.AddCell(new PdfPCell(new Phrase("Released by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0 });
+                            tableFooter.AddCell(new PdfPCell(new Phrase("Received by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
 
-                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 10f, PaddingBottom = 10f });
-                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 10f, PaddingBottom = 10f });
-                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 10f, PaddingBottom = 10f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().mstUser.FullName.ToUpper())) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f, HorizontalAlignment = 1 });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
 
-                            tableFooter.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().mstUser.FullName)) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase("Signature Over Printed Name")) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
                             tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 5f });
-                            tableFooter.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().mstUser1.FullName)) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase("Signature Over Printed Name")) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 5f });
+                            tableFooter.AddCell(new PdfPCell(new Phrase("Signature Over Printed Name")) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
                             document.Add(tableFooter);
                         }
 

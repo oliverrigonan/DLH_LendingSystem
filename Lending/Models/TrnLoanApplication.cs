@@ -20,6 +20,15 @@ namespace Lending.Models
         public Int32 AreaId { get; set; }
         public String Area { get; set; }
         public String Particulars { get; set; }
+        public Decimal PrincipalAmount { get; set; }
+        public Decimal ProcessingFee { get; set; }
+        public Decimal Passbook { get; set; }
+        public Decimal Penalty { get; set; }
+        public Decimal LateInt { get; set; }
+        public Decimal Advance { get; set; }
+        public Decimal Requirements { get; set; }
+        public Decimal InsuranceIPI { get; set; }
+        public Decimal InsurancePPI { get; set; }
         public Decimal LoanAmount { get; set; }
         public Decimal PaidAmount { get; set; }
         public Decimal BalanceAmount { get; set; }

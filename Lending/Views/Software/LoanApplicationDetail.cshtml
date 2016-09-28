@@ -88,7 +88,7 @@
                                             <i class="fa fa-unlock fa-fw"></i> Unlock
                                         </button>
                                         <button class="btn btn-primary" id="btnPrint" onclick="btnPrintOnClick()">
-                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF / Cash Voucher
                                         </button>
                                         <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/LoanApplicationList'">
                                             <i class="fa fa-close fa-fw"></i> Close
@@ -147,70 +147,70 @@
                                         <label>Enter Principal Amount</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationPrincipalAmount" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>3% Processing Fee</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationProcessingFee" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Passbook</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationPassbook" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Balance</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationBalance" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Penalty</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationPenalty" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Late Int.</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationLateInt" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Advance</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationAdvance" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Requirements</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationRequirements" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Insurance / IPI</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationInsuranceIPI" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Insurance / PPI</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="" class="form-control numberField" placeholder="0.00">
+                                            <input type="text" id="loanApplicationInsurancePPI" class="form-control numberField requiredLoanApplication" placeholder="0.00">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -250,7 +250,7 @@
                                 <i class="fa fa-unlock fa-fw"></i> Unlock
                             </button>
                             <button class="btn btn-primary" id="btnPrintButtom" onclick="btnPrintOnClick()">
-                                <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                <i class="fa fa-file-pdf-o fa-fw"></i> PDF / Cash Voucher
                             </button>
                             <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/LoanApplicationList'">
                                 <i class="fa fa-close fa-fw"></i> Close
@@ -576,6 +576,7 @@
                 success: function (loanApplicationResult) {
                     if (loanApplicationResult != null) {
                         document.getElementById("loanApplicationNumber").disabled = true;
+                        document.getElementById("loanApplicationProcessingFee").disabled = true;
                         document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
@@ -583,6 +584,16 @@
                         cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
                         cboloanApplicationArea.selectedValue = loanApplicationResult.Area;
                         document.getElementById("loanApplicationParticulars").value = loanApplicationResult.Particulars;
+                        document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
+                        document.getElementById('loanApplicationProcessingFee').value = loanApplicationResult.ProcessingFee.toLocaleString();
+                        document.getElementById('loanApplicationPassbook').value = loanApplicationResult.Passbook.toLocaleString();
+                        //document.getElementById('loanApplicationBalance').value = loanApplicationResult.BalanceAmount;
+                        document.getElementById('loanApplicationPenalty').value = loanApplicationResult.Penalty.toLocaleString();
+                        document.getElementById('loanApplicationLateInt').value = loanApplicationResult.LateInt.toLocaleString();
+                        document.getElementById('loanApplicationAdvance').value = loanApplicationResult.Advance.toLocaleString();
+                        document.getElementById('loanApplicationRequirements').value = loanApplicationResult.Requirements.toLocaleString();
+                        document.getElementById('loanApplicationInsuranceIPI').value = loanApplicationResult.InsuranceIPI.toLocaleString();
+                        document.getElementById('loanApplicationInsurancePPI').value = loanApplicationResult.InsurancePPI.toLocaleString();
                         document.getElementById("loanApplicationLoanAmount").value = loanApplicationResult.LoanAmount.toLocaleString();
                         cboloanApplicationCollector.selectedValue = loanApplicationResult.Collector;
                         cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
@@ -603,6 +614,15 @@
                             cboloanApplicationCollector.disabled = true;
                             cboloanApplicationPreparedBy.disabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
+                            document.getElementById('loanApplicationPrincipalAmount').disabled = true;
+                            document.getElementById('loanApplicationProcessingFee').disabled = true;
+                            document.getElementById('loanApplicationPassbook').disabled = true;
+                            document.getElementById('loanApplicationPenalty').disabled = true;
+                            document.getElementById('loanApplicationLateInt').disabled = true;
+                            document.getElementById('loanApplicationAdvance').disabled = true;
+                            document.getElementById('loanApplicationRequirements').disabled = true;
+                            document.getElementById('loanApplicationInsuranceIPI').disabled = true;
+                            document.getElementById('loanApplicationInsurancePPI').disabled = true;
                             document.getElementById("loanApplicationLoanAmount").disabled = true;
                             $("#btnAddLoanRequirements").prop("disabled", true);
                             isLocked = true;
@@ -658,6 +678,15 @@
                 loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                 loanApplicationObject.AreaId = cboloanApplicationArea.selectedItem["Id"];
                 loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
+                loanApplicationObject.PrincipalAmount = document.getElementById("loanApplicationPrincipalAmount").value;
+                loanApplicationObject.ProcessingFee = document.getElementById("loanApplicationProcessingFee").value;
+                loanApplicationObject.Passbook = document.getElementById("loanApplicationPassbook").value;
+                loanApplicationObject.Penalty = document.getElementById("loanApplicationPenalty").value;
+                loanApplicationObject.LateInt = document.getElementById("loanApplicationLateInt").value;
+                loanApplicationObject.Advance = document.getElementById("loanApplicationAdvance").value;
+                loanApplicationObject.Requirements = document.getElementById("loanApplicationRequirements").value;
+                loanApplicationObject.InsuranceIPI = document.getElementById("loanApplicationInsuranceIPI").value;
+                loanApplicationObject.InsurancePPI = document.getElementById("loanApplicationInsurancePPI").value;
                 loanApplicationObject.LoanAmount = document.getElementById("loanApplicationLoanAmount").value;
                 loanApplicationObject.CollectorId = cboloanApplicationCollector.selectedItem["Id"];
                 loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
@@ -1089,6 +1118,11 @@
         function btnPrintOnClick() {
             $("#btnPrint").prop("disabled", true);
             $("#btnPrintButtom").prop("disabled", true);
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnUnlockButtom").prop("disabled", true);
+            $("#btnClose").prop("disabled", true);
+            $("#btnCloseButtom").prop("disabled", true);
+
             document.getElementById("btnPrint").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
             document.getElementById("btnPrintButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
             window.location = "/RepLoanApplicationDetail/loanApplicationDetail?loanId=" + getUrlParameter("id");
@@ -1100,6 +1134,170 @@
             toastrModification();
             createloanApplicationLoanDate();
         }
+
+        // jqueries codes 
+        $('#loanApplicationPrincipalAmount').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            
+            document.getElementById('loanApplicationProcessingFee').value = principalAmountValue * 0.03;
+
+            setTimeout(function () {
+                var totalLoanAmountDeductions = principalAmountValue - (principalAmountValue * 0.03) - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+                document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+            }, 500);
+        });
+
+        //$('#loanApplicationProcessingFee').keyup(function () {
+        //    var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+        //    var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+        //    var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+        //    var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+        //    var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+        //    var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+        //    var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+        //    var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+        //    var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+        //    var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+        //    var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+        //    document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        //});
+
+        $('#loanApplicationPassbook').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationBalance').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationPenalty').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationLateInt').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationAdvance').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationRequirements').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationInsuranceIPI').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
+
+        $('#loanApplicationInsurancePPI').keyup(function () {
+            var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
+            var processingFeeValue = document.getElementById('loanApplicationProcessingFee').value.replace(/\,/g, '');
+            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
+            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
+            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
+            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
+            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
+            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
+            var insuranceIPIValue = document.getElementById('loanApplicationInsuranceIPI').value.replace(/\,/g, '');
+            var insurancePPIValue = document.getElementById('loanApplicationInsurancePPI').value.replace(/\,/g, '');
+            var totalLoanAmountDeductions = principalAmountValue - processingFeeValue - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIValue - insurancePPIValue;
+
+            document.getElementById('loanApplicationLoanAmount').value = totalLoanAmountDeductions.toLocaleString();
+        });
     </script>
 </body>
 </html>
