@@ -31,7 +31,7 @@ namespace Lending.Reports
                                            CollectionNumber = d.trnCollection.CollectionNumber,
                                            AccountId = d.AccountId,
                                            Account = d.mstAccount.Account,
-                                           Applicant = d.trnCollection.mstApplicant.ApplicantFullName,
+                                           Applicant = d.trnCollection.mstApplicant.ApplicantLastName + " " + d.trnCollection.mstApplicant.ApplicantFirstName + ", " + d.trnCollection.mstApplicant.ApplicantMiddleName,
                                            LoanId = d.LoanId,
                                            LoanNumber = d.trnLoanApplication.LoanNumber,
                                            LoanDate = d.trnLoanApplication.LoanDate.ToShortDateString(),

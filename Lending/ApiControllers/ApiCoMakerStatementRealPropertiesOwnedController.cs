@@ -24,7 +24,7 @@ namespace Lending.ApiControllers
                                                        {
                                                            Id = d.Id,
                                                            CoMakerId = d.CoMakerId,
-                                                           CoMaker = d.mstCoMakerStatement.CoMakerFullName,
+                                                           CoMaker = d.mstCoMakerStatement.CoMakerLastName + ", " + d.mstCoMakerStatement.CoMakerFirstName + " " + d.mstCoMakerStatement.CoMakerMiddleName,
                                                            Real = d.Real,
                                                            Location = d.Location,
                                                            PresentValue = d.PresentValue,

@@ -27,27 +27,9 @@ namespace Lending.ApiControllers
                                        LoanNumber = d.LoanNumber,
                                        LoanDate = d.LoanDate.ToShortDateString(),
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       AccountId = d.AccountId,
-                                       Account = d.mstAccount.Account,
                                        ApplicantId = d.ApplicantId,
-                                       Applicant = d.mstApplicant.ApplicantFullName,
-                                       AreaId = d.AreaId,
-                                       Area = d.mstArea.Area,
+                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                        Particulars = d.Particulars,
-                                       PrincipalAmount = d.PrincipalAmount,
-                                       ProcessingFee = d.ProcessingFee,
-                                       Passbook = d.Passbook,
-                                       Penalty = d.Penalty,
-                                       LateInt = d.LateInt,
-                                       Advance = d.Advance,
-                                       Requirements = d.Requirements,
-                                       InsuranceIPI = d.InsuranceIPI,
-                                       InsurancePPI = d.InsurancePPI,
-                                       LoanAmount = d.LoanAmount,
-                                       PaidAmount = d.PaidAmount,
-                                       BalanceAmount = d.BalanceAmount,
-                                       CollectorId = d.CollectorId,
-                                       Collector = d.mstCollector.Collector,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
                                        IsLocked = d.IsLocked,
@@ -76,27 +58,9 @@ namespace Lending.ApiControllers
                                       LoanNumber = d.LoanNumber,
                                       LoanDate = d.LoanDate.ToShortDateString(),
                                       MaturityDate = d.MaturityDate.ToShortDateString(),
-                                      AccountId = d.AccountId,
-                                      Account = d.mstAccount.Account,
                                       ApplicantId = d.ApplicantId,
-                                      Applicant = d.mstApplicant.ApplicantFullName,
-                                      AreaId = d.AreaId,
-                                      Area = d.mstArea.Area,
+                                      Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + d.mstApplicant.ApplicantMiddleName,
                                       Particulars = d.Particulars,
-                                      PrincipalAmount = d.PrincipalAmount,
-                                      ProcessingFee = d.ProcessingFee,
-                                      Passbook = d.Passbook,
-                                      Penalty = d.Penalty,
-                                      LateInt = d.LateInt,
-                                      Advance = d.Advance,
-                                      Requirements = d.Requirements,
-                                      InsuranceIPI = d.InsuranceIPI,
-                                      InsurancePPI = d.InsurancePPI,
-                                      LoanAmount = d.LoanAmount,
-                                      PaidAmount = d.PaidAmount,
-                                      BalanceAmount = d.BalanceAmount,
-                                      CollectorId = d.CollectorId,
-                                      Collector = d.mstCollector.Collector,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
                                       IsLocked = d.IsLocked,
@@ -125,27 +89,9 @@ namespace Lending.ApiControllers
                                       LoanNumber = d.LoanNumber,
                                       LoanDate = d.LoanDate.ToShortDateString(),
                                       MaturityDate = d.MaturityDate.ToShortDateString(),
-                                      AccountId = d.AccountId,
-                                      Account = d.mstAccount.Account,
                                       ApplicantId = d.ApplicantId,
-                                      Applicant = d.mstApplicant.ApplicantFullName,
-                                      AreaId = d.AreaId,
-                                      Area = d.mstArea.Area,
+                                      Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + d.mstApplicant.ApplicantMiddleName,
                                       Particulars = d.Particulars,
-                                      PrincipalAmount = d.PrincipalAmount,
-                                      ProcessingFee = d.ProcessingFee,
-                                      Passbook = d.Passbook,
-                                      Penalty = d.Penalty,
-                                      LateInt = d.LateInt,
-                                      Advance = d.Advance,
-                                      Requirements = d.Requirements,
-                                      InsuranceIPI = d.InsuranceIPI,
-                                      InsurancePPI = d.InsurancePPI,
-                                      LoanAmount = d.LoanAmount,
-                                      PaidAmount = d.PaidAmount,
-                                      BalanceAmount = d.BalanceAmount,
-                                      CollectorId = d.CollectorId,
-                                      Collector = d.mstCollector.Collector,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
                                       IsLocked = d.IsLocked,
@@ -195,23 +141,8 @@ namespace Lending.ApiControllers
                 newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                 newLoanApplication.LoanDate = DateTime.Today;
                 newLoanApplication.MaturityDate = DateTime.Today;
-                newLoanApplication.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
-                newLoanApplication.AreaId = (from d in db.mstAreas.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";
-                newLoanApplication.PrincipalAmount = 0;
-                newLoanApplication.ProcessingFee = 0;
-                newLoanApplication.Passbook = 0;
-                newLoanApplication.Penalty = 0;
-                newLoanApplication.LateInt = 0;
-                newLoanApplication.Advance = 0;
-                newLoanApplication.Requirements = 0;
-                newLoanApplication.InsuranceIPI = 0;
-                newLoanApplication.InsurancePPI = 0;
-                newLoanApplication.LoanAmount = 0;
-                newLoanApplication.PaidAmount = 0;
-                newLoanApplication.BalanceAmount = 0;
-                newLoanApplication.CollectorId = (from d in db.mstCollectors select d.Id).FirstOrDefault();
                 newLoanApplication.PreparedByUserId = userId;
                 newLoanApplication.IsLocked = false;
                 newLoanApplication.CreatedByUserId = userId;
@@ -245,33 +176,11 @@ namespace Lending.ApiControllers
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                        Decimal totalCollectionLinesPaidAmount = 0;
-                        var collectionLines = from d in db.trnCollectionLines where d.LoanId == Convert.ToInt32(id) where d.trnCollection.IsLocked == true select d;
-                        if (collectionLines.Any())
-                        {
-                            totalCollectionLinesPaidAmount = collectionLines.Sum(d => d.Amount);
-                        }
-
                         var lockLoanApplication = loanApplications.FirstOrDefault();
                         lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
                         lockLoanApplication.MaturityDate = Convert.ToDateTime(loanApplication.MaturityDate);
-                        lockLoanApplication.AccountId = loanApplication.AccountId;
                         lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
-                        lockLoanApplication.AreaId = loanApplication.AreaId;
                         lockLoanApplication.Particulars = loanApplication.Particulars;
-                        lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
-                        lockLoanApplication.ProcessingFee = loanApplication.PrincipalAmount * Convert.ToDecimal(0.03);
-                        lockLoanApplication.Passbook = loanApplication.Passbook;
-                        lockLoanApplication.Penalty = loanApplication.Penalty;
-                        lockLoanApplication.LateInt = loanApplication.LateInt;
-                        lockLoanApplication.Advance = loanApplication.Advance;
-                        lockLoanApplication.Requirements = loanApplication.Requirements;
-                        lockLoanApplication.InsuranceIPI = loanApplication.InsuranceIPI;
-                        lockLoanApplication.InsurancePPI = loanApplication.InsurancePPI;
-                        lockLoanApplication.LoanAmount = loanApplication.PrincipalAmount - (loanApplication.PrincipalAmount * Convert.ToDecimal(0.03)) - loanApplication.Passbook - loanApplication.Penalty - loanApplication.LateInt - loanApplication.Advance - loanApplication.Requirements - loanApplication.InsuranceIPI - loanApplication.InsurancePPI;
-                        lockLoanApplication.PaidAmount = totalCollectionLinesPaidAmount;
-                        lockLoanApplication.BalanceAmount = loanApplication.LoanAmount - totalCollectionLinesPaidAmount;
-                        lockLoanApplication.CollectorId = loanApplication.CollectorId;
                         lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
                         lockLoanApplication.IsLocked = true;
                         lockLoanApplication.UpdatedByUserId = userId;

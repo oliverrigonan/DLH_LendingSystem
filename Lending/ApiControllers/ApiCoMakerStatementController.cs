@@ -29,13 +29,16 @@ namespace Lending.ApiControllers
                                     {
                                         Id = d.Id,
                                         ApplicantId = d.ApplicantId,
-                                        Applicant = d.mstApplicant.ApplicantFullName,
-                                        CoMakerFullName = d.CoMakerFullName,
+                                        Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
+                                        CoMakerLastName = d.CoMakerLastName,
+                                        CoMakerFirstName = d.CoMakerFirstName,
+                                        CoMakerMiddleName = d.CoMakerMiddleName != null ? d.CoMakerMiddleName : " ",
                                         BirthDate = d.BirthDate.ToShortDateString(),
                                         CivilStatusId = d.CivilStatusId,
                                         CivilStatus = d.mstCivilStatus.CivilStatus,
                                         CityAddress = d.CityAddress,
                                         ProvinceAddress = d.ProvinceAddress,
+                                        ContactNumber = d.ContactNumber,
                                         ResidenceTypeId = d.ResidenceTypeId,
                                         ResidenceType = d.mstResidenceType.ResidenceType,
                                         ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
@@ -90,11 +93,14 @@ namespace Lending.ApiControllers
 
                         Data.mstCoMakerStatement newCoMakerStatement = new Data.mstCoMakerStatement();
                         newCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
-                        newCoMakerStatement.CoMakerFullName = coMakerStatement.CoMakerFullName;
+                        newCoMakerStatement.CoMakerLastName = coMakerStatement.CoMakerLastName;
+                        newCoMakerStatement.CoMakerFirstName = coMakerStatement.CoMakerFirstName;
+                        newCoMakerStatement.CoMakerMiddleName = coMakerStatement.CoMakerMiddleName;
                         newCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
                         newCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
                         newCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
                         newCoMakerStatement.ProvinceAddress = coMakerStatement.ProvinceAddress;
+                        newCoMakerStatement.ContactNumber = coMakerStatement.ContactNumber;
                         newCoMakerStatement.ResidenceTypeId = coMakerStatement.ResidenceTypeId;
                         newCoMakerStatement.ResidenceMonthlyRentAmount = coMakerStatement.ResidenceMonthlyRentAmount;
                         newCoMakerStatement.LandResidenceTypeId = coMakerStatement.LandResidenceTypeId;
@@ -167,11 +173,14 @@ namespace Lending.ApiControllers
 
                             var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
                             updateCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
-                            updateCoMakerStatement.CoMakerFullName = coMakerStatement.CoMakerFullName;
+                            updateCoMakerStatement.CoMakerLastName = coMakerStatement.CoMakerLastName;
+                            updateCoMakerStatement.CoMakerFirstName = coMakerStatement.CoMakerFirstName;
+                            updateCoMakerStatement.CoMakerMiddleName = coMakerStatement.CoMakerMiddleName;
                             updateCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
                             updateCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
                             updateCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
                             updateCoMakerStatement.ProvinceAddress = coMakerStatement.ProvinceAddress;
+                            updateCoMakerStatement.ContactNumber = coMakerStatement.ContactNumber;
                             updateCoMakerStatement.ResidenceTypeId = coMakerStatement.ResidenceTypeId;
                             updateCoMakerStatement.ResidenceMonthlyRentAmount = coMakerStatement.ResidenceMonthlyRentAmount;
                             updateCoMakerStatement.LandResidenceTypeId = coMakerStatement.LandResidenceTypeId;

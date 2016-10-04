@@ -37,7 +37,6 @@ td.td-label {
 
 .numberField {
     text-align: right;
-    width: 50%;
 }
 
 .wijmo-combobox-width-50 {
@@ -59,7 +58,8 @@ a:hover, a:focus {
     text-decoration: none;
 }
 
-button,
+/*button,
+.dropdown-menu,
 .btn,
 input,
 textarea,
@@ -72,7 +72,7 @@ img,
 .nav-tabs > li > a,
 .list-group > a {
     border-radius: 0 !important;
-}
+}*/
 
 textarea {
     resize: vertical;

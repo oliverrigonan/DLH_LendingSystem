@@ -42,7 +42,7 @@ namespace Lending.Reports
                                       CollectionNumber = d.CollectionNumber,
                                       CollectionDate = d.CollectionDate.ToShortDateString(),
                                       ApplicantId = d.ApplicantId,
-                                      Applicant = d.mstApplicant.ApplicantFullName,
+                                      Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
                                       Particulars = d.Particulars,
                                       PaidAmount = getTotalPaidAmount(d.Id),
                                       PreparedByUserId = d.PreparedByUserId,

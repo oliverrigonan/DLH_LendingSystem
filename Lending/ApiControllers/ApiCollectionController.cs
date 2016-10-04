@@ -41,7 +41,7 @@ namespace Lending.ApiControllers
                                   CollectionNumber = d.CollectionNumber,
                                   CollectionDate = d.CollectionDate.ToShortDateString(),
                                   ApplicantId = d.ApplicantId,
-                                  Applicant = d.mstApplicant.ApplicantFullName,
+                                  Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
                                   Particulars = d.Particulars,
                                   PaidAmount = getTotalPaidAmount(d.Id),
                                   PreparedByUserId = d.PreparedByUserId,
@@ -72,7 +72,7 @@ namespace Lending.ApiControllers
                                  CollectionNumber = d.CollectionNumber,
                                  CollectionDate = d.CollectionDate.ToShortDateString(),
                                  ApplicantId = d.ApplicantId,
-                                 Applicant = d.mstApplicant.ApplicantFullName,
+                                 Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
                                  Particulars = d.Particulars,
                                  PaidAmount = getTotalPaidAmount(d.Id),
                                  PreparedByUserId = d.PreparedByUserId,
@@ -191,17 +191,17 @@ namespace Lending.ApiControllers
                                     var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
                                     if (loanApplications.Any())
                                     {
-                                        Decimal paidAmount = 0;
-                                        var loanApplicationForPaidAmount = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
-                                        if (loanApplicationForPaidAmount.Any())
-                                        {
-                                            paidAmount = loanApplicationForPaidAmount.FirstOrDefault().PaidAmount;
-                                        }
+                                        //Decimal paidAmount = 0;
+                                        //var loanApplicationForPaidAmount = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                        //if (loanApplicationForPaidAmount.Any())
+                                        //{
+                                        //    paidAmount = loanApplicationForPaidAmount.FirstOrDefault().PaidAmount;
+                                        //}
 
-                                        var updateLoanAmount = loanApplications.FirstOrDefault();
-                                        updateLoanAmount.PaidAmount = paidAmount + collectionLine.Amount;
-                                        updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - (paidAmount + collectionLine.Amount);
-                                        db.SubmitChanges();
+                                        //var updateLoanAmount = loanApplications.FirstOrDefault();
+                                        //updateLoanAmount.PaidAmount = paidAmount + collectionLine.Amount;
+                                        //updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - (paidAmount + collectionLine.Amount);
+                                        //db.SubmitChanges();
                                     }
                                 }
                             }
@@ -269,17 +269,17 @@ namespace Lending.ApiControllers
                                 var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
                                 if (loanApplications.Any())
                                 {
-                                    Decimal paidAmount = 0;
-                                    var loanApplicationForPaidAmount = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
-                                    if (loanApplicationForPaidAmount.Any())
-                                    {
-                                        paidAmount = loanApplicationForPaidAmount.FirstOrDefault().PaidAmount;
-                                    }
+                                    //Decimal paidAmount = 0;
+                                    //var loanApplicationForPaidAmount = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                                    //if (loanApplicationForPaidAmount.Any())
+                                    //{
+                                    //    paidAmount = loanApplicationForPaidAmount.FirstOrDefault().PaidAmount;
+                                    //}
 
-                                    var updateLoanAmount = loanApplications.FirstOrDefault();
-                                    updateLoanAmount.PaidAmount = paidAmount - collectionLine.Amount;
-                                    updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - (paidAmount - collectionLine.Amount);
-                                    db.SubmitChanges();
+                                    //var updateLoanAmount = loanApplications.FirstOrDefault();
+                                    //updateLoanAmount.PaidAmount = paidAmount - collectionLine.Amount;
+                                    //updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - (paidAmount - collectionLine.Amount);
+                                    //db.SubmitChanges();
                                 }
                             }
                         }
@@ -334,20 +334,20 @@ namespace Lending.ApiControllers
                                                   Amount = d.Amount
                                               };
 
-                        if (collectionLines.Any())
-                        {
-                            foreach (var collectionLine in collectionLines)
-                            {
-                                var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
-                                if (loanApplications.Any())
-                                {
-                                    var updateLoanAmount = loanApplications.FirstOrDefault();
-                                    updateLoanAmount.PaidAmount = 0;
-                                    updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - 0;
-                                    db.SubmitChanges();
-                                }
-                            }
-                        }
+                        //if (collectionLines.Any())
+                        //{
+                        //    foreach (var collectionLine in collectionLines)
+                        //    {
+                        //        var loanApplications = from d in db.trnLoanApplications where d.Id == collectionLine.LoanId select d;
+                        //        if (loanApplications.Any())
+                        //        {
+                        //            var updateLoanAmount = loanApplications.FirstOrDefault();
+                        //            updateLoanAmount.PaidAmount = 0;
+                        //            updateLoanAmount.BalanceAmount = loanApplications.FirstOrDefault().LoanAmount - 0;
+                        //            db.SubmitChanges();
+                        //        }
+                        //    }
+                        //}
 
                         Business.Journal journal = new Business.Journal();
                         journal.deleteCollectionJournal(Convert.ToInt32(id));

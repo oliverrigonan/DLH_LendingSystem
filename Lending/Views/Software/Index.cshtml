@@ -17,9 +17,55 @@
 
     <section class="software-section">
         <div class="container">
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="/Software" class="btn btn-info">
+                        Dashboard
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Set Ups <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
+                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Activities <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
+                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
+                        <li><a href="/Software/DisbursementList"><i class="fa fa-credit-card fa-fw"></i> Disbursement</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Reports <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br /><br />
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Dashboard Start Menu</h4>
+                    <h4><i class="fa fa-dashboard fa-fw"></i> Dashboard Start Menu</h4>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -76,7 +122,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <a href="/Software/CompanyList" class="btn btn-info btn-lg btn-block">
+                            <a href="/Software/CompanyList" class="btn btn-warning btn-lg btn-block">
                                 <i class="fa fa-building fa-4x fa-fw"></i>
                                 <br /><br />
                                 Company
@@ -84,7 +130,7 @@
                             <br />
                         </div>
                         <div class="col-md-4">
-                            <a href="/Software/UserList" class="btn btn-info btn-lg btn-block">
+                            <a href="/Software/UserList" class="btn btn-warning btn-lg btn-block">
                                 <i class="fa fa-key fa-4x fa-fw"></i>
                                 <br /><br />
                                 Users

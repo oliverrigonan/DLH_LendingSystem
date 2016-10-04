@@ -17,276 +17,291 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
-                        </a>
-                        <a href="/Software/CollectionList" class="list-group-item">
-                            <i class="fa fa-money fa-fw"></i> &nbsp; Collection
-                        </a>
-                        <a href="/Software/DisbursementList" class="list-group-item">
-                            <i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement
-                        </a>
-                        <a href="/Software/Tables" class="list-group-item active">
-                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                        </a>
-                        <a href="/Software/Reports" class="list-group-item">
-                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                        </a>
-                        <a href="/Software/CompanyList" class="list-group-item">
-                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                        </a>
-                        <a href="/Software/UserList" class="list-group-item">
-                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
-                        </a>
-                        <a href="/Manage/Index" class="list-group-item">
-                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
-                        </a>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            User security stamp
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="/Software" class="btn btn-info">
+                        Dashboard
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Set Ups <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
+                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Activities <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
+                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
+                        <li><a href="/Software/DisbursementList"><i class="fa fa-credit-card fa-fw"></i> Disbursement</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Reports <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br /><br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-table fa-fw"></i> Tables</h4>
+                </div>
+                <div class="panel-body">
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#Areas" data-toggle="tab" id="areaTab">
+                                Areas
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#Collectors" data-toggle="tab" id="collectorsTab">
+                                Collectors
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
+                                Requirements
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#Accounts" data-toggle="tab" id="accountTab">
+                                Accounts
+                            </a>
+                        </li>
+                    </ul>
+                    <br />
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="Areas">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchArea" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddApplicant" onclick="btnAddAreaOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="flexgridHeight">
+                                        <div id="areaFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="btn-group col-md-7" id="navigationPageGrid">
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                                <span class="glyphicon glyphicon-fast-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                                <span class="glyphicon glyphicon-step-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                                <span class="glyphicon glyphicon-step-forward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                                <span class="glyphicon glyphicon-fast-forward"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body">
+                        <div class="tab-pane fade" id="Collectors">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchCollector" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddCollector" onclick="btnAddCollectorOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="flexgridHeight">
+                                        <div id="collectorListFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="btn-group col-md-7" id="navigationPageGridCollector">
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollector">
+                                                <span class="glyphicon glyphicon-fast-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollector">
+                                                <span class="glyphicon glyphicon-step-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollector"></button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollector">
+                                                <span class="glyphicon glyphicon-step-forward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollector">
+                                                <span class="glyphicon glyphicon-fast-forward"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Requirements">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="flexgridHeight">
+                                        <div id="RequirementsListFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="btn-group col-md-7" id="navigationPageGridRequirements">
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridRequirements">
+                                                <span class="glyphicon glyphicon-fast-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridRequirements">
+                                                <span class="glyphicon glyphicon-step-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridRequirements"></button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridRequirements">
+                                                <span class="glyphicon glyphicon-step-forward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridRequirements">
+                                                <span class="glyphicon glyphicon-fast-forward"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Accounts">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="flexgridHeight">
+                                        <div id="AccountsListFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="btn-group col-md-7" id="navigationPageGridAccounts">
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridAccounts">
+                                                <span class="glyphicon glyphicon-fast-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridAccounts">
+                                                <span class="glyphicon glyphicon-step-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridAccounts"></button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridAccounts">
+                                                <span class="glyphicon glyphicon-step-forward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridAccounts">
+                                                <span class="glyphicon glyphicon-fast-forward"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    User security stamp
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
                             <p>Created by:</p>
                             <div style="padding-left: 10px;">
                                 <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
                                 <br />
                                 <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
                             </div>
-                            <hr />
+                            <br />
+                        </div>
+                        <div class="col-md-6">
                             <p>Updated by:</p>
                             <div style="padding-left: 10px;">
                                 <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
                                 <br />
                                 <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Tables</h4>
-                        </div>
-                        <div class="panel-body">
-                            <ul id="myTab" class="nav nav-tabs">
-                                <li class="active">
-                                    <a href="#Areas" data-toggle="tab" id="areaTab">
-                                        Areas
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#Collectors" data-toggle="tab" id="collectorsTab">
-                                        Collectors
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
-                                        Requirements
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#Accounts" data-toggle="tab" id="accountTab">
-                                        Accounts
-                                    </a>
-                                </li>
-                            </ul>
                             <br />
-                            <div id="myTabContent" class="tab-content">
-                                <div class="tab-pane fade in active" id="Areas">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                            <input type="text" id="searchArea" class="form-control" placeholder="Search" />
-                                                        </div>
-                                                    </td>
-                                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                                    <td align="right">
-                                                        <button class="btn btn-success" id="btnAddApplicant" onclick="btnAddAreaOnclick()">
-                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="flexgridHeight">
-                                                <div id="areaFlexGrid" class="grid"></div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="row">
-                                                <div class="btn-group col-md-7" id="navigationPageGrid">
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="Collectors">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                            <input type="text" id="searchCollector" class="form-control" placeholder="Search" />
-                                                        </div>
-                                                    </td>
-                                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                                    <td align="right">
-                                                        <button class="btn btn-success" id="btnAddCollector" onclick="btnAddCollectorOnclick()">
-                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="flexgridHeight">
-                                                <div id="collectorListFlexGrid" class="grid"></div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="row">
-                                                <div class="btn-group col-md-7" id="navigationPageGridCollector">
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollector">
-                                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollector">
-                                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollector"></button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollector">
-                                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollector">
-                                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="Requirements">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                            <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
-                                                        </div>
-                                                    </td>
-                                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                                    <td align="right">
-                                                        <button class="btn btn-success" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
-                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="flexgridHeight">
-                                                <div id="RequirementsListFlexGrid" class="grid"></div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="row">
-                                                <div class="btn-group col-md-7" id="navigationPageGridRequirements">
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridRequirements">
-                                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridRequirements">
-                                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridRequirements"></button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridRequirements">
-                                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridRequirements">
-                                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="Accounts">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                            <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
-                                                        </div>
-                                                    </td>
-                                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                                    <td align="right">
-                                                        <button class="btn btn-success" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
-                                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="flexgridHeight">
-                                                <div id="AccountsListFlexGrid" class="grid"></div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            <div class="row">
-                                                <div class="btn-group col-md-7" id="navigationPageGridAccounts">
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridAccounts">
-                                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridAccounts">
-                                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridAccounts"></button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridAccounts">
-                                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                                    </button>
-                                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridAccounts">
-                                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -2003,7 +2018,7 @@
                         }
 
                         disabled = false;
-                    } 
+                    }
 
                     cboTransactionType.dispose();
                     cboTransactionType = new wijmo.input.ComboBox('#transactionType', {

@@ -10,13 +10,20 @@ namespace Lending.Models
     {
         [Key]
         public Int32 Id { get; set; }
+        public String ApplicantNumber { get; set; }
         public byte[] Photo { get; set; }
+        public Int32 AreaId { get; set; }
+        public String Area { get; set; }
         public String ApplicantFullName { get; set; }
+        public String ApplicantLastName { get; set; }
+        public String ApplicantFirstName { get; set; }
+        public String ApplicantMiddleName { get; set; }
         public String BirthDate { get; set; }
         public Int32 CivilStatusId { get; set; }
         public String CivilStatus { get; set; }
         public String CityAddress { get; set; }
         public String ProvinceAddress { get; set; }
+        public String ContactNumber { get; set; }
         public Int32 ResidenceTypeId { get; set; }
         public String ResidenceType { get; set; }
         public Decimal ResidenceMonthlyRentAmount { get; set; }

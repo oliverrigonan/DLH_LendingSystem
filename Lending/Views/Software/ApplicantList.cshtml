@@ -17,107 +17,122 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item active">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
-                        </a>
-                        <a href="/Software/CollectionList" class="list-group-item">
-                            <i class="fa fa-money fa-fw"></i> &nbsp; Collection
-                        </a>
-                        <a href="/Software/DisbursementList" class="list-group-item">
-                            <i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement
-                        </a>
-                        <a href="/Software/Tables" class="list-group-item">
-                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                        </a>
-                        <a href="/Software/Reports" class="list-group-item">
-                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                        </a>
-                        <a href="/Software/CompanyList" class="list-group-item">
-                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                        </a>
-                        <a href="/Software/UserList" class="list-group-item">
-                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
-                        </a>
-                        <a href="/Manage/Index" class="list-group-item">
-                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
-                        </a>
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="/Software" class="btn btn-info">
+                        Dashboard
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Set Ups <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
+                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Activities <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
+                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
+                        <li><a href="/Software/DisbursementList"><i class="fa fa-credit-card fa-fw"></i> Disbursement</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Reports <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br /><br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-users fa-fw"></i> Applicants</h4>
+                </div>
+                <div class="panel-heading">
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                    <input type="text" id="searchApplicant" class="form-control" placeholder="Search" />
+                                </div>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                            <td align="right">
+                                <button class="btn btn-primary" id="btnAddApplicant" onclick="btnAddApplicantOnclick()">
+                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <div class="flexgridHeight">
+                        <div id="applicantListFlexGrid" class="grid"></div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            User security stamp
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="btn-group col-md-7" id="navigationPageGrid">
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                <span class="glyphicon glyphicon-fast-backward"></span>
+                            </button>
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                <span class="glyphicon glyphicon-step-backward"></span>
+                            </button>
+                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                <span class="glyphicon glyphicon-step-forward"></span>
+                            </button>
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                <span class="glyphicon glyphicon-fast-forward"></span>
+                            </button>
                         </div>
-                        <div class="panel-body">
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    User security stamp
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
                             <p>Created by:</p>
                             <div style="padding-left: 10px;">
                                 <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
                                 <br />
                                 <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
                             </div>
-                            <hr />
+                            <br />
+                        </div>
+                        <div class="col-md-6">
                             <p>Updated by:</p>
                             <div style="padding-left: 10px;">
                                 <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
                                 <br />
                                 <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>List of Applicants</h4>
-                        </div>
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                            <input type="text" id="searchApplicant" class="form-control" placeholder="Search" />
-                                        </div>
-                                    </td>
-                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="right">
-                                        <button class="btn btn-primary" id="btnAddApplicant" onclick="btnAddApplicantOnclick()">
-                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-body">
-                            <div class="flexgridHeight">
-                                <div id="applicantListFlexGrid" class="grid"></div>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="row">
-                                <div class="btn-group col-md-7" id="navigationPageGrid">
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                    </button>
-                                </div>
-                            </div>
+                            <br />
                         </div>
                     </div>
                 </div>
@@ -181,7 +196,10 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: applicantListResult[i]["Id"],
-                                ApplicantFullName: applicantListResult[i]["ApplicantFullName"],
+                                ApplicantNumber: applicantListResult[i]["ApplicantNumber"],
+                                ApplicantFullName: applicantListResult[i]["ApplicantLastName"] + ", " + applicantListResult[i]["ApplicantFirstName"] + " " + applicantListResult[i]["ApplicantMiddleName"],
+                                Area: applicantListResult[i]["Area"],
+                                ContactNumber: applicantListResult[i]["ContactNumber"],
                                 CityAddress: applicantListResult[i]["CityAddress"],
                                 IsLocked: applicantListResult[i]["IsLocked"],
                                 CreatedByUserId: applicantListResult[i]["CreatedByUserId"],
@@ -252,7 +270,9 @@
                         });
 
                         applicantCollectionView.filter = function (item) {
-                            return !filterText || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1);
+                            return !filterText || (item.ApplicantNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         applicantCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -349,7 +369,9 @@
             });
 
             applicantCollectionView.filter = function (item) {
-                return !filterText || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.ApplicantNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
             }
 
             applicantCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -388,16 +410,34 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "Applicant Number",
+                                "binding": "ApplicantNumber",
+                                "allowSorting": true,
+                                "width": "1.5*"
+                            },
+                            {
                                 "header": "Applicant",
                                 "binding": "ApplicantFullName",
                                 "allowSorting": true,
-                                "width": "3*"
+                                "width": "2.5*"
+                            },
+                            {
+                                "header": "Contact Number",
+                                "binding": "ContactNumber",
+                                "allowSorting": true,
+                                "width": "1.5*"
+                            },
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": "2*"
                             },
                             {
                                 "header": "L",
                                 "binding": "IsLocked",
                                 "allowSorting": true,
-                                "width": "0.2*"
+                                "width": "0.5*"
                             }
                 ],
                 autoGenerateColumns: false,

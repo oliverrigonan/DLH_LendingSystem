@@ -21,27 +21,27 @@ namespace Lending.Reports
             {
                 var loanApplications = from d in db.trnLoanApplications.OrderBy(d => d.MaturityDate)
                                        where d.MaturityDate >= Convert.ToDateTime(dueDate)
-                                       && d.AreaId == areaId
+                                       //&& d.AreaId == areaId
                                        && d.IsLocked == true
-                                       && d.BalanceAmount > 0
+                                       //&& d.BalanceAmount > 0
                                        select new Models.TrnLoanApplication
                                        {
                                            Id = d.Id,
                                            LoanNumber = d.LoanNumber,
                                            LoanDate = d.LoanDate.ToShortDateString(),
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
-                                           AccountId = d.AccountId,
-                                           Account = d.mstAccount.Account,
+                                           //AccountId = d.AccountId,
+                                           //Account = d.mstAccount.Account,
                                            ApplicantId = d.ApplicantId,
-                                           Applicant = d.mstApplicant.ApplicantFullName,
-                                           AreaId = d.AreaId,
-                                           Area = d.mstArea.Area,
+                                           Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
+                                           //AreaId = d.AreaId,
+                                           //Area = d.mstArea.Area,
                                            Particulars = d.Particulars,
-                                           LoanAmount = d.LoanAmount,
-                                           PaidAmount = d.PaidAmount,
-                                           BalanceAmount = d.BalanceAmount,
-                                           CollectorId = d.CollectorId,
-                                           Collector = d.mstCollector.Collector,
+                                           //LoanAmount = d.LoanAmount,
+                                           //PaidAmount = d.PaidAmount,
+                                           //BalanceAmount = d.BalanceAmount,
+                                           //CollectorId = d.CollectorId,
+                                           //Collector = d.mstCollector.Collector,
                                            PreparedByUserId = d.PreparedByUserId,
                                            PreparedByUser = d.mstUser.FullName,
                                            IsLocked = d.IsLocked,
@@ -113,10 +113,10 @@ namespace Lending.Reports
                 {
                     loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
                     loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.MaturityDate, fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
-                    loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.BalanceAmount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    loanApplicationData.AddCell(new PdfPCell(new Phrase(" ", /* loanApplication.BalanceAmount.ToString("#,##0.00"),*/ fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
                     loanApplicationData.AddCell(new PdfPCell(new Phrase("", fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
 
-                    totalBalanceAmount += loanApplication.BalanceAmount;
+                    //totalBalanceAmount += loanApplication.BalanceAmount;
                 }
 
                 document.Add(line);

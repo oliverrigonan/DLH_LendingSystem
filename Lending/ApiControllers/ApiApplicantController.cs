@@ -28,12 +28,19 @@ namespace Lending.ApiControllers
                              select new Models.MstApplicant
                              {
                                  Id = d.Id,
-                                 ApplicantFullName = d.ApplicantFullName,
+                                 ApplicantNumber = d.ApplicantNumber,
+                                 AreaId = d.AreaId,
+                                 Area = d.mstArea.Area,
+                                 ApplicantFullName = d.ApplicantLastName + ", " + d.ApplicantFirstName + " " + (d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " "),
+                                 ApplicantLastName = d.ApplicantLastName,
+                                 ApplicantFirstName = d.ApplicantFirstName,
+                                 ApplicantMiddleName = d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " ",
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
                                  CivilStatus = d.mstCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
+                                 ContactNumber = d.ContactNumber,
                                  ResidenceTypeId = d.ResidenceTypeId,
                                  ResidenceType = d.mstResidenceType.ResidenceType,
                                  ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
@@ -89,13 +96,20 @@ namespace Lending.ApiControllers
                              select new Models.MstApplicant
                              {
                                  Id = d.Id,
+                                 ApplicantNumber = d.ApplicantNumber,
                                  Photo = d.Photo.ToArray(),
-                                 ApplicantFullName = d.ApplicantFullName,
+                                 AreaId = d.AreaId,
+                                 Area = d.mstArea.Area,
+                                 ApplicantFullName = d.ApplicantLastName + ", " + d.ApplicantFirstName + " " + (d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " "),
+                                 ApplicantLastName = d.ApplicantLastName,
+                                 ApplicantFirstName = d.ApplicantFirstName,
+                                 ApplicantMiddleName = d.ApplicantMiddleName,
                                  BirthDate = d.BirthDate.ToShortDateString(),
                                  CivilStatusId = d.CivilStatusId,
                                  CivilStatus = d.mstCivilStatus.CivilStatus,
                                  CityAddress = d.CityAddress,
                                  ProvinceAddress = d.ProvinceAddress,
+                                 ContactNumber = d.ContactNumber,
                                  ResidenceTypeId = d.ResidenceTypeId,
                                  ResidenceType = d.mstResidenceType.ResidenceType,
                                  ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
@@ -140,6 +154,20 @@ namespace Lending.ApiControllers
             return (Models.MstApplicant)applicants.FirstOrDefault();
         }
 
+        // zero fill
+        public String zeroFill(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = "0" + result;
+                pad--;
+            }
+
+            return result;
+        }
+
         // add applicant 
         [Authorize]
         [HttpPost]
@@ -158,12 +186,25 @@ namespace Lending.ApiControllers
                 String file = Convert.ToBase64String(bytes);
                 byte[] imgarr = Convert.FromBase64String(file);
 
+                String applicantNumber = "0000000001";
+                var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
+                if (applicants.Any())
+                {
+                    var newApplicantNumber = Convert.ToInt32(applicants.FirstOrDefault().ApplicantNumber) + 0000000001;
+                    applicantNumber = newApplicantNumber.ToString();
+                }
+
+                newApplicant.ApplicantNumber = zeroFill(Convert.ToInt32(applicantNumber), 10);
                 newApplicant.Photo = imgarr;
-                newApplicant.ApplicantFullName = "NA";
+                newApplicant.AreaId = (from d in db.mstAreas select d.Id).FirstOrDefault();
+                newApplicant.ApplicantLastName = "NA";
+                newApplicant.ApplicantFirstName = "NA";
+                newApplicant.ApplicantMiddleName = null;
                 newApplicant.BirthDate = DateTime.Today;
                 newApplicant.CivilStatusId = (from d in db.mstCivilStatus select d.Id).FirstOrDefault();
                 newApplicant.CityAddress = "NA";
                 newApplicant.ProvinceAddress = "NA";
+                newApplicant.ContactNumber = "NA";
                 newApplicant.ResidenceTypeId = (from d in db.mstResidenceTypes select d.Id).FirstOrDefault();
                 newApplicant.ResidenceMonthlyRentAmount = 0;
                 newApplicant.LandResidenceTypeId = (from d in db.mstResidenceTypes select d.Id).FirstOrDefault();
@@ -305,11 +346,15 @@ namespace Lending.ApiControllers
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                         var updateApplicant = applicants.FirstOrDefault();
-                        updateApplicant.ApplicantFullName = applicant.ApplicantFullName;
+                        updateApplicant.AreaId = applicant.AreaId;
+                        updateApplicant.ApplicantLastName = applicant.ApplicantLastName;
+                        updateApplicant.ApplicantFirstName = applicant.ApplicantFirstName;
+                        updateApplicant.ApplicantMiddleName = applicant.ApplicantMiddleName;
                         updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
                         updateApplicant.CivilStatusId = applicant.CivilStatusId;
                         updateApplicant.CityAddress = applicant.CityAddress;
                         updateApplicant.ProvinceAddress = applicant.ProvinceAddress;
+                        updateApplicant.ContactNumber = applicant.ContactNumber;
                         updateApplicant.ResidenceTypeId = applicant.ResidenceTypeId;
                         updateApplicant.ResidenceMonthlyRentAmount = applicant.ResidenceMonthlyRentAmount;
                         updateApplicant.LandResidenceTypeId = applicant.LandResidenceTypeId;

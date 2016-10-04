@@ -21,18 +21,18 @@ namespace Lending.Business
                                        LoanNumber = d.LoanNumber,
                                        LoanDate = d.LoanDate.ToShortDateString(),
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       AccountId = d.AccountId,
-                                       Account = d.mstAccount.Account,
+                                       //AccountId = d.AccountId,
+                                       //Account = d.mstAccount.Account,
                                        ApplicantId = d.ApplicantId,
-                                       Applicant = d.mstApplicant.ApplicantFullName,
-                                       AreaId = d.AreaId,
-                                       Area = d.mstArea.Area,
+                                       Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
+                                       //AreaId = d.AreaId,
+                                       //Area = d.mstArea.Area,
                                        Particulars = d.Particulars,
-                                       LoanAmount = d.LoanAmount,
-                                       PaidAmount = d.PaidAmount,
-                                       BalanceAmount = d.BalanceAmount,
-                                       CollectorId = d.CollectorId,
-                                       Collector = d.mstCollector.Collector,
+                                       //LoanAmount = d.LoanAmount,
+                                       //PaidAmount = d.PaidAmount,
+                                       //BalanceAmount = d.BalanceAmount,
+                                       //CollectorId = d.CollectorId,
+                                       //Collector = d.mstCollector.Collector,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
                                        IsLocked = d.IsLocked,
@@ -48,13 +48,13 @@ namespace Lending.Business
             {
                 foreach (var loanApplication in loanApplications)
                 {
-                    if (loanApplication.LoanAmount > 0)
-                    {
+                    //if (loanApplication.LoanAmount > 0)
+                    //{
                         Data.trnJournal newLoanJournal = new Data.trnJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(loanApplication.LoanDate);
-                        newLoanJournal.AccountId = loanApplication.AccountId;
+                        newLoanJournal.AccountId = /*loanApplication.AccountId;*/ (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                         newLoanJournal.Particulars = loanApplication.Particulars;
-                        newLoanJournal.ReleasedAmount = loanApplication.LoanAmount;
+                        newLoanJournal.ReleasedAmount = /*loanApplication.LoanAmount; */ 0;
                         newLoanJournal.ReceivedAmount = 0;
                         newLoanJournal.DocumentReference = "Loan - " + loanApplication.LoanNumber;
                         newLoanJournal.LoanId = loanId;
@@ -63,7 +63,7 @@ namespace Lending.Business
 
                         db.trnJournals.InsertOnSubmit(newLoanJournal);
                         db.SubmitChanges();
-                    }
+                    //}
                 }
             }
         }

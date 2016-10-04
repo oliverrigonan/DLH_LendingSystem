@@ -76,8 +76,9 @@ namespace Lending.Reports
                             float[] collectionDataWidthCells = new float[] { 15f, 40, 20f, 25f };
                             collectionData.SetWidths(collectionDataWidthCells);
                             collectionData.WidthPercentage = 100;
+
                             collectionData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
-                            collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstApplicant.ApplicantFullName, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
+                            collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().mstApplicant.ApplicantLastName + " " + collections.FirstOrDefault().mstApplicant.ApplicantFirstName + ", " + collections.FirstOrDefault().mstApplicant.ApplicantMiddleName, fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase("Collection Number", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase(collections.FirstOrDefault().CollectionNumber, fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 15f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -113,9 +114,9 @@ namespace Lending.Reports
                                                       LoanDate = d.trnLoanApplication.LoanDate.ToShortDateString(),
                                                       Particulars = d.Particulars,
                                                       Amount = d.Amount,
-                                                      LoanAmount = d.trnLoanApplication.LoanAmount,
-                                                      PaidAmount = d.trnLoanApplication.PaidAmount,
-                                                      Balance = d.trnLoanApplication.BalanceAmount,
+                                                      //LoanAmount = d.trnLoanApplication.LoanAmount,
+                                                      //PaidAmount = d.trnLoanApplication.PaidAmount,
+                                                      //Balance = d.trnLoanApplication.BalanceAmount,
                                                       CollectedByCollectorId = d.CollectedByCollectorId,
                                                       CollectedByCollector = d.mstCollector.Collector
                                                   };

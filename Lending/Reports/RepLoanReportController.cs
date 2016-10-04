@@ -29,18 +29,18 @@ namespace Lending.Reports
                                            LoanNumber = d.LoanNumber,
                                            LoanDate = d.LoanDate.ToShortDateString(),
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
-                                           AccountId = d.AccountId,
-                                           Account = d.mstAccount.Account,
+                                           //AccountId = d.AccountId,
+                                           //Account = d.mstAccount.Account,
                                            ApplicantId = d.ApplicantId,
-                                           Applicant = d.mstApplicant.ApplicantFullName,
-                                           AreaId = d.AreaId,
-                                           Area = d.mstArea.Area,
+                                           Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
+                                           //AreaId = d.AreaId,
+                                           //Area = d.mstArea.Area,
                                            Particulars = d.Particulars,
-                                           LoanAmount = d.LoanAmount,
-                                           PaidAmount = d.PaidAmount,
-                                           BalanceAmount = d.BalanceAmount,
-                                           CollectorId = d.CollectorId,
-                                           Collector = d.mstCollector.Collector,
+                                           //LoanAmount = d.LoanAmount,
+                                           //PaidAmount = d.PaidAmount,
+                                           //BalanceAmount = d.BalanceAmount,
+                                           //CollectorId = d.CollectorId,
+                                           //Collector = d.mstCollector.Collector,
                                            PreparedByUserId = d.PreparedByUserId,
                                            PreparedByUser = d.mstUser.FullName,
                                            IsLocked = d.IsLocked,
@@ -112,11 +112,11 @@ namespace Lending.Reports
                     loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.LoanDate, fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
                     loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.LoanNumber, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
                     loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
-                    loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.Area, fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
+                    loanApplicationData.AddCell(new PdfPCell(new Phrase(" ", /* loanApplication.Area,*/ fontArial12)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
                     loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.MaturityDate, fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f });
-                    loanApplicationData.AddCell(new PdfPCell(new Phrase(loanApplication.LoanAmount.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
+                    loanApplicationData.AddCell(new PdfPCell(new Phrase(" ", /* loanApplication.LoanAmount.ToString("#,##0.00"),*/ fontArial12)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingRight = 5f });
 
-                    totalLoanAmount += loanApplication.LoanAmount;
+                    //totalLoanAmount += loanApplication.LoanAmount;
                 }
 
                 document.Add(line);
