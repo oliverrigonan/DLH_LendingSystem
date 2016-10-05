@@ -21,20 +21,23 @@ namespace Lending.Business
                                        LoanNumber = d.LoanNumber,
                                        LoanDate = d.LoanDate.ToShortDateString(),
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       //AccountId = d.AccountId,
-                                       //Account = d.mstAccount.Account,
+                                       AccountId = d.AccountId,
+                                       Account = d.mstAccount.Account,
                                        ApplicantId = d.ApplicantId,
-                                       Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + ", " + d.mstApplicant.ApplicantMiddleName,
-                                       //AreaId = d.AreaId,
-                                       //Area = d.mstArea.Area,
+                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                        Particulars = d.Particulars,
-                                       //LoanAmount = d.LoanAmount,
-                                       //PaidAmount = d.PaidAmount,
-                                       //BalanceAmount = d.BalanceAmount,
-                                       //CollectorId = d.CollectorId,
-                                       //Collector = d.mstCollector.Collector,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
+                                       Principal = d.Principal,
+                                       ProcessingFee = d.ProcessingFee,
+                                       Passbook = d.Passbook,
+                                       Balance = d.Balance,
+                                       Penalty = d.Penalty,
+                                       LateInt = d.LateInt,
+                                       Advance = d.Advance,
+                                       Requirements = d.Requirements,
+                                       InsuranceIPIorPPI = d.InsuranceIPIorPPI,
+                                       NetAmount = d.NetAmount,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -48,13 +51,13 @@ namespace Lending.Business
             {
                 foreach (var loanApplication in loanApplications)
                 {
-                    //if (loanApplication.LoanAmount > 0)
-                    //{
+                    if (loanApplication.NetAmount > 0)
+                    {
                         Data.trnJournal newLoanJournal = new Data.trnJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(loanApplication.LoanDate);
-                        newLoanJournal.AccountId = /*loanApplication.AccountId;*/ (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
+                        newLoanJournal.AccountId = loanApplication.AccountId;
                         newLoanJournal.Particulars = loanApplication.Particulars;
-                        newLoanJournal.ReleasedAmount = /*loanApplication.LoanAmount; */ 0;
+                        newLoanJournal.ReleasedAmount = loanApplication.NetAmount; 
                         newLoanJournal.ReceivedAmount = 0;
                         newLoanJournal.DocumentReference = "Loan - " + loanApplication.LoanNumber;
                         newLoanJournal.LoanId = loanId;
@@ -63,7 +66,7 @@ namespace Lending.Business
 
                         db.trnJournals.InsertOnSubmit(newLoanJournal);
                         db.SubmitChanges();
-                    //}
+                    }
                 }
             }
         }

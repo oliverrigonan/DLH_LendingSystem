@@ -13,11 +13,24 @@ namespace Lending.Models
         public String LoanNumber { get; set; }
         public String LoanDate { get; set; }
         public String MaturityDate { get; set; }
+        public Int32 AccountId { get; set; }
+        public String Account { get; set; }
         public Int32 ApplicantId { get; set; }
         public String Applicant { get; set; }
+        public String Area { get; set; }
         public String Particulars { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
+        public Decimal Principal { get; set; }
+        public Decimal ProcessingFee { get; set; }
+        public Decimal Passbook { get; set; }
+        public Decimal Balance { get; set; }
+        public Decimal Penalty { get; set; }
+        public Decimal LateInt { get; set; }
+        public Decimal Advance { get; set; }
+        public Decimal Requirements { get; set; }
+        public Decimal InsuranceIPIorPPI { get; set; }
+        public Decimal NetAmount { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }

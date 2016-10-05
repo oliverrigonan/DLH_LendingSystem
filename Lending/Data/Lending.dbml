@@ -76,7 +76,7 @@
       <Association Name="mstAccount_trnCollectionLine" Member="trnCollectionLines" ThisKey="Id" OtherKey="AccountId" Type="trnCollectionLine" />
       <Association Name="mstAccount_trnDisbursement" Member="trnDisbursements" ThisKey="Id" OtherKey="AccountId" Type="trnDisbursement" />
       <Association Name="mstAccount_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="AccountId" Type="trnJournal" />
-      <Association Name="mstAccount_trnLoanApplicationLine" Member="trnLoanApplicationLines" ThisKey="Id" OtherKey="AccountId" Type="trnLoanApplicationLine" />
+      <Association Name="mstAccount_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="AccountId" Type="trnLoanApplication" />
       <Association Name="mstTransactionType_mstAccount" Member="mstTransactionType" ThisKey="AccountTransactionTypeId" OtherKey="Id" Type="mstTransactionType" IsForeignKey="true" />
       <Association Name="mstUser_mstAccount" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstAccount1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -440,28 +440,10 @@
       <Column Name="LoanNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="LoanDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="MaturityDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="trnLoanApplication_trnLoanRequirement" Member="trnLoanRequirements" ThisKey="Id" OtherKey="LoanId" Type="trnLoanRequirement" />
-      <Association Name="trnLoanApplication_trnCollectionLine" Member="trnCollectionLines" ThisKey="Id" OtherKey="LoanId" Type="trnCollectionLine" />
-      <Association Name="trnLoanApplication_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="LoanId" Type="trnJournal" />
-      <Association Name="trnLoanApplication_trnLoanApplicationLine" Member="trnLoanApplicationLines" ThisKey="Id" OtherKey="LoanId" Type="trnLoanApplicationLine" />
-      <Association Name="mstApplicant_trnLoanApplication" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
-      <Association Name="mstUser_trnLoanApplication" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-      <Association Name="mstUser_trnLoanApplication1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-      <Association Name="mstUser_trnLoanApplication2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.trnLoanApplicationLines" Member="trnLoanApplicationLines">
-    <Type Name="trnLoanApplicationLine">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Principal" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
       <Column Name="ProcessingFee" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
       <Column Name="Passbook" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
@@ -472,10 +454,29 @@
       <Column Name="Requirements" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
       <Column Name="InsuranceIPIorPPI" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
       <Column Name="NetAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
-      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="mstAccount_trnLoanApplicationLine" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
-      <Association Name="trnLoanApplication_trnLoanApplicationLine" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="trnLoanApplication_trnLoanRequirement" Member="trnLoanRequirements" ThisKey="Id" OtherKey="LoanId" Type="trnLoanRequirement" />
+      <Association Name="trnLoanApplication_trnCollectionLine" Member="trnCollectionLines" ThisKey="Id" OtherKey="LoanId" Type="trnCollectionLine" />
+      <Association Name="trnLoanApplication_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="LoanId" Type="trnJournal" />
+      <Association Name="mstAccount_trnLoanApplication" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
+      <Association Name="mstApplicant_trnLoanApplication" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnLoanApplication2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.trnLoanApplicationCollateral" Member="trnLoanApplicationCollaterals">
+    <Type Name="trnLoanApplicationCollateral">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Brand" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ModelNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SerialNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>

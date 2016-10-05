@@ -17,255 +17,263 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
-                        </a>
-                        <a href="/Software/CollectionList" class="list-group-item">
-                            <i class="fa fa-money fa-fw"></i> &nbsp; Collection
-                        </a>
-                        <a href="/Software/DisbursementList" class="list-group-item">
-                            <i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement
-                        </a>
-                        <a href="/Software/Tables" class="list-group-item">
-                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                        </a>
-                        <a href="/Software/Reports" class="list-group-item active">
-                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                        </a>
-                        <a href="/Software/CompanyList" class="list-group-item">
-                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                        </a>
-                        <a href="/Software/UserList" class="list-group-item">
-                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
-                        </a>
-                        <a href="/Manage/Index" class="list-group-item">
-                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
-                        </a>
-                    </div>
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="/Software" class="btn btn-info">
+                        Dashboard
+                    </a>
                 </div>
-                <div class="col-lg-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Reports</h4>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Set Ups <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
+                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Activities <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
+                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
+                        <li><a href="/Software/DisbursementList"><i class="fa fa-credit-card fa-fw"></i> Disbursement</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Reports <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br /><br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4>Reports</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
+                                <li class="active"><a data-toggle="pill" href="#loanReportPill" id="">Loan Summary Report</a></li>
+                                <li><a data-toggle="pill" href="#cashVoucherPill" id="">Cash Voucher</a></li>
+                                <li><a data-toggle="pill" href="#collectiblesPill" id="">Collectibles (By Area)</a></li>
+                                <li><a data-toggle="pill" href="#dailyReleaseMonitoringPill" id="">Daily Release Monitoring</a></li>
+                                <li><a data-toggle="pill" href="#collectionSummaryReportPill" id="">Collection Summary Report</a></li>
+                                <li><a data-toggle="pill" href="#collectionDetailReportPill" id="">Collection Detail Report</a></li>
+                                <li><a data-toggle="pill" href="#disbursementReportPill" id="">Disbursement Report (Expenses)</a></li>
+                            </ul>
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <ul class="nav nav-pills nav-stacked" style="background-color: #f7f7f7">
-                                        <li class="active"><a data-toggle="pill" href="#loanReportPill" id="">Loan Summary Report</a></li>
-                                        <li><a data-toggle="pill" href="#cashVoucherPill" id="">Cash Voucher</a></li>
-                                        <li><a data-toggle="pill" href="#collectiblesPill" id="">Collectibles (By Area)</a></li>
-                                        <li><a data-toggle="pill" href="#dailyReleaseMonitoringPill" id="">Daily Release Monitoring</a></li>
-                                        <li><a data-toggle="pill" href="#collectionSummaryReportPill" id="">Collection Summary Report</a></li>
-                                        <li><a data-toggle="pill" href="#collectionDetailReportPill" id="">Collection Detail Report</a></li>
-                                        <li><a data-toggle="pill" href="#disbursementReportPill" id="">Disbursement Report (Expenses)</a></li>
-                                    </ul>
+                        <div class="col-md-8">
+                            <div class="tab-content">
+                                <div id="loanReportPill" class="tab-pane fade in active">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="btnLoanReportPDF" onclick="btnLoanReportPDFOnclick()">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboLoanReportStartDate"></div> &nbsp; <span id="cboLoanReportStartDateString"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboLoanReportEndDate"></div> &nbsp; <span id="cboLoanReportEndDateString"></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="tab-content">
-                                        <div id="loanReportPill" class="tab-pane fade in active">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="btnLoanReportPDF" onclick="btnLoanReportPDFOnclick()">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Start Date</label><br />
-                                                        <div id="cboLoanReportStartDate"></div> &nbsp; <span id="cboLoanReportStartDateString"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>End Date</label><br />
-                                                        <div id="cboLoanReportEndDate"></div> &nbsp; <span id="cboLoanReportEndDateString"></span>
-                                                    </div>
-                                                </div>
+                                <div id="cashVoucherPill" class="tab-pane fade in">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Applicant</label><br />
+                                                <div id="cashVoucherReportApplicant"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Loan Number</label><br />
+                                                <div id="cashVoucherReportLoanNumber"></div>
                                             </div>
                                         </div>
-                                        <div id="cashVoucherPill" class="tab-pane fade in">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Applicant</label><br />
-                                                        <div id="cashVoucherReportApplicant"></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Loan Number</label><br />
-                                                        <div id="cashVoucherReportLoanNumber"></div>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                </div>
+                                <div id="collectiblesPill" class="tab-pane fade in">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="btnCollectiblesPDF" onclick="btnCollectiblesPDFOnclick()">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Area</label><br />
+                                                <div id="cboCollectiblesReportArea"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Start Date (Due Date)</label><br />
+                                                <div id="cboCollectiblesReportStartDate"></div> &nbsp; <span id="cboCollectiblesReportStartDateString"></span>
                                             </div>
                                         </div>
-                                        <div id="collectiblesPill" class="tab-pane fade in">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="btnCollectiblesPDF" onclick="btnCollectiblesPDFOnclick()">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Area</label><br />
-                                                        <div id="cboCollectiblesReportArea"></div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Start Date (Due Date)</label><br />
-                                                        <div id="cboCollectiblesReportStartDate"></div> &nbsp; <span id="cboCollectiblesReportStartDateString"></span>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                </div>
+                                <div id="dailyReleaseMonitoringPill" class="tab-pane fade in">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboDailyReleaseMonitoringStartDate"></div> &nbsp; <span id="cboDailyReleaseMonitoringStartDateString"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboDailyReleaseMonitoringEndDate"></div> &nbsp; <span id="cboDailyReleaseMonitoringEndDateString"></span>
                                             </div>
                                         </div>
-                                        <div id="dailyReleaseMonitoringPill" class="tab-pane fade in">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Start Date</label><br />
-                                                        <div id="cboDailyReleaseMonitoringStartDate"></div> &nbsp; <span id="cboDailyReleaseMonitoringStartDateString"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>End Date</label><br />
-                                                        <div id="cboDailyReleaseMonitoringEndDate"></div> &nbsp; <span id="cboDailyReleaseMonitoringEndDateString"></span>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                </div>
+                                <div id="collectionSummaryReportPill" class="tab-pane fade in">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="btnCollectionSummaryReportPDF" onclick="btnCollectionSummaryReportPDFOnclick()">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboCollectionSummaryReportStartDate"></div> &nbsp; <span id="cboCollectionSummaryReportStartDateString"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboCollectionSummaryReportEndDate"></div> &nbsp; <span id="cboCollectionSummaryReportEndDateString"></span>
                                             </div>
                                         </div>
-                                        <div id="collectionSummaryReportPill" class="tab-pane fade in">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="btnCollectionSummaryReportPDF" onclick="btnCollectionSummaryReportPDFOnclick()">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Start Date</label><br />
-                                                        <div id="cboCollectionSummaryReportStartDate"></div> &nbsp; <span id="cboCollectionSummaryReportStartDateString"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>End Date</label><br />
-                                                        <div id="cboCollectionSummaryReportEndDate"></div> &nbsp; <span id="cboCollectionSummaryReportEndDateString"></span>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                </div>
+                                <div id="collectionDetailReportPill" class="tab-pane fade in">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="btnCollectionDetailReportPDF" onclick="btnCollectionDetailReportPDFOnclick()">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboCollectionDetailReportStartDate"></div> &nbsp; <span id="cboCollectionDetailReportStartDateString"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboCollectionDetailReportEndDate"></div> &nbsp; <span id="cboCollectionDetailReportEndDateString"></span>
                                             </div>
                                         </div>
-                                        <div id="collectionDetailReportPill" class="tab-pane fade in">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="btnCollectionDetailReportPDF" onclick="btnCollectionDetailReportPDFOnclick()">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Start Date</label><br />
-                                                        <div id="cboCollectionDetailReportStartDate"></div> &nbsp; <span id="cboCollectionDetailReportStartDateString"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>End Date</label><br />
-                                                        <div id="cboCollectionDetailReportEndDate"></div> &nbsp; <span id="cboCollectionDetailReportEndDateString"></span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div id="disbursementReportPill" class="tab-pane fade in">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td align="right">
+                                                        <button class="btn btn-primary btn-sm" id="" onclick="">
+                                                            <i class="fa fa-eye fa-fw"></i> View
+                                                        </button>
+                                                        <button class="btn btn-primary btn-sm" id="btnDisbursementReportPDF" onclick="btnDisbursementReportPDFOnclick()">
+                                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </div>
-                                        <div id="disbursementReportPill" class="tab-pane fade in">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <table style="width: 100%">
-                                                        <tr>
-                                                            <td align="right">
-                                                                <button class="btn btn-primary btn-sm" id="" onclick="">
-                                                                    <i class="fa fa-eye fa-fw"></i> View
-                                                                </button>
-                                                                <button class="btn btn-primary btn-sm" id="btnDisbursementReportPDF" onclick="btnDisbursementReportPDFOnclick()">
-                                                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <label>Start Date</label><br />
-                                                        <div id="cboDisbursementReportStartDate"></div> &nbsp; <span id="cboDisbursementReportStartDateString"></span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>End Date</label><br />
-                                                        <div id="cboDisbursementReportEndDate"></div> &nbsp; <span id="cboDisbursementReportEndDateString"></span>
-                                                    </div>
-                                                </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboDisbursementReportStartDate"></div> &nbsp; <span id="cboDisbursementReportStartDateString"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboDisbursementReportEndDate"></div> &nbsp; <span id="cboDisbursementReportEndDateString"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -1013,7 +1021,7 @@
                         }
 
                         disabled = false;
-                    } 
+                    }
 
                     cboCashVoucherApplicant.dispose();
                     cboCashVoucherApplicant = new wijmo.input.ComboBox('#cashVoucherReportApplicant', {
@@ -1172,7 +1180,7 @@
                         }
 
                         disabled = false;
-                    } 
+                    }
 
                     cboCollectiblesReportArea.dispose();
                     cboCollectiblesReportArea = new wijmo.input.ComboBox('#cboCollectiblesReportArea', {
