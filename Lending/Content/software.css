@@ -8,21 +8,21 @@
     font-size: 100%;
 }
 
-.button-item {
+/*.button-item {
     padding-top: 2px;
     padding-left: 15px;
     padding-right: 15px;
-}
+}*/
 
 .flexgridHeight {
     height: 450px;
 }
 
-@media screen and (max-width: 768px) {
+/*@media screen and (max-width: 768px) {
     .flexgridHeight {
         height: 870px;
     }
-}
+}*/
 
 .form-table {
     width: 100%;

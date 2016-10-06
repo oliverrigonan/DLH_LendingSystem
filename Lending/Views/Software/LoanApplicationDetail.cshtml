@@ -415,25 +415,57 @@
         var loanApplicationCollateralCollectionView;
         var loanApplicationCollateralFlexGrid;
         var loanApplicationCollateralId = 0;
+        var newDate = new Date();
+        var loanApplicationLoanDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var loanApplicationMaturityDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
 
         // create loan Application Loan Date
         function createloanApplicationLoanDate() {
+            loanApplicationLoanDate.dispose();
             loanApplicationLoanDate = new wijmo.input.InputDate('#loanApplicationLoanDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
-                mask: '99-99-9999'
-            });
+                value: new Date(loanApplicationLoanDateValue),
+                mask: '99-99-9999',
+                max: new Date(loanApplicationMaturityDateValue),
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    loanApplicationLoanDateValue = thisDateValue;
 
-            createloanApplicationMaturityDate();
+                    setTimeout(function () {
+                        createloanApplicationMaturityDate();
+                    }, 50);
+                }
+            });
         }
 
         // create loan Application Maturity Date
         function createloanApplicationMaturityDate() {
+            loanApplicationMaturityDate.dispose();
             loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
-                mask: '99-99-9999'
+                value: new Date(loanApplicationMaturityDateValue),
+                mask: '99-99-9999',
+                min: new Date(loanApplicationLoanDateValue),
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    loanApplicationMaturityDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createloanApplicationLoanDate();
+                    }, 50);
+                }
             });
+        }
+
+        // loan application loan date and maturity date
+        function loanApplicationLoanDateRange() {
+            createloanApplicationLoanDate();
+
+            loanApplicationMaturityDateRange();
+        }
+
+        function loanApplicationMaturityDateRange() {
+            createloanApplicationMaturityDate();
 
             cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant');
             getApplicant();
@@ -598,8 +630,12 @@
 
                         if (loanApplicationResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
-                            loanApplicationLoanDate.disabled = true;
-                            loanApplicationMaturityDate.disabled = true;
+
+                            setTimeout(function () {
+                                loanApplicationLoanDate.disabled = true;
+                                loanApplicationMaturityDate.disabled = true;
+                            }, 100);
+
                             cboLoanApplicationAccount.disabled = true;
                             cboloanApplicationApplicant.disabled = true;
                             cboloanApplicationPreparedBy.disabled = true;
@@ -1441,7 +1477,9 @@
         window.onload = function () {
             NProgress.start();
             toastrModification();
-            createloanApplicationLoanDate();
+            loanApplicationLoanDate = new wijmo.input.InputDate('#loanApplicationLoanDate');
+            loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate');
+            loanApplicationLoanDateRange();
         }
 
         // jqueries codes

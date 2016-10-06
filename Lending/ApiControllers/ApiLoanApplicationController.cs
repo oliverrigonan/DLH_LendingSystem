@@ -224,34 +224,44 @@ namespace Lending.ApiControllers
                 {
                     if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        if (Convert.ToDateTime(loanApplication.LoanDate) > Convert.ToDateTime(loanApplication.MaturityDate))
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                        else
+                        {
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                        var lockLoanApplication = loanApplications.FirstOrDefault();
-                        lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
-                        lockLoanApplication.MaturityDate = Convert.ToDateTime(loanApplication.MaturityDate);
-                        lockLoanApplication.AccountId = loanApplication.AccountId;
-                        lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
-                        lockLoanApplication.Particulars = loanApplication.Particulars;
-                        lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
-                        lockLoanApplication.Principal = loanApplication.Principal;
-                        lockLoanApplication.ProcessingFee = loanApplication.ProcessingFee;
-                        lockLoanApplication.Passbook = loanApplication.Passbook;
-                        lockLoanApplication.Balance = loanApplication.Balance;
-                        lockLoanApplication.Penalty = loanApplication.Penalty;
-                        lockLoanApplication.LateInt = loanApplication.LateInt;
-                        lockLoanApplication.Advance = loanApplication.Advance;
-                        lockLoanApplication.Requirements = loanApplication.Requirements;
-                        lockLoanApplication.InsuranceIPIorPPI = loanApplication.InsuranceIPIorPPI;
-                        lockLoanApplication.NetAmount = loanApplication.NetAmount;
-                        lockLoanApplication.IsLocked = true;
-                        lockLoanApplication.UpdatedByUserId = userId;
-                        lockLoanApplication.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                            var lockLoanApplication = loanApplications.FirstOrDefault();
+                            lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
+                            lockLoanApplication.MaturityDate = Convert.ToDateTime(loanApplication.MaturityDate);
+                            lockLoanApplication.AccountId = loanApplication.AccountId;
+                            lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
+                            lockLoanApplication.Particulars = loanApplication.Particulars;
+                            lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
+                            lockLoanApplication.Principal = loanApplication.Principal;
+                            lockLoanApplication.ProcessingFee = loanApplication.ProcessingFee;
+                            lockLoanApplication.Passbook = loanApplication.Passbook;
+                            lockLoanApplication.Balance = loanApplication.Balance;
+                            lockLoanApplication.Penalty = loanApplication.Penalty;
+                            lockLoanApplication.LateInt = loanApplication.LateInt;
+                            lockLoanApplication.Advance = loanApplication.Advance;
+                            lockLoanApplication.Requirements = loanApplication.Requirements;
+                            lockLoanApplication.InsuranceIPIorPPI = loanApplication.InsuranceIPIorPPI;
+                            lockLoanApplication.NetAmount = loanApplication.NetAmount;
+                            lockLoanApplication.IsLocked = true;
+                            lockLoanApplication.UpdatedByUserId = userId;
+                            lockLoanApplication.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
 
-                        Business.Journal journal = new Business.Journal();
-                        journal.postLoanJournal(Convert.ToInt32(id));
+                            Business.LoanLogHistory loanLogHistory = new Business.LoanLogHistory();
+                            loanLogHistory.postLoanLogHistory(Convert.ToInt32(id));
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            Business.Journal journal = new Business.Journal();
+                            journal.postLoanJournal(Convert.ToInt32(id));
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
                     }
                     else
                     {
@@ -289,6 +299,9 @@ namespace Lending.ApiControllers
                         unlockLoanApplication.UpdatedByUserId = userId;
                         unlockLoanApplication.UpdatedDateTime = DateTime.Now;
                         db.SubmitChanges();
+
+                        Business.LoanLogHistory loanLogHistory = new Business.LoanLogHistory();
+                        loanLogHistory.deleteLoanLogHistory(Convert.ToInt32(id));
 
                         Business.Journal journal = new Business.Journal();
                         journal.deleteLoanJournal(Convert.ToInt32(id));

@@ -114,6 +114,9 @@ namespace Lending.Data
     partial void InserttrnLoanApplicationCollateral(trnLoanApplicationCollateral instance);
     partial void UpdatetrnLoanApplicationCollateral(trnLoanApplicationCollateral instance);
     partial void DeletetrnLoanApplicationCollateral(trnLoanApplicationCollateral instance);
+    partial void InserttrnLoanLogHistory(trnLoanLogHistory instance);
+    partial void UpdatetrnLoanLogHistory(trnLoanLogHistory instance);
+    partial void DeletetrnLoanLogHistory(trnLoanLogHistory instance);
     #endregion
 		
 		public LendingDataContext() : 
@@ -367,6 +370,14 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<trnLoanApplicationCollateral>();
+			}
+		}
+		
+		public System.Data.Linq.Table<trnLoanLogHistory> trnLoanLogHistories
+		{
+			get
+			{
+				return this.GetTable<trnLoanLogHistory>();
 			}
 		}
 	}
@@ -2632,7 +2643,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceMonthlyRentAmount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceMonthlyRentAmount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal ResidenceMonthlyRentAmount
 		{
 			get
@@ -2676,7 +2687,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LandResidenceMonthlyRentAmount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LandResidenceMonthlyRentAmount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal LandResidenceMonthlyRentAmount
 		{
 			get
@@ -2816,7 +2827,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessStockValues", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessStockValues", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessStockValues
 		{
 			get
@@ -2836,7 +2847,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessBeginningCapital", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessBeginningCapital", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessBeginningCapital
 		{
 			get
@@ -2876,7 +2887,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowestDailySales", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowestDailySales", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessLowestDailySales
 		{
 			get
@@ -2896,7 +2907,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAverageDailySales", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAverageDailySales", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessAverageDailySales
 		{
 			get
@@ -3116,7 +3127,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMonthlySalary", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMonthlySalary", DbType="Decimal(18,5) NOT NULL")]
 		public decimal SpouseMonthlySalary
 		{
 			get
@@ -5545,7 +5556,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceMonthlyRentAmount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ResidenceMonthlyRentAmount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal ResidenceMonthlyRentAmount
 		{
 			get
@@ -5589,7 +5600,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LandResidenceMonthlyRentAmount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LandResidenceMonthlyRentAmount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal LandResidenceMonthlyRentAmount
 		{
 			get
@@ -5729,7 +5740,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessStockValues", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessStockValues", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessStockValues
 		{
 			get
@@ -5749,7 +5760,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessBeginningCapital", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessBeginningCapital", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessBeginningCapital
 		{
 			get
@@ -5789,7 +5800,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowestDailySales", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessLowestDailySales", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessLowestDailySales
 		{
 			get
@@ -5809,7 +5820,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAverageDailySales", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BusinessAverageDailySales", DbType="Decimal(18,5) NOT NULL")]
 		public decimal BusinessAverageDailySales
 		{
 			get
@@ -6029,7 +6040,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMonthlySalary", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpouseMonthlySalary", DbType="Decimal(18,5) NOT NULL")]
 		public decimal SpouseMonthlySalary
 		{
 			get
@@ -9224,7 +9235,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Amount
 		{
 			get
@@ -9630,7 +9641,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Amount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Amount
 		{
 			get
@@ -10357,6 +10368,8 @@ namespace Lending.Data
 		
 		private EntitySet<trnJournal> _trnJournals;
 		
+		private EntitySet<trnLoanLogHistory> _trnLoanLogHistories;
+		
 		private EntityRef<mstAccount> _mstAccount;
 		
 		private EntityRef<mstApplicant> _mstApplicant;
@@ -10424,6 +10437,7 @@ namespace Lending.Data
 			this._trnLoanRequirements = new EntitySet<trnLoanRequirement>(new Action<trnLoanRequirement>(this.attach_trnLoanRequirements), new Action<trnLoanRequirement>(this.detach_trnLoanRequirements));
 			this._trnCollectionLines = new EntitySet<trnCollectionLine>(new Action<trnCollectionLine>(this.attach_trnCollectionLines), new Action<trnCollectionLine>(this.detach_trnCollectionLines));
 			this._trnJournals = new EntitySet<trnJournal>(new Action<trnJournal>(this.attach_trnJournals), new Action<trnJournal>(this.detach_trnJournals));
+			this._trnLoanLogHistories = new EntitySet<trnLoanLogHistory>(new Action<trnLoanLogHistory>(this.attach_trnLoanLogHistories), new Action<trnLoanLogHistory>(this.detach_trnLoanLogHistories));
 			this._mstAccount = default(EntityRef<mstAccount>);
 			this._mstApplicant = default(EntityRef<mstApplicant>);
 			this._mstUser = default(EntityRef<mstUser>);
@@ -10604,7 +10618,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Principal", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Principal", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Principal
 		{
 			get
@@ -10624,7 +10638,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessingFee", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ProcessingFee", DbType="Decimal(18,5) NOT NULL")]
 		public decimal ProcessingFee
 		{
 			get
@@ -10644,7 +10658,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Passbook", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Passbook", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Passbook
 		{
 			get
@@ -10664,7 +10678,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Balance", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Balance
 		{
 			get
@@ -10684,7 +10698,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Penalty", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Penalty", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Penalty
 		{
 			get
@@ -10704,7 +10718,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LateInt", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LateInt", DbType="Decimal(18,5) NOT NULL")]
 		public decimal LateInt
 		{
 			get
@@ -10724,7 +10738,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Advance", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Advance", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Advance
 		{
 			get
@@ -10744,7 +10758,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Requirements", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Requirements", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Requirements
 		{
 			get
@@ -10764,7 +10778,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InsuranceIPIorPPI", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InsuranceIPIorPPI", DbType="Decimal(18,5) NOT NULL")]
 		public decimal InsuranceIPIorPPI
 		{
 			get
@@ -10784,7 +10798,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetAmount", DbType="Decimal(18,0) NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetAmount", DbType="Decimal(18,5) NOT NULL")]
 		public decimal NetAmount
 		{
 			get
@@ -10948,6 +10962,19 @@ namespace Lending.Data
 			set
 			{
 				this._trnJournals.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanLogHistory", Storage="_trnLoanLogHistories", ThisKey="Id", OtherKey="LoanId")]
+		public EntitySet<trnLoanLogHistory> trnLoanLogHistories
+		{
+			get
+			{
+				return this._trnLoanLogHistories;
+			}
+			set
+			{
+				this._trnLoanLogHistories.Assign(value);
 			}
 		}
 		
@@ -11176,6 +11203,18 @@ namespace Lending.Data
 			this.SendPropertyChanging();
 			entity.trnLoanApplication = null;
 		}
+		
+		private void attach_trnLoanLogHistories(trnLoanLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.trnLoanApplication = this;
+		}
+		
+		private void detach_trnLoanLogHistories(trnLoanLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.trnLoanApplication = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanApplicationCollateral")]
@@ -11335,6 +11374,325 @@ namespace Lending.Data
 					this._SerialNumber = value;
 					this.SendPropertyChanged("SerialNumber");
 					this.OnSerialNumberChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanLogHistory")]
+	public partial class trnLoanLogHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _LoanId;
+		
+		private System.DateTime _CollectibleDate;
+		
+		private decimal _NetAmount;
+		
+		private decimal _CollectibleAmount;
+		
+		private decimal _PaidAmount;
+		
+		private decimal _Penalty;
+		
+		private decimal _PreviousBalance;
+		
+		private decimal _CurrentBalance;
+		
+		private decimal _BalanceNetAmount;
+		
+		private EntityRef<trnLoanApplication> _trnLoanApplication;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnLoanIdChanging(int value);
+    partial void OnLoanIdChanged();
+    partial void OnCollectibleDateChanging(System.DateTime value);
+    partial void OnCollectibleDateChanged();
+    partial void OnNetAmountChanging(decimal value);
+    partial void OnNetAmountChanged();
+    partial void OnCollectibleAmountChanging(decimal value);
+    partial void OnCollectibleAmountChanged();
+    partial void OnPaidAmountChanging(decimal value);
+    partial void OnPaidAmountChanged();
+    partial void OnPenaltyChanging(decimal value);
+    partial void OnPenaltyChanged();
+    partial void OnPreviousBalanceChanging(decimal value);
+    partial void OnPreviousBalanceChanged();
+    partial void OnCurrentBalanceChanging(decimal value);
+    partial void OnCurrentBalanceChanged();
+    partial void OnBalanceNetAmountChanging(decimal value);
+    partial void OnBalanceNetAmountChanged();
+    #endregion
+		
+		public trnLoanLogHistory()
+		{
+			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoanId", DbType="Int NOT NULL")]
+		public int LoanId
+		{
+			get
+			{
+				return this._LoanId;
+			}
+			set
+			{
+				if ((this._LoanId != value))
+				{
+					if (this._trnLoanApplication.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLoanIdChanging(value);
+					this.SendPropertyChanging();
+					this._LoanId = value;
+					this.SendPropertyChanged("LoanId");
+					this.OnLoanIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectibleDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CollectibleDate
+		{
+			get
+			{
+				return this._CollectibleDate;
+			}
+			set
+			{
+				if ((this._CollectibleDate != value))
+				{
+					this.OnCollectibleDateChanging(value);
+					this.SendPropertyChanging();
+					this._CollectibleDate = value;
+					this.SendPropertyChanged("CollectibleDate");
+					this.OnCollectibleDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NetAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal NetAmount
+		{
+			get
+			{
+				return this._NetAmount;
+			}
+			set
+			{
+				if ((this._NetAmount != value))
+				{
+					this.OnNetAmountChanging(value);
+					this.SendPropertyChanging();
+					this._NetAmount = value;
+					this.SendPropertyChanged("NetAmount");
+					this.OnNetAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectibleAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal CollectibleAmount
+		{
+			get
+			{
+				return this._CollectibleAmount;
+			}
+			set
+			{
+				if ((this._CollectibleAmount != value))
+				{
+					this.OnCollectibleAmountChanging(value);
+					this.SendPropertyChanging();
+					this._CollectibleAmount = value;
+					this.SendPropertyChanged("CollectibleAmount");
+					this.OnCollectibleAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PaidAmount
+		{
+			get
+			{
+				return this._PaidAmount;
+			}
+			set
+			{
+				if ((this._PaidAmount != value))
+				{
+					this.OnPaidAmountChanging(value);
+					this.SendPropertyChanging();
+					this._PaidAmount = value;
+					this.SendPropertyChanged("PaidAmount");
+					this.OnPaidAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Penalty", DbType="Decimal(18,5) NOT NULL")]
+		public decimal Penalty
+		{
+			get
+			{
+				return this._Penalty;
+			}
+			set
+			{
+				if ((this._Penalty != value))
+				{
+					this.OnPenaltyChanging(value);
+					this.SendPropertyChanging();
+					this._Penalty = value;
+					this.SendPropertyChanged("Penalty");
+					this.OnPenaltyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreviousBalance", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PreviousBalance
+		{
+			get
+			{
+				return this._PreviousBalance;
+			}
+			set
+			{
+				if ((this._PreviousBalance != value))
+				{
+					this.OnPreviousBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._PreviousBalance = value;
+					this.SendPropertyChanged("PreviousBalance");
+					this.OnPreviousBalanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentBalance", DbType="Decimal(18,5) NOT NULL")]
+		public decimal CurrentBalance
+		{
+			get
+			{
+				return this._CurrentBalance;
+			}
+			set
+			{
+				if ((this._CurrentBalance != value))
+				{
+					this.OnCurrentBalanceChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentBalance = value;
+					this.SendPropertyChanged("CurrentBalance");
+					this.OnCurrentBalanceChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceNetAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal BalanceNetAmount
+		{
+			get
+			{
+				return this._BalanceNetAmount;
+			}
+			set
+			{
+				if ((this._BalanceNetAmount != value))
+				{
+					this.OnBalanceNetAmountChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceNetAmount = value;
+					this.SendPropertyChanged("BalanceNetAmount");
+					this.OnBalanceNetAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnLoanLogHistory", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		public trnLoanApplication trnLoanApplication
+		{
+			get
+			{
+				return this._trnLoanApplication.Entity;
+			}
+			set
+			{
+				trnLoanApplication previousValue = this._trnLoanApplication.Entity;
+				if (((previousValue != value) 
+							|| (this._trnLoanApplication.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._trnLoanApplication.Entity = null;
+						previousValue.trnLoanLogHistories.Remove(this);
+					}
+					this._trnLoanApplication.Entity = value;
+					if ((value != null))
+					{
+						value.trnLoanLogHistories.Add(this);
+						this._LoanId = value.Id;
+					}
+					else
+					{
+						this._LoanId = default(int);
+					}
+					this.SendPropertyChanged("trnLoanApplication");
 				}
 			}
 		}
