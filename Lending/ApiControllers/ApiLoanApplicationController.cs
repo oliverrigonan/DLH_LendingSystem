@@ -145,7 +145,6 @@ namespace Lending.ApiControllers
             return loanApplication.ToList();
         }
 
-
         // zero fill
         public String zeroFill(Int32 number, Int32 length)
         {

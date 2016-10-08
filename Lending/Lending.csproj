@@ -181,6 +181,7 @@
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiDisbursementController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationCollateralController.cs" />
+    <Compile Include="ApiControllers\ApiLoanLogHistoryController.cs" />
     <Compile Include="ApiControllers\ApiLoanRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Models\TrnDisbursement.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
+    <Compile Include="Models\TrnLoanLogHistory.cs" />
     <Compile Include="Models\TrnLoanRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\RepCollectiblesController.cs" />

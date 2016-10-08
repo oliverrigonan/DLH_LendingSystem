@@ -11415,9 +11415,11 @@ namespace Lending.Data
 		
 		private decimal _CollectibleAmount;
 		
-		private decimal _PaidAmount;
-		
 		private decimal _Penalty;
+		
+		private bool _IsPenalty;
+		
+		private decimal _PaidAmount;
 		
 		private decimal _PreviousBalance;
 		
@@ -11441,10 +11443,12 @@ namespace Lending.Data
     partial void OnNetAmountChanged();
     partial void OnCollectibleAmountChanging(decimal value);
     partial void OnCollectibleAmountChanged();
-    partial void OnPaidAmountChanging(decimal value);
-    partial void OnPaidAmountChanged();
     partial void OnPenaltyChanging(decimal value);
     partial void OnPenaltyChanged();
+    partial void OnIsPenaltyChanging(bool value);
+    partial void OnIsPenaltyChanged();
+    partial void OnPaidAmountChanging(decimal value);
+    partial void OnPaidAmountChanged();
     partial void OnPreviousBalanceChanging(decimal value);
     partial void OnPreviousBalanceChanged();
     partial void OnCurrentBalanceChanging(decimal value);
@@ -11563,26 +11567,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal PaidAmount
-		{
-			get
-			{
-				return this._PaidAmount;
-			}
-			set
-			{
-				if ((this._PaidAmount != value))
-				{
-					this.OnPaidAmountChanging(value);
-					this.SendPropertyChanging();
-					this._PaidAmount = value;
-					this.SendPropertyChanged("PaidAmount");
-					this.OnPaidAmountChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Penalty", DbType="Decimal(18,5) NOT NULL")]
 		public decimal Penalty
 		{
@@ -11599,6 +11583,46 @@ namespace Lending.Data
 					this._Penalty = value;
 					this.SendPropertyChanged("Penalty");
 					this.OnPenaltyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPenalty", DbType="Bit NOT NULL")]
+		public bool IsPenalty
+		{
+			get
+			{
+				return this._IsPenalty;
+			}
+			set
+			{
+				if ((this._IsPenalty != value))
+				{
+					this.OnIsPenaltyChanging(value);
+					this.SendPropertyChanging();
+					this._IsPenalty = value;
+					this.SendPropertyChanged("IsPenalty");
+					this.OnIsPenaltyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PaidAmount
+		{
+			get
+			{
+				return this._PaidAmount;
+			}
+			set
+			{
+				if ((this._PaidAmount != value))
+				{
+					this.OnPaidAmountChanging(value);
+					this.SendPropertyChanging();
+					this._PaidAmount = value;
+					this.SendPropertyChanged("PaidAmount");
+					this.OnPaidAmountChanged();
 				}
 			}
 		}
