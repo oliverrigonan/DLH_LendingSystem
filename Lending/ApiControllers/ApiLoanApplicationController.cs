@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace Lending.ApiControllers
 {
@@ -35,15 +36,15 @@ namespace Lending.ApiControllers
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       Principal = d.Principal,
-                                       ProcessingFee = d.ProcessingFee,
-                                       Passbook = d.Passbook,
-                                       Balance = d.Balance,
-                                       Penalty = d.Penalty,
-                                       LateInt = d.LateInt,
-                                       Advance = d.Advance,
-                                       Requirements = d.Requirements,
-                                       InsuranceIPIorPPI = d.InsuranceIPIorPPI,
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
+                                       PassbookAmount = d.PassbookAmount,
+                                       BalanceAmount = d.BalanceAmount,
+                                       PenaltyAmount = d.PenaltyAmount,
+                                       LateIntAmount = d.LateIntAmount,
+                                       AdvanceAmount = d.AdvanceAmount,
+                                       RequirementsAmount = d.RequirementsAmount,
+                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                        NetAmount = d.NetAmount,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
@@ -79,15 +80,15 @@ namespace Lending.ApiControllers
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
-                                      Principal = d.Principal,
-                                      ProcessingFee = d.ProcessingFee,
-                                      Passbook = d.Passbook,
-                                      Balance = d.Balance,
-                                      Penalty = d.Penalty,
-                                      LateInt = d.LateInt,
-                                      Advance = d.Advance,
-                                      Requirements = d.Requirements,
-                                      InsuranceIPIorPPI = d.InsuranceIPIorPPI,
+                                      PrincipalAmount = d.PrincipalAmount,
+                                      ProcessingFeeAmount = d.ProcessingFeeAmount,
+                                      PassbookAmount = d.PassbookAmount,
+                                      BalanceAmount = d.BalanceAmount,
+                                      PenaltyAmount = d.PenaltyAmount,
+                                      LateIntAmount = d.LateIntAmount,
+                                      AdvanceAmount = d.AdvanceAmount,
+                                      RequirementsAmount = d.RequirementsAmount,
+                                      InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                       NetAmount = d.NetAmount,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
@@ -123,15 +124,15 @@ namespace Lending.ApiControllers
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
-                                      Principal = d.Principal,
-                                      ProcessingFee = d.ProcessingFee,
-                                      Passbook = d.Passbook,
-                                      Balance = d.Balance,
-                                      Penalty = d.Penalty,
-                                      LateInt = d.LateInt,
-                                      Advance = d.Advance,
-                                      Requirements = d.Requirements,
-                                      InsuranceIPIorPPI = d.InsuranceIPIorPPI,
+                                      PrincipalAmount = d.PrincipalAmount,
+                                      ProcessingFeeAmount = d.ProcessingFeeAmount,
+                                      PassbookAmount = d.PassbookAmount,
+                                      BalanceAmount = d.BalanceAmount,
+                                      PenaltyAmount = d.PenaltyAmount,
+                                      LateIntAmount = d.LateIntAmount,
+                                      AdvanceAmount = d.AdvanceAmount,
+                                      RequirementsAmount = d.RequirementsAmount,
+                                      InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                       NetAmount = d.NetAmount,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
@@ -183,29 +184,29 @@ namespace Lending.ApiControllers
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";
                 newLoanApplication.PreparedByUserId = userId;
-                newLoanApplication.Principal = 0;
-                newLoanApplication.ProcessingFee = 0;
-                newLoanApplication.Passbook = 0;
-                newLoanApplication.Balance = 0;
-                newLoanApplication.Penalty = 0;
-                newLoanApplication.LateInt = 0;
-                newLoanApplication.Advance = 0;
-                newLoanApplication.Requirements = 0;
-                newLoanApplication.InsuranceIPIorPPI = 0;
+                newLoanApplication.PrincipalAmount = 0;
+                newLoanApplication.ProcessingFeeAmount = 0;
+                newLoanApplication.PassbookAmount = 0;
+                newLoanApplication.BalanceAmount = 0;
+                newLoanApplication.PenaltyAmount = 0;
+                newLoanApplication.LateIntAmount = 0;
+                newLoanApplication.AdvanceAmount = 0;
+                newLoanApplication.RequirementsAmount = 0;
+                newLoanApplication.InsuranceIPIorPPIAmount = 0;
                 newLoanApplication.NetAmount = 0;
                 newLoanApplication.IsLocked = false;
                 newLoanApplication.CreatedByUserId = userId;
                 newLoanApplication.CreatedDateTime = DateTime.Now;
                 newLoanApplication.UpdatedByUserId = userId;
                 newLoanApplication.UpdatedDateTime = DateTime.Now;
-
                 db.trnLoanApplications.InsertOnSubmit(newLoanApplication);
                 db.SubmitChanges();
 
                 return newLoanApplication.Id;
             }
-            catch
+            catch(Exception e)
             {
+                Debug.WriteLine(e);
                 return 0;
             }
         }
@@ -238,15 +239,15 @@ namespace Lending.ApiControllers
                             lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                             lockLoanApplication.Particulars = loanApplication.Particulars;
                             lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
-                            lockLoanApplication.Principal = loanApplication.Principal;
-                            lockLoanApplication.ProcessingFee = loanApplication.ProcessingFee;
-                            lockLoanApplication.Passbook = loanApplication.Passbook;
-                            lockLoanApplication.Balance = loanApplication.Balance;
-                            lockLoanApplication.Penalty = loanApplication.Penalty;
-                            lockLoanApplication.LateInt = loanApplication.LateInt;
-                            lockLoanApplication.Advance = loanApplication.Advance;
-                            lockLoanApplication.Requirements = loanApplication.Requirements;
-                            lockLoanApplication.InsuranceIPIorPPI = loanApplication.InsuranceIPIorPPI;
+                            lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
+                            lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;
+                            lockLoanApplication.PassbookAmount = loanApplication.PassbookAmount;
+                            lockLoanApplication.BalanceAmount = loanApplication.BalanceAmount;
+                            lockLoanApplication.PenaltyAmount = loanApplication.PenaltyAmount;
+                            lockLoanApplication.LateIntAmount = loanApplication.LateIntAmount;
+                            lockLoanApplication.AdvanceAmount = loanApplication.AdvanceAmount;
+                            lockLoanApplication.RequirementsAmount = loanApplication.RequirementsAmount;
+                            lockLoanApplication.InsuranceIPIorPPIAmount = loanApplication.InsuranceIPIorPPIAmount;
                             lockLoanApplication.NetAmount = loanApplication.NetAmount;
                             lockLoanApplication.IsLocked = true;
                             lockLoanApplication.UpdatedByUserId = userId;

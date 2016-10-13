@@ -21,15 +21,15 @@ namespace Lending.Models
         public String Particulars { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
-        public Decimal Principal { get; set; }
-        public Decimal ProcessingFee { get; set; }
-        public Decimal Passbook { get; set; }
-        public Decimal Balance { get; set; }
-        public Decimal Penalty { get; set; }
-        public Decimal LateInt { get; set; }
-        public Decimal Advance { get; set; }
-        public Decimal Requirements { get; set; }
-        public Decimal InsuranceIPIorPPI { get; set; }
+        public Decimal PrincipalAmount { get; set; }
+        public Decimal ProcessingFeeAmount { get; set; }
+        public Decimal PassbookAmount { get; set; }
+        public Decimal BalanceAmount { get; set; }
+        public Decimal PenaltyAmount { get; set; }
+        public Decimal LateIntAmount { get; set; }
+        public Decimal AdvanceAmount { get; set; }
+        public Decimal RequirementsAmount { get; set; }
+        public Decimal InsuranceIPIorPPIAmount { get; set; }
         public Decimal NetAmount { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }

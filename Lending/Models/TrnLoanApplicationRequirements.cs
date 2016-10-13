@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class TrnLoanRequirements
+    public class TrnLoanApplicationRequirements
     {
         [Key]
         public Int32 Id { get; set; }

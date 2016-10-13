@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
@@ -29,15 +30,15 @@ namespace Lending.Business
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       Principal = d.Principal,
-                                       ProcessingFee = d.ProcessingFee,
-                                       Passbook = d.Passbook,
-                                       Balance = d.Balance,
-                                       Penalty = d.Penalty,
-                                       LateInt = d.LateInt,
-                                       Advance = d.Advance,
-                                       Requirements = d.Requirements,
-                                       InsuranceIPIorPPI = d.InsuranceIPIorPPI,
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
+                                       PassbookAmount = d.PassbookAmount,
+                                       BalanceAmount = d.BalanceAmount,
+                                       PenaltyAmount = d.PenaltyAmount,
+                                       LateIntAmount = d.LateIntAmount,
+                                       AdvanceAmount = d.AdvanceAmount,
+                                       RequirementsAmount = d.RequirementsAmount,
+                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                        NetAmount = d.NetAmount,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
@@ -57,23 +58,31 @@ namespace Lending.Business
                         var numberOfDays = (Convert.ToDateTime(loanApplication.MaturityDate) - Convert.ToDateTime(loanApplication.LoanDate)).TotalDays;
                         for (var i = 1; i <= numberOfDays; i++)
                         {
-                            Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
-                            newLoanLogHistory.LoanId = loanId;
-                            newLoanLogHistory.CollectibleDate = Convert.ToDateTime(loanApplication.LoanDate).Date.AddDays(i);
-                            newLoanLogHistory.NetAmount = loanApplication.NetAmount;
-                            newLoanLogHistory.CollectibleAmount = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 2);
-                            
                             Decimal penaltyValue = 10;
-                            if(i % 3 == 0) {
+                            if (i % 3 == 0)
+                            {
                                 penaltyValue = 20;
                             }
 
-                            newLoanLogHistory.Penalty = penaltyValue; 
+                            Decimal currentBalanceValue = 0;
+                            if (i == 1)
+                            {
+                                currentBalanceValue = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
+                            }
+
+                            Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
+                            newLoanLogHistory.LoanId = loanId;
+                            newLoanLogHistory.CollectionDate = Convert.ToDateTime(loanApplication.LoanDate).Date.AddDays(i);
+                            newLoanLogHistory.NetAmount = loanApplication.NetAmount;
+                            newLoanLogHistory.CollectibleAmount = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
+                            newLoanLogHistory.PenaltyAmount = penaltyValue;
                             newLoanLogHistory.PaidAmount = 0;
-                            newLoanLogHistory.PreviousBalance = 0;
-                            newLoanLogHistory.CurrentBalance = 0;
-                            newLoanLogHistory.BalanceNetAmount = loanApplication.NetAmount;
+                            newLoanLogHistory.PreviousBalanceAmount = 0;
+                            newLoanLogHistory.CurrentBalanceAmount = currentBalanceValue;
+                            newLoanLogHistory.IsCleared = false;
                             newLoanLogHistory.IsPenalty = false;
+                            newLoanLogHistory.IsOverdue = false;
+                            newLoanLogHistory.IsFullyPaid = false;
                             db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
                             db.SubmitChanges();
                         }

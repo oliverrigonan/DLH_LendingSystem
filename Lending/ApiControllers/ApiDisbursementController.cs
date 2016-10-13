@@ -30,7 +30,7 @@ namespace Lending.ApiControllers
                                     Account = d.mstAccount.Account,
                                     Payee = d.Payee,
                                     Particulars = d.Particulars,
-                                    Amount = d.Amount,
+                                    DisburseAmount = d.DisburseAmount,
                                     PreparedByUserId = d.PreparedByUserId,
                                     PreparedByUser = d.mstUser.FullName,
                                     IsLocked = d.IsLocked,
@@ -62,7 +62,7 @@ namespace Lending.ApiControllers
                                    Account = d.mstAccount.Account,
                                    Payee = d.Payee,
                                    Particulars = d.Particulars,
-                                   Amount = d.Amount,
+                                   DisburseAmount = d.DisburseAmount,
                                    PreparedByUserId = d.PreparedByUserId,
                                    PreparedByUser = d.mstUser.FullName,
                                    IsLocked = d.IsLocked,
@@ -115,7 +115,7 @@ namespace Lending.ApiControllers
                 newDisbursement.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
                 newDisbursement.Payee = "NA";
                 newDisbursement.Particulars = "NA";
-                newDisbursement.Amount = 0;
+                newDisbursement.DisburseAmount = 0;
                 newDisbursement.PreparedByUserId = userId;
                 newDisbursement.IsLocked = false;
                 newDisbursement.CreatedByUserId = userId;
@@ -154,7 +154,7 @@ namespace Lending.ApiControllers
                         lockDisbursement.AccountId = disbursement.AccountId;
                         lockDisbursement.Payee = disbursement.Payee;
                         lockDisbursement.Particulars = disbursement.Particulars;
-                        lockDisbursement.Amount = disbursement.Amount;
+                        lockDisbursement.DisburseAmount = disbursement.DisburseAmount;
                         lockDisbursement.PreparedByUserId = disbursement.PreparedByUserId;
                         lockDisbursement.IsLocked = true;
                         lockDisbursement.UpdatedByUserId = userId;

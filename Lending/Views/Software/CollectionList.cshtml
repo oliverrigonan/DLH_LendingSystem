@@ -17,113 +17,111 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
-                        </a>
-                        <a href="/Software/CollectionList" class="list-group-item active">
-                            <i class="fa fa-money fa-fw"></i> &nbsp; Collection
-                        </a>
-                        <a href="/Software/DisbursementList" class="list-group-item">
-                            <i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement
-                        </a>
-                        <a href="/Software/Tables" class="list-group-item">
-                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                        </a>
-                        <a href="/Software/Reports" class="list-group-item">
-                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                        </a>
-                        <a href="/Software/CompanyList" class="list-group-item">
-                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                        </a>
-                        <a href="/Software/UserList" class="list-group-item">
-                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
-                        </a>
-                        <a href="/Manage/Index" class="list-group-item">
-                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
-                        </a>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            User security stamp
-                        </div>
-                        <div class="panel-body">
-                            <p>Created by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                            <hr />
-                            <p>Updated by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                        </div>
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="/Software" class="btn btn-info">
+                        Dashboard
+                    </a>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Set Ups <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
+                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Activities <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
+                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
+                        <li><a href="/Software/DisbursementList"><i class="fa fa-credit-card fa-fw"></i> Disbursement</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Reports <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br /><br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4><i class="fa fa-money fa-fw"></i> Collections</h4>
+                </div>
+                <div class="panel-heading">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                        <input type="text" id="searchCollection" class="form-control" placeholder="Search" />
                     </div>
                 </div>
-                <div class="col-lg-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>List of Collections</h4>
-                        </div>
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                            <input type="text" id="searchCollection" class="form-control" placeholder="Search" />
-                                        </div>
-                                    </td>
-                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="right">
-                                        <button class="btn btn-primary" id="btnAddCollection" onclick="btnAddCollectionOnclick()">
-                                            <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-heading">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Collection Date</span>
-                                <div id="cboCollectionDate"></div>
-                            </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="flexgridHeight">
-                                <div id="collectionListFlexGrid" class="grid"></div>
-                            </div>
-                        </div>
-                        <div class="panel-footer">
-                            <div class="row">
-                                <div class="btn-group col-md-7" id="navigationPageGrid">
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                    </button>
+                <div class="panel-heading">
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Collection Date</span>
+                                    <div id="cboCollectionDate"></div>
                                 </div>
-                            </div>
+                            </td>
+                            <td>
+                                &nbsp; &nbsp; &nbsp;
+                            </td>
+                            <td>
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-map-pin fa-fw"></i> Area</div>
+                                    <div id="cboArea"></div>
+                                </div>
+                            </td>
+                            <td>
+                                &nbsp; &nbsp; &nbsp;
+                            </td>
+                            <td>
+                                <button class="btn btn-default btn-sm"> <i class="fa fa-check fa-fw"></i> Mark all as Clear</button>
+                                <button class="btn btn-default btn-sm"> <i class="fa fa-check fa-fw"></i> Mark all as Absent (Penalty) </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <div class="flexgridHeight">
+                        <div id="collectionListFlexGrid" class=""></div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="btn-group col-md-7" id="navigationPageGrid">
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                <span class="glyphicon glyphicon-fast-backward"></span>
+                            </button>
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                <span class="glyphicon glyphicon-step-backward"></span>
+                            </button>
+                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                <span class="glyphicon glyphicon-step-forward"></span>
+                            </button>
+                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                <span class="glyphicon glyphicon-fast-forward"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -131,21 +129,20 @@
         </div>
     </section>
 
-    <!-- delete confirmation collection modal -->
-    <div class="modal fade" id="deleteConfirmationCollectionModal" role="dialog">
-        <div class="modal-dialog modal-sm">
+    <!-- Option Modal -->
+    <div class="modal fade" id="optionModal" role="dialog">
+        <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Collection</h4>
+                    <h4 class="modal-title"> Options</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Collection?
+
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteCollection" onclick="btnConfirmDeleteCollectionOnclick()">Yes</button>
-                    <button class="btn btn-default" id="btnCloseDeleteCollectionModal" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -168,6 +165,7 @@
         var btnLastPageGrid;
         var btnCurrentPageGrid;
         var isCollectionDateClicked = false;
+        var cboArea;
 
         // create cbo date for collection date
         function createCboCollectionDate() {
@@ -179,7 +177,7 @@
                 onValueChanged: function () {
                     if (isCollectionDateClicked == true) {
                         NProgress.start();
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionList());
+                        collectionCollectionView = new wijmo.collections.CollectionView(getLoanLogHistoryByCollectionDateAndAreaIdList());
                         collectionCollectionView.canFilter = true;
                         collectionCollectionView.pageSize = 15;
 
@@ -190,16 +188,11 @@
                         });
 
                         collectionCollectionView.filter = function (item) {
-                            return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
+                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
                             updateNavigateButtons();
-                        });
-
-                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
                         });
 
                         // Flex Grid
@@ -210,13 +203,16 @@
                     }
                 }
             });
+
+            cboArea = new wijmo.input.ComboBox('#cboArea');
+            createCboArea();
         }
 
-        // get collection list
-        function getCollectionList() {
-            var collectionListArray = new wijmo.collections.ObservableArray;
+        // get loan log history list by collection date and area id
+        function getLoanLogHistoryByCollectionDateAndAreaIdList() {
+            var loanLogHistoryListArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/collection/listByCollectionDate/' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-'),
+                url: '/api/loanLogHistory/listByCollectionDateAndByAreaId/' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-') + "/" + cboArea.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -228,27 +224,31 @@
                                 isLocked = true;
                             }
 
-                            collectionListArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                            var penaltyValue = 0;
+                            if (collectionListResult[i]["IsPenalty"]) {
+                                penaltyValue = collectionListResult[i]["PenaltyAmount"];
+                            }
+
+                            loanLogHistoryListArray.push({
+                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                                ClearButton: "<button class='btn btn-default btn-xs btn-block' onclick=''><i class='fa fa-check fa-fw'></i> Clear</button>",
+                                AbsentButton: "<button class='btn btn-default btn-xs btn-block'  onclick=''><i class='fa fa-circle fa-fw'></i> Absent</button>",
                                 Id: collectionListResult[i]["Id"],
-                                CollectionNumber: collectionListResult[i]["CollectionNumber"],
-                                CollectionDate: collectionListResult[i]["CollectionDate"],
-                                BranchId: collectionListResult[i]["BranchId"],
-                                Branch: collectionListResult[i]["Branch"],
-                                AccountId: collectionListResult[i]["AccountId"],
-                                Account: collectionListResult[i]["Account"],
-                                ApplicantId: collectionListResult[i]["ApplicantId"],
+                                LoanId: collectionListResult[i]["LoanId"],
+                                LoanNumber: collectionListResult[i]["LoanNumber"],
                                 Applicant: collectionListResult[i]["Applicant"],
-                                Particulars: collectionListResult[i]["Particulars"],
-                                CollectedAmount: collectionListResult[i]["PaidAmount"],
-                                IsLocked: collectionListResult[i]["IsLocked"],
-                                CreatedByUserId: collectionListResult[i]["CreatedByUserId"],
-                                CreatedByUser: collectionListResult[i]["CreatedByUser"],
-                                CreatedDateTime: collectionListResult[i]["CreatedDateTime"],
-                                UpdatedByUserId: collectionListResult[i]["UpdatedByUserId"],
-                                UpdatedByUser: collectionListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: collectionListResult[i]["UpdatedDateTime"]
+                                Area: collectionListResult[i]["Area"],
+                                CollectionDate: collectionListResult[i]["CollectionDate"],
+                                NetAmount: collectionListResult[i]["NetAmount"],
+                                CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
+                                PenaltyAmount: penaltyValue,
+                                PaidAmount: collectionListResult[i]["PaidAmount"],
+                                PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
+                                CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
+                                IsCleared: collectionListResult[i]["IsCleared"],
+                                IsPenalty: collectionListResult[i]["IsPenalty"],
+                                IsOverdue: collectionListResult[i]["IsOverdue"],
+                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"]
                             });
                         }
                     }
@@ -256,112 +256,23 @@
                     NProgress.done();
                 }
             });
-            return collectionListArray;
+            return loanLogHistoryListArray;
         }
 
-        // add new collection
-        function btnAddCollectionOnclick() {
-            document.getElementById("btnAddCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding New Collection Application";
-            $("#btnAddCollection").prop("disabled", true);
-
-            $.ajax({
-                type: "POST",
-                url: '/api/collection/add',
-                contentType: "application/json; charset=utf-8",
-                success: function (id) {
-                    if (id > 0) {
-                        window.location = '/Software/CollectionDetail?id=' + id;
-                    } else {
-                        toastr.error("Bad Request");
-                    }
-                }
+        // option collection
+        function btnOptionOnclick() {
+            $("#optionModal").modal({
+                "show": true,
+                "backdrop": "static"
             });
         }
 
-        // edit collection
-        function btnEditCollectionOnclick() {
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var id = collectionCollectionView.currentEditItem.Id;
-            window.location = '/Software/CollectionDetail?id=' + id;
-        }
-
-        // delete collection
-        function btnDeleteCollectionOnclick(isLocked) {
-            if (isLocked) {
-                toastr.info("Record Locked");
-            } else {
-                $("#deleteConfirmationCollectionModal").modal({
-                    "show": true,
-                    "backdrop": "static"
-                });
-
-                document.getElementById("btnConfirmDeleteCollection").innerHTML = "Yes";
-                $("#btnConfirmDeleteCollection").prop("disabled", false);
-                $("#btnCloseDeleteCollectionModal").prop("disabled", false);
-            }
-        }
-        function btnConfirmDeleteCollectionOnclick() {
-            document.getElementById("btnConfirmDeleteCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteCollection").prop("disabled", true);
-            $("#btnCloseDeleteCollectionModal").prop("disabled", true);
-
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var id = collectionCollectionView.currentEditItem.Id;
-            $.ajax({
-                url: '/api/collection/delete/' + id,
-                type: "DELETE",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Delete Successful");
-
-                        $('#deleteConfirmationCollectionModal').modal('hide');
-
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionList());
-                        collectionCollectionView.canFilter = true;
-                        collectionCollectionView.pageSize = 15;
-
-                        var filterText = '';
-                        $('#searchCollection').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            collectionCollectionView.refresh();
-                        });
-
-                        collectionCollectionView.filter = function (item) {
-                            return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
-
-                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
-                    },
-                    404: function () {
-                        toastr.error("Not Found");
-                        $('#deleteConfirmationCollectionModal').modal('hide');
-                        document.getElementById("btnConfirmDeleteCollection").innerHTML = "Yes";
-                        $("#btnConfirmDeleteCollection").prop("disabled", false);
-                        $("#btnCloseDeleteCollectionModal").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Bad Request");
-                        $('#deleteConfirmationCollectionModal').modal('hide');
-                        document.getElementById("btnConfirmDeleteCollection").innerHTML = "Yes";
-                        $("#btnConfirmDeleteCollection").prop("disabled", false);
-                        $("#btnCloseDeleteCollectionModal").prop("disabled", false);
-                    }
-                }
-            });
-        }
+        //// edit collection
+        //function btnEditCollectionOnclick() {
+        //    collectionCollectionView.editItem(collectionCollectionView.currentItem);
+        //    var id = collectionCollectionView.currentEditItem.Id;
+        //    window.location = '/Software/CollectionDetail?id=' + id;
+        //}
 
         // navigation button for flexgrid
         function updateNavigateButtons() {
@@ -389,18 +300,9 @@
             btnCurrentPageGrid.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
         }
 
-        // stamp security
-        function updateStampSecurity() {
-            var item = collectionCollectionView.currentItem;
-            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
-            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
-            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
-            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
-        }
-
         // create collection flexgrid
         function createCollectionFlexGrid() {
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionList());
+            collectionCollectionView = new wijmo.collections.CollectionView(getLoanLogHistoryByCollectionDateAndAreaIdList());
             collectionCollectionView.canFilter = true;
             collectionCollectionView.pageSize = 15;
 
@@ -411,16 +313,11 @@
             });
 
             collectionCollectionView.filter = function (item) {
-                return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
                 updateNavigateButtons();
-            });
-
-            collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateStampSecurity();
             });
 
             // Flex Grid
@@ -428,16 +325,8 @@
             collectionFlexGrid.initialize({
                 columns: [
                             {
-                                "header": "Edit",
-                                "binding": "EditButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Delete",
-                                "binding": "DeleteButton",
+                                "header": "Option",
+                                "binding": "OptionButton",
                                 "width": 80,
                                 "align": "center",
                                 "allowResizing": false,
@@ -447,32 +336,72 @@
                                 "header": "Date",
                                 "binding": "CollectionDate",
                                 "allowSorting": true,
-                                "width": "1.1*",
-                            },
-                            {
-                                "header": "Collection No.",
-                                "binding": "CollectionNumber",
-                                "allowSorting": true,
-                                "width": "1.3*",
+                                "width": "1.6*",
                             },
                             {
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": "2.5*",
                             },
                             {
-                                "header": "Collected Amount",
-                                "binding": "CollectedAmount",
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
                             {
-                                "header": "L",
-                                "binding": "IsLocked",
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
                                 "allowSorting": true,
-                                "width": "0.5*",
-                            }
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Previous",
+                                "binding": "PreviousBalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Current",
+                                "binding": "CurrentBalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Paid Amount",
+                                "binding": "PaidAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "P",
+                                "binding": "IsPenalty",
+                                "allowSorting": true,
+                                "width": "0.8*",
+                            },
+                            {
+                                "header": "C",
+                                "binding": "IsCleared",
+                                "allowSorting": true,
+                                "width": "0.8*",
+                            },
+                            {
+                                "header": "Absent",
+                                "binding": "AbsentButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Clear",
+                                "binding": "ClearButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
                 ],
                 autoGenerateColumns: false,
                 itemsSource: collectionCollectionView,
@@ -483,6 +412,43 @@
             });
 
             collectionFlexGrid.trackChanges = true;
+
+            var hr = new wijmo.grid.Row();
+            collectionFlexGrid.allowMerging = wijmo.grid.AllowMerging.AllHeaders;
+            collectionFlexGrid.columnHeaders.rows.push(hr);
+            collectionFlexGrid.columnHeaders.rows[0].allowMerging = true;
+
+            collectionFlexGrid.columnHeaders.columns[0].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 0, 'Option');
+
+            collectionFlexGrid.columnHeaders.columns[1].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 1, 'Date');
+
+            collectionFlexGrid.columnHeaders.columns[2].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 2, 'Applicant');
+
+            collectionFlexGrid.columnHeaders.columns[3].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 3, 'Collectible');
+
+            collectionFlexGrid.columnHeaders.columns[4].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 4, 'Penalty');
+
+            for (var balancesColumn = 5; balancesColumn <= 6; balancesColumn++) {
+                collectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
+            }
+
+            collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Paid Amount');
+
+            collectionFlexGrid.columnHeaders.columns[8].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 8, 'P');
+
+            collectionFlexGrid.columnHeaders.columns[9].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 9, 'C');
+
+            for (var actionsColumn = 10; actionsColumn <= 11; actionsColumn++) {
+                collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
+            }
 
             //Navigation button
             btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
@@ -511,13 +477,75 @@
             });
         }
 
+        // cbo Area
+        function createCboArea() {
+            var areaArray = new Array();
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (areaResults) {
+                    var disabled = true;
+                    if (areaResults.length > 0) {
+                        for (i = 0; i < areaResults.length; i++) {
+                            areaArray.push({
+                                Id: areaResults[i]["Id"],
+                                Area: areaResults[i]["Area"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    // applicant
+                    cboArea.dispose();
+                    cboArea = new wijmo.input.ComboBox('#cboArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            collectionCollectionView = new wijmo.collections.CollectionView(getLoanLogHistoryByCollectionDateAndAreaIdList());
+                            collectionCollectionView.canFilter = true;
+                            collectionCollectionView.pageSize = 15;
+
+                            var filterText = '';
+                            $('#searchCollection').keyup(function () {
+                                filterText = this.value.toLowerCase();
+                                collectionCollectionView.refresh();
+                            });
+
+                            collectionCollectionView.filter = function (item) {
+                                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
+                            }
+
+                            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtons();
+                            });
+
+                            // Flex Grid
+                            collectionFlexGrid.itemsSource = collectionCollectionView;
+                            collectionFlexGrid.trackChanges = true;
+                        }
+                    });
+
+                    createCollectionFlexGrid();
+                }
+            });
+        }
+
         // on load page
         window.onload = function () {
             NProgress.start();
             toastrModification();
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate');
             createCboCollectionDate();
-            createCollectionFlexGrid();
         }
     </script>
 </body>

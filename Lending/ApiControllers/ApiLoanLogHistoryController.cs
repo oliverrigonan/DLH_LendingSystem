@@ -25,15 +25,49 @@ namespace Lending.ApiControllers
                                    {
                                        Id = d.Id,
                                        LoanId = d.LoanId,
-                                       CollectibleDate = d.CollectibleDate.ToShortDateString(),
+                                       CollectionDate = d.CollectionDate.ToShortDateString(),
                                        NetAmount = d.NetAmount,
                                        CollectibleAmount = d.CollectibleAmount,
-                                       Penalty = d.Penalty,
-                                       IsPenalty = d.IsPenalty,
+                                       PenaltyAmount = d.PenaltyAmount,
                                        PaidAmount = d.PaidAmount,
-                                       PreviousBalance = d.PreviousBalance,
-                                       CurrentBalance = d.CurrentBalance,
-                                       BalanceNetAmount = d.BalanceNetAmount
+                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                       CurrentBalanceAmount = d.CurrentBalanceAmount,
+                                       IsCleared = d.IsCleared,
+                                       IsPenalty = d.IsPenalty,
+                                       IsOverdue = d.IsOverdue,
+                                       IsFullyPaid = d.IsFullyPaid
+                                   };
+
+            return loanLogHistories.ToList();
+        }
+
+        // loan log history by collectible date and by area
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLogHistory/listByCollectionDateAndByAreaId/{collectionDate}/{areaId}")]
+        public List<Models.TrnLoanLogHistory> listLoanLogHistoryByCollectionDateAndByAreaId(String collectionDate, String areaId)
+        {
+            var loanLogHistories = from d in db.trnLoanLogHistories
+                                   where d.CollectionDate == Convert.ToDateTime(collectionDate)
+                                   && d.trnLoanApplication.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                   select new Models.TrnLoanLogHistory
+                                   {
+                                       Id = d.Id,
+                                       LoanId = d.LoanId,
+                                       LoanNumber = d.trnLoanApplication.LoanNumber,
+                                       Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + d.trnLoanApplication.mstApplicant.ApplicantMiddleName,
+                                       Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
+                                       CollectionDate = d.CollectionDate.ToShortDateString(),
+                                       NetAmount = d.NetAmount,
+                                       CollectibleAmount = d.CollectibleAmount,
+                                       PenaltyAmount = d.PenaltyAmount,
+                                       PaidAmount = d.PaidAmount,
+                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                       CurrentBalanceAmount = d.CurrentBalanceAmount,
+                                       IsCleared = d.IsCleared,
+                                       IsPenalty = d.IsPenalty,
+                                       IsOverdue = d.IsOverdue,
+                                       IsFullyPaid = d.IsFullyPaid
                                    };
 
             return loanLogHistories.ToList();

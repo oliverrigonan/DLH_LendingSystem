@@ -27,7 +27,7 @@ namespace Lending
                       "~/wijmo/controls/wijmo.chart.min.js",
                       "~/Scripts/nprogress.js",
                       "~/Scripts/toastr.min.js",
-                      "~/Scripts/custom-script.js"));
+                      "~/Scripts/customize-script.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",

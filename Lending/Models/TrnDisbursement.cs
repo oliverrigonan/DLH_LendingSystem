@@ -16,7 +16,7 @@ namespace Lending.Models
         public String Account { get; set; }
         public String Payee { get; set; }
         public String Particulars { get; set; }
-        public Decimal Amount { get; set; }
+        public Decimal DisburseAmount { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Boolean IsLocked { get; set; }

@@ -87,7 +87,7 @@
                 </div>
                 <div class="panel-heading">
                     <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Filter by Loan Date</span>
+                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Date</span>
                         <div id="cboLoanDate"></div>
                     </div>
                 </div>
@@ -252,7 +252,7 @@
                                 LoanDate: loanApplicationListResult[i]["LoanDate"],
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 Area: loanApplicationListResult[i]["Area"],
-                                Principal: loanApplicationListResult[i]["Principal"],
+                                PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
@@ -482,8 +482,8 @@
                                 "width": "2.5*",
                             },
                             {
-                                "header": "Principal",
-                                "binding": "Principal",
+                                "header": "Principal Amount",
+                                "binding": "PrincipalAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
@@ -498,7 +498,7 @@
                                 "header": "L",
                                 "binding": "IsLocked",
                                 "allowSorting": true,
-                                "width": "0.5*",
+                                "width": "*",
                             }
                 ],
                 autoGenerateColumns: false,

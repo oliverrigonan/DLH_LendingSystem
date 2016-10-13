@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -175,14 +175,12 @@
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
-    <Compile Include="ApiControllers\ApiCollectionController.cs" />
-    <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
     <Compile Include="ApiControllers\ApiCollectorController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiDisbursementController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationCollateralController.cs" />
     <Compile Include="ApiControllers\ApiLoanLogHistoryController.cs" />
-    <Compile Include="ApiControllers\ApiLoanRequirementsController.cs" />
+    <Compile Include="ApiControllers\ApiLoanApplicationRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
@@ -232,22 +230,13 @@
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
-    <Compile Include="Models\TrnCollection.cs" />
-    <Compile Include="Models\TrnCollectionLines.cs" />
     <Compile Include="Models\TrnDisbursement.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
     <Compile Include="Models\TrnLoanLogHistory.cs" />
-    <Compile Include="Models\TrnLoanRequirements.cs" />
+    <Compile Include="Models\TrnLoanApplicationRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reports\RepCollectiblesController.cs" />
-    <Compile Include="Reports\RepCollectionDetailController.cs" />
-    <Compile Include="Reports\RepCollectionDetailReportController.cs" />
-    <Compile Include="Reports\RepCollectionSummaryReportController.cs" />
-    <Compile Include="Reports\RepDisbursementDetailController.cs" />
-    <Compile Include="Reports\RepDisbursementReportController.cs" />
     <Compile Include="Reports\RepLoanApplicationCashVoucherController.cs" />
-    <Compile Include="Reports\RepLoanReportController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -319,7 +308,7 @@
     <Content Include="fonts\font-awesome-4.6.3\scss\_screen-reader.scss" />
     <Content Include="fonts\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="fonts\font-awesome-4.6.3\scss\_variables.scss" />
-    <Content Include="Scripts\custom-script.js" />
+    <Content Include="Scripts\customize-script.js" />
     <Content Include="Scripts\nprogress.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
@@ -460,6 +449,49 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\HomeHeader.cshtml" />
+    <Content Include="Views\Shared\HomeFooter.cshtml" />
+    <Content Include="Views\Shared\AccountLogin.cshtml" />
+    <Content Include="Views\Shared\AccountRegister.cshtml" />
+    <Content Include="Views\Shared\ManageIndex.cshtml" />
+    <Content Include="Views\Software\Index.cshtml" />
+    <Content Include="Views\Software\ApplicantList.cshtml" />
+    <Content Include="Views\Software\ApplicantDetail.cshtml" />
+    <Content Include="Views\Software\Forbidden.cshtml" />
+    <Content Include="Views\Software\NotFound.cshtml" />
+    <Content Include="Views\Software\LoanApplicationList.cshtml" />
+    <Content Include="Views\Software\Tables.cshtml" />
+    <Content Include="Views\Software\CompanyList.cshtml" />
+    <Content Include="Views\Software\CompanyDetail.cshtml" />
+    <Content Include="Views\Software\LoanApplicationDetail.cshtml" />
+    <Content Include="Views\Software\CollectionList.cshtml" />
+    <Content Include="Views\Software\CollectionDetail.cshtml" />
+    <Content Include="Views\Software\Reports.cshtml" />
+    <Content Include="Views\Software\DisbursementList.cshtml" />
+    <Content Include="Views\Software\DisbursementDetail.cshtml" />
+    <Content Include="Views\Software\UserDetail.cshtml" />
+    <Content Include="Views\Software\UserList.cshtml" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.de.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.en-GB.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.en.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.es.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.fr.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.it.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ja.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ko.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.pt.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.ru.js.map" />
+    <Content Include="wijmo\controls\cultures\wijmo.culture.zh.js.map" />
+    <Content Include="wijmo\controls\wijmo.chart.interaction.js.map" />
+    <Content Include="wijmo\controls\wijmo.chart.js.map" />
+    <Content Include="wijmo\controls\wijmo.gauge.js.map" />
+    <Content Include="wijmo\controls\wijmo.grid.filter.js.map" />
+    <Content Include="wijmo\controls\wijmo.grid.grouppanel.js.map" />
+    <Content Include="wijmo\controls\wijmo.grid.js.map" />
+    <Content Include="wijmo\controls\wijmo.input.js.map" />
+    <Content Include="wijmo\controls\wijmo.js.map" />
+    <Content Include="wijmo\interop\angular\wijmo.angular.js.map" />
+    <Content Include="wijmo\interop\knockout\wijmo.knockout.js.map" />
     <Content Include="wijmo\styles\themes\mixins\chart.less" />
     <Content Include="wijmo\styles\themes\mixins\color-functions.less" />
     <Content Include="wijmo\styles\themes\mixins\guards.less" />
@@ -486,28 +518,6 @@
     <Content Include="wijmo\styles\themes\wijmo.theme.superhero.less" />
     <Content Include="wijmo\styles\themes\wijmo.theme.trust.less" />
     <Content Include="wijmo\styles\themes\wijmo.theme.zen.less" />
-    <Content Include="Views\Shared\HomeHeader.cshtml" />
-    <Content Include="Views\Shared\HomeFooter.cshtml" />
-    <Content Include="Views\Shared\AccountLogin.cshtml" />
-    <Content Include="Views\Shared\AccountRegister.cshtml" />
-    <Content Include="Views\Shared\ManageIndex.cshtml" />
-    <Content Include="Views\Software\Index.cshtml" />
-    <Content Include="Views\Software\ApplicantList.cshtml" />
-    <Content Include="Views\Software\ApplicantDetail.cshtml" />
-    <Content Include="Views\Software\Forbidden.cshtml" />
-    <Content Include="Views\Software\NotFound.cshtml" />
-    <Content Include="Views\Software\LoanApplicationList.cshtml" />
-    <Content Include="Views\Software\Tables.cshtml" />
-    <Content Include="Views\Software\CompanyList.cshtml" />
-    <Content Include="Views\Software\CompanyDetail.cshtml" />
-    <Content Include="Views\Software\LoanApplicationDetail.cshtml" />
-    <Content Include="Views\Software\CollectionList.cshtml" />
-    <Content Include="Views\Software\CollectionDetail.cshtml" />
-    <Content Include="Views\Software\Reports.cshtml" />
-    <Content Include="Views\Software\DisbursementList.cshtml" />
-    <Content Include="Views\Software\DisbursementDetail.cshtml" />
-    <Content Include="Views\Software\UserDetail.cshtml" />
-    <Content Include="Views\Software\UserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,87 +17,79 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="list-group">
-                        <a href="/Software" class="list-group-item">
-                            <i class="fa fa-dashboard fa-fw"></i> &nbsp; Dashboard
-                        </a>
-                        <a href="/Software/ApplicantList" class="list-group-item">
-                            <i class="fa fa-users fa-fw"></i> &nbsp; Applicant
-                        </a>
-                        <a href="/Software/LoanApplicationList" class="list-group-item">
-                            <i class="fa fa-file-text-o fa-fw"></i> &nbsp; Loan
-                        </a>
-                        <a href="/Software/CollectionList" class="list-group-item">
-                            <i class="fa fa-money fa-fw"></i> &nbsp; Collection
-                        </a>
-                        <a href="/Software/DisbursementList" class="list-group-item active">
-                            <i class="fa fa-credit-card fa-fw"></i> &nbsp; Disbursement
-                        </a>
-                        <a href="/Software/Tables" class="list-group-item">
-                            <i class="fa fa-table fa-fw"></i> &nbsp; Tables
-                        </a>
-                        <a href="/Software/Reports" class="list-group-item">
-                            <i class="fa fa-print fa-fw"></i> &nbsp; Reports
-                        </a>
-                        <a href="/Software/CompanyList" class="list-group-item">
-                            <i class="fa fa-building fa-fw"></i> &nbsp; Company
-                        </a>
-                        <a href="/Software/UserList" class="list-group-item">
-                            <i class="fa fa-key fa-fw"></i> &nbsp; Users
-                        </a>
-                        <a href="/Manage/Index" class="list-group-item">
-                            <i class="fa fa-gears fa-fw"></i> &nbsp; Settings
-                        </a>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            User security stamp
-                        </div>
-                        <div class="panel-body">
-                            <p>Created by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                            <hr />
-                            <p>Updated by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                        </div>
-                    </div>
+            <div class="btn-group">
+                <div class="btn-group">
+                    <a href="/Software" class="btn btn-info">
+                        Dashboard
+                    </a>
                 </div>
-                <div class="col-lg-9">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        <h4>Disbursement Detail</h4>
-                                    </td>
-                                    <td align="right">
-                                        <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
-                                            <i class="fa fa-lock fa-fw"></i> Lock
-                                        </button>
-                                        <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
-                                            <i class="fa fa-unlock fa-fw"></i> Unlock
-                                        </button>
-                                        <button class="btn btn-primary" id="btnPrint" onclick="btnPrintOnClick()">
-                                            <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                                        </button>
-                                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/DisbursementList'">
-                                            <i class="fa fa-close fa-fw"></i> Close
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-body">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Set Ups <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
+                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Activities <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
+                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
+                        <li><a href="/Software/DisbursementList"><i class="fa fa-credit-card fa-fw"></i> Disbursement</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        Reports <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br /><br />
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <h4>Disbursement Detail</h4>
+                            </td>
+                            <td align="right">
+                                <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
+                                    <i class="fa fa-lock fa-fw"></i> Lock
+                                </button>
+                                <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
+                                    <i class="fa fa-unlock fa-fw"></i> Unlock
+                                </button>
+                                <button class="btn btn-primary" id="btnPrint" onclick="btnPrintOnClick()">
+                                    <i class="fa fa-file-pdf-o fa-fw"></i> PDF
+                                </button>
+                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/DisbursementList'">
+                                    <i class="fa fa-close fa-fw"></i> Close
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="form-group">
@@ -134,19 +126,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel-footer" align="right">
-                            <button class="btn btn-primary" id="btnLockButtom" onclick="btnLockOnClick()">
-                                <i class="fa fa-lock fa-fw"></i> Lock
-                            </button>
-                            <button class="btn btn-primary" id="btnUnlockButtom" onclick="btnUnlockOnClick()">
-                                <i class="fa fa-unlock fa-fw"></i> Unlock
-                            </button>
-                            <button class="btn btn-primary" id="btnPrintButtom" onclick="btnPrintOnClick()">
-                                <i class="fa fa-file-pdf-o fa-fw"></i> PDF
-                            </button>
-                            <button class="btn btn-danger" id="btnCloseButtom" onclick="window.location = '/Software/DisbursementList'">
-                                <i class="fa fa-close fa-fw"></i> Close
-                            </button>
+                        <div class="col-md-4">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <p>Created by:</p>
+                                    <div style="padding-left: 10px;">
+                                        <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                        <br />
+                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                    </div>
+                                    <br />
+                                    <p>Updated by:</p>
+                                    <div style="padding-left: 10px;">
+                                        <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                        <br />
+                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -274,7 +271,7 @@
                         cboDisbursementAccount.selectedValue = disbursementResult.Account;
                         document.getElementById("disbursementPayee").value = disbursementResult.Payee;
                         document.getElementById("disbursementParticulars").value = disbursementResult.Particulars;
-                        document.getElementById("disbursementAmount").value = disbursementResult.Amount.toLocaleString();
+                        document.getElementById("disbursementAmount").value = disbursementResult.DisburseAmount.toLocaleString();
                         cboDisbursementPreparedBy.selectedValue = disbursementResult.PreparedByUser;
                         document.getElementById('stampCreatedBy').innerHTML = disbursementResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = disbursementResult.CreatedDateTime;
@@ -283,7 +280,6 @@
 
                         if (disbursementResult.IsLocked) {
                             $("#btnLock").prop("disabled", true);
-                            $("#btnLockButtom").prop("disabled", true);
 
                             cboDisbursementDate.disabled = true;
                             cboDisbursementAccount.disabled = true;
@@ -296,8 +292,6 @@
                         } else {
                             $("#btnUnlock").prop("disabled", true);
                             $("#btnPrint").prop("disabled", true);
-                            $("#btnUnlockButtom").prop("disabled", true);
-                            $("#btnPrintButtom").prop("disabled", true);
                         }
                     } else {
                         alert("The record you'd requested has no data");
@@ -332,18 +326,15 @@
         function btnLockOnClick() {
             if (inputValidationForDisbursement()) {
                 $("#btnLock").prop("disabled", true);
-                $("#btnLockButtom").prop("disabled", true);
                 document.getElementById("btnLock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
-                document.getElementById("btnLockButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                 $("#btnClose").prop("disabled", true);
-                $("#btnCloseButtom").prop("disabled", true);
 
                 var disbursementObject = new Object();
                 disbursementObject.DisbursementDate = cboDisbursementDate.value;
                 disbursementObject.AccountId = cboDisbursementAccount.selectedItem["Id"];
                 disbursementObject.Payee = document.getElementById("disbursementPayee").value;
                 disbursementObject.Particulars = document.getElementById("disbursementParticulars").value;
-                disbursementObject.Amount = document.getElementById("disbursementAmount").value;
+                disbursementObject.DisburseAmount = document.getElementById("disbursementAmount").value;
                 disbursementObject.PreparedByUserId = cboDisbursementPreparedBy.selectedItem["Id"];
                 var disbursementData = JSON.stringify(disbursementObject);
 
@@ -363,20 +354,14 @@
                         404: function () {
                             toastr.error("Not Found");
                             $("#btnLock").prop("disabled", false);
-                            $("#btnLockButtom").prop("disabled", false);
                             document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
-                            document.getElementById("btnLockButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Lock";
                             $("#btnClose").prop("disabled", false);
-                            $("#btnCloseButtom").prop("disabled", false);
                         },
                         400: function () {
                             toastr.error("Bad Request");
                             $("#btnLock").prop("disabled", false);
-                            $("#btnLockButtom").prop("disabled", false);
                             document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
-                            document.getElementById("btnLockButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Lock";
                             $("#btnClose").prop("disabled", false);
-                            $("#btnCloseButtom").prop("disabled", false);
                         }
                     }
                 });
@@ -389,12 +374,8 @@
         function btnUnlockOnClick() {
             $("#btnUnlock").prop("disabled", true);
             $("#btnPrint").prop("disabled", true);
-            $("#btnUnlockButtom").prop("disabled", true);
-            $("#btnPrintButtom").prop("disabled", true);
             $("#btnClose").prop("disabled", true);
-            $("#btnCloseButtom").prop("disabled", true);
             document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
-            document.getElementById("btnUnlockButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
 
             $.ajax({
                 type: "PUT",
@@ -412,21 +393,14 @@
                         toastr.error("Not Found");
                         $("#btnUnlock").prop("disabled", false);
                         $("#btnPrint").prop("disabled", false);
-                        $("#btnUnlockButtom").prop("disabled", false);
-                        $("#btnPrintButtom").prop("disabled", false);
                         $("#btnClose").prop("disabled", false);
-                        $("#btnCloseButtom").prop("disabled", true);
                         document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
-                        document.getElementById("btnUnlockButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
                     },
                     400: function () {
                         toastr.error("Bad Request");
                         $("#btnLock").prop("disabled", false);
-                        $("#btnLockButtom").prop("disabled", false);
                         document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
-                        document.getElementById("btnLockButtom").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Lock";
                         $("#btnClose").prop("disabled", false);
-                        $("#btnCloseButtom").prop("disabled", false);
                     }
                 }
             });
@@ -435,9 +409,7 @@
         // print
         function btnPrintOnClick() {
             $("#btnPrint").prop("disabled", true);
-            $("#btnPrintButtom").prop("disabled", true);
             document.getElementById("btnPrint").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
-            document.getElementById("btnPrintButtom").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
             window.location = "/RepDisbursementDetail/disbursementDetail?disbursementId=" + getUrlParameter("id");
         }
 

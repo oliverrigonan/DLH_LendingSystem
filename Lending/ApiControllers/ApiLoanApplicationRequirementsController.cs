@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace Lending.ApiControllers
 {
-    public class ApiLoanRequirementsController : ApiController
+    public class ApiLoanApplicationRequirementsController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
@@ -15,12 +15,12 @@ namespace Lending.ApiControllers
         // loan Requirements list
         [Authorize]
         [HttpGet]
-        [Route("api/loanRequirements/listByLoanId/{loanId}")]
-        public List<Models.TrnLoanRequirements> listLoanRequirementsByLoanId(String loanId)
+        [Route("api/loanApplicationRequirements/listByLoanId/{loanId}")]
+        public List<Models.TrnLoanApplicationRequirements> listLoanRequirementsByLoanId(String loanId)
         {
-            var loanRequirements = from d in db.trnLoanRequirements.OrderByDescending(d => d.Id)
+            var loanRequirements = from d in db.trnLoanApplicationRequirements.OrderByDescending(d => d.Id)
                                    where d.LoanId == Convert.ToInt32(loanId)
-                                   select new Models.TrnLoanRequirements
+                                   select new Models.TrnLoanApplicationRequirements
                                    {
                                        Id = d.Id,
                                        LoanId = d.LoanId,
@@ -35,8 +35,8 @@ namespace Lending.ApiControllers
         // add loan Requirements
         [Authorize]
         [HttpPost]
-        [Route("api/loanRequirements/add")]
-        public HttpResponseMessage addLoanRequirements(Models.TrnLoanRequirements loanRequirement)
+        [Route("api/loanApplicationRequirements/add")]
+        public HttpResponseMessage addLoanRequirements(Models.TrnLoanApplicationRequirements loanRequirement)
         {
             try
             {
@@ -45,11 +45,11 @@ namespace Lending.ApiControllers
                 {
                     if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        Data.trnLoanRequirement newLoanRequirement = new Data.trnLoanRequirement();
+                        Data.trnLoanApplicationRequirement newLoanRequirement = new Data.trnLoanApplicationRequirement();
                         newLoanRequirement.LoanId = loanRequirement.LoanId;
                         newLoanRequirement.RequirementId = loanRequirement.RequirementId;
                         newLoanRequirement.Note = loanRequirement.Note;
-                        db.trnLoanRequirements.InsertOnSubmit(newLoanRequirement);
+                        db.trnLoanApplicationRequirements.InsertOnSubmit(newLoanRequirement);
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);
@@ -73,8 +73,8 @@ namespace Lending.ApiControllers
         // update loan Requirements
         [Authorize]
         [HttpPut]
-        [Route("api/loanRequirements/update/{id}")]
-        public HttpResponseMessage updateLoanRequirements(String id, Models.TrnLoanRequirements loanRequirement)
+        [Route("api/loanApplicationRequirements/update/{id}")]
+        public HttpResponseMessage updateLoanRequirements(String id, Models.TrnLoanApplicationRequirements loanRequirement)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace Lending.ApiControllers
                 {
                     if(!loanApplications.FirstOrDefault().IsLocked) 
                     {
-                        var loanRequirements = from d in db.trnLoanRequirements where d.Id == Convert.ToInt32(id) select d;
+                        var loanRequirements = from d in db.trnLoanApplicationRequirements where d.Id == Convert.ToInt32(id) select d;
                         if (loanRequirements.Any())
                         {
                             var updateLoanRequirement = loanRequirements.FirstOrDefault();
@@ -118,12 +118,12 @@ namespace Lending.ApiControllers
         // delete loan Requirements
         [Authorize]
         [HttpDelete]
-        [Route("api/loanRequirements/delete/{id}")]
+        [Route("api/loanApplicationRequirements/delete/{id}")]
         public HttpResponseMessage deleteLoanRequirements(String id)
         {
             try
             {
-                var loanRequirements = from d in db.trnLoanRequirements where d.Id == Convert.ToInt32(id) select d;
+                var loanRequirements = from d in db.trnLoanApplicationRequirements where d.Id == Convert.ToInt32(id) select d;
                 if (loanRequirements.Any())
                 {
                     var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirements.FirstOrDefault().LoanId select d;
@@ -131,7 +131,7 @@ namespace Lending.ApiControllers
                     {
                         if(!loanApplications.FirstOrDefault().IsLocked)
                         {
-                            db.trnLoanRequirements.DeleteOnSubmit(loanRequirements.First());
+                            db.trnLoanApplicationRequirements.DeleteOnSubmit(loanRequirements.First());
                             db.SubmitChanges();
 
                             return Request.CreateResponse(HttpStatusCode.OK);

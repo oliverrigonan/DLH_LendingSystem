@@ -28,15 +28,15 @@ namespace Lending.Business
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       Principal = d.Principal,
-                                       ProcessingFee = d.ProcessingFee,
-                                       Passbook = d.Passbook,
-                                       Balance = d.Balance,
-                                       Penalty = d.Penalty,
-                                       LateInt = d.LateInt,
-                                       Advance = d.Advance,
-                                       Requirements = d.Requirements,
-                                       InsuranceIPIorPPI = d.InsuranceIPIorPPI,
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
+                                       PassbookAmount = d.PassbookAmount,
+                                       BalanceAmount = d.BalanceAmount,
+                                       PenaltyAmount= d.PenaltyAmount,
+                                       LateIntAmount = d.LateIntAmount,
+                                       AdvanceAmount = d.AdvanceAmount,
+                                       RequirementsAmount = d.RequirementsAmount,
+                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                        NetAmount = d.NetAmount,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
@@ -82,63 +82,6 @@ namespace Lending.Business
             }
         }
 
-        // collection journal
-        public void postCollectionJournal(Int32 collectionId)
-        {
-            var collectionLines = from d in db.trnCollectionLines
-                                  where d.CollectionId == collectionId
-                                  select new Models.TrnCollectionLines
-                                  {
-                                      Id = d.Id,
-                                      CollectionId = d.CollectionId,
-                                      CollectionNumber = d.trnCollection.CollectionNumber,
-                                      CollectionDate = d.trnCollection.CollectionDate.ToShortDateString(),
-                                      AccountId = d.AccountId,
-                                      Account = d.mstAccount.Account,
-                                      LoanId = d.LoanId,
-                                      LoanNumber = d.trnLoanApplication.LoanNumber,
-                                      LoanDate = d.trnLoanApplication.LoanDate.ToShortDateString(),
-                                      Particulars = d.Particulars,
-                                      Amount = d.Amount,
-                                      CollectedByCollectorId = d.CollectedByCollectorId,
-                                      CollectedByCollector = d.mstCollector.Collector
-                                  };
-
-            if (collectionLines.Any())
-            {
-                foreach (var collectionLine in collectionLines)
-                {
-                    if (collectionLine.Amount > 0)
-                    {
-                        Data.trnJournal newCollectionJournal = new Data.trnJournal();
-                        newCollectionJournal.JournalDate = Convert.ToDateTime(collectionLine.CollectionDate);
-                        newCollectionJournal.AccountId = collectionLine.AccountId;
-                        newCollectionJournal.Particulars = collectionLine.Particulars;
-                        newCollectionJournal.ReleasedAmount = 0;
-                        newCollectionJournal.ReceivedAmount = collectionLine.Amount;
-                        newCollectionJournal.DocumentReference = "Collection - " + collectionLine.CollectionNumber;
-                        newCollectionJournal.LoanId = null;
-                        newCollectionJournal.CollectionId = collectionId;
-                        newCollectionJournal.DisbursementId = null;
-
-                        db.trnJournals.InsertOnSubmit(newCollectionJournal);
-                        db.SubmitChanges();
-                    }
-                }
-            }
-        }
-
-        // delete collection journal
-        public void deleteCollectionJournal(Int32 collectionId)
-        {
-            var journals = from d in db.trnJournals where d.CollectionId == collectionId select d;
-            if (journals.Any())
-            {
-                db.trnJournals.DeleteAllOnSubmit(journals);
-                db.SubmitChanges();
-            }
-        }
-
         // disbursement journal
         public void postDisbursementJournal(Int32 disbursementId)
         {
@@ -153,7 +96,7 @@ namespace Lending.Business
                                    Account = d.mstAccount.Account,
                                    Payee = d.Payee,
                                    Particulars = d.Particulars,
-                                   Amount = d.Amount,
+                                   DisburseAmount = d.DisburseAmount,
                                    PreparedByUserId = d.PreparedByUserId,
                                    PreparedByUser = d.mstUser.FullName,
                                    IsLocked = d.IsLocked,
@@ -169,13 +112,13 @@ namespace Lending.Business
             {
                 foreach (var disbursement in disbursements)
                 {
-                    if (disbursement.Amount > 0)
+                    if (disbursement.DisburseAmount > 0)
                     {
                         Data.trnJournal newLoanJournal = new Data.trnJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(disbursement.DisbursementDate);
                         newLoanJournal.AccountId = disbursement.AccountId;
                         newLoanJournal.Particulars = disbursement.Particulars;
-                        newLoanJournal.ReleasedAmount = disbursement.Amount;
+                        newLoanJournal.ReleasedAmount = disbursement.DisburseAmount;
                         newLoanJournal.ReceivedAmount = 0;
                         newLoanJournal.DocumentReference = "Disbursement - " + disbursement.DisbursementNumber;
                         newLoanJournal.LoanId = null;

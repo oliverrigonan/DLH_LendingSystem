@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -25,13 +24,10 @@ namespace Lending
             //thread.Start();
         }
 
-        private Data.LendingDataContext db = new Data.LendingDataContext();
-        public void DoMyBackgroundWorkOnNewThread()
-        {
-            //while (true)
-            //{
-            //    Thread.Sleep(5000);
-            //}
-        }
+        //private Data.LendingDataContext db = new Data.LendingDataContext();
+        //public void DoMyBackgroundWorkOnNewThread()
+        //{
+          
+        //}
     }
 }
