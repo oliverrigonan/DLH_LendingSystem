@@ -131,7 +131,7 @@
 
     <!-- Option Modal -->
     <div class="modal fade" id="optionModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -139,7 +139,41 @@
                     <h4 class="modal-title"> Options</h4>
                 </div>
                 <div class="modal-body">
-
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Partial Payment
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Partial Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer" align="right">
+                            <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Mark as
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button class="btn btn-success btn-block"> Clear</button>
+                                    <button class="btn btn-warning btn-block"> Unclear</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-danger btn-block"> Absent</button>
+                                    <button class="btn btn-primary btn-block"> Fully Paid</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-info btn-block"> View Details</button>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
@@ -229,10 +263,20 @@
                                 penaltyValue = collectionListResult[i]["PenaltyAmount"];
                             }
 
+                            var btnClearClass = "btn btn-default btn-xs btn-block";
+                            if(collectionListResult[i]["IsCleared"]) {
+                                btnClearClass = "btn btn-success btn-xs btn-block";
+                            }
+
+                            var btnAbsentClass = "btn btn-default btn-xs btn-block";
+                            if (collectionListResult[i]["IsPenalty"]) {
+                                btnAbsentClass = "btn btn-danger btn-xs btn-block";
+                            }
+
                             loanLogHistoryListArray.push({
                                 OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
-                                ClearButton: "<button class='btn btn-default btn-xs btn-block' onclick=''><i class='fa fa-check fa-fw'></i> Clear</button>",
-                                AbsentButton: "<button class='btn btn-default btn-xs btn-block'  onclick=''><i class='fa fa-circle fa-fw'></i> Absent</button>",
+                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>",
+                                AbsentButton: "<button class='" + btnAbsentClass + "'  onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>",
                                 Id: collectionListResult[i]["Id"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
@@ -267,12 +311,45 @@
             });
         }
 
-        //// edit collection
-        //function btnEditCollectionOnclick() {
-        //    collectionCollectionView.editItem(collectionCollectionView.currentItem);
-        //    var id = collectionCollectionView.currentEditItem.Id;
-        //    window.location = '/Software/CollectionDetail?id=' + id;
-        //}
+        // clear collection
+        function btnClearOnclick() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var collectionItem = collectionCollectionView.currentEditItem;
+            if (collectionItem.CurrentBalanceAmount > 0) {
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/loanLogHistory/isCleared/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Successfully Cleared");
+
+                            collectionItem.PaidAmount = collectionItem.CurrentBalanceAmount;
+                            collectionItem.CurrentBalanceAmount = 0;
+                            collectionItem.IsCleared = true;
+                            collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+
+                            collectionCollectionView.onCollectionChanged(function () {
+                                collectionCollectionView.refresh();
+                            });
+                        },
+                        404: function () {
+                            toastr.error("Not Found");
+                        },
+                        400: function () {
+                            toastr.error("Bad Request");
+                        }
+                    }
+                });
+            } else {
+                if (collectionItem.IsCleared) {
+                    toastr.info("Already Cleared");
+                } else {
+                    toastr.info("No Current Balance");
+                }
+            }
+        }
 
         // navigation button for flexgrid
         function updateNavigateButtons() {
@@ -378,13 +455,19 @@
                                 "header": "P",
                                 "binding": "IsPenalty",
                                 "allowSorting": true,
-                                "width": "0.8*",
+                                "width": "0.7*",
                             },
                             {
                                 "header": "C",
                                 "binding": "IsCleared",
                                 "allowSorting": true,
-                                "width": "0.8*",
+                                "width": "0.7*",
+                            },
+                            {
+                                "header": "F",
+                                "binding": "IsFullyPaid",
+                                "allowSorting": true,
+                                "width": "0.7*",
                             },
                             {
                                 "header": "Absent",
@@ -446,7 +529,10 @@
             collectionFlexGrid.columnHeaders.columns[9].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 9, 'C');
 
-            for (var actionsColumn = 10; actionsColumn <= 11; actionsColumn++) {
+            collectionFlexGrid.columnHeaders.columns[10].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 10, 'F');
+
+            for (var actionsColumn = 11; actionsColumn <= 12; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
 

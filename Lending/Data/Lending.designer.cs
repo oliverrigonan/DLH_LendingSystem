@@ -96,6 +96,9 @@ namespace Lending.Data
     partial void InsertmstUser(mstUser instance);
     partial void UpdatemstUser(mstUser instance);
     partial void DeletemstUser(mstUser instance);
+    partial void InserttrnCollectionLogHistory(trnCollectionLogHistory instance);
+    partial void UpdatetrnCollectionLogHistory(trnCollectionLogHistory instance);
+    partial void DeletetrnCollectionLogHistory(trnCollectionLogHistory instance);
     partial void InserttrnDisbursement(trnDisbursement instance);
     partial void UpdatetrnDisbursement(trnDisbursement instance);
     partial void DeletetrnDisbursement(trnDisbursement instance);
@@ -316,6 +319,14 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<mstUser>();
+			}
+		}
+		
+		public System.Data.Linq.Table<trnCollectionLogHistory> trnCollectionLogHistories
+		{
+			get
+			{
+				return this.GetTable<trnCollectionLogHistory>();
 			}
 		}
 		
@@ -4930,6 +4941,8 @@ namespace Lending.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private EntitySet<trnCollectionLogHistory> _trnCollectionLogHistories;
+		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -4956,6 +4969,7 @@ namespace Lending.Data
 		
 		public mstCollector()
 		{
+			this._trnCollectionLogHistories = new EntitySet<trnCollectionLogHistory>(new Action<trnCollectionLogHistory>(this.attach_trnCollectionLogHistories), new Action<trnCollectionLogHistory>(this.detach_trnCollectionLogHistories));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -5109,6 +5123,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCollector_trnCollectionLogHistory", Storage="_trnCollectionLogHistories", ThisKey="Id", OtherKey="CollectorId")]
+		public EntitySet<trnCollectionLogHistory> trnCollectionLogHistories
+		{
+			get
+			{
+				return this._trnCollectionLogHistories;
+			}
+			set
+			{
+				this._trnCollectionLogHistories.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCollector", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public mstUser mstUser
 		{
@@ -5195,6 +5222,18 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_trnCollectionLogHistories(trnCollectionLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCollector = this;
+		}
+		
+		private void detach_trnCollectionLogHistories(trnCollectionLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCollector = null;
 		}
 	}
 	
@@ -8557,6 +8596,366 @@ namespace Lending.Data
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnCollectionLogHistory")]
+	public partial class trnCollectionLogHistory : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _LoanId;
+		
+		private System.DateTime _CollectionDate;
+		
+		private decimal _CollectibleAmount;
+		
+		private decimal _PaidAmount;
+		
+		private bool _IsCleared;
+		
+		private bool _IsPenalty;
+		
+		private bool _IsOverdue;
+		
+		private bool _IsFullyPaid;
+		
+		private int _CollectorId;
+		
+		private EntityRef<mstCollector> _mstCollector;
+		
+		private EntityRef<trnLoanApplication> _trnLoanApplication;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnLoanIdChanging(int value);
+    partial void OnLoanIdChanged();
+    partial void OnCollectionDateChanging(System.DateTime value);
+    partial void OnCollectionDateChanged();
+    partial void OnCollectibleAmountChanging(decimal value);
+    partial void OnCollectibleAmountChanged();
+    partial void OnPaidAmountChanging(decimal value);
+    partial void OnPaidAmountChanged();
+    partial void OnIsClearedChanging(bool value);
+    partial void OnIsClearedChanged();
+    partial void OnIsPenaltyChanging(bool value);
+    partial void OnIsPenaltyChanged();
+    partial void OnIsOverdueChanging(bool value);
+    partial void OnIsOverdueChanged();
+    partial void OnIsFullyPaidChanging(bool value);
+    partial void OnIsFullyPaidChanged();
+    partial void OnCollectorIdChanging(int value);
+    partial void OnCollectorIdChanged();
+    #endregion
+		
+		public trnCollectionLogHistory()
+		{
+			this._mstCollector = default(EntityRef<mstCollector>);
+			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoanId", DbType="Int NOT NULL")]
+		public int LoanId
+		{
+			get
+			{
+				return this._LoanId;
+			}
+			set
+			{
+				if ((this._LoanId != value))
+				{
+					if (this._trnLoanApplication.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLoanIdChanging(value);
+					this.SendPropertyChanging();
+					this._LoanId = value;
+					this.SendPropertyChanged("LoanId");
+					this.OnLoanIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionDate", DbType="DateTime NOT NULL")]
+		public System.DateTime CollectionDate
+		{
+			get
+			{
+				return this._CollectionDate;
+			}
+			set
+			{
+				if ((this._CollectionDate != value))
+				{
+					this.OnCollectionDateChanging(value);
+					this.SendPropertyChanging();
+					this._CollectionDate = value;
+					this.SendPropertyChanged("CollectionDate");
+					this.OnCollectionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectibleAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal CollectibleAmount
+		{
+			get
+			{
+				return this._CollectibleAmount;
+			}
+			set
+			{
+				if ((this._CollectibleAmount != value))
+				{
+					this.OnCollectibleAmountChanging(value);
+					this.SendPropertyChanging();
+					this._CollectibleAmount = value;
+					this.SendPropertyChanged("CollectibleAmount");
+					this.OnCollectibleAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaidAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PaidAmount
+		{
+			get
+			{
+				return this._PaidAmount;
+			}
+			set
+			{
+				if ((this._PaidAmount != value))
+				{
+					this.OnPaidAmountChanging(value);
+					this.SendPropertyChanging();
+					this._PaidAmount = value;
+					this.SendPropertyChanged("PaidAmount");
+					this.OnPaidAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCleared", DbType="Bit NOT NULL")]
+		public bool IsCleared
+		{
+			get
+			{
+				return this._IsCleared;
+			}
+			set
+			{
+				if ((this._IsCleared != value))
+				{
+					this.OnIsClearedChanging(value);
+					this.SendPropertyChanging();
+					this._IsCleared = value;
+					this.SendPropertyChanged("IsCleared");
+					this.OnIsClearedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPenalty", DbType="Bit NOT NULL")]
+		public bool IsPenalty
+		{
+			get
+			{
+				return this._IsPenalty;
+			}
+			set
+			{
+				if ((this._IsPenalty != value))
+				{
+					this.OnIsPenaltyChanging(value);
+					this.SendPropertyChanging();
+					this._IsPenalty = value;
+					this.SendPropertyChanged("IsPenalty");
+					this.OnIsPenaltyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdue", DbType="Bit NOT NULL")]
+		public bool IsOverdue
+		{
+			get
+			{
+				return this._IsOverdue;
+			}
+			set
+			{
+				if ((this._IsOverdue != value))
+				{
+					this.OnIsOverdueChanging(value);
+					this.SendPropertyChanging();
+					this._IsOverdue = value;
+					this.SendPropertyChanged("IsOverdue");
+					this.OnIsOverdueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFullyPaid", DbType="Bit NOT NULL")]
+		public bool IsFullyPaid
+		{
+			get
+			{
+				return this._IsFullyPaid;
+			}
+			set
+			{
+				if ((this._IsFullyPaid != value))
+				{
+					this.OnIsFullyPaidChanging(value);
+					this.SendPropertyChanging();
+					this._IsFullyPaid = value;
+					this.SendPropertyChanged("IsFullyPaid");
+					this.OnIsFullyPaidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectorId", DbType="Int NOT NULL")]
+		public int CollectorId
+		{
+			get
+			{
+				return this._CollectorId;
+			}
+			set
+			{
+				if ((this._CollectorId != value))
+				{
+					if (this._mstCollector.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCollectorIdChanging(value);
+					this.SendPropertyChanging();
+					this._CollectorId = value;
+					this.SendPropertyChanged("CollectorId");
+					this.OnCollectorIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCollector_trnCollectionLogHistory", Storage="_mstCollector", ThisKey="CollectorId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public mstCollector mstCollector
+		{
+			get
+			{
+				return this._mstCollector.Entity;
+			}
+			set
+			{
+				mstCollector previousValue = this._mstCollector.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCollector.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCollector.Entity = null;
+						previousValue.trnCollectionLogHistories.Remove(this);
+					}
+					this._mstCollector.Entity = value;
+					if ((value != null))
+					{
+						value.trnCollectionLogHistories.Add(this);
+						this._CollectorId = value.Id;
+					}
+					else
+					{
+						this._CollectorId = default(int);
+					}
+					this.SendPropertyChanged("mstCollector");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnCollectionLogHistory", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public trnLoanApplication trnLoanApplication
+		{
+			get
+			{
+				return this._trnLoanApplication.Entity;
+			}
+			set
+			{
+				trnLoanApplication previousValue = this._trnLoanApplication.Entity;
+				if (((previousValue != value) 
+							|| (this._trnLoanApplication.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._trnLoanApplication.Entity = null;
+						previousValue.trnCollectionLogHistories.Remove(this);
+					}
+					this._trnLoanApplication.Entity = value;
+					if ((value != null))
+					{
+						value.trnCollectionLogHistories.Add(this);
+						this._LoanId = value.Id;
+					}
+					else
+					{
+						this._LoanId = default(int);
+					}
+					this.SendPropertyChanged("trnLoanApplication");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnDisbursement")]
 	public partial class trnDisbursement : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -9485,6 +9884,8 @@ namespace Lending.Data
 		
 		private EntitySet<trnLoanLogHistory> _trnLoanLogHistories;
 		
+		private EntitySet<trnCollectionLogHistory> _trnCollectionLogHistories;
+		
 		private EntitySet<trnJournal> _trnJournals;
 		
 		private EntitySet<trnLoanApplicationRequirement> _trnLoanApplicationRequirements;
@@ -9554,6 +9955,7 @@ namespace Lending.Data
 		public trnLoanApplication()
 		{
 			this._trnLoanLogHistories = new EntitySet<trnLoanLogHistory>(new Action<trnLoanLogHistory>(this.attach_trnLoanLogHistories), new Action<trnLoanLogHistory>(this.detach_trnLoanLogHistories));
+			this._trnCollectionLogHistories = new EntitySet<trnCollectionLogHistory>(new Action<trnCollectionLogHistory>(this.attach_trnCollectionLogHistories), new Action<trnCollectionLogHistory>(this.detach_trnCollectionLogHistories));
 			this._trnJournals = new EntitySet<trnJournal>(new Action<trnJournal>(this.attach_trnJournals), new Action<trnJournal>(this.detach_trnJournals));
 			this._trnLoanApplicationRequirements = new EntitySet<trnLoanApplicationRequirement>(new Action<trnLoanApplicationRequirement>(this.attach_trnLoanApplicationRequirements), new Action<trnLoanApplicationRequirement>(this.detach_trnLoanApplicationRequirements));
 			this._mstAccount = default(EntityRef<mstAccount>);
@@ -10057,6 +10459,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnCollectionLogHistory", Storage="_trnCollectionLogHistories", ThisKey="Id", OtherKey="LoanId")]
+		public EntitySet<trnCollectionLogHistory> trnCollectionLogHistories
+		{
+			get
+			{
+				return this._trnCollectionLogHistories;
+			}
+			set
+			{
+				this._trnCollectionLogHistories.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnJournal", Storage="_trnJournals", ThisKey="Id", OtherKey="LoanId")]
 		public EntitySet<trnJournal> trnJournals
 		{
@@ -10280,6 +10695,18 @@ namespace Lending.Data
 		}
 		
 		private void detach_trnLoanLogHistories(trnLoanLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.trnLoanApplication = null;
+		}
+		
+		private void attach_trnCollectionLogHistories(trnCollectionLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.trnLoanApplication = this;
+		}
+		
+		private void detach_trnCollectionLogHistories(trnCollectionLogHistory entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoanApplication = null;

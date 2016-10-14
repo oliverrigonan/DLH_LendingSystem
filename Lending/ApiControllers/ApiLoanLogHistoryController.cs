@@ -72,5 +72,80 @@ namespace Lending.ApiControllers
 
             return loanLogHistories.ToList();
         }
+
+        // update branch
+        [Authorize]
+        [HttpPut]
+        [Route("api/loanLogHistory/isCleared/updateByIdAndByLoanId/{id}/{loanId}")]
+        public HttpResponseMessage updateIsClearedLoanLogHistory(String id, String loanId)
+        {
+            try
+            {
+                var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+                if (loanApplications.Any())
+                {
+                    if (loanApplications.FirstOrDefault().IsLocked)
+                    {
+                        var loanLogHistories = from d in db.trnLoanLogHistories where d.Id == Convert.ToInt32(id) select d;
+                        if (loanLogHistories.Any())
+                        {
+                            if (loanLogHistories.FirstOrDefault().CurrentBalanceAmount > 0)
+                            {
+                                Data.trnCollectionLogHistory newCollectionLogHistory = new Data.trnCollectionLogHistory();
+                                newCollectionLogHistory.LoanId = Convert.ToInt32(loanId);
+                                newCollectionLogHistory.CollectionDate = loanLogHistories.FirstOrDefault().CollectionDate;
+                                newCollectionLogHistory.CollectibleAmount = loanLogHistories.FirstOrDefault().CollectibleAmount;
+                                newCollectionLogHistory.PaidAmount = loanLogHistories.FirstOrDefault().CurrentBalanceAmount;
+                                newCollectionLogHistory.IsCleared = true;
+                                newCollectionLogHistory.IsPenalty = loanLogHistories.FirstOrDefault().IsPenalty;
+                                newCollectionLogHistory.IsOverdue = loanLogHistories.FirstOrDefault().IsOverdue;
+                                newCollectionLogHistory.IsFullyPaid = loanLogHistories.FirstOrDefault().IsFullyPaid;
+                                newCollectionLogHistory.CollectorId = (from d in db.mstCollectors select d.Id).FirstOrDefault();
+                                db.trnCollectionLogHistories.InsertOnSubmit(newCollectionLogHistory);
+                                db.SubmitChanges();
+
+                                var updateLoanLogHistory = loanLogHistories.FirstOrDefault();
+                                updateLoanLogHistory.PaidAmount = loanLogHistories.FirstOrDefault().CurrentBalanceAmount;
+                                updateLoanLogHistory.PreviousBalanceAmount = loanLogHistories.FirstOrDefault().PreviousBalanceAmount;
+                                updateLoanLogHistory.CurrentBalanceAmount = 0;
+                                updateLoanLogHistory.IsCleared = true;
+                                db.SubmitChanges();
+
+                                var loanLogHistoryByCollectionDate = from d in db.trnLoanLogHistories where d.CollectionDate == loanLogHistories.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                if (loanLogHistoryByCollectionDate.Any())
+                                {
+                                    var updateLoanLogHistoryByCollectionDate = loanLogHistoryByCollectionDate.FirstOrDefault();
+                                    updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = loanLogHistoryByCollectionDate.FirstOrDefault().CollectibleAmount;
+                                    db.SubmitChanges();
+                                }
+                                
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.NotFound);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
     }
 }
