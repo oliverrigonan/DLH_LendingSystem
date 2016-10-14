@@ -4213,6 +4213,8 @@ namespace Lending.Data
 		
 		private EntitySet<mstApplicant> _mstApplicants;
 		
+		private EntitySet<mstCollector> _mstCollectors;
+		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -4240,6 +4242,7 @@ namespace Lending.Data
 		public mstArea()
 		{
 			this._mstApplicants = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants), new Action<mstApplicant>(this.detach_mstApplicants));
+			this._mstCollectors = new EntitySet<mstCollector>(new Action<mstCollector>(this.attach_mstCollectors), new Action<mstCollector>(this.detach_mstCollectors));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -4406,6 +4409,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstArea_mstCollector", Storage="_mstCollectors", ThisKey="Id", OtherKey="AreaId")]
+		public EntitySet<mstCollector> mstCollectors
+		{
+			get
+			{
+				return this._mstCollectors;
+			}
+			set
+			{
+				this._mstCollectors.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstArea", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public mstUser mstUser
 		{
@@ -4501,6 +4517,18 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstApplicants(mstApplicant entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstArea = null;
+		}
+		
+		private void attach_mstCollectors(mstCollector entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstArea = this;
+		}
+		
+		private void detach_mstCollectors(mstCollector entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstArea = null;
@@ -4933,6 +4961,8 @@ namespace Lending.Data
 		
 		private string _ContactNumber;
 		
+		private int _AreaId;
+		
 		private int _CreatedByUserId;
 		
 		private System.DateTime _CreatedDateTime;
@@ -4942,6 +4972,10 @@ namespace Lending.Data
 		private System.DateTime _UpdatedDateTime;
 		
 		private EntitySet<trnCollectionLogHistory> _trnCollectionLogHistories;
+		
+		private EntitySet<trnLoanApplication> _trnLoanApplications;
+		
+		private EntityRef<mstArea> _mstArea;
 		
 		private EntityRef<mstUser> _mstUser;
 		
@@ -4957,6 +4991,8 @@ namespace Lending.Data
     partial void OnCollectorChanged();
     partial void OnContactNumberChanging(string value);
     partial void OnContactNumberChanged();
+    partial void OnAreaIdChanging(int value);
+    partial void OnAreaIdChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -4970,6 +5006,8 @@ namespace Lending.Data
 		public mstCollector()
 		{
 			this._trnCollectionLogHistories = new EntitySet<trnCollectionLogHistory>(new Action<trnCollectionLogHistory>(this.attach_trnCollectionLogHistories), new Action<trnCollectionLogHistory>(this.detach_trnCollectionLogHistories));
+			this._trnLoanApplications = new EntitySet<trnLoanApplication>(new Action<trnLoanApplication>(this.attach_trnLoanApplications), new Action<trnLoanApplication>(this.detach_trnLoanApplications));
+			this._mstArea = default(EntityRef<mstArea>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -5031,6 +5069,30 @@ namespace Lending.Data
 					this._ContactNumber = value;
 					this.SendPropertyChanged("ContactNumber");
 					this.OnContactNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AreaId", DbType="Int NOT NULL")]
+		public int AreaId
+		{
+			get
+			{
+				return this._AreaId;
+			}
+			set
+			{
+				if ((this._AreaId != value))
+				{
+					if (this._mstArea.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAreaIdChanging(value);
+					this.SendPropertyChanging();
+					this._AreaId = value;
+					this.SendPropertyChanged("AreaId");
+					this.OnAreaIdChanged();
 				}
 			}
 		}
@@ -5136,6 +5198,53 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCollector_trnLoanApplication", Storage="_trnLoanApplications", ThisKey="Id", OtherKey="CollectorId")]
+		public EntitySet<trnLoanApplication> trnLoanApplications
+		{
+			get
+			{
+				return this._trnLoanApplications;
+			}
+			set
+			{
+				this._trnLoanApplications.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstArea_mstCollector", Storage="_mstArea", ThisKey="AreaId", OtherKey="Id", IsForeignKey=true)]
+		public mstArea mstArea
+		{
+			get
+			{
+				return this._mstArea.Entity;
+			}
+			set
+			{
+				mstArea previousValue = this._mstArea.Entity;
+				if (((previousValue != value) 
+							|| (this._mstArea.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstArea.Entity = null;
+						previousValue.mstCollectors.Remove(this);
+					}
+					this._mstArea.Entity = value;
+					if ((value != null))
+					{
+						value.mstCollectors.Add(this);
+						this._AreaId = value.Id;
+					}
+					else
+					{
+						this._AreaId = default(int);
+					}
+					this.SendPropertyChanged("mstArea");
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCollector", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public mstUser mstUser
 		{
@@ -5231,6 +5340,18 @@ namespace Lending.Data
 		}
 		
 		private void detach_trnCollectionLogHistories(trnCollectionLogHistory entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCollector = null;
+		}
+		
+		private void attach_trnLoanApplications(trnLoanApplication entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCollector = this;
+		}
+		
+		private void detach_trnLoanApplications(trnLoanApplication entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstCollector = null;
@@ -8867,7 +8988,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCollector_trnCollectionLogHistory", Storage="_mstCollector", ThisKey="CollectorId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCollector_trnCollectionLogHistory", Storage="_mstCollector", ThisKey="CollectorId", OtherKey="Id", IsForeignKey=true)]
 		public mstCollector mstCollector
 		{
 			get
@@ -8901,7 +9022,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnCollectionLogHistory", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanApplication_trnCollectionLogHistory", Storage="_trnLoanApplication", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
 		public trnLoanApplication trnLoanApplication
 		{
 			get
@@ -9852,6 +9973,8 @@ namespace Lending.Data
 		
 		private int _PreparedByUserId;
 		
+		private int _CollectorId;
+		
 		private decimal _PrincipalAmount;
 		
 		private decimal _ProcessingFeeAmount;
@@ -9894,6 +10017,8 @@ namespace Lending.Data
 		
 		private EntityRef<mstApplicant> _mstApplicant;
 		
+		private EntityRef<mstCollector> _mstCollector;
+		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -9920,6 +10045,8 @@ namespace Lending.Data
     partial void OnParticularsChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
+    partial void OnCollectorIdChanging(int value);
+    partial void OnCollectorIdChanged();
     partial void OnPrincipalAmountChanging(decimal value);
     partial void OnPrincipalAmountChanged();
     partial void OnProcessingFeeAmountChanging(decimal value);
@@ -9960,6 +10087,7 @@ namespace Lending.Data
 			this._trnLoanApplicationRequirements = new EntitySet<trnLoanApplicationRequirement>(new Action<trnLoanApplicationRequirement>(this.attach_trnLoanApplicationRequirements), new Action<trnLoanApplicationRequirement>(this.detach_trnLoanApplicationRequirements));
 			this._mstAccount = default(EntityRef<mstAccount>);
 			this._mstApplicant = default(EntityRef<mstApplicant>);
+			this._mstCollector = default(EntityRef<mstCollector>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			this._mstUser2 = default(EntityRef<mstUser>);
@@ -10134,6 +10262,30 @@ namespace Lending.Data
 					this._PreparedByUserId = value;
 					this.SendPropertyChanged("PreparedByUserId");
 					this.OnPreparedByUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectorId", DbType="Int NOT NULL")]
+		public int CollectorId
+		{
+			get
+			{
+				return this._CollectorId;
+			}
+			set
+			{
+				if ((this._CollectorId != value))
+				{
+					if (this._mstCollector.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCollectorIdChanging(value);
+					this.SendPropertyChanging();
+					this._CollectorId = value;
+					this.SendPropertyChanged("CollectorId");
+					this.OnCollectorIdChanged();
 				}
 			}
 		}
@@ -10562,6 +10714,40 @@ namespace Lending.Data
 						this._ApplicantId = default(int);
 					}
 					this.SendPropertyChanged("mstApplicant");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCollector_trnLoanApplication", Storage="_mstCollector", ThisKey="CollectorId", OtherKey="Id", IsForeignKey=true)]
+		public mstCollector mstCollector
+		{
+			get
+			{
+				return this._mstCollector.Entity;
+			}
+			set
+			{
+				mstCollector previousValue = this._mstCollector.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCollector.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCollector.Entity = null;
+						previousValue.trnLoanApplications.Remove(this);
+					}
+					this._mstCollector.Entity = value;
+					if ((value != null))
+					{
+						value.trnLoanApplications.Add(this);
+						this._CollectorId = value.Id;
+					}
+					else
+					{
+						this._CollectorId = default(int);
+					}
+					this.SendPropertyChanged("mstCollector");
 				}
 			}
 		}

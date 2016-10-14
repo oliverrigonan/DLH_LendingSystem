@@ -100,7 +100,7 @@ namespace Lending.ApiControllers
                                 newCollectionLogHistory.IsPenalty = loanLogHistories.FirstOrDefault().IsPenalty;
                                 newCollectionLogHistory.IsOverdue = loanLogHistories.FirstOrDefault().IsOverdue;
                                 newCollectionLogHistory.IsFullyPaid = loanLogHistories.FirstOrDefault().IsFullyPaid;
-                                newCollectionLogHistory.CollectorId = (from d in db.mstCollectors select d.Id).FirstOrDefault();
+                                newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CollectorId;
                                 db.trnCollectionLogHistories.InsertOnSubmit(newCollectionLogHistory);
                                 db.SubmitChanges();
 
@@ -118,7 +118,7 @@ namespace Lending.ApiControllers
                                     updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = loanLogHistoryByCollectionDate.FirstOrDefault().CollectibleAmount;
                                     db.SubmitChanges();
                                 }
-                                
+
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }
                             else

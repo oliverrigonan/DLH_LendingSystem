@@ -25,6 +25,34 @@ namespace Lending.ApiControllers
                                  Id = d.Id,
                                  Collector = d.Collector,
                                  ContactNumber = d.ContactNumber,
+                                 AreaId = d.AreaId,
+                                 Area = d.mstArea.Area,
+                                 CreatedByUserId = d.CreatedByUserId,
+                                 CreatedByUser = d.mstUser.FullName,
+                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                 UpdatedByUserId = d.UpdatedByUserId,
+                                 UpdatedByUser = d.mstUser1.FullName,
+                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                             };
+
+            return collectors.ToList();
+        }
+
+        // collector list by Area Id
+        [Authorize]
+        [HttpGet]
+        [Route("api/collector/listByAreaId/{areaId}")]
+        public List<Models.MstCollector> listCollectorByAreaId(String areaId)
+        {
+            var collectors = from d in db.mstCollectors.OrderByDescending(d => d.Id)
+                             where d.AreaId == Convert.ToInt32(areaId)
+                             select new Models.MstCollector
+                             {
+                                 Id = d.Id,
+                                 Collector = d.Collector,
+                                 ContactNumber = d.ContactNumber,
+                                 AreaId = d.AreaId,
+                                 Area = d.mstArea.Area,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -50,6 +78,7 @@ namespace Lending.ApiControllers
 
                 newCollector.Collector = collector.Collector;
                 newCollector.ContactNumber = collector.ContactNumber;
+                newCollector.AreaId = collector.AreaId;
                 newCollector.CreatedByUserId = userId;
                 newCollector.CreatedDateTime = DateTime.Now;
                 newCollector.UpdatedByUserId = userId;
@@ -83,6 +112,7 @@ namespace Lending.ApiControllers
 
                     updateCollector.Collector = collector.Collector;
                     updateCollector.ContactNumber = collector.ContactNumber;
+                    updateCollector.AreaId = collector.AreaId;
                     updateCollector.UpdatedByUserId = userId;
                     updateCollector.UpdatedDateTime = DateTime.Now;
                     db.SubmitChanges();

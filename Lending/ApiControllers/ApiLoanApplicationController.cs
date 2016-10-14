@@ -36,6 +36,8 @@ namespace Lending.ApiControllers
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
+                                       CollectorId = d.CollectorId,
+                                       Collector = d.mstCollector.Collector,
                                        PrincipalAmount = d.PrincipalAmount,
                                        ProcessingFeeAmount = d.ProcessingFeeAmount,
                                        PassbookAmount = d.PassbookAmount,
@@ -80,6 +82,8 @@ namespace Lending.ApiControllers
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
+                                      CollectorId = d.CollectorId,
+                                      Collector = d.mstCollector.Collector,
                                       PrincipalAmount = d.PrincipalAmount,
                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
                                       PassbookAmount = d.PassbookAmount,
@@ -124,6 +128,8 @@ namespace Lending.ApiControllers
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
+                                      CollectorId = d.CollectorId,
+                                      Collector = d.mstCollector.Collector,
                                       PrincipalAmount = d.PrincipalAmount,
                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
                                       PassbookAmount = d.PassbookAmount,
@@ -184,6 +190,7 @@ namespace Lending.ApiControllers
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";
                 newLoanApplication.PreparedByUserId = userId;
+                newLoanApplication.CollectorId = (from d in db.mstCollectors.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.PrincipalAmount = 0;
                 newLoanApplication.ProcessingFeeAmount = 0;
                 newLoanApplication.PassbookAmount = 0;
