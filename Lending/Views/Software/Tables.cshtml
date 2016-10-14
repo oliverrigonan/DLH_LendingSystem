@@ -574,9 +574,6 @@
                         }
                     }
 
-                    cboArea = new wijmo.input.ComboBox('#cboArea');
-                    createCboArea();
-
                     NProgress.done();
                 }
             });
@@ -1117,6 +1114,7 @@
             collectorId = 0;
             document.getElementById("collectorName").value = "NA";
             document.getElementById("collectorContactNumber").value = "NA";
+            createCboArea();
         }
 
         // edit collector
@@ -2550,6 +2548,9 @@
 
             cboTransactionType = new wijmo.input.ComboBox('#transactionType');
             getTransactionType();
+
+            cboArea = new wijmo.input.ComboBox('#cboArea');
+            createCboArea();
         }
     </script>
 </body>
