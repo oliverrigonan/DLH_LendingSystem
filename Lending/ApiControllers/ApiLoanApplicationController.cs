@@ -38,6 +38,7 @@ namespace Lending.ApiControllers
                                        PreparedByUser = d.mstUser.FullName,
                                        CollectorId = d.CollectorId,
                                        Collector = d.mstCollector.Collector,
+                                       CollectorAreaAssigned = d.mstCollector.mstArea.Area,
                                        PrincipalAmount = d.PrincipalAmount,
                                        ProcessingFeeAmount = d.ProcessingFeeAmount,
                                        PassbookAmount = d.PassbookAmount,
@@ -84,6 +85,7 @@ namespace Lending.ApiControllers
                                       PreparedByUser = d.mstUser.FullName,
                                       CollectorId = d.CollectorId,
                                       Collector = d.mstCollector.Collector,
+                                      CollectorAreaAssigned = d.mstCollector.mstArea.Area,
                                       PrincipalAmount = d.PrincipalAmount,
                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
                                       PassbookAmount = d.PassbookAmount,
@@ -130,6 +132,7 @@ namespace Lending.ApiControllers
                                       PreparedByUser = d.mstUser.FullName,
                                       CollectorId = d.CollectorId,
                                       Collector = d.mstCollector.Collector,
+                                      CollectorAreaAssigned = d.mstCollector.mstArea.Area,
                                       PrincipalAmount = d.PrincipalAmount,
                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
                                       PassbookAmount = d.PassbookAmount,
@@ -185,7 +188,7 @@ namespace Lending.ApiControllers
                 Data.trnLoanApplication newLoanApplication = new Data.trnLoanApplication();
                 newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                 newLoanApplication.LoanDate = DateTime.Today;
-                newLoanApplication.MaturityDate = DateTime.Today;
+                newLoanApplication.MaturityDate = DateTime.Today.AddMonths(2);
                 newLoanApplication.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";

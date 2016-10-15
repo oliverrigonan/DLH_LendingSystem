@@ -140,15 +140,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-7">
                             <div class="panel-group" id="accordion">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                                                Partial Payment
-                                            </a>
-                                        </h4>
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                                            Partial Payment
+                                        </a>
                                     </div>
                                     <div id="collapse1" class="panel-collapse collapse in">
                                         <div class="panel-body">
@@ -167,11 +165,9 @@
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                                                Advance Payment
-                                            </a>
-                                        </h4>
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                            Advance Payment
+                                        </a>
                                     </div>
                                     <div id="collapse2" class="panel-collapse collapse">
                                         <div class="panel-body">
@@ -187,27 +183,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr />
+                            <button class="btn btn-info btn-block"> View Details</button>
+                            <button class="btn btn-primary btn-block"> Undo (No Action)</button>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-5">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Mark as
+                                    Actions
                                 </div>
                                 <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-sm-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
                                             <button class="btn btn-success btn-block"> Clear</button>
                                             <button class="btn btn-warning btn-block"> Unclear</button>
                                         </div>
-                                        <div class="col-sm-6">
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
                                             <button class="btn btn-danger btn-block"> Absent</button>
+                                            <button class="btn btn-warning btn-block"> Cancel Absent</button>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
                                             <button class="btn btn-primary btn-block"> Fully Paid</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <hr />
-                            <button class="btn btn-info btn-block"> View Details</button>
                         </div>
                     </div>
                 </div>
@@ -294,13 +298,8 @@
                                 isLocked = true;
                             }
 
-                            var penaltyValue = 0;
-                            if (collectionListResult[i]["IsPenalty"]) {
-                                penaltyValue = collectionListResult[i]["PenaltyAmount"];
-                            }
-
                             var btnClearClass = "btn btn-default btn-xs btn-block";
-                            if(collectionListResult[i]["IsCleared"]) {
+                            if (collectionListResult[i]["IsCleared"]) {
                                 btnClearClass = "btn btn-success btn-xs btn-block";
                             }
 
@@ -309,10 +308,15 @@
                                 btnAbsentClass = "btn btn-danger btn-xs btn-block";
                             }
 
+                            var disableButton = ""
+                            if (!collectionListResult[i]["IsAction"]) {
+                                disableButton = "disabled"
+                            }
+
                             loanLogHistoryListArray.push({
                                 OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
-                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>",
-                                AbsentButton: "<button class='" + btnAbsentClass + "'  onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>",
+                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
+                                AbsentButton: "<button class='" + btnAbsentClass + "'  onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
                                 Id: collectionListResult[i]["Id"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
@@ -321,7 +325,7 @@
                                 CollectionDate: collectionListResult[i]["CollectionDate"],
                                 NetAmount: collectionListResult[i]["NetAmount"],
                                 CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
-                                PenaltyAmount: penaltyValue,
+                                PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
                                 PaidAmount: collectionListResult[i]["PaidAmount"],
                                 PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
                                 CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
@@ -349,49 +353,59 @@
 
         // clear collection
         function btnClearOnclick() {
+            NProgress.start();
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
             if (collectionItem.CurrentBalanceAmount > 0) {
-                $.ajax({
-                    type: "PUT",
-                    url: '/api/loanLogHistory/isCleared/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    statusCode: {
-                        200: function () {
-                            toastr.success("Successfully Cleared");
+                if (!collectionItem.IsCleared) {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/loanLogHistory/isCleared/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                            200: function () {
+                                NProgress.done();
+                                toastr.success("Successfully Cleared");
 
-                            collectionItem.PaidAmount = collectionItem.CurrentBalanceAmount;
-                            collectionItem.CurrentBalanceAmount = 0;
-                            collectionItem.IsCleared = true;
-                            collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                collectionItem.PenaltyAmount = 0;
+                                collectionItem.PaidAmount = collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount;
+                                collectionItem.CurrentBalanceAmount = 0;
+                                collectionItem.IsCleared = true;
+                                collectionItem.IsPenalty = false;
+                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
 
-                            collectionCollectionView.onCollectionChanged(function () {
-                                collectionCollectionView.refresh();
-                            });
-                        },
-                        404: function () {
-                            toastr.error("Not Found");
-                        },
-                        400: function () {
-                            toastr.error("Bad Request");
+                                collectionCollectionView.onCollectionChanged(function () {
+                                    collectionCollectionView.refresh();
+                                });
+                            },
+                            404: function () {
+                                NProgress.done();
+                                toastr.error("Not Found");
+                            },
+                            400: function () {
+                                NProgress.done();
+                                toastr.error("Bad Request");
+                            }
                         }
-                    }
-                });
-            } else {
-                if (collectionItem.IsCleared) {
-                    toastr.info("Already Cleared");
+                    });
                 } else {
-                    toastr.info("No Current Balance");
+                    NProgress.done();
+                    toastr.info("Already Cleared");
                 }
+            } else {
+                NProgress.done();
+                toastr.info("No Current Balance to be cleared");
             }
         }
 
         // absent collection
         function btnAbsentOnclick() {
+            NProgress.start();
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
-            if (collectionItem.CurrentBalanceAmount > 0) {
+            if (!collectionItem.IsPenalty) {
                 $.ajax({
                     type: "PUT",
                     url: '/api/loanLogHistory/isPenalty/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
@@ -399,32 +413,44 @@
                     dataType: "json",
                     statusCode: {
                         200: function () {
-                            toastr.success("Penalty");
+                            var newDate = new Date(collectionItem.CollectionDate);
+                            var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+                            $.ajax({
+                                type: "GET",
+                                url: '/api/loanLogHistory/getPenaltyValue/' + collectionDateValue,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (penaltyValueResult) {
+                                    NProgress.done();
+                                    toastr.info("Absent / Penalty");
 
-                            collectionItem.PaidAmount = 0;
-                            collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
-                            collectionItem.IsCleared = false;
-                            collectionItem.IsPenalty = true;
-                            collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                    collectionItem.PenaltyAmount = penaltyValueResult;
+                                    collectionItem.PaidAmount = 0;
+                                    collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
+                                    collectionItem.IsCleared = false;
+                                    collectionItem.IsPenalty = true;
+                                    collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                    collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
 
-                            collectionCollectionView.onCollectionChanged(function () {
-                                collectionCollectionView.refresh();
+                                    collectionCollectionView.onCollectionChanged(function () {
+                                        collectionCollectionView.refresh();
+                                    });
+                                }
                             });
                         },
                         404: function () {
+                            NProgress.done();
                             toastr.error("Not Found");
                         },
                         400: function () {
+                            NProgress.done();
                             toastr.error("Bad Request");
                         }
                     }
                 });
             } else {
-                if (collectionItem.IsPenalty) {
-                    toastr.info("Already Absent");
-                } else {
-                    toastr.info("No Current Balance");
-                }
+                NProgress.done();
+                toastr.info("Already Absent");
             }
         }
 
@@ -490,7 +516,7 @@
                                 "header": "Date",
                                 "binding": "CollectionDate",
                                 "allowSorting": true,
-                                "width": "1.6*",
+                                "width": "1.7*",
                             },
                             {
                                 "header": "Applicant",
@@ -505,10 +531,28 @@
                                 "width": "2*",
                             },
                             {
+                                "header": "P",
+                                "binding": "IsPenalty",
+                                "allowSorting": true,
+                                "width": "0.6*",
+                            },
+                            {
                                 "header": "Penalty",
                                 "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
+                            },
+                            {
+                                "header": "O",
+                                "binding": "IsOverdue",
+                                "allowSorting": true,
+                                "width": "0.6*",
+                            },
+                            {
+                                "header": "F",
+                                "binding": "IsFullyPaid",
+                                "allowSorting": true,
+                                "width": "0.6*",
                             },
                             {
                                 "header": "Previous",
@@ -529,22 +573,10 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "P",
-                                "binding": "IsPenalty",
-                                "allowSorting": true,
-                                "width": "0.7*",
-                            },
-                            {
-                                "header": "O",
+                                "header": "C",
                                 "binding": "IsOverdue",
                                 "allowSorting": true,
-                                "width": "0.7*",
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": "0.7*",
+                                "width": "0.6*",
                             },
                             {
                                 "header": "Absent",
@@ -591,25 +623,28 @@
             collectionFlexGrid.columnHeaders.setCellData(0, 3, 'Collectible');
 
             collectionFlexGrid.columnHeaders.columns[4].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 4, 'Penalty');
+            collectionFlexGrid.columnHeaders.setCellData(0, 4, 'P');
 
-            for (var balancesColumn = 5; balancesColumn <= 6; balancesColumn++) {
+            collectionFlexGrid.columnHeaders.columns[5].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 5, 'Penalty');
+
+            collectionFlexGrid.columnHeaders.columns[6].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'O');
+
+            collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'F');
+
+            for (var balancesColumn = 8; balancesColumn <= 9; balancesColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
             }
 
-            collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Paid Amount');
-
-            collectionFlexGrid.columnHeaders.columns[8].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 8, 'P');
-
-            collectionFlexGrid.columnHeaders.columns[9].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 9, 'O');
-
             collectionFlexGrid.columnHeaders.columns[10].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 10, 'F');
+            collectionFlexGrid.columnHeaders.setCellData(0, 10, 'Paid Amount');
 
-            for (var actionsColumn = 11; actionsColumn <= 12; actionsColumn++) {
+            collectionFlexGrid.columnHeaders.columns[11].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 11, 'C');
+
+            for (var actionsColumn = 12; actionsColumn <= 13; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
 

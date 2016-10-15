@@ -58,24 +58,21 @@ namespace Lending.Business
                         var numberOfDays = (Convert.ToDateTime(loanApplication.MaturityDate) - Convert.ToDateTime(loanApplication.LoanDate)).TotalDays;
                         for (var i = 1; i <= numberOfDays; i++)
                         {
-                            Decimal penaltyValue = 10;
-                            if (i % 3 == 0)
-                            {
-                                penaltyValue = 20;
-                            }
-
                             Decimal currentBalanceValue = 0;
+                            Boolean isActionValue = false;
                             if (i == 1)
                             {
                                 currentBalanceValue = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
+                                isActionValue = true;
                             }
 
                             Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
                             newLoanLogHistory.LoanId = loanId;
+                            newLoanLogHistory.DayNumber = i;
                             newLoanLogHistory.CollectionDate = Convert.ToDateTime(loanApplication.LoanDate).Date.AddDays(i);
                             newLoanLogHistory.NetAmount = loanApplication.NetAmount;
                             newLoanLogHistory.CollectibleAmount = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
-                            newLoanLogHistory.PenaltyAmount = penaltyValue;
+                            newLoanLogHistory.PenaltyAmount = 0;
                             newLoanLogHistory.PaidAmount = 0;
                             newLoanLogHistory.PreviousBalanceAmount = 0;
                             newLoanLogHistory.CurrentBalanceAmount = currentBalanceValue;
@@ -83,6 +80,7 @@ namespace Lending.Business
                             newLoanLogHistory.IsPenalty = false;
                             newLoanLogHistory.IsOverdue = false;
                             newLoanLogHistory.IsFullyPaid = false;
+                            newLoanLogHistory.IsAction = isActionValue;
                             db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
                             db.SubmitChanges();
                         }

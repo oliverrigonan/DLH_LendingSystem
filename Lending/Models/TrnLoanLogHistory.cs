@@ -14,6 +14,7 @@ namespace Lending.Models
         public String LoanNumber { get; set; }
         public String Applicant { get; set; }
         public String Area { get; set; }
+        public Decimal DayNumber { get; set; }
         public String CollectionDate { get; set; }
         public Decimal NetAmount { get; set; }
         public Decimal CollectibleAmount { get; set; }
@@ -25,6 +26,7 @@ namespace Lending.Models
         public Boolean IsPenalty { get; set; }
         public Boolean IsOverdue { get; set; }
         public Boolean IsFullyPaid { get; set; }
+        public Boolean IsAction { get; set; }
         public String LoanApplicationMaturityDate { get; set; }
     }
 }
