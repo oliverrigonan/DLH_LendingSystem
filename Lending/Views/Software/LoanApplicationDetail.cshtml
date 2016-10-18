@@ -1078,8 +1078,8 @@
                         $("#btnClose").prop("disabled", false);
                         document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
                     },
-                    400: function () {
-                        toastr.error("Bad Request");
+                    400: function (message) {
+                        toastr.error("Bad Request", message.responseText);
                         $("#btnLock").prop("disabled", false);
                         document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
                         $("#btnClose").prop("disabled", false);
