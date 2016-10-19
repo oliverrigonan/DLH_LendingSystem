@@ -216,7 +216,7 @@
                                             </td>
                                             <td>&nbsp;&nbsp;&nbsp;</td>
                                             <td align="right">
-                                                <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Undo Actions and Changes">
+                                                <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Undo Actions and Changes" onclick="btnUndoChangesOnclick()">
                                                     <i class="fa fa-undo fa-fw"></i>
                                                 </button>
                                             </td>
@@ -341,7 +341,8 @@
                             loanLogHistoryListArray.push({
                                 OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
                                 ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
-                                AbsentButton: "<button class='" + btnAbsentClass + "'  onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
+                                AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
+                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' onclick='btnUndoChangesOnclick()'" + disableButton + "><i class='fa fa-undo fa-fw'></i></button>",
                                 Id: collectionListResult[i]["Id"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
@@ -446,7 +447,7 @@
                             var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
                             $.ajax({
                                 type: "GET",
-                                url: '/api/loanLogHistory/getPenaltyValue/' + collectionDateValue,
+                                url: '/api/loanLogHistory/getPenaltyValue/' + collectionItem.LoanId + '/' + collectionDateValue,
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
                                 success: function (penaltyValueResult) {
@@ -485,6 +486,60 @@
                 NProgress.done();
                 toastr.info("Already Absent");
             }
+        }
+
+        // undo changes collection
+        function btnUndoChangesOnclick() {
+            NProgress.start();
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var collectionItem = collectionCollectionView.currentEditItem;
+            $.ajax({
+                type: "PUT",
+                url: '/api/loanLogHistory/undoChanges/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        var newDate = new Date(collectionItem.CollectionDate);
+                        var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+                        $.ajax({
+                            type: "GET",
+                            url: '/api/loanLogHistory/getPreviousBalance/' + collectionItem.LoanId + '/' + collectionDateValue,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (previousBalanceValueResult) {
+                                NProgress.done();
+                                toastr.success("Done");
+
+                                collectionItem.PenaltyAmount = 0;
+                                collectionItem.PaidAmount = 0;
+                                collectionItem.PreviousBalanceAmount = previousBalanceValueResult;
+                                collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + previousBalanceValueResult;
+                                collectionItem.IsCleared = false;
+                                collectionItem.IsPenalty = false;
+                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+
+                                collectionCollectionView.onCollectionChanged(function () {
+                                    collectionCollectionView.refresh();
+                                });
+                            }
+                        });
+                    },
+                    404: function (message) {
+                        NProgress.done();
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                    },
+                    400: function (message) {
+                        NProgress.done();
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                    },
+                    500: function (message) {
+                        NProgress.done();
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                    }
+                }
+            });
         }
 
         // navigation button for flexgrid
@@ -627,6 +682,14 @@
                                 "allowResizing": false,
                                 "isContentHtml": true
                             },
+                            {
+                                "header": "U",
+                                "binding": "UndoChangesButton",
+                                "width": 30,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
                 ],
                 autoGenerateColumns: false,
                 itemsSource: collectionCollectionView,
@@ -677,7 +740,7 @@
             collectionFlexGrid.columnHeaders.columns[11].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 11, 'C');
 
-            for (var actionsColumn = 12; actionsColumn <= 13; actionsColumn++) {
+            for (var actionsColumn = 12; actionsColumn <= 14; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
 
