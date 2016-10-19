@@ -27,6 +27,10 @@ namespace Lending.Models
         public Boolean IsOverdue { get; set; }
         public Boolean IsFullyPaid { get; set; }
         public Boolean IsAction { get; set; }
+        public Boolean IsDueDate { get; set; }
+        
         public String LoanApplicationMaturityDate { get; set; }
+        public Int32 CollectorId { get; set; }
+        public String Collector { get; set; }
     }
 }

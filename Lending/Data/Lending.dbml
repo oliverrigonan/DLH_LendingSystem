@@ -24,6 +24,8 @@
       <Column Name="IsOverdue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsAction" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsDueDate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="trnLoanLogHistory_trnCollectionLogHistory" Member="trnCollectionLogHistories" ThisKey="Id" OtherKey="LoanLogHistoryId" Type="trnCollectionLogHistory" />
       <Association Name="trnLoanApplication_trnLoanLogHistory" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
     </Type>
   </Table>
@@ -375,19 +377,13 @@
   <Table Name="dbo.trnCollectionLogHistory" Member="trnCollectionLogHistories">
     <Type Name="trnCollectionLogHistory">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CollectionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="CollectibleAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="LoanLogHistoryId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="IsCleared" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsPenalty" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsOverdue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CollectorId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="mstAccount_trnCollectionLogHistory" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
       <Association Name="mstCollector_trnCollectionLogHistory" Member="mstCollector" ThisKey="CollectorId" OtherKey="Id" Type="mstCollector" IsForeignKey="true" />
-      <Association Name="trnLoanApplication_trnCollectionLogHistory" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
+      <Association Name="trnLoanLogHistory_trnCollectionLogHistory" Member="trnLoanLogHistory" ThisKey="LoanLogHistoryId" OtherKey="Id" Type="trnLoanLogHistory" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnDisbursement" Member="trnDisbursements">
@@ -454,7 +450,6 @@
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="trnLoanApplication_trnLoanLogHistory" Member="trnLoanLogHistories" ThisKey="Id" OtherKey="LoanId" Type="trnLoanLogHistory" />
-      <Association Name="trnLoanApplication_trnCollectionLogHistory" Member="trnCollectionLogHistories" ThisKey="Id" OtherKey="LoanId" Type="trnCollectionLogHistory" />
       <Association Name="trnLoanApplication_trnJournal" Member="trnJournals" ThisKey="Id" OtherKey="LoanId" Type="trnJournal" />
       <Association Name="trnLoanApplication_trnLoanApplicationRequirement" Member="trnLoanApplicationRequirements" ThisKey="Id" OtherKey="LoanId" Type="trnLoanApplicationRequirement" />
       <Association Name="mstAccount_trnLoanApplication" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />

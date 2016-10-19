@@ -302,7 +302,7 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var collectionLogHistory = from d in db.trnCollectionLogHistories where d.LoanId == Convert.ToInt32(id) select d;
+                        var collectionLogHistory = from d in db.trnCollectionLogHistories where d.trnLoanLogHistory.LoanId == Convert.ToInt32(id) select d;
                         if (!collectionLogHistory.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();

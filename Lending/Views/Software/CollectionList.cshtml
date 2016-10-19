@@ -97,6 +97,7 @@
                             <td>
                                 <button class="btn btn-default btn-sm"> <i class="fa fa-check fa-fw"></i> Mark all as Clear</button>
                                 <button class="btn btn-default btn-sm"> <i class="fa fa-check fa-fw"></i> Mark all as Absent (Penalty) </button>
+                                <button class="btn btn-primary btn-sm"> <i class="fa fa-print fa-fw"></i> Print </button>
                             </td>
                         </tr>
                     </table>
@@ -145,7 +146,16 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
-                                            Partial Payment
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Partial Payment
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </a>
                                     </div>
                                     <div id="collapse1" class="panel-collapse collapse in">
@@ -166,7 +176,16 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
-                                            Advance Payment
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Advance Payment
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </a>
                                     </div>
                                     <div id="collapse2" class="panel-collapse collapse">
@@ -187,7 +206,16 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                                            Change the Collector
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Change Collector
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
                                         </a>
                                     </div>
                                     <div id="collapse3" class="panel-collapse collapse">
@@ -202,9 +230,69 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Overdue
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                    </div>
+                                    <div id="collapse4" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Are you sure that you want to make this collection as overdue?
+                                        </div>
+                                        <div class="panel-footer" align="right">
+                                            <button class="btn btn-default btn-sm"> Yes </button>
+                                            <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapse4"> No </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Extend Payment
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                    </div>
+                                    <div id="collapse5" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Days</label><br />
+                                                <div class="input-group numberField">
+                                                    <span class="input-group-addon">&#8369;</span>
+                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Penalty</label><br />
+                                                <div class="input-group numberField">
+                                                    <span class="input-group-addon">&#8369;</span>
+                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer" align="right">
+                                            <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <hr />
-                            <button class="btn btn-info btn-block"> View Collection Detail</button>
                         </div>
                         <div class="col-sm-5">
                             <div class="panel panel-default">
@@ -235,6 +323,84 @@
                                             <button class="btn btn-primary btn-block"> Fully Paid</button>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-info btn-block"> Collection Detail</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- overdue or extension modal -->
+    <div class="modal fade" id="overdueExtensionModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Company</h4>
+                </div>
+                <div class="modal-body">
+                    The current collection is in due date. What would you like to do? Extend or Overdue?
+                    <br /><br />
+                    <div class="panel-group" id="accordion2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                Overdue
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-caret-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapse6" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    Are you sure that you want to make this collection as overdue?
+                                </div>
+                                <div class="panel-footer" align="right">
+                                    <button class="btn btn-default btn-sm"> Yes </button>
+                                    <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion2" href="#collapse5"> No </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse7">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                Extend Payment Process
+                                            </td>
+                                            <td align="right">
+                                                <i class="fa fa-caret-down fa-fw"></i>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                            <div id="collapse7" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer" align="right">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
                                 </div>
                             </div>
                         </div>
@@ -339,10 +505,10 @@
                             }
 
                             loanLogHistoryListArray.push({
-                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'" + disableButton + "><i class='fa fa-wrench fa-fw'></i> Option</button>",
                                 ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
                                 AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
-                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' onclick='btnUndoChangesOnclick()'" + disableButton + "><i class='fa fa-undo fa-fw'></i></button>",
+                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disableButton + "><i class='fa fa-undo fa-fw'></i></button>",
                                 Id: collectionListResult[i]["Id"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
@@ -358,7 +524,8 @@
                                 IsCleared: collectionListResult[i]["IsCleared"],
                                 IsPenalty: collectionListResult[i]["IsPenalty"],
                                 IsOverdue: collectionListResult[i]["IsOverdue"],
-                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"]
+                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
+                                IsDueDate: collectionListResult[i]["IsDueDate"]
                             });
                         }
                     }
@@ -435,56 +602,64 @@
             NProgress.start();
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
-            if (!collectionItem.IsPenalty) {
-                $.ajax({
-                    type: "PUT",
-                    url: '/api/loanLogHistory/absent/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    statusCode: {
-                        200: function () {
-                            var newDate = new Date(collectionItem.CollectionDate);
-                            var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
-                            $.ajax({
-                                type: "GET",
-                                url: '/api/loanLogHistory/getPenaltyValue/' + collectionItem.LoanId + '/' + collectionDateValue,
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: function (penaltyValueResult) {
-                                    NProgress.done();
-                                    toastr.info("Absent / Penalty");
-
-                                    collectionItem.PenaltyAmount = penaltyValueResult;
-                                    collectionItem.PaidAmount = 0;
-                                    collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
-                                    collectionItem.IsCleared = false;
-                                    collectionItem.IsPenalty = true;
-                                    collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
-                                    collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
-
-                                    collectionCollectionView.onCollectionChanged(function () {
-                                        collectionCollectionView.refresh();
-                                    });
-                                }
-                            });
-                        },
-                        404: function (message) {
-                            NProgress.done();
-                            toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                        },
-                        400: function (message) {
-                            NProgress.done();
-                            toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                        },
-                        500: function (message) {
-                            NProgress.done();
-                            toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
-                        }
-                    }
+            if (collectionItem.IsDueDate) {
+                NProgress.done();
+                $("#overdueExtensionModal").modal({
+                    "show": true,
+                    "backdrop": "static"
                 });
             } else {
-                NProgress.done();
-                toastr.info("Already Absent");
+                if (!collectionItem.IsPenalty) {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/loanLogHistory/absent/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                            200: function () {
+                                var newDate = new Date(collectionItem.CollectionDate);
+                                var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+                                $.ajax({
+                                    type: "GET",
+                                    url: '/api/loanLogHistory/getPenaltyValue/' + collectionItem.LoanId + '/' + collectionDateValue,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (penaltyValueResult) {
+                                        NProgress.done();
+                                        toastr.info("Absent / Penalty");
+
+                                        collectionItem.PenaltyAmount = penaltyValueResult;
+                                        collectionItem.PaidAmount = 0;
+                                        collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
+                                        collectionItem.IsCleared = false;
+                                        collectionItem.IsPenalty = true;
+                                        collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                        collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+
+                                        collectionCollectionView.onCollectionChanged(function () {
+                                            collectionCollectionView.refresh();
+                                        });
+                                    }
+                                });
+                            },
+                            404: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                            },
+                            400: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                            },
+                            500: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                            }
+                        }
+                    });
+                } else {
+                    NProgress.done();
+                    toastr.info("Already Absent");
+                }
             }
         }
 
@@ -509,7 +684,7 @@
                             dataType: "json",
                             success: function (previousBalanceValueResult) {
                                 NProgress.done();
-                                toastr.success("Done");
+                                toastr.success("Undo Changes Done");
 
                                 collectionItem.PenaltyAmount = 0;
                                 collectionItem.PaidAmount = 0;
@@ -655,7 +830,7 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "Paid Amount",
+                                "header": "Paid",
                                 "binding": "PaidAmount",
                                 "allowSorting": true,
                                 "width": "2*",
@@ -735,7 +910,7 @@
             }
 
             collectionFlexGrid.columnHeaders.columns[10].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 10, 'Paid Amount');
+            collectionFlexGrid.columnHeaders.setCellData(0, 10, 'Paid');
 
             collectionFlexGrid.columnHeaders.columns[11].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 11, 'C');

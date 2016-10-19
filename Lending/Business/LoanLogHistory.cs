@@ -60,10 +60,16 @@ namespace Lending.Business
                         {
                             Decimal currentBalanceValue = 0;
                             Boolean isActionValue = false;
+                            Boolean isDueDateValue = false;
                             if (i == 1)
                             {
                                 currentBalanceValue = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
                                 isActionValue = true;
+                            }
+
+                            if (i == numberOfDays)
+                            {
+                                isDueDateValue = true;
                             }
 
                             Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
@@ -81,6 +87,7 @@ namespace Lending.Business
                             newLoanLogHistory.IsOverdue = false;
                             newLoanLogHistory.IsFullyPaid = false;
                             newLoanLogHistory.IsAction = isActionValue;
+                            newLoanLogHistory.IsDueDate = isDueDateValue;
                             db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
                             db.SubmitChanges();
                         }
