@@ -515,10 +515,6 @@ namespace Lending.Data
 		
 		private bool _IsPenalty;
 		
-		private bool _IsOverdue;
-		
-		private bool _IsFullyPaid;
-		
 		private bool _IsAction;
 		
 		private bool _IsDueDate;
@@ -555,10 +551,6 @@ namespace Lending.Data
     partial void OnIsClearedChanged();
     partial void OnIsPenaltyChanging(bool value);
     partial void OnIsPenaltyChanged();
-    partial void OnIsOverdueChanging(bool value);
-    partial void OnIsOverdueChanged();
-    partial void OnIsFullyPaidChanging(bool value);
-    partial void OnIsFullyPaidChanged();
     partial void OnIsActionChanging(bool value);
     partial void OnIsActionChanged();
     partial void OnIsDueDateChanging(bool value);
@@ -812,46 +804,6 @@ namespace Lending.Data
 					this._IsPenalty = value;
 					this.SendPropertyChanged("IsPenalty");
 					this.OnIsPenaltyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdue", DbType="Bit NOT NULL")]
-		public bool IsOverdue
-		{
-			get
-			{
-				return this._IsOverdue;
-			}
-			set
-			{
-				if ((this._IsOverdue != value))
-				{
-					this.OnIsOverdueChanging(value);
-					this.SendPropertyChanging();
-					this._IsOverdue = value;
-					this.SendPropertyChanged("IsOverdue");
-					this.OnIsOverdueChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFullyPaid", DbType="Bit NOT NULL")]
-		public bool IsFullyPaid
-		{
-			get
-			{
-				return this._IsFullyPaid;
-			}
-			set
-			{
-				if ((this._IsFullyPaid != value))
-				{
-					this.OnIsFullyPaidChanging(value);
-					this.SendPropertyChanging();
-					this._IsFullyPaid = value;
-					this.SendPropertyChanged("IsFullyPaid");
-					this.OnIsFullyPaidChanged();
 				}
 			}
 		}
@@ -10044,6 +9996,10 @@ namespace Lending.Data
 		
 		private decimal _NetAmount;
 		
+		private bool _IsOverdue;
+		
+		private bool _IsFullyPaid;
+		
 		private bool _IsLocked;
 		
 		private int _CreatedByUserId;
@@ -10114,6 +10070,10 @@ namespace Lending.Data
     partial void OnInsuranceIPIorPPIAmountChanged();
     partial void OnNetAmountChanging(decimal value);
     partial void OnNetAmountChanged();
+    partial void OnIsOverdueChanging(bool value);
+    partial void OnIsOverdueChanged();
+    partial void OnIsFullyPaidChanging(bool value);
+    partial void OnIsFullyPaidChanged();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
@@ -10532,6 +10492,46 @@ namespace Lending.Data
 					this._NetAmount = value;
 					this.SendPropertyChanged("NetAmount");
 					this.OnNetAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdue", DbType="Bit NOT NULL")]
+		public bool IsOverdue
+		{
+			get
+			{
+				return this._IsOverdue;
+			}
+			set
+			{
+				if ((this._IsOverdue != value))
+				{
+					this.OnIsOverdueChanging(value);
+					this.SendPropertyChanging();
+					this._IsOverdue = value;
+					this.SendPropertyChanged("IsOverdue");
+					this.OnIsOverdueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFullyPaid", DbType="Bit NOT NULL")]
+		public bool IsFullyPaid
+		{
+			get
+			{
+				return this._IsFullyPaid;
+			}
+			set
+			{
+				if ((this._IsFullyPaid != value))
+				{
+					this.OnIsFullyPaidChanging(value);
+					this.SendPropertyChanging();
+					this._IsFullyPaid = value;
+					this.SendPropertyChanged("IsFullyPaid");
+					this.OnIsFullyPaidChanged();
 				}
 			}
 		}

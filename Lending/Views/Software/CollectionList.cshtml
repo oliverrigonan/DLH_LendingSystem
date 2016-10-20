@@ -209,7 +209,7 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td>
-                                                        Change Collector
+                                                        Full Payment
                                                     </td>
                                                     <td align="right">
                                                         <i class="fa fa-caret-down fa-fw"></i>
@@ -221,8 +221,11 @@
                                     <div id="collapse3" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <div class="form-group">
-                                                <label>Collector</label><br />
-                                                <input type="text" class="form-control" id="" placeholder="0.00" />
+                                                <label>Amount</label><br />
+                                                <div class="input-group numberField">
+                                                    <span class="input-group-addon">&#8369;</span>
+                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer" align="right">
@@ -236,31 +239,6 @@
                                             <table style="width: 100%">
                                                 <tr>
                                                     <td>
-                                                        Overdue
-                                                    </td>
-                                                    <td align="right">
-                                                        <i class="fa fa-caret-down fa-fw"></i>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </a>
-                                    </div>
-                                    <div id="collapse4" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            Are you sure that you want to make this collection as overdue?
-                                        </div>
-                                        <div class="panel-footer" align="right">
-                                            <button class="btn btn-default btn-sm"> Yes </button>
-                                            <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapse4"> No </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
                                                         Extend Payment
                                                     </td>
                                                     <td align="right">
@@ -270,7 +248,7 @@
                                             </table>
                                         </a>
                                     </div>
-                                    <div id="collapse5" class="panel-collapse collapse">
+                                    <div id="collapse4" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <div class="form-group">
                                                 <label>Days</label><br />
@@ -285,6 +263,58 @@
                                                     <span class="input-group-addon">&#8369;</span>
                                                     <input type="text" class="form-control numberField" id="" placeholder="0.00" />
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer" align="right">
+                                            <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Overdue
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                    </div>
+                                    <div id="collapse5" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            Are you sure that you want to make this collection as overdue?
+                                        </div>
+                                        <div class="panel-footer" align="right">
+                                            <button class="btn btn-default btn-sm"> Yes </button>
+                                            <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapse5"> No </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        Change Collector
+                                                    </td>
+                                                    <td align="right">
+                                                        <i class="fa fa-caret-down fa-fw"></i>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                    </div>
+                                    <div id="collapse6" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Collector</label><br />
+                                                <input type="text" class="form-control" id="" placeholder="0.00" />
                                             </div>
                                         </div>
                                         <div class="panel-footer" align="right">
@@ -318,13 +348,9 @@
                                             <button class="btn btn-danger btn-block" onclick="btnAbsentOnclick()"> Absent</button>
                                         </div>
                                     </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <button class="btn btn-primary btn-block"> Fully Paid</button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
+                            <button class="btn btn-info btn-block" onclick="btnLoanApplicationDetailOnclick()"> Loan Application Detail</button>
                             <button class="btn btn-info btn-block"> Collection Detail</button>
                         </div>
                     </div>
@@ -351,7 +377,7 @@
                     <div class="panel-group" id="accordion2">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
+                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse7">
                                     <table style="width: 100%">
                                         <tr>
                                             <td>
@@ -364,19 +390,19 @@
                                     </table>
                                 </a>
                             </div>
-                            <div id="collapse6" class="panel-collapse collapse">
+                            <div id="collapse7" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     Are you sure that you want to make this collection as overdue?
                                 </div>
                                 <div class="panel-footer" align="right">
                                     <button class="btn btn-default btn-sm"> Yes </button>
-                                    <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion2" href="#collapse5"> No </a>
+                                    <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion2" href="#collapse7"> No </a>
                                 </div>
                             </div>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse7">
+                                <a data-toggle="collapse" data-parent="#accordion2" href="#collapse8">
                                     <table style="width: 100%">
                                         <tr>
                                             <td>
@@ -389,7 +415,7 @@
                                     </table>
                                 </a>
                             </div>
-                            <div id="collapse7" class="panel-collapse collapse">
+                            <div id="collapse8" class="panel-collapse collapse">
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label>Amount</label><br />
@@ -558,19 +584,28 @@
                         dataType: "json",
                         statusCode: {
                             200: function () {
-                                NProgress.done();
-                                toastr.success("Successfully Cleared");
+                                $.ajax({
+                                    type: "GET",
+                                    url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (isFullyPaidResult) {
+                                        NProgress.done();
+                                        toastr.success("Successfully Cleared");
 
-                                collectionItem.PenaltyAmount = 0;
-                                collectionItem.PaidAmount = collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount;
-                                collectionItem.CurrentBalanceAmount = 0;
-                                collectionItem.IsCleared = true;
-                                collectionItem.IsPenalty = false;
-                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
-                                collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                        collectionItem.PenaltyAmount = 0;
+                                        collectionItem.PaidAmount = collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount;
+                                        collectionItem.CurrentBalanceAmount = 0;
+                                        collectionItem.IsCleared = true;
+                                        collectionItem.IsFullyPaid = isFullyPaidResult;
+                                        collectionItem.IsPenalty = false;
+                                        collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                        collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
 
-                                collectionCollectionView.onCollectionChanged(function () {
-                                    collectionCollectionView.refresh();
+                                        collectionCollectionView.onCollectionChanged(function () {
+                                            collectionCollectionView.refresh();
+                                        });
+                                    }
                                 });
                             },
                             404: function (message) {
@@ -625,19 +660,28 @@
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (penaltyValueResult) {
-                                        NProgress.done();
-                                        toastr.info("Absent / Penalty");
+                                        $.ajax({
+                                            type: "GET",
+                                            url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (isFullyPaidResult) {
+                                                NProgress.done();
+                                                toastr.info("Absent / Penalty");
 
-                                        collectionItem.PenaltyAmount = penaltyValueResult;
-                                        collectionItem.PaidAmount = 0;
-                                        collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
-                                        collectionItem.IsCleared = false;
-                                        collectionItem.IsPenalty = true;
-                                        collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
-                                        collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                                collectionItem.PenaltyAmount = penaltyValueResult;
+                                                collectionItem.PaidAmount = 0;
+                                                collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
+                                                collectionItem.IsCleared = false;
+                                                collectionItem.IsFullyPaid = isFullyPaidResult;
+                                                collectionItem.IsPenalty = true;
+                                                collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                                collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
 
-                                        collectionCollectionView.onCollectionChanged(function () {
-                                            collectionCollectionView.refresh();
+                                                collectionCollectionView.onCollectionChanged(function () {
+                                                    collectionCollectionView.refresh();
+                                                });
+                                            }
                                         });
                                     }
                                 });
@@ -683,20 +727,29 @@
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (previousBalanceValueResult) {
-                                NProgress.done();
-                                toastr.success("Undo Changes Done");
+                                $.ajax({
+                                    type: "GET",
+                                    url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (isFullyPaidResult) {
+                                        NProgress.done();
+                                        toastr.success("Undo Changes Done");
 
-                                collectionItem.PenaltyAmount = 0;
-                                collectionItem.PaidAmount = 0;
-                                collectionItem.PreviousBalanceAmount = previousBalanceValueResult;
-                                collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + previousBalanceValueResult;
-                                collectionItem.IsCleared = false;
-                                collectionItem.IsPenalty = false;
-                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
-                                collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                        collectionItem.PenaltyAmount = 0;
+                                        collectionItem.PaidAmount = 0;
+                                        collectionItem.PreviousBalanceAmount = previousBalanceValueResult;
+                                        collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + previousBalanceValueResult;
+                                        collectionItem.IsCleared = false;
+                                        collectionItem.IsFullyPaid = isFullyPaidResult;
+                                        collectionItem.IsPenalty = false;
+                                        collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                        collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
 
-                                collectionCollectionView.onCollectionChanged(function () {
-                                    collectionCollectionView.refresh();
+                                        collectionCollectionView.onCollectionChanged(function () {
+                                            collectionCollectionView.refresh();
+                                        });
+                                    }
                                 });
                             }
                         });
@@ -1009,6 +1062,13 @@
             });
         }
 
+        // loan applicaion detail onclick
+        function btnLoanApplicationDetailOnclick() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var collectionItem = collectionCollectionView.currentEditItem;
+            window.open('/Software/LoanApplicationDetail?id=' + collectionItem.LoanId, '_blank');
+        }
+
         // on load page
         window.onload = function () {
             NProgress.start();
@@ -1016,6 +1076,7 @@
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate');
             createCboCollectionDate();
             $(function () { $("[data-toggle='tooltip']").tooltip(); });
+            doubleModal();
         }
     </script>
 </body>

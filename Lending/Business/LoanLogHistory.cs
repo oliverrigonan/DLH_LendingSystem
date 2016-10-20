@@ -84,8 +84,6 @@ namespace Lending.Business
                             newLoanLogHistory.CurrentBalanceAmount = currentBalanceValue;
                             newLoanLogHistory.IsCleared = false;
                             newLoanLogHistory.IsPenalty = false;
-                            newLoanLogHistory.IsOverdue = false;
-                            newLoanLogHistory.IsFullyPaid = false;
                             newLoanLogHistory.IsAction = isActionValue;
                             newLoanLogHistory.IsDueDate = isDueDateValue;
                             db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);

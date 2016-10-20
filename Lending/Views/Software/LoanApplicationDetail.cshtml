@@ -2049,18 +2049,6 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "O",
-                                "binding": "IsOverdue",
-                                "allowSorting": false,
-                                "width": "0.7*",
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": false,
-                                "width": "0.7*",
-                            },
-                            {
                                 "header": "Previous",
                                 "binding": "PreviousBalanceAmount",
                                 "allowSorting": false,
@@ -2112,21 +2100,15 @@
             loanLogHistoryFlexGrid.columnHeaders.columns[3].allowMerging = true;
             loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 3, 'Penalty');
 
-            loanLogHistoryFlexGrid.columnHeaders.columns[4].allowMerging = true;
-            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 4, 'O');
-
-            loanLogHistoryFlexGrid.columnHeaders.columns[5].allowMerging = true;
-            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 5, 'F');
-
-            for (var balancesColumn = 6; balancesColumn <= 7; balancesColumn++) {
+            for (var balancesColumn = 4; balancesColumn <= 5; balancesColumn++) {
                 loanLogHistoryFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
             }
 
-            loanLogHistoryFlexGrid.columnHeaders.columns[8].allowMerging = true;
-            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 8, 'C');
+            loanLogHistoryFlexGrid.columnHeaders.columns[6].allowMerging = true;
+            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 6, 'C');
 
-            loanLogHistoryFlexGrid.columnHeaders.columns[9].allowMerging = true;
-            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 9, 'Paid Amount');
+            loanLogHistoryFlexGrid.columnHeaders.columns[7].allowMerging = true;
+            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 7, 'Paid Amount');
 
             //Navigation button
             btnFirstPageGridLoanLogHistory = document.getElementById('btnMoveToFirstPageGridLoanLogHistory');

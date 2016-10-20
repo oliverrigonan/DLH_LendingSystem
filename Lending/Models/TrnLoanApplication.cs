@@ -34,6 +34,8 @@ namespace Lending.Models
         public Decimal RequirementsAmount { get; set; }
         public Decimal InsuranceIPIorPPIAmount { get; set; }
         public Decimal NetAmount { get; set; }
+        public Boolean IsOverdue { get; set; }
+        public Boolean IsFullyPaid { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }

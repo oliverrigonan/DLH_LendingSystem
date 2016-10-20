@@ -36,8 +36,8 @@ namespace Lending.ApiControllers
                                        CurrentBalanceAmount = d.CurrentBalanceAmount,
                                        IsCleared = d.IsCleared,
                                        IsPenalty = d.IsPenalty,
-                                       IsOverdue = d.IsOverdue,
-                                       IsFullyPaid = d.IsFullyPaid,
+                                       IsOverdue = d.trnLoanApplication.IsOverdue,
+                                       IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
                                        CollectorId = d.trnLoanApplication.CollectorId,
                                        Collector = d.trnLoanApplication.mstCollector.Collector
@@ -72,8 +72,8 @@ namespace Lending.ApiControllers
                                        CurrentBalanceAmount = d.CurrentBalanceAmount,
                                        IsCleared = d.IsCleared,
                                        IsPenalty = d.IsPenalty,
-                                       IsOverdue = d.IsOverdue,
-                                       IsFullyPaid = d.IsFullyPaid,
+                                       IsOverdue = d.trnLoanApplication.IsOverdue,
+                                       IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
                                        IsDueDate = d.IsDueDate
                                    };
@@ -118,7 +118,7 @@ namespace Lending.ApiControllers
                                             else
                                             {
                                                 Data.trnCollectionLogHistory newCollectionLogHistory = new Data.trnCollectionLogHistory();
-                                                newCollectionLogHistory.LoanLogHistoryId = Convert.ToInt32(loanId);
+                                                newCollectionLogHistory.LoanLogHistoryId = loanLogHistories.FirstOrDefault().Id;
                                                 newCollectionLogHistory.PaidAmount = loanLogHistories.FirstOrDefault().CurrentBalanceAmount;
                                                 newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CollectorId;
                                                 newCollectionLogHistory.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
@@ -152,29 +152,9 @@ namespace Lending.ApiControllers
                                                 }
                                                 else
                                                 {
-                                                    var loanLogHistoriesForFullPayments = from d in db.trnLoanLogHistories
-                                                                                          where d.LoanId == Convert.ToInt32(loanId)
-                                                                                          && d.CollectionDate >= loanApplications.FirstOrDefault().LoanDate
-                                                                                          && d.CollectionDate <= loanApplications.FirstOrDefault().MaturityDate
-                                                                                          select new Models.TrnLoanLogHistory
-                                                                                          {
-                                                                                              Id = d.Id
-                                                                                          };
-
-                                                    if (loanLogHistoriesForFullPayments.Any())
-                                                    {
-                                                        foreach (var loanLogHistoriesForFullPayment in loanLogHistoriesForFullPayments)
-                                                        {
-                                                            var eachLoanLogHistoriesForFullPayment = from d in db.trnLoanLogHistories where d.Id == loanLogHistoriesForFullPayment.Id select d;
-
-                                                            if (eachLoanLogHistoriesForFullPayment.Any())
-                                                            {
-                                                                var updateFullPaymentLoanLogHistoriesForFullPayment = eachLoanLogHistoriesForFullPayment.FirstOrDefault();
-                                                                updateFullPaymentLoanLogHistoriesForFullPayment.IsFullyPaid = true;
-                                                                db.SubmitChanges();
-                                                            }
-                                                        }
-                                                    }
+                                                    var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                                    updateLoanApplicationsForFullyPaid.IsFullyPaid = true;
+                                                    db.SubmitChanges();
                                                 }
                                             }
                                             else
@@ -190,29 +170,9 @@ namespace Lending.ApiControllers
                                                 }
                                                 else
                                                 {
-                                                    var loanLogHistoriesForFullPayments = from d in db.trnLoanLogHistories
-                                                                                          where d.LoanId == Convert.ToInt32(loanId)
-                                                                                          && d.CollectionDate >= loanApplications.FirstOrDefault().LoanDate
-                                                                                          && d.CollectionDate <= loanApplications.FirstOrDefault().MaturityDate
-                                                                                          select new Models.TrnLoanLogHistory
-                                                                                          {
-                                                                                              Id = d.Id
-                                                                                          };
-
-                                                    if (loanLogHistoriesForFullPayments.Any())
-                                                    {
-                                                        foreach (var loanLogHistoriesForFullPayment in loanLogHistoriesForFullPayments)
-                                                        {
-                                                            var eachLoanLogHistoriesForFullPayment = from d in db.trnLoanLogHistories where d.Id == loanLogHistoriesForFullPayment.Id select d;
-
-                                                            if (eachLoanLogHistoriesForFullPayment.Any())
-                                                            {
-                                                                var updateFullPaymentLoanLogHistoriesForFullPayment = eachLoanLogHistoriesForFullPayment.FirstOrDefault();
-                                                                updateFullPaymentLoanLogHistoriesForFullPayment.IsFullyPaid = true;
-                                                                db.SubmitChanges();
-                                                            }
-                                                        }
-                                                    }
+                                                    var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                                    updateLoanApplicationsForFullyPaid.IsFullyPaid = true;
+                                                    db.SubmitChanges();
                                                 }
                                             }
 
@@ -253,7 +213,7 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to apply some actions.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
@@ -364,29 +324,9 @@ namespace Lending.ApiControllers
                                             }
                                             else
                                             {
-                                                var loanLogHistoriesForFullPayments = from d in db.trnLoanLogHistories
-                                                                                      where d.Id == Convert.ToInt32(id)
-                                                                                      && d.CollectionDate >= loanApplications.FirstOrDefault().LoanDate
-                                                                                      && d.CollectionDate <= loanApplications.FirstOrDefault().MaturityDate
-                                                                                      select new Models.TrnLoanLogHistory
-                                                                                      {
-                                                                                          Id = d.Id
-                                                                                      };
-
-                                                if (loanLogHistoriesForFullPayments.Any())
-                                                {
-                                                    foreach (var loanLogHistoriesForFullPayment in loanLogHistoriesForFullPayments)
-                                                    {
-                                                        var eachLoanLogHistoriesForFullPayment = from d in db.trnLoanLogHistories where d.Id == loanLogHistoriesForFullPayment.Id select d;
-
-                                                        if (eachLoanLogHistoriesForFullPayment.Any())
-                                                        {
-                                                            var updateFullPaymentLoanLogHistoriesForFullPayment = eachLoanLogHistoriesForFullPayment.FirstOrDefault();
-                                                            updateFullPaymentLoanLogHistoriesForFullPayment.IsFullyPaid = false;
-                                                            db.SubmitChanges();
-                                                        }
-                                                    }
-                                                }
+                                                var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                                updateLoanApplicationsForFullyPaid.IsFullyPaid = false;
+                                                db.SubmitChanges();
                                             }
                                         }
                                         else
@@ -402,29 +342,9 @@ namespace Lending.ApiControllers
                                             }
                                             else
                                             {
-                                                var loanLogHistoriesForFullPayments = from d in db.trnLoanLogHistories
-                                                                                      where d.Id == Convert.ToInt32(id)
-                                                                                      && d.CollectionDate >= loanApplications.FirstOrDefault().LoanDate
-                                                                                      && d.CollectionDate <= loanApplications.FirstOrDefault().MaturityDate
-                                                                                      select new Models.TrnLoanLogHistory
-                                                                                      {
-                                                                                          Id = d.Id
-                                                                                      };
-
-                                                if (loanLogHistoriesForFullPayments.Any())
-                                                {
-                                                    foreach (var loanLogHistoriesForFullPayment in loanLogHistoriesForFullPayments)
-                                                    {
-                                                        var eachLoanLogHistoriesForFullPayment = from d in db.trnLoanLogHistories where d.Id == loanLogHistoriesForFullPayment.Id select d;
-
-                                                        if (eachLoanLogHistoriesForFullPayment.Any())
-                                                        {
-                                                            var updateFullPaymentLoanLogHistoriesForFullPayment = eachLoanLogHistoriesForFullPayment.FirstOrDefault();
-                                                            updateFullPaymentLoanLogHistoriesForFullPayment.IsFullyPaid = false;
-                                                            db.SubmitChanges();
-                                                        }
-                                                    }
-                                                }
+                                                var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                                updateLoanApplicationsForFullyPaid.IsFullyPaid = false;
+                                                db.SubmitChanges();
                                             }
                                         }
 
@@ -507,8 +427,6 @@ namespace Lending.ApiControllers
                                         updateLoanLogHistory.PenaltyAmount = 0;
                                         updateLoanLogHistory.IsCleared = false;
                                         updateLoanLogHistory.IsPenalty = false;
-                                        updateLoanLogHistory.IsOverdue = false;
-                                        updateLoanLogHistory.IsFullyPaid = false;
                                         updateLoanLogHistory.IsAction = true;
                                         db.SubmitChanges();
 
@@ -525,6 +443,12 @@ namespace Lending.ApiControllers
                                             updateLoanLogHistoryByCollectionDate.IsAction = false;
                                             db.SubmitChanges();
                                         }
+                                        else
+                                        {
+                                            var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                            updateLoanApplicationsForFullyPaid.IsFullyPaid = false;
+                                            db.SubmitChanges();
+                                        }
                                     }
                                     else
                                     {
@@ -536,8 +460,6 @@ namespace Lending.ApiControllers
                                         updateLoanLogHistory.PenaltyAmount = 0;
                                         updateLoanLogHistory.IsCleared = false;
                                         updateLoanLogHistory.IsPenalty = false;
-                                        updateLoanLogHistory.IsOverdue = false;
-                                        updateLoanLogHistory.IsFullyPaid = false;
                                         updateLoanLogHistory.IsAction = true;
                                         db.SubmitChanges();
 
@@ -548,6 +470,12 @@ namespace Lending.ApiControllers
                                             updateLoanLogHistoryByCollectionDate.PreviousBalanceAmount = 0;
                                             updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = 0;
                                             updateLoanLogHistoryByCollectionDate.IsAction = false;
+                                            db.SubmitChanges();
+                                        }
+                                        else
+                                        {
+                                            var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                            updateLoanApplicationsForFullyPaid.IsFullyPaid = false;
                                             db.SubmitChanges();
                                         }
                                     }
@@ -645,6 +573,23 @@ namespace Lending.ApiControllers
             }
 
             return previousBalance;
+        }
+
+        // loan log history get fully payment
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLogHistory/getIsFullyPaid/{loanId}")]
+        public Boolean getLoanLogHistoryIsFullPaid(String loanId)
+        {
+            var isFullyPaid = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+
+            Boolean isFullyPaidValue = false;
+            if (isFullyPaid.Any())
+            {
+                isFullyPaidValue = isFullyPaid.FirstOrDefault().IsFullyPaid;
+            }
+
+            return isFullyPaidValue;
         }
     }
 }
