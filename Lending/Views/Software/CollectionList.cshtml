@@ -158,10 +158,10 @@
                                             </table>
                                         </a>
                                     </div>
-                                    <div id="collapse1" class="panel-collapse collapse in">
+                                    <div id="collapse1" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <div class="form-group">
-                                                <label>Current amount to be paid</label><br />
+                                                <label>Current Amount</label><br />
                                                 <span id="currentAmountToBePaid"></span>
                                             </div>
                                             <div class="form-group">
@@ -239,68 +239,6 @@
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        Extend Payment
-                                                    </td>
-                                                    <td align="right">
-                                                        <i class="fa fa-caret-down fa-fw"></i>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </a>
-                                    </div>
-                                    <div id="collapse4" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <label>Days</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Penalty</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer" align="right">
-                                            <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
-                                            <table style="width: 100%">
-                                                <tr>
-                                                    <td>
-                                                        Overdue
-                                                    </td>
-                                                    <td align="right">
-                                                        <i class="fa fa-caret-down fa-fw"></i>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </a>
-                                    </div>
-                                    <div id="collapse5" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            Are you sure that you want to make this collection as overdue?
-                                        </div>
-                                        <div class="panel-footer" align="right">
-                                            <button class="btn btn-default btn-sm"> Yes </button>
-                                            <a class="btn btn-default btn-sm" data-toggle="collapse" data-parent="#accordion" href="#collapse5"> No </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
                                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse6">
                                             <table style="width: 100%">
                                                 <tr>
@@ -314,11 +252,11 @@
                                             </table>
                                         </a>
                                     </div>
-                                    <div id="collapse6" class="panel-collapse collapse">
+                                    <div id="collapse6" class="panel-collapse collapse in">
                                         <div class="panel-body">
                                             <div class="form-group">
                                                 <label>Collector</label><br />
-                                                <input type="text" class="form-control" id="" placeholder="0.00" />
+                                                <div id="cboCollectionChangeCollector"></div>
                                             </div>
                                         </div>
                                         <div class="panel-footer" align="right">
@@ -334,7 +272,7 @@
                                     <table style="width: 100%">
                                         <tr>
                                             <td>
-                                                More Actions
+                                                Actions
                                             </td>
                                             <td>&nbsp;&nbsp;&nbsp;</td>
                                             <td align="right">
@@ -346,12 +284,8 @@
                                     </table>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <button class="btn btn-success btn-block" onclick="btnClearOnclick()"> Clear</button>
-                                            <button class="btn btn-danger btn-block" onclick="btnAbsentOnclick()"> Absent</button>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-success btn-block" onclick="btnClearOnclick()"> Clear</button>
+                                    <button class="btn btn-danger btn-block" onclick="btnAbsentOnclick()"> Absent</button>
                                 </div>
                             </div>
                             <button class="btn btn-info btn-block" onclick="btnLoanApplicationDetailOnclick()"> Loan Application Detail</button>
@@ -373,7 +307,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Company</h4>
+                    <h4 class="modal-title">Collection Due Date</h4>
                 </div>
                 <div class="modal-body">
                     The current collection is in due date. What would you like to do? Extend or Overdue?
@@ -555,7 +489,8 @@
                                 IsPenalty: collectionListResult[i]["IsPenalty"],
                                 IsOverdue: collectionListResult[i]["IsOverdue"],
                                 IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                IsDueDate: collectionListResult[i]["IsDueDate"]
+                                IsDueDate: collectionListResult[i]["IsDueDate"],
+                                CollectorWithAssignedArea: collectionListResult[i]["CollectorWithAssignedArea"]
                             });
                         }
                     }
@@ -575,7 +510,10 @@
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
 
-            document.getElementById("currentAmountToBePaid").innerHTML = "&#8369; " + collectionItem.CurrentBalanceAmount;
+            document.getElementById("currentAmountToBePaid").innerHTML = "&#8369; " + collectionItem.CurrentBalanceAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            document.getElementById("collectionPartialPayment").value = 0;
+
+            cboCollectionChangeCollector.selectedValue = collectionItem.CollectorWithAssignedArea;
         }
 
         // clear collection
@@ -1103,92 +1041,140 @@
                 collectionCollectionView.editItem(collectionCollectionView.currentItem);
                 var collectionItem = collectionCollectionView.currentEditItem;
                 var collectionPartialAmount = document.getElementById("collectionPartialPayment").value;
-                if (parseFloat(collectionItem.CurrentBalanceAmount) >= parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''))) {
-                    var loanLogHistoryObject = new Object();
-                    loanLogHistoryObject.PaidAmount = parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''));
-                    var loanLogHistoryData = JSON.stringify(loanLogHistoryObject);
 
-                    $('#collectionPartialPayment').each(function () {
-                        $(this).css({
-                            "border": "",
-                        });
-                    });
-
-                    $("#btnUpdatePartialPayment").prop("disabled", true);
-                    document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/loanLogHistory/partialPayment/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: loanLogHistoryData,
-                        statusCode: {
-                            200: function () {
-                                $.ajax({
-                                    type: "GET",
-                                    url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
-                                    contentType: "application/json; charset=utf-8",
-                                    dataType: "json",
-                                    success: function (isFullyPaidResult) {
-                                        $("#btnUpdatePartialPayment").prop("disabled", false);
-                                        document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-                                        NProgress.done();
-                                        toastr.success("Partial Payment Done");
-
-                                        collectionItem.PenaltyAmount = 0;
-                                        collectionItem.PaidAmount = document.getElementById("collectionPartialPayment").value;
-                                        collectionItem.CurrentBalanceAmount = (collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount) - parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''));
-                                        var currentAmountToBeDisplayed = (collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount) - parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''));
-
-                                        document.getElementById("currentAmountToBePaid").innerHTML = "&#8369; " + (Math.round(currentAmountToBeDisplayed * 100) / 100).toString();
-
-                                        var isClearedValue = false;
-                                        var buttonClear = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
-                                        if ((collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount) - parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, '')) == 0) {
-                                            isClearedValue = true;
-                                            buttonClear = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
-                                        }
-
-                                        collectionItem.IsCleared = isClearedValue;
-                                        collectionItem.IsFullyPaid = isFullyPaidResult;
-                                        collectionItem.IsPenalty = false;
-
-                                        collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
-                                        collectionItem.ClearButton = buttonClear;
-
-                                        collectionCollectionView.onCollectionChanged(function () {
-                                            collectionCollectionView.refresh();
-                                        });
-                                    }
-                                });
-                            },
-                            404: function (message) {
-                                NProgress.done();
-                                toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                            },
-                            400: function (message) {
-                                NProgress.done();
-                                toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                            },
-                            500: function (message) {
-                                NProgress.done();
-                                toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
-                            }
-                        }
+                if (collectionItem.IsDueDate) {
+                    NProgress.done();
+                    $("#overdueExtensionModal").modal({
+                        "show": true,
+                        "backdrop": "static"
                     });
                 } else {
-                    NProgress.done();
-                    $('#collectionPartialPayment').each(function () {
-                        $(this).css({
-                            "border": "1px solid red"
-                        });
-                    });
+                    if (parseFloat(collectionItem.CurrentBalanceAmount) >= parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''))) {
+                        var loanLogHistoryObject = new Object();
+                        loanLogHistoryObject.PaidAmount = parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''));
+                        var loanLogHistoryData = JSON.stringify(loanLogHistoryObject);
 
-                    toastr.error("The amount to be paid must not be greater than the current balance which is to be collected (Paid).");
+                        $('#collectionPartialPayment').each(function () {
+                            $(this).css({
+                                "border": "",
+                            });
+                        });
+
+                        $("#btnUpdatePartialPayment").prop("disabled", true);
+                        document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
+                        $.ajax({
+                            type: "PUT",
+                            url: '/api/loanLogHistory/partialPayment/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: loanLogHistoryData,
+                            statusCode: {
+                                200: function () {
+                                    $.ajax({
+                                        type: "GET",
+                                        url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (isFullyPaidResult) {
+                                            $("#btnUpdatePartialPayment").prop("disabled", false);
+                                            document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                                            NProgress.done();
+                                            toastr.success("Partial Payment Done");
+
+                                            collectionItem.PenaltyAmount = 0;
+                                            collectionItem.PaidAmount = document.getElementById("collectionPartialPayment").value;
+                                            collectionItem.CurrentBalanceAmount = (collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount) - parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''));
+                                            var currentAmountToBeDisplayed = (collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount) - parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, ''));
+
+                                            document.getElementById("currentAmountToBePaid").innerHTML = "&#8369; " + (Math.round(currentAmountToBeDisplayed * 100) / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                                            var isClearedValue = false;
+                                            var buttonClear = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                            if ((collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount) - parseFloat(collectionPartialAmount.replace(/[^\d\.]/g, '')) == 0) {
+                                                isClearedValue = true;
+                                                buttonClear = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                            }
+
+                                            collectionItem.IsCleared = isClearedValue;
+                                            collectionItem.IsFullyPaid = isFullyPaidResult;
+                                            collectionItem.IsPenalty = false;
+
+                                            collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                            collectionItem.ClearButton = buttonClear;
+
+                                            collectionCollectionView.onCollectionChanged(function () {
+                                                collectionCollectionView.refresh();
+                                            });
+                                        }
+                                    });
+                                },
+                                404: function (message) {
+                                    NProgress.done();
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                                },
+                                400: function (message) {
+                                    NProgress.done();
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                                },
+                                500: function (message) {
+                                    NProgress.done();
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                }
+                            }
+                        });
+                    } else {
+                        NProgress.done();
+                        $('#collectionPartialPayment').each(function () {
+                            $(this).css({
+                                "border": "1px solid red"
+                            });
+                        });
+
+                        toastr.error("The amount to be paid must not be greater than the current balance which is to be collected (Paid).");
+                    }
                 }
             } else {
                 toastr.error("Invalid Entry");
             }
+        }
+
+        var cboCollectionChangeCollector;
+
+        // collector
+        function getCollectorByArea() {
+            var collectorByAreaArray = new Array();
+            $.ajax({
+                url: '/api/collector/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (collectorByAreaResults) {
+                    var disabled = true;
+                    if (collectorByAreaResults.length > 0) {
+                        for (i = 0; i < collectorByAreaResults.length; i++) {
+                            collectorByAreaArray.push({
+                                Id: collectorByAreaResults[i]["Id"],
+                                Collector: collectorByAreaResults[i]["Collector"],
+                                CollectorWithAssignedArea: collectorByAreaResults[i]["Collector"] + "  (" + collectorByAreaResults[i]["Area"] + ")",
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboCollectionChangeCollector.dispose();
+                    cboCollectionChangeCollector = new wijmo.input.ComboBox('#cboCollectionChangeCollector', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: collectorByAreaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "CollectorWithAssignedArea",
+                        selectedValuePath: "CollectorWithAssignedArea"
+                    });
+                }
+            });
         }
 
         // on load page
@@ -1199,6 +1185,8 @@
             createCboCollectionDate();
             $(function () { $("[data-toggle='tooltip']").tooltip(); });
             doubleModal();
+            cboCollectionChangeCollector = new wijmo.input.ComboBox('#cboCollectionChangeCollector');
+            getCollectorByArea();
         }
     </script>
 </body>

@@ -40,7 +40,8 @@ namespace Lending.ApiControllers
                                        IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
                                        CollectorId = d.trnLoanApplication.CollectorId,
-                                       Collector = d.trnLoanApplication.mstCollector.Collector
+                                       Collector = d.trnLoanApplication.mstCollector.Collector,
+                                       CollectorWithAssignedArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")"
                                    };
 
             return loanLogHistories.ToList();
@@ -512,85 +513,6 @@ namespace Lending.ApiControllers
             }
         }
 
-        // loan log history get penalty value
-        [Authorize]
-        [HttpGet]
-        [Route("api/loanLogHistory/getPenaltyValue/{loanId}/{collectionDate}")]
-        public Decimal getLoanLogHistoryPenaltyValue(String loanId, String collectionDate)
-        {
-
-            var penaltyValue = 10;
-            var previousDay1 = from d in db.trnLoanLogHistories
-                               where d.LoanId == Convert.ToInt32(loanId)
-                               && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1)
-                               select d;
-
-            if (previousDay1.Any())
-            {
-                if (previousDay1.FirstOrDefault().IsPenalty)
-                {
-                    if (previousDay1.FirstOrDefault().PenaltyAmount == 10)
-                    {
-                        var previousDay2 = from d in db.trnLoanLogHistories
-                                           where d.LoanId == Convert.ToInt32(loanId)
-                                           && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-2)
-                                           select d;
-
-                        if (previousDay2.Any())
-                        {
-                            if (previousDay2.FirstOrDefault().IsPenalty)
-                            {
-                                if (previousDay2.FirstOrDefault().PenaltyAmount == 10)
-                                {
-                                    penaltyValue = 20;
-                                }
-                                else
-                                {
-                                    penaltyValue = 10;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return penaltyValue;
-        }
-
-        // loan log history get previous balance
-        [Authorize]
-        [HttpGet]
-        [Route("api/loanLogHistory/getPreviousBalance/{loanId}/{collectionDate}")]
-        public Decimal getLoanLogHistoryPreviousBalance(String loanId, String collectionDate)
-        {
-            var prevoiusDay = from d in db.trnLoanLogHistories where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1) select d;
-
-            Decimal previousBalance = 0;
-            if (prevoiusDay.Any())
-            {
-                previousBalance = prevoiusDay.FirstOrDefault().CurrentBalanceAmount;
-            }
-
-            return previousBalance;
-        }
-
-        // loan log history get fully payment
-        [Authorize]
-        [HttpGet]
-        [Route("api/loanLogHistory/getIsFullyPaid/{loanId}")]
-        public Boolean getLoanLogHistoryIsFullPaid(String loanId)
-        {
-            var isFullyPaid = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
-
-            Boolean isFullyPaidValue = false;
-            if (isFullyPaid.Any())
-            {
-                isFullyPaidValue = isFullyPaid.FirstOrDefault().IsFullyPaid;
-            }
-
-            return isFullyPaidValue;
-        }
-
         // partial payment loan log history
         [Authorize]
         [HttpPut]
@@ -674,26 +596,6 @@ namespace Lending.ApiControllers
                                                             updateLoanApplicationsForFullyPaid.IsFullyPaid = true;
                                                             db.SubmitChanges();
                                                         }
-                                                        else
-                                                        {
-                                                            Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
-                                                            newLoanLogHistory.LoanId = Convert.ToInt32(loanId);
-                                                            newLoanLogHistory.DayNumber = loanLogHistories.FirstOrDefault().DayNumber + 1;
-                                                            newLoanLogHistory.CollectionDate = Convert.ToDateTime(loanLogHistories.FirstOrDefault().CollectionDate).Date.AddDays(1);
-                                                            newLoanLogHistory.NetAmount = loanLogHistories.FirstOrDefault().NetAmount;
-                                                            newLoanLogHistory.CollectibleAmount = 0;
-                                                            newLoanLogHistory.PenaltyAmount = 0;
-                                                            newLoanLogHistory.PaidAmount = 0;
-                                                            newLoanLogHistory.PreviousBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
-                                                            newLoanLogHistory.CurrentBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
-                                                            newLoanLogHistory.IsCleared = false;
-                                                            newLoanLogHistory.IsPenalty = false;
-                                                            newLoanLogHistory.IsAction = true;
-                                                            newLoanLogHistory.IsOverdue = false;
-                                                            newLoanLogHistory.IsDueDate = false;
-                                                            db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
-                                                            db.SubmitChanges();
-                                                        }
                                                     }
                                                 }
                                                 else
@@ -713,26 +615,6 @@ namespace Lending.ApiControllers
                                                         {
                                                             var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
                                                             updateLoanApplicationsForFullyPaid.IsFullyPaid = true;
-                                                            db.SubmitChanges();
-                                                        }
-                                                        else
-                                                        {
-                                                            Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
-                                                            newLoanLogHistory.LoanId = Convert.ToInt32(loanId);
-                                                            newLoanLogHistory.DayNumber = loanLogHistories.FirstOrDefault().DayNumber + 1;
-                                                            newLoanLogHistory.CollectionDate = Convert.ToDateTime(loanLogHistories.FirstOrDefault().CollectionDate).Date.AddDays(1);
-                                                            newLoanLogHistory.NetAmount = loanLogHistories.FirstOrDefault().NetAmount;
-                                                            newLoanLogHistory.CollectibleAmount = 0;
-                                                            newLoanLogHistory.PenaltyAmount = 0;
-                                                            newLoanLogHistory.PaidAmount = 0;
-                                                            newLoanLogHistory.PreviousBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
-                                                            newLoanLogHistory.CurrentBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
-                                                            newLoanLogHistory.IsCleared = false;
-                                                            newLoanLogHistory.IsPenalty = false;
-                                                            newLoanLogHistory.IsAction = true;
-                                                            newLoanLogHistory.IsOverdue = false;
-                                                            newLoanLogHistory.IsDueDate = true;
-                                                            db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
                                                             db.SubmitChanges();
                                                         }
                                                     }
@@ -784,6 +666,85 @@ namespace Lending.ApiControllers
             {
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
             }
+        }
+
+        // loan log history get penalty value
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLogHistory/getPenaltyValue/{loanId}/{collectionDate}")]
+        public Decimal getLoanLogHistoryPenaltyValue(String loanId, String collectionDate)
+        {
+
+            var penaltyValue = 10;
+            var previousDay1 = from d in db.trnLoanLogHistories
+                               where d.LoanId == Convert.ToInt32(loanId)
+                               && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1)
+                               select d;
+
+            if (previousDay1.Any())
+            {
+                if (previousDay1.FirstOrDefault().IsPenalty)
+                {
+                    if (previousDay1.FirstOrDefault().PenaltyAmount == 10)
+                    {
+                        var previousDay2 = from d in db.trnLoanLogHistories
+                                           where d.LoanId == Convert.ToInt32(loanId)
+                                           && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-2)
+                                           select d;
+
+                        if (previousDay2.Any())
+                        {
+                            if (previousDay2.FirstOrDefault().IsPenalty)
+                            {
+                                if (previousDay2.FirstOrDefault().PenaltyAmount == 10)
+                                {
+                                    penaltyValue = 20;
+                                }
+                                else
+                                {
+                                    penaltyValue = 10;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return penaltyValue;
+        }
+
+        // loan log history get previous balance
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLogHistory/getPreviousBalance/{loanId}/{collectionDate}")]
+        public Decimal getLoanLogHistoryPreviousBalance(String loanId, String collectionDate)
+        {
+            var prevoiusDay = from d in db.trnLoanLogHistories where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1) select d;
+
+            Decimal previousBalance = 0;
+            if (prevoiusDay.Any())
+            {
+                previousBalance = prevoiusDay.FirstOrDefault().CurrentBalanceAmount;
+            }
+
+            return previousBalance;
+        }
+
+        // loan log history get fully payment
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLogHistory/getIsFullyPaid/{loanId}")]
+        public Boolean getLoanLogHistoryIsFullPaid(String loanId)
+        {
+            var isFullyPaid = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+
+            Boolean isFullyPaidValue = false;
+            if (isFullyPaid.Any())
+            {
+                isFullyPaidValue = isFullyPaid.FirstOrDefault().IsFullyPaid;
+            }
+
+            return isFullyPaidValue;
         }
     }
 }

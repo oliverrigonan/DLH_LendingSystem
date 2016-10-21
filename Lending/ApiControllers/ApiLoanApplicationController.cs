@@ -253,6 +253,7 @@ namespace Lending.ApiControllers
                             lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                             lockLoanApplication.Particulars = loanApplication.Particulars;
                             lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
+                            lockLoanApplication.CollectorId = loanApplication.CollectorId;
                             lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
                             lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;
                             lockLoanApplication.PassbookAmount = loanApplication.PassbookAmount;

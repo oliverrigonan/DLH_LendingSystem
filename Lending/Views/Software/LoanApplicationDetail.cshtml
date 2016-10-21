@@ -997,6 +997,8 @@
                 document.getElementById("btnLock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                 $("#btnClose").prop("disabled", true);
 
+                console.log(cboLoanApplicationCollector.selectedItem["Id"]);
+
                 var loanApplicationObject = new Object();
                 loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
                 loanApplicationObject.MaturityDate = loanApplicationMaturityDate.value;
@@ -1004,6 +1006,7 @@
                 loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                 loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
                 loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
+                loanApplicationObject.CollectorId = cboLoanApplicationCollector.selectedItem["Id"];
                 loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                 loanApplicationObject.ProcessingFeeAmount = document.getElementById('loanApplicationProcessingFee').value;
                 loanApplicationObject.PassbookAmount = document.getElementById('loanApplicationPassbook').value;
