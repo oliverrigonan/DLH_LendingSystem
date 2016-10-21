@@ -39,9 +39,9 @@ namespace Lending.ApiControllers
                                        IsOverdue = d.IsOverdue,
                                        IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
-                                       CollectorId = d.trnLoanApplication.CollectorId,
-                                       Collector = d.trnLoanApplication.mstCollector.Collector,
-                                       CollectorWithAssignedArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")"
+                                       AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
+                                       AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
+                                       CollectorWithAssignedArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")"
                                    };
 
             return loanLogHistories.ToList();
@@ -76,7 +76,10 @@ namespace Lending.ApiControllers
                                        IsOverdue = d.IsOverdue,
                                        IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
-                                       IsDueDate = d.IsDueDate
+                                       IsDueDate = d.IsDueDate,
+                                       AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
+                                       AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
+                                       CollectorWithAssignedArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")"
                                    };
 
             return loanLogHistories.ToList();
@@ -121,7 +124,7 @@ namespace Lending.ApiControllers
                                                 Data.trnCollectionLogHistory newCollectionLogHistory = new Data.trnCollectionLogHistory();
                                                 newCollectionLogHistory.LoanLogHistoryId = loanLogHistories.FirstOrDefault().Id;
                                                 newCollectionLogHistory.PaidAmount = loanLogHistories.FirstOrDefault().CurrentBalanceAmount;
-                                                newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CollectorId;
+                                                newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CurrentCollectorId;
                                                 newCollectionLogHistory.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
                                                 db.trnCollectionLogHistories.InsertOnSubmit(newCollectionLogHistory);
                                                 db.SubmitChanges();
@@ -257,7 +260,7 @@ namespace Lending.ApiControllers
                                             Data.trnCollectionLogHistory newCollectionLogHistory = new Data.trnCollectionLogHistory();
                                             newCollectionLogHistory.LoanLogHistoryId = loanLogHistories.FirstOrDefault().Id;
                                             newCollectionLogHistory.PaidAmount = loanLogHistories.FirstOrDefault().CurrentBalanceAmount;
-                                            newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CollectorId;
+                                            newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CurrentCollectorId;
                                             newCollectionLogHistory.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
                                             db.trnCollectionLogHistories.InsertOnSubmit(newCollectionLogHistory);
                                             db.SubmitChanges();
@@ -554,7 +557,7 @@ namespace Lending.ApiControllers
                                                     Data.trnCollectionLogHistory newCollectionLogHistory = new Data.trnCollectionLogHistory();
                                                     newCollectionLogHistory.LoanLogHistoryId = loanLogHistories.FirstOrDefault().Id;
                                                     newCollectionLogHistory.PaidAmount = loanLogHistory.PaidAmount;
-                                                    newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CollectorId;
+                                                    newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CurrentCollectorId;
                                                     newCollectionLogHistory.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
                                                     db.trnCollectionLogHistories.InsertOnSubmit(newCollectionLogHistory);
                                                     db.SubmitChanges();

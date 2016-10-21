@@ -915,7 +915,7 @@
                         document.getElementById("loanApplicationApplicantArea").value = loanApplicationResult.Area;
                         document.getElementById("loanApplicationParticulars").value = loanApplicationResult.Particulars;
                         cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
-                        cboLoanApplicationCollector.selectedValue = loanApplicationResult.Collector + " (" + loanApplicationResult.CollectorAreaAssigned + ")";
+                        cboLoanApplicationCollector.selectedValue = loanApplicationResult.AssignedCollector + " (" + loanApplicationResult.CollectorAreaAssigned + ")";
                         document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
                         document.getElementById('loanApplicationProcessingFee').value = loanApplicationResult.ProcessingFeeAmount.toLocaleString();
                         document.getElementById('loanApplicationPassbook').value = loanApplicationResult.PassbookAmount.toLocaleString();
@@ -997,8 +997,6 @@
                 document.getElementById("btnLock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                 $("#btnClose").prop("disabled", true);
 
-                console.log(cboLoanApplicationCollector.selectedItem["Id"]);
-
                 var loanApplicationObject = new Object();
                 loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
                 loanApplicationObject.MaturityDate = loanApplicationMaturityDate.value;
@@ -1006,7 +1004,7 @@
                 loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                 loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
                 loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
-                loanApplicationObject.CollectorId = cboLoanApplicationCollector.selectedItem["Id"];
+                loanApplicationObject.AssignedCollectorId = cboLoanApplicationCollector.selectedItem["Id"];
                 loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                 loanApplicationObject.ProcessingFeeAmount = document.getElementById('loanApplicationProcessingFee').value;
                 loanApplicationObject.PassbookAmount = document.getElementById('loanApplicationPassbook').value;
@@ -2196,7 +2194,7 @@
                             collectorByAreaArray.push({
                                 Id: collectorByAreaResults[i]["Id"],
                                 Collector: collectorByAreaResults[i]["Collector"],
-                                CollectorWithAssignedArea: collectorByAreaResults[i]["Collector"] + "  (" + collectorByAreaResults[i]["Area"] + ")",
+                                CollectorWithAssignedArea: collectorByAreaResults[i]["Collector"] + " (" + collectorByAreaResults[i]["Area"] + ")",
                             });
                         }
 

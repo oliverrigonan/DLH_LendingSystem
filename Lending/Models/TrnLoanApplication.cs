@@ -21,8 +21,10 @@ namespace Lending.Models
         public String Particulars { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
-        public Int32 CollectorId { get; set; }
-        public String Collector { get; set; }
+        public Int32 AssignedCollectorId { get; set; }
+        public String AssignedCollector { get; set; }
+        public Int32 CurrentCollectorId { get; set; }
+        public String CurrentCollector { get; set; }
         public String CollectorAreaAssigned { get; set; }
         public Decimal PrincipalAmount { get; set; }
         public Decimal ProcessingFeeAmount { get; set; }

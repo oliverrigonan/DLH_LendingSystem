@@ -29,8 +29,8 @@ namespace Lending.Models
         public Boolean IsAction { get; set; }
         public Boolean IsDueDate { get; set; }
         public String LoanApplicationMaturityDate { get; set; }
-        public Int32 CollectorId { get; set; }
-        public String Collector { get; set; }
+        public Int32 AssignedCollectorId { get; set; }
+        public String AssignedCollector { get; set; }
         public String CollectorWithAssignedArea { get; set; }
     }
 }
