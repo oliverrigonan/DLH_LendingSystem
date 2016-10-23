@@ -427,9 +427,17 @@
                                     </td>
                                     <td>&nbsp;&nbsp;&nbsp;</td>
                                     <td align="right">
-                                        <button class="btn btn-primary btn-sm" id="" onclick="">
-                                            <i class="fa fa-print fa-fw"></i>&nbsp; Print
-                                        </button>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                                                Options <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#"><i class="fa fa-print fa-fw"></i> Print</a></li>
+                                                <li><a href="#"><i class="fa fa-eye fa-fw"></i> View Collection Detail</a></li>
+                                                <li class="divider"></li>
+                                                <li><a href="#"><i class="fa fa-eraser fa-fw"></i> Clear Collections</a></li>
+                                            </ul>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -468,13 +476,13 @@
                                             <input type="text" class="form-control numberField" id="loanLogHistoryPrincipalAmount" placeholder="0.00" disabled />
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    @*<div class="form-group">
                                         <label>Total Penalty</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
                                             <input type="text" class="form-control numberField" id="loanLogHistoryTotalPenalty" placeholder="0.00" disabled />
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -484,13 +492,13 @@
                                             <input type="text" class="form-control numberField" id="loanLogHistoryTotalDeductions" placeholder="0.00" disabled />
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    @*<div class="form-group">
                                         <label>Total Amount Paid</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
                                             <input type="text" class="form-control numberField" id="loanLogHistoryTotalAmountPaid" placeholder="0.00" disabled />
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -500,13 +508,13 @@
                                             <input type="text" class="form-control numberField" id="loanLogHistoryNetAmount" placeholder="0.00" disabled />
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    @*<div class="form-group">
                                         <label>Total Current Balance</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
                                             <input type="text" class="form-control numberField" id="loanLogHistoryTotalBalance" placeholder="0.00" disabled />
                                         </div>
-                                    </div>
+                                    </div>*@
                                 </div>
                             </div>
                         </div>
@@ -1071,18 +1079,29 @@
                             location.reload();
                         }, 1500);
                     },
-                    404: function () {
-                        toastr.error("Not Found");
+                    404: function (message) {
+                        $("#processingModal").modal("hide");
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
                         $("#btnUnlock").prop("disabled", false);
                         $("#btnPrint").prop("disabled", false);
                         $("#btnClose").prop("disabled", false);
                         document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
                     },
                     400: function (message) {
-                        toastr.error("Bad Request", message.responseText);
-                        $("#btnLock").prop("disabled", false);
-                        document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
+                        $("#processingModal").modal("hide");
+                        toastr.error(message.responseText.replace(/"/g,""), "Error 400 - Bad Request");
+                        $("#btnUnlock").prop("disabled", false);
+                        $("#btnPrint").prop("disabled", false);
                         $("#btnClose").prop("disabled", false);
+                        document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                    },
+                    500: function (message) {
+                        $("#processingModal").modal("hide");
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                        $("#btnUnlock").prop("disabled", false);
+                        $("#btnPrint").prop("disabled", false);
+                        $("#btnClose").prop("disabled", false);
+                        document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
                     }
                 }
             });

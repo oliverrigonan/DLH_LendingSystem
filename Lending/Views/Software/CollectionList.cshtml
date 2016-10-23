@@ -171,10 +171,30 @@
                                     </div>
                                     <div id="collapse2" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            <label>Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                            <div class="form-group">
+                                                <label>Amount</label><br />
+                                                <div class="input-group numberField">
+                                                    <span class="input-group-addon">&#8369;</span>
+                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer" align="right">
+                                            <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                                            Change the Collector
+                                        </a>
+                                    </div>
+                                    <div id="collapse3" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <label>Collector</label><br />
+                                                <input type="text" class="form-control" id="" placeholder="0.00" />
                                             </div>
                                         </div>
                                         <div class="panel-footer" align="right">
@@ -184,26 +204,30 @@
                                 </div>
                             </div>
                             <hr />
-                            <button class="btn btn-info btn-block"> View Details</button>
-                            <button class="btn btn-primary btn-block"> Undo (No Action)</button>
-                            <button class="btn btn-danger btn-block"> Clear All Collections</button>
+                            <button class="btn btn-info btn-block"> View Collection Detail</button>
                         </div>
                         <div class="col-sm-5">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    More Actions
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                More Actions
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Undo Actions and Changes">
+                                                    <i class="fa fa-undo fa-fw"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                                 <div class="panel-body">
                                     <div class="panel panel-default">
                                         <div class="panel-body">
-                                            <button class="btn btn-success btn-block"> Clear</button>
-                                            <button class="btn btn-warning btn-block"> Unclear</button>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <button class="btn btn-danger btn-block"> Absent</button>
-                                            <button class="btn btn-warning btn-block"> Cancel Absent</button>
+                                            <button class="btn btn-success btn-block" onclick="btnClearOnclick()"> Clear</button>
+                                            <button class="btn btn-danger btn-block" onclick="btnAbsentOnclick()"> Absent</button>
                                         </div>
                                     </div>
                                     <div class="panel panel-default">
@@ -357,11 +381,11 @@
             NProgress.start();
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
-            if (collectionItem.CurrentBalanceAmount > 0) {
-                if (!collectionItem.IsCleared) {
+            if (!collectionItem.IsCleared) {
+                if (collectionItem.CurrentBalanceAmount > 0) {
                     $.ajax({
                         type: "PUT",
-                        url: '/api/loanLogHistory/isCleared/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                        url: '/api/loanLogHistory/cleared/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         statusCode: {
@@ -381,23 +405,27 @@
                                     collectionCollectionView.refresh();
                                 });
                             },
-                            404: function () {
+                            404: function (message) {
                                 NProgress.done();
-                                toastr.error("Not Found");
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
                             },
-                            400: function () {
+                            400: function (message) {
                                 NProgress.done();
-                                toastr.error("Bad Request");
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                            },
+                            500: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
                             }
                         }
                     });
                 } else {
                     NProgress.done();
-                    toastr.info("Already Cleared");
+                    toastr.info("No Current Balance to be cleared");
                 }
             } else {
                 NProgress.done();
-                toastr.info("No Current Balance to be cleared");
+                toastr.info("Already Cleared");
             }
         }
 
@@ -409,7 +437,7 @@
             if (!collectionItem.IsPenalty) {
                 $.ajax({
                     type: "PUT",
-                    url: '/api/loanLogHistory/isPenalty/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                    url: '/api/loanLogHistory/absent/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     statusCode: {
@@ -439,13 +467,17 @@
                                 }
                             });
                         },
-                        404: function () {
+                        404: function (message) {
                             NProgress.done();
-                            toastr.error("Not Found");
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
                         },
-                        400: function () {
+                        400: function (message) {
                             NProgress.done();
-                            toastr.error("Bad Request");
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                        },
+                        500: function (message) {
+                            NProgress.done();
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
                         }
                     }
                 });
@@ -575,7 +607,7 @@
                             },
                             {
                                 "header": "C",
-                                "binding": "IsOverdue",
+                                "binding": "IsCleared",
                                 "allowSorting": true,
                                 "width": "0.6*",
                             },
@@ -745,6 +777,7 @@
             toastrModification();
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate');
             createCboCollectionDate();
+            $(function () { $("[data-toggle='tooltip']").tooltip(); });
         }
     </script>
 </body>

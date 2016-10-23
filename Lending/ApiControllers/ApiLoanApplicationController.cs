@@ -302,35 +302,43 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-                        
-                        var unlockLoanApplication = loanApplications.FirstOrDefault();
-                        unlockLoanApplication.IsLocked = false;
-                        unlockLoanApplication.UpdatedByUserId = userId;
-                        unlockLoanApplication.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        var collectionLogHistory = from d in db.trnCollectionLogHistories where d.LoanId == Convert.ToInt32(id) select d;
+                        if (!collectionLogHistory.Any())
+                        {
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                        Business.LoanLogHistory loanLogHistory = new Business.LoanLogHistory();
-                        loanLogHistory.deleteLoanLogHistory(Convert.ToInt32(id));
+                            var unlockLoanApplication = loanApplications.FirstOrDefault();
+                            unlockLoanApplication.IsLocked = false;
+                            unlockLoanApplication.UpdatedByUserId = userId;
+                            unlockLoanApplication.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
 
-                        Business.Journal journal = new Business.Journal();
-                        journal.deleteLoanJournal(Convert.ToInt32(id));
+                            Business.LoanLogHistory loanLogHistory = new Business.LoanLogHistory();
+                            loanLogHistory.deleteLoanLogHistory(Convert.ToInt32(id));
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            Business.Journal journal = new Business.Journal();
+                            journal.deleteLoanJournal(Convert.ToInt32(id));
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot unlock the loan application because the collection has already been started.");
+                        }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot unlock the loan application because it is not yet locked.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to unlock this loan application.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
             }
         }
 
