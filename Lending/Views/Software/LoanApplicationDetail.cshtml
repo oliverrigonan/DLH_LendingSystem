@@ -624,12 +624,14 @@
 
         // loan application loan date and maturity date
         function loanApplicationLoanDateRange() {
+            loanApplicationLoanDate = new wijmo.input.InputDate('#loanApplicationLoanDate');
             createloanApplicationLoanDate();
 
             loanApplicationMaturityDateRange();
         }
 
         function loanApplicationMaturityDateRange() {
+            loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate');
             createloanApplicationMaturityDate();
 
             cboLoanApplicationAccount = new wijmo.input.ComboBox('#cboLoanApplicationAccount');
@@ -909,7 +911,10 @@
                         document.getElementById('loanApplicationProcessingFee').disabled = true;
                         document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
+
+                        loanApplicationMaturityDate.min = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
+
                         cboLoanApplicationAccount.selectedValue = loanApplicationResult.Account;
                         cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
                         document.getElementById("loanApplicationApplicantArea").value = loanApplicationResult.Area;
@@ -1967,6 +1972,7 @@
                                     IsPenalty: loanLogHistoryDataResults[i]["IsPenalty"],
                                     IsOverdue: loanLogHistoryDataResults[i]["IsOverdue"],
                                     IsFullyPaid: loanLogHistoryDataResults[i]["IsFullyPaid"],
+                                    IsAdvance: loanLogHistoryDataResults[i]["IsAdvance"],
                                     PaidAmount: loanLogHistoryDataResults[i]["PaidAmount"],
                                     PreviousBalanceAmount: loanLogHistoryDataResults[i]["PreviousBalanceAmount"],
                                     CurrentBalanceAmount: loanLogHistoryDataResults[i]["CurrentBalanceAmount"],
@@ -2069,6 +2075,12 @@
                             },
                             {
                                 "header": "A",
+                                "binding": "IsAdvance",
+                                "allowSorting": false,
+                                "width": "0.7*",
+                            },
+                            {
+                                "header": "P",
                                 "binding": "IsPenalty",
                                 "allowSorting": false,
                                 "width": "0.7*",
@@ -2118,7 +2130,10 @@
             loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 7, 'A');
 
             loanLogHistoryFlexGrid.columnHeaders.columns[8].allowMerging = true;
-            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 8, 'C');
+            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 8, 'P');
+
+            loanLogHistoryFlexGrid.columnHeaders.columns[9].allowMerging = true;
+            loanLogHistoryFlexGrid.columnHeaders.setCellData(0, 9, 'C');
 
             //Navigation button
             btnFirstPageGridLoanLogHistory = document.getElementById('btnMoveToFirstPageGridLoanLogHistory');
@@ -2221,8 +2236,6 @@
         window.onload = function () {
             NProgress.start();
             toastrModification();
-            loanApplicationLoanDate = new wijmo.input.InputDate('#loanApplicationLoanDate');
-            loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate');
             loanApplicationLoanDateRange();
 
             $(document).on('show.bs.modal', '.modal', function (event) {

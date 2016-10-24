@@ -23,6 +23,7 @@ namespace Lending.Models
         public Decimal PreviousBalanceAmount { get; set; }
         public Decimal CurrentBalanceAmount { get; set; }
         public Boolean IsCleared { get; set; }
+        public Boolean IsAdvance { get; set; }
         public Boolean IsPenalty { get; set; }
         public Boolean IsOverdue { get; set; }
         public Boolean IsFullyPaid { get; set; }

@@ -518,19 +518,28 @@
                 "show": true,
                 "backdrop": "static"
             });
+
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
 
             document.getElementById("currentAmountToBePaid").innerHTML = "&#8369; " + collectionItem.CurrentBalanceAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             document.getElementById("collectionPartialPayment").value = 0;
 
-            console.log(collectionItem.CollectorWithAssignedArea);
-
             cboCollectionChangeCollector.selectedValue = collectionItem.CollectorWithAssignedArea;
+
             document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
             $("#btnUpdatePartialPayment").prop("disabled", false);
 
             $('#collectionPartialPayment').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            $("#btnUpdateAdvancePayment").prop("disabled", false);
+            document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+
+            $('#collectionAdvancePaymentAmount').each(function () {
                 $(this).css({
                     "border": "",
                 });
@@ -1238,8 +1247,6 @@
                 var collectionItem = collectionCollectionView.currentEditItem;
                 var collectionAdvancePaymentAmount = document.getElementById("collectionAdvancePaymentAmount").value;
 
-                console.log(collectionAdvancePaymentAmount);
-
                 var loanLogHistoryObject = new Object();
                 loanLogHistoryObject.PaidAmount = parseFloat(collectionAdvancePaymentAmount.replace(/[^\d\.]/g, ''));
                 var loanLogHistoryData = JSON.stringify(loanLogHistoryObject);
@@ -1268,7 +1275,7 @@
                                 dataType: "json",
                                 data: loanLogHistoryData,
                                 statusCode: {
-                                    200: function () {
+                                    200: function (message) {
                                         $.ajax({
                                             type: "GET",
                                             url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
@@ -1276,16 +1283,28 @@
                                             dataType: "json",
                                             success: function (isFullyPaidResult) {
                                                 NProgress.done();
-                                                toastr.success("Successfully Cleared");
+                                                toastr.success(message, "Successfully Updated");
+
+                                                $("#btnUpdateAdvancePayment").prop("disabled", false);
+                                                document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+
+                                                $('#collectionAdvancePaymentAmount').each(function () {
+                                                    $(this).css({
+                                                        "border": "",
+                                                    });
+                                                });
 
                                                 collectionItem.PenaltyAmount = 0;
                                                 collectionItem.PaidAmount = collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount;
                                                 collectionItem.CurrentBalanceAmount = 0;
                                                 collectionItem.IsCleared = true;
+                                                collectionItem.IsAdvance = true;
                                                 collectionItem.IsFullyPaid = isFullyPaidResult;
                                                 collectionItem.IsPenalty = false;
-                                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
-                                                collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                                collectionItem.OptionButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()' disabled><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()' disabled><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                                collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()' disabled><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                                collectionItem.UndoChangesButton = "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()' disabled><i class='fa fa-undo fa-fw'></i></button>";
 
                                                 collectionCollectionView.onCollectionChanged(function () {
                                                     collectionCollectionView.refresh();
@@ -1314,10 +1333,9 @@
                                 }
                             });
                         }
-                    }
-                    else {
+                    } else {
                         NProgress.done();
-                        $('#collectionPartialPayment').each(function () {
+                        $('#collectionAdvancePaymentAmount').each(function () {
                             $(this).css({
                                 "border": "1px solid red"
                             });
@@ -1329,7 +1347,7 @@
                     }
                 } else {
                     NProgress.done();
-                    $('#collectionPartialPayment').each(function () {
+                    $('#collectionAdvancePaymentAmount').each(function () {
                         $(this).css({
                             "border": "1px solid red"
                         });
@@ -1352,10 +1370,10 @@
             toastrModification();
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate');
             createCboCollectionDate();
-            $(function () { $("[data-toggle='tooltip']").tooltip(); });
             doubleModal();
             cboCollectionChangeCollector = new wijmo.input.ComboBox('#cboCollectionChangeCollector');
             getCollectorByArea();
+            $(function () { $("[data-toggle='tooltip']").tooltip(); });
         }
     </script>
 </body>
