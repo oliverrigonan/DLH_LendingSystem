@@ -83,6 +83,7 @@ namespace Lending.Business
                             newLoanLogHistory.PreviousBalanceAmount = 0;
                             newLoanLogHistory.CurrentBalanceAmount = currentBalanceValue;
                             newLoanLogHistory.IsCleared = false;
+                            newLoanLogHistory.IsAdvance = false;
                             newLoanLogHistory.IsPenalty = false;
                             newLoanLogHistory.IsAction = isActionValue;
                             newLoanLogHistory.IsOverdue = false;

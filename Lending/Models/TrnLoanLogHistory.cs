@@ -31,6 +31,8 @@ namespace Lending.Models
         public String LoanApplicationMaturityDate { get; set; }
         public Int32 AssignedCollectorId { get; set; }
         public String AssignedCollector { get; set; }
+        public Int32 CurrentCollectorId { get; set; }
+        public String CurrentCollector { get; set; }
         public String CollectorWithAssignedArea { get; set; }
     }
 }

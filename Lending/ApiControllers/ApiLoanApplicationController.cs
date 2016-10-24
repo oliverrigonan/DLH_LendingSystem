@@ -40,7 +40,7 @@ namespace Lending.ApiControllers
                                        AssignedCollector = d.mstCollector.Collector,
                                        CurrentCollectorId = d.CurrentCollectorId,
                                        CurrentCollector = d.mstCollector1.Collector,
-                                       CollectorAreaAssigned = d.mstCollector.mstArea.Area,
+                                       CollectorAreaAssigned = d.mstCollector1.mstArea.Area,
                                        PrincipalAmount = d.PrincipalAmount,
                                        ProcessingFeeAmount = d.ProcessingFeeAmount,
                                        PassbookAmount = d.PassbookAmount,

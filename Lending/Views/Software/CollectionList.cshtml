@@ -202,12 +202,12 @@
                                                 <label>Amount</label><br />
                                                 <div class="input-group numberField">
                                                     <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                    <input type="text" class="form-control numberField" value="0" id="collectionAdvancePaymentAmount" placeholder="0.00" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer" align="right">
-                                            <button class="btn btn-primary btn-sm"><i class="fa fa-check fa-fw"></i> Update </button>
+                                            <button class="btn btn-primary btn-sm" id="btnUpdateAdvancePayment" onclick="btnUpdateAdvancePaymentOnclick()"><i class="fa fa-check fa-fw"></i> Update </button>
                                         </div>
                                     </div>
                                 </div>
@@ -500,6 +500,7 @@
                                 IsOverdue: collectionListResult[i]["IsOverdue"],
                                 IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
                                 IsDueDate: collectionListResult[i]["IsDueDate"],
+                                IsAdvance: collectionListResult[i]["IsAdvance"],
                                 CollectorWithAssignedArea: collectionListResult[i]["CollectorWithAssignedArea"]
                             });
                         }
@@ -813,8 +814,8 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "P",
-                                "binding": "IsPenalty",
+                                "header": "O",
+                                "binding": "IsOverdue",
                                 "allowSorting": true,
                                 "width": "0.6*",
                             },
@@ -823,18 +824,6 @@
                                 "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
-                            },
-                            {
-                                "header": "O",
-                                "binding": "IsOverdue",
-                                "allowSorting": true,
-                                "width": "0.6*",
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": "0.6*",
                             },
                             {
                                 "header": "Previous",
@@ -849,16 +838,22 @@
                                 "width": "2*",
                             },
                             {
+                                "header": "A",
+                                "binding": "IsAdvance",
+                                "allowSorting": true,
+                                "width": "0.6*",
+                            },
+                            {
+                                "header": "F",
+                                "binding": "IsFullyPaid",
+                                "allowSorting": true,
+                                "width": "0.6*",
+                            },
+                            {
                                 "header": "Paid",
                                 "binding": "PaidAmount",
                                 "allowSorting": true,
                                 "width": "2*",
-                            },
-                            {
-                                "header": "C",
-                                "binding": "IsCleared",
-                                "allowSorting": true,
-                                "width": "0.6*",
                             },
                             {
                                 "header": "Absent",
@@ -913,28 +908,25 @@
             collectionFlexGrid.columnHeaders.setCellData(0, 3, 'Collectible');
 
             collectionFlexGrid.columnHeaders.columns[4].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 4, 'P');
+            collectionFlexGrid.columnHeaders.setCellData(0, 4, 'O');
 
             collectionFlexGrid.columnHeaders.columns[5].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 5, 'Penalty');
 
-            collectionFlexGrid.columnHeaders.columns[6].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'O');
-
-            collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'F');
-
-            for (var balancesColumn = 8; balancesColumn <= 9; balancesColumn++) {
+            for (var balancesColumn = 6; balancesColumn <= 7; balancesColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
             }
+
+            collectionFlexGrid.columnHeaders.columns[8].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 8, 'A');
+
+            collectionFlexGrid.columnHeaders.columns[9].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 9, 'F');
 
             collectionFlexGrid.columnHeaders.columns[10].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 10, 'Paid');
 
-            collectionFlexGrid.columnHeaders.columns[11].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 11, 'C');
-
-            for (var actionsColumn = 12; actionsColumn <= 14; actionsColumn++) {
+            for (var actionsColumn = 11; actionsColumn <= 13; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
 
@@ -1217,6 +1209,141 @@
                     });
                 }
             });
+        }
+
+        // advance payment validation
+        function advancePaymentValidation() {
+            var isValid = true;
+            $('#collectionAdvancePaymentAmount').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // Advance Payment
+        function btnUpdateAdvancePaymentOnclick() {
+            NProgress.start();
+            if (advancePaymentValidation()) {
+                collectionCollectionView.editItem(collectionCollectionView.currentItem);
+                var collectionItem = collectionCollectionView.currentEditItem;
+                var collectionAdvancePaymentAmount = document.getElementById("collectionAdvancePaymentAmount").value;
+
+                console.log(collectionAdvancePaymentAmount);
+
+                var loanLogHistoryObject = new Object();
+                loanLogHistoryObject.PaidAmount = parseFloat(collectionAdvancePaymentAmount.replace(/[^\d\.]/g, ''));
+                var loanLogHistoryData = JSON.stringify(loanLogHistoryObject);
+
+                if (parseFloat(collectionItem.CurrentBalanceAmount) <= parseFloat(collectionAdvancePaymentAmount.replace(/[^\d\.]/g, ''))) {
+                    if (collectionAdvancePaymentAmount != 0) {
+                        if (collectionItem.IsDueDate) {
+                            NProgress.done();
+                            $("#overdueExtensionModal").modal({
+                                "show": true,
+                                "backdrop": "static"
+                            });
+                        } else {
+                            $('#collectionAdvancePaymentAmount').each(function () {
+                                $(this).css({
+                                    "border": "",
+                                });
+                            });
+
+                            $("#btnUpdateAdvancePayment").prop("disabled", true);
+                            document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/loanLogHistory/advancePayment/updateByIdAndByLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: loanLogHistoryData,
+                                statusCode: {
+                                    200: function () {
+                                        $.ajax({
+                                            type: "GET",
+                                            url: '/api/loanLogHistory/getIsFullyPaid/' + collectionItem.LoanId,
+                                            contentType: "application/json; charset=utf-8",
+                                            dataType: "json",
+                                            success: function (isFullyPaidResult) {
+                                                NProgress.done();
+                                                toastr.success("Successfully Cleared");
+
+                                                collectionItem.PenaltyAmount = 0;
+                                                collectionItem.PaidAmount = collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount;
+                                                collectionItem.CurrentBalanceAmount = 0;
+                                                collectionItem.IsCleared = true;
+                                                collectionItem.IsFullyPaid = isFullyPaidResult;
+                                                collectionItem.IsPenalty = false;
+                                                collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
+                                                collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+
+                                                collectionCollectionView.onCollectionChanged(function () {
+                                                    collectionCollectionView.refresh();
+                                                });
+                                            }
+                                        });
+                                    },
+                                    404: function (message) {
+                                        NProgress.done();
+                                        $("#btnUpdateAdvancePayment").prop("disabled", false);
+                                        document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                                    },
+                                    400: function (message) {
+                                        NProgress.done();
+                                        $("#btnUpdateAdvancePayment").prop("disabled", false);
+                                        document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                                    },
+                                    500: function (message) {
+                                        NProgress.done();
+                                        $("#btnUpdateAdvancePayment").prop("disabled", false);
+                                        document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                    }
+                                }
+                            });
+                        }
+                    }
+                    else {
+                        NProgress.done();
+                        $('#collectionPartialPayment').each(function () {
+                            $(this).css({
+                                "border": "1px solid red"
+                            });
+                        });
+
+                        $("#btnUpdateAdvancePayment").prop("disabled", false);
+                        document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                        toastr.error("0 Amount or No Amount");
+                    }
+                } else {
+                    NProgress.done();
+                    $('#collectionPartialPayment').each(function () {
+                        $(this).css({
+                            "border": "1px solid red"
+                        });
+                    });
+
+                    $("#btnUpdateAdvancePayment").prop("disabled", false);
+                    document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                    toastr.error("The amount to be paid must not be greater than the current balance which is to be collected (Paid).");
+                }
+            } else {
+                $("#btnUpdateAdvancePayment").prop("disabled", false);
+                document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                toastr.error("Invalid Entry");
+            }
         }
 
         // on load page
