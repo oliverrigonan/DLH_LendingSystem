@@ -297,7 +297,7 @@
                                 </div>
                             </div>
                             <button class="btn btn-info btn-block" onclick="btnLoanApplicationDetailOnclick()"> Loan Application Detail</button>
-                            <button class="btn btn-info btn-block"> Collection Detail</button>
+                            <button class="btn btn-info btn-block" onclick="btnCollectionDetailOnclick()"> Collection Detail</button>
                         </div>
                     </div>
                 </div>
@@ -1034,6 +1034,13 @@
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
             window.open('/Software/LoanApplicationDetail?id=' + collectionItem.LoanId, '_blank');
+        }
+
+        // collection detail onclick
+        function btnCollectionDetailOnclick() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var collectionItem = collectionCollectionView.currentEditItem;
+            window.open('/Software/CollectionDetail?loanId=' + collectionItem.LoanId, '_blank');
         }
 
         // partial payment validation

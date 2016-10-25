@@ -96,9 +96,9 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult CollectionDetail(Int32? id)
+        public ActionResult CollectionDetail(Int32? loanId)
         {
-            if (id == null)
+            if (loanId == null)
             {
                 return RedirectToAction("NotFound", "Software");
             }
