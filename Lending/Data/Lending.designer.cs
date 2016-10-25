@@ -517,6 +517,8 @@ namespace Lending.Data
 		
 		private bool _IsAction;
 		
+		private bool _IsOverdue;
+		
 		private bool _IsDueDate;
 		
 		private EntitySet<trnCollectionLogHistory> _trnCollectionLogHistories;
@@ -553,6 +555,8 @@ namespace Lending.Data
     partial void OnIsPenaltyChanged();
     partial void OnIsActionChanging(bool value);
     partial void OnIsActionChanged();
+    partial void OnIsOverdueChanging(bool value);
+    partial void OnIsOverdueChanged();
     partial void OnIsDueDateChanging(bool value);
     partial void OnIsDueDateChanged();
     #endregion
@@ -824,6 +828,26 @@ namespace Lending.Data
 					this._IsAction = value;
 					this.SendPropertyChanged("IsAction");
 					this.OnIsActionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdue", DbType="Bit NOT NULL")]
+		public bool IsOverdue
+		{
+			get
+			{
+				return this._IsOverdue;
+			}
+			set
+			{
+				if ((this._IsOverdue != value))
+				{
+					this.OnIsOverdueChanging(value);
+					this.SendPropertyChanging();
+					this._IsOverdue = value;
+					this.SendPropertyChanged("IsOverdue");
+					this.OnIsOverdueChanged();
 				}
 			}
 		}
@@ -9996,8 +10020,6 @@ namespace Lending.Data
 		
 		private decimal _NetAmount;
 		
-		private bool _IsOverdue;
-		
 		private bool _IsFullyPaid;
 		
 		private bool _IsLocked;
@@ -10070,8 +10092,6 @@ namespace Lending.Data
     partial void OnInsuranceIPIorPPIAmountChanged();
     partial void OnNetAmountChanging(decimal value);
     partial void OnNetAmountChanged();
-    partial void OnIsOverdueChanging(bool value);
-    partial void OnIsOverdueChanged();
     partial void OnIsFullyPaidChanging(bool value);
     partial void OnIsFullyPaidChanged();
     partial void OnIsLockedChanging(bool value);
@@ -10492,26 +10512,6 @@ namespace Lending.Data
 					this._NetAmount = value;
 					this.SendPropertyChanged("NetAmount");
 					this.OnNetAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdue", DbType="Bit NOT NULL")]
-		public bool IsOverdue
-		{
-			get
-			{
-				return this._IsOverdue;
-			}
-			set
-			{
-				if ((this._IsOverdue != value))
-				{
-					this.OnIsOverdueChanging(value);
-					this.SendPropertyChanging();
-					this._IsOverdue = value;
-					this.SendPropertyChanged("IsOverdue");
-					this.OnIsOverdueChanged();
 				}
 			}
 		}

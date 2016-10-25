@@ -85,6 +85,7 @@ namespace Lending.Business
                             newLoanLogHistory.IsCleared = false;
                             newLoanLogHistory.IsPenalty = false;
                             newLoanLogHistory.IsAction = isActionValue;
+                            newLoanLogHistory.IsOverdue = false;
                             newLoanLogHistory.IsDueDate = isDueDateValue;
                             db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
                             db.SubmitChanges();

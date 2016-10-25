@@ -50,7 +50,6 @@ namespace Lending.ApiControllers
                                        InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                        NetAmount = d.NetAmount,
                                        IsFullyPaid = d.IsFullyPaid,
-                                       IsOverdue = d.IsOverdue,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -100,7 +99,6 @@ namespace Lending.ApiControllers
                                       NetAmount = d.NetAmount,
                                       IsLocked = d.IsLocked,
                                       IsFullyPaid = d.IsFullyPaid,
-                                      IsOverdue = d.IsOverdue,
                                       CreatedByUserId = d.CreatedByUserId,
                                       CreatedByUser = d.mstUser1.FullName,
                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -148,7 +146,6 @@ namespace Lending.ApiControllers
                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                       NetAmount = d.NetAmount,
                                       IsFullyPaid = d.IsFullyPaid,
-                                      IsOverdue = d.IsOverdue,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
                                       CreatedByUser = d.mstUser1.FullName,
@@ -211,7 +208,6 @@ namespace Lending.ApiControllers
                 newLoanApplication.InsuranceIPIorPPIAmount = 0;
                 newLoanApplication.NetAmount = 0;
                 newLoanApplication.IsFullyPaid = false;
-                newLoanApplication.IsOverdue = false;
                 newLoanApplication.IsLocked = false;
                 newLoanApplication.CreatedByUserId = userId;
                 newLoanApplication.CreatedDateTime = DateTime.Now;

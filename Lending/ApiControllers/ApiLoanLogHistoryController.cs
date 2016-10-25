@@ -36,7 +36,7 @@ namespace Lending.ApiControllers
                                        CurrentBalanceAmount = d.CurrentBalanceAmount,
                                        IsCleared = d.IsCleared,
                                        IsPenalty = d.IsPenalty,
-                                       IsOverdue = d.trnLoanApplication.IsOverdue,
+                                       IsOverdue = d.IsOverdue,
                                        IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
                                        CollectorId = d.trnLoanApplication.CollectorId,
@@ -72,7 +72,7 @@ namespace Lending.ApiControllers
                                        CurrentBalanceAmount = d.CurrentBalanceAmount,
                                        IsCleared = d.IsCleared,
                                        IsPenalty = d.IsPenalty,
-                                       IsOverdue = d.trnLoanApplication.IsOverdue,
+                                       IsOverdue = d.IsOverdue,
                                        IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                        IsAction = d.IsAction,
                                        IsDueDate = d.IsDueDate
@@ -213,9 +213,8 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to apply some actions.");
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
             }
         }
@@ -590,6 +589,201 @@ namespace Lending.ApiControllers
             }
 
             return isFullyPaidValue;
+        }
+
+        // partial payment loan log history
+        [Authorize]
+        [HttpPut]
+        [Route("api/loanLogHistory/partialPayment/updateByIdAndByLoanId/{id}/{loanId}")]
+        public HttpResponseMessage updatePartialPaymentLoanLogHistory(String id, String loanId, Models.TrnLoanLogHistory loanLogHistory)
+        {
+            try
+            {
+                var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+                if (loanApplications.Any())
+                {
+                    if (loanApplications.FirstOrDefault().IsLocked)
+                    {
+                        var loanLogHistories = from d in db.trnLoanLogHistories where d.Id == Convert.ToInt32(id) select d;
+                        if (loanLogHistories.Any())
+                        {
+                            if (loanLogHistories.FirstOrDefault().CurrentBalanceAmount > 0)
+                            {
+                                if (!loanLogHistories.FirstOrDefault().IsCleared)
+                                {
+                                    if (loanLogHistories.FirstOrDefault().IsAction)
+                                    {
+                                        if (loanLogHistories.FirstOrDefault().CollectionDate <= DateTime.Today)
+                                        {
+                                            if (loanLogHistories.FirstOrDefault().CurrentBalanceAmount >= loanLogHistory.PaidAmount)
+                                            {
+                                                var collectionLogHistories = from d in db.trnCollectionLogHistories
+                                                                             where d.LoanLogHistoryId == loanLogHistories.FirstOrDefault().Id
+                                                                             select d;
+
+                                                if (collectionLogHistories.Any())
+                                                {
+                                                    var updateCollectionLogHistory = collectionLogHistories.FirstOrDefault();
+                                                    updateCollectionLogHistory.PaidAmount = loanLogHistory.PaidAmount;
+                                                    db.SubmitChanges();
+                                                }
+                                                else
+                                                {
+                                                    Data.trnCollectionLogHistory newCollectionLogHistory = new Data.trnCollectionLogHistory();
+                                                    newCollectionLogHistory.LoanLogHistoryId = loanLogHistories.FirstOrDefault().Id;
+                                                    newCollectionLogHistory.PaidAmount = loanLogHistory.PaidAmount;
+                                                    newCollectionLogHistory.CollectorId = loanApplications.FirstOrDefault().CollectorId;
+                                                    newCollectionLogHistory.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                                    db.trnCollectionLogHistories.InsertOnSubmit(newCollectionLogHistory);
+                                                    db.SubmitChanges();
+                                                }
+
+                                                var isClearedValue = false;
+                                                if (loanLogHistories.FirstOrDefault().CurrentBalanceAmount - loanLogHistory.PaidAmount == 0)
+                                                {
+                                                    isClearedValue = true;
+                                                }
+
+                                                var updateLoanLogHistory = loanLogHistories.FirstOrDefault();
+                                                updateLoanLogHistory.PaidAmount = loanLogHistory.PaidAmount;
+                                                updateLoanLogHistory.CurrentBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                updateLoanLogHistory.IsCleared = isClearedValue;
+                                                db.SubmitChanges();
+
+                                                var loanLogHistoryByCollectionDatePrevious = from d in db.trnLoanLogHistories where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == loanLogHistories.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                if (loanLogHistoryByCollectionDatePrevious.Any())
+                                                {
+                                                    var updateLoanLogHistoryByCollectionDatePrevious = loanLogHistoryByCollectionDatePrevious.FirstOrDefault();
+                                                    updateLoanLogHistoryByCollectionDatePrevious.IsAction = false;
+                                                    db.SubmitChanges();
+
+                                                    var loanLogHistoryByCollectionDate = from d in db.trnLoanLogHistories where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == loanLogHistories.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    if (loanLogHistoryByCollectionDate.Any())
+                                                    {
+                                                        var updateLoanLogHistoryByCollectionDate = loanLogHistoryByCollectionDate.FirstOrDefault();
+                                                        updateLoanLogHistoryByCollectionDate.PreviousBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                        updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = loanLogHistoryByCollectionDate.FirstOrDefault().CollectibleAmount + ((loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount);
+                                                        updateLoanLogHistoryByCollectionDate.IsAction = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                    else
+                                                    {
+                                                        if (loanLogHistories.FirstOrDefault().CurrentBalanceAmount == 0)
+                                                        {
+                                                            var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                                            updateLoanApplicationsForFullyPaid.IsFullyPaid = true;
+                                                            db.SubmitChanges();
+                                                        }
+                                                        else
+                                                        {
+                                                            Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
+                                                            newLoanLogHistory.LoanId = Convert.ToInt32(loanId);
+                                                            newLoanLogHistory.DayNumber = loanLogHistories.FirstOrDefault().DayNumber + 1;
+                                                            newLoanLogHistory.CollectionDate = Convert.ToDateTime(loanLogHistories.FirstOrDefault().CollectionDate).Date.AddDays(1);
+                                                            newLoanLogHistory.NetAmount = loanLogHistories.FirstOrDefault().NetAmount;
+                                                            newLoanLogHistory.CollectibleAmount = 0;
+                                                            newLoanLogHistory.PenaltyAmount = 0;
+                                                            newLoanLogHistory.PaidAmount = 0;
+                                                            newLoanLogHistory.PreviousBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                            newLoanLogHistory.CurrentBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                            newLoanLogHistory.IsCleared = false;
+                                                            newLoanLogHistory.IsPenalty = false;
+                                                            newLoanLogHistory.IsAction = true;
+                                                            newLoanLogHistory.IsOverdue = false;
+                                                            newLoanLogHistory.IsDueDate = false;
+                                                            db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
+                                                            db.SubmitChanges();
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    var loanLogHistoryByCollectionDate = from d in db.trnLoanLogHistories where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == loanLogHistories.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    if (loanLogHistoryByCollectionDate.Any())
+                                                    {
+                                                        var updateLoanLogHistoryByCollectionDate = loanLogHistoryByCollectionDate.FirstOrDefault();
+                                                        updateLoanLogHistoryByCollectionDate.PreviousBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                        updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = loanLogHistoryByCollectionDate.FirstOrDefault().CollectibleAmount + ((loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount);
+                                                        updateLoanLogHistoryByCollectionDate.IsAction = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                    else
+                                                    {
+                                                        if (loanLogHistories.FirstOrDefault().CurrentBalanceAmount - loanLogHistory.PaidAmount == 0)
+                                                        {
+                                                            var updateLoanApplicationsForFullyPaid = loanApplications.FirstOrDefault();
+                                                            updateLoanApplicationsForFullyPaid.IsFullyPaid = true;
+                                                            db.SubmitChanges();
+                                                        }
+                                                        else
+                                                        {
+                                                            Data.trnLoanLogHistory newLoanLogHistory = new Data.trnLoanLogHistory();
+                                                            newLoanLogHistory.LoanId = Convert.ToInt32(loanId);
+                                                            newLoanLogHistory.DayNumber = loanLogHistories.FirstOrDefault().DayNumber + 1;
+                                                            newLoanLogHistory.CollectionDate = Convert.ToDateTime(loanLogHistories.FirstOrDefault().CollectionDate).Date.AddDays(1);
+                                                            newLoanLogHistory.NetAmount = loanLogHistories.FirstOrDefault().NetAmount;
+                                                            newLoanLogHistory.CollectibleAmount = 0;
+                                                            newLoanLogHistory.PenaltyAmount = 0;
+                                                            newLoanLogHistory.PaidAmount = 0;
+                                                            newLoanLogHistory.PreviousBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                            newLoanLogHistory.CurrentBalanceAmount = (loanLogHistories.FirstOrDefault().CollectibleAmount + loanLogHistories.FirstOrDefault().PreviousBalanceAmount) - loanLogHistory.PaidAmount;
+                                                            newLoanLogHistory.IsCleared = false;
+                                                            newLoanLogHistory.IsPenalty = false;
+                                                            newLoanLogHistory.IsAction = true;
+                                                            newLoanLogHistory.IsOverdue = false;
+                                                            newLoanLogHistory.IsDueDate = true;
+                                                            db.trnLoanLogHistories.InsertOnSubmit(newLoanLogHistory);
+                                                            db.SubmitChanges();
+                                                        }
+                                                    }
+                                                }
+
+                                                return Request.CreateResponse(HttpStatusCode.OK);
+                                            }
+                                            else
+                                            {
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "The amount to be paid must not be greater than the current amount which is to be collected (Paid).");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "The actions can be applied when the collection date matches the date today.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                    }
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "The collection was already cleared. Click the Option button for update changes.");
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No current balance to be cleared.");
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to apply some actions.");
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to apply some actions.");
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
+            }
         }
     }
 }
