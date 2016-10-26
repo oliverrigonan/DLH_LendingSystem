@@ -486,6 +486,7 @@
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
                                 DayNumber: collectionListResult[i]["DayNumber"],
+                                ApplicantId: collectionListResult[i]["ApplicantId"],
                                 Applicant: collectionListResult[i]["Applicant"],
                                 Area: collectionListResult[i]["Area"],
                                 CollectionDate: collectionListResult[i]["CollectionDate"],
@@ -1040,7 +1041,7 @@
         function btnCollectionDetailOnclick() {
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
-            window.open('/Software/CollectionDetail?loanId=' + collectionItem.LoanId, '_blank');
+            window.open('/Software/CollectionDetail?applicantId=' + collectionItem.ApplicantId + '&loanId=' + collectionItem.LoanId, '_blank');
         }
 
         // partial payment validation

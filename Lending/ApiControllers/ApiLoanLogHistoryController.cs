@@ -62,6 +62,7 @@ namespace Lending.ApiControllers
                                        Id = d.Id,
                                        LoanId = d.LoanId,
                                        LoanNumber = d.trnLoanApplication.LoanNumber,
+                                       ApplicantId = d.trnLoanApplication.ApplicantId,
                                        Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + d.trnLoanApplication.mstApplicant.ApplicantMiddleName,
                                        Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
                                        DayNumber = d.DayNumber,
@@ -446,7 +447,7 @@ namespace Lending.ApiControllers
                                         {
                                             var updateLoanLogHistoryByCollectionDate = loanLogHistoryByCollectionDate.FirstOrDefault();
                                             updateLoanLogHistoryByCollectionDate.PreviousBalanceAmount = 0;
-                                            updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = 0;
+                                            updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = loanLogHistories.FirstOrDefault().CollectibleAmount;
                                             updateLoanLogHistoryByCollectionDate.IsAction = false;
                                             db.SubmitChanges();
                                         }
@@ -475,7 +476,7 @@ namespace Lending.ApiControllers
                                         {
                                             var updateLoanLogHistoryByCollectionDate = loanLogHistoryByCollectionDate.FirstOrDefault();
                                             updateLoanLogHistoryByCollectionDate.PreviousBalanceAmount = 0;
-                                            updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = 0;
+                                            updateLoanLogHistoryByCollectionDate.CurrentBalanceAmount = loanLogHistories.FirstOrDefault().CollectibleAmount;
                                             updateLoanLogHistoryByCollectionDate.IsAction = false;
                                             db.SubmitChanges();
                                         }

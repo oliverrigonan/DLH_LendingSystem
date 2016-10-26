@@ -12,6 +12,7 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public Int32 LoanId { get; set; }
         public String LoanNumber { get; set; }
+        public Int32 ApplicantId { get; set; }
         public String Applicant { get; set; }
         public String Area { get; set; }
         public Decimal DayNumber { get; set; }

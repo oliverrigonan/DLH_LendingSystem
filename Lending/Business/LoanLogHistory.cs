@@ -58,12 +58,11 @@ namespace Lending.Business
                         var numberOfDays = (Convert.ToDateTime(loanApplication.MaturityDate) - Convert.ToDateTime(loanApplication.LoanDate)).TotalDays;
                         for (var i = 1; i <= numberOfDays; i++)
                         {
-                            Decimal currentBalanceValue = 0;
                             Boolean isActionValue = false;
                             Boolean isDueDateValue = false;
+
                             if (i == 1)
                             {
-                                currentBalanceValue = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
                                 isActionValue = true;
                             }
 
@@ -81,7 +80,7 @@ namespace Lending.Business
                             newLoanLogHistory.PenaltyAmount = 0;
                             newLoanLogHistory.PaidAmount = 0;
                             newLoanLogHistory.PreviousBalanceAmount = 0;
-                            newLoanLogHistory.CurrentBalanceAmount = currentBalanceValue;
+                            newLoanLogHistory.CurrentBalanceAmount = Math.Round(loanApplication.NetAmount / Convert.ToDecimal(numberOfDays), 1);
                             newLoanLogHistory.IsCleared = false;
                             newLoanLogHistory.IsAdvance = false;
                             newLoanLogHistory.IsPenalty = false;
