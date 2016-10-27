@@ -33,6 +33,7 @@ namespace Lending.ApiControllers
                                        ApplicantId = d.ApplicantId,
                                        Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                        Area = d.mstApplicant.mstArea.Area,
+                                       IsNewApplicant = d.IsNewApplicant,
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
@@ -83,6 +84,7 @@ namespace Lending.ApiControllers
                                       ApplicantId = d.ApplicantId,
                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                       Area = d.mstApplicant.mstArea.Area,
+                                      IsNewApplicant = d.IsNewApplicant,
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
@@ -133,6 +135,7 @@ namespace Lending.ApiControllers
                                       ApplicantId = d.ApplicantId,
                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                       Area = d.mstApplicant.mstArea.Area,
+                                      IsNewApplicant = d.IsNewApplicant,
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
@@ -200,6 +203,7 @@ namespace Lending.ApiControllers
                 newLoanApplication.MaturityDate = DateTime.Today.AddMonths(2);
                 newLoanApplication.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newLoanApplication.IsNewApplicant = true;
                 newLoanApplication.Particulars = "NA";
                 newLoanApplication.PreparedByUserId = userId;
                 newLoanApplication.AssignedCollectorId = (from d in db.mstCollectors.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
@@ -314,8 +318,12 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var collectionLogHistory = from d in db.trnCollectionLogHistories where d.trnLoanLogHistory.LoanId == Convert.ToInt32(id) select d;
-                        if (!collectionLogHistory.Any())
+                        var collection = from d in db.trnCollections
+                                         where d.LoanId == Convert.ToInt32(id) 
+                                         && d.IsProcessed == true
+                                         select d;
+
+                        if (!collection.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
