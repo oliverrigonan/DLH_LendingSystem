@@ -171,8 +171,9 @@ namespace Lending.ApiControllers
         public String zeroFill(Int32 number, Int32 length)
         {
             var result = number.ToString();
-            var pad = length - result.Length; 
-            while (pad > 0) {
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
                 result = "0" + result;
                 pad--;
             }
@@ -192,7 +193,8 @@ namespace Lending.ApiControllers
 
                 String loanNumber = "0000000001";
                 var loanApplication = from d in db.trnLoanApplications.OrderByDescending(d => d.Id) select d;
-                if(loanApplication.Any()) {
+                if (loanApplication.Any())
+                {
                     var newLoanNumber = Convert.ToInt32(loanApplication.FirstOrDefault().LoanNumber) + 0000000001;
                     loanNumber = newLoanNumber.ToString();
                 }
@@ -229,9 +231,8 @@ namespace Lending.ApiControllers
 
                 return newLoanApplication.Id;
             }
-            catch(Exception e)
+            catch
             {
-                Debug.WriteLine(e);
                 return 0;
             }
         }
@@ -280,8 +281,8 @@ namespace Lending.ApiControllers
                             lockLoanApplication.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();
 
-                            Business.LoanLogHistory loanLogHistory = new Business.LoanLogHistory();
-                            loanLogHistory.postLoanLogHistory(Convert.ToInt32(id));
+                            Business.Collection collection = new Business.Collection();
+                            collection.postCollection(Convert.ToInt32(id));
 
                             Business.Journal journal = new Business.Journal();
                             journal.postLoanJournal(Convert.ToInt32(id));
@@ -318,12 +319,12 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var collection = from d in db.trnCollections
-                                         where d.LoanId == Convert.ToInt32(id) 
-                                         && d.IsProcessed == true
-                                         select d;
+                        var collections = from d in db.trnCollections
+                                          where d.LoanId == Convert.ToInt32(id)
+                                          && d.IsProcessed == true
+                                          select d;
 
-                        if (!collection.Any())
+                        if (!collections.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
@@ -333,8 +334,8 @@ namespace Lending.ApiControllers
                             unlockLoanApplication.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();
 
-                            Business.LoanLogHistory loanLogHistory = new Business.LoanLogHistory();
-                            loanLogHistory.deleteLoanLogHistory(Convert.ToInt32(id));
+                            Business.Collection collection = new Business.Collection();
+                            collection.deleteCollection(Convert.ToInt32(id));
 
                             Business.Journal journal = new Business.Journal();
                             journal.deleteLoanJournal(Convert.ToInt32(id));

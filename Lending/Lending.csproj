@@ -180,7 +180,6 @@
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiDisbursementController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationCollateralController.cs" />
-    <Compile Include="ApiControllers\ApiLoanLogHistoryController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
@@ -197,8 +196,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Business\Collection.cs" />
     <Compile Include="Business\Journal.cs" />
-    <Compile Include="Business\LoanLogHistory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
