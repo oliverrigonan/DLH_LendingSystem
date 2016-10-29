@@ -1452,12 +1452,7 @@
 
         // pdf
         function btnPrintOnClick() {
-            $("#btnPrint").prop("disabled", true);
-            $("#btnUnlock").prop("disabled", true);
-            $("#btnClose").prop("disabled", true);
-
-            document.getElementById("btnPrint").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Generating PDF File";
-            window.location = "/RepLoanApplicationCashVoucher/loanApplicationCashVoucher?loanId=" + getUrlParameter("id");
+            window.open("/RepLoanApplicationCashVoucher/loanApplicationCashVoucher?loanId=" + getUrlParameter("id"), "_blank");
         }
 
         // loan application tab

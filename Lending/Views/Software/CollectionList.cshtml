@@ -95,8 +95,6 @@
                                 &nbsp; &nbsp; &nbsp;
                             </td>
                             <td>
-                                <button class="btn btn-default btn-sm"> <i class="fa fa-check fa-fw"></i> Mark all as Clear</button>
-                                <button class="btn btn-default btn-sm"> <i class="fa fa-check fa-fw"></i> Mark all as Absent (Penalty) </button>
                                 <button class="btn btn-primary btn-sm"> <i class="fa fa-print fa-fw"></i> Print </button>
                             </td>
                         </tr>
@@ -130,37 +128,16 @@
         </div>
     </section>
 
-    <!-- Option Modal -->
-    <div class="modal fade" id="optionModal" role="dialog">
+    <!-- Detail Modal -->
+    <div class="modal fade" id="detailModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Options</h4>
+                    <h4 class="modal-title"> Details</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        Actions
-                                    </td>
-                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="right">
-                                        <button type="button" class="btn btn-default btn-xs" data-toggle="tooltip" data-placement="top" title="Undo Actions and Changes" onclick="btnUndoChangesOnclick()">
-                                            <i class="fa fa-undo fa-fw"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-body">
-                            <button class="btn btn-success btn-block" onclick="btnClearOnclick()"> Clear</button>
-                            <button class="btn btn-danger btn-block" onclick="btnAbsentOnclick()"> Absent</button>
-                        </div>
-                    </div>
                     <button class="btn btn-info btn-block" onclick="btnLoanApplicationDetailOnclick()"> Loan Application Detail</button>
                     <button class="btn btn-info btn-block" onclick="btnCollectionDetailOnclick()"> Collection Detail</button>
                 </div>
@@ -181,7 +158,7 @@
                     <h4 class="modal-title">Collection Due Date</h4>
                 </div>
                 <div class="modal-body">
-                    The current collection is in due date. Click the button below for more options.
+                    The current collection is in due date. Click the button below for more details.
                     <br /><br />
                     <button class="btn btn-info btn-block" onclick="btnCollectionDetailOnclick()"> Go to Collection Detail</button>
                 </div>
@@ -285,7 +262,7 @@
                             }
 
                             collectionListArray.push({
-                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'" + disableButton + "><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                                DetailButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnDetailOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
                                 AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
                                 UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disableButton + "><i class='fa fa-undo fa-fw'></i></button>",
@@ -330,9 +307,9 @@
             return collectionListArray;
         }
 
-        // option collection
-        function btnOptionOnclick() {
-            $("#optionModal").modal({
+        // detail collection
+        function btnDetailOnclick() {
+            $("#detailModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
@@ -589,8 +566,8 @@
             collectionFlexGrid.initialize({
                 columns: [
                             {
-                                "header": "Option",
-                                "binding": "OptionButton",
+                                "header": "Detail",
+                                "binding": "DetailButton",
                                 "width": 80,
                                 "align": "center",
                                 "allowResizing": false,
@@ -703,7 +680,7 @@
             collectionFlexGrid.columnHeaders.rows[0].allowMerging = true;
 
             collectionFlexGrid.columnHeaders.columns[0].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 0, 'Option');
+            collectionFlexGrid.columnHeaders.setCellData(0, 0, 'Detail');
 
             collectionFlexGrid.columnHeaders.columns[1].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 1, 'Date');

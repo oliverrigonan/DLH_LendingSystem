@@ -97,19 +97,31 @@
                         </div>
                         <div class="col-md-7">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Number</span>
+                                <span class="input-group-addon"><i class="fa fa-file-text-o fa-fw"></i> Loan Number</span>
                                 <div id="cboLoanNumberLogHistory" style="width: 100%;"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="panel-heading">
-                    <button class="btn btn-primary btn-sm" id="">Partial Payment</button>
-                    <button class="btn btn-primary btn-sm" id="">Advance Payment</button>
-                    <button class="btn btn-primary btn-sm" id="">Full Payment</button>
-                    <button class="btn btn-primary btn-sm" id="">Extend Collection</button>
-                    <button class="btn btn-primary btn-sm" id="">Overdue</button>
-                    <button class="btn btn-primary btn-sm" id=""><i class="fa fa-question-circle-o fa-fw"></i></button>
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-map-pin fa-fw"></i> Area</span>
+                                <input type="text" class="form-control input-sm" id="applicantArea" disabled />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnExtedCollectionOnclick()">Extend Collection</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnOverdueOnclick()">Overdue</button>
+                        </div>
+                        <div class="col-md-1" align="right">
+                            <button class="btn btn-info btn-sm" id="" onclick="btnHelpOnclick()"><i class="fa fa-question-circle-o fa-fw"></i> Help</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="flexgridHeight">
@@ -141,7 +153,7 @@
 
     <!-- due date options -->
     <div class="modal fade" id="deudatemodal" role="dialog">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -151,6 +163,120 @@
                 <div class="modal-body">
                     <button class="btn btn-primary btn-block" onclick=""> Extend Payment</button>
                     <button class="btn btn-primary btn-block" onclick=""> Overdue</button>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- partial payment -->
+    <div class="modal fade" id="partialPaymentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Partial Payment</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- advance payment -->
+    <div class="modal fade" id="advancePaymentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Advance Payment</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- full payment -->
+    <div class="modal fade" id="fullPaymentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Full Payment</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- extend payment -->
+    <div class="modal fade" id="extendPaymentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Extend Payment</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- overdue -->
+    <div class="modal fade" id="overduePaymentModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Extend Payment</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- help -->
+    <div class="modal fade" id="helpModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Help and Guide</h4>
+                </div>
+                <div class="modal-body">
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
@@ -242,6 +368,7 @@
                             });
 
                             document.getElementById("applicantName").value = loanNumberResults[i]["Applicant"];
+                            document.getElementById("applicantArea").value = loanNumberResults[i]["Area"];
                         }
 
                         disabled = false;
@@ -326,7 +453,7 @@
                                 NetAmount: collectionListResult[i]["NetAmount"],
                                 CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
                                 PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                PaidAmount: collectionListResult[i]["PaidAmount"],
+                                PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold(),
                                 PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
                                 CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
                                 IsCleared: collectionListResult[i]["IsCleared"],
@@ -347,6 +474,9 @@
                                 CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"]
                             });
                         }
+                    } else {
+                        alert("The record you'd requested has no data");
+                        window.location = "/Software/CollectionList";
                     }
 
                     NProgress.done();
@@ -430,6 +560,8 @@
                                 "binding": "PaidAmount",
                                 "allowSorting": false,
                                 "width": "2*",
+                                "isContentHtml": true,
+                                "align": "right"
                             },
                             {
                                 "header": "O",
@@ -709,12 +841,59 @@
             });
         }
 
+        // partial payment
+        function btnPartialPaymentOnclick() {
+            $("#partialPaymentModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // advance payment
+        function btnAdvancePaymentOnclick() {
+            $("#advancePaymentModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // full payment
+        function btnFullPaymentOnclick() {
+            $("#fullPaymentModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // extend collection
+        function btnExtedCollectionOnclick() {
+            $("#extendPaymentModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // overdue
+        function btnOverdueOnclick() {
+            $("#overduePaymentModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // help
+        function btnHelpOnclick() {
+            $("#helpModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
         // on load page
         window.onload = function () {
             toastrModification();
             getLoanApplicationForSelectedValue();
         };
-
     </script>
 </body>
 </html>
