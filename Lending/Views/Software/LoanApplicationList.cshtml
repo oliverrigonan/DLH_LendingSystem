@@ -244,12 +244,15 @@
                                 isLocked = true;
                             }
 
+                            var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
+                            var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
                             loanApplicationListArray.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: loanApplicationListResult[i]["Id"],
                                 LoanNumber: loanApplicationListResult[i]["LoanNumber"],
-                                LoanDate: loanApplicationListResult[i]["LoanDate"],
+                                LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 Area: loanApplicationListResult[i]["Area"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
@@ -462,7 +465,7 @@
                                 "header": "Date",
                                 "binding": "LoanDate",
                                 "allowSorting": true,
-                                "width": "1.2*",
+                                "width": "1.5*",
                             },
                             {
                                 "header": "Loan No.",

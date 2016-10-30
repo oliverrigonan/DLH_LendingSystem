@@ -125,6 +125,33 @@
                     </div>
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    User security stamp
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Created by:</p>
+                            <div style="padding-left: 10px;">
+                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                <br />
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <p>Updated by:</p>
+                            <div style="padding-left: 10px;">
+                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                <br />
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -261,6 +288,9 @@
                                 disableButton = "disabled"
                             }
 
+                            var newDate = new Date(collectionListResult[i]["CollectionDate"]);
+                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
                             collectionListArray.push({
                                 DetailButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnDetailOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
@@ -274,7 +304,7 @@
                                 Applicant: collectionListResult[i]["Applicant"],
                                 Area: collectionListResult[i]["Area"],
                                 IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                CollectionDate: collectionListResult[i]["CollectionDate"],
+                                CollectionDate: collectionDateValue,
                                 NetAmount: collectionListResult[i]["NetAmount"],
                                 CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
                                 PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
@@ -577,7 +607,7 @@
                                 "header": "Date",
                                 "binding": "CollectionDate",
                                 "allowSorting": true,
-                                "width": "1.7*",
+                                "width": "2*",
                             },
                             {
                                 "header": "Applicant",
