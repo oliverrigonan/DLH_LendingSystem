@@ -313,11 +313,11 @@
                                 CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
                                 IsCleared: collectionListResult[i]["IsCleared"],
                                 IsAbsent: collectionListResult[i]["IsAbsent"],
-                                IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
-                                IsAdvancedPayment: collectionListResult[i]["IsAdvancedPayment"],
+                                IsPartiallyPaid: collectionListResult[i]["IsPartiallyPaid"],
+                                IsAdvancedPaid: collectionListResult[i]["IsAdvancedPaid"],
                                 IsDueDate: collectionListResult[i]["IsDueDate"],
                                 IsOverdue: collectionListResult[i]["IsOverdue"],
-                                IsExtended: collectionListResult[i]["IsExtended"],
+                                IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
                                 IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
                                 IsProcessed: collectionListResult[i]["IsProcessed"],
                                 IsAction: collectionListResult[i]["IsAction"],
@@ -326,7 +326,8 @@
                                 AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
                                 CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
                                 CurrentCollector: collectionListResult[i]["CurrentCollector"],
-                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"]
+                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
+                                Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString(),
                             });
                         }
                     }
@@ -371,11 +372,10 @@
                                         collectionItem.PenaltyAmount = 0;
                                         collectionItem.PaidAmount = collectionItem.CollectibleAmount + collectionItem.PreviousBalanceAmount;
                                         collectionItem.CurrentBalanceAmount = 0;
-                                        collectionItem.IsCleared = true;
                                         collectionItem.IsFullyPaid = isFullyPaidResult;
-                                        collectionItem.IsAbsent = false;
                                         collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
                                         collectionItem.ClearButton = "<button class='btn btn-success btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                        collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " Paid";
 
                                         collectionCollectionView.onCollectionChanged(function () {
                                             collectionCollectionView.refresh();
@@ -447,11 +447,10 @@
                                                 collectionItem.PenaltyAmount = penaltyValueResult;
                                                 collectionItem.PaidAmount = 0;
                                                 collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + collectionItem.PenaltyAmount + collectionItem.PreviousBalanceAmount;
-                                                collectionItem.IsCleared = false;
                                                 collectionItem.IsFullyPaid = isFullyPaidResult;
-                                                collectionItem.IsAbsent = true;
                                                 collectionItem.AbsentButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
                                                 collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                                collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " Absent";
 
                                                 collectionCollectionView.onCollectionChanged(function () {
                                                     collectionCollectionView.refresh();
@@ -515,11 +514,10 @@
                                         collectionItem.PaidAmount = 0;
                                         collectionItem.PreviousBalanceAmount = previousBalanceValueResult;
                                         collectionItem.CurrentBalanceAmount = collectionItem.CollectibleAmount + previousBalanceValueResult;
-                                        collectionItem.IsCleared = false;
                                         collectionItem.IsFullyPaid = isFullyPaidResult;
-                                        collectionItem.IsAbsent = false;
                                         collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
                                         collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
+                                        collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " Not Processed";
 
                                         collectionCollectionView.onCollectionChanged(function () {
                                             collectionCollectionView.refresh();
@@ -604,12 +602,6 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Date",
-                                "binding": "CollectionDate",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
@@ -646,28 +638,17 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "O",
-                                "binding": "IsOverdue",
-                                "allowSorting": true,
-                                "width": "0.6*",
-                            },
-                            {
-                                "header": "E",
-                                "binding": "IsOverdue",
-                                "allowSorting": true,
-                                "width": "0.6*",
-                            },
-                            {
-                                "header": "A",
-                                "binding": "IsAdvancedPayment",
-                                "allowSorting": true,
-                                "width": "0.6*",
-                            },
-                            {
                                 "header": "F",
                                 "binding": "IsFullyPaid",
                                 "allowSorting": true,
                                 "width": "0.6*",
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "Status",
+                                "width": "2.7*",
+                                "allowResizing": false,
+                                "isContentHtml": true
                             },
                             {
                                 "header": "Absent",
@@ -713,37 +694,28 @@
             collectionFlexGrid.columnHeaders.setCellData(0, 0, 'Detail');
 
             collectionFlexGrid.columnHeaders.columns[1].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 1, 'Date');
+            collectionFlexGrid.columnHeaders.setCellData(0, 1, 'Applicant');
 
             collectionFlexGrid.columnHeaders.columns[2].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 2, 'Applicant');
+            collectionFlexGrid.columnHeaders.setCellData(0, 2, 'Collectible');
 
             collectionFlexGrid.columnHeaders.columns[3].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 3, 'Collectible');
+            collectionFlexGrid.columnHeaders.setCellData(0, 3, 'Penalty');
 
-            collectionFlexGrid.columnHeaders.columns[4].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 4, 'Penalty');
-
-            for (var balancesColumn = 5; balancesColumn <= 6; balancesColumn++) {
+            for (var balancesColumn = 4; balancesColumn <= 5; balancesColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
             }
 
+            collectionFlexGrid.columnHeaders.columns[6].allowMerging = true;
+            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'Paid');
+
             collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Paid');
+            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'F');
 
             collectionFlexGrid.columnHeaders.columns[8].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 8, 'O');
+            collectionFlexGrid.columnHeaders.setCellData(0, 8, 'Status');
 
-            collectionFlexGrid.columnHeaders.columns[9].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 9, 'E');
-
-            collectionFlexGrid.columnHeaders.columns[10].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 10, 'A');
-
-            collectionFlexGrid.columnHeaders.columns[11].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 11, 'F');
-
-            for (var actionsColumn = 12; actionsColumn <= 14; actionsColumn++) {
+            for (var actionsColumn = 9; actionsColumn <= 11; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
 

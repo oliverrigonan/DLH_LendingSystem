@@ -92,7 +92,7 @@
                         <div class="col-md-5">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user fa-fw"></i> Applicant</span>
-                                <input type="text" class="form-control input-sm" id="applicantName" disabled/>
+                                <input type="text" class="form-control input-sm" id="applicantName" disabled />
                             </div>
                         </div>
                         <div class="col-md-7">
@@ -112,11 +112,12 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
-                            <button class="btn btn-primary btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
-                            <button class="btn btn-primary btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
-                            <button class="btn btn-primary btn-sm" id="" onclick="btnExtedCollectionOnclick()">Extend Collection</button>
-                            <button class="btn btn-primary btn-sm" id="" onclick="btnOverdueOnclick()">Overdue</button>
+                            <button class="btn btn-success btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
+                            <button class="btn btn-success btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
+                            <button class="btn btn-success btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
+                            <button class="btn btn-warning btn-sm" id="" onclick="btnExtedCollectionOnclick()">Extend</button>
+                            <button class="btn btn-warning btn-sm" id="" onclick="btnOverdueOnclick()">Overdue</button>
+                            <button class="btn btn-default btn-sm" id="" onclick=""><i class="fa fa-refresh fa-fw"></i></button>
                         </div>
                         <div class="col-md-1" align="right">
                             <button class="btn btn-info btn-sm" id="" onclick="btnHelpOnclick()"><i class="fa fa-question-circle-o fa-fw"></i> Help</button>
@@ -272,7 +273,7 @@
 
     <!-- due date options -->
     <div class="modal fade" id="deudatemodal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -300,9 +301,72 @@
                     <h4 class="modal-title">Partial Payment</h4>
                 </div>
                 <div class="modal-body">
-
+                    <div id="partialPaymentLoading" align="center">
+                        <center>
+                            <i class="fa fa-spinner fa-fw fa-spin"></i>
+                        </center>
+                    </div>
+                    <div id="partialPaymentContent">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Current Collection
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Collection Date</label><br />
+                                            <input type="text" class="form-control" id="partialPaymentCollectionDate" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Daily Collectibles</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField" id="partialPaymentDailyCollectibles" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Previous Balance</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField" id="partialPaymentPreviousBalance" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Current Balance</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField" id="partialPaymentCurrentBalance" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Amount
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Enter Partial Amount</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField requiredPartialPayment" id="partialPaymentPartialAmount" placeholder="0.00" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="alert alert-warning">
+                                    <label><i class="fa fa-info-circle"></i> Remember: </label> <br />
+                                    The Partial Amount must not be greater than the current balance which is to be partially paid.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-primary" id="" onclick="btnUpdatePartialPayment()"><i class="fa fa-check fa-fw"></i> Update</button>
                     <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
@@ -504,7 +568,6 @@
                             selectedValue: loanApplicationSelectedValue.toString(),
                             onSelectedIndexChanged: function () {
                                 NProgress.start();
-                                $("#loadingData").show();
 
                                 urlParameterLoanId = this.selectedItem["Id"];
 
@@ -557,7 +620,6 @@
 
                             var newDate = new Date(collectionListResult[i]["CollectionDate"]);
                             var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
-
                             collectionListArray.push({
                                 OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'" + disableButton + "><i class='fa fa-wrench fa-fw'></i> Option</button>",
                                 ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
@@ -580,11 +642,11 @@
                                 CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
                                 IsCleared: collectionListResult[i]["IsCleared"],
                                 IsAbsent: collectionListResult[i]["IsAbsent"],
-                                IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
-                                IsAdvancedPayment: collectionListResult[i]["IsAdvancedPayment"],
+                                IsPartiallyPaid: collectionListResult[i]["IsPartiallyPaid"],
+                                IsAdvancedPaid: collectionListResult[i]["IsAdvancedPaid"],
                                 IsDueDate: collectionListResult[i]["IsDueDate"],
                                 IsOverdue: collectionListResult[i]["IsOverdue"],
-                                IsExtended: collectionListResult[i]["IsExtended"],
+                                IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
                                 IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
                                 IsProcessed: collectionListResult[i]["IsProcessed"],
                                 IsAction: collectionListResult[i]["IsAction"],
@@ -593,7 +655,8 @@
                                 AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
                                 CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
                                 CurrentCollector: collectionListResult[i]["CurrentCollector"],
-                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"]
+                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
+                                Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString()
                             });
                         }
                     } else {
@@ -686,28 +749,17 @@
                                 "align": "right"
                             },
                             {
-                                "header": "O",
-                                "binding": "IsOverdue",
+                                "header": "C",
+                                "binding": "IsCurrentCollection",
                                 "allowSorting": false,
                                 "width": "0.7*",
                             },
                             {
-                                "header": "E",
-                                "binding": "IsExtended",
+                                "header": "Status",
+                                "binding": "Status",
                                 "allowSorting": false,
-                                "width": "0.7*",
-                            },
-                            {
-                                "header": "A",
-                                "binding": "IsAdvancedPayment",
-                                "allowSorting": false,
-                                "width": "0.7*",
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": false,
-                                "width": "0.7*",
+                                "isContentHtml": true,
+                                "width": "2.2*",
                             },
                             {
                                 "header": "Absent",
@@ -766,18 +818,12 @@
             collectionFlexGrid.columnHeaders.setCellData(0, 5, 'Paid Amount');
 
             collectionFlexGrid.columnHeaders.columns[6].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'O');
+            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'C');
 
             collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'E');
+            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Status');
 
-            collectionFlexGrid.columnHeaders.columns[8].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 8, 'A');
-
-            collectionFlexGrid.columnHeaders.columns[9].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 9, 'F');
-
-            for (var actionsColumn = 10; actionsColumn <= 12; actionsColumn++) {
+            for (var actionsColumn = 8; actionsColumn <= 10; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
 
@@ -824,7 +870,6 @@
                             200: function () {
                                 toastr.success("Cleared");
                                 NProgress.start();
-                                $("#loadingData").show();
 
                                 urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
@@ -884,7 +929,6 @@
                             200: function () {
                                 toastr.success("Absent");
                                 NProgress.start();
-                                $("#loadingData").show();
 
                                 urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
@@ -933,7 +977,6 @@
                     200: function () {
                         toastr.success("Undo");
                         NProgress.start();
-                        $("#loadingData").show();
 
                         urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
@@ -963,12 +1006,132 @@
             });
         }
 
+        var currentCollectionId = 0;
         // partial payment
         function btnPartialPaymentOnclick() {
-            $("#partialPaymentModal").modal({
-                "show": true,
-                "backdrop": "static"
+            NProgress.start();
+            $("#partialPaymentContent").hide();
+            $("#partialPaymentLoading").show();
+            $.ajax({
+                url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (currentCollectionResults) {
+                    if (currentCollectionResults != null) {
+                        if (currentCollectionResults.IsDueDate) {
+                            $("#deudatemodal").modal({
+                                "show": true,
+                                "backdrop": "static"
+                            });
+                        } else {
+                            $("#partialPaymentModal").modal({
+                                "show": true,
+                                "backdrop": "static"
+                            });
+
+                            $("#partialPaymentContent").show();
+                            $("#partialPaymentLoading").hide();
+
+                            var newDate = new Date(currentCollectionResults.CollectionDate);
+                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            currentCollectionId = currentCollectionResults.Id;
+                            document.getElementById("partialPaymentCollectionDate").value = collectionDateValue;
+                            document.getElementById("partialPaymentDailyCollectibles").value = currentCollectionResults.CollectibleAmount;
+                            document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount;
+                            document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount;
+                        }
+                    } else {
+                        toastr.info("No Current Collection to be partially paid.");
+                    }
+
+                    NProgress.done();
+                }
             });
+        }
+
+        // form input validation
+        function inputValidationForPartialPayment() {
+            var isValid = true;
+            $('.requiredPartialPayment').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // btn update partial payment
+        function btnUpdatePartialPayment() {
+            if (inputValidationForPartialPayment()) {
+                var partialAmountValue = document.getElementById("partialPaymentPartialAmount").value;
+                var currentBalanceAmountValue = document.getElementById("partialPaymentCurrentBalance").value;
+
+                var partialAmountObject = new Object();
+                partialAmountObject.PaidAmount = partialAmountValue;
+                var partialAmountData = JSON.stringify(partialAmountObject);
+
+                if (parseFloat(partialAmountValue.toString()) > parseFloat(currentBalanceAmountValue.toString())) {
+                    $('.requiredPartialPayment').each(function () {
+                        $(this).css({
+                            "border": "1px solid red"
+                        });
+                    });
+
+                    toastr.error("The amount to be paid must not be greater than the current balance amount.", "Invalid Entry");
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/collection/partialPayment/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: partialAmountData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Partially Paid");
+                                NProgress.start();
+
+                                $("#partialPaymentModal").modal("hide");
+
+                                urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+
+                                collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                                collectionCollectionView.pageSize = 15;
+
+                                collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsCollection();
+                                });
+
+                                collectionFlexGrid.itemsSource = collectionCollectionView;
+                                collectionFlexGrid.trackChanges = true;
+                            },
+                            404: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                            },
+                            400: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                            },
+                            500: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Please fill the empty field.", "Invalid Entry");
+            }
         }
 
         // advance payment
@@ -1015,6 +1178,7 @@
         window.onload = function () {
             toastrModification();
             getLoanApplicationForSelectedValue();
+            doubleModal();
         };
     </script>
 </body>

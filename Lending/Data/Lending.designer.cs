@@ -9028,15 +9028,15 @@ namespace Lending.Data
 		
 		private bool _IsAbsent;
 		
-		private bool _IsPartialPayment;
+		private bool _IsPartiallyPaid;
 		
-		private bool _IsAdvancedPayment;
+		private bool _IsAdvancedPaid;
 		
 		private bool _IsDueDate;
 		
 		private bool _IsOverdue;
 		
-		private bool _IsExtended;
+		private bool _IsExtendCollection;
 		
 		private bool _IsCurrentCollection;
 		
@@ -9080,16 +9080,16 @@ namespace Lending.Data
     partial void OnIsClearedChanged();
     partial void OnIsAbsentChanging(bool value);
     partial void OnIsAbsentChanged();
-    partial void OnIsPartialPaymentChanging(bool value);
-    partial void OnIsPartialPaymentChanged();
-    partial void OnIsAdvancedPaymentChanging(bool value);
-    partial void OnIsAdvancedPaymentChanged();
+    partial void OnIsPartiallyPaidChanging(bool value);
+    partial void OnIsPartiallyPaidChanged();
+    partial void OnIsAdvancedPaidChanging(bool value);
+    partial void OnIsAdvancedPaidChanged();
     partial void OnIsDueDateChanging(bool value);
     partial void OnIsDueDateChanged();
     partial void OnIsOverdueChanging(bool value);
     partial void OnIsOverdueChanged();
-    partial void OnIsExtendedChanging(bool value);
-    partial void OnIsExtendedChanged();
+    partial void OnIsExtendCollectionChanging(bool value);
+    partial void OnIsExtendCollectionChanged();
     partial void OnIsCurrentCollectionChanging(bool value);
     partial void OnIsCurrentCollectionChanged();
     partial void OnIsProcessedChanging(bool value);
@@ -9356,42 +9356,42 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPartialPayment", DbType="Bit NOT NULL")]
-		public bool IsPartialPayment
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPartiallyPaid", DbType="Bit NOT NULL")]
+		public bool IsPartiallyPaid
 		{
 			get
 			{
-				return this._IsPartialPayment;
+				return this._IsPartiallyPaid;
 			}
 			set
 			{
-				if ((this._IsPartialPayment != value))
+				if ((this._IsPartiallyPaid != value))
 				{
-					this.OnIsPartialPaymentChanging(value);
+					this.OnIsPartiallyPaidChanging(value);
 					this.SendPropertyChanging();
-					this._IsPartialPayment = value;
-					this.SendPropertyChanged("IsPartialPayment");
-					this.OnIsPartialPaymentChanged();
+					this._IsPartiallyPaid = value;
+					this.SendPropertyChanged("IsPartiallyPaid");
+					this.OnIsPartiallyPaidChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdvancedPayment", DbType="Bit NOT NULL")]
-		public bool IsAdvancedPayment
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdvancedPaid", DbType="Bit NOT NULL")]
+		public bool IsAdvancedPaid
 		{
 			get
 			{
-				return this._IsAdvancedPayment;
+				return this._IsAdvancedPaid;
 			}
 			set
 			{
-				if ((this._IsAdvancedPayment != value))
+				if ((this._IsAdvancedPaid != value))
 				{
-					this.OnIsAdvancedPaymentChanging(value);
+					this.OnIsAdvancedPaidChanging(value);
 					this.SendPropertyChanging();
-					this._IsAdvancedPayment = value;
-					this.SendPropertyChanged("IsAdvancedPayment");
-					this.OnIsAdvancedPaymentChanged();
+					this._IsAdvancedPaid = value;
+					this.SendPropertyChanged("IsAdvancedPaid");
+					this.OnIsAdvancedPaidChanged();
 				}
 			}
 		}
@@ -9436,22 +9436,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsExtended", DbType="Bit NOT NULL")]
-		public bool IsExtended
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsExtendCollection", DbType="Bit NOT NULL")]
+		public bool IsExtendCollection
 		{
 			get
 			{
-				return this._IsExtended;
+				return this._IsExtendCollection;
 			}
 			set
 			{
-				if ((this._IsExtended != value))
+				if ((this._IsExtendCollection != value))
 				{
-					this.OnIsExtendedChanging(value);
+					this.OnIsExtendCollectionChanging(value);
 					this.SendPropertyChanging();
-					this._IsExtended = value;
-					this.SendPropertyChanged("IsExtended");
-					this.OnIsExtendedChanged();
+					this._IsExtendCollection = value;
+					this.SendPropertyChanged("IsExtendCollection");
+					this.OnIsExtendCollectionChanged();
 				}
 			}
 		}

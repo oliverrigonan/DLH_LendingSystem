@@ -88,11 +88,11 @@ namespace Lending.Business
                         newCollection.CurrentBalanceAmount = Math.Round(loanApplication.FirstOrDefault().NetAmount / Convert.ToDecimal(numberOfDays), 1);
                         newCollection.IsCleared = false;
                         newCollection.IsAbsent = false;
-                        newCollection.IsPartialPayment = false;
-                        newCollection.IsAdvancedPayment = false;
+                        newCollection.IsPartiallyPaid = false;
+                        newCollection.IsAdvancedPaid = false;
                         newCollection.IsDueDate = isDueDateValue;
                         newCollection.IsOverdue = false;
-                        newCollection.IsExtended = false;
+                        newCollection.IsExtendCollection = false;
                         newCollection.IsCurrentCollection = isCurrentCollectionValue;
                         newCollection.IsProcessed = false;
                         newCollection.IsAction = isActionValue;
