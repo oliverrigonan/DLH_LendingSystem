@@ -301,66 +301,59 @@
                     <h4 class="modal-title">Partial Payment</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="partialPaymentLoading" align="center">
-                        <center>
-                            <i class="fa fa-spinner fa-fw fa-spin"></i>
-                        </center>
-                    </div>
-                    <div id="partialPaymentContent">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Current Collection
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Current Collection
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Collection Date</label><br />
+                                        <input type="text" class="form-control" id="partialPaymentCollectionDate" disabled />
                                     </div>
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Collection Date</label><br />
-                                            <input type="text" class="form-control" id="partialPaymentCollectionDate" disabled />
+                                    <div class="form-group">
+                                        <label>Daily Collectibles</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="partialPaymentDailyCollectibles" placeholder="0.00" disabled />
                                         </div>
-                                        <div class="form-group">
-                                            <label>Daily Collectibles</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="partialPaymentDailyCollectibles" placeholder="0.00" disabled />
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Previous Balance</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="partialPaymentPreviousBalance" placeholder="0.00" disabled />
                                         </div>
-                                        <div class="form-group">
-                                            <label>Previous Balance</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="partialPaymentPreviousBalance" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Current Balance</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="partialPaymentCurrentBalance" placeholder="0.00" disabled />
-                                            </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Current Balance</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="partialPaymentCurrentBalance" placeholder="0.00" disabled />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Amount
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Enter Partial Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredPartialPayment" id="partialPaymentPartialAmount" placeholder="0.00" />
-                                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Amount
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Enter Partial Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField requiredPartialPayment" id="partialPaymentPartialAmount" placeholder="0.00" />
                                         </div>
                                     </div>
                                 </div>
-                                <div class="alert alert-warning">
-                                    <label><i class="fa fa-info-circle"></i> Remember: </label> <br />
-                                    The Partial Amount must not be greater than the current balance which is to be partially paid.
-                                </div>
+                            </div>
+                            <div class="alert alert-warning">
+                                <label><i class="fa fa-info-circle"></i> Remember: </label> <br />
+                                The Partial Amount must not be greater than the current balance which is to be partially paid.
                             </div>
                         </div>
                     </div>
@@ -380,10 +373,33 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Advance Payment</h4>
+                    <h4 class="modal-title">Advance Payment <span id="loadingData"><i class="fa fa-spinner fa-spin"></i></span></h4>
                 </div>
                 <div class="modal-body">
-
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div id="advancePaymentGrid" class="grid"></div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="btn-group col-md-7" id="navigationPageGridCollectionAdvancePayment">
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollectionAdvancePayment">
+                                        <span class="glyphicon glyphicon-fast-backward"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollectionAdvancePayment">
+                                        <span class="glyphicon glyphicon-step-backward"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollectionAdvancePayment"></button>
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollectionAdvancePayment">
+                                        <span class="glyphicon glyphicon-step-forward"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollectionAdvancePayment">
+                                        <span class="glyphicon glyphicon-fast-forward"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
@@ -484,6 +500,7 @@
         var btnLastPageGridCollection;
         var btnCurrentPageGridCollection;
         var urlParameterLoanId = getUrlParameter("loanId");
+        var currentCollectionId = 0;
 
         // loan application for selected value
         function getLoanApplicationForSelectedValue() {
@@ -637,7 +654,7 @@
                                 NetAmount: collectionListResult[i]["NetAmount"],
                                 CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
                                 PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold(),
+                                PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold().replace(/(\d+)(\d{3})/, '$1'+','+'$2'),
                                 PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
                                 CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
                                 IsCleared: collectionListResult[i]["IsCleared"],
@@ -696,7 +713,6 @@
             }
             btnCurrentPageGridCollection.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
         }
-
 
         // flexgrid of collection
         function createFlexGridForCollection() {
@@ -1006,12 +1022,9 @@
             });
         }
 
-        var currentCollectionId = 0;
         // partial payment
         function btnPartialPaymentOnclick() {
             NProgress.start();
-            $("#partialPaymentContent").hide();
-            $("#partialPaymentLoading").show();
             $.ajax({
                 url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
                 cache: false,
@@ -1025,13 +1038,16 @@
                                 "backdrop": "static"
                             });
                         } else {
+                            $('.requiredPartialPayment').each(function () {
+                                $(this).css({
+                                    "border": "",
+                                });
+                            });
+
                             $("#partialPaymentModal").modal({
                                 "show": true,
                                 "backdrop": "static"
                             });
-
-                            $("#partialPaymentContent").show();
-                            $("#partialPaymentLoading").hide();
 
                             var newDate = new Date(currentCollectionResults.CollectionDate);
                             var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
@@ -1041,6 +1057,7 @@
                             document.getElementById("partialPaymentDailyCollectibles").value = currentCollectionResults.CollectibleAmount;
                             document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount;
                             document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount;
+                            document.getElementById("partialPaymentPartialAmount").value = 0;
                         }
                     } else {
                         toastr.info("No Current Collection to be partially paid.");
@@ -1080,7 +1097,7 @@
                 partialAmountObject.PaidAmount = partialAmountValue;
                 var partialAmountData = JSON.stringify(partialAmountObject);
 
-                if (parseFloat(partialAmountValue.toString()) > parseFloat(currentBalanceAmountValue.toString())) {
+                if (parseFloat(partialAmountValue.split(',').join('')) > parseFloat(currentBalanceAmountValue.split(',').join(''))) {
                     $('.requiredPartialPayment').each(function () {
                         $(this).css({
                             "border": "1px solid red"
@@ -1134,12 +1151,204 @@
             }
         }
 
+        // list collection for advance payment
+        function listCollectionForAdvancePayment() {
+            NProgress.start();
+            var collectionListArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/collection/list/advancePayment/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectionListResult) {
+                    if (collectionListResult.length > 0) {
+
+                        var amountValue = 0;
+
+                        for (i = 0; i < collectionListResult.length; i++) {
+                            var newDate = new Date(collectionListResult[i]["CollectionDate"]);
+                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+                            amountValue = amountValue + collectionListResult[i]["CurrentBalanceAmount"];
+                            collectionListArray.push({
+                                Id: collectionListResult[i]["Id"],
+                                LoanId: collectionListResult[i]["LoanId"],
+                                LoanNumber: collectionListResult[i]["LoanNumber"],
+                                DayNumber: collectionListResult[i]["DayNumber"],
+                                ApplicantId: collectionListResult[i]["ApplicantId"],
+                                Applicant: collectionListResult[i]["Applicant"],
+                                Area: collectionListResult[i]["Area"],
+                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
+                                CollectionDate: collectionDateValue,
+                                NetAmount: collectionListResult[i]["NetAmount"],
+                                CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
+                                PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
+                                PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold(),
+                                PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
+                                CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
+                                IsCleared: collectionListResult[i]["IsCleared"],
+                                IsAbsent: collectionListResult[i]["IsAbsent"],
+                                IsPartiallyPaid: collectionListResult[i]["IsPartiallyPaid"],
+                                IsAdvancedPaid: collectionListResult[i]["IsAdvancedPaid"],
+                                IsDueDate: collectionListResult[i]["IsDueDate"],
+                                IsOverdue: collectionListResult[i]["IsOverdue"],
+                                IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
+                                IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
+                                IsProcessed: collectionListResult[i]["IsProcessed"],
+                                IsAction: collectionListResult[i]["IsAction"],
+                                AssignedCollectorId: collectionListResult[i]["AssignedCollectorId"],
+                                AssignedCollector: collectionListResult[i]["AssignedCollector"],
+                                AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
+                                CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
+                                CurrentCollector: collectionListResult[i]["CurrentCollector"],
+                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
+                                Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString().bold(),
+                                BtnPick: "<button class='btn btn-primary btn-xs' onclick=''><i class='fa fa-hand-o-left fa-fw'></i> Pick</button>",
+                                Amount: amountValue.toString().bold().replace(/(\d+)(\d{3})/, '$1'+','+'$2'),
+                            });
+                        }
+                    } else {
+                        alert("The record you'd requested has no data");
+                    }
+
+                    NProgress.done();
+                    $("#loadingData").hide();
+                }
+            });
+
+            return collectionListArray;
+        }
+
+        var advancePaymentCollectionView;
+        var advancePaymentFlexGrid;
+        var btnFirstPageGridCollectionAdvancePayment;
+        var btnPreviousPageGridCollectionAdvancePayment;
+        var btnNextPageGridCollectionAdvancePayment;
+        var btnLastPageGridCollectionAdvancePayment;
+
+        // navigation button for flexgrid
+        function updateNavigateButtonsCollectionAdvancePayment() {
+            if (advancePaymentCollectionView.pageSize <= 0) {
+                document.getElementById('navigationPageGridCollectionAdvancePayment').style.display = 'none';
+                return;
+            }
+            document.getElementById('navigationPageGridCollectionAdvancePayment').style.display = 'block';
+            if (advancePaymentCollectionView.pageIndex === 0) {
+                btnFirstPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
+                btnPreviousPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
+                btnNextPageGridCollectionAdvancePayment.removeAttribute('disabled');
+                btnLastPageGridCollectionAdvancePayment.removeAttribute('disabled');
+            } else if (advancePaymentCollectionView.pageIndex === (advancePaymentCollectionView.pageCount - 1)) {
+                btnFirstPageGridCollectionAdvancePayment.removeAttribute('disabled');
+                btnPreviousPageGridCollectionAdvancePayment.removeAttribute('disabled');
+                btnNextPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
+                btnLastPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
+            } else {
+                btnFirstPageGridCollectionAdvancePayment.removeAttribute('disabled');
+                btnPreviousPageGridCollectionAdvancePayment.removeAttribute('disabled');
+                btnNextPageGridCollectionAdvancePayment.removeAttribute('disabled');
+                btnLastPageGridCollectionAdvancePayment.removeAttribute('disabled');
+            }
+            btnCurrentPageGridCollectionAdvancePayment.innerHTML = (advancePaymentCollectionView.pageIndex + 1) + ' / ' + advancePaymentCollectionView.pageCount;
+        }
+
+        // create flexgrid for advance payment
+        function createFlexgridForAdvancePaymentProcess() {
+            advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
+            advancePaymentCollectionView.pageSize = 10;
+
+            advancePaymentCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionAdvancePayment();
+            });
+
+            advancePaymentFlexGrid = new wijmo.grid.FlexGrid('#advancePaymentGrid');
+            advancePaymentFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Date",
+                                "binding": "CollectionDate",
+                                "allowSorting": false,
+                                "width": "1.5*",
+                            },
+                            {
+                                "header": "Collectibles",
+                                "binding": "CollectibleAmount",
+                                "allowSorting": false,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Amount",
+                                "binding": "Amount",
+                                "allowSorting": false,
+                                "width": "2*",
+                                "align": "right",
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Pick",
+                                "binding": "BtnPick",
+                                "width": 70,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: advancePaymentCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            advancePaymentFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollectionAdvancePayment = document.getElementById('btnMoveToFirstPageGridCollectionAdvancePayment');
+            btnPreviousPageGridCollectionAdvancePayment = document.getElementById('btnMoveToPreviousPageGridCollectionAdvancePayment');
+            btnNextPageGridCollectionAdvancePayment = document.getElementById('btnMoveToNextPageGridCollectionAdvancePayment');
+            btnLastPageGridCollectionAdvancePayment = document.getElementById('btnMoveToLastPageGridCollectionAdvancePayment');
+            btnCurrentPageGridCollectionAdvancePayment = document.getElementById('btnCurrentPageGridCollectionAdvancePayment');
+
+            updateNavigateButtonsCollectionAdvancePayment();
+
+            btnFirstPageGridCollectionAdvancePayment.addEventListener('click', function () {
+                advancePaymentCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollectionAdvancePayment();
+            });
+            btnPreviousPageGridCollectionAdvancePayment.addEventListener('click', function () {
+                advancePaymentCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollectionAdvancePayment();
+            });
+            btnNextPageGridCollectionAdvancePayment.addEventListener('click', function () {
+                advancePaymentCollectionView.moveToNextPage();
+                updateNavigateButtonsCollectionAdvancePayment();
+            });
+            btnLastPageGridCollectionAdvancePayment.addEventListener('click', function () {
+                advancePaymentCollectionView.moveToLastPage();
+                updateNavigateButtonsCollectionAdvancePayment();
+            });
+        }
+
         // advance payment
         function btnAdvancePaymentOnclick() {
             $("#advancePaymentModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
+
+            NProgress.start();
+            $("#loadingData").show();
+            setTimeout(function () {
+                advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
+                advancePaymentCollectionView.pageSize = 10;
+
+                advancePaymentCollectionView.collectionChanged.addHandler(function (sender, args) {
+                    updateNavigateButtonsCollectionAdvancePayment();
+                });
+
+                advancePaymentFlexGrid.itemsSource = advancePaymentCollectionView;
+                advancePaymentFlexGrid.trackChanges = true;
+            }, 500)
         }
 
         // full payment
@@ -1178,6 +1387,7 @@
         window.onload = function () {
             toastrModification();
             getLoanApplicationForSelectedValue();
+            createFlexgridForAdvancePaymentProcess();
             doubleModal();
         };
     </script>

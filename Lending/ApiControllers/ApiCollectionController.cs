@@ -13,6 +13,56 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
+        // collection list by applicantId and by loanId for advance payment
+        [Authorize]
+        [HttpGet]
+        [Route("api/collection/list/advancePayment/byApplicantId/byLoanId/{applicantId}/{loanId}")]
+        public List<Models.TrnCollection> listCollectionForAdvancePayment(String applicantId, String loanId)
+        {
+            var collections = from d in db.trnCollections
+                              where d.trnLoanApplication.ApplicantId == Convert.ToInt32(applicantId)
+                              && d.LoanId == Convert.ToInt32(loanId)
+                              && d.IsProcessed == false
+                              select new Models.TrnCollection
+                              {
+                                  Id = d.Id,
+                                  LoanId = d.LoanId,
+                                  LoanNumber = d.trnLoanApplication.LoanNumber,
+                                  ApplicantId = d.trnLoanApplication.ApplicantId,
+                                  Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + d.trnLoanApplication.mstApplicant.ApplicantMiddleName,
+                                  Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
+                                  IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
+                                  AccountId = d.AccountId,
+                                  Account = d.mstAccount.Account,
+                                  CollectionDate = d.CollectionDate.ToShortDateString(),
+                                  NetAmount = d.NetAmount,
+                                  CollectibleAmount = d.CollectibleAmount,
+                                  PenaltyAmount = d.PenaltyAmount,
+                                  PaidAmount = d.PaidAmount,
+                                  PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                  CurrentBalanceAmount = d.CurrentBalanceAmount,
+                                  IsCleared = d.IsCleared,
+                                  IsAbsent = d.IsAbsent,
+                                  IsPartiallyPaid = d.IsPartiallyPaid,
+                                  IsAdvancedPaid = d.IsAdvancedPaid,
+                                  IsDueDate = d.IsDueDate,
+                                  IsOverdue = d.IsOverdue,
+                                  IsExtendCollection = d.IsExtendCollection,
+                                  IsCurrentCollection = d.IsCurrentCollection,
+                                  IsProcessed = d.IsProcessed,
+                                  IsAction = d.IsAction,
+                                  AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
+                                  AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
+                                  AssignedCollectorArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")",
+                                  CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
+                                  CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
+                                  CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
+                                  Status = getStatus(d.IsCleared, d.IsAbsent, d.IsOverdue, d.IsExtendCollection, d.IsPartiallyPaid, d.IsAdvancedPaid)
+                              };
+
+            return collections.ToList();
+        }
+
         // get status
         public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsOverdue, Boolean IsExtendCollection, Boolean IsPartiallyPaid, Boolean IsAdvancedPaid)
         {
@@ -550,6 +600,7 @@ namespace Lending.ApiControllers
                                     updateCollection.IsCurrentCollection = true;
                                     updateCollection.IsProcessed = false;
                                     updateCollection.IsAction = true;
+                                    updateCollection.IsPartiallyPaid = false;
                                     db.SubmitChanges();
 
                                     var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
@@ -745,9 +796,8 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
             }
         }
