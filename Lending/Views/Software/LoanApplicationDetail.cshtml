@@ -1944,6 +1944,15 @@
                                 var newCollectionDate = new Date(collectionListResult[i]["CollectionDate"]);
                                 var collectionDateValue = ('0' + (newCollectionDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newCollectionDate.getDate()).slice(-2) + '-' + newCollectionDate.getFullYear();
 
+                                var statusColor = "black";
+                                if (collectionListResult[i]["IsCleared"]) {
+                                    statusColor = "green";
+                                } else {
+                                    if (collectionListResult[i]["IsAbsent"]) {
+                                        statusColor = "red";
+                                    }
+                                }
+
                                 collectionListArray.push({
                                     Id: collectionListResult[i]["Id"],
                                     LoanId: collectionListResult[i]["LoanId"],
@@ -1976,7 +1985,7 @@
                                     CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
                                     CurrentCollector: collectionListResult[i]["CurrentCollector"],
                                     CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
-                                    Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString(),
+                                    Status: ("<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString()).bold().fontcolor(statusColor),
                                 });
                             }
                         }

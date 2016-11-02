@@ -95,7 +95,7 @@
                                 &nbsp; &nbsp; &nbsp;
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-sm"> <i class="fa fa-print fa-fw"></i> Print </button>
+                                <button class="btn btn-primary btn-sm"> <i class="fa fa-print fa-fw"></i> Print Collection Paper</button>
                             </td>
                         </tr>
                     </table>
@@ -517,7 +517,7 @@
                                         collectionItem.IsFullyPaid = isFullyPaidResult;
                                         collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
                                         collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
-                                        collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " Not Processed";
+                                        collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " --";
 
                                         collectionCollectionView.onCollectionChanged(function () {
                                             collectionCollectionView.refresh();
