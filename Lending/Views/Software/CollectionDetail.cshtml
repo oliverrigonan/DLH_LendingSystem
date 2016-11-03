@@ -520,7 +520,7 @@
 
     <!-- full payment -->
     <div class="modal fade" id="fullPaymentModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -528,10 +528,25 @@
                     <h4 class="modal-title">Full Payment</h4>
                 </div>
                 <div class="modal-body">
-
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Amount
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Total Current Balance Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    Are you sure for the full payment?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                    <button class="btn btn-default" onclick="">Yes</button>
+                    <button class="btn btn-default" id="" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
