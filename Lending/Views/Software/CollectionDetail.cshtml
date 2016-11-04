@@ -508,6 +508,24 @@
                     <h4 class="modal-title">Advance Payment Confirmation</h4>
                 </div>
                 <div class="modal-body">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Detail
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Advance Paid Until</label><br />
+                                <input type="text" class="form-control" id="advancePaymentConfirmationDate" disabled/>
+                            </div>
+                            <div class="form-group">
+                                <label>Advance Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField" id="advancePaymentConfirmationAmount" placeholder="0.00" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     Are you sure for the advance payment?
                 </div>
                 <div class="modal-footer">
@@ -1362,6 +1380,7 @@
                                 Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString().bold(),
                                 BtnPick: "<button class='btn btn-primary btn-xs' onclick='btnPickOnclick()'><i class='fa fa-hand-o-left fa-fw'></i> Pick</button>",
                                 Amount: amountValue.toString().bold().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2'),
+                                AmountValue: amountValue
                             });
                         }
                     } else {
@@ -1504,10 +1523,15 @@
 
         // pick button
         function btnPickOnclick() {
+            advancePaymentCollectionView.editItem(advancePaymentCollectionView.currentItem);
+            var advancePaymentItem = advancePaymentCollectionView.currentEditItem;
             $("#advancePaymentConfirmationModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
+
+            document.getElementById("advancePaymentConfirmationDate").value = advancePaymentItem.CollectionDate;
+            document.getElementById("advancePaymentConfirmationAmount").value = advancePaymentItem.AmountValue.toLocaleString();
         }
 
         // advance payment tab clicked
