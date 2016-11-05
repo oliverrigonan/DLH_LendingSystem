@@ -162,15 +162,15 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Loan Date</label><br />
-                                                <input type="text" class="form-control" id="" disabled />
+                                                <input type="text" class="form-control" id="collectionDetailLoanDate" disabled />
                                             </div>
                                             <div class="form-group">
                                                 <label>Maturity Date (Due Date)</label><br />
-                                                <input type="text" class="form-control" id="" disabled />
+                                                <input type="text" class="form-control" id="collectionDetailMaturityDate" disabled />
                                             </div>
                                             <div class="form-group">
                                                 <label>Is Fully Paid</label><br />
-                                                <input type="checkbox" id="" disabled />
+                                                <input type="checkbox" id="collectionDetailIsFullyPaid" disabled />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
@@ -178,25 +178,28 @@
                                                 <label>Principal Amount</label><br />
                                                 <div class="input-group numberField">
                                                     <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                    <input type="text" class="form-control numberField" id="collectionDetailPrincipalAmount" placeholder="0.00" disabled/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Total Deductions</label><br />
                                                 <div class="input-group numberField">
                                                     <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                    <input type="text" class="form-control numberField" id="collectionDetailTotalDeductions" placeholder="0.00" disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label>Net Amount</label><br />
                                                 <div class="input-group numberField">
                                                     <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                    <input type="text" class="form-control numberField" id="collectionDetailNetAmount" placeholder="0.00" disabled />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <button class="btn btn-info" onclick="btnViewLoanApplicationDetailOnclick()">View Loan Application Detail</button>
                                 </div>
                             </div>
                             <div class="panel panel-default">
@@ -702,6 +705,7 @@
                                 LoanDate: loanNumberResults[i]["LoanDate"],
                                 MaturityDate: loanNumberResults[i]["MaturityDate"],
                                 Applicant: loanNumberResults[i]["Applicant"],
+                                Area: loanNumberResults[i]["Area"],
                                 NetAmount: loanNumberResults[i]["NetAmount"],
                                 PrincipalAmount: loanNumberResults[i]["PrincipalAmount"],
                                 ProcessingFeeAmount: loanNumberResults[i]["ProcessingFeeAmount"],
@@ -713,11 +717,9 @@
                                 RequirementsAmount: loanNumberResults[i]["RequirementsAmount"],
                                 InsuranceIPIorPPIAmount: loanNumberResults[i]["InsuranceIPIorPPIAmount"],
                                 IsLocked: loanNumberResults[i]["IsLocked"],
+                                IsFullyPaid: loanNumberResults[i]["IsFullyPaid"],
                                 LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"] + " " + currentLabel
                             });
-
-                            document.getElementById("applicantName").value = loanNumberResults[i]["Applicant"];
-                            document.getElementById("applicantArea").value = loanNumberResults[i]["Area"];
                         }
 
                         disabled = false;
@@ -737,6 +739,7 @@
 
                                 urlParameterLoanId = this.selectedItem["Id"];
 
+                                // flexgrid refresh
                                 collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
                                 collectionCollectionView.pageSize = 15;
 
@@ -746,10 +749,81 @@
 
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
+
+                                // more detail
+                                document.getElementById("applicantName").value = this.selectedItem["Applicant"];
+                                document.getElementById("applicantArea").value = this.selectedItem["Area"];
+
+                                var newLoanDate = new Date(this.selectedItem["LoanDate"]);
+                                var loanDateValue = ('0' + (newLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newLoanDate.getDate()).slice(-2) + '-' + newLoanDate.getFullYear();
+
+                                var newMaturityDate = new Date(this.selectedItem["MaturityDate"]);
+                                var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
+
+                                document.getElementById("collectionDetailLoanDate").value = loanDateValue;
+                                document.getElementById("collectionDetailMaturityDate").value = maturityDateValue;
+                                document.getElementById("collectionDetailIsFullyPaid").checked = this.selectedItem["IsFullyPaid"];
+
+                                document.getElementById("collectionDetailPrincipalAmount").value = this.selectedItem["PrincipalAmount"].toLocaleString();
+
+                                var processingFee = this.selectedItem["ProcessingFeeAmount"];
+                                var passbook = this.selectedItem["PassbookAmount"];
+                                var balance = this.selectedItem["BalanceAmount"];
+                                var penalty = this.selectedItem["PenaltyAmount"];
+                                var lateInt = this.selectedItem["LateIntAmount"];
+                                var advance = this.selectedItem["AdvanceAmount"];
+                                var requirements = this.selectedItem["RequirementsAmount"];
+                                var insuranceIPIorPPI = this.selectedItem["InsuranceIPIorPPIAmount"];
+
+                                var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
+
+                                document.getElementById("collectionDetailTotalDeductions").value = totalDeductions.toLocaleString();
+                                document.getElementById("collectionDetailNetAmount").value = this.selectedItem["NetAmount"].toLocaleString();
+
+                                setTimeout(function () {
+                                    advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
+                                    advancePaymentCollectionView.pageSize = 5;
+
+                                    advancePaymentCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                        updateNavigateButtonsCollectionAdvancePayment();
+                                    });
+
+                                    advancePaymentFlexGrid.itemsSource = advancePaymentCollectionView;
+                                    advancePaymentFlexGrid.trackChanges = true;
+                                }, 500)
                             }
                         });
+
+                        document.getElementById("applicantName").value = cboLoanNumberLogHistory.selectedItem["Applicant"];
+                        document.getElementById("applicantArea").value = cboLoanNumberLogHistory.selectedItem["Area"];
+
+                        var newLoanDate = new Date(cboLoanNumberLogHistory.selectedItem["LoanDate"]);
+                        var loanDateValue = ('0' + (newLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newLoanDate.getDate()).slice(-2) + '-' + newLoanDate.getFullYear();
+
+                        var newMaturityDate = new Date(cboLoanNumberLogHistory.selectedItem["MaturityDate"]);
+                        var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
+                       
+                        document.getElementById("collectionDetailLoanDate").value = loanDateValue;
+                        document.getElementById("collectionDetailMaturityDate").value = maturityDateValue;
+                        document.getElementById("collectionDetailIsFullyPaid").checked = cboLoanNumberLogHistory.selectedItem["IsFullyPaid"];
+
+                        document.getElementById("collectionDetailPrincipalAmount").value = cboLoanNumberLogHistory.selectedItem["PrincipalAmount"].toLocaleString();
+
+                        var processingFee = cboLoanNumberLogHistory.selectedItem["ProcessingFeeAmount"];
+                        var passbook = cboLoanNumberLogHistory.selectedItem["PassbookAmount"];
+                        var balance = cboLoanNumberLogHistory.selectedItem["BalanceAmount"];
+                        var penalty = cboLoanNumberLogHistory.selectedItem["PenaltyAmount"];
+                        var lateInt = cboLoanNumberLogHistory.selectedItem["LateIntAmount"];
+                        var advance = cboLoanNumberLogHistory.selectedItem["AdvanceAmount"];
+                        var requirements = cboLoanNumberLogHistory.selectedItem["RequirementsAmount"];
+                        var insuranceIPIorPPI = cboLoanNumberLogHistory.selectedItem["InsuranceIPIorPPIAmount"];
+
+                        var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
+
+                        document.getElementById("collectionDetailTotalDeductions").value = totalDeductions.toLocaleString();
+                        document.getElementById("collectionDetailNetAmount").value = cboLoanNumberLogHistory.selectedItem["NetAmount"].toLocaleString();
                     } else {
-                        toastr.info("No logs / History at this time");
+                        toastr.info("No collection at this time");
                     }
 
                     createFlexGridForCollection();
@@ -1327,6 +1401,10 @@
         function listCollectionForAdvancePayment() {
             NProgress.start();
             var collectionListArray = new wijmo.collections.ObservableArray;
+
+            console.log(getUrlParameter("applicantId"));
+            console.log(urlParameterLoanId);
+
             $.ajax({
                 url: '/api/collection/list/advancePayment/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
                 cache: false,
@@ -1384,7 +1462,7 @@
                             });
                         }
                     } else {
-                        alert("The record you'd requested has no data");
+                        toastr.info("The Collection was already fully paid. Cannot transact anymore once it's fully paid.", "Collection was already fully paid.");
                     }
 
                     NProgress.done();
@@ -1581,6 +1659,11 @@
                 "show": true,
                 "backdrop": "static"
             });
+        }
+
+        // view the loan application detail
+        function btnViewLoanApplicationDetailOnclick() {
+            window.open('/Software/LoanApplicationDetail?id=' + urlParameterLoanId, '_blank');
         }
 
         // on load page
