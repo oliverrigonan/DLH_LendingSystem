@@ -114,7 +114,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Applicant</label><br />
-                                        <div id="loanApplicationApplicant"></div> <button class="btn btn-primary btn-sm" id="btnViewCollection" onclick="btnViewCollectionOnclick()"><i class="fa fa-eye fa-fw"></i> View Loan History</button>
+                                        <div id="loanApplicationApplicant"></div> <button class="btn btn-primary btn-sm" id="btnViewCollection" onclick="btnViewCollectionOnclick()"><i class="fa fa-eye fa-fw"></i> View Collections</button>
                                     </div>
                                     <div class="form-group">
                                         <label>Area</label><br />
@@ -412,7 +412,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Loan Log / History <span id="loadingData"><i class="fa fa-spinner fa-spin"></i></span></h4>
+                    <h4 class="modal-title">Collections <span id="loadingData"><i class="fa fa-spinner fa-spin"></i></span></h4>
                 </div>
                 <div class="modal-body">
                     <div class="panel panel-default">
@@ -1966,16 +1966,17 @@
                                     NetAmount: collectionListResult[i]["NetAmount"],
                                     CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
                                     PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                    PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold(),
+                                    PaidAmount: (collectionListResult[i]["PaidAmount"].toLocaleString()).toString().bold(),
                                     PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
                                     CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
                                     IsCleared: collectionListResult[i]["IsCleared"],
                                     IsAbsent: collectionListResult[i]["IsAbsent"],
-                                    IsPartiallyPaid: collectionListResult[i]["IsPartiallyPaid"],
-                                    IsAdvancedPaid: collectionListResult[i]["IsAdvancedPaid"],
+                                    IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
+                                    IsAdvancePayment: collectionListResult[i]["IsAdvancePayment"],
+                                    IsFullPayment: collectionListResult[i]["IsFullPayment"],
                                     IsDueDate: collectionListResult[i]["IsDueDate"],
-                                    IsOverdue: collectionListResult[i]["IsOverdue"],
                                     IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
+                                    IsOverdueCollection: collectionListResult[i]["IsOverdueCollection"],
                                     IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
                                     IsProcessed: collectionListResult[i]["IsProcessed"],
                                     IsAction: collectionListResult[i]["IsAction"],

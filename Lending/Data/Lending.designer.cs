@@ -9028,15 +9028,17 @@ namespace Lending.Data
 		
 		private bool _IsAbsent;
 		
-		private bool _IsPartiallyPaid;
+		private bool _IsPartialPayment;
 		
-		private bool _IsAdvancedPaid;
+		private bool _IsAdvancePayment;
+		
+		private bool _IsFullPayment;
 		
 		private bool _IsDueDate;
 		
-		private bool _IsOverdue;
-		
 		private bool _IsExtendCollection;
+		
+		private bool _IsOverdueCollection;
 		
 		private bool _IsCurrentCollection;
 		
@@ -9080,16 +9082,18 @@ namespace Lending.Data
     partial void OnIsClearedChanged();
     partial void OnIsAbsentChanging(bool value);
     partial void OnIsAbsentChanged();
-    partial void OnIsPartiallyPaidChanging(bool value);
-    partial void OnIsPartiallyPaidChanged();
-    partial void OnIsAdvancedPaidChanging(bool value);
-    partial void OnIsAdvancedPaidChanged();
+    partial void OnIsPartialPaymentChanging(bool value);
+    partial void OnIsPartialPaymentChanged();
+    partial void OnIsAdvancePaymentChanging(bool value);
+    partial void OnIsAdvancePaymentChanged();
+    partial void OnIsFullPaymentChanging(bool value);
+    partial void OnIsFullPaymentChanged();
     partial void OnIsDueDateChanging(bool value);
     partial void OnIsDueDateChanged();
-    partial void OnIsOverdueChanging(bool value);
-    partial void OnIsOverdueChanged();
     partial void OnIsExtendCollectionChanging(bool value);
     partial void OnIsExtendCollectionChanged();
+    partial void OnIsOverdueCollectionChanging(bool value);
+    partial void OnIsOverdueCollectionChanged();
     partial void OnIsCurrentCollectionChanging(bool value);
     partial void OnIsCurrentCollectionChanged();
     partial void OnIsProcessedChanging(bool value);
@@ -9356,42 +9360,62 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPartiallyPaid", DbType="Bit NOT NULL")]
-		public bool IsPartiallyPaid
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsPartialPayment", DbType="Bit NOT NULL")]
+		public bool IsPartialPayment
 		{
 			get
 			{
-				return this._IsPartiallyPaid;
+				return this._IsPartialPayment;
 			}
 			set
 			{
-				if ((this._IsPartiallyPaid != value))
+				if ((this._IsPartialPayment != value))
 				{
-					this.OnIsPartiallyPaidChanging(value);
+					this.OnIsPartialPaymentChanging(value);
 					this.SendPropertyChanging();
-					this._IsPartiallyPaid = value;
-					this.SendPropertyChanged("IsPartiallyPaid");
-					this.OnIsPartiallyPaidChanged();
+					this._IsPartialPayment = value;
+					this.SendPropertyChanged("IsPartialPayment");
+					this.OnIsPartialPaymentChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdvancedPaid", DbType="Bit NOT NULL")]
-		public bool IsAdvancedPaid
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdvancePayment", DbType="Bit NOT NULL")]
+		public bool IsAdvancePayment
 		{
 			get
 			{
-				return this._IsAdvancedPaid;
+				return this._IsAdvancePayment;
 			}
 			set
 			{
-				if ((this._IsAdvancedPaid != value))
+				if ((this._IsAdvancePayment != value))
 				{
-					this.OnIsAdvancedPaidChanging(value);
+					this.OnIsAdvancePaymentChanging(value);
 					this.SendPropertyChanging();
-					this._IsAdvancedPaid = value;
-					this.SendPropertyChanged("IsAdvancedPaid");
-					this.OnIsAdvancedPaidChanged();
+					this._IsAdvancePayment = value;
+					this.SendPropertyChanged("IsAdvancePayment");
+					this.OnIsAdvancePaymentChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFullPayment", DbType="Bit NOT NULL")]
+		public bool IsFullPayment
+		{
+			get
+			{
+				return this._IsFullPayment;
+			}
+			set
+			{
+				if ((this._IsFullPayment != value))
+				{
+					this.OnIsFullPaymentChanging(value);
+					this.SendPropertyChanging();
+					this._IsFullPayment = value;
+					this.SendPropertyChanged("IsFullPayment");
+					this.OnIsFullPaymentChanged();
 				}
 			}
 		}
@@ -9416,26 +9440,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdue", DbType="Bit NOT NULL")]
-		public bool IsOverdue
-		{
-			get
-			{
-				return this._IsOverdue;
-			}
-			set
-			{
-				if ((this._IsOverdue != value))
-				{
-					this.OnIsOverdueChanging(value);
-					this.SendPropertyChanging();
-					this._IsOverdue = value;
-					this.SendPropertyChanged("IsOverdue");
-					this.OnIsOverdueChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsExtendCollection", DbType="Bit NOT NULL")]
 		public bool IsExtendCollection
 		{
@@ -9452,6 +9456,26 @@ namespace Lending.Data
 					this._IsExtendCollection = value;
 					this.SendPropertyChanged("IsExtendCollection");
 					this.OnIsExtendCollectionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsOverdueCollection", DbType="Bit NOT NULL")]
+		public bool IsOverdueCollection
+		{
+			get
+			{
+				return this._IsOverdueCollection;
+			}
+			set
+			{
+				if ((this._IsOverdueCollection != value))
+				{
+					this.OnIsOverdueCollectionChanging(value);
+					this.SendPropertyChanging();
+					this._IsOverdueCollection = value;
+					this.SendPropertyChanged("IsOverdueCollection");
+					this.OnIsOverdueCollectionChanged();
 				}
 			}
 		}

@@ -27,11 +27,12 @@ namespace Lending.Models
         public Decimal CurrentBalanceAmount { get; set; }
         public Boolean IsCleared { get; set; }
         public Boolean IsAbsent { get; set; }
-        public Boolean IsPartiallyPaid { get; set; }
-        public Boolean IsAdvancedPaid { get; set; }
+        public Boolean IsPartialPayment { get; set; }
+        public Boolean IsAdvancePayment { get; set; }
+        public Boolean IsFullPayment { get; set; }
         public Boolean IsDueDate { get; set; }
-        public Boolean IsOverdue { get; set; }
         public Boolean IsExtendCollection { get; set; }
+        public Boolean IsOverdueCollection { get; set; }
         public Boolean IsCurrentCollection { get; set; }
         public Boolean IsProcessed { get; set; }
         public Boolean IsAction { get; set; }
