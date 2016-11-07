@@ -352,36 +352,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="alert alert-warning">
-                                <label><i class="fa fa-info-circle"></i> Remember: </label> <br />
-                                The Partial Amount must not be greater than the current balance which is to be partially paid.
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="" onclick="btnUpdatePartialPayment()"><i class="fa fa-check fa-fw"></i> Update</button>
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- partial payment confirmation -->
-    <div class="modal fade" id="partialPaymentConfirmationModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Partial Payment Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure for the partial payment?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" id="btnUpdatePartialPaymentConfirmId" onclick="btnUpdatePartialPaymentConfirm()">Yes</button>
-                    <button class="btn btn-default" id="btnUpdatePartialPaymentConfirmIdNo" data-dismiss="modal">No</button>
+                    <button class="btn btn-primary" id="btnUpdatePartialPaymentId" onclick="btnUpdatePartialPayment()"><i class="fa fa-check fa-fw"></i> Update</button>
+                    <button class="btn btn-danger" id="btnUpdatePartialPaymentClose" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -462,28 +438,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" onclick="btnUpdateAdvancePayment()"><i class="fa fa-check fa-fw"></i> Update</button>
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- advance payment confirmation -->
-    <div class="modal fade" id="advancePaymentConfirmModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Advance Payment Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure for the advance payment?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-default" id="btnUpdateAdvancePaymentConfirmId" onclick="btnUpdateAdvancePaymentConfirm()">Yes</button>
-                    <button class="btn btn-default" id="btnUpdateAdvancePaymentConfirmIdNo" data-dismiss="modal">No</button>
+                    <button class="btn btn-primary" id="btnUpdateAdvancePaymentId" onclick="btnUpdateAdvancePayment()"><i class="fa fa-check fa-fw"></i> Update</button>
+                    <button class="btn btn-danger" id="btnUpdateAdvancePaymentClose" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -499,16 +455,37 @@
                     <h4 class="modal-title">Full Payment</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Amount
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Full payment Dates
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Full Payment Start Date</label><br />
+                                        <input type="text" class="form-control" id="fullPaymentStartDate" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Full Payment End Date</label><br />
+                                        <input type="text" class="form-control" id="fullPaymentEndDate" disabled />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label>Full Amount</label><br />
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField" id="fullPaymentAmount" placeholder="0.00" disabled />
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Amount
+                                </div>
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Full Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="fullPaymentAmount" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -874,6 +851,14 @@
 
                             if (!collectionListResult[i]["IsProcessed"]) {
                                 amountValue += collectionListResult[i]["CurrentBalanceAmount"];
+
+                                if (collectionListResult[i]["IsCurrentCollection"]) {
+                                    document.getElementById("fullPaymentStartDate").value = collectionDateValue;
+                                }
+
+                                if (i == collectionListResult.length - 1) {
+                                    document.getElementById("fullPaymentEndDate").value = collectionDateValue;
+                                }
                             }
                         }
 
@@ -1225,6 +1210,10 @@
 
         // partial payment
         function btnPartialPaymentOnclick() {
+            document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+            $("#btnUpdatePartialPaymentId").prop("disabled", false);
+            $("#btnUpdatePartialPaymentClose").prop("disabled", false);
+
             NProgress.start();
             $.ajax({
                 url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
@@ -1290,117 +1279,92 @@
 
         // partial payment confirmation
         function btnUpdatePartialPayment() {
-            document.getElementById("btnUpdatePartialPaymentConfirmId").innerHTML = "Yes";
-            $("#btnUpdatePartialPaymentConfirmId").prop("disabled", false);
-            $("#btnUpdatePartialPaymentConfirmIdNo").prop("disabled", false);
-
             if (inputValidationForPartialPayment()) {
-                $("#partialPaymentConfirmationModal").modal({
-                    "show": true,
-                    "backdrop": "static"
-                });
-            } else {
-                toastr.error("Please fill the empty field.", "Invalid Entry");
-            }
-        }
+                if (inputValidationForPartialPayment()) {
+                    $("#btnUpdatePartialPaymentId").prop("disabled", true);
+                    $("#btnUpdatePartialPaymentClose").prop("disabled", true);
+                    document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
-        // btn update partial payment
-        function btnUpdatePartialPaymentConfirm() {
-            if (inputValidationForPartialPayment()) {
-                $("#btnUpdatePartialPaymentConfirmId").prop("disabled", true);
-                $("#btnUpdatePartialPaymentConfirmIdNo").prop("disabled", true);
-                document.getElementById("btnUpdatePartialPaymentConfirmId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+                    var partialAmountValue = document.getElementById("partialPaymentPartialAmount").value;
+                    var currentBalanceAmountValue = document.getElementById("partialPaymentCurrentBalance").value;
 
-                var partialAmountValue = document.getElementById("partialPaymentPartialAmount").value;
-                var currentBalanceAmountValue = document.getElementById("partialPaymentCurrentBalance").value;
+                    var partialAmountObject = new Object();
+                    partialAmountObject.PaidAmount = partialAmountValue;
+                    var partialAmountData = JSON.stringify(partialAmountObject);
 
-                var partialAmountObject = new Object();
-                partialAmountObject.PaidAmount = partialAmountValue;
-                var partialAmountData = JSON.stringify(partialAmountObject);
-
-                if (parseFloat(partialAmountValue.split(',').join('')) > 0) {
-                    if (parseFloat(partialAmountValue.split(',').join('')) > parseFloat(currentBalanceAmountValue.split(',').join(''))) {
-                        $('.requiredPartialPayment').each(function () {
-                            $(this).css({
-                                "border": "1px solid red"
+                    if (parseFloat(partialAmountValue.split(',').join('')) > 0) {
+                        if (parseFloat(partialAmountValue.split(',').join('')) > parseFloat(currentBalanceAmountValue.split(',').join(''))) {
+                            $('.requiredPartialPayment').each(function () {
+                                $(this).css({
+                                    "border": "1px solid red"
+                                });
                             });
-                        });
 
-                        document.getElementById("btnUpdatePartialPaymentConfirmId").innerHTML = "Yes";
-                        $("#btnUpdatePartialPaymentConfirmId").prop("disabled", false);
-                        $("#btnUpdatePartialPaymentConfirmIdNo").prop("disabled", false);
-                        toastr.error("The amount to be paid must not be greater than the current balance amount.", "Invalid Entry");
-                    } else {
-                        $("#processingModal").modal({
-                            "show": true,
-                            "backdrop": "static"
-                        });
+                            document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                            $("#btnUpdatePartialPaymentId").prop("disabled", false);
+                            $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
-                        $.ajax({
-                            type: "PUT",
-                            url: '/api/collection/partialPayment/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId,
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            data: partialAmountData,
-                            statusCode: {
-                                200: function () {
-                                    toastr.success("Partially Paid");
-                                    NProgress.start();
+                            toastr.error("The amount to be paid must not be greater than the current balance amount.", "Invalid Entry");
+                        } else {
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/collection/partialPayment/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: partialAmountData,
+                                statusCode: {
+                                    200: function () {
+                                        toastr.success("Partially Paid");
+                                        NProgress.start();
 
-                                    $("#partialPaymentConfirmationModal").modal("hide");
-                                    $("#partialPaymentModal").modal("hide");
-                                    $("#processingModal").modal("hide");
+                                        $("#partialPaymentModal").modal("hide");
 
-                                    urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
-                                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                                    collectionCollectionView.pageSize = 15;
+                                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                                        collectionCollectionView.pageSize = 15;
 
-                                    collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                        updateNavigateButtonsCollection();
-                                    });
+                                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                            updateNavigateButtonsCollection();
+                                        });
 
-                                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                                    collectionFlexGrid.trackChanges = true;
-                                },
-                                404: function (message) {
-                                    NProgress.done();
-                                    $("#partialPaymentConfirmationModal").modal("hide");
-                                    $("#partialPaymentModal").modal("hide");
-                                    $("#processingModal").modal("hide");
+                                        collectionFlexGrid.itemsSource = collectionCollectionView;
+                                        collectionFlexGrid.trackChanges = true;
+                                    },
+                                    404: function (message) {
+                                        NProgress.done();
+                                        $("#partialPaymentModal").modal("hide");
 
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                                },
-                                400: function (message) {
-                                    NProgress.done();
-                                    $("#partialPaymentConfirmationModal").modal("hide");
-                                    $("#partialPaymentModal").modal("hide");
-                                    $("#processingModal").modal("hide");
+                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                                    },
+                                    400: function (message) {
+                                        NProgress.done();
+                                        $("#partialPaymentModal").modal("hide");
 
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                                },
-                                500: function (message) {
-                                    NProgress.done();
-                                    $("#partialPaymentConfirmationModal").modal("hide");
-                                    $("#partialPaymentModal").modal("hide");
-                                    $("#processingModal").modal("hide");
+                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                                    },
+                                    500: function (message) {
+                                        NProgress.done();
+                                        $("#partialPaymentModal").modal("hide");
 
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    } else {
+                        document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                        $("#btnUpdatePartialPaymentId").prop("disabled", false);
+                        $("#btnUpdatePartialPaymentClose").prop("disabled", false);
+
+                        toastr.error("Zero(0) amount. Please Enter an amount for partial payment.", "Invalid Entry");
                     }
                 } else {
-                    document.getElementById("btnUpdatePartialPaymentConfirmId").innerHTML = "Yes";
-                    $("#btnUpdatePartialPaymentConfirmId").prop("disabled", false);
-                    $("#btnUpdatePartialPaymentConfirmIdNo").prop("disabled", false);
-                    toastr.error("Zero(0) amount. Please Enter an amount for partial payment.", "Invalid Entry");
+                    $("#partialPaymentModal").modal("hide");
+
+                    toastr.error("Please fill the empty field.", "Invalid Entry");
                 }
             } else {
-                $("#partialPaymentConfirmationModal").modal("hide");
-                $("#partialPaymentModal").modal("hide");
-                $("#processingModal").modal("hide");
-
                 toastr.error("Please fill the empty field.", "Invalid Entry");
             }
         }
@@ -1614,6 +1578,10 @@
 
         // pick button
         function btnPickOnclick() {
+            document.getElementById("btnUpdateAdvancePaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+            $("#btnUpdateAdvancePaymentId").prop("disabled", false);
+            $("#btnUpdateAdvancePaymentClose").prop("disabled", false);
+
             advancePaymentCollectionView.editItem(advancePaymentCollectionView.currentItem);
             var advancePaymentItem = advancePaymentCollectionView.currentEditItem;
             $("#advancePaymentUpdateModal").modal({
@@ -1628,21 +1596,10 @@
 
         // advance payment update
         function btnUpdateAdvancePayment() {
-            $("#advancePaymentConfirmModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+            $("#btnUpdateAdvancePaymentId").prop("disabled", true);
+            $("#btnUpdateAdvancePaymentClose").prop("disabled", true);
+            document.getElementById("btnUpdateAdvancePaymentId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
-            document.getElementById("btnUpdateAdvancePaymentConfirmId").innerHTML = "Yes";
-            $("#btnUpdateAdvancePaymentConfirmId").prop("disabled", false);
-            $("#btnUpdateAdvancePaymentConfirmIdNo").prop("disabled", false);
-        }
-
-        // advance payment confirm
-        function btnUpdateAdvancePaymentConfirm() {
-            $("#btnUpdateAdvancePaymentConfirmId").prop("disabled", true);
-            $("#btnUpdateAdvancePaymentConfirmIdNo").prop("disabled", true);
-            document.getElementById("btnUpdateAdvancePaymentConfirmId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
             $.ajax({
                 type: "PUT",
                 url: '/api/collection/advancePayment/update/byId/byLoanId/' + collectionAdvancePaymentId + '/' + urlParameterLoanId,
@@ -1655,7 +1612,6 @@
 
                         $("#advancePaymentUpdateModal").modal("hide");
                         $("#advancePaymentModal").modal("hide");
-                        $("#advancePaymentConfirmModal").modal("hide");
 
                         urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
@@ -1673,21 +1629,21 @@
                         NProgress.done();
                         $("#advancePaymentUpdateModal").modal("hide");
                         $("#advancePaymentModal").modal("hide");
-                        $("#advancePaymentConfirmModal").modal("hide");
+
                         toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
                     },
                     400: function (message) {
                         NProgress.done();
                         $("#advancePaymentUpdateModal").modal("hide");
                         $("#advancePaymentModal").modal("hide");
-                        $("#advancePaymentConfirmModal").modal("hide");
+
                         toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
                     },
                     500: function (message) {
                         NProgress.done();
                         $("#advancePaymentUpdateModal").modal("hide");
                         $("#advancePaymentModal").modal("hide");
-                        $("#advancePaymentConfirmModal").modal("hide");
+
                         toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
                     }
                 }
