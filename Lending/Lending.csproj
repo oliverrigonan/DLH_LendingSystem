@@ -197,6 +197,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business\Collection.cs" />
+    <Compile Include="Business\CollectionStatus.cs" />
     <Compile Include="Business\Journal.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -236,6 +237,7 @@
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
     <Compile Include="Models\TrnLoanApplicationRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\RepCollectionPaperController.cs" />
     <Compile Include="Reports\RepLoanApplicationCashVoucherController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -522,6 +524,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RepCollectionPaper\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

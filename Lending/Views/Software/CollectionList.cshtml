@@ -95,7 +95,7 @@
                                 &nbsp; &nbsp; &nbsp;
                             </td>
                             <td>
-                                <button class="btn btn-primary btn-sm"> <i class="fa fa-print fa-fw"></i> Print Collection Paper</button>
+                                <button class="btn btn-primary btn-sm" onclick="btnCollectionPaperOnclick()"> <i class="fa fa-print fa-fw"></i> Print Collection Paper</button>
                             </td>
                         </tr>
                     </table>
@@ -822,6 +822,11 @@
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
             window.open('/Software/CollectionDetail?applicantId=' + collectionItem.ApplicantId + '&loanId=' + collectionItem.LoanId, '_blank');
+        }
+
+        // collection report
+        function btnCollectionPaperOnclick() {
+            window.open('/RepCollectionPaper/CollectionPaper?collectionDate=' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-') + '&areaId=' + cboArea.selectedItem["Id"], '_blank');
         }
 
         // on load page

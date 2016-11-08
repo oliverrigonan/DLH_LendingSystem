@@ -12,93 +12,7 @@ namespace Lending.ApiControllers
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
-
-        // get status
-        public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsPartialPayment, Boolean IsAdvancePayment, Boolean IsFullPayment, Boolean IsExtendCollection, Boolean IsOverdueCollection)
-        {
-            String status = "";
-
-            if (IsCleared)
-            {
-                if (IsAdvancePayment)
-                {
-                    status = "Advance";
-                }
-                else
-                {
-                    if (IsFullPayment)
-                    {
-                        status = "Full";
-                    }
-                    else
-                    {
-                        if (IsExtendCollection)
-                        {
-                            status = "Paid (Extend)";
-                        }
-                        else
-                        {
-                            if (IsOverdueCollection)
-                            {
-                                status = "Paid (Overdue)";
-                            }
-                            else
-                            {
-                                status = "Paid";
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                if (IsAbsent)
-                {
-                    if (IsExtendCollection)
-                    {
-                        status = "Absent (Extend)";
-                    }
-                    else
-                    {
-                        if (IsOverdueCollection)
-                        {
-                            status = "Absent (Overdue)";
-                        }
-                        else
-                        {
-                            status = "Absent";
-                        }
-                    }
-                }
-                else
-                {
-                    if (IsPartialPayment)
-                    {
-                        if (IsExtendCollection)
-                        {
-                            status = "Partial (Extend)";
-                        }
-                        else
-                        {
-                            if (IsOverdueCollection)
-                            {
-                                status = "Partial (Overdue)";
-                            }
-                            else
-                            {
-                                status = "Partial";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        status = "--";
-                    }
-                }
-            }
-
-            return status;
-        }
+        private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // collection list by applicantId and by loanId for advance payment
         [Authorize]
@@ -145,7 +59,7 @@ namespace Lending.ApiControllers
                                   CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
                                   CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
                                   CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
-                                  Status = getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
+                                  Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
             return collections.ToList();
@@ -196,7 +110,7 @@ namespace Lending.ApiControllers
                                   CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
                                   CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
                                   CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
-                                  Status = getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
+                                  Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
             return (Models.TrnCollection)collections.FirstOrDefault();
@@ -246,7 +160,7 @@ namespace Lending.ApiControllers
                                   CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
                                   CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
                                   CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
-                                  Status = getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
+                                  Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
             return collections.ToList();
@@ -296,7 +210,7 @@ namespace Lending.ApiControllers
                                        CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
                                        CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
                                        CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
-                                       Status = getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
+                                       Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                                    };
 
             return collections.ToList();
