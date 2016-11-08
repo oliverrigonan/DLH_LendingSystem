@@ -356,7 +356,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnUpdatePartialPaymentId" onclick="btnUpdatePartialPayment()"><i class="fa fa-check fa-fw"></i> Update</button>
+                    <button class="btn btn-primary" id="btnUpdatePartialPayment" onclick="btnUpdatePartialPaymentOnclick()"><i class="fa fa-check fa-fw"></i> Update</button>
                     <button class="btn btn-danger" id="btnUpdatePartialPaymentClose" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
@@ -438,7 +438,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnUpdateAdvancePaymentId" onclick="btnUpdateAdvancePayment()"><i class="fa fa-check fa-fw"></i> Update</button>
+                    <button class="btn btn-primary" id="btnUpdateAdvancePayment" onclick="btnUpdateAdvancePaymentOnclick()"><i class="fa fa-check fa-fw"></i> Update</button>
                     <button class="btn btn-danger" id="btnUpdateAdvancePaymentClose" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
@@ -512,8 +512,8 @@
                     Are you sure for the full payment?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnFullPaymentAmountConfirmId" onclick="btnFullPaymentAmountConfirmOnclick()">Yes</button>
-                    <button class="btn btn-default" id="btnFullPaymentAmountConfirmIdNo" data-dismiss="modal">No</button>
+                    <button class="btn btn-default" id="btnFullPaymentAmountConfirm" onclick="btnFullPaymentAmountConfirmOnclick()">Yes</button>
+                    <button class="btn btn-default" id="btnFullPaymentAmountConfirmNo" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -697,35 +697,8 @@
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
 
-                                // more detail
-                                document.getElementById("applicantName").value = this.selectedItem["Applicant"];
-                                document.getElementById("applicantArea").value = this.selectedItem["Area"];
-
-                                var newLoanDate = new Date(this.selectedItem["LoanDate"]);
-                                var loanDateValue = ('0' + (newLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newLoanDate.getDate()).slice(-2) + '-' + newLoanDate.getFullYear();
-
-                                var newMaturityDate = new Date(this.selectedItem["MaturityDate"]);
-                                var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
-
-                                document.getElementById("collectionDetailLoanDate").value = loanDateValue;
-                                document.getElementById("collectionDetailMaturityDate").value = maturityDateValue;
-                                document.getElementById("collectionDetailIsFullyPaid").checked = this.selectedItem["IsFullyPaid"];
-
-                                document.getElementById("collectionDetailPrincipalAmount").value = this.selectedItem["PrincipalAmount"].toLocaleString();
-
-                                var processingFee = this.selectedItem["ProcessingFeeAmount"];
-                                var passbook = this.selectedItem["PassbookAmount"];
-                                var balance = this.selectedItem["BalanceAmount"];
-                                var penalty = this.selectedItem["PenaltyAmount"];
-                                var lateInt = this.selectedItem["LateIntAmount"];
-                                var advance = this.selectedItem["AdvanceAmount"];
-                                var requirements = this.selectedItem["RequirementsAmount"];
-                                var insuranceIPIorPPI = this.selectedItem["InsuranceIPIorPPIAmount"];
-
-                                var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-                                document.getElementById("collectionDetailTotalDeductions").value = totalDeductions.toLocaleString();
-                                document.getElementById("collectionDetailNetAmount").value = this.selectedItem["NetAmount"].toLocaleString();
+                                updateMoreDetails();
+                                updateNavigateButtonsCollection();
 
                                 setTimeout(function () {
                                     advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
@@ -741,34 +714,7 @@
                             }
                         });
 
-                        document.getElementById("applicantName").value = cboLoanNumberLogHistory.selectedItem["Applicant"];
-                        document.getElementById("applicantArea").value = cboLoanNumberLogHistory.selectedItem["Area"];
-
-                        var newLoanDate = new Date(cboLoanNumberLogHistory.selectedItem["LoanDate"]);
-                        var loanDateValue = ('0' + (newLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newLoanDate.getDate()).slice(-2) + '-' + newLoanDate.getFullYear();
-
-                        var newMaturityDate = new Date(cboLoanNumberLogHistory.selectedItem["MaturityDate"]);
-                        var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
-
-                        document.getElementById("collectionDetailLoanDate").value = loanDateValue;
-                        document.getElementById("collectionDetailMaturityDate").value = maturityDateValue;
-                        document.getElementById("collectionDetailIsFullyPaid").checked = cboLoanNumberLogHistory.selectedItem["IsFullyPaid"];
-
-                        document.getElementById("collectionDetailPrincipalAmount").value = cboLoanNumberLogHistory.selectedItem["PrincipalAmount"].toLocaleString();
-
-                        var processingFee = cboLoanNumberLogHistory.selectedItem["ProcessingFeeAmount"];
-                        var passbook = cboLoanNumberLogHistory.selectedItem["PassbookAmount"];
-                        var balance = cboLoanNumberLogHistory.selectedItem["BalanceAmount"];
-                        var penalty = cboLoanNumberLogHistory.selectedItem["PenaltyAmount"];
-                        var lateInt = cboLoanNumberLogHistory.selectedItem["LateIntAmount"];
-                        var advance = cboLoanNumberLogHistory.selectedItem["AdvanceAmount"];
-                        var requirements = cboLoanNumberLogHistory.selectedItem["RequirementsAmount"];
-                        var insuranceIPIorPPI = cboLoanNumberLogHistory.selectedItem["InsuranceIPIorPPIAmount"];
-
-                        var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-                        document.getElementById("collectionDetailTotalDeductions").value = totalDeductions.toLocaleString();
-                        document.getElementById("collectionDetailNetAmount").value = cboLoanNumberLogHistory.selectedItem["NetAmount"].toLocaleString();
+                        updateMoreDetails();
                     } else {
                         toastr.info("No collection at this time");
                     }
@@ -776,6 +722,40 @@
                     createFlexGridForCollection();
                 }
             });
+        }
+
+        // more detail update
+        function updateMoreDetails() {
+            document.getElementById("applicantName").value = cboLoanNumberLogHistory.selectedItem["Applicant"];
+            document.getElementById("applicantArea").value = cboLoanNumberLogHistory.selectedItem["Area"];
+
+            var newLoanDate = new Date(cboLoanNumberLogHistory.selectedItem["LoanDate"]);
+            var loanDateValue = ('0' + (newLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newLoanDate.getDate()).slice(-2) + '-' + newLoanDate.getFullYear();
+
+            var newMaturityDate = new Date(cboLoanNumberLogHistory.selectedItem["MaturityDate"]);
+            var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
+
+            document.getElementById("collectionDetailLoanDate").value = loanDateValue;
+            document.getElementById("collectionDetailMaturityDate").value = maturityDateValue;
+            document.getElementById("collectionDetailIsFullyPaid").checked = cboLoanNumberLogHistory.selectedItem["IsFullyPaid"];
+
+            document.getElementById("collectionDetailPrincipalAmount").value = cboLoanNumberLogHistory.selectedItem["PrincipalAmount"].toLocaleString();
+
+            var processingFee = cboLoanNumberLogHistory.selectedItem["ProcessingFeeAmount"];
+            var passbook = cboLoanNumberLogHistory.selectedItem["PassbookAmount"];
+            var balance = cboLoanNumberLogHistory.selectedItem["BalanceAmount"];
+            var penalty = cboLoanNumberLogHistory.selectedItem["PenaltyAmount"];
+            var lateInt = cboLoanNumberLogHistory.selectedItem["LateIntAmount"];
+            var advance = cboLoanNumberLogHistory.selectedItem["AdvanceAmount"];
+            var requirements = cboLoanNumberLogHistory.selectedItem["RequirementsAmount"];
+            var insuranceIPIorPPI = cboLoanNumberLogHistory.selectedItem["InsuranceIPIorPPIAmount"];
+
+            var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
+
+            document.getElementById("collectionDetailTotalDeductions").value = totalDeductions.toLocaleString();
+            document.getElementById("collectionDetailNetAmount").value = cboLoanNumberLogHistory.selectedItem["NetAmount"].toLocaleString();
+
+
         }
 
         // get collection by applicantId and by loanId
@@ -1210,8 +1190,8 @@
 
         // partial payment
         function btnPartialPaymentOnclick() {
-            document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-            $("#btnUpdatePartialPaymentId").prop("disabled", false);
+            document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+            $("#btnUpdatePartialPayment").prop("disabled", false);
             $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
             NProgress.start();
@@ -1278,12 +1258,12 @@
         }
 
         // partial payment confirmation
-        function btnUpdatePartialPayment() {
+        function btnUpdatePartialPaymentOnclick() {
             if (inputValidationForPartialPayment()) {
                 if (inputValidationForPartialPayment()) {
-                    $("#btnUpdatePartialPaymentId").prop("disabled", true);
+                    $("#btnUpdatePartialPayment").prop("disabled", true);
                     $("#btnUpdatePartialPaymentClose").prop("disabled", true);
-                    document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+                    document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
                     var partialAmountValue = document.getElementById("partialPaymentPartialAmount").value;
                     var currentBalanceAmountValue = document.getElementById("partialPaymentCurrentBalance").value;
@@ -1300,8 +1280,8 @@
                                 });
                             });
 
-                            document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-                            $("#btnUpdatePartialPaymentId").prop("disabled", false);
+                            document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                            $("#btnUpdatePartialPayment").prop("disabled", false);
                             $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
                             toastr.error("The amount to be paid must not be greater than the current balance amount.", "Invalid Entry");
@@ -1353,8 +1333,8 @@
                             });
                         }
                     } else {
-                        document.getElementById("btnUpdatePartialPaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-                        $("#btnUpdatePartialPaymentId").prop("disabled", false);
+                        document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                        $("#btnUpdatePartialPayment").prop("disabled", false);
                         $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
                         toastr.error("Zero(0) amount. Please Enter an amount for partial payment.", "Invalid Entry");
@@ -1578,8 +1558,8 @@
 
         // pick button
         function btnPickOnclick() {
-            document.getElementById("btnUpdateAdvancePaymentId").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-            $("#btnUpdateAdvancePaymentId").prop("disabled", false);
+            document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+            $("#btnUpdateAdvancePayment").prop("disabled", false);
             $("#btnUpdateAdvancePaymentClose").prop("disabled", false);
 
             advancePaymentCollectionView.editItem(advancePaymentCollectionView.currentItem);
@@ -1595,10 +1575,10 @@
         }
 
         // advance payment update
-        function btnUpdateAdvancePayment() {
-            $("#btnUpdateAdvancePaymentId").prop("disabled", true);
+        function btnUpdateAdvancePaymentOnclick() {
+            $("#btnUpdateAdvancePayment").prop("disabled", true);
             $("#btnUpdateAdvancePaymentClose").prop("disabled", true);
-            document.getElementById("btnUpdateAdvancePaymentId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+            document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
             $.ajax({
                 type: "PUT",
@@ -1681,16 +1661,16 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnFullPaymentAmountConfirmId").innerHTML = "Yes";
-            $("#btnFullPaymentAmountConfirmId").prop("disabled", false);
-            $("#btnFullPaymentAmountConfirmIdNo").prop("disabled", false);
+            document.getElementById("btnFullPaymentAmountConfirm").innerHTML = "Yes";
+            $("#btnFullPaymentAmountConfirm").prop("disabled", false);
+            $("#btnFullPaymentAmountConfirmNo").prop("disabled", false);
         }
 
         // full payment amount confirm
         function btnFullPaymentAmountConfirmOnclick() {
-            $("#btnFullPaymentAmountConfirmId").prop("disabled", true);
-            $("#btnFullPaymentAmountConfirmIdNo").prop("disabled", true);
-            document.getElementById("btnFullPaymentAmountConfirmId").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+            $("#btnFullPaymentAmountConfirm").prop("disabled", true);
+            $("#btnFullPaymentAmountConfirmNo").prop("disabled", true);
+            document.getElementById("btnFullPaymentAmountConfirm").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
             $.ajax({
                 type: "PUT",
                 url: '/api/collection/fullPayment/update/byId/byLoanId/' + collectionAdvancePaymentId + '/' + urlParameterLoanId,
