@@ -178,7 +178,8 @@
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
     <Compile Include="ApiControllers\ApiCollectorController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
-    <Compile Include="ApiControllers\ApiDisbursementController.cs" />
+    <Compile Include="ApiControllers\ApiExpensesController.cs" />
+    <Compile Include="ApiControllers\ApiExpenseTypeController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationCollateralController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
@@ -228,11 +229,12 @@
     <Compile Include="Models\MstCoMakerStatementApplianceOwned.cs" />
     <Compile Include="Models\MstCoMakerStatementRealPropertiesOwned.cs" />
     <Compile Include="Models\MstCompany.cs" />
+    <Compile Include="Models\MstExpenseType.cs" />
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
-    <Compile Include="Models\TrnDisbursement.cs" />
+    <Compile Include="Models\TrnExpenses.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
     <Compile Include="Models\TrnLoanApplicationRequirements.cs" />
@@ -470,8 +472,8 @@
     <Content Include="Views\Software\CollectionList.cshtml" />
     <Content Include="Views\Software\CollectionDetail.cshtml" />
     <Content Include="Views\Software\Reports.cshtml" />
-    <Content Include="Views\Software\DisbursementList.cshtml" />
-    <Content Include="Views\Software\DisbursementDetail.cshtml" />
+    <Content Include="Views\Software\ExpensesList.cshtml" />
+    <Content Include="Views\Software\ExpenseDetail.cshtml" />
     <Content Include="Views\Software\UserDetail.cshtml" />
     <Content Include="Views\Software\UserList.cshtml" />
     <Content Include="wijmo\controls\cultures\wijmo.culture.de.js.map" />

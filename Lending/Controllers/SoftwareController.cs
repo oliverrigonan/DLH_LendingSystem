@@ -109,13 +109,13 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult DisbursementList()
+        public ActionResult ExpensesList()
         {
             return View();
         }
 
         [Authorize]
-        public ActionResult DisbursementDetail(Int32? id)
+        public ActionResult ExpenseDetail(Int32? id)
         {
             if (id == null)
             {

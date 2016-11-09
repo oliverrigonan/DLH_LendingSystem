@@ -32,7 +32,7 @@ namespace Lending.Business
                                        ProcessingFeeAmount = d.ProcessingFeeAmount,
                                        PassbookAmount = d.PassbookAmount,
                                        BalanceAmount = d.BalanceAmount,
-                                       PenaltyAmount= d.PenaltyAmount,
+                                       PenaltyAmount = d.PenaltyAmount,
                                        LateIntAmount = d.LateIntAmount,
                                        AdvanceAmount = d.AdvanceAmount,
                                        RequirementsAmount = d.RequirementsAmount,
@@ -57,12 +57,12 @@ namespace Lending.Business
                         newLoanJournal.JournalDate = Convert.ToDateTime(loanApplication.LoanDate);
                         newLoanJournal.AccountId = loanApplication.AccountId;
                         newLoanJournal.Particulars = loanApplication.Particulars;
-                        newLoanJournal.ReleasedAmount = loanApplication.NetAmount; 
+                        newLoanJournal.ReleasedAmount = loanApplication.NetAmount;
                         newLoanJournal.ReceivedAmount = 0;
                         newLoanJournal.DocumentReference = "Loan - " + loanApplication.LoanNumber;
                         newLoanJournal.LoanId = loanId;
                         newLoanJournal.CollectionId = null;
-                        newLoanJournal.DisbursementId = null;
+                        newLoanJournal.ExpenseId = null;
 
                         db.trnJournals.InsertOnSubmit(newLoanJournal);
                         db.SubmitChanges();
@@ -82,48 +82,51 @@ namespace Lending.Business
             }
         }
 
-        // disbursement journal
-        public void postDisbursementJournal(Int32 disbursementId)
+        // expenses journal
+        public void postExpensesJournal(Int32 expenseId)
         {
-            var disbursements = from d in db.trnDisbursements
-                               where d.Id == disbursementId
-                               select new Models.TrnDisbursement
-                               {
-                                   Id = d.Id,
-                                   DisbursementNumber = d.DisbursementNumber,
-                                   DisbursementDate = d.DisbursementDate.ToShortDateString(),
-                                   AccountId = d.AccountId,
-                                   Account = d.mstAccount.Account,
-                                   Payee = d.Payee,
-                                   Particulars = d.Particulars,
-                                   DisburseAmount = d.DisburseAmount,
-                                   PreparedByUserId = d.PreparedByUserId,
-                                   PreparedByUser = d.mstUser.FullName,
-                                   IsLocked = d.IsLocked,
-                                   CreatedByUserId = d.CreatedByUserId,
-                                   CreatedByUser = d.mstUser1.FullName,
-                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                   UpdatedByUserId = d.UpdatedByUserId,
-                                   UpdatedByUser = d.mstUser2.FullName,
-                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                               };
+            var expenses = from d in db.trnExpenses
+                           where d.Id == expenseId
+                           select new Models.TrnExpenses
+                           {
+                               Id = d.Id,
+                               ExpenseNumber = d.ExpenseNumber,
+                               ExpenseDate = d.ExpenseDate.ToShortDateString(),
+                               AccountId = d.AccountId,
+                               Account = d.mstAccount.Account,
+                               CollectorId = d.CollectorId,
+                               Collector = d.mstCollector.Collector,
+                               ExpenseTypeId = d.ExpenseTypeId,
+                               ExpenseType = d.mstExpenseType.ExpenseType,
+                               Particulars = d.Particulars,
+                               ExpenseAmount = d.ExpenseAmount,
+                               PreparedByUserId = d.PreparedByUserId,
+                               PreparedByUser = d.mstUser.FullName,
+                               IsLocked = d.IsLocked,
+                               CreatedByUserId = d.CreatedByUserId,
+                               CreatedByUser = d.mstUser1.FullName,
+                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                               UpdatedByUserId = d.UpdatedByUserId,
+                               UpdatedByUser = d.mstUser2.FullName,
+                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                           };
 
-            if (disbursements.Any())
+            if (expenses.Any())
             {
-                foreach (var disbursement in disbursements)
+                foreach (var expense in expenses)
                 {
-                    if (disbursement.DisburseAmount > 0)
+                    if (expense.ExpenseAmount > 0)
                     {
                         Data.trnJournal newLoanJournal = new Data.trnJournal();
-                        newLoanJournal.JournalDate = Convert.ToDateTime(disbursement.DisbursementDate);
-                        newLoanJournal.AccountId = disbursement.AccountId;
-                        newLoanJournal.Particulars = disbursement.Particulars;
-                        newLoanJournal.ReleasedAmount = disbursement.DisburseAmount;
+                        newLoanJournal.JournalDate = Convert.ToDateTime(expense.ExpenseDate);
+                        newLoanJournal.AccountId = expense.AccountId;
+                        newLoanJournal.Particulars = expense.Particulars;
+                        newLoanJournal.ReleasedAmount = expense.ExpenseAmount;
                         newLoanJournal.ReceivedAmount = 0;
-                        newLoanJournal.DocumentReference = "Disbursement - " + disbursement.DisbursementNumber;
+                        newLoanJournal.DocumentReference = "Expenses - " + expense.ExpenseNumber;
                         newLoanJournal.LoanId = null;
                         newLoanJournal.CollectionId = null;
-                        newLoanJournal.DisbursementId = disbursementId;
+                        newLoanJournal.ExpenseId = expense.Id;
 
                         db.trnJournals.InsertOnSubmit(newLoanJournal);
                         db.SubmitChanges();
@@ -132,10 +135,10 @@ namespace Lending.Business
             }
         }
 
-        // delete disbursement journal
-        public void deleteDisbursementJournal(Int32 disbursementId)
+        // delete expenses journal
+        public void deleteExpensesJournal(Int32 expenseId)
         {
-            var journals = from d in db.trnJournals where d.DisbursementId == disbursementId select d;
+            var journals = from d in db.trnJournals where d.ExpenseId == expenseId select d;
             if (journals.Any())
             {
                 db.trnJournals.DeleteAllOnSubmit(journals);
