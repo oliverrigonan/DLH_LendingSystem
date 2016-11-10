@@ -342,7 +342,7 @@
                     Are you sure that you want to delete this Applicant's Requirement?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteLoanRequirement" onclick="btnConfirmDeleteLoanRequirementOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteLoanRequirement" onclick="btnConfirmDeleteLoanRequirementOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteLoanRequirementModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -397,7 +397,7 @@
                     Are you sure that you want to delete this Applicant's Collateral?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteLoanApplicationCollateral" onclick="btnConfirmDeleteLoanApplicationCollateralOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteLoanApplicationCollateral" onclick="btnConfirmDeleteLoanApplicationCollateralOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteLoanApplicationCollateralModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -1352,7 +1352,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Delete";
             $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
             $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
         }
@@ -1384,7 +1384,7 @@
 
                         $("#deleteConfirmationLoanRequirementModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
                         $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
                     },
@@ -1393,7 +1393,7 @@
 
                         $("#deleteConfirmationLoanRequirementModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
                         $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
                     }
@@ -1692,7 +1692,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteLoanApplicationCollateral").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteLoanApplicationCollateral").innerHTML = "Delete";
             $("#btnConfirmDeleteLoanApplicationCollateral").prop("disabled", false);
             $("#btnCloseDeleteLoanApplicationCollateralModal").prop("disabled", false);
         }
@@ -1724,7 +1724,7 @@
 
                         $("#deleteConfirmationLoanApplicationCollateralModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteLoanApplicationCollateral").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteLoanApplicationCollateral").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanApplicationCollateral").prop("disabled", false);
                         $("#btnCloseDeleteLoanApplicationCollateralModal").prop("disabled", false);
                     },
@@ -1733,7 +1733,7 @@
 
                         $("#deleteConfirmationLoanApplicationCollateralModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteLoanApplicationCollateral").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteLoanApplicationCollateral").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanApplicationCollateral").prop("disabled", false);
                         $("#btnCloseDeleteLoanApplicationCollateralModal").prop("disabled", false);
                     }

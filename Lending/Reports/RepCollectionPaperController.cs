@@ -15,12 +15,55 @@ namespace Lending.Reports
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
         private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
-        
+
         // Collection Paper
         public ActionResult collectionPaper(String collectionDate, Int32 areaId)
         {
             if (collectionDate != null && areaId != null)
             {
+                // PDF settings
+                MemoryStream workStream = new MemoryStream();
+                Rectangle rectangle = new Rectangle(PageSize.A3);
+                Document document = new Document(rectangle, 72, 72, 72, 72);
+                document.SetMargins(30f, 30f, 30f, 30f);
+                PdfWriter.GetInstance(document, workStream).CloseStream = false;
+
+                // Document Starts
+                document.Open();
+
+                // Fonts Customization
+                Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
+                Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+                Font fontArial12 = FontFactory.GetFont("Arial", 12);
+                Font fontArial12White = FontFactory.GetFont("Arial", 13, BaseColor.WHITE);
+                Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
+                Font fontArial11 = FontFactory.GetFont("Arial", 11);
+
+                // line
+                Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
+
+                // table main header
+                PdfPTable collectionHeader = new PdfPTable(2);
+                float[] collectionHeaderWidthCells = new float[] { 50f, 50f };
+                collectionHeader.SetWidths(collectionHeaderWidthCells);
+                collectionHeader.WidthPercentage = 100;
+                collectionHeader.AddCell(new PdfPCell(new Phrase("DLH Incorporated", fontArial17Bold)) { Border = 0 });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("Collection Paper", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("Genes Compound Brgy. Quiot Pardo Cebu City", fontArial12)) { Border = 0, PaddingTop = 5f });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("Quiot Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("0932-444-1234", fontArial12)) { Border = 0, PaddingTop = 5f });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
+                document.Add(collectionHeader);
+
+                // table collection label
+                PdfPTable collectionLabel = new PdfPTable(1);
+                float[] collectionLabelWidthCells = new float[] { 100f };
+                collectionLabel.SetWidths(collectionLabelWidthCells);
+                collectionLabel.WidthPercentage = 100;
+                collectionLabel.AddCell(new PdfPCell(new Phrase("List of daily collections (Applicants)", fontArial12White)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 9f, PaddingLeft = 5f, BackgroundColor = BaseColor.BLACK });
+                document.Add(line);
+                document.Add(collectionLabel);
+
                 var collections = from d in db.trnCollections
                                   where d.CollectionDate == Convert.ToDateTime(collectionDate)
                                   && d.trnLoanApplication.mstApplicant.AreaId == areaId
@@ -64,49 +107,6 @@ namespace Lending.Reports
 
                 if (collections.Any())
                 {
-                    // PDF settings
-                    MemoryStream workStream = new MemoryStream();
-                    Rectangle rectangle = new Rectangle(PageSize.A3);
-                    Document document = new Document(rectangle, 72, 72, 72, 72);
-                    document.SetMargins(30f, 30f, 30f, 30f);
-                    PdfWriter.GetInstance(document, workStream).CloseStream = false;
-
-                    // Document Starts
-                    document.Open();
-
-                    // Fonts Customization
-                    Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
-                    Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
-                    Font fontArial12 = FontFactory.GetFont("Arial", 12);
-                    Font fontArial12White = FontFactory.GetFont("Arial", 13, BaseColor.WHITE);
-                    Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
-                    Font fontArial11 = FontFactory.GetFont("Arial", 11);
-
-                    // line
-                    Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
-
-                    // table main header
-                    PdfPTable collectionHeader = new PdfPTable(2);
-                    float[] collectionHeaderWidthCells = new float[] { 50f, 50f };
-                    collectionHeader.SetWidths(collectionHeaderWidthCells);
-                    collectionHeader.WidthPercentage = 100;
-                    collectionHeader.AddCell(new PdfPCell(new Phrase("DLH Incorporated", fontArial17Bold)) { Border = 0 });
-                    collectionHeader.AddCell(new PdfPCell(new Phrase("Collection Paper", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
-                    collectionHeader.AddCell(new PdfPCell(new Phrase("Genes Compound Brgy. Quiot Pardo Cebu City", fontArial12)) { Border = 0, PaddingTop = 5f });
-                    collectionHeader.AddCell(new PdfPCell(new Phrase("Quiot Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
-                    collectionHeader.AddCell(new PdfPCell(new Phrase("0932-444-1234", fontArial12)) { Border = 0, PaddingTop = 5f });
-                    collectionHeader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
-                    document.Add(collectionHeader);
-
-                    // table collection label
-                    PdfPTable collectionLabel = new PdfPTable(1);
-                    float[] collectionLabelWidthCells = new float[] { 100f };
-                    collectionLabel.SetWidths(collectionLabelWidthCells);
-                    collectionLabel.WidthPercentage = 100;
-                    collectionLabel.AddCell(new PdfPCell(new Phrase("List of daily collections (Applicants)", fontArial12White)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 9f, PaddingLeft = 5f, BackgroundColor = BaseColor.BLACK });
-                    document.Add(line);
-                    document.Add(collectionLabel);
-
                     var area = from d in db.mstAreas where d.Id == areaId select d;
                     if (area.Any())
                     {
@@ -114,7 +114,7 @@ namespace Lending.Reports
                         float[] areaLabelWithCells = new float[] { 100f };
                         areaLabel.SetWidths(areaLabelWithCells);
                         areaLabel.WidthPercentage = 100;
-                        areaLabel.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().Area + " Daily Collections", fontArial12Bold)) { HorizontalAlignment = 0, Border = 0,  PaddingTop = 20f, PaddingBottom = 10f });
+                        areaLabel.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().Area + " Daily Collections", fontArial12Bold)) { HorizontalAlignment = 0, Border = 0, PaddingTop = 20f, PaddingBottom = 10f });
                         document.Add(areaLabel);
 
                         PdfPTable dailyCollection = new PdfPTable(7);
@@ -196,27 +196,21 @@ namespace Lending.Reports
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         document.Add(collectionSummaryTotal);
                         document.Add(Chunk.NEWLINE);
-
-
                     }
-
-                    // Document End
-                    document.Close();
-
-                    byte[] byteInfo = workStream.ToArray();
-                    workStream.Write(byteInfo, 0, byteInfo.Length);
-                    workStream.Position = 0;
-
-                    return new FileStreamResult(workStream, "application/pdf");
                 }
-                else
-                {
-                    return RedirectToAction("NotFound", "Software");
-                }
+                
+                // Document End
+                document.Close();
+
+                byte[] byteInfo = workStream.ToArray();
+                workStream.Write(byteInfo, 0, byteInfo.Length);
+                workStream.Position = 0;
+
+                return new FileStreamResult(workStream, "application/pdf");
             }
             else
             {
-                return RedirectToAction("CollectionList", "Software");
+                return RedirectToAction("NotFound", "Software");
             }
         }
     }

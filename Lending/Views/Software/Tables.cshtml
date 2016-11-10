@@ -403,7 +403,7 @@
                     Are you sure that you want to delete this Area?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteArea" onclick="btnConfirmDeleteAreaOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteArea" onclick="btnConfirmDeleteAreaOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteAreaModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -454,7 +454,7 @@
                     Are you sure that you want to delete this Collector?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteCollector" onclick="btnConfirmDeleteCollectorOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteCollector" onclick="btnConfirmDeleteCollectorOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteCollectorModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -501,7 +501,7 @@
                     Are you sure that you want to delete this Requirement?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteRequirements" onclick="btnConfirmDeleteRequirementsOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteRequirements" onclick="btnConfirmDeleteRequirementsOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteRequirementsModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -552,7 +552,7 @@
                     Are you sure that you want to delete this Account?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteAccounts" onclick="btnConfirmDeleteAccountsOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteAccounts" onclick="btnConfirmDeleteAccountsOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteAccountsModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -599,7 +599,7 @@
                     Are you sure that you want to delete this Expense Type?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteExpenseTypes" onclick="btnConfirmDeleteExpenseTypesOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteExpenseTypes" onclick="btnConfirmDeleteExpenseTypesOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteExpenseTypesModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -887,7 +887,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "Delete";
             $("#btnConfirmDeleteArea").prop("disabled", false);
             $("#btnCloseDeleteAreaModal").prop("disabled", false);
         }
@@ -944,7 +944,7 @@
 
                         $("#deleteConfirmationAreaModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Delete";
                         $("#btnConfirmDeleteArea").prop("disabled", false);
                         $("#btnCloseDeleteAreaModal").prop("disabled", false);
                     },
@@ -953,7 +953,7 @@
 
                         $("#deleteConfirmationAreaModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteArea").innerHTML = "Delete";
                         $("#btnConfirmDeleteArea").prop("disabled", false);
                         $("#btnCloseDeleteAreaModal").prop("disabled", false);
                     }
@@ -1405,7 +1405,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteCollector").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteCollector").innerHTML = "Delete";
             $("#btnConfirmDeleteCollector").prop("disabled", false);
             $("#btnCloseDeleteCollectorModal").prop("disabled", false);
         }
@@ -1882,7 +1882,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteRequirements").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteRequirements").innerHTML = "Delete";
             $("#btnConfirmDeleteRequirements").prop("disabled", false);
             $("#btnCloseDeleteRequirementsModal").prop("disabled", false);
         }
@@ -2403,7 +2403,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteAccounts").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteAccounts").innerHTML = "Delete";
             $("#btnConfirmDeleteAccounts").prop("disabled", false);
             $("#btnCloseDeleteAccountsModal").prop("disabled", false);
         }
@@ -2884,7 +2884,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteExpenseTypes").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteExpenseTypes").innerHTML = "Delete";
             $("#btnConfirmDeleteExpenseTypes").prop("disabled", false);
             $("#btnCloseDeleteExpenseTypesModal").prop("disabled", false);
         }
@@ -3088,6 +3088,7 @@
             $("#Areas").hide();
             $("#Collectors").hide();
             $("#ExpenseTypes").hide();
+            $("#Requirements").hide();
             $("#Accounts").hide();
             $("#ExpenseTypes").show();
 

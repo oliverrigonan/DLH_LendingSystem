@@ -159,7 +159,7 @@
                     Are you sure that you want to delete this Loan Application?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteLoanApplication" onclick="btnConfirmDeleteLoanApplicationOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteLoanApplication" onclick="btnConfirmDeleteLoanApplicationOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteLoanApplicationModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -311,7 +311,7 @@
                     "backdrop": "static"
                 });
 
-                document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Yes";
+                document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
                 $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
                 $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
             }
@@ -365,14 +365,14 @@
                     404: function () {
                         toastr.error("Not Found");
                         $('#deleteConfirmationLoanApplicationModal').modal('hide');
-                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
                         $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
                     },
                     400: function () {
                         toastr.error("Bad Request");
                         $('#deleteConfirmationLoanApplicationModal').modal('hide');
-                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
                         $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
                     }
