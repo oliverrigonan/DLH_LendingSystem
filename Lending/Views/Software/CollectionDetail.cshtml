@@ -39,18 +39,8 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
                         <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        System <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
-                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
                         <li class="divider"></li>
-                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
                     </ul>
                 </div>
                 <div class="btn-group">
@@ -59,6 +49,17 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
                     </ul>
                 </div>
             </div>
@@ -112,9 +113,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-success btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
-                            <button class="btn btn-success btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
-                            <button class="btn btn-success btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
+                            <button class="btn btn-primary btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
                             <button class="btn btn-default btn-sm" id="" onclick="btnRefreshOnclick()">Refresh</button>
                         </div>
                         <div class="col-md-1" align="right">
@@ -512,7 +513,7 @@
                     Are you sure for the full payment?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnFullPaymentAmountConfirm" onclick="btnFullPaymentAmountConfirmOnclick()">Yes</button>
+                    <button class="btn btn-primary" id="btnFullPaymentAmountConfirm" onclick="btnFullPaymentAmountConfirmOnclick()">Yes</button>
                     <button class="btn btn-default" id="btnFullPaymentAmountConfirmNo" data-dismiss="modal">No</button>
                 </div>
             </div>

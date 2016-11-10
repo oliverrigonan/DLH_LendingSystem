@@ -39,18 +39,8 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
                         <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        System <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
-                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
                         <li class="divider"></li>
-                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
                     </ul>
                 </div>
                 <div class="btn-group">
@@ -59,6 +49,17 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                    </ul>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                        System <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
+                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
                     </ul>
                 </div>
             </div>
@@ -153,7 +154,7 @@
                     Are you sure that you want to delete this Company?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteCompany" onclick="btnConfirmDeleteCompanyOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteCompany" onclick="btnConfirmDeleteCompanyOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteCompanyModal" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -253,7 +254,7 @@
                     "backdrop": "static"
                 });
 
-                document.getElementById("btnConfirmDeleteCompany").innerHTML = "Yes";
+                document.getElementById("btnConfirmDeleteCompany").innerHTML = "Delete";
                 $("#btnConfirmDeleteCompany").prop("disabled", false);
                 $("#btnCloseDeleteCompanyModal").prop("disabled", false);
             }
@@ -311,7 +312,7 @@
 
                         $("#deleteConfirmationCompanyModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteCompany").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteCompany").innerHTML = "Delete";
                         $("#btnConfirmDeleteCompany").prop("disabled", false);
                         $("#btnCloseDeleteCompanyModal").prop("disabled", false);
                     },
@@ -320,7 +321,7 @@
 
                         $("#deleteConfirmationCompanyModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteCompany").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteCompany").innerHTML = "Delete";
                         $("#btnConfirmDeleteCompany").prop("disabled", false);
                         $("#btnCloseDeleteCompanyModal").prop("disabled", false);
                     }

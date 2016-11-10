@@ -73,7 +73,7 @@ namespace Lending.Reports
                                       LoanId = d.LoanId,
                                       LoanNumber = d.trnLoanApplication.LoanNumber,
                                       ApplicantId = d.trnLoanApplication.ApplicantId,
-                                      Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + d.trnLoanApplication.mstApplicant.ApplicantMiddleName,
+                                      Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
                                       Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
                                       IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
                                       AccountId = d.AccountId,
