@@ -14,9 +14,8 @@ namespace Lending.Models
         public String ExpenseDate { get; set; }
         public Int32 AccountId { get; set; }
         public String Account { get; set; }
-        public Int32 CollectorId { get; set; }
-        public String Collector { get; set; }
-        public String CollectorAreaAssigned { get; set; }
+        public Int32 CollectorStaffId { get; set; }
+        public String CollectorStaff { get; set; }
         public Int32 ExpenseTypeId { get; set; }
         public String ExpenseType { get; set; }
         public String Particulars { get; set; }

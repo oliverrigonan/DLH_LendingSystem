@@ -28,9 +28,8 @@ namespace Lending.ApiControllers
                                ExpenseDate = d.ExpenseDate.ToShortDateString(),
                                AccountId = d.AccountId,
                                Account = d.mstAccount.Account,
-                               CollectorId = d.CollectorId,
-                               Collector = d.mstCollector.Collector,
-                               CollectorAreaAssigned = d.mstCollector.mstArea.Area,
+                               CollectorStaffId = d.CollectorStaffId,
+                               CollectorStaff = d.mstStaff.Staff,
                                ExpenseTypeId = d.ExpenseTypeId,
                                ExpenseType = d.mstExpenseType.ExpenseType,
                                Particulars = d.Particulars,
@@ -64,9 +63,8 @@ namespace Lending.ApiControllers
                               ExpenseDate = d.ExpenseDate.ToShortDateString(),
                               AccountId = d.AccountId,
                               Account = d.mstAccount.Account,
-                              CollectorId = d.CollectorId,
-                              Collector = d.mstCollector.Collector,
-                              CollectorAreaAssigned = d.mstCollector.mstArea.Area,
+                              CollectorStaffId = d.CollectorStaffId,
+                              CollectorStaff = d.mstStaff.Staff,
                               ExpenseTypeId = d.ExpenseTypeId,
                               ExpenseType = d.mstExpenseType.ExpenseType,
                               Particulars = d.Particulars,
@@ -121,7 +119,7 @@ namespace Lending.ApiControllers
                 newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
                 newExpense.ExpenseDate = DateTime.Today;
                 newExpense.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
-                newExpense.CollectorId = (from d in db.mstCollectors.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newExpense.CollectorStaffId = (from d in db.mstStaffs.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newExpense.Particulars = "NA";
                 newExpense.ExpenseAmount = 0;
@@ -161,7 +159,7 @@ namespace Lending.ApiControllers
                         var lockExpense = expenses.FirstOrDefault();
                         lockExpense.ExpenseDate = Convert.ToDateTime(expense.ExpenseDate);
                         lockExpense.AccountId = expense.AccountId;
-                        lockExpense.CollectorId = expense.CollectorId;
+                        lockExpense.CollectorStaffId = expense.CollectorStaffId;
                         lockExpense.ExpenseTypeId = expense.ExpenseTypeId;
                         lockExpense.Particulars = expense.Particulars;
                         lockExpense.ExpenseAmount = expense.ExpenseAmount;

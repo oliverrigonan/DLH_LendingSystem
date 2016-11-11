@@ -53,7 +53,7 @@ namespace Lending.Business
                 {
                     if (loanApplication.NetAmount > 0)
                     {
-                        Data.trnJournal newLoanJournal = new Data.trnJournal();
+                        Data.sysJournal newLoanJournal = new Data.sysJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(loanApplication.LoanDate);
                         newLoanJournal.AccountId = loanApplication.AccountId;
                         newLoanJournal.Particulars = loanApplication.Particulars;
@@ -64,7 +64,7 @@ namespace Lending.Business
                         newLoanJournal.CollectionId = null;
                         newLoanJournal.ExpenseId = null;
 
-                        db.trnJournals.InsertOnSubmit(newLoanJournal);
+                        db.sysJournals.InsertOnSubmit(newLoanJournal);
                         db.SubmitChanges();
                     }
                 }
@@ -74,10 +74,10 @@ namespace Lending.Business
         // delete loan journal
         public void deleteLoanJournal(Int32 loanId)
         {
-            var journals = from d in db.trnJournals where d.LoanId == loanId select d;
+            var journals = from d in db.sysJournals where d.LoanId == loanId select d;
             if (journals.Any())
             {
-                db.trnJournals.DeleteAllOnSubmit(journals);
+                db.sysJournals.DeleteAllOnSubmit(journals);
                 db.SubmitChanges();
             }
         }
@@ -94,8 +94,8 @@ namespace Lending.Business
                                ExpenseDate = d.ExpenseDate.ToShortDateString(),
                                AccountId = d.AccountId,
                                Account = d.mstAccount.Account,
-                               CollectorId = d.CollectorId,
-                               Collector = d.mstCollector.Collector,
+                               CollectorStaffId = d.CollectorStaffId,
+                               CollectorStaff = d.mstStaff.Staff,
                                ExpenseTypeId = d.ExpenseTypeId,
                                ExpenseType = d.mstExpenseType.ExpenseType,
                                Particulars = d.Particulars,
@@ -117,7 +117,7 @@ namespace Lending.Business
                 {
                     if (expense.ExpenseAmount > 0)
                     {
-                        Data.trnJournal newLoanJournal = new Data.trnJournal();
+                        Data.sysJournal newLoanJournal = new Data.sysJournal();
                         newLoanJournal.JournalDate = Convert.ToDateTime(expense.ExpenseDate);
                         newLoanJournal.AccountId = expense.AccountId;
                         newLoanJournal.Particulars = expense.Particulars;
@@ -128,7 +128,7 @@ namespace Lending.Business
                         newLoanJournal.CollectionId = null;
                         newLoanJournal.ExpenseId = expense.Id;
 
-                        db.trnJournals.InsertOnSubmit(newLoanJournal);
+                        db.sysJournals.InsertOnSubmit(newLoanJournal);
                         db.SubmitChanges();
                     }
                 }
@@ -138,10 +138,10 @@ namespace Lending.Business
         // delete expenses journal
         public void deleteExpensesJournal(Int32 expenseId)
         {
-            var journals = from d in db.trnJournals where d.ExpenseId == expenseId select d;
+            var journals = from d in db.sysJournals where d.ExpenseId == expenseId select d;
             if (journals.Any())
             {
-                db.trnJournals.DeleteAllOnSubmit(journals);
+                db.sysJournals.DeleteAllOnSubmit(journals);
                 db.SubmitChanges();
             }
         }

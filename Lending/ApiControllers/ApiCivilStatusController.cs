@@ -16,14 +16,14 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/civilStatus/list")]
-        public List<Models.MstApplicantCivilStatus> listApplicantCivilStatus()
+        public List<Models.SysCivilStatus> listApplicantCivilStatus()
         {
-            var civilStatus = from d in db.mstCivilStatus
-                                 select new Models.MstApplicantCivilStatus
-                                 {
-                                     Id = d.Id,
-                                     CivilStatus = d.CivilStatus
-                                 };
+            var civilStatus = from d in db.sysCivilStatus
+                              select new Models.SysCivilStatus
+                              {
+                                  Id = d.Id,
+                                  CivilStatus = d.CivilStatus
+                              };
 
             return civilStatus.ToList();
         }

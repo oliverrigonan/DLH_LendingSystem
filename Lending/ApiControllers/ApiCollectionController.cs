@@ -53,12 +53,6 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
-                                  AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
-                                  AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
-                                  AssignedCollectorArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")",
-                                  CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
-                                  CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
-                                  CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -104,12 +98,6 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
-                                  AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
-                                  AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
-                                  AssignedCollectorArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")",
-                                  CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
-                                  CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
-                                  CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -154,12 +142,6 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
-                                  AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
-                                  AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
-                                  AssignedCollectorArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")",
-                                  CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
-                                  CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
-                                  CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -204,12 +186,6 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
-                                  AssignedCollectorId = d.trnLoanApplication.AssignedCollectorId,
-                                  AssignedCollector = d.trnLoanApplication.mstCollector.Collector,
-                                  AssignedCollectorArea = d.trnLoanApplication.mstCollector.Collector + " (" + d.trnLoanApplication.mstCollector.mstArea.Area + ")",
-                                  CurrentCollectorId = d.trnLoanApplication.CurrentCollectorId,
-                                  CurrentCollector = d.trnLoanApplication.mstCollector1.Collector,
-                                  CurrentCollectorArea = d.trnLoanApplication.mstCollector1.Collector + " (" + d.trnLoanApplication.mstCollector1.mstArea.Area + ")",
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 

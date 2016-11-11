@@ -16,10 +16,10 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/transactionType/list")]
-        public List<Models.MstTransactionType> listTransactionType()
+        public List<Models.SysTransactionType> listTransactionType()
         {
-            var transactionTypes = from d in db.mstTransactionTypes
-                                   select new Models.MstTransactionType
+            var transactionTypes = from d in db.sysTransactionTypes
+                                   select new Models.SysTransactionType
                                    {
                                        Id = d.Id,
                                        TransactionType = d.TransactionType,

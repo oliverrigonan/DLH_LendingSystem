@@ -37,11 +37,6 @@ namespace Lending.ApiControllers
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       AssignedCollectorId = d.AssignedCollectorId,
-                                       AssignedCollector = d.mstCollector.Collector,
-                                       CurrentCollectorId = d.CurrentCollectorId,
-                                       CurrentCollector = d.mstCollector1.Collector,
-                                       CollectorAreaAssigned = d.mstCollector1.mstArea.Area,
                                        PrincipalAmount = d.PrincipalAmount,
                                        ProcessingFeeAmount = d.ProcessingFeeAmount,
                                        PassbookAmount = d.PassbookAmount,
@@ -88,11 +83,6 @@ namespace Lending.ApiControllers
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
-                                      AssignedCollectorId = d.AssignedCollectorId,
-                                      AssignedCollector = d.mstCollector.Collector,
-                                      CurrentCollectorId = d.CurrentCollectorId,
-                                      CurrentCollector = d.mstCollector1.Collector,
-                                      CollectorAreaAssigned = d.mstCollector.mstArea.Area,
                                       PrincipalAmount = d.PrincipalAmount,
                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
                                       PassbookAmount = d.PassbookAmount,
@@ -139,11 +129,6 @@ namespace Lending.ApiControllers
                                       Particulars = d.Particulars,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
-                                      AssignedCollectorId = d.AssignedCollectorId,
-                                      AssignedCollector = d.mstCollector.Collector,
-                                      CurrentCollectorId = d.CurrentCollectorId,
-                                      CurrentCollector = d.mstCollector1.Collector,
-                                      CollectorAreaAssigned = d.mstCollector.mstArea.Area,
                                       PrincipalAmount = d.PrincipalAmount,
                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
                                       PassbookAmount = d.PassbookAmount,
@@ -208,8 +193,6 @@ namespace Lending.ApiControllers
                 newLoanApplication.IsNewApplicant = true;
                 newLoanApplication.Particulars = "NA";
                 newLoanApplication.PreparedByUserId = userId;
-                newLoanApplication.AssignedCollectorId = (from d in db.mstCollectors.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
-                newLoanApplication.CurrentCollectorId = (from d in db.mstCollectors.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.PrincipalAmount = 0;
                 newLoanApplication.ProcessingFeeAmount = 0;
                 newLoanApplication.PassbookAmount = 0;
@@ -265,7 +248,6 @@ namespace Lending.ApiControllers
                             lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                             lockLoanApplication.Particulars = loanApplication.Particulars;
                             lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
-                            lockLoanApplication.AssignedCollectorId = loanApplication.AssignedCollectorId;
                             lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
                             lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;
                             lockLoanApplication.PassbookAmount = loanApplication.PassbookAmount;

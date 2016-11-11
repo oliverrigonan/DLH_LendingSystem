@@ -84,7 +84,7 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult Tables()
+        public ActionResult SystemTables()
         {
             return View();
         }
@@ -128,12 +128,6 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult Reports()
-        {
-            return View();
-        }
-
-        [Authorize]
         public ActionResult UserList()
         {
             return View();
@@ -150,6 +144,62 @@ namespace Lending.Controllers
             {
                 return View();
             }
+        }
+
+        [Authorize]
+        public ActionResult AreaList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult AreaDetail(Int32? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [Authorize]
+        public ActionResult StaffList()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult StaffDetail(Int32? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("NotFound", "Software");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [Authorize]
+        public ActionResult LoanReport()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult CollectionReport()
+        {
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult ExpensesReport()
+        {
+            return View();
         }
     }
 }

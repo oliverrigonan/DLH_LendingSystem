@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Title -->
-    <title>Company List</title>
+    <title>Area List</title>
 
     <!-- Styles -->
     @Styles.Render("~/Content/css")
@@ -67,7 +67,7 @@
             <br /><br />
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Companies</h4>
+                    <h4><i class="fa fa-users fa-fw"></i> Areas</h4>
                 </div>
                 <div class="panel-heading">
                     <table style="width: 100%">
@@ -75,12 +75,12 @@
                             <td>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                    <input type="text" id="searchCompany" class="form-control" placeholder="Search" />
+                                    <input type="text" id="searchArea" class="form-control" placeholder="Search" />
                                 </div>
                             </td>
                             <td>&nbsp;&nbsp;&nbsp;</td>
                             <td align="right">
-                                <button class="btn btn-primary" id="btnAddNewCompany" onclick="btnAddNewCompanyOnclick()">
+                                <button class="btn btn-primary" id="btnAddArea" onclick="btnAddAreaOnclick()">
                                     <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                 </button>
                             </td>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="flexgridHeight">
-                        <div id="companyListFlexGrid" class="grid"></div>
+                        <div id="areaListFlexGrid" class="grid"></div>
                     </div>
                 </div>
                 <div class="panel-footer">
@@ -142,72 +142,74 @@
         </div>
     </section>
 
-    <!-- delete confirmation company modal -->
-    <div class="modal fade" id="deleteConfirmationCompanyModal" role="dialog">
+    <!-- Footer -->
+    @Html.Partial("HomeFooter")
+
+    <!-- delete confirmation area modal -->
+    <div class="modal fade" id="deleteConfirmationAreaModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Company</h4>
+                    <h4 class="modal-title">Delete Area</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Company?
+                    Are you sure that you want to delete this Area?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteCompany" onclick="btnConfirmDeleteCompanyOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnCloseDeleteCompanyModal" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteArea" onclick="btnConfirmDeleteAreaOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteAreaModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
-
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
-        // global variables
-        var companyCollectionView;
-        var companyFlexGrid;
+        // glebal variable
+        var areaCollectionView;
+        var areaFlexGrid;
         var btnFirstPageGrid;
         var btnPreviousPageGrid;
         var btnNextPageGrid;
         var btnLastPageGrid;
         var btnCurrentPageGrid;
 
-        // get company
-        function getCompanyData() {
-            var companiesArray = new wijmo.collections.ObservableArray;
+        // get areas
+        function getAreaList() {
+            var areas = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/company/list',
+                url: '/api/area/list',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
-                success: function (companyListResult) {
-                    if (companyListResult.length > 0) {
-                        for (i = 0; i < companyListResult.length; i++) {
+                success: function (areaListResult) {
+                    if (areaListResult.length > 0) {
+                        for (i = 0; i < areaListResult.length; i++) {
                             var isLocked = false;
-                            if (companyListResult[i]["IsLocked"]) {
+                            if (areaListResult[i]["IsLocked"]) {
                                 isLocked = true;
                             }
 
-                            companiesArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCompanyOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCompanyOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
-                                Id: companyListResult[i]["Id"],
-                                Company: companyListResult[i]["Company"],
-                                Address: companyListResult[i]["Address"],
-                                ContactNumber: companyListResult[i]["ContactNumber"],
-                                IsLocked: companyListResult[i]["IsLocked"],
-                                CreatedByUserId: companyListResult[i]["CreatedByUserId"],
-                                CreatedByUser: companyListResult[i]["CreatedByUser"],
-                                CreatedDateTime: companyListResult[i]["CreatedDateTime"],
-                                UpdatedByUserId: companyListResult[i]["UpdatedByUserId"],
-                                UpdatedByUser: companyListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: companyListResult[i]["UpdatedDateTime"]
+                            areas.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editAreaOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteAreaOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: areaListResult[i]["Id"],
+                                AreaNumber: areaListResult[i]["AreaNumber"],
+                                Area: areaListResult[i]["Area"],
+                                Description: areaListResult[i]["Description"],
+                                SupervisorStaff: areaListResult[i]["SupervisorStaff"],
+                                CollectorStaff: areaListResult[i]["CollectorStaff"],
+                                IsLocked: areaListResult[i]["IsLocked"],
+                                CreatedByUserId: areaListResult[i]["CreatedByUserId"],
+                                CreatedByUser: areaListResult[i]["CreatedByUser"],
+                                CreatedDateTime: areaListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: areaListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: areaListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: areaListResult[i]["UpdatedDateTime"]
                             });
                         }
                     }
@@ -215,116 +217,87 @@
                     NProgress.done();
                 }
             });
-            return companiesArray;
+            return areas;
         }
 
-        // add new company
-        function btnAddNewCompanyOnclick() {
-            $("#btnAddNewCompany").prop("disabled", true);
-            document.getElementById("btnAddNewCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding new Company";
-
-            $.ajax({
-                type: "POST",
-                url: '/api/company/add',
-                contentType: "application/json; charset=utf-8",
-                success: function (id) {
-                    if (id > 0) {
-                        window.location = '/Software/CompanyDetail?id=' + id;
-                    } else {
-                        toastr.error("Internal Server Error");
-                    }
-                }
-            });
+        // edit area
+        function editAreaOnclick() {
+            areaCollectionView.editItem(areaCollectionView.currentItem);
+            var areaCurrentEditItem = areaCollectionView.currentEditItem;
+            window.location = '/Software/AreaDetail?id=' + areaCurrentEditItem.Id;
         }
 
-        // edit company
-        function btnEditCompanyOnclick() {
-            companyCollectionView.editItem(companyCollectionView.currentItem);
-            var currentItem = companyCollectionView.currentEditItem;
-
-            window.location = "/Software/CompanyDetail?id=" + currentItem.Id;
-        }
-
-        // delete company
-        function btnDeleteCompanyOnclick(isLocked) {
+        // delete area
+        function deleteAreaOnclick(isLocked) {
             if (isLocked) {
                 toastr.info("Record Locked");
             } else {
-                $("#deleteConfirmationCompanyModal").modal({
+                $("#deleteConfirmationAreaModal").modal({
                     "show": true,
                     "backdrop": "static"
                 });
 
-                document.getElementById("btnConfirmDeleteCompany").innerHTML = "Delete";
-                $("#btnConfirmDeleteCompany").prop("disabled", false);
-                $("#btnCloseDeleteCompanyModal").prop("disabled", false);
+                document.getElementById("btnConfirmDeleteArea").innerHTML = "Delete";
+                $("#btnConfirmDeleteArea").prop("disabled", false);
+                $("#btnCloseDeleteAreaModal").prop("disabled", false);
             }
         }
 
-        // confirm delete company
-        function btnConfirmDeleteCompanyOnclick() {
-            document.getElementById("btnConfirmDeleteCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteCompany").prop("disabled", true);
-            $("#btnCloseDeleteCompanyModal").prop("disabled", true);
+        function btnConfirmDeleteAreaOnclick() {
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteArea").prop("disabled", true);
+            $("#btnCloseDeleteAreaModal").prop("disabled", true);
 
-            companyCollectionView.editItem(companyCollectionView.currentItem);
-            var currentItem = companyCollectionView.currentEditItem;
-
+            areaCollectionView.editItem(areaCollectionView.currentItem);
+            var id = areaCollectionView.currentEditItem.Id;
             $.ajax({
+                url: '/api/area/delete/' + id,
                 type: "DELETE",
-                url: '/api/company/delete/' + currentItem.Id,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
                     200: function () {
                         toastr.success("Delete Successful");
 
-                        $("#deleteConfirmationCompanyModal").modal("hide");
+                        $('#deleteConfirmationAreaModal').modal('hide');
 
-                        companyCollectionView = new wijmo.collections.CollectionView(getCompanyData());
-                        companyCollectionView.canFilter = true;
-                        companyCollectionView.pageSize = 15;
+                        areaCollectionView = new wijmo.collections.CollectionView(getAreaList());
+                        areaCollectionView.canFilter = true;
+                        areaCollectionView.pageSize = 15;
 
                         var filterText = '';
-                        $('#searchCompany').keyup(function () {
+                        $('#searchArea').keyup(function () {
                             filterText = this.value.toLowerCase();
-                            companyCollectionView.refresh();
+                            areaCollectionView.refresh();
                         });
 
-                        companyCollectionView.filter = function (item) {
-                            return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
+                        areaCollectionView.filter = function (item) {
+                            return !filterText || (item.AreaNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Discription.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.CollectorStaff.toLowerCase().indexOf(filterText) > -1);
                         }
 
-                        companyCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        areaCollectionView.collectionChanged.addHandler(function (sender, args) {
                             updateNavigateButtons();
                         });
 
-                        companyCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
                         // Flex Grid
-                        companyFlexGrid.itemsSource = companyCollectionView;
-                        companyFlexGrid.trackChanges = true;
+                        areaFlexGrid.itemsSource = areaCollectionView;
+                        areaFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("Not Found");
-
-                        $("#deleteConfirmationCompanyModal").modal("hide");
-
-                        document.getElementById("btnConfirmDeleteCompany").innerHTML = "Delete";
-                        $("#btnConfirmDeleteCompany").prop("disabled", false);
-                        $("#btnCloseDeleteCompanyModal").prop("disabled", false);
+                        toastr.error("Delete Not Found");
+                        $('#deleteConfirmationAreaModal').modal('hide');
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
                     },
                     400: function () {
                         toastr.error("Bad Request");
-
-                        $("#deleteConfirmationCompanyModal").modal("hide");
-
-                        document.getElementById("btnConfirmDeleteCompany").innerHTML = "Delete";
-                        $("#btnConfirmDeleteCompany").prop("disabled", false);
-                        $("#btnCloseDeleteCompanyModal").prop("disabled", false);
+                        $('#deleteConfirmationAreaModal').modal('hide');
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
                     }
                 }
             });
@@ -332,17 +305,17 @@
 
         // navigation button for flexgrid
         function updateNavigateButtons() {
-            if (companyCollectionView.pageSize <= 0) {
+            if (areaCollectionView.pageSize <= 0) {
                 document.getElementById('navigationPageGrid').style.display = 'none';
                 return;
             }
             document.getElementById('navigationPageGrid').style.display = 'block';
-            if (companyCollectionView.pageIndex === 0) {
+            if (areaCollectionView.pageIndex === 0) {
                 btnFirstPageGrid.setAttribute('disabled', 'disabled');
                 btnPreviousPageGrid.setAttribute('disabled', 'disabled');
                 btnNextPageGrid.removeAttribute('disabled');
                 btnLastPageGrid.removeAttribute('disabled');
-            } else if (companyCollectionView.pageIndex === (companyCollectionView.pageCount - 1)) {
+            } else if (areaCollectionView.pageIndex === (areaCollectionView.pageCount - 1)) {
                 btnFirstPageGrid.removeAttribute('disabled');
                 btnPreviousPageGrid.removeAttribute('disabled');
                 btnLastPageGrid.setAttribute('disabled', 'disabled');
@@ -353,57 +326,72 @@
                 btnNextPageGrid.removeAttribute('disabled');
                 btnLastPageGrid.removeAttribute('disabled');
             }
-            btnCurrentPageGrid.innerHTML = (companyCollectionView.pageIndex + 1) + ' / ' + companyCollectionView.pageCount;
+            btnCurrentPageGrid.innerHTML = (areaCollectionView.pageIndex + 1) + ' / ' + areaCollectionView.pageCount;
+        }
+
+        // add new area
+        function btnAddAreaOnclick() {
+            $("#btnAddArea").prop("disabled", true);
+            document.getElementById("btnAddArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding new Area";
+
+            $.ajax({
+                type: "POST",
+                url: '/api/area/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/AreaDetail?id=' + id;
+                    } else {
+                        toastr.error("Internal Server Error");
+                    }
+                }
+            });
         }
 
         // stamp security
         function updateStampSecurity() {
-            var item = companyCollectionView.currentItem;
+            var item = areaCollectionView.currentItem;
             document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
             document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
             document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
             document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
         }
 
-        // on load page
+        // ready function
         window.onload = function () {
             NProgress.start();
             toastrModification();
 
-            companyCollectionView = new wijmo.collections.CollectionView(getCompanyData());
-            companyCollectionView.canFilter = true;
-            companyCollectionView.pageSize = 15;
+            areaCollectionView = new wijmo.collections.CollectionView(getAreaList());
+            areaCollectionView.canFilter = true;
+            areaCollectionView.pageSize = 15;
 
             var filterText = '';
-            $('#searchCompany').keyup(function () {
+            $('#searchArea').keyup(function () {
                 filterText = this.value.toLowerCase();
-                companyCollectionView.refresh();
+                areaCollectionView.refresh();
             });
 
-            companyCollectionView.filter = function (item) {
-                return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
+            areaCollectionView.filter = function (item) {
+                return !filterText || (item.AreaNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Discription.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.CollectorStaff.toLowerCase().indexOf(filterText) > -1);
             }
 
-            companyCollectionView.collectionChanged.addHandler(function (sender, args) {
+            areaCollectionView.collectionChanged.addHandler(function (sender, args) {
                 updateNavigateButtons();
             });
 
-            companyCollectionView.currentChanged.addHandler(function (sender, args) {
+            areaCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
             });
-            
+
             // Flex Grid
-            companyFlexGrid = new wijmo.grid.FlexGrid('#companyListFlexGrid');
-            companyFlexGrid.initialize({
+            areaFlexGrid = new wijmo.grid.FlexGrid('#areaListFlexGrid');
+            areaFlexGrid.initialize({
                 columns: [
-                            {
-                                "header": "Company",
-                                "isReadOnly": true,
-                                "visible": false,
-                                "allowDragging": false,
-                                "width": "*"
-                            },
                             {
                                 "header": "Edit",
                                 "binding": "EditButton",
@@ -421,39 +409,51 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Company",
-                                "binding": "Company",
+                                "header": "Area Number",
+                                "binding": "AreaNumber",
                                 "allowSorting": true,
-                                "width": "3*",
+                                "width": "1.5*"
                             },
                             {
-                                "header": "Address",
-                                "binding": "Address",
+                                "header": "Area",
+                                "binding": "Area",
                                 "allowSorting": true,
-                                "width": "4*",
+                                "width": "2.5*"
                             },
                             {
-                                "header": "Contact Number",
-                                "binding": "ContactNumber",
+                                "header": "Description",
+                                "binding": "Description",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": "3*"
+                            },
+                            {
+                                "header": "Supervisor Staff",
+                                "binding": "SupervisorStaff",
+                                "allowSorting": true,
+                                "width": "2*"
+                            },
+                            {
+                                "header": "Collector Staff",
+                                "binding": "CollectorStaff",
+                                "allowSorting": true,
+                                "width": "2*"
                             },
                             {
                                 "header": "L",
                                 "binding": "IsLocked",
                                 "allowSorting": true,
-                                "width": "0.4*",
+                                "width": "0.5*"
                             }
                 ],
                 autoGenerateColumns: false,
-                itemsSource: companyCollectionView,
+                itemsSource: areaCollectionView,
                 isReadOnly: true,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
                 selectionMode: wijmo.grid.SelectionMode.Row
             });
 
-            companyFlexGrid.trackChanges = true;
+            areaFlexGrid.trackChanges = true;
 
             //Navigation button
             btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
@@ -465,19 +465,19 @@
             updateNavigateButtons();
 
             btnFirstPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToFirstPage();
+                areaCollectionView.moveToFirstPage();
                 updateNavigateButtons();
             });
             btnPreviousPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToPreviousPage();
+                areaCollectionView.moveToPreviousPage();
                 updateNavigateButtons();
             });
             btnNextPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToNextPage();
+                areaCollectionView.moveToNextPage();
                 updateNavigateButtons();
             });
             btnLastPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToLastPage();
+                areaCollectionView.moveToLastPage();
                 updateNavigateButtons();
             });
         }

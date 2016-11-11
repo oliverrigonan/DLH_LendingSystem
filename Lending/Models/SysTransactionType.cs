@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class MstTransactionType
+    public class SysTransactionType
     {
         [Key]
         public Int32 Id { get; set; }

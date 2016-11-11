@@ -29,7 +29,8 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
-                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                        <li><a href="/Software/AreaList"><i class="fa fa-map-pin fa-fw"></i> Area</a></li>
+                        <li><a href="/Software/StaffList"><i class="fa fa-user fa-fw"></i> Staff</a></li>
                     </ul>
                 </div>
                 <div class="btn-group">
@@ -39,7 +40,6 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
                         <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li class="divider"></li>
                         <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
                     </ul>
                 </div>
@@ -48,7 +48,9 @@
                         Reports <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                        <li><a href="/Software/LoanReport"><i class="fa fa-print fa-fw"></i> Loan Report</a></li>
+                        <li><a href="/Software/CollectionReport"><i class="fa fa-print fa-fw"></i> Collection Report</a></li>
+                        <li><a href="/Software/ExpensesReport"><i class="fa fa-print fa-fw"></i> Expenses Report</a></li>
                     </ul>
                 </div>
                 <div class="btn-group">
@@ -58,8 +60,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
                         <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                        <li><a href="/Software/SystemTables"><i class="fa fa-table fa-fw"></i> System Tables</a></li>
                     </ul>
                 </div>
             </div>
@@ -226,7 +227,7 @@
         function getCollectorByArea() {
             var collectorByAreaArray = new Array();
             $.ajax({
-                url: '/api/collector/list',
+                url: '/api/staff/list',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -237,8 +238,7 @@
                         for (i = 0; i < collectorByAreaResults.length; i++) {
                             collectorByAreaArray.push({
                                 Id: collectorByAreaResults[i]["Id"],
-                                Collector: collectorByAreaResults[i]["Collector"],
-                                CollectorWithAssignedArea: collectorByAreaResults[i]["Collector"] + " (" + collectorByAreaResults[i]["Area"] + ")",
+                                Staff: collectorByAreaResults[i]["Staff"]
                             });
                         }
 
@@ -258,8 +258,8 @@
                         itemsSource: collectorByAreaArray,
                         isEditable: false,
                         required: true,
-                        displayMemberPath: "CollectorWithAssignedArea",
-                        selectedValuePath: "CollectorWithAssignedArea"
+                        displayMemberPath: "Staff",
+                        selectedValuePath: "Staff"
                     });
                 }
             });
@@ -359,7 +359,7 @@
                         document.getElementById("expensesNumber").value = expensesResult.ExpenseNumber;
                         cboExpensesDate.value = new Date(expensesResult.ExpenseDate);
                         cboExpensesAccount.selectedValue = expensesResult.Account;
-                        cboCollector.selectedValue = expensesResult.Collector + " (" + expensesResult.CollectorAreaAssigned + ")";
+                        cboCollector.selectedValue = expensesResult.CollectorStaff;
                         cboExpenseType.selectedValue = expensesResult.ExpenseType;
                         document.getElementById("expensesParticulars").value = expensesResult.Particulars;
                         document.getElementById("expensesAmount").value = expensesResult.ExpenseAmount.toLocaleString();

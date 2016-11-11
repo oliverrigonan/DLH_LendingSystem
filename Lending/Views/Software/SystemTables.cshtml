@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Title -->
-    <title>Tables</title>
+    <title>System Tables</title>
 
     <!-- Styles -->
     @Styles.Render("~/Content/css")
@@ -29,7 +29,8 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
-                        <li><a href="/Software/Tables"><i class="fa fa-table fa-fw"></i> Tables</a></li>
+                        <li><a href="/Software/AreaList"><i class="fa fa-map-pin fa-fw"></i> Area</a></li>
+                        <li><a href="/Software/StaffList"><i class="fa fa-user fa-fw"></i> Staff</a></li>
                     </ul>
                 </div>
                 <div class="btn-group">
@@ -39,7 +40,6 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
                         <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li class="divider"></li>
                         <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
                     </ul>
                 </div>
@@ -48,7 +48,9 @@
                         Reports <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/Reports"><i class="fa fa-print fa-fw"></i> Generate Reports</a></li>
+                        <li><a href="/Software/LoanReport"><i class="fa fa-print fa-fw"></i> Loan Report</a></li>
+                        <li><a href="/Software/CollectionReport"><i class="fa fa-print fa-fw"></i> Collection Report</a></li>
+                        <li><a href="/Software/ExpensesReport"><i class="fa fa-print fa-fw"></i> Expenses Report</a></li>
                     </ul>
                 </div>
                 <div class="btn-group">
@@ -58,8 +60,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
                         <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/Manage/Index"><i class="fa fa-gears fa-fw"></i> Settings</a></li>
+                        <li><a href="/Software/SystemTables"><i class="fa fa-table fa-fw"></i> System Tables</a></li>
                     </ul>
                 </div>
             </div>

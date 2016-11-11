@@ -31,11 +31,6 @@ namespace Lending.Business
                                        Particulars = d.Particulars,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
-                                       AssignedCollectorId = d.AssignedCollectorId,
-                                       AssignedCollector = d.mstCollector.Collector,
-                                       CurrentCollectorId = d.CurrentCollectorId,
-                                       CurrentCollector = d.mstCollector1.Collector,
-                                       CollectorAreaAssigned = d.mstCollector.mstArea.Area,
                                        PrincipalAmount = d.PrincipalAmount,
                                        ProcessingFeeAmount = d.ProcessingFeeAmount,
                                        PassbookAmount = d.PassbookAmount,
@@ -97,7 +92,6 @@ namespace Lending.Business
                         newCollection.IsCurrentCollection = isCurrentCollectionValue;
                         newCollection.IsProcessed = false;
                         newCollection.IsAction = isActionValue;
-                        newCollection.CollectorId = loanApplication.FirstOrDefault().CurrentCollectorId;
                         db.trnCollections.InsertOnSubmit(newCollection);
                         db.SubmitChanges();
                     }

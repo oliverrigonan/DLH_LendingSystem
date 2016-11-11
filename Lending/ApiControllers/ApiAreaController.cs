@@ -23,8 +23,14 @@ namespace Lending.ApiControllers
                         select new Models.MstArea
                         {
                             Id = d.Id,
+                            AreaNumber = d.AreaNumber,
                             Area = d.Area,
                             Description = d.Description,
+                            SupervisorStaffId = d.SupervisorStaffId,
+                            SupervisorStaff = d.mstStaff.Staff,
+                            CollectorStaffId = d.CollectorStaffId,
+                            CollectorStaff = d.mstStaff1.Staff,
+                            IsLocked = d.IsLocked,
                             CreatedByUserId = d.CreatedByUserId,
                             CreatedByUser = d.mstUser.FullName,
                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -36,19 +42,75 @@ namespace Lending.ApiControllers
             return areas.ToList();
         }
 
+        // area by Id
+        [Authorize]
+        [HttpGet]
+        [Route("api/area/getById/{id}")]
+        public Models.MstArea getAreaById(String id)
+        {
+            var areas = from d in db.mstAreas
+                        where d.Id == Convert.ToInt32(id)
+                        select new Models.MstArea
+                        {
+                            Id = d.Id,
+                            AreaNumber = d.AreaNumber,
+                            Area = d.Area,
+                            Description = d.Description,
+                            SupervisorStaffId = d.SupervisorStaffId,
+                            SupervisorStaff = d.mstStaff.Staff,
+                            CollectorStaffId = d.CollectorStaffId,
+                            CollectorStaff = d.mstStaff1.Staff,
+                            IsLocked = d.IsLocked,
+                            CreatedByUserId = d.CreatedByUserId,
+                            CreatedByUser = d.mstUser.FullName,
+                            CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                            UpdatedByUserId = d.UpdatedByUserId,
+                            UpdatedByUser = d.mstUser1.FullName,
+                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                        };
+
+            return (Models.MstArea)areas.FirstOrDefault();
+        }
+
+        // zero fill
+        public String zeroFill(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = "0" + result;
+                pad--;
+            }
+
+            return result;
+        }
+
         // add area
         [Authorize]
         [HttpPost]
         [Route("api/area/add")]
-        public HttpResponseMessage addArea(Models.MstArea area)
+        public Int32 addArea(Models.MstArea area)
         {
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
+                String areaNumber = "0000000001";
+                var areas = from d in db.mstAreas.OrderByDescending(d => d.Id) select d;
+                if (areas.Any())
+                {
+                    var newAreaNumber = Convert.ToInt32(areas.FirstOrDefault().AreaNumber) + 0000000001;
+                    areaNumber = newAreaNumber.ToString();
+                }
+
                 Data.mstArea newArea = new Data.mstArea();
-                newArea.Area = area.Area;
-                newArea.Description = area.Description;
+                newArea.AreaNumber = zeroFill(Convert.ToInt32(areaNumber), 10);
+                newArea.Area = "NA";
+                newArea.Description = "NA";
+                newArea.SupervisorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 1 select d.Id).FirstOrDefault();
+                newArea.CollectorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 2 select d.Id).FirstOrDefault();
+                newArea.IsLocked = false;
                 newArea.CreatedByUserId = userId;
                 newArea.CreatedDateTime = DateTime.Now;
                 newArea.UpdatedByUserId = userId;
@@ -57,7 +119,50 @@ namespace Lending.ApiControllers
                 db.mstAreas.InsertOnSubmit(newArea);
                 db.SubmitChanges();
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return newArea.Id;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // lock area
+        [Authorize]
+        [HttpPut]
+        [Route("api/area/lock/{id}")]
+        public HttpResponseMessage lockArea(String id, Models.MstArea area)
+        {
+            try
+            {
+                var areas = from d in db.mstAreas where d.Id == Convert.ToInt32(id) select d;
+                if (areas.Any())
+                {
+                    if (!areas.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+
+                        var lockArea = areas.FirstOrDefault();
+                        lockArea.Area = area.Area;
+                        lockArea.Description = area.Description;
+                        lockArea.SupervisorStaffId = area.SupervisorStaffId;
+                        lockArea.CollectorStaffId = area.CollectorStaffId;
+                        lockArea.IsLocked = true;
+                        lockArea.UpdatedByUserId = userId;
+                        lockArea.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
             }
             catch
             {
@@ -65,28 +170,33 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update area
+        // unlock area
         [Authorize]
         [HttpPut]
-        [Route("api/area/update/{id}")]
-        public HttpResponseMessage updateArea(String id, Models.MstArea area)
+        [Route("api/area/unlock/{id}")]
+        public HttpResponseMessage unlockArea(String id, Models.MstArea area)
         {
             try
             {
                 var areas = from d in db.mstAreas where d.Id == Convert.ToInt32(id) select d;
                 if (areas.Any())
                 {
-                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    if (areas.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
-                    var updateArea = areas.FirstOrDefault();
-                    updateArea.Area = area.Area;
-                    updateArea.Description = area.Description;
-                    updateArea.UpdatedByUserId = userId;
-                    updateArea.UpdatedDateTime = DateTime.Now;
+                        var unlockArea = areas.FirstOrDefault();
+                        unlockArea.IsLocked = false;
+                        unlockArea.UpdatedByUserId = userId;
+                        unlockArea.UpdatedDateTime = DateTime.Now;
+                        db.SubmitChanges();
 
-                    db.SubmitChanges();
-
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -110,10 +220,17 @@ namespace Lending.ApiControllers
                 var areas = from d in db.mstAreas where d.Id == Convert.ToInt32(id) select d;
                 if (areas.Any())
                 {
-                    db.mstAreas.DeleteOnSubmit(areas.First());
-                    db.SubmitChanges();
+                    if (!areas.FirstOrDefault().IsLocked)
+                    {
+                        db.mstAreas.DeleteOnSubmit(areas.First());
+                        db.SubmitChanges();
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

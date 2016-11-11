@@ -176,7 +176,6 @@
     <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
-    <Compile Include="ApiControllers\ApiCollectorController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiExpensesController.cs" />
     <Compile Include="ApiControllers\ApiExpenseTypeController.cs" />
@@ -188,6 +187,8 @@
     <Compile Include="ApiControllers\ApiCoMakerStatementApplianceOwnedController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementRealPropertiesOwnedController.cs" />
+    <Compile Include="ApiControllers\ApiStaffController.cs" />
+    <Compile Include="ApiControllers\ApiStaffRoleController.cs" />
     <Compile Include="ApiControllers\ApiTransactionTypeController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationController.cs" />
@@ -219,9 +220,9 @@
     <Compile Include="Models\MstAccount.cs" />
     <Compile Include="Models\MstApplicant.cs" />
     <Compile Include="Models\MstApplicantApplianceOwned.cs" />
-    <Compile Include="Models\MstApplicantCivilStatus.cs" />
+    <Compile Include="Models\SysCivilStatus.cs" />
     <Compile Include="Models\MstApplicantRealPropertiesOwned.cs" />
-    <Compile Include="Models\MstApplicantResidenceType.cs" />
+    <Compile Include="Models\SysResidenceType.cs" />
     <Compile Include="Models\MstArea.cs" />
     <Compile Include="Models\MstBranch.cs" />
     <Compile Include="Models\MstCollector.cs" />
@@ -231,7 +232,9 @@
     <Compile Include="Models\MstCompany.cs" />
     <Compile Include="Models\MstExpenseType.cs" />
     <Compile Include="Models\MstRequirements.cs" />
-    <Compile Include="Models\MstTransactionType.cs" />
+    <Compile Include="Models\MstStaff.cs" />
+    <Compile Include="Models\SysStaffRole.cs" />
+    <Compile Include="Models\SysTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
     <Compile Include="Models\TrnExpenses.cs" />
@@ -465,13 +468,12 @@
     <Content Include="Views\Software\Forbidden.cshtml" />
     <Content Include="Views\Software\NotFound.cshtml" />
     <Content Include="Views\Software\LoanApplicationList.cshtml" />
-    <Content Include="Views\Software\Tables.cshtml" />
+    <Content Include="Views\Software\SystemTables.cshtml" />
     <Content Include="Views\Software\CompanyList.cshtml" />
     <Content Include="Views\Software\CompanyDetail.cshtml" />
     <Content Include="Views\Software\LoanApplicationDetail.cshtml" />
     <Content Include="Views\Software\CollectionList.cshtml" />
     <Content Include="Views\Software\CollectionDetail.cshtml" />
-    <Content Include="Views\Software\Reports.cshtml" />
     <Content Include="Views\Software\ExpensesList.cshtml" />
     <Content Include="Views\Software\ExpenseDetail.cshtml" />
     <Content Include="Views\Software\UserDetail.cshtml" />
@@ -523,6 +525,13 @@
     <Content Include="wijmo\styles\themes\wijmo.theme.superhero.less" />
     <Content Include="wijmo\styles\themes\wijmo.theme.trust.less" />
     <Content Include="wijmo\styles\themes\wijmo.theme.zen.less" />
+    <Content Include="Views\Software\AreaList.cshtml" />
+    <Content Include="Views\Software\AreaDetail.cshtml" />
+    <Content Include="Views\Software\StaffList.cshtml" />
+    <Content Include="Views\Software\StaffDetail.cshtml" />
+    <Content Include="Views\Software\LoanReport.cshtml" />
+    <Content Include="Views\Software\CollectionReport.cshtml" />
+    <Content Include="Views\Software\ExpensesReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

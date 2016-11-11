@@ -16,10 +16,10 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/residenceType/list")]
-        public List<Models.MstApplicantResidenceType> listApplicantResidenceType()
+        public List<Models.SysResidenceType> listApplicantResidenceType()
         {
-            var residenceTypes = from d in db.mstResidenceTypes.OrderByDescending(d => d.Id)
-                                 select new Models.MstApplicantResidenceType
+            var residenceTypes = from d in db.sysResidenceTypes.OrderByDescending(d => d.Id)
+                                 select new Models.SysResidenceType
                                  {
                                      Id = d.Id,
                                      ResidenceType = d.ResidenceType
