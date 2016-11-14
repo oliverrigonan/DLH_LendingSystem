@@ -67,7 +67,7 @@
             <br /><br />
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Users</h4>
+                    <h4><i class="fa fa-key fa-fw"></i> Users</h4>
                 </div>
                 <div class="panel-heading">
                     <div class="input-group">
@@ -96,33 +96,6 @@
                             <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
                                 <span class="glyphicon glyphicon-fast-forward"></span>
                             </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    User security stamp
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p>Created by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                            <br />
-                        </div>
-                        <div class="col-md-6">
-                            <p>Updated by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                            </div>
-                            <br />
                         </div>
                     </div>
                 </div>
@@ -163,7 +136,7 @@
                             }
 
                             users.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editUserOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editUserOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 Id: userListResult[i]["Id"],
                                 Username: userListResult[i]["Username"],
                                 FullName: userListResult[i]["FullName"],

@@ -474,7 +474,7 @@
                     Are you sure that you want to delete this Photo?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailPhoto" onclick="btnConfirmDeleteApplicantDetailPhotoOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailPhoto" onclick="btnConfirmDeleteApplicantDetailPhotoOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseApplicantDetailPhoto" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -529,7 +529,7 @@
                     Are you sure that you want to delete this Property?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailRealPropertiesOwned" onclick="btnConfirmDeleteApplicantDetailRealPropertiesOwnedOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailRealPropertiesOwned" onclick="btnConfirmDeleteApplicantDetailRealPropertiesOwnedOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailRealPropertiesOwned" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -576,7 +576,7 @@
                     Are you sure that you want to delete this Appliance?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailApplianceOwned" onclick="btnConfirmDeleteApplicantDetailApplianceOwnedOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailApplianceOwned" onclick="btnConfirmDeleteApplicantDetailApplianceOwnedOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailApplianceOwned" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -895,7 +895,7 @@
                     Are you sure that you want to delete this Co-Maker?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailCoMakerStatement" onclick="btnConfirmDeleteApplicantDetailCoMakerStatementOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailCoMakerStatement" onclick="btnConfirmDeleteApplicantDetailCoMakerStatementOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailCoMakerStatement" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -950,7 +950,7 @@
                     Are you sure that you want to delete this Co-Maker's Property?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned" onclick="btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwnedOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned" onclick="btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwnedOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailCoMakerRealPropertiesOwned" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -997,7 +997,7 @@
                     Are you sure that you want to delete this Co-Maker's Appliance?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" id="btnConfirmDeleteApplicantDetailCoMakerApplianceOwned" onclick="btnConfirmDeleteApplicantDetailCoMakerApplianceOwnedOnclick()">Yes</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailCoMakerApplianceOwned" onclick="btnConfirmDeleteApplicantDetailCoMakerApplianceOwnedOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteModalApplicantDetailCoMakerApplianceOwned" data-dismiss="modal">No</button>
                 </div>
             </div>
@@ -1704,7 +1704,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteApplicantDetailRealPropertiesOwned").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteApplicantDetailRealPropertiesOwned").innerHTML = "Delete";
             $("#btnConfirmDeleteApplicantDetailRealPropertiesOwned").prop("disabled", false);
             $("#btnCloseDeleteModalApplicantDetailRealPropertiesOwned").prop("disabled", false);
         }
@@ -1740,7 +1740,7 @@
 
                         $("#deleteConfirmationApplicantDetailRealPropertiesOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailRealPropertiesOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailRealPropertiesOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailRealPropertiesOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailRealPropertiesOwned").prop("disabled", false);
                     },
@@ -1749,7 +1749,7 @@
 
                         $("#deleteConfirmationApplicantDetailRealPropertiesOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailRealPropertiesOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailRealPropertiesOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailRealPropertiesOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailRealPropertiesOwned").prop("disabled", false);
                     }
@@ -2015,7 +2015,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "Delete";
             $("#btnConfirmDeleteApplicantDetailApplianceOwned").prop("disabled", false);
             $("#btnCloseDeleteModalApplicantDetailApplianceOwned").prop("disabled", false);
         }
@@ -2049,7 +2049,7 @@
 
                         $("#deleteConfirmationApplicantDetailApplianceOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailApplianceOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailApplianceOwned").prop("disabled", false);
                     },
@@ -2058,7 +2058,7 @@
 
                         $("#deleteConfirmationApplicantDetailApplianceOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailApplianceOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailApplianceOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailApplianceOwned").prop("disabled", false);
                     }
@@ -2453,7 +2453,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "Delete";
             $("#btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
             $("#btnCloseDeleteModalApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
         }
@@ -2487,7 +2487,7 @@
 
                         $("#deleteConfirmationApplicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
                     },
@@ -2496,7 +2496,7 @@
 
                         $("#deleteConfirmationApplicantDetailCoMakerRealPropertiesOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailCoMakerRealPropertiesOwned").prop("disabled", false);
                     }
@@ -2801,7 +2801,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteApplicantDetailCoMakerStatement").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteApplicantDetailCoMakerStatement").innerHTML = "Delete";
             $("#btnConfirmDeleteApplicantDetailCoMakerStatement").prop("disabled", false);
             $("#btnCloseDeleteModalApplicantDetailCoMakerStatement").prop("disabled", false);
         }
@@ -2835,7 +2835,7 @@
 
                         $("#deleteConfirmationApplicantDetailCoMakerStatementModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerStatement").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerStatement").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailCoMakerStatement").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailCoMakerStatement").prop("disabled", false);
                     },
@@ -2844,7 +2844,7 @@
 
                         $("#deleteConfirmationApplicantDetailCoMakerStatementModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerStatement").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerStatement").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailCoMakerStatement").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailCoMakerStatement").prop("disabled", false);
                     }
@@ -3102,7 +3102,7 @@
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").innerHTML = "Yes";
+            document.getElementById("btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").innerHTML = "Delete";
             $("#btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
             $("#btnCloseDeleteModalApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
         }
@@ -3136,7 +3136,7 @@
 
                         $("#deleteConfirmationApplicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                     },
@@ -3145,7 +3145,7 @@
 
                         $("#deleteConfirmationApplicantDetailCoMakerApplianceOwnedModal").modal("hide");
 
-                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").innerHTML = "Yes";
+                        document.getElementById("btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").innerHTML = "Delete";
                         $("#btnConfirmDeleteApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                         $("#btnCloseDeleteModalApplicantDetailCoMakerApplianceOwned").prop("disabled", false);
                     }
@@ -3241,14 +3241,14 @@
                                     404: function () {
                                         toastr.error("Not Found");
 
-                                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Yes";
+                                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Delete";
                                         $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
                                         $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
                                     },
                                     400: function () {
                                         toastr.error("Bad Request");
 
-                                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Yes";
+                                        document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Delete";
                                         $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
                                         $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
                                     }
