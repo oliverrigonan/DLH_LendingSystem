@@ -33,8 +33,9 @@ namespace Lending.ApiControllers
                                        ApplicantId = d.ApplicantId,
                                        Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                        Area = d.mstApplicant.mstArea.Area,
-                                       IsNewApplicant = d.IsNewApplicant,
                                        Particulars = d.Particulars,
+                                       LoanTypeId = d.LoanTypeId,
+                                       LoanType = d.mstLoanType.LoanType,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
                                        PrincipalAmount = d.PrincipalAmount,
@@ -79,8 +80,9 @@ namespace Lending.ApiControllers
                                       ApplicantId = d.ApplicantId,
                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                       Area = d.mstApplicant.mstArea.Area,
-                                      IsNewApplicant = d.IsNewApplicant,
                                       Particulars = d.Particulars,
+                                      LoanTypeId = d.LoanTypeId,
+                                      LoanType = d.mstLoanType.LoanType,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
                                       PrincipalAmount = d.PrincipalAmount,
@@ -125,8 +127,9 @@ namespace Lending.ApiControllers
                                       ApplicantId = d.ApplicantId,
                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                       Area = d.mstApplicant.mstArea.Area,
-                                      IsNewApplicant = d.IsNewApplicant,
                                       Particulars = d.Particulars,
+                                      LoanTypeId = d.LoanTypeId,
+                                      LoanType = d.mstLoanType.LoanType,
                                       PreparedByUserId = d.PreparedByUserId,
                                       PreparedByUser = d.mstUser.FullName,
                                       PrincipalAmount = d.PrincipalAmount,
@@ -190,8 +193,8 @@ namespace Lending.ApiControllers
                 newLoanApplication.MaturityDate = DateTime.Today.AddMonths(2);
                 newLoanApplication.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
-                newLoanApplication.IsNewApplicant = true;
                 newLoanApplication.Particulars = "NA";
+                newLoanApplication.LoanTypeId = (from d in db.mstLoanTypes.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                 newLoanApplication.PreparedByUserId = userId;
                 newLoanApplication.PrincipalAmount = 0;
                 newLoanApplication.ProcessingFeeAmount = 0;
@@ -247,6 +250,7 @@ namespace Lending.ApiControllers
                             lockLoanApplication.AccountId = loanApplication.AccountId;
                             lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
                             lockLoanApplication.Particulars = loanApplication.Particulars;
+                            lockLoanApplication.LoanTypeId = loanApplication.LoanTypeId;
                             lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
                             lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
                             lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;

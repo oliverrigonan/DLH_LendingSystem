@@ -18,8 +18,9 @@ namespace Lending.Models
         public Int32 ApplicantId { get; set; }
         public String Applicant { get; set; }
         public String Area { get; set; }
-        public Boolean IsNewApplicant { get; set; }
         public String Particulars { get; set; }
+        public Int32 LoanTypeId { get; set; }
+        public String LoanType { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Int32 AssignedCollectorId { get; set; }
