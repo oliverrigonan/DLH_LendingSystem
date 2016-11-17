@@ -73,6 +73,7 @@
                                 <h4><i class="fa fa-money fa-fw"></i> Collection Detail</h4>
                             </td>
                             <td align="right">
+                                <button class="btn btn-primary" id="" onclick="btnPrintApplicantCollectionPaper()"><i class="fa fa-print fa-fw"></i> Print Applicant Collection Paper</button>
                                 <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/CollectionList'">
                                     <i class="fa fa-close fa-fw"></i> Close
                                 </button>
@@ -116,26 +117,99 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="flexgridHeight">
-                        <div id="collectionFlexGrid" class=""></div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="btn-group col-md-7" id="navigationPageGridCollection">
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollection">
-                                <span class="glyphicon glyphicon-fast-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollection">
-                                <span class="glyphicon glyphicon-step-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollection"></button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollection">
-                                <span class="glyphicon glyphicon-step-forward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollection">
-                                <span class="glyphicon glyphicon-fast-forward"></span>
-                            </button>
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#collectionsTabContent" data-toggle="tab" id="collectionTab">
+                                Collection
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#paymentLogTabContent" data-toggle="tab" id="paymentLogTab">
+                                Payment Logs
+                            </a>
+                        </li>
+                    </ul>
+                    <br />
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="collectionsTabContent">
+                            <div class="flexgridHeight">
+                                <div id="collectionFlexGrid" class=""></div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="btn-group col-md-7" id="navigationPageGridCollection">
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollection">
+                                                <span class="glyphicon glyphicon-fast-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollection">
+                                                <span class="glyphicon glyphicon-step-backward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollection"></button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollection">
+                                                <span class="glyphicon glyphicon-step-forward"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollection">
+                                                <span class="glyphicon glyphicon-fast-forward"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in" id="paymentLogTabContent">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <ul class="nav nav-pills nav-stacked">
+                                        <li class="active"><a data-toggle="pill" href="#partialPaymentLogs">Partial Payment Logs</a></li>
+                                        <li><a data-toggle="pill" href="#advancePaymentLogs">Advance Payment Logs</a></li>
+                                        <li><a data-toggle="pill" href="#fullPaymentLogs">Full Payment Logs</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="tab-content">
+                                        <div id="partialPaymentLogs" class="tab-pane fade in active">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Partial Payment Logs
+                                                </div>
+                                                <div class="panel-body">
+
+                                                </div>
+                                                <div class="panel-footer">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="advancePaymentLogs" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Advance Payment Logs
+                                                </div>
+                                                <div class="panel-body">
+
+                                                </div>
+                                                <div class="panel-footer">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="fullPaymentLogs" class="tab-pane fade">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    Full Payment Logs
+                                                </div>
+                                                <div class="panel-body">
+
+                                                </div>
+                                                <div class="panel-footer">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1751,6 +1825,11 @@
 
             collectionFlexGrid.itemsSource = collectionCollectionView;
             collectionFlexGrid.trackChanges = true;
+        }
+
+        // print applicant collection paper
+        function btnPrintApplicantCollectionPaper() {
+
         }
 
         // on load page
