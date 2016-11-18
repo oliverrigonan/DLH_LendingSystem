@@ -84,7 +84,14 @@
                                             Expenses Summary Report
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboExpensesSummaryReportStartDate"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboExpensesSummaryReportEndDate"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -106,5 +113,56 @@
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var newDate = new Date();
+        var defaultDate = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboExpensesSummaryReportStartDate;
+        var cboExpensesSummaryReportEndDate;
+        var cboExpensesSummaryReportStartDateDefaultValue = defaultDate;
+        var cboExpensesSummaryReportEndDateDefaultValue = defaultDate;
+
+        // cbo start date expenses summary report
+        function createCboExpensesSummaryReportStartDate() {
+            cboExpensesSummaryReportStartDate.dispose();
+            cboExpensesSummaryReportStartDate = new wijmo.input.InputDate('#cboExpensesSummaryReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboExpensesSummaryReportStartDateDefaultValue),
+                mask: '99-99-9999',
+                max: new Date(cboExpensesSummaryReportEndDateDefaultValue),
+                onValueChanged: function () {
+                    cboExpensesSummaryReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboExpensesSummaryReportEndDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo end date loan expenses report
+        function createCboExpensesSummaryReportEndDate() {
+            cboExpensesSummaryReportEndDate.dispose();
+            cboExpensesSummaryReportEndDate = new wijmo.input.InputDate('#cboExpensesSummaryReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboExpensesSummaryReportEndDateDefaultValue),
+                mask: '99-99-9999',
+                min: new Date(cboExpensesSummaryReportStartDateDefaultValue),
+                onValueChanged: function () {
+                    cboExpensesSummaryReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboExpensesSummaryReportStartDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // on load page
+        window.onload = function () {
+            cboExpensesSummaryReportStartDate = new wijmo.input.InputDate('#cboExpensesSummaryReportStartDate');
+            createCboExpensesSummaryReportStartDate();
+            cboExpensesSummaryReportEndDate = new wijmo.input.InputDate('#cboExpensesSummaryReportEndDate');
+            createCboExpensesSummaryReportEndDate();
+        }
+    </script>
 </body>
 </html>

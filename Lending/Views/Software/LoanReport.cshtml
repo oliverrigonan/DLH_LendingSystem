@@ -87,7 +87,14 @@
                                             Loan Summary Report
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboLoanSummaryReportStartDate"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboLoanSummaryReportEndDate"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -101,7 +108,18 @@
                                             Loan Detail Report
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Applicant</label><br />
+                                                <div id="cboLoanDetailReportApplicant"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboLoanDetailReportStartDate"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboLoanDetailReportEndDate"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -115,7 +133,14 @@
                                             Daily Release Monitoring Summary Report
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboDailyReleaseMonitoringSummaryReportStartDate"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboDailyReleaseMonitoringSummaryReportEndDate"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -129,7 +154,18 @@
                                             Daily Release Monitoring Detail Report
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Area</label><br />
+                                                <div id="cboDailyReleaseMonitoringDetailReportArea"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Start Date</label><br />
+                                                <div id="cboDailyReleaseMonitoringDetailReportStartDate"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>End Date</label><br />
+                                                <div id="cboDailyReleaseMonitoringDetailReportEndDate"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -151,5 +187,264 @@
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var newDate = new Date();
+        var defaultDate = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboLoanSummaryReportStartDate;
+        var cboLoanSummaryReportEndDate;
+        var cboLoanSummaryReportStartDateDefaultValue = defaultDate;
+        var cboLoanSummaryReportEndDateDefaultValue = defaultDate;
+        var cboLoanDetailReportApplicant;
+        var cboLoanDetailReportStartDate;
+        var cboLoanDetailReportEndDate;
+        var cboLoanDetailReportStartDateDefaultValue = defaultDate;
+        var cboLoanDetailReportEndDateDefaultValue = defaultDate;
+        var cboDailyReleaseMonitoringSummaryReportStartDate;
+        var cboDailyReleaseMonitoringSummaryReportEndDate;
+        var cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue = defaultDate;
+        var cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue = defaultDate;
+        var cboDailyReleaseMonitoringDetailReportArea;
+        var cboDailyReleaseMonitoringDetailReportStartDate;
+        var cboDailyReleaseMonitoringDetailReportEndDate;
+        var cboDailyReleaseMonitoringDetailReportStartDateDefaultValue = defaultDate;
+        var cboDailyReleaseMonitoringDetailReportEndDateDefaultValue = defaultDate;
+
+        // cbo start date loan summary report
+        function createCboLoanSummaryReportStartDate() {
+            cboLoanSummaryReportStartDate.dispose();
+            cboLoanSummaryReportStartDate = new wijmo.input.InputDate('#cboLoanSummaryReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboLoanSummaryReportStartDateDefaultValue),
+                mask: '99-99-9999',
+                max: new Date(cboLoanSummaryReportEndDateDefaultValue),
+                onValueChanged: function () {
+                    cboLoanSummaryReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboLoanSummaryReportEndDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo end date loan summary report
+        function createCboLoanSummaryReportEndDate() {
+            cboLoanSummaryReportEndDate.dispose();
+            cboLoanSummaryReportEndDate = new wijmo.input.InputDate('#cboLoanSummaryReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboLoanSummaryReportEndDateDefaultValue),
+                mask: '99-99-9999',
+                min: new Date(cboLoanSummaryReportStartDateDefaultValue),
+                onValueChanged: function () {
+                    cboLoanSummaryReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboLoanSummaryReportStartDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo applicant loan detail report
+        function createCboApplicant() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/applicant/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                Id: applicantResults[i]["Id"],
+                                ApplicantFullName: applicantResults[i]["ApplicantFullName"]
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboLoanDetailReportApplicant.dispose();
+                    cboLoanDetailReportApplicant = new wijmo.input.ComboBox('#cboLoanDetailReportApplicant', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ApplicantFullName",
+                        selectedValuePath: "ApplicantFullName",
+                    });
+                }
+            });
+        }
+
+        // cbo start date loan detail report
+        function createCboLoanDetailReportStartDate() {
+            cboLoanDetailReportStartDate.dispose();
+            cboLoanDetailReportStartDate = new wijmo.input.InputDate('#cboLoanDetailReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboLoanDetailReportStartDateDefaultValue),
+                mask: '99-99-9999',
+                max: new Date(cboLoanDetailReportEndDateDefaultValue),
+                onValueChanged: function () {
+                    cboLoanDetailReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboLoanDetailReportEndDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo end date loan detail report
+        function createCboLoanDetailReportEndDate() {
+            cboLoanDetailReportEndDate.dispose();
+            cboLoanDetailReportEndDate = new wijmo.input.InputDate('#cboLoanDetailReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboLoanDetailReportEndDateDefaultValue),
+                mask: '99-99-9999',
+                min: new Date(cboLoanDetailReportStartDateDefaultValue),
+                onValueChanged: function () {
+                    cboLoanDetailReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboLoanDetailReportStartDate();
+                    }, 50);
+                }
+            });
+        }
+
+        //  cbo start date daily release monitoring summary report
+        function createCboDailyReleaseMonitoringSummaryReportStartDate() {
+            cboDailyReleaseMonitoringSummaryReportStartDate.dispose();
+            cboDailyReleaseMonitoringSummaryReportStartDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringSummaryReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue),
+                mask: '99-99-9999',
+                max: new Date(cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue),
+                onValueChanged: function () {
+                    cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboDailyReleaseMonitoringSummaryReportEndDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo end date daily release monitoring summary report
+        function createCboDailyReleaseMonitoringSummaryReportEndDate() {
+            cboDailyReleaseMonitoringSummaryReportEndDate.dispose();
+            cboDailyReleaseMonitoringSummaryReportEndDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringSummaryReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue),
+                mask: '99-99-9999',
+                min: new Date(cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue),
+                onValueChanged: function () {
+                    cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboDailyReleaseMonitoringSummaryReportStartDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo area daily release monitoring detail report
+        function createCboArea() {
+            var areaArray = new Array();
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (areatResults) {
+                    var disabled = true;
+                    if (areatResults.length > 0) {
+                        for (i = 0; i < areatResults.length; i++) {
+                            areaArray.push({
+                                Id: areatResults[i]["Id"],
+                                Area: areatResults[i]["Area"]
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboDailyReleaseMonitoringDetailReportArea.dispose();
+                    cboDailyReleaseMonitoringDetailReportArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringDetailReportArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                    });
+                }
+            });
+        }
+
+        // cbo start date daily release monitoring detail report
+        function createCboDailyReleaseMonitoringDetailReportStartDate() {
+            cboDailyReleaseMonitoringDetailReportStartDate.dispose();
+            cboDailyReleaseMonitoringDetailReportStartDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringDetailReportStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboDailyReleaseMonitoringDetailReportStartDateDefaultValue),
+                mask: '99-99-9999',
+                max: new Date(cboDailyReleaseMonitoringDetailReportEndDateDefaultValue),
+                onValueChanged: function () {
+                    cboDailyReleaseMonitoringDetailReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboDailyReleaseMonitoringDetailReportEndDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // cbo end date daily release monitoring detail report
+        function createCboDailyReleaseMonitoringDetailReportEndDate() {
+            cboDailyReleaseMonitoringDetailReportEndDate.dispose();
+            cboDailyReleaseMonitoringDetailReportEndDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringDetailReportEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboDailyReleaseMonitoringDetailReportEndDateDefaultValue),
+                mask: '99-99-9999',
+                min: new Date(cboDailyReleaseMonitoringDetailReportStartDateDefaultValue),
+                onValueChanged: function () {
+                    cboDailyReleaseMonitoringDetailReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    setTimeout(function () {
+                        createCboDailyReleaseMonitoringDetailReportStartDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // on load page
+        window.onload = function () {
+            cboLoanSummaryReportStartDate = new wijmo.input.InputDate('#cboLoanSummaryReportStartDate');
+            createCboLoanSummaryReportStartDate();
+            cboLoanSummaryReportEndDate = new wijmo.input.InputDate('#cboLoanSummaryReportEndDate');
+            createCboLoanSummaryReportEndDate();
+
+            cboLoanDetailReportApplicant = new wijmo.input.ComboBox('#cboLoanDetailReportApplicant');
+            createCboApplicant();
+
+            cboLoanDetailReportStartDate = new wijmo.input.InputDate('#cboLoanDetailReportStartDate');
+            createCboLoanDetailReportStartDate();
+            cboLoanDetailReportEndDate = new wijmo.input.InputDate('#cboLoanDetailReportEndDate');
+            createCboLoanDetailReportEndDate();
+
+            cboDailyReleaseMonitoringSummaryReportStartDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringSummaryReportStartDate');
+            createCboDailyReleaseMonitoringSummaryReportStartDate();
+            cboDailyReleaseMonitoringSummaryReportEndDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringSummaryReportEndDate');
+            createCboDailyReleaseMonitoringSummaryReportEndDate();
+
+            cboDailyReleaseMonitoringDetailReportArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringDetailReportArea');
+            createCboArea();
+            cboDailyReleaseMonitoringDetailReportStartDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringDetailReportStartDate');
+            createCboDailyReleaseMonitoringDetailReportStartDate();
+            cboDailyReleaseMonitoringDetailReportEndDate = new wijmo.input.InputDate('#cboDailyReleaseMonitoringDetailReportEndDate');
+            createCboDailyReleaseMonitoringDetailReportEndDate();
+        }
+    </script>
 </body>
 </html>

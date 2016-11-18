@@ -86,7 +86,14 @@
                                             Applicant Collection Paper
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Applicant</label><br />
+                                                <div id="cboApplicantCollectionPaperReportApplicant"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Loan Number</label><br />
+                                                <div id="cboApplicantCollectionPaperReportLoanNumber" style="width: 100%;"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -100,7 +107,14 @@
                                             Area Collection Paper
                                         </div>
                                         <div class="panel-body">
-
+                                            <div class="form-group">
+                                                <label>Area</label><br />
+                                                <div id="cboAreaCollectionPaperReportArea"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Collection Date</label><br />
+                                                <div id="cboAreaCollectionPaperReportCollectionDate"></div>
+                                            </div>
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
@@ -136,5 +150,148 @@
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var cboApplicantCollectionPaperReportApplicant;
+        var cboApplicantCollectionPaperReportLoanNumber;
+        var cboAreaCollectionPaperReportArea;
+        var cboAreaCollectionPaperReportCollectionDate;
+
+        // cbo applicant collection paper for applicants
+        function createCboApplicant() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/applicant/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                Id: applicantResults[i]["Id"],
+                                ApplicantFullName: applicantResults[i]["ApplicantFullName"]
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboApplicantCollectionPaperReportApplicant.dispose();
+                    cboApplicantCollectionPaperReportApplicant = new wijmo.input.ComboBox('#cboApplicantCollectionPaperReportApplicant', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ApplicantFullName",
+                        selectedValuePath: "ApplicantFullName",
+                        onSelectedIndexChanged: function () {
+                            createCboApplicantLoanNumber();
+                        }
+                    });
+                    createCboApplicantLoanNumber();
+                }
+            });
+        }
+
+        // cbo loan number collection paper for applicants
+        function createCboApplicantLoanNumber() {
+            var loanNumberArray = new Array();
+            $.ajax({
+                url: '/api/loanApplication/listByApplicantId/' + cboApplicantCollectionPaperReportApplicant.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (loanNumberResults) {
+                    var disabled = true;
+                    if (loanNumberResults.length > 0) {
+                        for (i = 0; i < loanNumberResults.length; i++) {
+                            loanNumberArray.push({
+                                Id: loanNumberResults[i]["Id"],
+                                LoanNumber: loanNumberResults[i]["LoanNumber"],
+                                LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"]
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboApplicantCollectionPaperReportLoanNumber.dispose();
+                    cboApplicantCollectionPaperReportLoanNumber = new wijmo.input.ComboBox('#cboApplicantCollectionPaperReportLoanNumber', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: loanNumberArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "LoanNumberDetailed",
+                        selectedValuePath: "LoanNumberDetailed",
+                    });
+                }
+            });
+        }
+
+        // cbo area collection paper for area
+        function createCboArea() {
+            var areaArray = new Array();
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (areatResults) {
+                    var disabled = true;
+                    if (areatResults.length > 0) {
+                        for (i = 0; i < areatResults.length; i++) {
+                            areaArray.push({
+                                Id: areatResults[i]["Id"],
+                                Area: areatResults[i]["Area"]
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboAreaCollectionPaperReportArea.dispose();
+                    cboAreaCollectionPaperReportArea = new wijmo.input.ComboBox('#cboAreaCollectionPaperReportArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                    });
+                }
+            });
+        }
+
+        // cbo collection date collection paper for area
+        function createCboAreaCollectionPaperReportCollectionDate() {
+            cboAreaCollectionPaperReportCollectionDate.dispose();
+            cboAreaCollectionPaperReportCollectionDate = new wijmo.input.InputDate('#cboAreaCollectionPaperReportCollectionDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999'
+            });
+        }
+
+        // on load page
+        window.onload = function () {
+            cboApplicantCollectionPaperReportLoanNumber = new wijmo.input.ComboBox('#cboApplicantCollectionPaperReportLoanNumber');
+            cboApplicantCollectionPaperReportApplicant = new wijmo.input.ComboBox('#cboApplicantCollectionPaperReportApplicant');
+            createCboApplicant();
+
+            cboAreaCollectionPaperReportArea = new wijmo.input.ComboBox('#cboAreaCollectionPaperReportArea');
+            createCboArea();
+
+            cboAreaCollectionPaperReportCollectionDate = new wijmo.input.InputDate('#cboAreaCollectionPaperReportCollectionDate');
+            createCboAreaCollectionPaperReportCollectionDate();
+        }
+    </script>
 </body>
 </html>
