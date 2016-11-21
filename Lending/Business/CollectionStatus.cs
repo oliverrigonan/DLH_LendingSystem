@@ -10,8 +10,7 @@ namespace Lending.Business
         // get status
         public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsPartialPayment, Boolean IsAdvancePayment, Boolean IsFullPayment, Boolean IsExtendCollection, Boolean IsOverdueCollection)
         {
-            String status = "";
-
+            String status = "?";
             if (IsCleared)
             {
                 if (IsAdvancePayment)
@@ -83,10 +82,6 @@ namespace Lending.Business
                                 status = "Partial";
                             }
                         }
-                    }
-                    else
-                    {
-                        status = "--";
                     }
                 }
             }
