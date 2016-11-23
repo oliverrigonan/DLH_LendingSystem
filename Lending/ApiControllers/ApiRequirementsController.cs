@@ -20,7 +20,7 @@ namespace Lending.ApiControllers
         [Route("api/requirements/list")]
         public List<Models.MstRequirements> listRequirements()
         {
-            var requirements = from d in db.mstRequirements.OrderByDescending(d => d.Id)
+            var requirements = from d in db.mstRequirements
                              select new Models.MstRequirements
                              {
                                  Id = d.Id,

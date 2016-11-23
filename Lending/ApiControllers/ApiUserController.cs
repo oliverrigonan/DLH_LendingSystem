@@ -41,7 +41,7 @@ namespace Lending.ApiControllers
         [Route("api/user/list")]
         public List<Models.MstUser> listUser()
         {
-            var users = from d in db.mstUsers.OrderByDescending(d => d.Id)
+            var users = from d in db.mstUsers
                         select new Models.MstUser
                         {
                             Id = d.Id,

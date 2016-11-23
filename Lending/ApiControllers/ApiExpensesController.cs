@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/expenses/listByExpensesDate/{expenseDate}")]
         public List<Models.TrnExpenses> listExpenseByExpensesDate(String expenseDate)
         {
-            var expenses = from d in db.trnExpenses.OrderByDescending(d => d.Id)
+            var expenses = from d in db.trnExpenses
                            where d.ExpenseDate == Convert.ToDateTime(expenseDate)
                            select new Models.TrnExpenses
                            {
@@ -108,7 +108,7 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 String expenseNumber = "0000000001";
-                var expense = from d in db.trnExpenses.OrderByDescending(d => d.Id) select d;
+                var expense = from d in db.trnExpenses select d;
                 if (expense.Any())
                 {
                     var newExpenseNumber = Convert.ToInt32(expense.FirstOrDefault().ExpenseNumber) + 0000000001;
@@ -118,9 +118,9 @@ namespace Lending.ApiControllers
                 Data.trnExpense newExpense = new Data.trnExpense();
                 newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
                 newExpense.ExpenseDate = DateTime.Today;
-                newExpense.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
-                newExpense.CollectorStaffId = (from d in db.mstStaffs.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
-                newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newExpense.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
+                newExpense.CollectorStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
+                newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes select d.Id).FirstOrDefault();
                 newExpense.Particulars = "NA";
                 newExpense.ExpenseAmount = 0;
                 newExpense.PreparedByUserId = userId;

@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/staffRole/list")]
         public List<Models.SysStaffRole> listStaffRole()
         {
-            var staffRoles = from d in db.sysStaffRoles.OrderByDescending(d => d.Id)
+            var staffRoles = from d in db.sysStaffRoles
                                select new Models.SysStaffRole
                                {
                                    Id = d.Id,

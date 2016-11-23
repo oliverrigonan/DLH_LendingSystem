@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/company/list")]
         public List<Models.MstCompany> listCompany()
         {
-            var companies = from d in db.mstCompanies.OrderByDescending(d => d.Id)
+            var companies = from d in db.mstCompanies
                             select new Models.MstCompany
                             {
                                 Id = d.Id,

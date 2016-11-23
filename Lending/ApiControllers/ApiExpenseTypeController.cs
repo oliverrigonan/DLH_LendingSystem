@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/expenseType/list")]
         public List<Models.MstExpenseType> listExpenseType()
         {
-            var expenseTypes = from d in db.mstExpenseTypes.OrderByDescending(d => d.Id)
+            var expenseTypes = from d in db.mstExpenseTypes
                         select new Models.MstExpenseType
                         {
                             Id = d.Id,

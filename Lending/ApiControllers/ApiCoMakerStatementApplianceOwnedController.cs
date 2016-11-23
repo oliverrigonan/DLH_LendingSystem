@@ -18,7 +18,7 @@ namespace Lending.ApiControllers
         [Route("api/coMakerStatementApplianceOwned/listByCoMakerId/{coMakerId}")]
         public List<Models.MstCoMakerStatementApplianceOwned> listCoMakerStatementApplianceOwnedByCoMakerId(String coMakerId)
         {
-            var coMakerStatementApplianceOwneds = from d in db.mstCoMakerStatementApplianceOwneds.OrderByDescending(d => d.Id)
+            var coMakerStatementApplianceOwneds = from d in db.mstCoMakerStatementApplianceOwneds
                                                   where d.CoMakerId == Convert.ToInt32(coMakerId)
                                                   select new Models.MstCoMakerStatementApplianceOwned
                                                   {

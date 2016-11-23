@@ -20,7 +20,7 @@ namespace Lending.ApiControllers
         [Route("api/loanApplication/listByLoanDate/{loanDate}")]
         public List<Models.TrnLoanApplication> listLoanApplicationByLoanDate(String loanDate)
         {
-            var loanApplications = from d in db.trnLoanApplications.OrderByDescending(d => d.Id)
+            var loanApplications = from d in db.trnLoanApplications
                                    where d.LoanDate == Convert.ToDateTime(loanDate)
                                    select new Models.TrnLoanApplication
                                    {
@@ -180,7 +180,7 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 String loanNumber = "0000000001";
-                var loanApplication = from d in db.trnLoanApplications.OrderByDescending(d => d.Id) select d;
+                var loanApplication = from d in db.trnLoanApplications select d;
                 if (loanApplication.Any())
                 {
                     var newLoanNumber = Convert.ToInt32(loanApplication.FirstOrDefault().LoanNumber) + 0000000001;
@@ -191,10 +191,10 @@ namespace Lending.ApiControllers
                 newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                 newLoanApplication.LoanDate = DateTime.Today;
                 newLoanApplication.MaturityDate = DateTime.Today.AddMonths(2);
-                newLoanApplication.AccountId = (from d in db.mstAccounts.OrderByDescending(d => d.Id) where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
-                newLoanApplication.ApplicantId = (from d in db.mstApplicants.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newLoanApplication.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
+                newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";
-                newLoanApplication.LoanTypeId = (from d in db.mstLoanTypes.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
+                newLoanApplication.LoanTypeId = (from d in db.mstLoanTypes select d.Id).FirstOrDefault();
                 newLoanApplication.PreparedByUserId = userId;
                 newLoanApplication.PrincipalAmount = 0;
                 newLoanApplication.ProcessingFeeAmount = 0;

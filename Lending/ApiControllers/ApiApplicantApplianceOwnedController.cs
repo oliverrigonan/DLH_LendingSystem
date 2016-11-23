@@ -18,7 +18,7 @@ namespace Lending.ApiControllers
         [Route("api/applicantApplianceOwned/listByApplicantId/{applicantId}")]
         public List<Models.MstApplicantApplianceOwned> listApplicantApplianceOwnedByAppplicantId(String applicantId)
         {
-            var applicantApplianceOwneds = from d in db.mstApplicantApplianceOwneds.OrderByDescending(d => d.Id)
+            var applicantApplianceOwneds = from d in db.mstApplicantApplianceOwneds
                                            where d.ApplicantId == Convert.ToInt32(applicantId)
                                            select new Models.MstApplicantApplianceOwned
                                            {

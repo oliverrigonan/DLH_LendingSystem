@@ -244,7 +244,7 @@
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
     <Compile Include="Models\TrnLoanApplicationRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reports\RepCollectionPaperController.cs" />
+    <Compile Include="Reports\RepAreaCollectionPaperController.cs" />
     <Compile Include="Reports\RepLoanApplicationCashVoucherController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

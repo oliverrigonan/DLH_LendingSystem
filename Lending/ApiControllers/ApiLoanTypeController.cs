@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/loanTypes/list")]
         public List<Models.MstLoanType> listLoanTypes()
         {
-            var loanTypes = from d in db.mstLoanTypes.OrderByDescending(d => d.Id)
+            var loanTypes = from d in db.mstLoanTypes
                             select new Models.MstLoanType
                             {
                                 Id = d.Id,

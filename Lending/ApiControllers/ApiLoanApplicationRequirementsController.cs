@@ -18,7 +18,7 @@ namespace Lending.ApiControllers
         [Route("api/loanApplicationRequirements/listByLoanId/{loanId}")]
         public List<Models.TrnLoanApplicationRequirements> listLoanRequirementsByLoanId(String loanId)
         {
-            var loanRequirements = from d in db.trnLoanApplicationRequirements.OrderByDescending(d => d.Id)
+            var loanRequirements = from d in db.trnLoanApplicationRequirements
                                    where d.LoanId == Convert.ToInt32(loanId)
                                    select new Models.TrnLoanApplicationRequirements
                                    {

@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/area/list")]
         public List<Models.MstArea> listArea()
         {
-            var areas = from d in db.mstAreas.OrderByDescending(d => d.Id)
+            var areas = from d in db.mstAreas
                         select new Models.MstArea
                         {
                             Id = d.Id,
@@ -97,7 +97,7 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 String areaNumber = "0000000001";
-                var areas = from d in db.mstAreas.OrderByDescending(d => d.Id) select d;
+                var areas = from d in db.mstAreas select d;
                 if (areas.Any())
                 {
                     var newAreaNumber = Convert.ToInt32(areas.FirstOrDefault().AreaNumber) + 0000000001;

@@ -10,14 +10,14 @@ using System.Web.Mvc;
 
 namespace Lending.Reports
 {
-    public class RepCollectionPaperController : Controller
+    public class RepAreaCollectionPaperController : Controller
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
         private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // Collection Paper
-        public ActionResult collectionPaper(String collectionDate, Int32 areaId)
+        public ActionResult areaCollectionPaper(String collectionDate, Int32 areaId)
         {
             if (collectionDate != null && areaId != null)
             {
@@ -48,7 +48,7 @@ namespace Lending.Reports
                 collectionHeader.SetWidths(collectionHeaderWidthCells);
                 collectionHeader.WidthPercentage = 100;
                 collectionHeader.AddCell(new PdfPCell(new Phrase("DLH Incorporated", fontArial17Bold)) { Border = 0 });
-                collectionHeader.AddCell(new PdfPCell(new Phrase("Collection Paper", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("Area Collection Paper", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
                 collectionHeader.AddCell(new PdfPCell(new Phrase("Genes Compound Brgy. Quiot Pardo Cebu City", fontArial12)) { Border = 0, PaddingTop = 5f });
                 collectionHeader.AddCell(new PdfPCell(new Phrase("Quiot Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
                 collectionHeader.AddCell(new PdfPCell(new Phrase("0932-444-1234", fontArial12)) { Border = 0, PaddingTop = 5f });
