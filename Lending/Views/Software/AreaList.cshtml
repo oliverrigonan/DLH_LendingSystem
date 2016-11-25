@@ -88,28 +88,7 @@
                     </table>
                 </div>
                 <div class="panel-body">
-                    <div class="flexgridHeight">
-                        <div id="areaListFlexGrid" class="grid"></div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="btn-group col-md-7" id="navigationPageGrid">
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                <span class="glyphicon glyphicon-fast-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                <span class="glyphicon glyphicon-step-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                <span class="glyphicon glyphicon-step-forward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                <span class="glyphicon glyphicon-fast-forward"></span>
-                            </button>
-                        </div>
-                    </div>
+                    <div id="areaListFlexGrid" class="grid"></div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -172,11 +151,6 @@
         // glebal variable
         var areaCollectionView;
         var areaFlexGrid;
-        var btnFirstPageGrid;
-        var btnPreviousPageGrid;
-        var btnNextPageGrid;
-        var btnLastPageGrid;
-        var btnCurrentPageGrid;
 
         // get areas
         function getAreaList() {
@@ -263,7 +237,6 @@
 
                         areaCollectionView = new wijmo.collections.CollectionView(getAreaList());
                         areaCollectionView.canFilter = true;
-                        areaCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchArea').keyup(function () {
@@ -278,10 +251,6 @@
                                                || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
                                                || (item.CollectorStaff.toLowerCase().indexOf(filterText) > -1);
                         }
-
-                        areaCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
 
                         // Flex Grid
                         areaFlexGrid.itemsSource = areaCollectionView;
@@ -301,32 +270,6 @@
                     }
                 }
             });
-        }
-
-        // navigation button for flexgrid
-        function updateNavigateButtons() {
-            if (areaCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGrid').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGrid').style.display = 'block';
-            if (areaCollectionView.pageIndex === 0) {
-                btnFirstPageGrid.setAttribute('disabled', 'disabled');
-                btnPreviousPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            } else if (areaCollectionView.pageIndex === (areaCollectionView.pageCount - 1)) {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            }
-            btnCurrentPageGrid.innerHTML = (areaCollectionView.pageIndex + 1) + ' / ' + areaCollectionView.pageCount;
         }
 
         // add new area
@@ -364,7 +307,6 @@
 
             areaCollectionView = new wijmo.collections.CollectionView(getAreaList());
             areaCollectionView.canFilter = true;
-            areaCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchArea').keyup(function () {
@@ -379,10 +321,6 @@
                                    || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
                                    || (item.CollectorStaff.toLowerCase().indexOf(filterText) > -1);
             }
-
-            areaCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtons();
-            });
 
             areaCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -454,32 +392,6 @@
             });
 
             areaFlexGrid.trackChanges = true;
-
-            //Navigation button
-            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
-            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
-            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
-            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
-            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
-
-            updateNavigateButtons();
-
-            btnFirstPageGrid.addEventListener('click', function () {
-                areaCollectionView.moveToFirstPage();
-                updateNavigateButtons();
-            });
-            btnPreviousPageGrid.addEventListener('click', function () {
-                areaCollectionView.moveToPreviousPage();
-                updateNavigateButtons();
-            });
-            btnNextPageGrid.addEventListener('click', function () {
-                areaCollectionView.moveToNextPage();
-                updateNavigateButtons();
-            });
-            btnLastPageGrid.addEventListener('click', function () {
-                areaCollectionView.moveToLastPage();
-                updateNavigateButtons();
-            });
         }
     </script>
 </body>

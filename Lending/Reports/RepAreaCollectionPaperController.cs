@@ -111,19 +111,22 @@ namespace Lending.Reports
                         areaLabel.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().Area + " Daily Collections", fontArial12Bold)) { HorizontalAlignment = 0, Border = 0, PaddingTop = 20f, PaddingBottom = 10f });
                         document.Add(areaLabel);
 
-                        PdfPTable dailyCollection = new PdfPTable(5);
-                        float[] dailyCollectionWithCells = new float[] { 10f, 25f, 10f, 15f, 33f };
+                        PdfPTable dailyCollection = new PdfPTable(7);
+                        float[] dailyCollectionWithCells = new float[] { 10f, 25f, 10f, 10f, 10f, 10f, 18f };
                         dailyCollection.SetWidths(dailyCollectionWithCells);
                         dailyCollection.WidthPercentage = 100;
                         dailyCollection.AddCell(new PdfPCell(new Phrase("Loan No.", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         dailyCollection.AddCell(new PdfPCell(new Phrase("Applicant", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         dailyCollection.AddCell(new PdfPCell(new Phrase("Due Date", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                        dailyCollection.AddCell(new PdfPCell(new Phrase("Collectible", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         dailyCollection.AddCell(new PdfPCell(new Phrase("Balance", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                        dailyCollection.AddCell(new PdfPCell(new Phrase("Collected", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         dailyCollection.AddCell(new PdfPCell(new Phrase("Actions", fontArial11Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
                         Decimal totalCollectibles = 0;
-                        Int32 active = 0;
-                        Int32 overdue = 0;
+                        Decimal totalActives = 0;
+                        Decimal totalOverdue = 0;
+                        Decimal totalCollection = 0;
                         foreach (var collection in collections)
                         {
                             var collectionDueDate = from d in db.trnCollections
@@ -139,60 +142,81 @@ namespace Lending.Reports
 
                             if (!collection.IsFullyPaid)
                             {
+                                String paidAmount = "";
+                                if (collection.PaidAmount > 0)
+                                {
+                                    paidAmount = collection.PaidAmount.ToString("#,##0.00");
+                                }
+
                                 dailyCollection.AddCell(new PdfPCell(new Phrase(collection.LoanNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
                                 dailyCollection.AddCell(new PdfPCell(new Phrase(collection.Applicant, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
                                 dailyCollection.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(Convert.ToDateTime(dueDate)).ToString("MMM-dd-yyyy", CultureInfo.InvariantCulture), fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                                dailyCollection.AddCell(new PdfPCell(new Phrase(collection.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                                 dailyCollection.AddCell(new PdfPCell(new Phrase(collection.CurrentBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                                dailyCollection.AddCell(new PdfPCell(new Phrase(paidAmount, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                                 dailyCollection.AddCell(new PdfPCell(new Phrase("", fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
 
                                 totalCollectibles += collection.CurrentBalanceAmount;
+                                totalCollection += collection.PaidAmount;
                             }
 
                             if (!collection.IsOverdueCollection)
                             {
-                                active += 1;
+                                totalActives += collection.CurrentBalanceAmount;
                             }
                             else
                             {
-                                overdue += 1;
+                                totalOverdue += collection.CurrentBalanceAmount;
                             }
-
                         }
 
                         document.Add(dailyCollection);
                         document.Add(Chunk.NEWLINE);
 
+                        var expenses = from d in db.trnExpenses
+                                       where d.ExpenseDate == Convert.ToDateTime(collectionDate)
+                                       && d.CollectorStaffId == area.FirstOrDefault().CollectorStaffId
+                                       select d;
+
+                        Decimal gasAllowanceExpenses = 0;
+                        if (expenses.Any())
+                        {
+                            gasAllowanceExpenses += expenses.Sum(d => d.ExpenseAmount);
+                        }
+
+                        Decimal netCollection = (totalActives + totalOverdue) - gasAllowanceExpenses;
+
                         PdfPTable collectionSummaryTotal = new PdfPTable(5);
-                        float[] collectionSummaryTotalWidthCells = new float[] { 20f, 20, 10, 20f, 30 };
+                        float[] collectionSummaryTotalWidthCells = new float[] { 25f, 20, 10, 20f, 25 };
                         collectionSummaryTotal.SetWidths(collectionSummaryTotalWidthCells);
                         collectionSummaryTotal.WidthPercentage = 100;
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Total Collectibles", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(totalCollectibles.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Total Balance to be Collected", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 20f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(totalCollectibles.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f, PaddingBottom = 20f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, PaddingBottom = 20f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 20f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 20f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Active", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(active.ToString(), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(totalActives.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Overdue", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(overdue.ToString(), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(totalOverdue.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Total Collection", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(totalCollection.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Gas Expense", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Gas/Allowance Expenses", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(gasAllowanceExpenses.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Net Collection", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(netCollection.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
@@ -212,11 +236,11 @@ namespace Lending.Reports
                         tableFooter.AddCell(new PdfPCell(new Phrase("Collector's Name:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
                         tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0 });
                         tableFooter.AddCell(new PdfPCell(new Phrase("Checked by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
-                        tableFooter.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().mstStaff.Staff)) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f, HorizontalAlignment = 1 });
-                        tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
-                        tableFooter.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().mstStaff1.Staff)) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f, HorizontalAlignment = 1 });
-                        tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
-                        tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f });
+                        tableFooter.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().mstStaff.Staff)) { Border = 0, PaddingTop = 30f, PaddingBottom = 10f, HorizontalAlignment = 1 });
+                        tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 30f, PaddingBottom = 10f });
+                        tableFooter.AddCell(new PdfPCell(new Phrase(area.FirstOrDefault().mstStaff1.Staff)) { Border = 0, PaddingTop = 30f, PaddingBottom = 10f, HorizontalAlignment = 1 });
+                        tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 30f, PaddingBottom = 10f });
+                        tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 30f, PaddingBottom = 10f });
                         tableFooter.AddCell(new PdfPCell(new Phrase("Signature Over Printed Name")) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });
                         tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 5f });
                         tableFooter.AddCell(new PdfPCell(new Phrase("Signature Over Printed Name")) { Border = 1, HorizontalAlignment = 1, PaddingBottom = 5f });

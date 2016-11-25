@@ -187,7 +187,7 @@ namespace Lending.ApiControllers
                 byte[] imgarr = Convert.FromBase64String(file);
 
                 String applicantNumber = "0000000001";
-                var applicants = from d in db.mstApplicants select d;
+                var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
                 if (applicants.Any())
                 {
                     var newApplicantNumber = Convert.ToInt32(applicants.FirstOrDefault().ApplicantNumber) + 0000000001;

@@ -180,7 +180,7 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 String loanNumber = "0000000001";
-                var loanApplication = from d in db.trnLoanApplications select d;
+                var loanApplication = from d in db.trnLoanApplications.OrderByDescending(d => d.Id) select d;
                 if (loanApplication.Any())
                 {
                     var newLoanNumber = Convert.ToInt32(loanApplication.FirstOrDefault().LoanNumber) + 0000000001;

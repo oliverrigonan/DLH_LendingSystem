@@ -127,7 +127,7 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 String staffNumber = "0000000001";
-                var staffs = from d in db.mstStaffs select d;
+                var staffs = from d in db.mstStaffs.OrderByDescending(d => d.Id) select d;
                 if (staffs.Any())
                 {
                     var newStaffNumber = Convert.ToInt32(staffs.FirstOrDefault().StaffNumber) + 0000000001;

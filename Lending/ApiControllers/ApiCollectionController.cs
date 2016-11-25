@@ -1075,7 +1075,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/collection/overdue/update/byId/byLoanId/{id}/{loanId}")]
-        public HttpResponseMessage absentCollection(String id, String loanId)
+        public HttpResponseMessage overdueCollection(String id, String loanId)
         {
             try
             {

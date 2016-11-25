@@ -108,7 +108,7 @@ namespace Lending.ApiControllers
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
 
                 String expenseNumber = "0000000001";
-                var expense = from d in db.trnExpenses select d;
+                var expense = from d in db.trnExpenses.OrderByDescending(d => d.Id) select d;
                 if (expense.Any())
                 {
                     var newExpenseNumber = Convert.ToInt32(expense.FirstOrDefault().ExpenseNumber) + 0000000001;
@@ -119,7 +119,7 @@ namespace Lending.ApiControllers
                 newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
                 newExpense.ExpenseDate = DateTime.Today;
                 newExpense.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
-                newExpense.CollectorStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
+                newExpense.CollectorStaffId = (from d in db.mstStaffs where d.Id == 2 select d.Id).FirstOrDefault();
                 newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes select d.Id).FirstOrDefault();
                 newExpense.Particulars = "NA";
                 newExpense.ExpenseAmount = 0;

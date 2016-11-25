@@ -124,99 +124,25 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#paymentLogTabContent" data-toggle="tab" id="paymentLogTab">
-                                Payment Logs
+                            <a href="#moreDetailsTabContent" data-toggle="tab" id="moreDetailsTab">
+                                More Details
                             </a>
                         </li>
                     </ul>
                     <br />
                     <div id="myTabContent" class="tab-content">
                         <div class="tab-pane fade in active" id="collectionsTabContent">
-                            <div class="flexgridHeight">
-                                <div id="collectionFlexGrid" class=""></div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-footer">
-                                    <div class="row">
-                                        <div class="btn-group col-md-7" id="navigationPageGridCollection">
-                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollection">
-                                                <span class="glyphicon glyphicon-fast-backward"></span>
-                                            </button>
-                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollection">
-                                                <span class="glyphicon glyphicon-step-backward"></span>
-                                            </button>
-                                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollection"></button>
-                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollection">
-                                                <span class="glyphicon glyphicon-step-forward"></span>
-                                            </button>
-                                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollection">
-                                                <span class="glyphicon glyphicon-fast-forward"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <div id="collectionFlexGrid"></div>
                         </div>
-                        <div class="tab-pane fade in" id="paymentLogTabContent">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <ul class="nav nav-pills nav-stacked">
-                                        <li class="active"><a data-toggle="pill" href="#partialPaymentLogs">Partial Payment Logs</a></li>
-                                        <li><a data-toggle="pill" href="#advancePaymentLogs">Advance Payment Logs</a></li>
-                                        <li><a data-toggle="pill" href="#fullPaymentLogs">Full Payment Logs</a></li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-9">
-                                    <div class="tab-content">
-                                        <div id="partialPaymentLogs" class="tab-pane fade in active">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    Partial Payment Logs
-                                                </div>
-                                                <div class="panel-body">
-
-                                                </div>
-                                                <div class="panel-footer">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="advancePaymentLogs" class="tab-pane fade">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    Advance Payment Logs
-                                                </div>
-                                                <div class="panel-body">
-
-                                                </div>
-                                                <div class="panel-footer">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="fullPaymentLogs" class="tab-pane fade">
-                                            <div class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    Full Payment Logs
-                                                </div>
-                                                <div class="panel-body">
-
-                                                </div>
-                                                <div class="panel-footer">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tab-pane fade in" id="moreDetailsTabContent">
+                            
                         </div>
                     </div>
                 </div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    More details
+                    details (More Details)
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -653,11 +579,6 @@
         // Global Variables
         var collectionCollectionView;
         var collectionFlexGrid;
-        var btnFirstPageGridCollection;
-        var btnPreviousPageGridCollection;
-        var btnNextPageGridCollection;
-        var btnLastPageGridCollection;
-        var btnCurrentPageGridCollection;
         var urlParameterLoanId = getUrlParameter("loanId");
         var currentCollectionId = 0;
         var advancePaymentCollectionView;
@@ -755,12 +676,7 @@
 
                                 // flexgrid refresh
                                 collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                                collectionCollectionView.pageSize = 15;
-
-                                collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                    updateNavigateButtonsCollection();
-                                });
-
+                                
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
 
@@ -921,41 +837,10 @@
             return collectionListArray;
         }
 
-        // navigation button for flexgrid
-        function updateNavigateButtonsCollection() {
-            if (collectionCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGridCollection').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGridCollection').style.display = 'block';
-            if (collectionCollectionView.pageIndex === 0) {
-                btnFirstPageGridCollection.setAttribute('disabled', 'disabled');
-                btnPreviousPageGridCollection.setAttribute('disabled', 'disabled');
-                btnNextPageGridCollection.removeAttribute('disabled');
-                btnLastPageGridCollection.removeAttribute('disabled');
-            } else if (collectionCollectionView.pageIndex === (collectionCollectionView.pageCount - 1)) {
-                btnFirstPageGridCollection.removeAttribute('disabled');
-                btnPreviousPageGridCollection.removeAttribute('disabled');
-                btnLastPageGridCollection.setAttribute('disabled', 'disabled');
-                btnNextPageGridCollection.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGridCollection.removeAttribute('disabled');
-                btnPreviousPageGridCollection.removeAttribute('disabled');
-                btnNextPageGridCollection.removeAttribute('disabled');
-                btnLastPageGridCollection.removeAttribute('disabled');
-            }
-            btnCurrentPageGridCollection.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
-        }
-
         // flexgrid of collection
         function createFlexGridForCollection() {
             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-            collectionCollectionView.pageSize = 15;
-
-            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtonsCollection();
-            });
-
+            
             collectionFlexGrid = new wijmo.grid.FlexGrid('#collectionFlexGrid');
             collectionFlexGrid.initialize({
                 columns: [
@@ -1075,32 +960,6 @@
             for (var actionsColumn = 8; actionsColumn <= 10; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
-
-            //Navigation button
-            btnFirstPageGridCollection = document.getElementById('btnMoveToFirstPageGridCollection');
-            btnPreviousPageGridCollection = document.getElementById('btnMoveToPreviousPageGridCollection');
-            btnNextPageGridCollection = document.getElementById('btnMoveToNextPageGridCollection');
-            btnLastPageGridCollection = document.getElementById('btnMoveToLastPageGridCollection');
-            btnCurrentPageGridCollection = document.getElementById('btnCurrentPageGridCollection');
-
-            updateNavigateButtonsCollection();
-
-            btnFirstPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToFirstPage();
-                updateNavigateButtonsCollection();
-            });
-            btnPreviousPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToPreviousPage();
-                updateNavigateButtonsCollection();
-            });
-            btnNextPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToNextPage();
-                updateNavigateButtonsCollection();
-            });
-            btnLastPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToLastPage();
-                updateNavigateButtonsCollection();
-            });
         }
 
         // clear collection
@@ -1123,12 +982,7 @@
                                 urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
                                 collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                                collectionCollectionView.pageSize = 15;
-
-                                collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                    updateNavigateButtonsCollection();
-                                });
-
+                                
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
                             },
@@ -1182,12 +1036,7 @@
                                 urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
                                 collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                                collectionCollectionView.pageSize = 15;
-
-                                collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                    updateNavigateButtonsCollection();
-                                });
-
+                                
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
                             },
@@ -1230,12 +1079,7 @@
                         urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                        collectionCollectionView.pageSize = 15;
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsCollection();
-                        });
-
+                        
                         collectionFlexGrid.itemsSource = collectionCollectionView;
                         collectionFlexGrid.trackChanges = true;
                     },
@@ -1369,12 +1213,7 @@
                                         urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
                                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                                        collectionCollectionView.pageSize = 15;
-
-                                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                            updateNavigateButtonsCollection();
-                                        });
-
+                                        
                                         collectionFlexGrid.itemsSource = collectionCollectionView;
                                         collectionFlexGrid.trackChanges = true;
                                     },
@@ -1663,12 +1502,7 @@
                         urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                        collectionCollectionView.pageSize = 15;
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsCollection();
-                        });
-
+                        
                         collectionFlexGrid.itemsSource = collectionCollectionView;
                         collectionFlexGrid.trackChanges = true;
                     },
@@ -1754,12 +1588,7 @@
                         urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-                        collectionCollectionView.pageSize = 15;
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsCollection();
-                        });
-
+                        
                         collectionFlexGrid.itemsSource = collectionCollectionView;
                         collectionFlexGrid.trackChanges = true;
                     },
@@ -1817,12 +1646,7 @@
         // btn refresh the grid
         function btnRefreshOnclick() {
             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-            collectionCollectionView.pageSize = 15;
-
-            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtonsCollection();
-            });
-
+            
             collectionFlexGrid.itemsSource = collectionCollectionView;
             collectionFlexGrid.trackChanges = true;
         }

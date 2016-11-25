@@ -88,28 +88,7 @@
                     </table>
                 </div>
                 <div class="panel-body">
-                    <div class="flexgridHeight">
-                        <div id="companyListFlexGrid" class="grid"></div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="btn-group col-md-7" id="navigationPageGrid">
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                <span class="glyphicon glyphicon-fast-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                <span class="glyphicon glyphicon-step-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                <span class="glyphicon glyphicon-step-forward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                <span class="glyphicon glyphicon-fast-forward"></span>
-                            </button>
-                        </div>
-                    </div>
+                    <div id="companyListFlexGrid" class="grid"></div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -172,11 +151,6 @@
         // global variables
         var companyCollectionView;
         var companyFlexGrid;
-        var btnFirstPageGrid;
-        var btnPreviousPageGrid;
-        var btnNextPageGrid;
-        var btnLastPageGrid;
-        var btnCurrentPageGrid;
 
         // get company
         function getCompanyData() {
@@ -283,7 +257,6 @@
 
                         companyCollectionView = new wijmo.collections.CollectionView(getCompanyData());
                         companyCollectionView.canFilter = true;
-                        companyCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchCompany').keyup(function () {
@@ -295,10 +268,6 @@
                             return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
                                                || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
                         }
-
-                        companyCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
 
                         companyCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
@@ -330,32 +299,6 @@
             });
         }
 
-        // navigation button for flexgrid
-        function updateNavigateButtons() {
-            if (companyCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGrid').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGrid').style.display = 'block';
-            if (companyCollectionView.pageIndex === 0) {
-                btnFirstPageGrid.setAttribute('disabled', 'disabled');
-                btnPreviousPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            } else if (companyCollectionView.pageIndex === (companyCollectionView.pageCount - 1)) {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            }
-            btnCurrentPageGrid.innerHTML = (companyCollectionView.pageIndex + 1) + ' / ' + companyCollectionView.pageCount;
-        }
-
         // stamp security
         function updateStampSecurity() {
             var item = companyCollectionView.currentItem;
@@ -372,7 +315,6 @@
 
             companyCollectionView = new wijmo.collections.CollectionView(getCompanyData());
             companyCollectionView.canFilter = true;
-            companyCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchCompany').keyup(function () {
@@ -384,10 +326,6 @@
                 return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
                                    || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
             }
-
-            companyCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtons();
-            });
 
             companyCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -454,32 +392,6 @@
             });
 
             companyFlexGrid.trackChanges = true;
-
-            //Navigation button
-            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
-            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
-            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
-            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
-            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
-
-            updateNavigateButtons();
-
-            btnFirstPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToFirstPage();
-                updateNavigateButtons();
-            });
-            btnPreviousPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToPreviousPage();
-                updateNavigateButtons();
-            });
-            btnNextPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToNextPage();
-                updateNavigateButtons();
-            });
-            btnLastPageGrid.addEventListener('click', function () {
-                companyCollectionView.moveToLastPage();
-                updateNavigateButtons();
-            });
         }
     </script>
 </body>

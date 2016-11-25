@@ -227,7 +227,7 @@
         function getCollectorByArea() {
             var collectorByAreaArray = new Array();
             $.ajax({
-                url: '/api/staff/list',
+                url: '/api/staff/list/byStaffRoleId/2',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -423,7 +423,7 @@
                 var expensesObject = new Object();
                 expensesObject.ExpenseDate = cboExpensesDate.value;
                 expensesObject.AccountId = cboExpensesAccount.selectedItem["Id"];
-                expensesObject.CollectorId = cboCollector.selectedItem["Id"];
+                expensesObject.CollectorStaffId = cboCollector.selectedItem["Id"];
                 expensesObject.ExpenseTypeId = cboExpenseType.selectedItem["Id"];
                 expensesObject.Particulars = document.getElementById("expensesParticulars").value;
                 expensesObject.ExpenseAmount = document.getElementById("expensesAmount").value;

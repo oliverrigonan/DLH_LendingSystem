@@ -88,28 +88,7 @@
                     </table>
                 </div>
                 <div class="panel-body">
-                    <div class="flexgridHeight">
-                        <div id="staffListFlexGrid" class="grid"></div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="btn-group col-md-7" id="navigationPageGrid">
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                <span class="glyphicon glyphicon-fast-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                <span class="glyphicon glyphicon-step-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                <span class="glyphicon glyphicon-step-forward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                <span class="glyphicon glyphicon-fast-forward"></span>
-                            </button>
-                        </div>
-                    </div>
+                    <div id="staffListFlexGrid" class="grid"></div>
                 </div>
             </div>
             <div class="panel panel-default">
@@ -172,11 +151,6 @@
         // glebal variable
         var staffCollectionView;
         var staffFlexGrid;
-        var btnFirstPageGrid;
-        var btnPreviousPageGrid;
-        var btnNextPageGrid;
-        var btnLastPageGrid;
-        var btnCurrentPageGrid;
 
         // get staffs
         function getStaffList() {
@@ -265,7 +239,6 @@
 
                         staffCollectionView = new wijmo.collections.CollectionView(getStaffList());
                         staffCollectionView.canFilter = true;
-                        staffCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchStaff').keyup(function () {
@@ -280,10 +253,6 @@
                                                || (item.StaffManualNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.StaffRole.toLowerCase().indexOf(filterText) > -1);
                         }
-
-                        staffCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
 
                         // Flex Grid
                         staffFlexGrid.itemsSource = staffCollectionView;
@@ -303,32 +272,6 @@
                     }
                 }
             });
-        }
-
-        // navigation button for flexgrid
-        function updateNavigateButtons() {
-            if (staffCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGrid').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGrid').style.display = 'block';
-            if (staffCollectionView.pageIndex === 0) {
-                btnFirstPageGrid.setAttribute('disabled', 'disabled');
-                btnPreviousPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            } else if (staffCollectionView.pageIndex === (staffCollectionView.pageCount - 1)) {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            }
-            btnCurrentPageGrid.innerHTML = (staffCollectionView.pageIndex + 1) + ' / ' + staffCollectionView.pageCount;
         }
 
         // add new staff
@@ -366,7 +309,6 @@
 
             staffCollectionView = new wijmo.collections.CollectionView(getStaffList());
             staffCollectionView.canFilter = true;
-            staffCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchStaff').keyup(function () {
@@ -381,10 +323,6 @@
                                    || (item.StaffManualNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.StaffRole.toLowerCase().indexOf(filterText) > -1);
             }
-
-            staffCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtons();
-            });
 
             staffCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -456,32 +394,6 @@
             });
 
             staffFlexGrid.trackChanges = true;
-
-            //Navigation button
-            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
-            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
-            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
-            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
-            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
-
-            updateNavigateButtons();
-
-            btnFirstPageGrid.addEventListener('click', function () {
-                staffCollectionView.moveToFirstPage();
-                updateNavigateButtons();
-            });
-            btnPreviousPageGrid.addEventListener('click', function () {
-                staffCollectionView.moveToPreviousPage();
-                updateNavigateButtons();
-            });
-            btnNextPageGrid.addEventListener('click', function () {
-                staffCollectionView.moveToNextPage();
-                updateNavigateButtons();
-            });
-            btnLastPageGrid.addEventListener('click', function () {
-                staffCollectionView.moveToLastPage();
-                updateNavigateButtons();
-            });
         }
     </script>
 </body>

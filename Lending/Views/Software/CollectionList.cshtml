@@ -103,26 +103,21 @@
                     </table>
                 </div>
                 <div class="panel-body">
-                    <div class="flexgridHeight">
-                        <div id="collectionListFlexGrid" class=""></div>
-                    </div>
+                    <div id="collectionListFlexGrid" class=""></div>
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="btn-group col-md-7" id="navigationPageGrid">
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                <span class="glyphicon glyphicon-fast-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                <span class="glyphicon glyphicon-step-backward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                <span class="glyphicon glyphicon-step-forward"></span>
-                            </button>
-                            <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                <span class="glyphicon glyphicon-fast-forward"></span>
-                            </button>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Supervisor</label><br />
+                                <input type="text" id="areaSuperVisor" class="form-control" placeholder="Supervisor" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Collector</label><br />
+                                <input type="text" id="areaCollector" class="form-control" placeholder="Collector" disabled>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -230,7 +225,6 @@
                         NProgress.start();
                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateAndAreaIdList());
                         collectionCollectionView.canFilter = true;
-                        collectionCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchCollection').keyup(function () {
@@ -241,10 +235,6 @@
                         collectionCollectionView.filter = function (item) {
                             return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
                         }
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
 
                         // Flex Grid
                         collectionFlexGrid.itemsSource = collectionCollectionView;
@@ -526,7 +516,7 @@
                                         collectionItem.IsFullyPaid = isFullyPaidResult;
                                         collectionItem.AbsentButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>";
                                         collectionItem.ClearButton = "<button class='btn btn-default btn-xs btn-block' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>";
-                                        collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " --";
+                                        collectionItem.Status = "<i class='fa fa-info-circle fa-fw'></i>" + " ?";
 
                                         collectionCollectionView.onCollectionChanged(function () {
                                             collectionCollectionView.refresh();
@@ -552,37 +542,10 @@
             });
         }
 
-        // navigation button for flexgrid
-        function updateNavigateButtons() {
-            if (collectionCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGrid').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGrid').style.display = 'block';
-            if (collectionCollectionView.pageIndex === 0) {
-                btnFirstPageGrid.setAttribute('disabled', 'disabled');
-                btnPreviousPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            } else if (collectionCollectionView.pageIndex === (collectionCollectionView.pageCount - 1)) {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.setAttribute('disabled', 'disabled');
-                btnNextPageGrid.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGrid.removeAttribute('disabled');
-                btnPreviousPageGrid.removeAttribute('disabled');
-                btnNextPageGrid.removeAttribute('disabled');
-                btnLastPageGrid.removeAttribute('disabled');
-            }
-            btnCurrentPageGrid.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
-        }
-
         // create collection flexgrid
         function createCollectionFlexGrid() {
             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateAndAreaIdList());
             collectionCollectionView.canFilter = true;
-            collectionCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchCollection').keyup(function () {
@@ -593,10 +556,6 @@
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
             }
-
-            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtons();
-            });
 
             // Flex Grid
             collectionFlexGrid = new wijmo.grid.FlexGrid('#collectionListFlexGrid');
@@ -727,32 +686,6 @@
             for (var actionsColumn = 9; actionsColumn <= 11; actionsColumn++) {
                 collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
-
-            //Navigation button
-            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
-            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
-            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
-            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
-            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
-
-            updateNavigateButtons();
-
-            btnFirstPageGrid.addEventListener('click', function () {
-                collectionCollectionView.moveToFirstPage();
-                updateNavigateButtons();
-            });
-            btnPreviousPageGrid.addEventListener('click', function () {
-                collectionCollectionView.moveToPreviousPage();
-                updateNavigateButtons();
-            });
-            btnNextPageGrid.addEventListener('click', function () {
-                collectionCollectionView.moveToNextPage();
-                updateNavigateButtons();
-            });
-            btnLastPageGrid.addEventListener('click', function () {
-                collectionCollectionView.moveToLastPage();
-                updateNavigateButtons();
-            });
         }
 
         // cbo Area
@@ -771,6 +704,8 @@
                             areaArray.push({
                                 Id: areaResults[i]["Id"],
                                 Area: areaResults[i]["Area"],
+                                SupervisorStaff: areaResults[i]["SupervisorStaff"],
+                                CollectorStaff: areaResults[i]["CollectorStaff"]
                             });
                         }
 
@@ -791,7 +726,6 @@
                             NProgress.start();
                             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateAndAreaIdList());
                             collectionCollectionView.canFilter = true;
-                            collectionCollectionView.pageSize = 15;
 
                             var filterText = '';
                             $('#searchCollection').keyup(function () {
@@ -803,15 +737,17 @@
                                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
                             }
 
-                            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                updateNavigateButtons();
-                            });
-
                             // Flex Grid
                             collectionFlexGrid.itemsSource = collectionCollectionView;
                             collectionFlexGrid.trackChanges = true;
+
+                            document.getElementById("areaSuperVisor").value = this.selectedItem["SupervisorStaff"];
+                            document.getElementById("areaCollector").value = this.selectedItem["CollectorStaff"];
                         }
                     });
+
+                    document.getElementById("areaSuperVisor").value = cboArea.selectedItem["SupervisorStaff"];
+                    document.getElementById("areaCollector").value = cboArea.selectedItem["CollectorStaff"];
 
                     createCollectionFlexGrid();
                 }
