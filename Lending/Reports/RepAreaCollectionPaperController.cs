@@ -162,17 +162,18 @@ namespace Lending.Reports
 
                             if (!collection.IsOverdueCollection)
                             {
-                                totalActives += collection.CurrentBalanceAmount;
+                                totalActives += collection.PaidAmount;
                             }
                             else
                             {
-                                totalOverdue += collection.CurrentBalanceAmount;
+                                totalOverdue += collection.PaidAmount;
                             }
                         }
 
                         document.Add(dailyCollection);
                         document.Add(Chunk.NEWLINE);
 
+                        // expenses
                         var expenses = from d in db.trnExpenses
                                        where d.ExpenseDate == Convert.ToDateTime(collectionDate)
                                        && d.CollectorStaffId == area.FirstOrDefault().CollectorStaffId
@@ -187,7 +188,7 @@ namespace Lending.Reports
                         Decimal netCollection = (totalActives + totalOverdue) - gasAllowanceExpenses;
 
                         PdfPTable collectionSummaryTotal = new PdfPTable(5);
-                        float[] collectionSummaryTotalWidthCells = new float[] { 25f, 20, 10, 20f, 25 };
+                        float[] collectionSummaryTotalWidthCells = new float[] { 30f, 20, 10, 20f, 20f };
                         collectionSummaryTotal.SetWidths(collectionSummaryTotalWidthCells);
                         collectionSummaryTotal.WidthPercentage = 100;
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Total Balance to be Collected", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 20f });
@@ -210,13 +211,13 @@ namespace Lending.Reports
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Gas/Allowance Expenses", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(gasAllowanceExpenses.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Net Collection", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(netCollection.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Gas/Allowance and other Expenses", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 15f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(gasAllowanceExpenses.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f, PaddingBottom = 15f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, PaddingBottom = 15f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, PaddingBottom = 15f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, PaddingBottom = 15f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("Net Collection", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 5f, PaddingBottom = 10f });
+                        collectionSummaryTotal.AddCell(new PdfPCell(new Phrase(netCollection.ToString("#,##0.00"), fontArial12)) { HorizontalAlignment = 2, PaddingTop = 5f, PaddingLeft = 5f, PaddingRight = 30f, PaddingBottom = 10f });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });
                         collectionSummaryTotal.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0 });

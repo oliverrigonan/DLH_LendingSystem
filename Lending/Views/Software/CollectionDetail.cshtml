@@ -83,13 +83,13 @@
                 </div>
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i> Applicant</span>
+                                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                 <input type="text" class="form-control input-sm" id="applicantName" disabled />
                             </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-8">
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-file-text-o fa-fw"></i> Loan Number</span>
                                 <div id="cboLoanNumberLogHistory" style="width: 100%;"></div>
@@ -99,16 +99,25 @@
                 </div>
                 <div class="panel-heading">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-map-pin fa-fw"></i> Area</span>
+                                <span class="input-group-addon"><i class="fa fa-map-pin fa-fw"></i></span>
                                 <input type="text" class="form-control input-sm" id="applicantArea" disabled />
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-7">
                             <button class="btn btn-primary btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
                             <button class="btn btn-primary btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
                             <button class="btn btn-primary btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    Extensions <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Extend Collection/Payment</a></li>
+                                    <li><a href="#">Mark Collection as Overdue</a></li>
+                                </ul>
+                            </div>
                             <button class="btn btn-default btn-sm" id="" onclick="btnRefreshOnclick()">Refresh</button>
                         </div>
                         <div class="col-md-1" align="right">
@@ -135,123 +144,123 @@
                             <div id="collectionFlexGrid"></div>
                         </div>
                         <div class="tab-pane fade in" id="moreDetailsTabContent">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    details (More Details)
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
+
                             <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    details (More Details)
+                                </div>
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Loan Date</label><br />
-                                                <input type="text" class="form-control" id="collectionDetailLoanDate" disabled />
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Loan Date</label><br />
+                                                                <input type="text" class="form-control" id="collectionDetailLoanDate" disabled />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Maturity Date (Due Date)</label><br />
+                                                                <input type="text" class="form-control" id="collectionDetailMaturityDate" disabled />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Is Fully Paid</label><br />
+                                                                <input type="checkbox" id="collectionDetailIsFullyPaid" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Principal Amount</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="collectionDetailPrincipalAmount" placeholder="0.00" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Total Deductions</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="collectionDetailTotalDeductions" placeholder="0.00" disabled />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Net Amount</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="collectionDetailNetAmount" placeholder="0.00" disabled />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="panel-footer">
+                                                    <button class="btn btn-info" onclick="btnViewLoanApplicationDetailOnclick()">View Loan Application Detail</button>
+                                                </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label>Maturity Date (Due Date)</label><br />
-                                                <input type="text" class="form-control" id="collectionDetailMaturityDate" disabled />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Is Fully Paid</label><br />
-                                                <input type="checkbox" id="collectionDetailIsFullyPaid" disabled />
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <p>Created by:</p>
+                                                    <div style="padding-left: 10px;">
+                                                        <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                        <br />
+                                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                    </div>
+                                                    <br />
+                                                    <p>Updated by:</p>
+                                                    <div style="padding-left: 10px;">
+                                                        <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                        <br />
+                                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Principal Amount</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="collectionDetailPrincipalAmount" placeholder="0.00" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Total Deductions</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="collectionDetailTotalDeductions" placeholder="0.00" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Net Amount</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="collectionDetailNetAmount" placeholder="0.00" disabled />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel-footer">
-                                    <button class="btn btn-info" onclick="btnViewLoanApplicationDetailOnclick()">View Loan Application Detail</button>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <p>Created by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                        <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                    <br />
-                                    <p>Updated by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                        <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Collection Start Date</label><br />
-                                                <input type="text" class="form-control" id="" disabled />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Collection End Date</label><br />
-                                                <input type="text" class="form-control" id="" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Daily Collectible</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Total Penalty</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Total Current Balance</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Total Paid Amount</label><br />
-                                                <div class="input-group numberField">
-                                                    <span class="input-group-addon">&#8369;</span>
-                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Collection Start Date</label><br />
+                                                                <input type="text" class="form-control" id="" disabled />
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Collection End Date</label><br />
+                                                                <input type="text" class="form-control" id="" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label>Daily Collectible</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Total Penalty</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Total Current Balance</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Total Paid Amount</label><br />
+                                                                <div class="input-group numberField">
+                                                                    <span class="input-group-addon">&#8369;</span>
+                                                                    <input type="text" class="form-control numberField" id="" placeholder="0.00" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
