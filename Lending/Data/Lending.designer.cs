@@ -10471,6 +10471,8 @@ namespace Lending.Data
 		
 		private bool _IsAction;
 		
+		private bool _IsLastDay;
+		
 		private EntityRef<mstAccount> _mstAccount;
 		
 		private EntityRef<trnLoanApplication> _trnLoanApplication;
@@ -10521,6 +10523,8 @@ namespace Lending.Data
     partial void OnIsProcessedChanged();
     partial void OnIsActionChanging(bool value);
     partial void OnIsActionChanged();
+    partial void OnIsLastDayChanging(bool value);
+    partial void OnIsLastDayChanged();
     #endregion
 		
 		public trnCollection()
@@ -10954,6 +10958,26 @@ namespace Lending.Data
 					this._IsAction = value;
 					this.SendPropertyChanged("IsAction");
 					this.OnIsActionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLastDay", DbType="Bit NOT NULL")]
+		public bool IsLastDay
+		{
+			get
+			{
+				return this._IsLastDay;
+			}
+			set
+			{
+				if ((this._IsLastDay != value))
+				{
+					this.OnIsLastDayChanging(value);
+					this.SendPropertyChanging();
+					this._IsLastDay = value;
+					this.SendPropertyChanged("IsLastDay");
+					this.OnIsLastDayChanged();
 				}
 			}
 		}

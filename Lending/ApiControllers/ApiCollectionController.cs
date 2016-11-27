@@ -53,6 +53,7 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
+                                  IsLastDay = d.IsLastDay,
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -98,6 +99,7 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
+                                  IsLastDay = d.IsLastDay,
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -142,6 +144,7 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
+                                  IsLastDay = d.IsLastDay,
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -186,6 +189,7 @@ namespace Lending.ApiControllers
                                   IsCurrentCollection = d.IsCurrentCollection,
                                   IsProcessed = d.IsProcessed,
                                   IsAction = d.IsAction,
+                                  IsLastDay = d.IsLastDay,
                                   Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
                               };
 
@@ -396,7 +400,89 @@ namespace Lending.ApiControllers
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is in due date. Extend or Overdue");
+                                        if (collection.FirstOrDefault().IsOverdueCollection || collection.FirstOrDefault().IsOverdueCollection)
+                                        {
+                                            if (!collection.FirstOrDefault().IsLastDay)
+                                            {
+                                                Boolean isOverDueCollection = true;
+                                                if (collection.FirstOrDefault().CollectionDate == loanApplication.FirstOrDefault().MaturityDate)
+                                                {
+                                                    isOverDueCollection = false;
+                                                }
+
+                                                Decimal penaltyAmount = getPenaltyAmount(collection.FirstOrDefault().LoanId, collection.FirstOrDefault().CollectionDate.ToShortDateString());
+
+                                                var updateCollection = collection.FirstOrDefault();
+                                                updateCollection.PaidAmount = 0;
+                                                updateCollection.CurrentBalanceAmount = collection.FirstOrDefault().CollectibleAmount + penaltyAmount + collection.FirstOrDefault().PreviousBalanceAmount;
+                                                updateCollection.PenaltyAmount = penaltyAmount;
+                                                updateCollection.IsCleared = false;
+                                                updateCollection.IsAbsent = true;
+                                                updateCollection.IsProcessed = true;
+                                                updateCollection.IsCurrentCollection = false;
+                                                updateCollection.IsPartialPayment = false;
+                                                updateCollection.IsAdvancePayment = false;
+                                                updateCollection.IsExtendCollection = false;
+                                                updateCollection.IsOverdueCollection = isOverDueCollection;
+                                                updateCollection.IsFullPayment = false;
+                                                db.SubmitChanges();
+
+                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                if (collectionPrevoiusDate.Any())
+                                                {
+                                                    var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
+                                                    updateCollectionPrevoiusDate.IsAction = false;
+                                                    updateCollectionPrevoiusDate.IsCurrentCollection = false;
+                                                    db.SubmitChanges();
+
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    if (collectionNextDate.Any())
+                                                    {
+                                                        var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
+                                                        updateCollectionNextDate.PreviousBalanceAmount = collection.FirstOrDefault().CollectibleAmount + penaltyAmount + collection.FirstOrDefault().PreviousBalanceAmount;
+                                                        updateCollectionNextDate.CurrentBalanceAmount = collectionNextDate.FirstOrDefault().CollectibleAmount + (collection.FirstOrDefault().CollectibleAmount + penaltyAmount + collection.FirstOrDefault().PreviousBalanceAmount);
+                                                        updateCollectionNextDate.IsAction = true;
+                                                        updateCollectionNextDate.IsCurrentCollection = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                    else
+                                                    {
+                                                        var updateLoanApplicationFullPayment = loanApplication.FirstOrDefault();
+                                                        updateLoanApplicationFullPayment.IsFullyPaid = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    if (collectionNextDate.Any())
+                                                    {
+                                                        var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
+                                                        updateCollectionNextDate.PreviousBalanceAmount = collection.FirstOrDefault().CollectibleAmount + penaltyAmount + collection.FirstOrDefault().PreviousBalanceAmount;
+                                                        updateCollectionNextDate.CurrentBalanceAmount = collectionNextDate.FirstOrDefault().CollectibleAmount + (collection.FirstOrDefault().CollectibleAmount + penaltyAmount + collection.FirstOrDefault().PreviousBalanceAmount);
+                                                        updateCollectionNextDate.IsAction = true;
+                                                        updateCollectionNextDate.IsCurrentCollection = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                    else
+                                                    {
+                                                        var updateLoanApplicationFullPayment = loanApplication.FirstOrDefault();
+                                                        updateLoanApplicationFullPayment.IsFullyPaid = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                }
+
+                                                return Request.CreateResponse(HttpStatusCode.OK);
+                                            }
+                                            else
+                                            {
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is in due date. Extend or Overdue");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is in due date. Extend or Overdue");
+                                        }
                                     }
                                 }
                                 else
@@ -684,7 +770,135 @@ namespace Lending.ApiControllers
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry but the collection is in due date.");
+                                    if (collections.FirstOrDefault().IsOverdueCollection || collections.FirstOrDefault().IsExtendCollection)
+                                    {
+                                        if (!collections.FirstOrDefault().IsLastDay)
+                                        {
+                                            Boolean isExtendCollection = true;
+                                            if (collections.FirstOrDefault().CollectionDate == loanApplication.FirstOrDefault().MaturityDate)
+                                            {
+                                                isExtendCollection = false;
+                                            }
+
+                                            if (collections.FirstOrDefault().CurrentBalanceAmount > 0)
+                                            {
+                                                if (!collections.FirstOrDefault().IsCleared && !collections.FirstOrDefault().IsAbsent)
+                                                {
+                                                    if (collections.FirstOrDefault().IsAction)
+                                                    {
+                                                        if (collection.PaidAmount > 0)
+                                                        {
+                                                            if (collections.FirstOrDefault().CurrentBalanceAmount >= collection.PaidAmount)
+                                                            {
+                                                                var isClearedValue = false;
+                                                                var IsPartialPaymentValue = true;
+                                                                if (collections.FirstOrDefault().CurrentBalanceAmount - collection.PaidAmount == 0)
+                                                                {
+                                                                    isClearedValue = true;
+                                                                    IsPartialPaymentValue = false;
+                                                                }
+
+                                                                var updateCollection = collections.FirstOrDefault();
+                                                                updateCollection.PaidAmount = collection.PaidAmount;
+                                                                updateCollection.CurrentBalanceAmount = (collections.FirstOrDefault().CollectibleAmount + collections.FirstOrDefault().PreviousBalanceAmount) - collection.PaidAmount;
+                                                                updateCollection.IsCleared = isClearedValue;
+                                                                updateCollection.IsAbsent = false;
+                                                                updateCollection.IsCurrentCollection = false;
+                                                                updateCollection.IsProcessed = true;
+                                                                updateCollection.IsPartialPayment = IsPartialPaymentValue;
+                                                                updateCollection.IsAdvancePayment = false;
+                                                                updateCollection.IsExtendCollection = isExtendCollection;
+                                                                updateCollection.IsOverdueCollection = false;
+                                                                updateCollection.IsFullPayment = false;
+                                                                db.SubmitChanges();
+
+                                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                                if (collectionPrevoiusDate.Any())
+                                                                {
+                                                                    var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
+                                                                    updateCollectionPrevoiusDate.IsAction = false;
+                                                                    updateCollectionPrevoiusDate.IsCurrentCollection = false;
+                                                                    db.SubmitChanges();
+
+                                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                                    if (collectionNextDate.Any())
+                                                                    {
+                                                                        var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
+                                                                        updateCollectionNextDate.PreviousBalanceAmount = (collections.FirstOrDefault().CollectibleAmount + collections.FirstOrDefault().PreviousBalanceAmount) - collection.PaidAmount;
+                                                                        updateCollectionNextDate.CurrentBalanceAmount = collectionNextDate.FirstOrDefault().CollectibleAmount + ((collections.FirstOrDefault().CollectibleAmount + collections.FirstOrDefault().PreviousBalanceAmount) - collection.PaidAmount);
+                                                                        updateCollectionNextDate.IsAction = true;
+                                                                        updateCollectionNextDate.IsCurrentCollection = true;
+                                                                        db.SubmitChanges();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (collections.FirstOrDefault().CurrentBalanceAmount == 0)
+                                                                        {
+                                                                            var updateLoanApplicationFullPayment = loanApplication.FirstOrDefault();
+                                                                            updateLoanApplicationFullPayment.IsFullyPaid = true;
+                                                                            db.SubmitChanges();
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                                    if (collectionNextDate.Any())
+                                                                    {
+                                                                        var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
+                                                                        updateCollectionNextDate.PreviousBalanceAmount = (collections.FirstOrDefault().CollectibleAmount + collections.FirstOrDefault().PreviousBalanceAmount) - collection.PaidAmount;
+                                                                        updateCollectionNextDate.CurrentBalanceAmount = collectionNextDate.FirstOrDefault().CollectibleAmount + ((collections.FirstOrDefault().CollectibleAmount + collections.FirstOrDefault().PreviousBalanceAmount) - collection.PaidAmount);
+                                                                        updateCollectionNextDate.IsAction = true;
+                                                                        updateCollectionNextDate.IsCurrentCollection = true;
+                                                                        db.SubmitChanges();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (collections.FirstOrDefault().CurrentBalanceAmount == 0)
+                                                                        {
+                                                                            var updateLoanApplicationFullPayment = loanApplication.FirstOrDefault();
+                                                                            updateLoanApplicationFullPayment.IsFullyPaid = true;
+                                                                            db.SubmitChanges();
+                                                                        }
+                                                                    }
+                                                                }
+
+                                                                return Request.CreateResponse(HttpStatusCode.OK);
+                                                            }
+                                                            else
+                                                            {
+                                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "The amount to be paid must not be greater than the current balance amount.");
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Zero(0) amount. Please Enter an amount for partial payment.");
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Collection actions has already been applied");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No current balance.");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry but the collection is in due date.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry but the collection is in due date.");
+                                    }
                                 }
                             }
                             else
@@ -1064,6 +1278,116 @@ namespace Lending.ApiControllers
             return previousBalanceValue;
         }
 
+        // extend collection
+        [Authorize]
+        [HttpPut]
+        [Route("api/collection/extend/update/byId/byLoanId/{id}/{loanId}/{noOfDays}")]
+        public HttpResponseMessage extendCollection(String id, String loanId, String noOfDays)
+        {
+            try
+            {
+                var loanApplication = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+                if (loanApplication.Any())
+                {
+                    if (loanApplication.FirstOrDefault().IsLocked)
+                    {
+                        var collection = from d in db.trnCollections
+                                         where d.Id == Convert.ToInt32(id)
+                                         select d;
+
+                        if (!loanApplication.FirstOrDefault().IsFullyPaid)
+                        {
+                            if (collection.Any())
+                            {
+                                if (collection.FirstOrDefault().IsCurrentCollection)
+                                {
+                                    if (collection.FirstOrDefault().IsDueDate)
+                                    {
+                                        if (Convert.ToInt32(noOfDays) <= 5)
+                                        {
+                                            var updateCollection = collection.FirstOrDefault();
+                                            updateCollection.IsOverdueCollection = false;
+                                            updateCollection.IsExtendCollection = true;
+                                            updateCollection.IsLastDay = false;
+                                            db.SubmitChanges();
+
+                                            for (Int32 i = 1; i <= Convert.ToInt32(noOfDays); i++)
+                                            {
+                                                Boolean isLastDay = false;
+                                                if (i == Convert.ToInt32(noOfDays))
+                                                {
+                                                    isLastDay = true;
+                                                }
+
+                                                Data.trnCollection newCollection = new Data.trnCollection();
+                                                newCollection.LoanId = collection.FirstOrDefault().LoanId;
+                                                newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                                newCollection.CollectionDate = Convert.ToDateTime(collection.FirstOrDefault().CollectionDate).Date.AddDays(i);
+                                                newCollection.NetAmount = collection.FirstOrDefault().NetAmount;
+                                                newCollection.CollectibleAmount = collection.FirstOrDefault().CollectibleAmount;
+                                                newCollection.PenaltyAmount = 0;
+                                                newCollection.PaidAmount = 0;
+                                                newCollection.PreviousBalanceAmount = 0;
+                                                newCollection.CurrentBalanceAmount = collection.FirstOrDefault().CurrentBalanceAmount;
+                                                newCollection.IsCleared = false;
+                                                newCollection.IsAbsent = false;
+                                                newCollection.IsPartialPayment = false;
+                                                newCollection.IsAdvancePayment = false;
+                                                newCollection.IsFullPayment = false;
+                                                newCollection.IsDueDate = true;
+                                                newCollection.IsExtendCollection = true;
+                                                newCollection.IsOverdueCollection = false;
+                                                newCollection.IsCurrentCollection = false;
+                                                newCollection.IsProcessed = false;
+                                                newCollection.IsAction = false;
+                                                newCollection.IsLastDay = isLastDay;
+                                                db.trnCollections.InsertOnSubmit(newCollection);
+                                                db.SubmitChanges();
+                                            }
+
+                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "The number of days must not be greater than five (5).");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is not yet on due date.");
+                                    }
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "No Current Collection.");
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry, but there are no data found in the server.");
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+            }
+        }
+
         // overdue collection
         [Authorize]
         [HttpPut]
@@ -1089,59 +1413,59 @@ namespace Lending.ApiControllers
                                 {
                                     if (collection.FirstOrDefault().IsDueDate)
                                     {
-                                        if (!collection.FirstOrDefault().IsCleared && !collection.FirstOrDefault().IsAbsent)
+                                        if (collection.FirstOrDefault().IsLastDay)
                                         {
-                                            if (collection.FirstOrDefault().IsAction)
-                                            {
-                                                Data.trnCollection newCollection = new Data.trnCollection();
-                                                newCollection.LoanId = collection.FirstOrDefault().LoanId;
-                                                newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-                                                newCollection.CollectionDate = Convert.ToDateTime(collection.FirstOrDefault().CollectionDate).Date.AddDays(1);
-                                                newCollection.NetAmount = collection.FirstOrDefault().NetAmount;
-                                                newCollection.CollectibleAmount = collection.FirstOrDefault().CollectibleAmount;
-                                                newCollection.PenaltyAmount = 0;
-                                                newCollection.PaidAmount = 0;
-                                                newCollection.PreviousBalanceAmount = 0;
-                                                newCollection.CurrentBalanceAmount = collection.FirstOrDefault().CurrentBalanceAmount;
-                                                newCollection.IsCleared = false;
-                                                newCollection.IsAbsent = false;
-                                                newCollection.IsPartialPayment = false;
-                                                newCollection.IsAdvancePayment = false;
-                                                newCollection.IsFullPayment = false;
-                                                newCollection.IsDueDate = true;
-                                                newCollection.IsExtendCollection = false;
-                                                newCollection.IsOverdueCollection = true;
-                                                newCollection.IsCurrentCollection = false;
-                                                newCollection.IsProcessed = false;
-                                                newCollection.IsAction = true;
-                                                db.trnCollections.InsertOnSubmit(newCollection);
-                                                db.SubmitChanges();
+                                            var updateCollection = collection.FirstOrDefault();
+                                            updateCollection.IsOverdueCollection = true;
+                                            updateCollection.IsExtendCollection = false;
+                                            updateCollection.IsLastDay = false;
+                                            db.SubmitChanges();
 
-                                                return Request.CreateResponse(HttpStatusCode.OK);
-                                            }
-                                            else
-                                            {
-                                                return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                            }
+                                            Data.trnCollection newCollection = new Data.trnCollection();
+                                            newCollection.LoanId = collection.FirstOrDefault().LoanId;
+                                            newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                            newCollection.CollectionDate = Convert.ToDateTime(collection.FirstOrDefault().CollectionDate).Date.AddDays(1);
+                                            newCollection.NetAmount = collection.FirstOrDefault().NetAmount;
+                                            newCollection.CollectibleAmount = collection.FirstOrDefault().CollectibleAmount;
+                                            newCollection.PenaltyAmount = 0;
+                                            newCollection.PaidAmount = 0;
+                                            newCollection.PreviousBalanceAmount = 0;
+                                            newCollection.CurrentBalanceAmount = collection.FirstOrDefault().CurrentBalanceAmount;
+                                            newCollection.IsCleared = false;
+                                            newCollection.IsAbsent = false;
+                                            newCollection.IsPartialPayment = false;
+                                            newCollection.IsAdvancePayment = false;
+                                            newCollection.IsFullPayment = false;
+                                            newCollection.IsDueDate = true;
+                                            newCollection.IsExtendCollection = false;
+                                            newCollection.IsOverdueCollection = true;
+                                            newCollection.IsCurrentCollection = false;
+                                            newCollection.IsProcessed = false;
+                                            newCollection.IsAction = false;
+                                            newCollection.IsLastDay = true;
+                                            db.trnCollections.InsertOnSubmit(newCollection);
+                                            db.SubmitChanges();
+
+                                            return Request.CreateResponse(HttpStatusCode.OK);
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Cant process by this time.");
                                         }
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is not yet on due date.");
                                     }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "No Current Collection.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry, but there are no data found in the server.");
                             }
                         }
                         else
@@ -1164,7 +1488,5 @@ namespace Lending.ApiControllers
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
             }
         }
-
-
     }
 }

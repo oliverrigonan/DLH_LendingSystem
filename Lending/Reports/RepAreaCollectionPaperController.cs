@@ -177,6 +177,7 @@ namespace Lending.Reports
                         var expenses = from d in db.trnExpenses
                                        where d.ExpenseDate == Convert.ToDateTime(collectionDate)
                                        && d.CollectorStaffId == area.FirstOrDefault().CollectorStaffId
+                                       && d.IsLocked == true
                                        select d;
 
                         Decimal gasAllowanceExpenses = 0;

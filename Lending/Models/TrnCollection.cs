@@ -36,6 +36,7 @@ namespace Lending.Models
         public Boolean IsCurrentCollection { get; set; }
         public Boolean IsProcessed { get; set; }
         public Boolean IsAction { get; set; }
+        public Boolean IsLastDay { get; set; }
         public Int32 AssignedCollectorId { get; set; }
         public String AssignedCollector { get; set; }
         public String AssignedCollectorArea { get; set; }

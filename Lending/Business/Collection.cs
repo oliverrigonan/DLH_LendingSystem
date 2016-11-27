@@ -59,7 +59,7 @@ namespace Lending.Business
                     var numberOfDays = (Convert.ToDateTime(loanApplication.FirstOrDefault().MaturityDate) - Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate)).TotalDays;
                     for (var i = 1; i <= numberOfDays; i++)
                     {
-                        Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false;
+                        Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false, isLastDay = false;
                         
                         if (i == 1)
                         {
@@ -70,6 +70,7 @@ namespace Lending.Business
                         if (i == numberOfDays)
                         {
                             isDueDateValue = true;
+                            isLastDay = true;
                         }
 
                         Data.trnCollection newCollection = new Data.trnCollection();
@@ -93,6 +94,7 @@ namespace Lending.Business
                         newCollection.IsCurrentCollection = isCurrentCollectionValue;
                         newCollection.IsProcessed = false;
                         newCollection.IsAction = isActionValue;
+                        newCollection.IsLastDay = isLastDay;
                         db.trnCollections.InsertOnSubmit(newCollection);
                         db.SubmitChanges();
                     }
