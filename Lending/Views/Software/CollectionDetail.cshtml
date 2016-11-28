@@ -604,6 +604,7 @@
         var btnNextPageGridCollectionAdvancePayment;
         var btnLastPageGridCollectionAdvancePayment;
         var collectionAdvancePaymentId = 0;
+        var cboExtendNumberOfDays;
 
         // loan application for selected value
         function getLoanApplicationForSelectedValue() {
@@ -828,6 +829,7 @@
                                 CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
                                 CurrentCollector: collectionListResult[i]["CurrentCollector"],
                                 CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
+                                IsLastDay: collectionListResult[i]["IsLastDay"],
                                 Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString()
                             });
 
@@ -1063,7 +1065,7 @@
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
             if (collectionItem.IsDueDate) {
-                if (collectionItem.IsExtendCollection || collectionItem.IsOverdueCollection) {
+                if (!collectionItem.IsLastDay) {
                     if (!collectionItem.IsAbsent) {
                         $.ajax({
                             type: "PUT",
@@ -1105,41 +1107,46 @@
                     toastr.info("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                 }
             } else {
-                if (!collectionItem.IsAbsent) {
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/collection/absent/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Absent");
-                                NProgress.start();
+                if (!collectionItem.IsLastDay) {
+                    if (!collectionItem.IsAbsent) {
+                        $.ajax({
+                            type: "PUT",
+                            url: '/api/collection/absent/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            statusCode: {
+                                200: function () {
+                                    toastr.success("Absent");
+                                    NProgress.start();
 
-                                urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                                    urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
-                                collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
 
-                                collectionFlexGrid.itemsSource = collectionCollectionView;
-                                collectionFlexGrid.trackChanges = true;
-                            },
-                            404: function (message) {
-                                NProgress.done();
-                                toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                            },
-                            400: function (message) {
-                                NProgress.done();
-                                toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                            },
-                            500: function (message) {
-                                NProgress.done();
-                                toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                    collectionFlexGrid.itemsSource = collectionCollectionView;
+                                    collectionFlexGrid.trackChanges = true;
+                                },
+                                404: function (message) {
+                                    NProgress.done();
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                                },
+                                400: function (message) {
+                                    NProgress.done();
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                                },
+                                500: function (message) {
+                                    NProgress.done();
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        NProgress.done();
+                        toastr.info("Already Absent");
+                    }
                 } else {
                     NProgress.done();
-                    toastr.info("Already Absent");
+                    toastr.info("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                 }
             }
         }
@@ -1197,7 +1204,7 @@
                 success: function (currentCollectionResults) {
                     if (currentCollectionResults != null) {
                         if (currentCollectionResults.IsDueDate) {
-                            if (currentCollectionResults.IsExtendCollection || currentCollectionResults.IsOverdueCollection) {
+                            if (!currentCollectionResults.IsLastDay) {
                                 $('.requiredPartialPayment').each(function () {
                                     $(this).css({
                                         "border": "",
@@ -1222,26 +1229,28 @@
                                 toastr.info("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                             }
                         } else {
-                            $('.requiredPartialPayment').each(function () {
-                                $(this).css({
-                                    "border": "",
+                            if (!currentCollectionResults.IsLastDay) {
+                                $('.requiredPartialPayment').each(function () {
+                                    $(this).css({
+                                        "border": "",
+                                    });
                                 });
-                            });
 
-                            $("#partialPaymentModal").modal({
-                                "show": true,
-                                "backdrop": "static"
-                            });
+                                $("#partialPaymentModal").modal({
+                                    "show": true,
+                                    "backdrop": "static"
+                                });
 
-                            var newDate = new Date(currentCollectionResults.CollectionDate);
-                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+                                var newDate = new Date(currentCollectionResults.CollectionDate);
+                                var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            currentCollectionId = currentCollectionResults.Id;
-                            document.getElementById("partialPaymentCollectionDate").value = collectionDateValue;
-                            document.getElementById("partialPaymentDailyCollectibles").value = currentCollectionResults.CollectibleAmount.toLocaleString();
-                            document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount.toLocaleString();
-                            document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount.toLocaleString();
-                            document.getElementById("partialPaymentPartialAmount").value = 0;
+                                currentCollectionId = currentCollectionResults.Id;
+                                document.getElementById("partialPaymentCollectionDate").value = collectionDateValue;
+                                document.getElementById("partialPaymentDailyCollectibles").value = currentCollectionResults.CollectibleAmount.toLocaleString();
+                                document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount.toLocaleString();
+                                document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount.toLocaleString();
+                                document.getElementById("partialPaymentPartialAmount").value = 0;
+                            }
                         }
                     } else {
                         toastr.info("No Current Collection.");
@@ -1773,11 +1782,13 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (currentCollectionResults) {
                     if (currentCollectionResults != null) {
-                        if (currentCollectionResults.IsDueDate) {
+                        if (currentCollectionResults.IsLastDay) {
                             $("#extendPaymentModal").modal({
                                 "show": true,
                                 "backdrop": "static"
                             });
+
+                            currentCollectionId = currentCollectionResults.Id;
                         } else {
                             toastr.info("The Collection is not yet on due date.");
                         }
@@ -1786,6 +1797,49 @@
                     }
 
                     NProgress.done();
+                }
+            });
+        }
+
+        // btn extend payment confirm
+        function btnExtendPaymentYesOnclick() {
+            $("#btnExtendPaymentYes").prop("disabled", true);
+            $("#btnExtendPaymentNo").prop("disabled", true);
+            document.getElementById("btnExtendPaymentYes").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+            $.ajax({
+                type: "PUT",
+                url: '/api/collection/extend/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId + '/' + cboExtendNumberOfDays.selectedValue,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Overdue");
+                        NProgress.start();
+
+                        $("#extendPaymentModal").modal("hide");
+
+                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+
+                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+
+                        collectionFlexGrid.itemsSource = collectionCollectionView;
+                        collectionFlexGrid.trackChanges = true;
+                    },
+                    404: function (message) {
+                        NProgress.done();
+                        $("#overduePaymentModal").modal("hide");
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                    },
+                    400: function (message) {
+                        NProgress.done();
+                        $("#overduePaymentModal").modal("hide");
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                    },
+                    500: function (message) {
+                        NProgress.done();
+                        $("#overduePaymentModal").modal("hide");
+                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                    }
                 }
             });
         }
@@ -1804,7 +1858,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (currentCollectionResults) {
                     if (currentCollectionResults != null) {
-                        if (currentCollectionResults.IsDueDate) {
+                        if (currentCollectionResults.IsLastDay) {
                             $("#overduePaymentModal").modal({
                                 "show": true,
                                 "backdrop": "static"
@@ -1874,7 +1928,7 @@
             doubleModal();
 
             // number of days
-            var cboExtendNumberOfDays = new wijmo.input.ComboBox('#cboExtendNumberOfDays', {
+            cboExtendNumberOfDays = new wijmo.input.ComboBox('#cboExtendNumberOfDays', {
                 placeholder: "Select",
                 itemsSource: new Array(1, 2, 3, 4, 5),
                 isEditable: false,
