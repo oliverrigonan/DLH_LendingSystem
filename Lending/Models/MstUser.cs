@@ -14,6 +14,9 @@ namespace Lending.Models
         public String Username { get; set; }
         public String Password { get; set; }
         public String FullName { get; set; }
+        public Int32 CompanyId { get; set; }
+        public String Company { get; set; }
+        public Boolean IsLocked { get; set; }
         public String CreatedDate { get; set; }
         public String UpdatedDate { get; set; }
     }

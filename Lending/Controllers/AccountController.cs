@@ -172,18 +172,17 @@ namespace Lending.Controllers
 
                     Data.LendingDataContext db = new Data.LendingDataContext();
 
-                    Data.mstUser newTblUser = new Data.mstUser();
-                    newTblUser.AspUserId = user.Id;
-                    newTblUser.Username = model.Username;
-                    newTblUser.Password = model.Password;
-                    newTblUser.FullName = model.FullName;
-                    newTblUser.CreatedDate = DateTime.Now;
-                    newTblUser.UpdatedDate = DateTime.Now;
-
-                    db.mstUsers.InsertOnSubmit(newTblUser);
+                    Data.mstUser newMstUser = new Data.mstUser();
+                    newMstUser.AspUserId = user.Id;
+                    newMstUser.Username = model.Username;
+                    newMstUser.Password = model.Password;
+                    newMstUser.FullName = model.FullName;
+                    newMstUser.CompanyId = (from d in db.mstCompanies select d).FirstOrDefault().Id;
+                    newMstUser.IsLocked = true;
+                    newMstUser.CreatedDate = DateTime.Now;
+                    newMstUser.UpdatedDate = DateTime.Now;
+                    db.mstUsers.InsertOnSubmit(newMstUser);
                     db.SubmitChanges();
-
-                    Debug.WriteLine("hehe");
 
                     return RedirectToAction("Index", "Home");
                 }

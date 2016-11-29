@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.Reports
 {
@@ -44,16 +45,19 @@ namespace Lending.Reports
                         // line
                         Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
 
+                        // user company detail
+                        var userCompanyDetail = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d).FirstOrDefault();
+
                         // table main header
                         PdfPTable loanApplicationheader = new PdfPTable(2);
                         float[] loanApplicationheaderWidthCells = new float[] { 50f, 50f };
                         loanApplicationheader.SetWidths(loanApplicationheaderWidthCells);
                         loanApplicationheader.WidthPercentage = 100;
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("DLH Incorporated", fontArial17Bold)) { Border = 0 });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Cash Voucher", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Genes Compound Brgy. Quiot Pardo Cebu City", fontArial12)) { Border = 0, PaddingTop = 5f });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Quiot Pardo Branch", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
-                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("0932-444-1234", fontArial12)) { Border = 0, PaddingTop = 5f });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.Company, fontArial17Bold)) { Border = 0 });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("Area Collection Paper", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.Address, fontArial12)) { Border = 0, PaddingTop = 5f });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
+                        loanApplicationheader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.ContactNumber, fontArial12)) { Border = 0, PaddingTop = 5f });
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
                         document.Add(loanApplicationheader);
 

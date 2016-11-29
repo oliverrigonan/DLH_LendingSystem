@@ -70,13 +70,48 @@
                     <h4><i class="fa fa-key fa-fw"></i> Users</h4>
                 </div>
                 <div class="panel-heading">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                        <input type="text" id="searchUser" class="form-control" placeholder="Search">
-                    </div>
+                    <table style="width: 100%">
+                        <tr>
+                            <td>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                    <input type="text" id="searchUser" class="form-control" placeholder="Search">
+                                </div>
+                            </td>
+                            <td>&nbsp;&nbsp;&nbsp;</td>
+                            <td align="right">
+                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                    <i class="fa fa-close fa-fw"></i> Close
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 <div class="panel-body">
                     <div id="userListFlexGrid" class="grid"></div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    User security stamp
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Created Date:</p>
+                            <div style="padding-left: 10px;">
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                            <br />
+                        </div>
+                        <div class="col-md-6">
+                            <p>Updated Date:</p>
+                            <div style="padding-left: 10px;">
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,6 +151,7 @@
                                 FullName: userListResult[i]["FullName"],
                                 CreatedByUser: userListResult[i]["FullName"],
                                 CreatedDateTime: userListResult[i]["CreatedDate"],
+                                IsLocked: userListResult[i]["IsLocked"],
                                 UpdatedByUser: userListResult[i]["FullName"],
                                 UpdatedDateTime: userListResult[i]["UpdatedDate"]
                             });
@@ -138,9 +174,7 @@
         // stamp security
         function updateStampSecurity() {
             var item = userCollectionView.currentItem;
-            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
             document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
-            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
             document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
         }
 
@@ -197,6 +231,12 @@
                                 "binding": "Username",
                                 "allowSorting": true,
                                 "width": "3*"
+                            },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": "0.5*"
                             },
                 ],
                 autoGenerateColumns: false,

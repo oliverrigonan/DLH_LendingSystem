@@ -446,25 +446,6 @@
                         <div class="panel-body">
                             <div id="collectionFlexGrid" class="grid"></div>
                         </div>
-                        <div class="panel-footer">
-                            <div class="row">
-                                <div class="btn-group col-md-7" id="navigationPageGridCollection">
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollection">
-                                        <span class="glyphicon glyphicon-fast-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollection">
-                                        <span class="glyphicon glyphicon-step-backward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollection"></button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollection">
-                                        <span class="glyphicon glyphicon-step-forward"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollection">
-                                        <span class="glyphicon glyphicon-fast-forward"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-body">
@@ -577,13 +558,6 @@
         var loanApplicationLoanDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
         var loanApplicationMaturityDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
         var cboLoanNumberLogHistory;
-        var collectionCollectionView;
-        var collectionFlexGrid;
-        var btnFirstPageGridCollection;
-        var btnPreviousPageGridCollection;
-        var btnNextPageGridCollection;
-        var btnLastPageGridCollection;
-        var btnCurrentPageGridCollection;
         var cboLoanType;
 
         // create loan Application Loan Date
@@ -744,11 +718,6 @@
                                             $("#loadingData").show();
 
                                             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-                                            collectionCollectionView.pageSize = 15;
-
-                                            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                                updateNavigateButtonsCollection();
-                                            });
 
                                             collectionFlexGrid.itemsSource = collectionCollectionView;
                                             collectionFlexGrid.trackChanges = true;
@@ -1902,11 +1871,6 @@
                                 $("#loadingData").show();
 
                                 collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-                                collectionCollectionView.pageSize = 15;
-
-                                collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                    updateNavigateButtonsCollection();
-                                });
 
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
@@ -2034,40 +1998,9 @@
             return collectionListArray;
         }
 
-        // navigation button for flexgrid
-        function updateNavigateButtonsCollection() {
-            if (collectionCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGridCollection').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGridCollection').style.display = 'block';
-            if (collectionCollectionView.pageIndex === 0) {
-                btnFirstPageGridCollection.setAttribute('disabled', 'disabled');
-                btnPreviousPageGridCollection.setAttribute('disabled', 'disabled');
-                btnNextPageGridCollection.removeAttribute('disabled');
-                btnLastPageGridCollection.removeAttribute('disabled');
-            } else if (collectionCollectionView.pageIndex === (collectionCollectionView.pageCount - 1)) {
-                btnFirstPageGridCollection.removeAttribute('disabled');
-                btnPreviousPageGridCollection.removeAttribute('disabled');
-                btnLastPageGridCollection.setAttribute('disabled', 'disabled');
-                btnNextPageGridCollection.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGridCollection.removeAttribute('disabled');
-                btnPreviousPageGridCollection.removeAttribute('disabled');
-                btnNextPageGridCollection.removeAttribute('disabled');
-                btnLastPageGridCollection.removeAttribute('disabled');
-            }
-            btnCurrentPageGridCollection.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
-        }
-
         // flexgrid of collection
         function createFlexGridForCollection() {
             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-            collectionCollectionView.pageSize = 15;
-
-            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtonsCollection();
-            });
 
             collectionFlexGrid = new wijmo.grid.FlexGrid('#collectionFlexGrid');
             collectionFlexGrid.initialize({
@@ -2160,32 +2093,6 @@
 
             collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Status');
-
-            //Navigation button
-            btnFirstPageGridCollection = document.getElementById('btnMoveToFirstPageGridCollection');
-            btnPreviousPageGridCollection = document.getElementById('btnMoveToPreviousPageGridCollection');
-            btnNextPageGridCollection = document.getElementById('btnMoveToNextPageGridCollection');
-            btnLastPageGridCollection = document.getElementById('btnMoveToLastPageGridCollection');
-            btnCurrentPageGridCollection = document.getElementById('btnCurrentPageGridCollection');
-
-            updateNavigateButtonsCollection();
-
-            btnFirstPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToFirstPage();
-                updateNavigateButtonsCollection();
-            });
-            btnPreviousPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToPreviousPage();
-                updateNavigateButtonsCollection();
-            });
-            btnNextPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToNextPage();
-                updateNavigateButtonsCollection();
-            });
-            btnLastPageGridCollection.addEventListener('click', function () {
-                collectionCollectionView.moveToLastPage();
-                updateNavigateButtonsCollection();
-            });
         }
 
         // view collection
@@ -2200,11 +2107,6 @@
 
             setTimeout(function () {
                 collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-                collectionCollectionView.pageSize = 15;
-
-                collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                    updateNavigateButtonsCollection();
-                });
 
                 collectionFlexGrid.itemsSource = collectionCollectionView;
                 collectionFlexGrid.trackChanges = true;

@@ -6423,6 +6423,8 @@ namespace Lending.Data
 		
 		private EntitySet<mstBranch> _mstBranches;
 		
+		private EntitySet<mstUser> _mstUsers;
+		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -6454,6 +6456,7 @@ namespace Lending.Data
 		public mstCompany()
 		{
 			this._mstBranches = new EntitySet<mstBranch>(new Action<mstBranch>(this.attach_mstBranches), new Action<mstBranch>(this.detach_mstBranches));
+			this._mstUsers = new EntitySet<mstUser>(new Action<mstUser>(this.attach_mstUsers), new Action<mstUser>(this.detach_mstUsers));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -6660,6 +6663,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstUser", Storage="_mstUsers", ThisKey="Id", OtherKey="CompanyId")]
+		public EntitySet<mstUser> mstUsers
+		{
+			get
+			{
+				return this._mstUsers;
+			}
+			set
+			{
+				this._mstUsers.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstCompany", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public mstUser mstUser
 		{
@@ -6755,6 +6771,18 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstBranches(mstBranch entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCompany = null;
+		}
+		
+		private void attach_mstUsers(mstUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstCompany = this;
+		}
+		
+		private void detach_mstUsers(mstUser entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstCompany = null;
@@ -8258,6 +8286,10 @@ namespace Lending.Data
 		
 		private string _FullName;
 		
+		private int _CompanyId;
+		
+		private bool _IsLocked;
+		
 		private System.DateTime _CreatedDate;
 		
 		private System.DateTime _UpdatedDate;
@@ -8310,6 +8342,8 @@ namespace Lending.Data
 		
 		private EntityRef<AspNetUser> _AspNetUser;
 		
+		private EntityRef<mstCompany> _mstCompany;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -8324,6 +8358,10 @@ namespace Lending.Data
     partial void OnPasswordChanged();
     partial void OnFullNameChanging(string value);
     partial void OnFullNameChanged();
+    partial void OnCompanyIdChanging(int value);
+    partial void OnCompanyIdChanged();
+    partial void OnIsLockedChanging(bool value);
+    partial void OnIsLockedChanged();
     partial void OnCreatedDateChanging(System.DateTime value);
     partial void OnCreatedDateChanged();
     partial void OnUpdatedDateChanging(System.DateTime value);
@@ -8356,6 +8394,7 @@ namespace Lending.Data
 			this._trnLoanApplications1 = new EntitySet<trnLoanApplication>(new Action<trnLoanApplication>(this.attach_trnLoanApplications1), new Action<trnLoanApplication>(this.detach_trnLoanApplications1));
 			this._trnLoanApplications2 = new EntitySet<trnLoanApplication>(new Action<trnLoanApplication>(this.attach_trnLoanApplications2), new Action<trnLoanApplication>(this.detach_trnLoanApplications2));
 			this._AspNetUser = default(EntityRef<AspNetUser>);
+			this._mstCompany = default(EntityRef<mstCompany>);
 			OnCreated();
 		}
 		
@@ -8459,6 +8498,50 @@ namespace Lending.Data
 					this._FullName = value;
 					this.SendPropertyChanged("FullName");
 					this.OnFullNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="Int NOT NULL")]
+		public int CompanyId
+		{
+			get
+			{
+				return this._CompanyId;
+			}
+			set
+			{
+				if ((this._CompanyId != value))
+				{
+					if (this._mstCompany.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCompanyIdChanging(value);
+					this.SendPropertyChanging();
+					this._CompanyId = value;
+					this.SendPropertyChanged("CompanyId");
+					this.OnCompanyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
+		public bool IsLocked
+		{
+			get
+			{
+				return this._IsLocked;
+			}
+			set
+			{
+				if ((this._IsLocked != value))
+				{
+					this.OnIsLockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsLocked = value;
+					this.SendPropertyChanged("IsLocked");
+					this.OnIsLockedChanged();
 				}
 			}
 		}
@@ -8836,6 +8919,40 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstUser", Storage="_mstCompany", ThisKey="CompanyId", OtherKey="Id", IsForeignKey=true)]
+		public mstCompany mstCompany
+		{
+			get
+			{
+				return this._mstCompany.Entity;
+			}
+			set
+			{
+				mstCompany previousValue = this._mstCompany.Entity;
+				if (((previousValue != value) 
+							|| (this._mstCompany.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstCompany.Entity = null;
+						previousValue.mstUsers.Remove(this);
+					}
+					this._mstCompany.Entity = value;
+					if ((value != null))
+					{
+						value.mstUsers.Add(this);
+						this._CompanyId = value.Id;
+					}
+					else
+					{
+						this._CompanyId = default(int);
+					}
+					this.SendPropertyChanged("mstCompany");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -9145,7 +9262,7 @@ namespace Lending.Data
 		
 		private int _FormId;
 		
-		private bool _CanPerformAction;
+		private bool _IsViewOnly;
 		
 		private EntityRef<mstUser> _mstUser;
 		
@@ -9161,8 +9278,8 @@ namespace Lending.Data
     partial void OnUserIdChanged();
     partial void OnFormIdChanging(int value);
     partial void OnFormIdChanged();
-    partial void OnCanPerformActionChanging(bool value);
-    partial void OnCanPerformActionChanged();
+    partial void OnIsViewOnlyChanging(bool value);
+    partial void OnIsViewOnlyChanged();
     #endregion
 		
 		public mstUserForm()
@@ -9240,22 +9357,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CanPerformAction", DbType="Bit NOT NULL")]
-		public bool CanPerformAction
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsViewOnly", DbType="Bit NOT NULL")]
+		public bool IsViewOnly
 		{
 			get
 			{
-				return this._CanPerformAction;
+				return this._IsViewOnly;
 			}
 			set
 			{
-				if ((this._CanPerformAction != value))
+				if ((this._IsViewOnly != value))
 				{
-					this.OnCanPerformActionChanging(value);
+					this.OnIsViewOnlyChanging(value);
 					this.SendPropertyChanging();
-					this._CanPerformAction = value;
-					this.SendPropertyChanged("CanPerformAction");
-					this.OnCanPerformActionChanged();
+					this._IsViewOnly = value;
+					this.SendPropertyChanged("IsViewOnly");
+					this.OnIsViewOnlyChanged();
 				}
 			}
 		}

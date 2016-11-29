@@ -196,6 +196,105 @@ namespace Lending.ApiControllers
             return collections.ToList();
         }
 
+        // get penalty amount
+        [Authorize]
+        [HttpGet]
+        [Route("api/collection/penaltyAmount/get/byLoanId/byCollectionDate/{loanId}/{collectionDate}")]
+        public Decimal getPenaltyAmount(Int32 loanId, String collectionDate)
+        {
+            Decimal penaltyAmount = 10;
+            var previousCollectionDay = from d in db.trnCollections
+                                        where d.LoanId == loanId
+                                        && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1)
+                                        select d;
+
+            if (previousCollectionDay.Any())
+            {
+                if (previousCollectionDay.FirstOrDefault().IsAbsent)
+                {
+                    if (previousCollectionDay.FirstOrDefault().PenaltyAmount == 10)
+                    {
+                        var previousCollectionDay2 = from d in db.trnCollections
+                                                     where d.LoanId == loanId
+                                                     && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-2)
+                                                     select d;
+
+                        if (previousCollectionDay2.Any())
+                        {
+                            if (previousCollectionDay2.FirstOrDefault().IsAbsent)
+                            {
+                                if (previousCollectionDay2.FirstOrDefault().PenaltyAmount == 10)
+                                {
+                                    penaltyAmount = 20;
+                                }
+                                else
+                                {
+                                    penaltyAmount = 10;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return penaltyAmount;
+        }
+
+        // get advance payment total balance to be paid.
+        public Decimal getAdvancePaymentTotalCurrentBalance(Int32 loanId, String collectionStarDate, String collectionEndDate)
+        {
+            var collectionDateSequences = from d in db.trnCollections
+                                          where d.LoanId == Convert.ToInt32(loanId)
+                                          && d.CollectionDate >= Convert.ToDateTime(collectionStarDate)
+                                          && d.CollectionDate <= Convert.ToDateTime(collectionEndDate)
+                                          select d;
+
+            Decimal currentBalanceAmount = 0;
+            if (collectionDateSequences.Any())
+            {
+                currentBalanceAmount = collectionDateSequences.Sum(d => d.CurrentBalanceAmount);
+            }
+
+            return currentBalanceAmount;
+        }
+
+        // get colllection from loan application fully paid
+        [Authorize]
+        [HttpGet]
+        [Route("api/collection/isFullyPaid/get/byId/{id}")]
+        public Boolean getIsFullyPaidCollection(String id)
+        {
+            var collection = from d in db.trnCollections
+                             where d.Id == Convert.ToInt32(id)
+                             select d;
+
+            Boolean isFullyPaidValue = false;
+            if (collection.Any())
+            {
+                isFullyPaidValue = collection.FirstOrDefault().trnLoanApplication.IsFullyPaid;
+            }
+
+            return isFullyPaidValue;
+        }
+
+
+        // get collection previous balance paid
+        [Authorize]
+        [HttpGet]
+        [Route("api/collection/previousBalance/get/byLoanId/byCollectionDate/{loanId}/{collectionDate}")]
+        public Decimal getPreviousBalanceCollection(String loanId, String collectionDate)
+        {
+            var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1) select d;
+
+            Decimal previousBalanceValue = 0;
+            if (collectionNextDate.Any())
+            {
+                previousBalanceValue = collectionNextDate.FirstOrDefault().CurrentBalanceAmount;
+            }
+
+            return previousBalanceValue;
+        }
+
         // clear collection
         [Authorize]
         [HttpPut]
@@ -280,37 +379,37 @@ namespace Lending.ApiControllers
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Can't process.");
                                     }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Collection was already cleared.");
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Already cleared.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No current balance to be cleared.");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No current balance.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
 
@@ -466,38 +565,38 @@ namespace Lending.ApiControllers
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is in due date. Extend or Overdue");
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "The current collection is due date. Please do extensions.");
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Can't process");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Collection was already absent.");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Already absent.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
 
@@ -598,27 +697,27 @@ namespace Lending.ApiControllers
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Can't process.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
 
@@ -730,22 +829,22 @@ namespace Lending.ApiControllers
                                                     }
                                                     else
                                                     {
-                                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The amount to be paid must not be greater than the current balance amount.");
+                                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The amount must not be greater than the current balance amount.");
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Zero(0) amount. Please Enter an amount for partial payment.");
+                                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Zero(0) amount. Please enter an amount.");
                                                 }
                                             }
                                             else
                                             {
-                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Can't process.");
                                             }
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Collection actions has already been applied");
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Already proceesed.");
                                         }
                                     }
                                     else
@@ -852,22 +951,22 @@ namespace Lending.ApiControllers
                                                             }
                                                             else
                                                             {
-                                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "The amount to be paid must not be greater than the current balance amount.");
+                                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "The amount must not be greater than the current balance amount.");
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Zero(0) amount. Please Enter an amount for partial payment.");
+                                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Zero(0) amount. Please enter an amount.");
                                                         }
                                                     }
                                                     else
                                                     {
-                                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot apply actions by this time.");
+                                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Can't process.");
                                                     }
                                                 }
                                                 else
                                                 {
-                                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Collection actions has already been applied");
+                                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Already processed.");
                                                 }
                                             }
                                             else
@@ -877,38 +976,38 @@ namespace Lending.ApiControllers
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry but the collection is in due date.");
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "The current collection is due date. Please do extensions.");
                                         }
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry but the collection is in due date.");
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The current collection is due date. Please do extensions.");
                                     }
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry, the collection date is not the current collection. Please close the modal and reopen it to update the details. Then try again");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Not a current collection.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
 
@@ -1024,17 +1123,17 @@ namespace Lending.ApiControllers
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to apply some actions.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
 
@@ -1149,118 +1248,19 @@ namespace Lending.ApiControllers
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to apply some actions.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server to apply some actions.");
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
-        }
-
-        // get penalty amount
-        [Authorize]
-        [HttpGet]
-        [Route("api/collection/penaltyAmount/get/byLoanId/byCollectionDate/{loanId}/{collectionDate}")]
-        public Decimal getPenaltyAmount(Int32 loanId, String collectionDate)
-        {
-            Decimal penaltyAmount = 10;
-            var previousCollectionDay = from d in db.trnCollections
-                                        where d.LoanId == loanId
-                                        && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1)
-                                        select d;
-
-            if (previousCollectionDay.Any())
-            {
-                if (previousCollectionDay.FirstOrDefault().IsAbsent)
-                {
-                    if (previousCollectionDay.FirstOrDefault().PenaltyAmount == 10)
-                    {
-                        var previousCollectionDay2 = from d in db.trnCollections
-                                                     where d.LoanId == loanId
-                                                     && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-2)
-                                                     select d;
-
-                        if (previousCollectionDay2.Any())
-                        {
-                            if (previousCollectionDay2.FirstOrDefault().IsAbsent)
-                            {
-                                if (previousCollectionDay2.FirstOrDefault().PenaltyAmount == 10)
-                                {
-                                    penaltyAmount = 20;
-                                }
-                                else
-                                {
-                                    penaltyAmount = 10;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return penaltyAmount;
-        }
-
-        // get advance payment total balance to be paid.
-        public Decimal getAdvancePaymentTotalCurrentBalance(Int32 loanId, String collectionStarDate, String collectionEndDate)
-        {
-            var collectionDateSequences = from d in db.trnCollections
-                                          where d.LoanId == Convert.ToInt32(loanId)
-                                          && d.CollectionDate >= Convert.ToDateTime(collectionStarDate)
-                                          && d.CollectionDate <= Convert.ToDateTime(collectionEndDate)
-                                          select d;
-
-            Decimal currentBalanceAmount = 0;
-            if (collectionDateSequences.Any())
-            {
-                currentBalanceAmount = collectionDateSequences.Sum(d => d.CurrentBalanceAmount);
-            }
-
-            return currentBalanceAmount;
-        }
-
-        // get colllection from loan application fully paid
-        [Authorize]
-        [HttpGet]
-        [Route("api/collection/isFullyPaid/get/byId/{id}")]
-        public Boolean getIsFullyPaidCollection(String id)
-        {
-            var collection = from d in db.trnCollections
-                             where d.Id == Convert.ToInt32(id)
-                             select d;
-
-            Boolean isFullyPaidValue = false;
-            if (collection.Any())
-            {
-                isFullyPaidValue = collection.FirstOrDefault().trnLoanApplication.IsFullyPaid;
-            }
-
-            return isFullyPaidValue;
-        }
-
-
-        // get collection previous balance paid
-        [Authorize]
-        [HttpGet]
-        [Route("api/collection/previousBalance/get/byLoanId/byCollectionDate/{loanId}/{collectionDate}")]
-        public Decimal getPreviousBalanceCollection(String loanId, String collectionDate)
-        {
-            var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-1) select d;
-
-            Decimal previousBalanceValue = 0;
-            if (collectionNextDate.Any())
-            {
-                previousBalanceValue = collectionNextDate.FirstOrDefault().CurrentBalanceAmount;
-            }
-
-            return previousBalanceValue;
         }
 
         // extend collection
@@ -1337,7 +1337,7 @@ namespace Lending.ApiControllers
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The Collection is not yet on due date.");
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The current collection is not yet on the due date.");
                                     }
                                 }
                                 else
@@ -1347,27 +1347,27 @@ namespace Lending.ApiControllers
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry, but there are no data found in the server.");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No data found in the server.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
 
@@ -1429,7 +1429,7 @@ namespace Lending.ApiControllers
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cant process by this time.");
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Can't process.");
                                     }
                                 }
                                 else
@@ -1439,27 +1439,27 @@ namespace Lending.ApiControllers
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry, but there are no data found in the server.");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No data found in the server.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                            return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Please lock the loan application first before procceding the collection process.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "The loan appliction must be locked before proceeding the collection.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server.");
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No data found in the server.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server.");
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something's went wrong from the server.");
             }
         }
     }

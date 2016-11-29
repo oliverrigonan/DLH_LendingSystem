@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="lending" Class="LendingDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=NOAH;Initial Catalog=lending;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=DEVELOPER;Initial Catalog=lending;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="DefaultConnection" Provider="System.Data.SqlClient" />
   <Table Name="dbo.AspNetRoles" Member="AspNetRoles">
     <Type Name="AspNetRole">
       <Column Name="Id" Type="System.String" DbType="NVarChar(128) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -275,6 +275,7 @@
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="mstCompany_mstBranch" Member="mstBranches" ThisKey="Id" OtherKey="CompanyId" Type="mstBranch" />
+      <Association Name="mstCompany_mstUser" Member="mstUsers" ThisKey="Id" OtherKey="CompanyId" Type="mstUser" />
       <Association Name="mstUser_mstCompany" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstCompany1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -350,6 +351,8 @@
       <Column Name="Username" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="Password" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="FullName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="mstUser_mstAccount" Member="mstAccounts" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstAccount" />
@@ -376,6 +379,7 @@
       <Association Name="mstUser_trnLoanApplication1" Member="trnLoanApplications1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnLoanApplication" />
       <Association Name="mstUser_trnLoanApplication2" Member="trnLoanApplications2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnLoanApplication" />
       <Association Name="AspNetUser_mstUser" Member="AspNetUser" ThisKey="AspUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
+      <Association Name="mstCompany_mstUser" Member="mstCompany" ThisKey="CompanyId" OtherKey="Id" Type="mstCompany" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.mstUserForms" Member="mstUserForms">
@@ -383,7 +387,7 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="FormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CanPerformAction" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsViewOnly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="mstUser_mstUserForm" Member="mstUser" ThisKey="UserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="sysForm_mstUserForm" Member="sysForm" ThisKey="FormId" OtherKey="Id" Type="sysForm" IsForeignKey="true" />
     </Type>

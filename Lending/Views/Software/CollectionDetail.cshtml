@@ -111,7 +111,7 @@
                             <button class="btn btn-primary btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
-                                    Extensions <span class="caret"></span>
+                                    Extension / Overdue <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#" onclick="linkExtendCollectionPaymentOnclick()">Extend Collection/Payment</a></li>
@@ -670,6 +670,10 @@
                                 InsuranceIPIorPPIAmount: loanNumberResults[i]["InsuranceIPIorPPIAmount"],
                                 IsLocked: loanNumberResults[i]["IsLocked"],
                                 IsFullyPaid: loanNumberResults[i]["IsFullyPaid"],
+                                CreatedByUser: loanNumberResults[i]["CreatedByUser"],
+                                CreatedDateTime: loanNumberResults[i]["CreatedDateTime"],
+                                UpdatedByUser: loanNumberResults[i]["UpdatedByUser"],
+                                UpdatedDateTime: loanNumberResults[i]["UpdatedDateTime"],
                                 LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"] + " " + currentLabel
                             });
                         }
@@ -711,8 +715,18 @@
                                     advancePaymentFlexGrid.itemsSource = advancePaymentCollectionView;
                                     advancePaymentFlexGrid.trackChanges = true;
                                 }, 500)
+
+                                document.getElementById('stampCreatedBy').innerHTML = this.selectedItem["CreatedByUser"];
+                                document.getElementById('stampCreatedDate').innerHTML = this.selectedItem["CreatedDateTime"];
+                                document.getElementById('stampUpdatedBy').innerHTML = this.selectedItem["UpdatedByUser"];
+                                document.getElementById('stampUpdatedDate').innerHTML = this.selectedItem["UpdatedDateTime"];
                             }
                         });
+
+                        document.getElementById('stampCreatedBy').innerHTML = cboLoanNumberLogHistory.selectedItem["CreatedByUser"];
+                        document.getElementById('stampCreatedDate').innerHTML = cboLoanNumberLogHistory.selectedItem["CreatedDateTime"];
+                        document.getElementById('stampUpdatedBy').innerHTML = cboLoanNumberLogHistory.selectedItem["UpdatedByUser"];
+                        document.getElementById('stampUpdatedDate').innerHTML = cboLoanNumberLogHistory.selectedItem["UpdatedDateTime"];
 
                         updateMoreDetails();
                     } else {
@@ -784,19 +798,19 @@
                                 btnAbsentClass = "btn btn-danger btn-xs btn-block";
                             }
 
-                            var disableButton = ""
-                            if (!collectionListResult[i]["IsAction"]) {
-                                disableButton = "disabled"
+                            var trashUndoIcon = "undo";
+                            if (collectionListResult[i]["IsExtendCollection"] || collectionListResult[i]["IsOverdueCollection"]) {
+                                trashUndoIcon = "trash";
                             }
 
                             var newDate = new Date(collectionListResult[i]["CollectionDate"]);
                             var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             collectionListArray.push({
-                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'" + disableButton + "><i class='fa fa-wrench fa-fw'></i> Option</button>",
-                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disableButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
-                                AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
-                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disableButton + "><i class='fa fa-undo fa-fw'></i></button>",
+                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>",
+                                AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>",
+                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'><i class='fa fa-" + trashUndoIcon + " fa-fw'></i></button>",
                                 Id: collectionListResult[i]["Id"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
@@ -1051,11 +1065,11 @@
                     });
                 } else {
                     NProgress.done();
-                    toastr.info("No Current Balance to be cleared");
+                    toastr.info("No Current Balance.");
                 }
             } else {
                 NProgress.done();
-                toastr.info("Already Cleared");
+                toastr.error("Already Cleared");
             }
         }
 
@@ -1104,7 +1118,7 @@
                     }
                 } else {
                     NProgress.done();
-                    toastr.info("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
+                    toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                 }
             } else {
                 if (!collectionItem.IsLastDay) {
@@ -1142,11 +1156,11 @@
                         });
                     } else {
                         NProgress.done();
-                        toastr.info("Already Absent");
+                        toastr.error("Already Absent");
                     }
                 } else {
                     NProgress.done();
-                    toastr.info("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
+                    toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                 }
             }
         }
@@ -1226,7 +1240,7 @@
                                 document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount.toLocaleString();
                                 document.getElementById("partialPaymentPartialAmount").value = 0;
                             } else {
-                                toastr.info("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
+                                toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                             }
                         } else {
                             if (!currentCollectionResults.IsLastDay) {
@@ -1250,10 +1264,12 @@
                                 document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount.toLocaleString();
                                 document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount.toLocaleString();
                                 document.getElementById("partialPaymentPartialAmount").value = 0;
+                            } else {
+                                toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
                             }
                         }
                     } else {
-                        toastr.info("No Current Collection.");
+                        toastr.error("No Current Collection.");
                     }
 
                     NProgress.done();
@@ -1566,7 +1582,7 @@
                             advancePaymentFlexGrid.trackChanges = true;
                         }, 500)
                     } else {
-                        toastr.info("No Current Collection.");
+                        toastr.error("No Current Collection.");
                     }
 
                     NProgress.done();
@@ -1658,7 +1674,7 @@
                             "backdrop": "static"
                         });
                     } else {
-                        toastr.info("No Current Collection.");
+                        toastr.error("No Current Collection.");
                     }
 
                     NProgress.done();
@@ -1790,10 +1806,10 @@
 
                             currentCollectionId = currentCollectionResults.Id;
                         } else {
-                            toastr.info("The Collection is not yet on due date.");
+                            toastr.error("The Collection is not yet on the due date.");
                         }
                     } else {
-                        toastr.info("No Current Collection.");
+                        toastr.error("No Current Collection.");
                     }
 
                     NProgress.done();
@@ -1866,10 +1882,10 @@
 
                             currentCollectionId = currentCollectionResults.Id;
                         } else {
-                            toastr.info("The Collection is not yet on due date.");
+                            toastr.error("The Collection is not yet on the due date.");
                         }
                     } else {
-                        toastr.info("No Current Collection.");
+                        toastr.error("No Current Collection.");
                     }
 
                     NProgress.done();
@@ -1934,6 +1950,8 @@
                 isEditable: false,
                 required: true
             });
+            //$(':button').prop('disabled', true);
+            //$('#btnClose').prop('disabled', false);
         };
     </script>
 </body>
