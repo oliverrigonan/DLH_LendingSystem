@@ -316,7 +316,7 @@
                                         <input type="text" class="form-control" id="partialPaymentCollectionDate" disabled />
                                     </div>
                                     <div class="form-group">
-                                        <label>Daily Collectibles</label><br />
+                                        <label>Dafault Daily Collectibles</label><br />
                                         <div class="input-group numberField">
                                             <span class="input-group-addon">&#8369;</span>
                                             <input type="text" class="form-control numberField" id="partialPaymentDailyCollectibles" placeholder="0.00" disabled />
@@ -532,6 +532,13 @@
                         <label>Please enter number of Days</label><br />
                         <div id="cboExtendNumberOfDays" style="width: 100%;"></div>
                     </div>
+                    <div class="form-group">
+                        <label>Daily Collectibles</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField" id="extendDailyCollectibles" value="0" placeholder="0.00" />
+                        </div>
+                    </div>
                     <hr />
                     Are you sure that you want to extend the days of payment of this collection?
                     <br /><br />
@@ -605,6 +612,7 @@
         var btnLastPageGridCollectionAdvancePayment;
         var collectionAdvancePaymentId = 0;
         var cboExtendNumberOfDays;
+        var defaultDailyCollectible = 0;
 
         // loan application for selected value
         function getLoanApplicationForSelectedValue() {
@@ -876,6 +884,9 @@
                                 var collectionStartDateValue = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
                                 document.getElementById("collectionStartDate").value = collectionStartDateValue;
                                 document.getElementById("collectionDailyCollectibles").value = collectionListResult[i]["CollectibleAmount"];
+
+                                document.getElementById("extendDailyCollectibles").value = collectionListResult[i]["CollectibleAmount"];
+                                defaultDailyCollectible = collectionListResult[i]["CollectibleAmount"];
                             } else {
                                 if (i == collectionListResult.length - 1) {
                                     var newEndDate = new Date(collectionListResult[i]["CollectionDate"]);
@@ -1819,45 +1830,51 @@
 
         // btn extend payment confirm
         function btnExtendPaymentYesOnclick() {
-            $("#btnExtendPaymentYes").prop("disabled", true);
-            $("#btnExtendPaymentNo").prop("disabled", true);
-            document.getElementById("btnExtendPaymentYes").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
-            $.ajax({
-                type: "PUT",
-                url: '/api/collection/extend/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId + '/' + cboExtendNumberOfDays.selectedValue,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Overdue");
-                        NProgress.start();
+            var extendDailyCollectibles = document.getElementById("extendDailyCollectibles").value;
+            if (parseFloat(extendDailyCollectibles.split(',').join('')) <= parseFloat(defaultDailyCollectible)) {
+                $("#btnExtendPaymentYes").prop("disabled", true);
+                $("#btnExtendPaymentNo").prop("disabled", true);
+                document.getElementById("btnExtendPaymentYes").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
-                        $("#extendPaymentModal").modal("hide");
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/collection/extend/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId + '/' + cboExtendNumberOfDays.selectedValue + '/' + extendDailyCollectibles,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Extended");
+                            NProgress.start();
 
-                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                            $("#extendPaymentModal").modal("hide");
 
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                            urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
 
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
-                    },
-                    404: function (message) {
-                        NProgress.done();
-                        $("#overduePaymentModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                    },
-                    400: function (message) {
-                        NProgress.done();
-                        $("#overduePaymentModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                    },
-                    500: function (message) {
-                        NProgress.done();
-                        $("#overduePaymentModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+
+                            collectionFlexGrid.itemsSource = collectionCollectionView;
+                            collectionFlexGrid.trackChanges = true;
+                        },
+                        404: function (message) {
+                            NProgress.done();
+                            $("#overduePaymentModal").modal("hide");
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                        },
+                        400: function (message) {
+                            NProgress.done();
+                            $("#overduePaymentModal").modal("hide");
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                        },
+                        500: function (message) {
+                            NProgress.done();
+                            $("#overduePaymentModal").modal("hide");
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                toastr.error("The Collectible amount you entered must not be greater than the default daily collectibles amount.");
+            }
         }
 
         // link overdue collection

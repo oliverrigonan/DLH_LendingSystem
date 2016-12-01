@@ -190,7 +190,7 @@ namespace Lending.ApiControllers
                 Data.trnLoanApplication newLoanApplication = new Data.trnLoanApplication();
                 newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                 newLoanApplication.LoanDate = DateTime.Today;
-                newLoanApplication.MaturityDate = DateTime.Today.AddMonths(2);
+                newLoanApplication.MaturityDate = DateTime.Today.AddDays(60);
                 newLoanApplication.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
                 newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                 newLoanApplication.Particulars = "NA";
