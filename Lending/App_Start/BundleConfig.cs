@@ -27,11 +27,11 @@ namespace Lending
                       "~/wijmo/controls/wijmo.chart.min.js",
                       "~/Scripts/nprogress.js",
                       "~/Scripts/toastr.min.js",
-                      "~/Scripts/customize-script.js"));
+                      "~/Scripts/customize-scripts.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      //"~/Content/bootstrap-theme.min.css",
+                      "~/Content/bootstrap-theme.min.css",
                       "~/Content/landing-page.css",
                       "~/Content/software.css",
                       "~/fonts/font-awesome-4.6.3/css/font-awesome.min.css",

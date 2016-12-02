@@ -22,7 +22,8 @@ namespace Lending.ApiControllers
                         select new Models.SysForms
                         {
                             Id = d.Id,
-                            Form = d.Form
+                            Form = d.Form,
+                            FormDescription = d.FormDescription
                         };
 
             return forms.ToList();

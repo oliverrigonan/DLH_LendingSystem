@@ -317,7 +317,7 @@
     <Content Include="fonts\font-awesome-4.6.3\scss\_screen-reader.scss" />
     <Content Include="fonts\font-awesome-4.6.3\scss\_stacked.scss" />
     <Content Include="fonts\font-awesome-4.6.3\scss\_variables.scss" />
-    <Content Include="Scripts\customize-script.js" />
+    <Content Include="Scripts\customize-scripts.js" />
     <Content Include="Scripts\nprogress.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
@@ -538,6 +538,7 @@
     <Content Include="Views\Software\LoanReport.cshtml" />
     <Content Include="Views\Software\CollectionReport.cshtml" />
     <Content Include="Views\Software\ExpensesReport.cshtml" />
+    <Content Include="Views\Shared\SoftwareMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

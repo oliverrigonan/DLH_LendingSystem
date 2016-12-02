@@ -17,53 +17,7 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="btn-group">
-                <div class="btn-group">
-                    <a href="/Software" class="btn btn-info">
-                        Dashboard
-                    </a>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Set Ups <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
-                        <li><a href="/Software/AreaList"><i class="fa fa-map-pin fa-fw"></i> Area</a></li>
-                        <li><a href="/Software/StaffList"><i class="fa fa-user fa-fw"></i> Staff</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Activities <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
-                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Reports <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/LoanReport"><i class="fa fa-print fa-fw"></i> Loan Report</a></li>
-                        <li><a href="/Software/CollectionReport"><i class="fa fa-print fa-fw"></i> Collection Report</a></li>
-                        <li><a href="/Software/ExpensesReport"><i class="fa fa-print fa-fw"></i> Expenses Report</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        System <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
-                        <li><a href="/Software/AreaList"><i class="fa fa-building fa-fw"></i> Area</a></li>
-                        <li><a href="/Software/SystemTables"><i class="fa fa-table fa-fw"></i> System Tables</a></li>
-                    </ul>
-                </div>
-            </div>
+            @Html.Partial("SoftwareMenu")
             <br /><br />
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -79,7 +33,7 @@
                                 <button class="btn btn-primary" id="btnUnlockArea" onclick="btnUnlockAreaOnclick()">
                                     <i class="fa fa-unlock fa-fw"></i> Unlock
                                 </button>
-                                <button class="btn btn-danger" id="btnCloseArea" onclick="window.location = '/Software/AreaList'">
+                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/AreaList'">
                                     <i class="fa fa-close fa-fw"></i> Close
                                 </button>
                             </td>
@@ -93,7 +47,7 @@
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label>Area Number</label><br />
-                                        <input type="text" class="form-control requiredArea" id="areaNumber" placeholder="Area Number" disabled/>
+                                        <input type="text" class="form-control requiredArea" id="areaNumber" placeholder="Area Number" disabled />
                                     </div>
                                     <div class="form-group">
                                         <label>Area</label><br />
@@ -300,7 +254,7 @@
                 document.getElementById("btnLockArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                 $("#btnLockArea").prop("disabled", true);
                 $("#btnUnlockArea").prop("disabled", true);
-                $("#btnCloseArea").prop("disabled", true);
+                $("#btnClose").prop("disabled", true);
                 $("#btnAddBranch").prop("disabled", true);
 
                 var areaDetailObject = new Object();
@@ -329,7 +283,7 @@
                             toastr.error("Not Found");
 
                             $("#btnLockArea").prop("disabled", false);
-                            $("#btnCloseArea").prop("disabled", false);
+                            $("#btnClose").prop("disabled", false);
                         },
                         400: function () {
                             document.getElementById("btnLockArea").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -337,7 +291,7 @@
                             toastr.error("Bad Request");
 
                             $("#btnLockArea").prop("disabled", false);
-                            $("#btnCloseArea").prop("disabled", false);
+                            $("#btnClose").prop("disabled", false);
                         }
                     }
                 });
@@ -351,7 +305,7 @@
             document.getElementById("btnUnlockArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
             $("#btnUnlockArea").prop("disabled", true);
             $("#btnLockArea").prop("disabled", true);
-            $("#btnCloseArea").prop("disabled", true);
+            $("#btnClose").prop("disabled", true);
             $("#btnAddBranch").prop("disabled", true);
 
             $.ajax({
@@ -372,7 +326,7 @@
                         toastr.error("Not Found");
 
                         $("#btnUnlockArea").prop("disabled", true);
-                        $("#btnCloseArea").prop("disabled", true);
+                        $("#btnClose").prop("disabled", true);
                     },
                     400: function () {
                         document.getElementById("btnUnlockArea").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
@@ -380,7 +334,7 @@
                         toastr.error("Bad Request");
 
                         $("#btnUnlockArea").prop("disabled", true);
-                        $("#btnCloseArea").prop("disabled", true);
+                        $("#btnClose").prop("disabled", true);
                     }
                 }
             });
@@ -392,6 +346,14 @@
             toastrModification();
             cboAreaSuperVisor = new wijmo.input.ComboBox('#cboAreaSuperVisor');
             getSupervisorStaff();
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+            }
         }
     </script>
 </body>

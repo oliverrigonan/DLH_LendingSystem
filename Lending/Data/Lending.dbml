@@ -387,7 +387,7 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="FormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="IsViewOnly" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanPerformActions" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="mstUser_mstUserForm" Member="mstUser" ThisKey="UserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="sysForm_mstUserForm" Member="sysForm" ThisKey="FormId" OtherKey="Id" Type="sysForm" IsForeignKey="true" />
     </Type>
@@ -406,6 +406,7 @@
     <Type Name="sysForm">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Form" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FormDescription" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Association Name="sysForm_mstUserForm" Member="mstUserForms" ThisKey="Id" OtherKey="FormId" Type="mstUserForm" />
     </Type>
   </Table>

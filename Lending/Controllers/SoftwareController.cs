@@ -3,16 +3,65 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.Controllers
 {
     public class SoftwareController : UserController
     {
+        // data
+        private Data.LendingDataContext db = new Data.LendingDataContext();
+
+        public String pageAccess(String page)
+        {
+            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).FirstOrDefault();
+            var userForms = from d in db.mstUserForms
+                            where d.UserId == userId
+                            select new Models.MstUserForm
+                            {
+                                Id = d.Id,
+                                UserId = d.UserId,
+                                User = d.mstUser.FullName,
+                                FormId = d.FormId,
+                                Form = d.sysForm.Form,
+                                CanPerformActions = d.CanPerformActions,
+                            };
+
+            String pageName = page;
+            String emptyPageName = "";
+
+            foreach (var userForm in userForms)
+            {
+                if (pageName.Equals(userForm.Form))
+                {
+                    var CanPerformActions = 0;
+                    if (userForm.CanPerformActions) 
+                    {
+                        CanPerformActions = 1;
+                    }
+
+                    ViewData.Add("CanPerformActions", CanPerformActions);
+
+                    emptyPageName = userForm.Form;
+                    break;
+                }
+            }
+
+            return emptyPageName;
+        }
+
         // GET: Software
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+            if (pageAccess("Software").Equals("Software"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
@@ -30,176 +79,318 @@ namespace Lending.Controllers
         [Authorize]
         public ActionResult ApplicantList()
         {
-            return View();
+            if (pageAccess("ApplicantList").Equals("ApplicantList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult ApplicantDetail(Int32? id)
         {
-            if(id == null) {
-                return RedirectToAction("NotFound", "Software");
+            if (pageAccess("ApplicantDetail").Equals("ApplicantDetail"))
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
+
         }
 
         [Authorize]
         public ActionResult LoanApplicationList()
         {
-            return View();
+            if (pageAccess("LoanApplicationList").Equals("LoanApplicationList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult LoanApplicationDetail(Int32? id)
         {
-            if (id == null)
+            if (pageAccess("LoanApplicationDetail").Equals("LoanApplicationDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult CompanyList()
         {
-            return View();
+            if (pageAccess("CompanyList").Equals("CompanyList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult CompanyDetail(Int32? id)
         {
-            if (id == null)
+            if (pageAccess("CompanyDetail").Equals("CompanyDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult SystemTables()
         {
-            return View();
+            if (pageAccess("SystemTables").Equals("SystemTables"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult CollectionList()
         {
-            return View();
+            if (pageAccess("CollectionList").Equals("CollectionList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult CollectionDetail(Int32? applicantId, Int32? loanId)
         {
-            if (applicantId == null || loanId == null)
+            if (pageAccess("CollectionDetail").Equals("CollectionDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (applicantId == null || loanId == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult ExpensesList()
         {
-            return View();
+            if (pageAccess("ExpensesList").Equals("ExpensesList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult ExpenseDetail(Int32? id)
         {
-            if (id == null)
+            if (pageAccess("ExpenseDetail").Equals("ExpenseDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult UserList()
         {
-            return View();
+            if (pageAccess("UserList").Equals("UserList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult UserDetail(Int32? id)
         {
-            if (id == null)
+            if (pageAccess("UserDetail").Equals("UserDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult AreaList()
         {
-            return View();
+            if (pageAccess("AreaList").Equals("AreaList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult AreaDetail(Int32? id)
         {
-            if (id == null)
+            if (pageAccess("AreaDetail").Equals("AreaDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult StaffList()
         {
-            return View();
+            if (pageAccess("StaffList").Equals("StaffList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult StaffDetail(Int32? id)
         {
-            if (id == null)
+            if (pageAccess("StaffDetail").Equals("StaffDetail"))
             {
-                return RedirectToAction("NotFound", "Software");
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
             {
-                return View();
+                return RedirectToAction("Forbidden", "Software");
             }
         }
 
         [Authorize]
         public ActionResult LoanReport()
         {
-            return View();
+            if (pageAccess("LoanReport").Equals("LoanReport"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult CollectionReport()
         {
-            return View();
+            if (pageAccess("CollectionReport").Equals("CollectionReport"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
 
         [Authorize]
         public ActionResult ExpensesReport()
         {
-            return View();
+            if (pageAccess("ExpensesReport").Equals("ExpensesReport"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
         }
     }
 }

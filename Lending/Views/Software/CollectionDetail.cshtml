@@ -17,53 +17,7 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="btn-group">
-                <div class="btn-group">
-                    <a href="/Software" class="btn btn-info">
-                        Dashboard
-                    </a>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Set Ups <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
-                        <li><a href="/Software/AreaList"><i class="fa fa-map-pin fa-fw"></i> Area</a></li>
-                        <li><a href="/Software/StaffList"><i class="fa fa-user fa-fw"></i> Staff</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Activities <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
-                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Reports <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/LoanReport"><i class="fa fa-print fa-fw"></i> Loan Report</a></li>
-                        <li><a href="/Software/CollectionReport"><i class="fa fa-print fa-fw"></i> Collection Report</a></li>
-                        <li><a href="/Software/ExpensesReport"><i class="fa fa-print fa-fw"></i> Expenses Report</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        System <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
-                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
-                        <li><a href="/Software/SystemTables"><i class="fa fa-table fa-fw"></i> System Tables</a></li>
-                    </ul>
-                </div>
-            </div>
+            @Html.Partial("SoftwareMenu")
             <br /><br />
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -105,7 +59,7 @@
                                 <input type="text" class="form-control input-sm" id="applicantArea" disabled />
                             </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-6">
                             <button class="btn btn-primary btn-sm" id="" onclick="btnPartialPaymentOnclick()">Partial Payment</button>
                             <button class="btn btn-primary btn-sm" id="" onclick="btnAdvancePaymentOnclick()">Advance Payment</button>
                             <button class="btn btn-primary btn-sm" id="" onclick="btnFullPaymentOnclick()">Full Payment</button>
@@ -118,10 +72,9 @@
                                     <li><a href="#" onclick="linkOverdueCollectionPaymentOnclick()">Mark Collection as Overdue</a></li>
                                 </ul>
                             </div>
-                            <button class="btn btn-default btn-sm" id="" onclick="btnRefreshOnclick()">Refresh</button>
                         </div>
-                        <div class="col-md-1" align="right">
-                            <button class="btn btn-info btn-sm" id="" onclick="btnHelpOnclick()"><i class="fa fa-question-circle-o fa-fw"></i> Help</button>
+                        <div class="col-md-2" align="right">
+                            <button class="btn btn-info btn-sm" id="" onclick="btnRefreshOnclick()"><i class="fa fa-refresh fa-fw"></i> Refresh</button>
                         </div>
                     </div>
                 </div>
@@ -539,10 +492,6 @@
                             <input type="text" class="form-control numberField" id="extendDailyCollectibles" value="0" placeholder="0.00" />
                         </div>
                     </div>
-                    <hr />
-                    Are you sure that you want to extend the days of payment of this collection?
-                    <br /><br />
-                    It will add multiple rows of data according to the number of days you entered.
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnExtendPaymentYes" onclick="btnExtendPaymentYesOnclick()">Yes</button>
@@ -562,31 +511,10 @@
                 </div>
                 <div class="modal-body">
                     Are you sure that you want to mark this collection as Overdue?
-                    <br /><br />
-                    It will add one row of data for overdue collection.
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnOverduePaymentYes" onclick="btnOverduePaymentYesOnclick()">Yes</button>
                     <button class="btn btn-default" id="btnOverduePaymentNo" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- help -->
-    <div class="modal fade" id="helpModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Help and Guide</h4>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -814,11 +742,22 @@
                             var newDate = new Date(collectionListResult[i]["CollectionDate"]);
                             var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
+                            var isCurrentCollecitonHTMLContent = "<span class='label label-default'><i class='fa fa-circle-o fa-fw'></i></span>";
+                            if (collectionListResult[i]["IsCurrentCollection"]) {
+                                isCurrentCollecitonHTMLContent = "<span class='label label-success'><i class='fa fa-check fa-fw'></i></span>";
+                            }
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
                             collectionListArray.push({
-                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'><i class='fa fa-wrench fa-fw'></i> Option</button>",
-                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'><i class='fa fa-check fa-fw'></i> Clear</button>",
-                                AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'><i class='fa fa-circle fa-fw'></i> Absent</button>",
-                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'><i class='fa fa-" + trashUndoIcon + " fa-fw'></i></button>",
+                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'" + disabledButton + "><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                                ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disabledButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
+                                AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disabledButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
+                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disabledButton + "><i class='fa fa-" + trashUndoIcon + " fa-fw'></i></button>",
                                 Id: collectionListResult[i]["Id"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
@@ -842,7 +781,7 @@
                                 IsDueDate: collectionListResult[i]["IsDueDate"],
                                 IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
                                 IsOverdueCollection: collectionListResult[i]["IsOverdueCollection"],
-                                IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
+                                IsCurrentCollection: isCurrentCollecitonHTMLContent,
                                 IsProcessed: collectionListResult[i]["IsProcessed"],
                                 IsAction: collectionListResult[i]["IsAction"],
                                 AssignedCollectorId: collectionListResult[i]["AssignedCollectorId"],
@@ -959,8 +898,10 @@
                             {
                                 "header": "C",
                                 "binding": "IsCurrentCollection",
+                                "isContentHtml": true,
                                 "allowSorting": false,
                                 "width": "0.7*",
+                                "align": "center"
                             },
                             {
                                 "header": "Status",
@@ -1769,14 +1710,6 @@
             });
         }
 
-        // help
-        function btnHelpOnclick() {
-            $("#helpModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-        }
-
         // view the loan application detail
         function btnViewLoanApplicationDetailOnclick() {
             window.open('/Software/LoanApplicationDetail?id=' + urlParameterLoanId, '_blank');
@@ -1967,8 +1900,14 @@
                 isEditable: false,
                 required: true
             });
-            //$(':button').prop('disabled', true);
-            //$('#btnClose').prop('disabled', false);
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+            }
         };
     </script>
 </body>

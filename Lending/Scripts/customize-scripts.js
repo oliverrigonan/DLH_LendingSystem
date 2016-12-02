@@ -3,9 +3,9 @@ function toastrModification() {
     toastr.options = {
         "closeButton": false,
         "debug": false,
-        "newestOnTop": true,
+        "newestOnTop": false,
         "progressBar": true,
-        "positionClass": "toast-bottom-right",
+        "positionClass": "toast-top-right",
         "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",

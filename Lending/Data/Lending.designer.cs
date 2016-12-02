@@ -9262,7 +9262,7 @@ namespace Lending.Data
 		
 		private int _FormId;
 		
-		private bool _IsViewOnly;
+		private bool _CanPerformActions;
 		
 		private EntityRef<mstUser> _mstUser;
 		
@@ -9278,8 +9278,8 @@ namespace Lending.Data
     partial void OnUserIdChanged();
     partial void OnFormIdChanging(int value);
     partial void OnFormIdChanged();
-    partial void OnIsViewOnlyChanging(bool value);
-    partial void OnIsViewOnlyChanged();
+    partial void OnCanPerformActionsChanging(bool value);
+    partial void OnCanPerformActionsChanged();
     #endregion
 		
 		public mstUserForm()
@@ -9357,22 +9357,22 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsViewOnly", DbType="Bit NOT NULL")]
-		public bool IsViewOnly
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CanPerformActions", DbType="Bit NOT NULL")]
+		public bool CanPerformActions
 		{
 			get
 			{
-				return this._IsViewOnly;
+				return this._CanPerformActions;
 			}
 			set
 			{
-				if ((this._IsViewOnly != value))
+				if ((this._CanPerformActions != value))
 				{
-					this.OnIsViewOnlyChanging(value);
+					this.OnCanPerformActionsChanging(value);
 					this.SendPropertyChanging();
-					this._IsViewOnly = value;
-					this.SendPropertyChanged("IsViewOnly");
-					this.OnIsViewOnlyChanged();
+					this._CanPerformActions = value;
+					this.SendPropertyChanged("CanPerformActions");
+					this.OnCanPerformActionsChanged();
 				}
 			}
 		}
@@ -9691,6 +9691,8 @@ namespace Lending.Data
 		
 		private string _Form;
 		
+		private string _FormDescription;
+		
 		private EntitySet<mstUserForm> _mstUserForms;
 		
     #region Extensibility Method Definitions
@@ -9701,6 +9703,8 @@ namespace Lending.Data
     partial void OnIdChanged();
     partial void OnFormChanging(string value);
     partial void OnFormChanged();
+    partial void OnFormDescriptionChanging(string value);
+    partial void OnFormDescriptionChanged();
     #endregion
 		
 		public sysForm()
@@ -9745,6 +9749,26 @@ namespace Lending.Data
 					this._Form = value;
 					this.SendPropertyChanged("Form");
 					this.OnFormChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FormDescription", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		public string FormDescription
+		{
+			get
+			{
+				return this._FormDescription;
+			}
+			set
+			{
+				if ((this._FormDescription != value))
+				{
+					this.OnFormDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._FormDescription = value;
+					this.SendPropertyChanged("FormDescription");
+					this.OnFormDescriptionChanged();
 				}
 			}
 		}

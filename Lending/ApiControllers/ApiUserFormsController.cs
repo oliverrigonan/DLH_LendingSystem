@@ -26,8 +26,8 @@ namespace Lending.ApiControllers
                                 UserId = d.UserId,
                                 User = d.mstUser.FullName,
                                 FormId = d.FormId,
-                                Form = d.sysForm.Form,
-                                IsViewOnly = d.IsViewOnly,
+                                FormDescription = d.sysForm.FormDescription,
+                                CanPerformActions = d.CanPerformActions,
                             };
 
             return userForms.ToList();
@@ -47,7 +47,7 @@ namespace Lending.ApiControllers
                     Data.mstUserForm newUserForm = new Data.mstUserForm();
                     newUserForm.UserId = userForm.UserId;
                     newUserForm.FormId = userForm.FormId;
-                    newUserForm.IsViewOnly = userForm.IsViewOnly;
+                    newUserForm.CanPerformActions = userForm.CanPerformActions;
                     db.mstUserForms.InsertOnSubmit(newUserForm);
                     db.SubmitChanges();
 
@@ -81,7 +81,7 @@ namespace Lending.ApiControllers
                         var updateUserForm = userForms.FirstOrDefault();
                         updateUserForm.UserId = userForm.UserId;
                         updateUserForm.FormId = userForm.FormId;
-                        updateUserForm.IsViewOnly = userForm.IsViewOnly;
+                        updateUserForm.CanPerformActions = userForm.CanPerformActions;
 
                         db.SubmitChanges();
 

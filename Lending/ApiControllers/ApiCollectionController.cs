@@ -375,6 +375,9 @@ namespace Lending.ApiControllers
                                             }
                                         }
 
+                                        Business.Journal journal = new Business.Journal();
+                                        journal.postCollectionJournal(Convert.ToInt32(id));
+
                                         return Request.CreateResponse(HttpStatusCode.OK);
                                     }
                                     else
@@ -495,6 +498,9 @@ namespace Lending.ApiControllers
                                             }
                                         }
 
+                                        Business.Journal journal = new Business.Journal();
+                                        journal.deleteCollectionJournal(Convert.ToInt32(id));
+
                                         return Request.CreateResponse(HttpStatusCode.OK);
                                     }
                                     else
@@ -561,6 +567,9 @@ namespace Lending.ApiControllers
                                                 }
                                             }
 
+                                            Business.Journal journal = new Business.Journal();
+                                            journal.deleteCollectionJournal(Convert.ToInt32(id));
+
                                             return Request.CreateResponse(HttpStatusCode.OK);
                                         }
                                         else
@@ -623,11 +632,10 @@ namespace Lending.ApiControllers
                                     var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
                                     if (collectionPrevoiusDate.Any())
                                     {
-                                        var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
-                                        if (collection.FirstOrDefault().IsCurrentCollection)
+                                        if (loanApplication.FirstOrDefault().IsFullyPaid)
                                         {
+                                            var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
                                             updateCollectionPrevoiusDate.PaidAmount = 0;
-                                            //updateCollectionPrevoiusDate.PreviousBalanceAmount = collectionPrevoiusDate.FirstOrDefault().CurrentBalanceAmount;
                                             updateCollectionPrevoiusDate.CurrentBalanceAmount = collectionPrevoiusDate.FirstOrDefault().CollectibleAmount + collectionPrevoiusDate.FirstOrDefault().PreviousBalanceAmount;
                                             updateCollectionPrevoiusDate.PenaltyAmount = 0;
                                             updateCollectionPrevoiusDate.IsCleared = false;
@@ -638,14 +646,49 @@ namespace Lending.ApiControllers
                                             updateCollectionPrevoiusDate.IsPartialPayment = false;
                                             updateCollectionPrevoiusDate.IsAdvancePayment = false;
                                             updateCollectionPrevoiusDate.IsFullPayment = false;
+                                            updateCollectionPrevoiusDate.IsLastDay = true;
+                                            db.SubmitChanges();
+
+                                            db.trnCollections.DeleteOnSubmit(collection.First());
+                                            db.SubmitChanges();
+
+                                            var updateLoanApplicationFullPayment = loanApplication.FirstOrDefault();
+                                            updateLoanApplicationFullPayment.IsFullyPaid = false;
+                                            db.SubmitChanges();
                                         }
+                                        else
+                                        {
+                                            var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
 
-                                        updateCollectionPrevoiusDate.IsLastDay = true;
-                                        db.SubmitChanges();
+                                            if (collection.FirstOrDefault().IsCurrentCollection)
+                                            {
+                                                updateCollectionPrevoiusDate.PaidAmount = 0;
+                                                updateCollectionPrevoiusDate.CurrentBalanceAmount = collectionPrevoiusDate.FirstOrDefault().CollectibleAmount + collectionPrevoiusDate.FirstOrDefault().PreviousBalanceAmount;
+                                                updateCollectionPrevoiusDate.PenaltyAmount = 0;
+                                                updateCollectionPrevoiusDate.IsCleared = false;
+                                                updateCollectionPrevoiusDate.IsAbsent = false;
+                                                updateCollectionPrevoiusDate.IsCurrentCollection = true;
+                                                updateCollectionPrevoiusDate.IsProcessed = false;
+                                                updateCollectionPrevoiusDate.IsAction = true;
+                                                updateCollectionPrevoiusDate.IsPartialPayment = false;
+                                                updateCollectionPrevoiusDate.IsAdvancePayment = false;
+                                                updateCollectionPrevoiusDate.IsFullPayment = false;
+                                            }
 
-                                        db.trnCollections.DeleteOnSubmit(collection.First());
-                                        db.SubmitChanges();
+                                            updateCollectionPrevoiusDate.IsLastDay = true;
+                                            db.SubmitChanges();
+
+                                            db.trnCollections.DeleteOnSubmit(collection.First());
+                                            db.SubmitChanges();
+
+                                            var updateLoanApplicationFullPayment = loanApplication.FirstOrDefault();
+                                            updateLoanApplicationFullPayment.IsFullyPaid = false;
+                                            db.SubmitChanges();
+                                        }
                                     }
+
+                                    Business.Journal journal = new Business.Journal();
+                                    journal.deleteCollectionJournal(Convert.ToInt32(id));
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
@@ -732,6 +775,9 @@ namespace Lending.ApiControllers
                                             db.SubmitChanges();
                                         }
                                     }
+
+                                    Business.Journal journal = new Business.Journal();
+                                    journal.deleteCollectionJournal(Convert.ToInt32(id));
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
@@ -866,6 +912,9 @@ namespace Lending.ApiControllers
                                                             }
                                                         }
 
+                                                        Business.Journal journal = new Business.Journal();
+                                                        journal.postCollectionJournal(Convert.ToInt32(id));
+
                                                         return Request.CreateResponse(HttpStatusCode.OK);
                                                     }
                                                     else
@@ -987,6 +1036,9 @@ namespace Lending.ApiControllers
                                                                         }
                                                                     }
                                                                 }
+
+                                                                Business.Journal journal = new Business.Journal();
+                                                                journal.postCollectionJournal(Convert.ToInt32(id));
 
                                                                 return Request.CreateResponse(HttpStatusCode.OK);
                                                             }
@@ -1148,6 +1200,9 @@ namespace Lending.ApiControllers
                                             }
                                         }
                                     }
+
+                                    Business.Journal journal = new Business.Journal();
+                                    journal.postCollectionJournal(advancePaymentCollection.Id);
                                 }
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -1273,6 +1328,9 @@ namespace Lending.ApiControllers
                                             }
                                         }
                                     }
+
+                                    Business.Journal journal = new Business.Journal();
+                                    journal.postCollectionJournal(fullPaymentCollection.Id);
                                 }
 
                                 return Request.CreateResponse(HttpStatusCode.OK);

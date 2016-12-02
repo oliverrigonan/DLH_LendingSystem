@@ -9,6 +9,7 @@ namespace Lending.Business
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
+        private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // loan journal
         public void postLoanJournal(Int32 loanId)
@@ -82,6 +83,79 @@ namespace Lending.Business
             }
         }
 
+        // collection journal
+        public void postCollectionJournal(Int32 collectionId)
+        {
+            var collections = from d in db.trnCollections
+                              where d.Id == collectionId
+                              select new Models.TrnCollection
+                              {
+                                  Id = d.Id,
+                                  LoanId = d.LoanId,
+                                  LoanNumber = d.trnLoanApplication.LoanNumber,
+                                  ApplicantId = d.trnLoanApplication.ApplicantId,
+                                  Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
+                                  Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
+                                  IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
+                                  AccountId = d.AccountId,
+                                  Account = d.mstAccount.Account,
+                                  CollectionDate = d.CollectionDate.ToShortDateString(),
+                                  NetAmount = d.NetAmount,
+                                  CollectibleAmount = d.CollectibleAmount,
+                                  PenaltyAmount = d.PenaltyAmount,
+                                  PaidAmount = d.PaidAmount,
+                                  PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                  CurrentBalanceAmount = d.CurrentBalanceAmount,
+                                  IsCleared = d.IsCleared,
+                                  IsAbsent = d.IsAbsent,
+                                  IsPartialPayment = d.IsPartialPayment,
+                                  IsAdvancePayment = d.IsAdvancePayment,
+                                  IsFullPayment = d.IsFullPayment,
+                                  IsDueDate = d.IsDueDate,
+                                  IsExtendCollection = d.IsExtendCollection,
+                                  IsOverdueCollection = d.IsOverdueCollection,
+                                  IsCurrentCollection = d.IsCurrentCollection,
+                                  IsProcessed = d.IsProcessed,
+                                  IsAction = d.IsAction,
+                                  IsLastDay = d.IsLastDay,
+                                  Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
+                              };
+
+            if (collections.Any())
+            {
+                foreach (var collection in collections)
+                {
+                    if (collection.PaidAmount > 0)
+                    {
+                        Data.sysJournal newCollectionJournal = new Data.sysJournal();
+                        newCollectionJournal.JournalDate = Convert.ToDateTime(collection.CollectionDate);
+                        newCollectionJournal.AccountId = collection.AccountId;
+                        newCollectionJournal.Particulars = "Collection";
+                        newCollectionJournal.ReleasedAmount = 0;
+                        newCollectionJournal.ReceivedAmount = collection.PaidAmount;
+                        newCollectionJournal.DocumentReference = "Collection - " + collection.LoanNumber;
+                        newCollectionJournal.LoanId = null;
+                        newCollectionJournal.CollectionId = collectionId;
+                        newCollectionJournal.ExpenseId = null;
+
+                        db.sysJournals.InsertOnSubmit(newCollectionJournal);
+                        db.SubmitChanges();
+                    }
+                }
+            }
+        }
+
+        // delete collection journal
+        public void deleteCollectionJournal(Int32 collectionId)
+        {
+            var journals = from d in db.sysJournals where d.CollectionId == collectionId select d;
+            if (journals.Any())
+            {
+                db.sysJournals.DeleteAllOnSubmit(journals);
+                db.SubmitChanges();
+            }
+        }
+
         // expenses journal
         public void postExpensesJournal(Int32 expenseId)
         {
@@ -117,18 +191,18 @@ namespace Lending.Business
                 {
                     if (expense.ExpenseAmount > 0)
                     {
-                        Data.sysJournal newLoanJournal = new Data.sysJournal();
-                        newLoanJournal.JournalDate = Convert.ToDateTime(expense.ExpenseDate);
-                        newLoanJournal.AccountId = expense.AccountId;
-                        newLoanJournal.Particulars = expense.Particulars;
-                        newLoanJournal.ReleasedAmount = expense.ExpenseAmount;
-                        newLoanJournal.ReceivedAmount = 0;
-                        newLoanJournal.DocumentReference = "Expenses - " + expense.ExpenseNumber;
-                        newLoanJournal.LoanId = null;
-                        newLoanJournal.CollectionId = null;
-                        newLoanJournal.ExpenseId = expense.Id;
+                        Data.sysJournal newExpenseJournal = new Data.sysJournal();
+                        newExpenseJournal.JournalDate = Convert.ToDateTime(expense.ExpenseDate);
+                        newExpenseJournal.AccountId = expense.AccountId;
+                        newExpenseJournal.Particulars = expense.Particulars;
+                        newExpenseJournal.ReleasedAmount = expense.ExpenseAmount;
+                        newExpenseJournal.ReceivedAmount = 0;
+                        newExpenseJournal.DocumentReference = "Expenses - " + expense.ExpenseNumber;
+                        newExpenseJournal.LoanId = null;
+                        newExpenseJournal.CollectionId = null;
+                        newExpenseJournal.ExpenseId = expenseId;
 
-                        db.sysJournals.InsertOnSubmit(newLoanJournal);
+                        db.sysJournals.InsertOnSubmit(newExpenseJournal);
                         db.SubmitChanges();
                     }
                 }

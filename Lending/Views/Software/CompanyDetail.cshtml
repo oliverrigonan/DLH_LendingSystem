@@ -17,53 +17,7 @@
 
     <section class="software-section">
         <div class="container">
-            <div class="btn-group">
-                <div class="btn-group">
-                    <a href="/Software" class="btn btn-info">
-                        Dashboard
-                    </a>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Set Ups <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/ApplicantList"><i class="fa fa-users fa-fw"></i> Applicants</a></li>
-                        <li><a href="/Software/AreaList"><i class="fa fa-map-pin fa-fw"></i> Area</a></li>
-                        <li><a href="/Software/StaffList"><i class="fa fa-user fa-fw"></i> Staff</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Activities <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/LoanApplicationList"><i class="fa fa-file-text-o fa-fw"></i> Loan Application</a></li>
-                        <li><a href="/Software/CollectionList"><i class="fa fa-money fa-fw"></i> Collection</a></li>
-                        <li><a href="/Software/ExpensesList"><i class="fa fa-credit-card fa-fw"></i> Expenses</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        Reports <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/LoanReport"><i class="fa fa-print fa-fw"></i> Loan Report</a></li>
-                        <li><a href="/Software/CollectionReport"><i class="fa fa-print fa-fw"></i> Collection Report</a></li>
-                        <li><a href="/Software/ExpensesReport"><i class="fa fa-print fa-fw"></i> Expenses Report</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                        System <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="/Software/UserList"><i class="fa fa-key fa-fw"></i> Users</a></li>
-                        <li><a href="/Software/CompanyList"><i class="fa fa-building fa-fw"></i> Company</a></li>
-                        <li><a href="/Software/SystemTables"><i class="fa fa-table fa-fw"></i> System Tables</a></li>
-                    </ul>
-                </div>
-            </div>
+            @Html.Partial("SoftwareMenu")
             <br /><br />
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -79,7 +33,7 @@
                                 <button class="btn btn-primary" id="btnUnlockCompany" onclick="btnUnlockCompanyOnclick()">
                                     <i class="fa fa-unlock fa-fw"></i> Unlock
                                 </button>
-                                <button class="btn btn-danger" id="btnCloseCompany" onclick="window.location = '/Software/CompanyList'">
+                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/CompanyList'">
                                     <i class="fa fa-close fa-fw"></i> Close
                                 </button>
                             </td>
@@ -278,7 +232,7 @@
                 document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                 $("#btnLockCompany").prop("disabled", true);
                 $("#btnUnlockCompany").prop("disabled", true);
-                $("#btnCloseCompany").prop("disabled", true);
+                $("#btnClose").prop("disabled", true);
                 $("#btnAddBranch").prop("disabled", true);
 
                 var companyDetailObject = new Object();
@@ -306,7 +260,7 @@
                             toastr.error("Not Found");
 
                             $("#btnLockCompany").prop("disabled", false);
-                            $("#btnCloseCompany").prop("disabled", false);
+                            $("#btnClose").prop("disabled", false);
                         },
                         400: function () {
                             document.getElementById("btnLockCompany").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
@@ -314,7 +268,7 @@
                             toastr.error("Bad Request");
 
                             $("#btnLockCompany").prop("disabled", false);
-                            $("#btnCloseCompany").prop("disabled", false);
+                            $("#btnClose").prop("disabled", false);
                         }
                     }
                 });
@@ -328,7 +282,7 @@
             document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
             $("#btnUnlockCompany").prop("disabled", true);
             $("#btnLockCompany").prop("disabled", true);
-            $("#btnCloseCompany").prop("disabled", true);
+            $("#btnClose").prop("disabled", true);
             $("#btnAddBranch").prop("disabled", true);
 
             $.ajax({
@@ -349,7 +303,7 @@
                         toastr.error("Not Found");
 
                         $("#btnUnlockCompany").prop("disabled", true);
-                        $("#btnCloseCompany").prop("disabled", true);
+                        $("#btnClose").prop("disabled", true);
                     },
                     400: function () {
                         document.getElementById("btnUnlockCompany").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
@@ -357,7 +311,7 @@
                         toastr.error("Bad Request");
 
                         $("#btnUnlockCompany").prop("disabled", true);
-                        $("#btnCloseCompany").prop("disabled", true);
+                        $("#btnClose").prop("disabled", true);
                     }
                 }
             });
@@ -376,7 +330,17 @@
                         for (i = 0; i < branchListResult.length; i++) {
                             var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
                             var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                            if (isLocked) {
+
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                if (isLocked) {
+                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                                } else {
+                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                                }
+                            } else {
                                 btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
                                 btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
                             }
@@ -686,6 +650,14 @@
             NProgress.start();
             toastrModification();
             getCompanyDetailData();
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+            }
         }
     </script>
 </body>

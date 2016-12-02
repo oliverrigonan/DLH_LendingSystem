@@ -14,6 +14,7 @@ namespace Lending.Models
         public String User { get; set; }
         public Int32 FormId { get; set; }
         public String Form { get; set; }
-        public Boolean IsViewOnly { get; set; }
+        public String FormDescription { get; set; }
+        public Boolean CanPerformActions { get; set; }
     }
 }
