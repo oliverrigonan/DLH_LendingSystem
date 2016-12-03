@@ -125,32 +125,70 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                String staffNumber = "0000000001";
-                var staffs = from d in db.mstStaffs.OrderByDescending(d => d.Id) select d;
-                if (staffs.Any())
+                if (mstUserForms.Any())
                 {
-                    var newStaffNumber = Convert.ToInt32(staffs.FirstOrDefault().StaffNumber) + 0000000001;
-                    staffNumber = newStaffNumber.ToString();
+                    String matchPageString = "StaffList";
+                    Boolean canPerformActions = false;
+
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        String staffNumber = "0000000001";
+                        var staffs = from d in db.mstStaffs.OrderByDescending(d => d.Id) select d;
+                        if (staffs.Any())
+                        {
+                            var newStaffNumber = Convert.ToInt32(staffs.FirstOrDefault().StaffNumber) + 0000000001;
+                            staffNumber = newStaffNumber.ToString();
+                        }
+
+                        Data.mstStaff newStaff = new Data.mstStaff();
+                        newStaff.StaffNumber = zeroFill(Convert.ToInt32(staffNumber), 10);
+                        newStaff.Staff = "NA";
+                        newStaff.ContactNumber = "NA";
+                        newStaff.Address = "NA";
+                        newStaff.StaffManualNumber = "NA";
+                        newStaff.StaffRoleId = (from d in db.sysStaffRoles select d.Id).FirstOrDefault();
+                        newStaff.IsLocked = false;
+                        newStaff.CreatedByUserId = userId;
+                        newStaff.CreatedDateTime = DateTime.Now;
+                        newStaff.UpdatedByUserId = userId;
+                        newStaff.UpdatedDateTime = DateTime.Now;
+
+                        db.mstStaffs.InsertOnSubmit(newStaff);
+                        db.SubmitChanges();
+
+                        return newStaff.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-
-                Data.mstStaff newStaff = new Data.mstStaff();
-                newStaff.StaffNumber = zeroFill(Convert.ToInt32(staffNumber), 10);
-                newStaff.Staff = "NA";
-                newStaff.ContactNumber = "NA";
-                newStaff.Address = "NA";
-                newStaff.StaffManualNumber = "NA";
-                newStaff.StaffRoleId = (from d in db.sysStaffRoles select d.Id).FirstOrDefault();
-                newStaff.IsLocked = false;
-                newStaff.CreatedByUserId = userId;
-                newStaff.CreatedDateTime = DateTime.Now;
-                newStaff.UpdatedByUserId = userId;
-                newStaff.UpdatedDateTime = DateTime.Now;
-
-                db.mstStaffs.InsertOnSubmit(newStaff);
-                db.SubmitChanges();
-
-                return newStaff.Id;
+                else
+                {
+                    return 0;
+                }
             }
             catch
             {
@@ -172,19 +210,57 @@ namespace Lending.ApiControllers
                     if (!staffs.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var lockStaff = staffs.FirstOrDefault();
-                        lockStaff.Staff = staff.Staff;
-                        lockStaff.ContactNumber = staff.ContactNumber;
-                        lockStaff.Address = staff.Address;
-                        lockStaff.StaffManualNumber = staff.StaffManualNumber;
-                        lockStaff.StaffRoleId = staff.StaffRoleId;
-                        lockStaff.IsLocked = true;
-                        lockStaff.UpdatedByUserId = userId;
-                        lockStaff.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "StaffDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var lockStaff = staffs.FirstOrDefault();
+                                lockStaff.Staff = staff.Staff;
+                                lockStaff.ContactNumber = staff.ContactNumber;
+                                lockStaff.Address = staff.Address;
+                                lockStaff.StaffManualNumber = staff.StaffManualNumber;
+                                lockStaff.StaffRoleId = staff.StaffRoleId;
+                                lockStaff.IsLocked = true;
+                                lockStaff.UpdatedByUserId = userId;
+                                lockStaff.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -216,14 +292,52 @@ namespace Lending.ApiControllers
                     if (staffs.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var unlockStaff = staffs.FirstOrDefault();
-                        unlockStaff.IsLocked = false;
-                        unlockStaff.UpdatedByUserId = userId;
-                        unlockStaff.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "StaffDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var unlockStaff = staffs.FirstOrDefault();
+                                unlockStaff.IsLocked = false;
+                                unlockStaff.UpdatedByUserId = userId;
+                                unlockStaff.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -254,10 +368,50 @@ namespace Lending.ApiControllers
                 {
                     if (!staffs.FirstOrDefault().IsLocked)
                     {
-                        db.mstStaffs.DeleteOnSubmit(staffs.First());
-                        db.SubmitChanges();
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "StaffDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                db.mstStaffs.DeleteOnSubmit(staffs.First());
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {

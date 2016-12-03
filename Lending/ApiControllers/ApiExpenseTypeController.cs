@@ -20,18 +20,18 @@ namespace Lending.ApiControllers
         public List<Models.MstExpenseType> listExpenseType()
         {
             var expenseTypes = from d in db.mstExpenseTypes
-                        select new Models.MstExpenseType
-                        {
-                            Id = d.Id,
-                            ExpenseType = d.ExpenseType,
-                            Description = d.Description,
-                            CreatedByUserId = d.CreatedByUserId,
-                            CreatedByUser = d.mstUser.FullName,
-                            CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                            UpdatedByUserId = d.UpdatedByUserId,
-                            UpdatedByUser = d.mstUser1.FullName,
-                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                        };
+                               select new Models.MstExpenseType
+                               {
+                                   Id = d.Id,
+                                   ExpenseType = d.ExpenseType,
+                                   Description = d.Description,
+                                   CreatedByUserId = d.CreatedByUserId,
+                                   CreatedByUser = d.mstUser.FullName,
+                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                   UpdatedByUserId = d.UpdatedByUserId,
+                                   UpdatedByUser = d.mstUser1.FullName,
+                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                               };
 
             return expenseTypes.ToList();
         }
@@ -45,19 +45,57 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                Data.mstExpenseType newExpenseType = new Data.mstExpenseType();
-                newExpenseType.ExpenseType = expenseType.ExpenseType;
-                newExpenseType.Description = expenseType.Description;
-                newExpenseType.CreatedByUserId = userId;
-                newExpenseType.CreatedDateTime = DateTime.Now;
-                newExpenseType.UpdatedByUserId = userId;
-                newExpenseType.UpdatedDateTime = DateTime.Now;
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "SystemTables";
+                    Boolean canPerformActions = false;
 
-                db.mstExpenseTypes.InsertOnSubmit(newExpenseType);
-                db.SubmitChanges();
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        Data.mstExpenseType newExpenseType = new Data.mstExpenseType();
+                        newExpenseType.ExpenseType = expenseType.ExpenseType;
+                        newExpenseType.Description = expenseType.Description;
+                        newExpenseType.CreatedByUserId = userId;
+                        newExpenseType.CreatedDateTime = DateTime.Now;
+                        newExpenseType.UpdatedByUserId = userId;
+                        newExpenseType.UpdatedDateTime = DateTime.Now;
+
+                        db.mstExpenseTypes.InsertOnSubmit(newExpenseType);
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             catch
             {
@@ -77,16 +115,54 @@ namespace Lending.ApiControllers
                 if (expenseTypes.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    var updateExpenseType = expenseTypes.FirstOrDefault();
-                    updateExpenseType.ExpenseType = expenseType.ExpenseType;
-                    updateExpenseType.Description = expenseType.Description;
-                    updateExpenseType.UpdatedByUserId = userId;
-                    updateExpenseType.UpdatedDateTime = DateTime.Now;
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
 
-                    db.SubmitChanges();
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            var updateExpenseType = expenseTypes.FirstOrDefault();
+                            updateExpenseType.ExpenseType = expenseType.ExpenseType;
+                            updateExpenseType.Description = expenseType.Description;
+                            updateExpenseType.UpdatedByUserId = userId;
+                            updateExpenseType.UpdatedDateTime = DateTime.Now;
+
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -110,10 +186,50 @@ namespace Lending.ApiControllers
                 var expenseTypes = from d in db.mstExpenseTypes where d.Id == Convert.ToInt32(id) select d;
                 if (expenseTypes.Any())
                 {
-                    db.mstExpenseTypes.DeleteOnSubmit(expenseTypes.First());
-                    db.SubmitChanges();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            db.mstExpenseTypes.DeleteOnSubmit(expenseTypes.First());
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

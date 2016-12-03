@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
@@ -45,15 +46,55 @@ namespace Lending.ApiControllers
                 {
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
-                        Data.mstApplicantApplianceOwned newApplianceOwned = new Data.mstApplicantApplianceOwned();
-                        newApplianceOwned.ApplicantId = applianceOwned.ApplicantId;
-                        newApplianceOwned.ApplianceBrand = applianceOwned.ApplianceBrand;
-                        newApplianceOwned.PresentValue = applianceOwned.PresentValue;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        db.mstApplicantApplianceOwneds.InsertOnSubmit(newApplianceOwned);
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                Data.mstApplicantApplianceOwned newApplianceOwned = new Data.mstApplicantApplianceOwned();
+                                newApplianceOwned.ApplicantId = applianceOwned.ApplicantId;
+                                newApplianceOwned.ApplianceBrand = applianceOwned.ApplianceBrand;
+                                newApplianceOwned.PresentValue = applianceOwned.PresentValue;
+
+                                db.mstApplicantApplianceOwneds.InsertOnSubmit(newApplianceOwned);
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -87,14 +128,54 @@ namespace Lending.ApiControllers
                         var applianceOwneds = from d in db.mstApplicantApplianceOwneds where d.Id == Convert.ToInt32(id) select d;
                         if (applianceOwneds.Any())
                         {
-                            var updateApplianceOwned = applianceOwneds.FirstOrDefault();
-                            updateApplianceOwned.ApplicantId = applianceOwned.ApplicantId;
-                            updateApplianceOwned.ApplianceBrand = applianceOwned.ApplianceBrand;
-                            updateApplianceOwned.PresentValue = applianceOwned.PresentValue;
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            db.SubmitChanges();
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    var updateApplianceOwned = applianceOwneds.FirstOrDefault();
+                                    updateApplianceOwned.ApplicantId = applianceOwned.ApplicantId;
+                                    updateApplianceOwned.ApplianceBrand = applianceOwned.ApplianceBrand;
+                                    updateApplianceOwned.PresentValue = applianceOwned.PresentValue;
+
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -133,10 +214,50 @@ namespace Lending.ApiControllers
                     {
                         if (!applicants.FirstOrDefault().IsLocked)
                         {
-                            db.mstApplicantApplianceOwneds.DeleteOnSubmit(applianceOwneds.First());
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    db.mstApplicantApplianceOwneds.DeleteOnSubmit(applianceOwneds.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

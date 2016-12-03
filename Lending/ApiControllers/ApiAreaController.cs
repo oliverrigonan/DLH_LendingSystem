@@ -95,31 +95,69 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                String areaNumber = "0000000001";
-                var areas = from d in db.mstAreas.OrderByDescending(d => d.Id) select d;
-                if (areas.Any())
+                if (mstUserForms.Any())
                 {
-                    var newAreaNumber = Convert.ToInt32(areas.FirstOrDefault().AreaNumber) + 0000000001;
-                    areaNumber = newAreaNumber.ToString();
+                    String matchPageString = "AreaList";
+                    Boolean canPerformActions = false;
+
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        String areaNumber = "0000000001";
+                        var areas = from d in db.mstAreas.OrderByDescending(d => d.Id) select d;
+                        if (areas.Any())
+                        {
+                            var newAreaNumber = Convert.ToInt32(areas.FirstOrDefault().AreaNumber) + 0000000001;
+                            areaNumber = newAreaNumber.ToString();
+                        }
+
+                        Data.mstArea newArea = new Data.mstArea();
+                        newArea.AreaNumber = zeroFill(Convert.ToInt32(areaNumber), 10);
+                        newArea.Area = "NA";
+                        newArea.Description = "NA";
+                        newArea.SupervisorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 1 select d.Id).FirstOrDefault();
+                        newArea.CollectorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 2 select d.Id).FirstOrDefault();
+                        newArea.IsLocked = false;
+                        newArea.CreatedByUserId = userId;
+                        newArea.CreatedDateTime = DateTime.Now;
+                        newArea.UpdatedByUserId = userId;
+                        newArea.UpdatedDateTime = DateTime.Now;
+
+                        db.mstAreas.InsertOnSubmit(newArea);
+                        db.SubmitChanges();
+
+                        return newArea.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-
-                Data.mstArea newArea = new Data.mstArea();
-                newArea.AreaNumber = zeroFill(Convert.ToInt32(areaNumber), 10);
-                newArea.Area = "NA";
-                newArea.Description = "NA";
-                newArea.SupervisorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 1 select d.Id).FirstOrDefault();
-                newArea.CollectorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 2 select d.Id).FirstOrDefault();
-                newArea.IsLocked = false;
-                newArea.CreatedByUserId = userId;
-                newArea.CreatedDateTime = DateTime.Now;
-                newArea.UpdatedByUserId = userId;
-                newArea.UpdatedDateTime = DateTime.Now;
-
-                db.mstAreas.InsertOnSubmit(newArea);
-                db.SubmitChanges();
-
-                return newArea.Id;
+                else
+                {
+                    return 0;
+                }
             }
             catch
             {
@@ -141,18 +179,56 @@ namespace Lending.ApiControllers
                     if (!areas.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var lockArea = areas.FirstOrDefault();
-                        lockArea.Area = area.Area;
-                        lockArea.Description = area.Description;
-                        lockArea.SupervisorStaffId = area.SupervisorStaffId;
-                        lockArea.CollectorStaffId = area.CollectorStaffId;
-                        lockArea.IsLocked = true;
-                        lockArea.UpdatedByUserId = userId;
-                        lockArea.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "AreaDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var lockArea = areas.FirstOrDefault();
+                                lockArea.Area = area.Area;
+                                lockArea.Description = area.Description;
+                                lockArea.SupervisorStaffId = area.SupervisorStaffId;
+                                lockArea.CollectorStaffId = area.CollectorStaffId;
+                                lockArea.IsLocked = true;
+                                lockArea.UpdatedByUserId = userId;
+                                lockArea.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -184,14 +260,52 @@ namespace Lending.ApiControllers
                     if (areas.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var unlockArea = areas.FirstOrDefault();
-                        unlockArea.IsLocked = false;
-                        unlockArea.UpdatedByUserId = userId;
-                        unlockArea.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "AreaDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var unlockArea = areas.FirstOrDefault();
+                                unlockArea.IsLocked = false;
+                                unlockArea.UpdatedByUserId = userId;
+                                unlockArea.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -222,10 +336,50 @@ namespace Lending.ApiControllers
                 {
                     if (!areas.FirstOrDefault().IsLocked)
                     {
-                        db.mstAreas.DeleteOnSubmit(areas.First());
-                        db.SubmitChanges();
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "AreaDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                db.mstAreas.DeleteOnSubmit(areas.First());
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {

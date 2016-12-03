@@ -177,74 +177,112 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                Data.mstApplicant newApplicant = new Data.mstApplicant();
-
-                string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Images\applicantPhotoPlaceHolder.png");
-
-                Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
-                String file = Convert.ToBase64String(bytes);
-                byte[] imgarr = Convert.FromBase64String(file);
-
-                String applicantNumber = "0000000001";
-                var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
-                if (applicants.Any())
+                if (mstUserForms.Any())
                 {
-                    var newApplicantNumber = Convert.ToInt32(applicants.FirstOrDefault().ApplicantNumber) + 0000000001;
-                    applicantNumber = newApplicantNumber.ToString();
+                    String matchPageString = "ApplicantList";
+                    Boolean canPerformActions = false;
+
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        Data.mstApplicant newApplicant = new Data.mstApplicant();
+
+                        string path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Images\applicantPhotoPlaceHolder.png");
+
+                        Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
+                        String file = Convert.ToBase64String(bytes);
+                        byte[] imgarr = Convert.FromBase64String(file);
+
+                        String applicantNumber = "0000000001";
+                        var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
+                        if (applicants.Any())
+                        {
+                            var newApplicantNumber = Convert.ToInt32(applicants.FirstOrDefault().ApplicantNumber) + 0000000001;
+                            applicantNumber = newApplicantNumber.ToString();
+                        }
+
+                        newApplicant.ApplicantNumber = zeroFill(Convert.ToInt32(applicantNumber), 10);
+                        newApplicant.Photo = imgarr;
+                        newApplicant.AreaId = (from d in db.mstAreas select d.Id).FirstOrDefault();
+                        newApplicant.ApplicantLastName = "NA";
+                        newApplicant.ApplicantFirstName = "NA";
+                        newApplicant.ApplicantMiddleName = null;
+                        newApplicant.BirthDate = DateTime.Today;
+                        newApplicant.CivilStatusId = (from d in db.sysCivilStatus select d.Id).FirstOrDefault();
+                        newApplicant.CityAddress = "NA";
+                        newApplicant.ProvinceAddress = "NA";
+                        newApplicant.ContactNumber = "NA";
+                        newApplicant.ResidenceTypeId = (from d in db.sysResidenceTypes select d.Id).FirstOrDefault();
+                        newApplicant.ResidenceMonthlyRentAmount = 0;
+                        newApplicant.LandResidenceTypeId = (from d in db.sysResidenceTypes select d.Id).FirstOrDefault();
+                        newApplicant.LandResidenceMonthlyRentAmount = 0;
+                        newApplicant.LengthOfStay = "NA";
+                        newApplicant.BusinessAddress = "NA";
+                        newApplicant.BusinessKaratulaName = "NA";
+                        newApplicant.BusinessTelephoneNumber = "NA";
+                        newApplicant.BusinessYear = "NA";
+                        newApplicant.BusinessMerchandise = "NA";
+                        newApplicant.BusinessStockValues = 0;
+                        newApplicant.BusinessBeginningCapital = 0;
+                        newApplicant.BusinessLowSalesPeriod = "NA";
+                        newApplicant.BusinessLowestDailySales = 0;
+                        newApplicant.BusinessAverageDailySales = 0;
+                        newApplicant.EmployedCompany = "NA";
+                        newApplicant.EmployedCompanyAddress = "NA";
+                        newApplicant.EmployedPositionOccupied = "NA";
+                        newApplicant.EmployedServiceLength = "NA";
+                        newApplicant.EmployedTelephoneNumber = "NA";
+                        newApplicant.SpouseFullName = "NA";
+                        newApplicant.SpouseEmployerBusiness = "NA";
+                        newApplicant.SpouseEmployerBusinessAddress = "NA";
+                        newApplicant.SpouseBusinessTelephoneNumber = "NA";
+                        newApplicant.SpousePositionOccupied = "NA";
+                        newApplicant.SpouseMonthlySalary = 0;
+                        newApplicant.SpouseLengthOfService = "NA";
+                        newApplicant.NumberOfChildren = "NA";
+                        newApplicant.Studying = "NA";
+                        newApplicant.Schools = "NA";
+                        newApplicant.IsLocked = false;
+                        newApplicant.CreatedByUserId = userId;
+                        newApplicant.CreatedDateTime = DateTime.Now;
+                        newApplicant.UpdatedByUserId = userId;
+                        newApplicant.UpdatedDateTime = DateTime.Now;
+
+                        db.mstApplicants.InsertOnSubmit(newApplicant);
+                        db.SubmitChanges();
+
+                        return newApplicant.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-
-                newApplicant.ApplicantNumber = zeroFill(Convert.ToInt32(applicantNumber), 10);
-                newApplicant.Photo = imgarr;
-                newApplicant.AreaId = (from d in db.mstAreas select d.Id).FirstOrDefault();
-                newApplicant.ApplicantLastName = "NA";
-                newApplicant.ApplicantFirstName = "NA";
-                newApplicant.ApplicantMiddleName = null;
-                newApplicant.BirthDate = DateTime.Today;
-                newApplicant.CivilStatusId = (from d in db.sysCivilStatus select d.Id).FirstOrDefault();
-                newApplicant.CityAddress = "NA";
-                newApplicant.ProvinceAddress = "NA";
-                newApplicant.ContactNumber = "NA";
-                newApplicant.ResidenceTypeId = (from d in db.sysResidenceTypes select d.Id).FirstOrDefault();
-                newApplicant.ResidenceMonthlyRentAmount = 0;
-                newApplicant.LandResidenceTypeId = (from d in db.sysResidenceTypes select d.Id).FirstOrDefault();
-                newApplicant.LandResidenceMonthlyRentAmount = 0;
-                newApplicant.LengthOfStay = "NA";
-                newApplicant.BusinessAddress = "NA";
-                newApplicant.BusinessKaratulaName = "NA";
-                newApplicant.BusinessTelephoneNumber = "NA";
-                newApplicant.BusinessYear = "NA";
-                newApplicant.BusinessMerchandise = "NA";
-                newApplicant.BusinessStockValues = 0;
-                newApplicant.BusinessBeginningCapital = 0;
-                newApplicant.BusinessLowSalesPeriod = "NA";
-                newApplicant.BusinessLowestDailySales = 0;
-                newApplicant.BusinessAverageDailySales = 0;
-                newApplicant.EmployedCompany = "NA";
-                newApplicant.EmployedCompanyAddress = "NA";
-                newApplicant.EmployedPositionOccupied = "NA";
-                newApplicant.EmployedServiceLength = "NA";
-                newApplicant.EmployedTelephoneNumber = "NA";
-                newApplicant.SpouseFullName = "NA";
-                newApplicant.SpouseEmployerBusiness = "NA";
-                newApplicant.SpouseEmployerBusinessAddress = "NA";
-                newApplicant.SpouseBusinessTelephoneNumber = "NA";
-                newApplicant.SpousePositionOccupied = "NA";
-                newApplicant.SpouseMonthlySalary = 0;
-                newApplicant.SpouseLengthOfService = "NA";
-                newApplicant.NumberOfChildren = "NA";
-                newApplicant.Studying = "NA";
-                newApplicant.Schools = "NA";
-                newApplicant.IsLocked = false;
-                newApplicant.CreatedByUserId = userId;
-                newApplicant.CreatedDateTime = DateTime.Now;
-                newApplicant.UpdatedByUserId = userId;
-                newApplicant.UpdatedDateTime = DateTime.Now;
-
-                db.mstApplicants.InsertOnSubmit(newApplicant);
-                db.SubmitChanges();
-
-                return newApplicant.Id;
+                else
+                {
+                    return 0;
+                }
             }
             catch
             {
@@ -266,14 +304,52 @@ namespace Lending.ApiControllers
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var lockApplicant = applicants.FirstOrDefault();
-                        lockApplicant.IsLocked = true;
-                        lockApplicant.UpdatedByUserId = userId;
-                        lockApplicant.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var lockApplicant = applicants.FirstOrDefault();
+                                lockApplicant.IsLocked = true;
+                                lockApplicant.UpdatedByUserId = userId;
+                                lockApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -305,14 +381,52 @@ namespace Lending.ApiControllers
                     if (applicants.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var unlockApplicant = applicants.FirstOrDefault();
-                        unlockApplicant.IsLocked = false;
-                        unlockApplicant.UpdatedByUserId = userId;
-                        unlockApplicant.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var unlockApplicant = applicants.FirstOrDefault();
+                                unlockApplicant.IsLocked = false;
+                                unlockApplicant.UpdatedByUserId = userId;
+                                unlockApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -344,52 +458,90 @@ namespace Lending.ApiControllers
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var updateApplicant = applicants.FirstOrDefault();
-                        updateApplicant.AreaId = applicant.AreaId;
-                        updateApplicant.ApplicantLastName = applicant.ApplicantLastName;
-                        updateApplicant.ApplicantFirstName = applicant.ApplicantFirstName;
-                        updateApplicant.ApplicantMiddleName = applicant.ApplicantMiddleName;
-                        updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
-                        updateApplicant.CivilStatusId = applicant.CivilStatusId;
-                        updateApplicant.CityAddress = applicant.CityAddress;
-                        updateApplicant.ProvinceAddress = applicant.ProvinceAddress;
-                        updateApplicant.ContactNumber = applicant.ContactNumber;
-                        updateApplicant.ResidenceTypeId = applicant.ResidenceTypeId;
-                        updateApplicant.ResidenceMonthlyRentAmount = applicant.ResidenceMonthlyRentAmount;
-                        updateApplicant.LandResidenceTypeId = applicant.LandResidenceTypeId;
-                        updateApplicant.LandResidenceMonthlyRentAmount = applicant.LandResidenceMonthlyRentAmount;
-                        updateApplicant.LengthOfStay = applicant.LengthOfStay;
-                        updateApplicant.BusinessAddress = applicant.BusinessAddress;
-                        updateApplicant.BusinessKaratulaName = applicant.BusinessKaratulaName;
-                        updateApplicant.BusinessTelephoneNumber = applicant.BusinessTelephoneNumber;
-                        updateApplicant.BusinessYear = applicant.BusinessYear;
-                        updateApplicant.BusinessMerchandise = applicant.BusinessMerchandise;
-                        updateApplicant.BusinessStockValues = applicant.BusinessStockValues;
-                        updateApplicant.BusinessBeginningCapital = applicant.BusinessBeginningCapital;
-                        updateApplicant.BusinessLowSalesPeriod = applicant.BusinessLowSalesPeriod;
-                        updateApplicant.BusinessLowestDailySales = applicant.BusinessLowestDailySales;
-                        updateApplicant.BusinessAverageDailySales = applicant.BusinessAverageDailySales;
-                        updateApplicant.EmployedCompany = applicant.EmployedCompany;
-                        updateApplicant.EmployedCompanyAddress = applicant.EmployedCompanyAddress;
-                        updateApplicant.EmployedPositionOccupied = applicant.EmployedPositionOccupied;
-                        updateApplicant.EmployedServiceLength = applicant.EmployedServiceLength;
-                        updateApplicant.EmployedTelephoneNumber = applicant.EmployedTelephoneNumber;
-                        updateApplicant.SpouseFullName = applicant.SpouseFullName;
-                        updateApplicant.SpouseEmployerBusiness = applicant.SpouseEmployerBusiness;
-                        updateApplicant.SpouseEmployerBusinessAddress = applicant.SpouseEmployerBusinessAddress;
-                        updateApplicant.SpouseBusinessTelephoneNumber = applicant.SpouseBusinessTelephoneNumber;
-                        updateApplicant.SpousePositionOccupied = applicant.SpousePositionOccupied;
-                        updateApplicant.SpouseMonthlySalary = applicant.SpouseMonthlySalary;
-                        updateApplicant.SpouseLengthOfService = applicant.SpouseLengthOfService;
-                        updateApplicant.NumberOfChildren = applicant.NumberOfChildren;
-                        updateApplicant.Studying = applicant.Studying;
-                        updateApplicant.Schools = applicant.Schools;
-                        updateApplicant.UpdatedByUserId = userId;
-                        updateApplicant.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var updateApplicant = applicants.FirstOrDefault();
+                                updateApplicant.AreaId = applicant.AreaId;
+                                updateApplicant.ApplicantLastName = applicant.ApplicantLastName;
+                                updateApplicant.ApplicantFirstName = applicant.ApplicantFirstName;
+                                updateApplicant.ApplicantMiddleName = applicant.ApplicantMiddleName;
+                                updateApplicant.BirthDate = Convert.ToDateTime(applicant.BirthDate);
+                                updateApplicant.CivilStatusId = applicant.CivilStatusId;
+                                updateApplicant.CityAddress = applicant.CityAddress;
+                                updateApplicant.ProvinceAddress = applicant.ProvinceAddress;
+                                updateApplicant.ContactNumber = applicant.ContactNumber;
+                                updateApplicant.ResidenceTypeId = applicant.ResidenceTypeId;
+                                updateApplicant.ResidenceMonthlyRentAmount = applicant.ResidenceMonthlyRentAmount;
+                                updateApplicant.LandResidenceTypeId = applicant.LandResidenceTypeId;
+                                updateApplicant.LandResidenceMonthlyRentAmount = applicant.LandResidenceMonthlyRentAmount;
+                                updateApplicant.LengthOfStay = applicant.LengthOfStay;
+                                updateApplicant.BusinessAddress = applicant.BusinessAddress;
+                                updateApplicant.BusinessKaratulaName = applicant.BusinessKaratulaName;
+                                updateApplicant.BusinessTelephoneNumber = applicant.BusinessTelephoneNumber;
+                                updateApplicant.BusinessYear = applicant.BusinessYear;
+                                updateApplicant.BusinessMerchandise = applicant.BusinessMerchandise;
+                                updateApplicant.BusinessStockValues = applicant.BusinessStockValues;
+                                updateApplicant.BusinessBeginningCapital = applicant.BusinessBeginningCapital;
+                                updateApplicant.BusinessLowSalesPeriod = applicant.BusinessLowSalesPeriod;
+                                updateApplicant.BusinessLowestDailySales = applicant.BusinessLowestDailySales;
+                                updateApplicant.BusinessAverageDailySales = applicant.BusinessAverageDailySales;
+                                updateApplicant.EmployedCompany = applicant.EmployedCompany;
+                                updateApplicant.EmployedCompanyAddress = applicant.EmployedCompanyAddress;
+                                updateApplicant.EmployedPositionOccupied = applicant.EmployedPositionOccupied;
+                                updateApplicant.EmployedServiceLength = applicant.EmployedServiceLength;
+                                updateApplicant.EmployedTelephoneNumber = applicant.EmployedTelephoneNumber;
+                                updateApplicant.SpouseFullName = applicant.SpouseFullName;
+                                updateApplicant.SpouseEmployerBusiness = applicant.SpouseEmployerBusiness;
+                                updateApplicant.SpouseEmployerBusinessAddress = applicant.SpouseEmployerBusinessAddress;
+                                updateApplicant.SpouseBusinessTelephoneNumber = applicant.SpouseBusinessTelephoneNumber;
+                                updateApplicant.SpousePositionOccupied = applicant.SpousePositionOccupied;
+                                updateApplicant.SpouseMonthlySalary = applicant.SpouseMonthlySalary;
+                                updateApplicant.SpouseLengthOfService = applicant.SpouseLengthOfService;
+                                updateApplicant.NumberOfChildren = applicant.NumberOfChildren;
+                                updateApplicant.Studying = applicant.Studying;
+                                updateApplicant.Schools = applicant.Schools;
+                                updateApplicant.UpdatedByUserId = userId;
+                                updateApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -421,15 +573,53 @@ namespace Lending.ApiControllers
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var updateApplicant = applicants.FirstOrDefault();
-                        byte[] imgarr = applicant.Photo;
-                        updateApplicant.Photo = new Binary(imgarr);
-                        updateApplicant.UpdatedByUserId = userId;
-                        updateApplicant.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var updateApplicant = applicants.FirstOrDefault();
+                                byte[] imgarr = applicant.Photo;
+                                updateApplicant.Photo = new Binary(imgarr);
+                                updateApplicant.UpdatedByUserId = userId;
+                                updateApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -461,19 +651,57 @@ namespace Lending.ApiControllers
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var updateApplicant = applicants.FirstOrDefault();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
-                        String file = Convert.ToBase64String(bytes);
-                        byte[] imgarr = Convert.FromBase64String(file);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-                        updateApplicant.Photo = imgarr;
-                        updateApplicant.UpdatedByUserId = userId;
-                        updateApplicant.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                                    break;
+                                }
+                            }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            if (canPerformActions)
+                            {
+                                var updateApplicant = applicants.FirstOrDefault();
+
+                                Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/applicantPhotoPlaceHolder.png"));
+                                String file = Convert.ToBase64String(bytes);
+                                byte[] imgarr = Convert.FromBase64String(file);
+
+                                updateApplicant.Photo = imgarr;
+                                updateApplicant.UpdatedByUserId = userId;
+                                updateApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -504,10 +732,50 @@ namespace Lending.ApiControllers
                 {
                     if (applicants.FirstOrDefault().IsLocked != true)
                     {
-                        db.mstApplicants.DeleteOnSubmit(applicants.First());
-                        db.SubmitChanges();
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantList";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                db.mstApplicants.DeleteOnSubmit(applicants.First());
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {

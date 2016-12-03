@@ -20,20 +20,20 @@ namespace Lending.ApiControllers
         public List<Models.MstAccount> listAccount()
         {
             var accounts = from d in db.mstAccounts
-                        select new Models.MstAccount
-                        {
-                            Id = d.Id,
-                            Account = d.Account,
-                            Description = d.Description,
-                            AccountTransactionTypeId = d.AccountTransactionTypeId,
-                            AccountTransactionType = d.sysTransactionType.TransactionType,
-                            CreatedByUserId = d.CreatedByUserId,
-                            CreatedByUser = d.mstUser.FullName,
-                            CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                            UpdatedByUserId = d.UpdatedByUserId,
-                            UpdatedByUser = d.mstUser1.FullName,
-                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                        };
+                           select new Models.MstAccount
+                           {
+                               Id = d.Id,
+                               Account = d.Account,
+                               Description = d.Description,
+                               AccountTransactionTypeId = d.AccountTransactionTypeId,
+                               AccountTransactionType = d.sysTransactionType.TransactionType,
+                               CreatedByUserId = d.CreatedByUserId,
+                               CreatedByUser = d.mstUser.FullName,
+                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                               UpdatedByUserId = d.UpdatedByUserId,
+                               UpdatedByUser = d.mstUser1.FullName,
+                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                           };
 
             return accounts.ToList();
         }
@@ -73,20 +73,58 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                Data.mstAccount newAccount = new Data.mstAccount();
-                newAccount.Account = account.Account;
-                newAccount.Description = account.Description;
-                newAccount.AccountTransactionTypeId = account.AccountTransactionTypeId;
-                newAccount.CreatedByUserId = userId;
-                newAccount.CreatedDateTime = DateTime.Now;
-                newAccount.UpdatedByUserId = userId;
-                newAccount.UpdatedDateTime = DateTime.Now;
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "SystemTables";
+                    Boolean canPerformActions = false;
 
-                db.mstAccounts.InsertOnSubmit(newAccount);
-                db.SubmitChanges();
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        Data.mstAccount newAccount = new Data.mstAccount();
+                        newAccount.Account = account.Account;
+                        newAccount.Description = account.Description;
+                        newAccount.AccountTransactionTypeId = account.AccountTransactionTypeId;
+                        newAccount.CreatedByUserId = userId;
+                        newAccount.CreatedDateTime = DateTime.Now;
+                        newAccount.UpdatedByUserId = userId;
+                        newAccount.UpdatedDateTime = DateTime.Now;
+
+                        db.mstAccounts.InsertOnSubmit(newAccount);
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             catch
             {
@@ -106,17 +144,54 @@ namespace Lending.ApiControllers
                 if (accounts.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    var updateAccount = accounts.FirstOrDefault();
-                    updateAccount.Account = account.Account;
-                    updateAccount.Description = account.Description;
-                    updateAccount.AccountTransactionTypeId = account.AccountTransactionTypeId;
-                    updateAccount.UpdatedByUserId = userId;
-                    updateAccount.UpdatedDateTime = DateTime.Now;
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
 
-                    db.SubmitChanges();
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            var updateAccount = accounts.FirstOrDefault();
+                            updateAccount.Account = account.Account;
+                            updateAccount.Description = account.Description;
+                            updateAccount.AccountTransactionTypeId = account.AccountTransactionTypeId;
+                            updateAccount.UpdatedByUserId = userId;
+                            updateAccount.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -140,10 +215,51 @@ namespace Lending.ApiControllers
                 var accounts = from d in db.mstAccounts where d.Id == Convert.ToInt32(id) select d;
                 if (accounts.Any())
                 {
-                    db.mstAccounts.DeleteOnSubmit(accounts.First());
-                    db.SubmitChanges();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            db.mstAccounts.DeleteOnSubmit(accounts.First());
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

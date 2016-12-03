@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
@@ -47,17 +48,57 @@ namespace Lending.ApiControllers
                 {
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
-                        Data.mstApplicantRealPropertiesOwned newRealPropertiesOwned = new Data.mstApplicantRealPropertiesOwned();
-                        newRealPropertiesOwned.ApplicantId = realPropertiesOwned.ApplicantId;
-                        newRealPropertiesOwned.Real = realPropertiesOwned.Real;
-                        newRealPropertiesOwned.Location = realPropertiesOwned.Location;
-                        newRealPropertiesOwned.PresentValue = realPropertiesOwned.PresentValue;
-                        newRealPropertiesOwned.EcumberedTo = realPropertiesOwned.EcumberedTo;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        db.mstApplicantRealPropertiesOwneds.InsertOnSubmit(newRealPropertiesOwned);
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                Data.mstApplicantRealPropertiesOwned newRealPropertiesOwned = new Data.mstApplicantRealPropertiesOwned();
+                                newRealPropertiesOwned.ApplicantId = realPropertiesOwned.ApplicantId;
+                                newRealPropertiesOwned.Real = realPropertiesOwned.Real;
+                                newRealPropertiesOwned.Location = realPropertiesOwned.Location;
+                                newRealPropertiesOwned.PresentValue = realPropertiesOwned.PresentValue;
+                                newRealPropertiesOwned.EcumberedTo = realPropertiesOwned.EcumberedTo;
+
+                                db.mstApplicantRealPropertiesOwneds.InsertOnSubmit(newRealPropertiesOwned);
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -91,17 +132,56 @@ namespace Lending.ApiControllers
                         var realPropertiesOwneds = from d in db.mstApplicantRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
                         if (realPropertiesOwneds.Any())
                         {
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            var updateRealPropertiesOwneds = realPropertiesOwneds.FirstOrDefault();
-                            updateRealPropertiesOwneds.ApplicantId = realPropertiesOwned.ApplicantId;
-                            updateRealPropertiesOwneds.Real = realPropertiesOwned.Real;
-                            updateRealPropertiesOwneds.Location = realPropertiesOwned.Location;
-                            updateRealPropertiesOwneds.PresentValue = realPropertiesOwned.PresentValue;
-                            updateRealPropertiesOwneds.EcumberedTo = realPropertiesOwned.EcumberedTo;
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
 
-                            db.SubmitChanges();
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    var updateRealPropertiesOwneds = realPropertiesOwneds.FirstOrDefault();
+                                    updateRealPropertiesOwneds.ApplicantId = realPropertiesOwned.ApplicantId;
+                                    updateRealPropertiesOwneds.Real = realPropertiesOwned.Real;
+                                    updateRealPropertiesOwneds.Location = realPropertiesOwned.Location;
+                                    updateRealPropertiesOwneds.PresentValue = realPropertiesOwned.PresentValue;
+                                    updateRealPropertiesOwneds.EcumberedTo = realPropertiesOwned.EcumberedTo;
+
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -140,10 +220,50 @@ namespace Lending.ApiControllers
                     {
                         if (!applicants.FirstOrDefault().IsLocked)
                         {
-                            db.mstApplicantRealPropertiesOwneds.DeleteOnSubmit(realPropertiesOwneds.First());
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    db.mstApplicantRealPropertiesOwneds.DeleteOnSubmit(realPropertiesOwneds.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

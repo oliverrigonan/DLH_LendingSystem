@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
@@ -47,17 +48,57 @@ namespace Lending.ApiControllers
                 {
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
-                        Data.mstCoMakerStatementRealPropertiesOwned newCoMakerRealPropertiesOwned = new Data.mstCoMakerStatementRealPropertiesOwned();
-                        newCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
-                        newCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
-                        newCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
-                        newCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
-                        newCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        db.mstCoMakerStatementRealPropertiesOwneds.InsertOnSubmit(newCoMakerRealPropertiesOwned);
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                Data.mstCoMakerStatementRealPropertiesOwned newCoMakerRealPropertiesOwned = new Data.mstCoMakerStatementRealPropertiesOwned();
+                                newCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
+                                newCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
+                                newCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
+                                newCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
+                                newCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
+
+                                db.mstCoMakerStatementRealPropertiesOwneds.InsertOnSubmit(newCoMakerRealPropertiesOwned);
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -91,16 +132,56 @@ namespace Lending.ApiControllers
                         var coMakeRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
                         if (coMakeRealPropertiesOwneds.Any())
                         {
-                            var updateCoMakerRealPropertiesOwned = coMakeRealPropertiesOwneds.FirstOrDefault();
-                            updateCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
-                            updateCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
-                            updateCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
-                            updateCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
-                            updateCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            db.SubmitChanges();
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    var updateCoMakerRealPropertiesOwned = coMakeRealPropertiesOwneds.FirstOrDefault();
+                                    updateCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
+                                    updateCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
+                                    updateCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
+                                    updateCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
+                                    updateCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
+
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -139,10 +220,50 @@ namespace Lending.ApiControllers
                     {
                         if (!applicants.FirstOrDefault().IsLocked)
                         {
-                            db.mstCoMakerStatementRealPropertiesOwneds.DeleteOnSubmit(coMakeRealPropertiesOwneds.First());
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    db.mstCoMakerStatementRealPropertiesOwneds.DeleteOnSubmit(coMakeRealPropertiesOwneds.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

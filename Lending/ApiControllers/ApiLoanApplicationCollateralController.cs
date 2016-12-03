@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
@@ -46,16 +47,56 @@ namespace Lending.ApiControllers
                 {
                     if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        Data.trnLoanApplicationCollateral newLoanApplicationCollateral = new Data.trnLoanApplicationCollateral();
-                        newLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
-                        newLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
-                        newLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
-                        newLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
-                        newLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
-                        db.trnLoanApplicationCollaterals.InsertOnSubmit(newLoanApplicationCollateral);
-                        db.SubmitChanges();
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "LoanApplicationDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                Data.trnLoanApplicationCollateral newLoanApplicationCollateral = new Data.trnLoanApplicationCollateral();
+                                newLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
+                                newLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
+                                newLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
+                                newLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
+                                newLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
+                                db.trnLoanApplicationCollaterals.InsertOnSubmit(newLoanApplicationCollateral);
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -89,15 +130,55 @@ namespace Lending.ApiControllers
                         var loanApplicationCollaterals = from d in db.trnLoanApplicationCollaterals where d.Id == Convert.ToInt32(id) select d;
                         if (loanApplicationCollaterals.Any())
                         {
-                            var updateLoanApplicationCollateral = loanApplicationCollaterals.FirstOrDefault();
-                            updateLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
-                            updateLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
-                            updateLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
-                            updateLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
-                            updateLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "LoanApplicationDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    var updateLoanApplicationCollateral = loanApplicationCollaterals.FirstOrDefault();
+                                    updateLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
+                                    updateLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
+                                    updateLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
+                                    updateLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
+                                    updateLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -136,10 +217,50 @@ namespace Lending.ApiControllers
                     {
                         if (!loanApplications.FirstOrDefault().IsLocked)
                         {
-                            db.trnLoanApplicationCollaterals.DeleteOnSubmit(loanApplicationCollaterals.First());
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "LoanApplicationDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    db.trnLoanApplicationCollaterals.DeleteOnSubmit(loanApplicationCollaterals.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

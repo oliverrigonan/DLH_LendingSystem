@@ -90,52 +90,90 @@ namespace Lending.ApiControllers
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        Data.mstCoMakerStatement newCoMakerStatement = new Data.mstCoMakerStatement();
-                        newCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
-                        newCoMakerStatement.CoMakerLastName = coMakerStatement.CoMakerLastName;
-                        newCoMakerStatement.CoMakerFirstName = coMakerStatement.CoMakerFirstName;
-                        newCoMakerStatement.CoMakerMiddleName = coMakerStatement.CoMakerMiddleName;
-                        newCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
-                        newCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
-                        newCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
-                        newCoMakerStatement.ProvinceAddress = coMakerStatement.ProvinceAddress;
-                        newCoMakerStatement.ContactNumber = coMakerStatement.ContactNumber;
-                        newCoMakerStatement.ResidenceTypeId = coMakerStatement.ResidenceTypeId;
-                        newCoMakerStatement.ResidenceMonthlyRentAmount = coMakerStatement.ResidenceMonthlyRentAmount;
-                        newCoMakerStatement.LandResidenceTypeId = coMakerStatement.LandResidenceTypeId;
-                        newCoMakerStatement.LandResidenceMonthlyRentAmount = coMakerStatement.LandResidenceMonthlyRentAmount;
-                        newCoMakerStatement.LengthOfStay = coMakerStatement.LengthOfStay;
-                        newCoMakerStatement.BusinessAddress = coMakerStatement.BusinessAddress;
-                        newCoMakerStatement.BusinessKaratulaName = coMakerStatement.BusinessKaratulaName;
-                        newCoMakerStatement.BusinessTelephoneNumber = coMakerStatement.BusinessTelephoneNumber;
-                        newCoMakerStatement.BusinessYear = coMakerStatement.BusinessYear;
-                        newCoMakerStatement.BusinessMerchandise = coMakerStatement.BusinessMerchandise;
-                        newCoMakerStatement.BusinessStockValues = coMakerStatement.BusinessStockValues;
-                        newCoMakerStatement.BusinessBeginningCapital = coMakerStatement.BusinessBeginningCapital;
-                        newCoMakerStatement.BusinessLowSalesPeriod = coMakerStatement.BusinessLowSalesPeriod;
-                        newCoMakerStatement.BusinessLowestDailySales = coMakerStatement.BusinessLowestDailySales;
-                        newCoMakerStatement.BusinessAverageDailySales = coMakerStatement.BusinessAverageDailySales;
-                        newCoMakerStatement.EmployedCompany = coMakerStatement.EmployedCompany;
-                        newCoMakerStatement.EmployedCompanyAddress = coMakerStatement.EmployedCompanyAddress;
-                        newCoMakerStatement.EmployedPositionOccupied = coMakerStatement.EmployedPositionOccupied;
-                        newCoMakerStatement.EmployedServiceLength = coMakerStatement.EmployedServiceLength;
-                        newCoMakerStatement.EmployedTelephoneNumber = coMakerStatement.EmployedTelephoneNumber;
-                        newCoMakerStatement.SpouseFullName = coMakerStatement.SpouseFullName;
-                        newCoMakerStatement.SpouseEmployerBusiness = coMakerStatement.SpouseEmployerBusiness;
-                        newCoMakerStatement.SpouseEmployerBusinessAddress = coMakerStatement.SpouseEmployerBusinessAddress;
-                        newCoMakerStatement.SpouseBusinessTelephoneNumber = coMakerStatement.SpouseBusinessTelephoneNumber;
-                        newCoMakerStatement.SpousePositionOccupied = coMakerStatement.SpousePositionOccupied;
-                        newCoMakerStatement.SpouseMonthlySalary = coMakerStatement.SpouseMonthlySalary;
-                        newCoMakerStatement.SpouseLengthOfService = coMakerStatement.SpouseLengthOfService;
-                        newCoMakerStatement.NumberOfChildren = coMakerStatement.NumberOfChildren;
-                        newCoMakerStatement.Studying = coMakerStatement.Studying;
-                        newCoMakerStatement.Schools = coMakerStatement.Schools;
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
 
-                        db.mstCoMakerStatements.InsertOnSubmit(newCoMakerStatement);
-                        db.SubmitChanges();
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                Data.mstCoMakerStatement newCoMakerStatement = new Data.mstCoMakerStatement();
+                                newCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
+                                newCoMakerStatement.CoMakerLastName = coMakerStatement.CoMakerLastName;
+                                newCoMakerStatement.CoMakerFirstName = coMakerStatement.CoMakerFirstName;
+                                newCoMakerStatement.CoMakerMiddleName = coMakerStatement.CoMakerMiddleName;
+                                newCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
+                                newCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
+                                newCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
+                                newCoMakerStatement.ProvinceAddress = coMakerStatement.ProvinceAddress;
+                                newCoMakerStatement.ContactNumber = coMakerStatement.ContactNumber;
+                                newCoMakerStatement.ResidenceTypeId = coMakerStatement.ResidenceTypeId;
+                                newCoMakerStatement.ResidenceMonthlyRentAmount = coMakerStatement.ResidenceMonthlyRentAmount;
+                                newCoMakerStatement.LandResidenceTypeId = coMakerStatement.LandResidenceTypeId;
+                                newCoMakerStatement.LandResidenceMonthlyRentAmount = coMakerStatement.LandResidenceMonthlyRentAmount;
+                                newCoMakerStatement.LengthOfStay = coMakerStatement.LengthOfStay;
+                                newCoMakerStatement.BusinessAddress = coMakerStatement.BusinessAddress;
+                                newCoMakerStatement.BusinessKaratulaName = coMakerStatement.BusinessKaratulaName;
+                                newCoMakerStatement.BusinessTelephoneNumber = coMakerStatement.BusinessTelephoneNumber;
+                                newCoMakerStatement.BusinessYear = coMakerStatement.BusinessYear;
+                                newCoMakerStatement.BusinessMerchandise = coMakerStatement.BusinessMerchandise;
+                                newCoMakerStatement.BusinessStockValues = coMakerStatement.BusinessStockValues;
+                                newCoMakerStatement.BusinessBeginningCapital = coMakerStatement.BusinessBeginningCapital;
+                                newCoMakerStatement.BusinessLowSalesPeriod = coMakerStatement.BusinessLowSalesPeriod;
+                                newCoMakerStatement.BusinessLowestDailySales = coMakerStatement.BusinessLowestDailySales;
+                                newCoMakerStatement.BusinessAverageDailySales = coMakerStatement.BusinessAverageDailySales;
+                                newCoMakerStatement.EmployedCompany = coMakerStatement.EmployedCompany;
+                                newCoMakerStatement.EmployedCompanyAddress = coMakerStatement.EmployedCompanyAddress;
+                                newCoMakerStatement.EmployedPositionOccupied = coMakerStatement.EmployedPositionOccupied;
+                                newCoMakerStatement.EmployedServiceLength = coMakerStatement.EmployedServiceLength;
+                                newCoMakerStatement.EmployedTelephoneNumber = coMakerStatement.EmployedTelephoneNumber;
+                                newCoMakerStatement.SpouseFullName = coMakerStatement.SpouseFullName;
+                                newCoMakerStatement.SpouseEmployerBusiness = coMakerStatement.SpouseEmployerBusiness;
+                                newCoMakerStatement.SpouseEmployerBusinessAddress = coMakerStatement.SpouseEmployerBusinessAddress;
+                                newCoMakerStatement.SpouseBusinessTelephoneNumber = coMakerStatement.SpouseBusinessTelephoneNumber;
+                                newCoMakerStatement.SpousePositionOccupied = coMakerStatement.SpousePositionOccupied;
+                                newCoMakerStatement.SpouseMonthlySalary = coMakerStatement.SpouseMonthlySalary;
+                                newCoMakerStatement.SpouseLengthOfService = coMakerStatement.SpouseLengthOfService;
+                                newCoMakerStatement.NumberOfChildren = coMakerStatement.NumberOfChildren;
+                                newCoMakerStatement.Studying = coMakerStatement.Studying;
+                                newCoMakerStatement.Schools = coMakerStatement.Schools;
+
+                                db.mstCoMakerStatements.InsertOnSubmit(newCoMakerStatement);
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -170,50 +208,88 @@ namespace Lending.ApiControllers
                         if (coMakerStatements.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
-                            updateCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
-                            updateCoMakerStatement.CoMakerLastName = coMakerStatement.CoMakerLastName;
-                            updateCoMakerStatement.CoMakerFirstName = coMakerStatement.CoMakerFirstName;
-                            updateCoMakerStatement.CoMakerMiddleName = coMakerStatement.CoMakerMiddleName;
-                            updateCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
-                            updateCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
-                            updateCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
-                            updateCoMakerStatement.ProvinceAddress = coMakerStatement.ProvinceAddress;
-                            updateCoMakerStatement.ContactNumber = coMakerStatement.ContactNumber;
-                            updateCoMakerStatement.ResidenceTypeId = coMakerStatement.ResidenceTypeId;
-                            updateCoMakerStatement.ResidenceMonthlyRentAmount = coMakerStatement.ResidenceMonthlyRentAmount;
-                            updateCoMakerStatement.LandResidenceTypeId = coMakerStatement.LandResidenceTypeId;
-                            updateCoMakerStatement.LandResidenceMonthlyRentAmount = coMakerStatement.LandResidenceMonthlyRentAmount;
-                            updateCoMakerStatement.LengthOfStay = coMakerStatement.LengthOfStay;
-                            updateCoMakerStatement.BusinessAddress = coMakerStatement.BusinessAddress;
-                            updateCoMakerStatement.BusinessKaratulaName = coMakerStatement.BusinessKaratulaName;
-                            updateCoMakerStatement.BusinessTelephoneNumber = coMakerStatement.BusinessTelephoneNumber;
-                            updateCoMakerStatement.BusinessYear = coMakerStatement.BusinessYear;
-                            updateCoMakerStatement.BusinessMerchandise = coMakerStatement.BusinessMerchandise;
-                            updateCoMakerStatement.BusinessStockValues = coMakerStatement.BusinessStockValues;
-                            updateCoMakerStatement.BusinessBeginningCapital = coMakerStatement.BusinessBeginningCapital;
-                            updateCoMakerStatement.BusinessLowSalesPeriod = coMakerStatement.BusinessLowSalesPeriod;
-                            updateCoMakerStatement.BusinessLowestDailySales = coMakerStatement.BusinessLowestDailySales;
-                            updateCoMakerStatement.BusinessAverageDailySales = coMakerStatement.BusinessAverageDailySales;
-                            updateCoMakerStatement.EmployedCompany = coMakerStatement.EmployedCompany;
-                            updateCoMakerStatement.EmployedCompanyAddress = coMakerStatement.EmployedCompanyAddress;
-                            updateCoMakerStatement.EmployedPositionOccupied = coMakerStatement.EmployedPositionOccupied;
-                            updateCoMakerStatement.EmployedServiceLength = coMakerStatement.EmployedServiceLength;
-                            updateCoMakerStatement.EmployedTelephoneNumber = coMakerStatement.EmployedTelephoneNumber;
-                            updateCoMakerStatement.SpouseFullName = coMakerStatement.SpouseFullName;
-                            updateCoMakerStatement.SpouseEmployerBusiness = coMakerStatement.SpouseEmployerBusiness;
-                            updateCoMakerStatement.SpouseEmployerBusinessAddress = coMakerStatement.SpouseEmployerBusinessAddress;
-                            updateCoMakerStatement.SpouseBusinessTelephoneNumber = coMakerStatement.SpouseBusinessTelephoneNumber;
-                            updateCoMakerStatement.SpousePositionOccupied = coMakerStatement.SpousePositionOccupied;
-                            updateCoMakerStatement.SpouseMonthlySalary = coMakerStatement.SpouseMonthlySalary;
-                            updateCoMakerStatement.SpouseLengthOfService = coMakerStatement.SpouseLengthOfService;
-                            updateCoMakerStatement.NumberOfChildren = coMakerStatement.NumberOfChildren;
-                            updateCoMakerStatement.Studying = coMakerStatement.Studying;
-                            updateCoMakerStatement.Schools = coMakerStatement.Schools;
-                            db.SubmitChanges();
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    var updateCoMakerStatement = coMakerStatements.FirstOrDefault();
+                                    updateCoMakerStatement.ApplicantId = coMakerStatement.ApplicantId;
+                                    updateCoMakerStatement.CoMakerLastName = coMakerStatement.CoMakerLastName;
+                                    updateCoMakerStatement.CoMakerFirstName = coMakerStatement.CoMakerFirstName;
+                                    updateCoMakerStatement.CoMakerMiddleName = coMakerStatement.CoMakerMiddleName;
+                                    updateCoMakerStatement.BirthDate = Convert.ToDateTime(coMakerStatement.BirthDate);
+                                    updateCoMakerStatement.CivilStatusId = coMakerStatement.CivilStatusId;
+                                    updateCoMakerStatement.CityAddress = coMakerStatement.CityAddress;
+                                    updateCoMakerStatement.ProvinceAddress = coMakerStatement.ProvinceAddress;
+                                    updateCoMakerStatement.ContactNumber = coMakerStatement.ContactNumber;
+                                    updateCoMakerStatement.ResidenceTypeId = coMakerStatement.ResidenceTypeId;
+                                    updateCoMakerStatement.ResidenceMonthlyRentAmount = coMakerStatement.ResidenceMonthlyRentAmount;
+                                    updateCoMakerStatement.LandResidenceTypeId = coMakerStatement.LandResidenceTypeId;
+                                    updateCoMakerStatement.LandResidenceMonthlyRentAmount = coMakerStatement.LandResidenceMonthlyRentAmount;
+                                    updateCoMakerStatement.LengthOfStay = coMakerStatement.LengthOfStay;
+                                    updateCoMakerStatement.BusinessAddress = coMakerStatement.BusinessAddress;
+                                    updateCoMakerStatement.BusinessKaratulaName = coMakerStatement.BusinessKaratulaName;
+                                    updateCoMakerStatement.BusinessTelephoneNumber = coMakerStatement.BusinessTelephoneNumber;
+                                    updateCoMakerStatement.BusinessYear = coMakerStatement.BusinessYear;
+                                    updateCoMakerStatement.BusinessMerchandise = coMakerStatement.BusinessMerchandise;
+                                    updateCoMakerStatement.BusinessStockValues = coMakerStatement.BusinessStockValues;
+                                    updateCoMakerStatement.BusinessBeginningCapital = coMakerStatement.BusinessBeginningCapital;
+                                    updateCoMakerStatement.BusinessLowSalesPeriod = coMakerStatement.BusinessLowSalesPeriod;
+                                    updateCoMakerStatement.BusinessLowestDailySales = coMakerStatement.BusinessLowestDailySales;
+                                    updateCoMakerStatement.BusinessAverageDailySales = coMakerStatement.BusinessAverageDailySales;
+                                    updateCoMakerStatement.EmployedCompany = coMakerStatement.EmployedCompany;
+                                    updateCoMakerStatement.EmployedCompanyAddress = coMakerStatement.EmployedCompanyAddress;
+                                    updateCoMakerStatement.EmployedPositionOccupied = coMakerStatement.EmployedPositionOccupied;
+                                    updateCoMakerStatement.EmployedServiceLength = coMakerStatement.EmployedServiceLength;
+                                    updateCoMakerStatement.EmployedTelephoneNumber = coMakerStatement.EmployedTelephoneNumber;
+                                    updateCoMakerStatement.SpouseFullName = coMakerStatement.SpouseFullName;
+                                    updateCoMakerStatement.SpouseEmployerBusiness = coMakerStatement.SpouseEmployerBusiness;
+                                    updateCoMakerStatement.SpouseEmployerBusinessAddress = coMakerStatement.SpouseEmployerBusinessAddress;
+                                    updateCoMakerStatement.SpouseBusinessTelephoneNumber = coMakerStatement.SpouseBusinessTelephoneNumber;
+                                    updateCoMakerStatement.SpousePositionOccupied = coMakerStatement.SpousePositionOccupied;
+                                    updateCoMakerStatement.SpouseMonthlySalary = coMakerStatement.SpouseMonthlySalary;
+                                    updateCoMakerStatement.SpouseLengthOfService = coMakerStatement.SpouseLengthOfService;
+                                    updateCoMakerStatement.NumberOfChildren = coMakerStatement.NumberOfChildren;
+                                    updateCoMakerStatement.Studying = coMakerStatement.Studying;
+                                    updateCoMakerStatement.Schools = coMakerStatement.Schools;
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -252,10 +328,50 @@ namespace Lending.ApiControllers
                     {
                         if (!applicants.FirstOrDefault().IsLocked)
                         {
-                            db.mstCoMakerStatements.DeleteOnSubmit(coMakerStatements.First());
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "ApplicantDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    db.mstCoMakerStatements.DeleteOnSubmit(coMakerStatements.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

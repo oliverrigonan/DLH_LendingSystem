@@ -45,20 +45,58 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                Data.mstLoanType newLoanType = new Data.mstLoanType();
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "SystemTables";
+                    Boolean canPerformActions = false;
 
-                newLoanType.LoanType = loanType.LoanType;
-                newLoanType.Description = loanType.Description;
-                newLoanType.CreatedByUserId = userId;
-                newLoanType.CreatedDateTime = DateTime.Now;
-                newLoanType.UpdatedByUserId = userId;
-                newLoanType.UpdatedDateTime = DateTime.Now;
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
 
-                db.mstLoanTypes.InsertOnSubmit(newLoanType);
-                db.SubmitChanges();
+                            break;
+                        }
+                    }
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                    if (canPerformActions)
+                    {
+                        Data.mstLoanType newLoanType = new Data.mstLoanType();
+
+                        newLoanType.LoanType = loanType.LoanType;
+                        newLoanType.Description = loanType.Description;
+                        newLoanType.CreatedByUserId = userId;
+                        newLoanType.CreatedDateTime = DateTime.Now;
+                        newLoanType.UpdatedByUserId = userId;
+                        newLoanType.UpdatedDateTime = DateTime.Now;
+
+                        db.mstLoanTypes.InsertOnSubmit(newLoanType);
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             catch
             {
@@ -78,16 +116,54 @@ namespace Lending.ApiControllers
                 if (loanTypes.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    var updateLoanType = loanTypes.FirstOrDefault();
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
 
-                    updateLoanType.LoanType = loanType.LoanType;
-                    updateLoanType.Description = loanType.Description;
-                    updateLoanType.UpdatedByUserId = userId;
-                    updateLoanType.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            var updateLoanType = loanTypes.FirstOrDefault();
+
+                            updateLoanType.LoanType = loanType.LoanType;
+                            updateLoanType.Description = loanType.Description;
+                            updateLoanType.UpdatedByUserId = userId;
+                            updateLoanType.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -111,10 +187,50 @@ namespace Lending.ApiControllers
                 var loanTypes = from d in db.mstLoanTypes where d.Id == Convert.ToInt32(id) select d;
                 if (loanTypes.Any())
                 {
-                    db.mstLoanTypes.DeleteOnSubmit(loanTypes.First());
-                    db.SubmitChanges();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            db.mstLoanTypes.DeleteOnSubmit(loanTypes.First());
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

@@ -106,34 +106,72 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                String expenseNumber = "0000000001";
-                var expense = from d in db.trnExpenses.OrderByDescending(d => d.Id) select d;
-                if (expense.Any())
+                if (mstUserForms.Any())
                 {
-                    var newExpenseNumber = Convert.ToInt32(expense.FirstOrDefault().ExpenseNumber) + 0000000001;
-                    expenseNumber = newExpenseNumber.ToString();
+                    String matchPageString = "ExpensesList";
+                    Boolean canPerformActions = false;
+
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        String expenseNumber = "0000000001";
+                        var expense = from d in db.trnExpenses.OrderByDescending(d => d.Id) select d;
+                        if (expense.Any())
+                        {
+                            var newExpenseNumber = Convert.ToInt32(expense.FirstOrDefault().ExpenseNumber) + 0000000001;
+                            expenseNumber = newExpenseNumber.ToString();
+                        }
+
+                        Data.trnExpense newExpense = new Data.trnExpense();
+                        newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
+                        newExpense.ExpenseDate = DateTime.Today;
+                        newExpense.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
+                        newExpense.CollectorStaffId = (from d in db.mstStaffs where d.Id == 2 select d.Id).FirstOrDefault();
+                        newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes select d.Id).FirstOrDefault();
+                        newExpense.Particulars = "NA";
+                        newExpense.ExpenseAmount = 0;
+                        newExpense.PreparedByUserId = userId;
+                        newExpense.IsLocked = false;
+                        newExpense.CreatedByUserId = userId;
+                        newExpense.CreatedDateTime = DateTime.Now;
+                        newExpense.UpdatedByUserId = userId;
+                        newExpense.UpdatedDateTime = DateTime.Now;
+
+                        db.trnExpenses.InsertOnSubmit(newExpense);
+                        db.SubmitChanges();
+
+                        return newExpense.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-
-                Data.trnExpense newExpense = new Data.trnExpense();
-                newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
-                newExpense.ExpenseDate = DateTime.Today;
-                newExpense.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
-                newExpense.CollectorStaffId = (from d in db.mstStaffs where d.Id == 2 select d.Id).FirstOrDefault();
-                newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes select d.Id).FirstOrDefault();
-                newExpense.Particulars = "NA";
-                newExpense.ExpenseAmount = 0;
-                newExpense.PreparedByUserId = userId;
-                newExpense.IsLocked = false;
-                newExpense.CreatedByUserId = userId;
-                newExpense.CreatedDateTime = DateTime.Now;
-                newExpense.UpdatedByUserId = userId;
-                newExpense.UpdatedDateTime = DateTime.Now;
-
-                db.trnExpenses.InsertOnSubmit(newExpense);
-                db.SubmitChanges();
-
-                return newExpense.Id;
+                else
+                {
+                    return 0;
+                }
             }
             catch
             {
@@ -155,25 +193,63 @@ namespace Lending.ApiControllers
                     if (!expenses.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var lockExpense = expenses.FirstOrDefault();
-                        lockExpense.ExpenseDate = Convert.ToDateTime(expense.ExpenseDate);
-                        lockExpense.AccountId = expense.AccountId;
-                        lockExpense.CollectorStaffId = expense.CollectorStaffId;
-                        lockExpense.ExpenseTypeId = expense.ExpenseTypeId;
-                        lockExpense.Particulars = expense.Particulars;
-                        lockExpense.ExpenseAmount = expense.ExpenseAmount;
-                        lockExpense.PreparedByUserId = expense.PreparedByUserId;
-                        lockExpense.IsLocked = true;
-                        lockExpense.UpdatedByUserId = userId;
-                        lockExpense.UpdatedDateTime = DateTime.Now;
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ExpenseDetail";
+                            Boolean canPerformActions = false;
 
-                        db.SubmitChanges();
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-                        Business.Journal journal = new Business.Journal();
-                        journal.postExpensesJournal(Convert.ToInt32(id));
+                                    break;
+                                }
+                            }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            if (canPerformActions)
+                            {
+                                var lockExpense = expenses.FirstOrDefault();
+                                lockExpense.ExpenseDate = Convert.ToDateTime(expense.ExpenseDate);
+                                lockExpense.AccountId = expense.AccountId;
+                                lockExpense.CollectorStaffId = expense.CollectorStaffId;
+                                lockExpense.ExpenseTypeId = expense.ExpenseTypeId;
+                                lockExpense.Particulars = expense.Particulars;
+                                lockExpense.ExpenseAmount = expense.ExpenseAmount;
+                                lockExpense.PreparedByUserId = expense.PreparedByUserId;
+                                lockExpense.IsLocked = true;
+                                lockExpense.UpdatedByUserId = userId;
+                                lockExpense.UpdatedDateTime = DateTime.Now;
+
+                                db.SubmitChanges();
+
+                                Business.Journal journal = new Business.Journal();
+                                journal.postExpensesJournal(Convert.ToInt32(id));
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -205,17 +281,55 @@ namespace Lending.ApiControllers
                     if (expenses.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var unlockExpense = expenses.FirstOrDefault();
-                        unlockExpense.IsLocked = false;
-                        unlockExpense.UpdatedByUserId = userId;
-                        unlockExpense.UpdatedDateTime = DateTime.Now;
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ExpenseDetail";
+                            Boolean canPerformActions = false;
 
-                        Business.Journal journal = new Business.Journal();
-                        journal.deleteExpensesJournal(Convert.ToInt32(id));
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var unlockExpense = expenses.FirstOrDefault();
+                                unlockExpense.IsLocked = false;
+                                unlockExpense.UpdatedByUserId = userId;
+                                unlockExpense.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                Business.Journal journal = new Business.Journal();
+                                journal.deleteExpensesJournal(Convert.ToInt32(id));
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -246,13 +360,53 @@ namespace Lending.ApiControllers
                 {
                     if (!expenses.FirstOrDefault().IsLocked)
                     {
-                        db.trnExpenses.DeleteOnSubmit(expenses.First());
-                        db.SubmitChanges();
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        Business.Journal journal = new Business.Journal();
-                        journal.deleteExpensesJournal(Convert.ToInt32(id));
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ExpenseDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                db.trnExpenses.DeleteOnSubmit(expenses.First());
+                                db.SubmitChanges();
+
+                                Business.Journal journal = new Business.Journal();
+                                journal.deleteExpensesJournal(Convert.ToInt32(id));
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {

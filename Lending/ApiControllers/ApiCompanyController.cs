@@ -73,20 +73,58 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                Data.mstCompany newCompany = new Data.mstCompany();
-                newCompany.Company = "NA";
-                newCompany.Address = "NA";
-                newCompany.ContactNumber = "NA";
-                newCompany.CreatedByUserId = userId;
-                newCompany.CreatedDateTime = DateTime.Now;
-                newCompany.UpdatedByUserId = userId;
-                newCompany.UpdatedDateTime = DateTime.Now;
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "CompanyList";
+                    Boolean canPerformActions = false;
 
-                db.mstCompanies.InsertOnSubmit(newCompany);
-                db.SubmitChanges();
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
 
-                return newCompany.Id;
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        Data.mstCompany newCompany = new Data.mstCompany();
+                        newCompany.Company = "NA";
+                        newCompany.Address = "NA";
+                        newCompany.ContactNumber = "NA";
+                        newCompany.CreatedByUserId = userId;
+                        newCompany.CreatedDateTime = DateTime.Now;
+                        newCompany.UpdatedByUserId = userId;
+                        newCompany.UpdatedDateTime = DateTime.Now;
+
+                        db.mstCompanies.InsertOnSubmit(newCompany);
+                        db.SubmitChanges();
+
+                        return newCompany.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch
             {
@@ -108,18 +146,56 @@ namespace Lending.ApiControllers
                     if (!companies.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var lockCompany = companies.FirstOrDefault();
-                        lockCompany.Company = company.Company;
-                        lockCompany.Address = company.Address;
-                        lockCompany.ContactNumber = company.ContactNumber;
-                        lockCompany.IsLocked = true;
-                        lockCompany.UpdatedByUserId = userId;
-                        lockCompany.UpdatedDateTime = DateTime.Now;
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "CompanyDetail";
+                            Boolean canPerformActions = false;
 
-                        db.SubmitChanges();
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var lockCompany = companies.FirstOrDefault();
+                                lockCompany.Company = company.Company;
+                                lockCompany.Address = company.Address;
+                                lockCompany.ContactNumber = company.ContactNumber;
+                                lockCompany.IsLocked = true;
+                                lockCompany.UpdatedByUserId = userId;
+                                lockCompany.UpdatedDateTime = DateTime.Now;
+
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -151,15 +227,53 @@ namespace Lending.ApiControllers
                     if (companies.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        var unlockCompany = companies.FirstOrDefault();
-                        unlockCompany.IsLocked = false;
-                        unlockCompany.UpdatedByUserId = userId;
-                        unlockCompany.UpdatedDateTime = DateTime.Now;
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "CompanyDetail";
+                            Boolean canPerformActions = false;
 
-                        db.SubmitChanges();
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var unlockCompany = companies.FirstOrDefault();
+                                unlockCompany.IsLocked = false;
+                                unlockCompany.UpdatedByUserId = userId;
+                                unlockCompany.UpdatedDateTime = DateTime.Now;
+
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {

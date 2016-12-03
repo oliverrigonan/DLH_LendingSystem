@@ -178,44 +178,82 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                String loanNumber = "0000000001";
-                var loanApplication = from d in db.trnLoanApplications.OrderByDescending(d => d.Id) select d;
-                if (loanApplication.Any())
+                if (mstUserForms.Any())
                 {
-                    var newLoanNumber = Convert.ToInt32(loanApplication.FirstOrDefault().LoanNumber) + 0000000001;
-                    loanNumber = newLoanNumber.ToString();
+                    String matchPageString = "LoanApplicationList";
+                    Boolean canPerformActions = false;
+
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        String loanNumber = "0000000001";
+                        var loanApplication = from d in db.trnLoanApplications.OrderByDescending(d => d.Id) select d;
+                        if (loanApplication.Any())
+                        {
+                            var newLoanNumber = Convert.ToInt32(loanApplication.FirstOrDefault().LoanNumber) + 0000000001;
+                            loanNumber = newLoanNumber.ToString();
+                        }
+
+                        Data.trnLoanApplication newLoanApplication = new Data.trnLoanApplication();
+                        newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
+                        newLoanApplication.LoanDate = DateTime.Today;
+                        newLoanApplication.MaturityDate = DateTime.Today.AddDays(60);
+                        newLoanApplication.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
+                        newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
+                        newLoanApplication.Particulars = "NA";
+                        newLoanApplication.LoanTypeId = (from d in db.mstLoanTypes select d.Id).FirstOrDefault();
+                        newLoanApplication.PreparedByUserId = userId;
+                        newLoanApplication.PrincipalAmount = 0;
+                        newLoanApplication.ProcessingFeeAmount = 0;
+                        newLoanApplication.PassbookAmount = 0;
+                        newLoanApplication.BalanceAmount = 0;
+                        newLoanApplication.PenaltyAmount = 0;
+                        newLoanApplication.LateIntAmount = 0;
+                        newLoanApplication.AdvanceAmount = 0;
+                        newLoanApplication.RequirementsAmount = 0;
+                        newLoanApplication.InsuranceIPIorPPIAmount = 0;
+                        newLoanApplication.NetAmount = 0;
+                        newLoanApplication.IsFullyPaid = false;
+                        newLoanApplication.IsLocked = false;
+                        newLoanApplication.CreatedByUserId = userId;
+                        newLoanApplication.CreatedDateTime = DateTime.Now;
+                        newLoanApplication.UpdatedByUserId = userId;
+                        newLoanApplication.UpdatedDateTime = DateTime.Now;
+                        db.trnLoanApplications.InsertOnSubmit(newLoanApplication);
+                        db.SubmitChanges();
+
+                        return newLoanApplication.Id;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-
-                Data.trnLoanApplication newLoanApplication = new Data.trnLoanApplication();
-                newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
-                newLoanApplication.LoanDate = DateTime.Today;
-                newLoanApplication.MaturityDate = DateTime.Today.AddDays(60);
-                newLoanApplication.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 1 select d.Id).FirstOrDefault();
-                newLoanApplication.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
-                newLoanApplication.Particulars = "NA";
-                newLoanApplication.LoanTypeId = (from d in db.mstLoanTypes select d.Id).FirstOrDefault();
-                newLoanApplication.PreparedByUserId = userId;
-                newLoanApplication.PrincipalAmount = 0;
-                newLoanApplication.ProcessingFeeAmount = 0;
-                newLoanApplication.PassbookAmount = 0;
-                newLoanApplication.BalanceAmount = 0;
-                newLoanApplication.PenaltyAmount = 0;
-                newLoanApplication.LateIntAmount = 0;
-                newLoanApplication.AdvanceAmount = 0;
-                newLoanApplication.RequirementsAmount = 0;
-                newLoanApplication.InsuranceIPIorPPIAmount = 0;
-                newLoanApplication.NetAmount = 0;
-                newLoanApplication.IsFullyPaid = false;
-                newLoanApplication.IsLocked = false;
-                newLoanApplication.CreatedByUserId = userId;
-                newLoanApplication.CreatedDateTime = DateTime.Now;
-                newLoanApplication.UpdatedByUserId = userId;
-                newLoanApplication.UpdatedDateTime = DateTime.Now;
-                db.trnLoanApplications.InsertOnSubmit(newLoanApplication);
-                db.SubmitChanges();
-
-                return newLoanApplication.Id;
+                else
+                {
+                    return 0;
+                }
             }
             catch
             {
@@ -236,44 +274,82 @@ namespace Lending.ApiControllers
                 {
                     if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        if (Convert.ToDateTime(loanApplication.LoanDate) > Convert.ToDateTime(loanApplication.MaturityDate))
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
+
+                        if (mstUserForms.Any())
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            String matchPageString = "LoanApplicationDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                if (Convert.ToDateTime(loanApplication.LoanDate) > Convert.ToDateTime(loanApplication.MaturityDate))
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                                else
+                                {
+                                    var lockLoanApplication = loanApplications.FirstOrDefault();
+                                    lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
+                                    lockLoanApplication.MaturityDate = Convert.ToDateTime(loanApplication.MaturityDate);
+                                    lockLoanApplication.AccountId = loanApplication.AccountId;
+                                    lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
+                                    lockLoanApplication.Particulars = loanApplication.Particulars;
+                                    lockLoanApplication.LoanTypeId = loanApplication.LoanTypeId;
+                                    lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
+                                    lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
+                                    lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;
+                                    lockLoanApplication.PassbookAmount = loanApplication.PassbookAmount;
+                                    lockLoanApplication.BalanceAmount = loanApplication.BalanceAmount;
+                                    lockLoanApplication.PenaltyAmount = loanApplication.PenaltyAmount;
+                                    lockLoanApplication.LateIntAmount = loanApplication.LateIntAmount;
+                                    lockLoanApplication.AdvanceAmount = loanApplication.AdvanceAmount;
+                                    lockLoanApplication.RequirementsAmount = loanApplication.RequirementsAmount;
+                                    lockLoanApplication.InsuranceIPIorPPIAmount = loanApplication.InsuranceIPIorPPIAmount;
+                                    lockLoanApplication.NetAmount = loanApplication.NetAmount;
+                                    lockLoanApplication.IsLocked = true;
+                                    lockLoanApplication.UpdatedByUserId = userId;
+                                    lockLoanApplication.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
+
+                                    Business.Collection collection = new Business.Collection();
+                                    collection.postCollection(Convert.ToInt32(id));
+
+                                    Business.Journal journal = new Business.Journal();
+                                    journal.postLoanJournal(Convert.ToInt32(id));
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
-                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-
-                            var lockLoanApplication = loanApplications.FirstOrDefault();
-                            lockLoanApplication.LoanDate = Convert.ToDateTime(loanApplication.LoanDate);
-                            lockLoanApplication.MaturityDate = Convert.ToDateTime(loanApplication.MaturityDate);
-                            lockLoanApplication.AccountId = loanApplication.AccountId;
-                            lockLoanApplication.ApplicantId = loanApplication.ApplicantId;
-                            lockLoanApplication.Particulars = loanApplication.Particulars;
-                            lockLoanApplication.LoanTypeId = loanApplication.LoanTypeId;
-                            lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
-                            lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
-                            lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;
-                            lockLoanApplication.PassbookAmount = loanApplication.PassbookAmount;
-                            lockLoanApplication.BalanceAmount = loanApplication.BalanceAmount;
-                            lockLoanApplication.PenaltyAmount = loanApplication.PenaltyAmount;
-                            lockLoanApplication.LateIntAmount = loanApplication.LateIntAmount;
-                            lockLoanApplication.AdvanceAmount = loanApplication.AdvanceAmount;
-                            lockLoanApplication.RequirementsAmount = loanApplication.RequirementsAmount;
-                            lockLoanApplication.InsuranceIPIorPPIAmount = loanApplication.InsuranceIPIorPPIAmount;
-                            lockLoanApplication.NetAmount = loanApplication.NetAmount;
-                            lockLoanApplication.IsLocked = true;
-                            lockLoanApplication.UpdatedByUserId = userId;
-                            lockLoanApplication.UpdatedDateTime = DateTime.Now;
-                            db.SubmitChanges();
-
-                            Business.Collection collection = new Business.Collection();
-                            collection.postCollection(Convert.ToInt32(id));
-
-                            Business.Journal journal = new Business.Journal();
-                            journal.postLoanJournal(Convert.ToInt32(id));
-
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
                         }
                     }
                     else
@@ -313,20 +389,58 @@ namespace Lending.ApiControllers
                         if (!collections.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            var unlockLoanApplication = loanApplications.FirstOrDefault();
-                            unlockLoanApplication.IsLocked = false;
-                            unlockLoanApplication.UpdatedByUserId = userId;
-                            unlockLoanApplication.UpdatedDateTime = DateTime.Now;
-                            db.SubmitChanges();
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "LoanApplicationDetail";
+                                Boolean canPerformActions = false;
 
-                            Business.Collection collection = new Business.Collection();
-                            collection.deleteCollection(Convert.ToInt32(id));
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
 
-                            Business.Journal journal = new Business.Journal();
-                            journal.deleteLoanJournal(Convert.ToInt32(id));
+                                        break;
+                                    }
+                                }
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                if (canPerformActions)
+                                {
+                                    var unlockLoanApplication = loanApplications.FirstOrDefault();
+                                    unlockLoanApplication.IsLocked = false;
+                                    unlockLoanApplication.UpdatedByUserId = userId;
+                                    unlockLoanApplication.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
+
+                                    Business.Collection collection = new Business.Collection();
+                                    collection.deleteCollection(Convert.ToInt32(id));
+
+                                    Business.Journal journal = new Business.Journal();
+                                    journal.deleteLoanJournal(Convert.ToInt32(id));
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -362,10 +476,50 @@ namespace Lending.ApiControllers
                 {
                     if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        db.trnLoanApplications.DeleteOnSubmit(loanApplications.First());
-                        db.SubmitChanges();
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "LoanApplicationDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                db.trnLoanApplications.DeleteOnSubmit(loanApplications.First());
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {

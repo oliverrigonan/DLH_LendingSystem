@@ -67,16 +67,56 @@ namespace Lending.ApiControllers
                 {
                     if (!companies.FirstOrDefault().IsLocked)
                     {
-                        Data.mstBranch newBranch = new Data.mstBranch();
-                        newBranch.CompanyId = branch.CompanyId;
-                        newBranch.Branch = branch.Branch;
-                        newBranch.Address = branch.Address;
-                        newBranch.ContactNumber = branch.ContactNumber;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        db.mstBranches.InsertOnSubmit(newBranch);
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "CompanyDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                Data.mstBranch newBranch = new Data.mstBranch();
+                                newBranch.CompanyId = branch.CompanyId;
+                                newBranch.Branch = branch.Branch;
+                                newBranch.Address = branch.Address;
+                                newBranch.ContactNumber = branch.ContactNumber;
+
+                                db.mstBranches.InsertOnSubmit(newBranch);
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -110,15 +150,55 @@ namespace Lending.ApiControllers
                         var branches = from d in db.mstBranches where d.Id == Convert.ToInt32(id) select d;
                         if (branches.Any())
                         {
-                            var updateBranch = branches.FirstOrDefault();
-                            updateBranch.CompanyId = branch.CompanyId;
-                            updateBranch.Branch = branch.Branch;
-                            updateBranch.Address = branch.Address;
-                            updateBranch.ContactNumber = branch.ContactNumber;
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            db.SubmitChanges();
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "CompanyDetail";
+                                Boolean canPerformActions = false;
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    var updateBranch = branches.FirstOrDefault();
+                                    updateBranch.CompanyId = branch.CompanyId;
+                                    updateBranch.Branch = branch.Branch;
+                                    updateBranch.Address = branch.Address;
+                                    updateBranch.ContactNumber = branch.ContactNumber;
+
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {
@@ -157,10 +237,50 @@ namespace Lending.ApiControllers
                     {
                         if (!companies.FirstOrDefault().IsLocked)
                         {
-                            db.mstBranches.DeleteOnSubmit(branches.First());
-                            db.SubmitChanges();
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "CompanyDetail";
+                                Boolean canPerformActions = false;
+
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                                if (canPerformActions)
+                                {
+                                    db.mstBranches.DeleteOnSubmit(branches.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

@@ -46,20 +46,58 @@ namespace Lending.ApiControllers
             try
             {
                 var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-                Data.mstRequirement newRequirement = new Data.mstRequirement();
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "SystemTables";
+                    Boolean canPerformActions = false;
 
-                newRequirement.Requirement = requirement.Requirement;
-                newRequirement.Description = requirement.Description;
-                newRequirement.CreatedByUserId = userId;
-                newRequirement.CreatedDateTime = DateTime.Now;
-                newRequirement.UpdatedByUserId = userId;
-                newRequirement.UpdatedDateTime = DateTime.Now;
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
 
-                db.mstRequirements.InsertOnSubmit(newRequirement);
-                db.SubmitChanges();
+                            break;
+                        }
+                    }
 
-                return Request.CreateResponse(HttpStatusCode.OK);
+                    if (canPerformActions)
+                    {
+                        Data.mstRequirement newRequirement = new Data.mstRequirement();
+
+                        newRequirement.Requirement = requirement.Requirement;
+                        newRequirement.Description = requirement.Description;
+                        newRequirement.CreatedByUserId = userId;
+                        newRequirement.CreatedDateTime = DateTime.Now;
+                        newRequirement.UpdatedByUserId = userId;
+                        newRequirement.UpdatedDateTime = DateTime.Now;
+
+                        db.mstRequirements.InsertOnSubmit(newRequirement);
+                        db.SubmitChanges();
+
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
             }
             catch(Exception e)
             {
@@ -80,16 +118,54 @@ namespace Lending.ApiControllers
                 if (requirements.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    var updateRequirement = requirements.FirstOrDefault();
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
 
-                    updateRequirement.Requirement = requirement.Requirement;
-                    updateRequirement.Description = requirement.Description;
-                    updateRequirement.UpdatedByUserId = userId;
-                    updateRequirement.UpdatedDateTime = DateTime.Now;
-                    db.SubmitChanges();
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            var updateRequirement = requirements.FirstOrDefault();
+
+                            updateRequirement.Requirement = requirement.Requirement;
+                            updateRequirement.Description = requirement.Description;
+                            updateRequirement.UpdatedByUserId = userId;
+                            updateRequirement.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -113,10 +189,50 @@ namespace Lending.ApiControllers
                 var requirements = from d in db.mstRequirements where d.Id == Convert.ToInt32(id) select d;
                 if (requirements.Any())
                 {
-                    db.mstRequirements.DeleteOnSubmit(requirements.First());
-                    db.SubmitChanges();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "SystemTables";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            db.mstRequirements.DeleteOnSubmit(requirements.First());
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {

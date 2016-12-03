@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
@@ -44,14 +45,54 @@ namespace Lending.ApiControllers
                 var users = from d in db.mstUsers where d.Id == userForm.UserId select d;
                 if (users.Any())
                 {
-                    Data.mstUserForm newUserForm = new Data.mstUserForm();
-                    newUserForm.UserId = userForm.UserId;
-                    newUserForm.FormId = userForm.FormId;
-                    newUserForm.CanPerformActions = userForm.CanPerformActions;
-                    db.mstUserForms.InsertOnSubmit(newUserForm);
-                    db.SubmitChanges();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "UserDetail";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            Data.mstUserForm newUserForm = new Data.mstUserForm();
+                            newUserForm.UserId = userForm.UserId;
+                            newUserForm.FormId = userForm.FormId;
+                            newUserForm.CanPerformActions = userForm.CanPerformActions;
+                            db.mstUserForms.InsertOnSubmit(newUserForm);
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
@@ -78,14 +119,54 @@ namespace Lending.ApiControllers
                     var userForms = from d in db.mstUserForms where d.Id == Convert.ToInt32(id) select d;
                     if (userForms.Any())
                     {
-                        var updateUserForm = userForms.FirstOrDefault();
-                        updateUserForm.UserId = userForm.UserId;
-                        updateUserForm.FormId = userForm.FormId;
-                        updateUserForm.CanPerformActions = userForm.CanPerformActions;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "UserDetail";
+                            Boolean canPerformActions = false;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var updateUserForm = userForms.FirstOrDefault();
+                                updateUserForm.UserId = userForm.UserId;
+                                updateUserForm.FormId = userForm.FormId;
+                                updateUserForm.CanPerformActions = userForm.CanPerformActions;
+
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -114,10 +195,50 @@ namespace Lending.ApiControllers
                 var userForms = from d in db.mstUserForms where d.Id == Convert.ToInt32(id) select d;
                 if (userForms.Any())
                 {
-                    db.mstUserForms.DeleteOnSubmit(userForms.First());
-                    db.SubmitChanges();
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
 
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "UserDetail";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            db.mstUserForms.DeleteOnSubmit(userForms.First());
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
                 }
                 else
                 {
