@@ -15,11 +15,11 @@ namespace Lending.Reports
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
+        // loan summary report
         public ActionResult loanSummaryReport(String startDate, String endDate)
         {
             if (startDate != null && endDate != null)
             {
-
                 // PDF settings
                 MemoryStream workStream = new MemoryStream();
                 //Rectangle rectangle = new Rectangle(PageSize.A3);
