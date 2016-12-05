@@ -98,8 +98,14 @@
                                 isLocked = true;
                             }
 
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
                             users.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editUserOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editUserOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 Id: userListResult[i]["Id"],
                                 Username: userListResult[i]["Username"],
                                 FullName: userListResult[i]["FullName"],
@@ -202,6 +208,15 @@
             });
 
             userFlexGrid.trackChanges = true;
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+                getUserRightsMessageError();
+            }
         }
     </script>
 </body>

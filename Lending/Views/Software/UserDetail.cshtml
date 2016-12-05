@@ -127,6 +127,9 @@
                                         <button class="btn btn-primary btn-sm" id="btnAddUserForm" onclick="bbtnAddUserFormOnclick()">
                                             <i class="fa fa-plus fa-fw"></i> Add
                                         </button>
+                                        <button class="btn btn-primary btn-sm" id="btnCopyRightsUserForm" onclick="btnCopyRightsUserFormOnclick()">
+                                            <i class="fa fa-copy fa-fw"></i> Copy Rights
+                                        </button>
                                     </td>
                                 </tr>
                             </table>
@@ -167,6 +170,29 @@
         </div>
     </div>
 
+    <!-- user form for copy rights confirmation -->
+    <div class="modal fade" id="copyUserRightsConfirmationModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Copy Rights </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>User</label><br />
+                        <div id="cboUserCopyRights" style="width: 100%;"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnUpdateUserFormCopyRights" onclick="btnUpdateUserFormCopyRightsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCancelUserFormCopyRights" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- delete confirmation user form detail modal -->
     <div class="modal fade" id="deleteConfirmationUserFormDetailModal" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -202,6 +228,7 @@
         var userFormCollectionView;
         var userFormFlexgrid;
         var cboForm;
+        var cboUserCopyRights;
 
         // get company data
         function getUserDetail() {
@@ -222,6 +249,7 @@
                             cboCompanyName.disabled = true;
                             $("#btnLockUser").prop("disabled", true);
                             $("#btnAddUserForm").prop("disabled", true);
+                            $("#btnCopyRightsUserForm").prop("disabled", true);
 
                             isLocked = true;
                         } else {
@@ -671,8 +699,8 @@
                             $("#btnSaveUserForm").prop("disabled", false);
                             $("#btnCancelUserForm").prop("disabled", false);
                         },
-                        400: function () {
-                            toastr.error("Bad Request");
+                        400: function (message) {
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
 
                             $("#userFormDetailEditModal").modal("hide");
 
@@ -782,6 +810,100 @@
             });
         }
 
+        // copy the rights of a particular user
+        function btnCopyRightsUserFormOnclick() {
+            $("#copyUserRightsConfirmationModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnUpdateUserFormCopyRights").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+            $("#btnUpdateUserFormCopyRights").prop("disabled", false);
+            $("#btnCancelUserFormCopyRights").prop("disabled", false);
+
+            createCboUserForCopyRights();
+        }
+
+        // create cbo user for copy rights
+        function createCboUserForCopyRights() {
+            var userArray = new Array();
+            $.ajax({
+                url: '/api/user/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (userResults) {
+                    var disabled = true;
+                    if (userResults.length > 0) {
+                        for (i = 0; i < userResults.length; i++) {
+                            userArray.push({
+                                Id: userResults[i]["Id"],
+                                Username: userResults[i]["Username"],
+                                FullName: userResults[i]["FullName"],
+                            });
+                        }
+                        disabled = false;
+                    }
+
+                    cboUserCopyRights.dispose();
+                    cboUserCopyRights = new wijmo.input.ComboBox('#cboUserCopyRights', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: userArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "FullName",
+                        selectedValuePath: "FullName"
+                    });
+                }
+            });
+        }
+
+        // copy rights confirm
+        function btnUpdateUserFormCopyRightsOnclick() {
+            document.getElementById("btnUpdateUserFormCopyRights").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
+            $("#btnUpdateUserFormCopyRights").prop("disabled", true);
+            $("#btnCancelUserFormCopyRights").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/userForm/copyRights/' + getUrlParameter("id") + '/' + cboUserCopyRights.selectedItem["Id"],
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Update Successful");
+
+                        $("#copyUserRightsConfirmationModal").modal("hide");
+
+                        userFormCollectionView = new wijmo.collections.CollectionView(getUserForms());
+
+                        // Flex Grid
+                        userFormFlexgrid.itemsSource = userFormCollectionView;
+                        userFormFlexgrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Record Not Found");
+
+                        $("#copyUserRightsConfirmationModal").modal("hide");
+
+                        document.getElementById("btnUpdateUserFormCopyRights").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                        $("#btnUpdateUserFormCopyRights").prop("disabled", false);
+                        $("#btnCancelUserFormCopyRights").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+
+                        $("#copyUserRightsConfirmationModal").modal("hide");
+
+                        document.getElementById("btnUpdateUserFormCopyRights").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                        $("#btnUpdateUserFormCopyRights").prop("disabled", false);
+                        $("#btnCancelUserFormCopyRights").prop("disabled", false);
+                    }
+                }
+            });
+        }
 
         // on load page
         window.onload = function () {
@@ -789,16 +911,17 @@
             toastrModification();
             cboCompanyName = new wijmo.input.ComboBox('#cboCompanyName');
             cboForm = new wijmo.input.ComboBox('#cboForm');
+            cboUserCopyRights = new wijmo.input.ComboBox('#cboUserCopyRights');
             getCompany();
             createCboForms();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {
-                $(':button').prop('disabled', false);
                 $('#btnClose').prop('disabled', false);
             } else {
                 $(':button').prop('disabled', true);
                 $('#btnClose').prop('disabled', false);
+                getUserRightsMessageError();
             }
         }
     </script>

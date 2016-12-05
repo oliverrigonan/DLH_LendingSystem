@@ -37,8 +37,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="" onclick="updateCurrentUserLoggedIn()"><i class="fa fa-check fa-fw"></i> Update</button>
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                    <button class="btn btn-primary" id="btnUpdateCurrentUserLoggedIn" onclick="updateCurrentUserLoggedIn()"><i class="fa fa-save fa-fw"></i> Update</button>
+                    <button class="btn btn-danger" id="btnCloseCurrentUserLoggedIn" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
                 </div>
             </div>
         </div>
@@ -59,8 +59,10 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (currentUserResults) {
                     // Read info
-                    document.getElementById("userUsername").innerHTML = currentUserResults.Username;
-                    document.getElementById("userFullName").innerHTML = currentUserResults.FullName;
+                    document.getElementById("userUsername").value = currentUserResults.Username;
+                    document.getElementById("userFullName").value = currentUserResults.FullName;
+                    document.getElementById('stampCreatedDate').innerHTML = currentUserResults.CreatedDate;
+                    document.getElementById('stampUpdatedDate').innerHTML = currentUserResults.UpdatedDate;
 
                     // Edit Info
                     document.getElementById("editFullName").value = currentUserResults.FullName;
@@ -80,6 +82,10 @@
 
         // update profile user
         function updateCurrentUserLoggedIn() {
+            document.getElementById("btnUpdateCurrentUserLoggedIn").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
+            $("#btnUpdateCurrentUserLoggedIn").prop("disabled", true);
+            $("#btnCloseCurrentUserLoggedIn").prop("disabled", true);
+
             var personalInformationObject = new Object();
             personalInformationObject.FullName = document.getElementById("editFullName").value;
             var personalInformationData = JSON.stringify(personalInformationObject);
@@ -110,10 +116,14 @@
                             location.reload()
                         },
                         404: function () {
-
+                            document.getElementById("btnUpdateCurrentUserLoggedIn").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                            $("#btnUpdateCurrentUserLoggedIn").prop("disabled", false);
+                            $("#btnCloseCurrentUserLoggedIn").prop("disabled", false);
                         },
                         400: function () {
-
+                            document.getElementById("btnUpdateCurrentUserLoggedIn").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                            $("#btnUpdateCurrentUserLoggedIn").prop("disabled", false);
+                            $("#btnCloseCurrentUserLoggedIn").prop("disabled", false);
                         }
                     }
                 });

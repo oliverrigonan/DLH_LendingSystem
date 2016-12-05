@@ -34,24 +34,34 @@
                             </table>
                         </div>
                         <div class="panel-body">
-                            <table class="table table-responsive">
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-user fa-fw"></i> &nbsp; Name
-                                    </td>
-                                    <td>
-                                        <span id="userFullName"></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="td-pad">
-                                        <i class="fa fa-key fa-fw"></i> &nbsp; Username
-                                    </td>
-                                    <td>
-                                        <span id="userUsername"></span>
-                                    </td>
-                                </tr>
-                            </table>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Fullname</label><br />
+                                        <input class="form-control" id="userFullName" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Username</label><br />
+                                        <input class="form-control" id="userUsername" disabled />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <p>Created Date:</p>
+                                            <div style="padding-left: 10px;">
+                                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                            </div>
+                                            <br />
+                                            <p>Updated Date:</p>
+                                            <div style="padding-left: 10px;">
+                                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>

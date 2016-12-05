@@ -19,6 +19,11 @@ function toastrModification() {
     }
 }
 
+// user rights message error
+function getUserRightsMessageError() {
+    toastr.info("You have no rights to perform some actions in this page. Please contact the user or admin who has full access of the system.");
+}
+
 // number fields
 $('input.numberField').on("blur", function (e) {
     nStr = this.value;
