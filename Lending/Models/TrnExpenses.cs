@@ -18,6 +18,8 @@ namespace Lending.Models
         public String CollectorStaff { get; set; }
         public Int32 ExpenseTypeId { get; set; }
         public String ExpenseType { get; set; }
+        public Int32 ExpenseTransactionTypeId { get; set; }
+        public String ExpenseTransactionType { get; set; }
         public String Particulars { get; set; }
         public Decimal ExpenseAmount { get; set; }
         public Int32 PreparedByUserId { get; set; }

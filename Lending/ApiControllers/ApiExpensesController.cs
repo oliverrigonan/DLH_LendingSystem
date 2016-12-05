@@ -32,6 +32,8 @@ namespace Lending.ApiControllers
                                CollectorStaff = d.mstStaff.Staff,
                                ExpenseTypeId = d.ExpenseTypeId,
                                ExpenseType = d.mstExpenseType.ExpenseType,
+                               ExpenseTransactionTypeId = d.ExpenseTransactionTypeId,
+                               ExpenseTransactionType = d.sysTransactionType.TransactionType,
                                Particulars = d.Particulars,
                                ExpenseAmount = d.ExpenseAmount,
                                PreparedByUserId = d.PreparedByUserId,
@@ -67,6 +69,8 @@ namespace Lending.ApiControllers
                               CollectorStaff = d.mstStaff.Staff,
                               ExpenseTypeId = d.ExpenseTypeId,
                               ExpenseType = d.mstExpenseType.ExpenseType,
+                              ExpenseTransactionTypeId = d.ExpenseTransactionTypeId,
+                              ExpenseTransactionType = d.sysTransactionType.TransactionType,
                               Particulars = d.Particulars,
                               ExpenseAmount = d.ExpenseAmount,
                               PreparedByUserId = d.PreparedByUserId,
@@ -149,6 +153,7 @@ namespace Lending.ApiControllers
                         newExpense.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
                         newExpense.CollectorStaffId = (from d in db.mstStaffs where d.Id == 2 select d.Id).FirstOrDefault();
                         newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes select d.Id).FirstOrDefault();
+                        newExpense.ExpenseTransactionTypeId = (from d in db.sysTransactionTypes select d.Id).FirstOrDefault();
                         newExpense.Particulars = "NA";
                         newExpense.ExpenseAmount = 0;
                         newExpense.PreparedByUserId = userId;
@@ -227,6 +232,7 @@ namespace Lending.ApiControllers
                                 lockExpense.AccountId = expense.AccountId;
                                 lockExpense.CollectorStaffId = expense.CollectorStaffId;
                                 lockExpense.ExpenseTypeId = expense.ExpenseTypeId;
+                                lockExpense.ExpenseTransactionTypeId = expense.ExpenseTransactionTypeId;
                                 lockExpense.Particulars = expense.Particulars;
                                 lockExpense.ExpenseAmount = expense.ExpenseAmount;
                                 lockExpense.PreparedByUserId = expense.PreparedByUserId;

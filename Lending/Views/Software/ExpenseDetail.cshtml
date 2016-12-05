@@ -69,6 +69,10 @@
                                         <div id="cboExpenseType"></div>
                                     </div>
                                     <div class="form-group">
+                                        <label>Expense Trasaction Type</label><br />
+                                        <div id="cboExpenseTransactionType"></div>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Particulars</label><br />
                                         <textarea class="form-control requiredExpenses" rows="5" id="expensesParticulars" placeholder="Particulars"></textarea>
                                     </div>
@@ -122,6 +126,8 @@
         var cboExpensesDate;
         var cboExpensesAccount;
         var cboExpensesPreparedBy;
+        var cboExpenseType;
+        var cboExpenseTransactionType;
 
         // create expenses Date
         function createExpensesDate() {
@@ -240,11 +246,11 @@
 
                         disabled = false;
 
-                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
-                        getUser();
+                        cboExpenseTransactionType = new wijmo.input.ComboBox('#cboExpenseTransactionType');
+                        getExpenseTransactionType();
                     } else {
-                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
-                        getUser();
+                        cboExpenseTransactionType = new wijmo.input.ComboBox('#cboExpenseTransactionType');
+                        getExpenseTransactionType();
                     }
 
                     cboExpenseType.dispose();
@@ -256,6 +262,48 @@
                         required: true,
                         displayMemberPath: "ExpenseType",
                         selectedValuePath: "ExpenseType"
+                    });
+                }
+            });
+        }
+
+        // expense Type
+        function getExpenseTransactionType() {
+            var expenseTransactionTypeArray = new Array();
+            $.ajax({
+                url: '/api/transactionType/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (expenseTransactionTypeResults) {
+                    var disabled = true;
+                    if (expenseTransactionTypeResults.length > 0) {
+                        for (i = 0; i < expenseTransactionTypeResults.length; i++) {
+                            expenseTransactionTypeArray.push({
+                                Id: expenseTransactionTypeResults[i]["Id"],
+                                TransactionType: expenseTransactionTypeResults[i]["TransactionType"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
+                        getUser();
+                    } else {
+                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
+                        getUser();
+                    }
+
+                    cboExpenseTransactionType.dispose();
+                    cboExpenseTransactionType = new wijmo.input.ComboBox('#cboExpenseTransactionType', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: expenseTransactionTypeArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "TransactionType",
+                        selectedValuePath: "TransactionType"
                     });
                 }
             });
@@ -315,6 +363,7 @@
                         cboExpensesAccount.selectedValue = expensesResult.Account;
                         cboCollector.selectedValue = expensesResult.CollectorStaff;
                         cboExpenseType.selectedValue = expensesResult.ExpenseType;
+                        cboExpenseTransactionType.selectedValue = expensesResult.ExpenseTransactionType;
                         document.getElementById("expensesParticulars").value = expensesResult.Particulars;
                         document.getElementById("expensesAmount").value = expensesResult.ExpenseAmount.toLocaleString();
                         cboExpensesPreparedBy.selectedValue = expensesResult.PreparedByUser;
@@ -329,6 +378,7 @@
                             cboExpensesAccount.disabled = true;
                             cboCollector.disabled = true;
                             cboExpenseType.disabled = true;
+                            cboExpenseTransactionType.disabled = true;
                             cboExpensesPreparedBy.disabled = true;
                             document.getElementById("expensesParticulars").disabled = true;
                             document.getElementById("expensesAmount").disabled = true;
@@ -379,6 +429,7 @@
                 expensesObject.AccountId = cboExpensesAccount.selectedItem["Id"];
                 expensesObject.CollectorStaffId = cboCollector.selectedItem["Id"];
                 expensesObject.ExpenseTypeId = cboExpenseType.selectedItem["Id"];
+                expensesObject.ExpenseTransactionTypeId = cboExpenseTransactionType.selectedItem["Id"];
                 expensesObject.Particulars = document.getElementById("expensesParticulars").value;
                 expensesObject.ExpenseAmount = document.getElementById("expensesAmount").value;
                 expensesObject.PreparedByUserId = cboExpensesPreparedBy.selectedItem["Id"];

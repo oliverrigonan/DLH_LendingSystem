@@ -62,8 +62,8 @@
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
-                                            <button class="btn btn-primary"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            <button class="btn btn-primary" onclick="btnLoanSummaryReportViewOnclick()"><i class="fa fa-eye fa-fw"></i> View</button>
+                                            <button class="btn btn-primary" onclick="btnLoanSummaryReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
                                         </div>
                                     </div>
                                 </div>
@@ -381,6 +381,11 @@
                     }, 50);
                 }
             });
+        }
+
+        // print loan summary report pdf
+        function btnLoanSummaryReportPrintOnclick() {
+            window.open('/RepLoanSummaryReport/loanSummaryReport?startDate=' + cboLoanSummaryReportStartDateDefaultValue + '&endDate=' + cboLoanSummaryReportEndDateDefaultValue, '_blank');
         }
 
         // on load page

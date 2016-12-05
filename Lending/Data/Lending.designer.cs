@@ -10462,6 +10462,8 @@ namespace Lending.Data
 		
 		private EntitySet<mstAccount> _mstAccounts;
 		
+		private EntitySet<trnExpense> _trnExpenses;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -10475,6 +10477,7 @@ namespace Lending.Data
 		public sysTransactionType()
 		{
 			this._mstAccounts = new EntitySet<mstAccount>(new Action<mstAccount>(this.attach_mstAccounts), new Action<mstAccount>(this.detach_mstAccounts));
+			this._trnExpenses = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses), new Action<trnExpense>(this.detach_trnExpenses));
 			OnCreated();
 		}
 		
@@ -10531,6 +10534,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="sysTransactionType_trnExpense", Storage="_trnExpenses", ThisKey="Id", OtherKey="ExpenseTransactionTypeId")]
+		public EntitySet<trnExpense> trnExpenses
+		{
+			get
+			{
+				return this._trnExpenses;
+			}
+			set
+			{
+				this._trnExpenses.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -10558,6 +10574,18 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstAccounts(mstAccount entity)
+		{
+			this.SendPropertyChanging();
+			entity.sysTransactionType = null;
+		}
+		
+		private void attach_trnExpenses(trnExpense entity)
+		{
+			this.SendPropertyChanging();
+			entity.sysTransactionType = this;
+		}
+		
+		private void detach_trnExpenses(trnExpense entity)
 		{
 			this.SendPropertyChanging();
 			entity.sysTransactionType = null;
@@ -11230,6 +11258,8 @@ namespace Lending.Data
 		
 		private int _ExpenseTypeId;
 		
+		private int _ExpenseTransactionTypeId;
+		
 		private string _Particulars;
 		
 		private decimal _ExpenseAmount;
@@ -11258,6 +11288,8 @@ namespace Lending.Data
 		
 		private EntityRef<mstUser> _mstUser2;
 		
+		private EntityRef<sysTransactionType> _sysTransactionType;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -11274,6 +11306,8 @@ namespace Lending.Data
     partial void OnCollectorStaffIdChanged();
     partial void OnExpenseTypeIdChanging(int value);
     partial void OnExpenseTypeIdChanged();
+    partial void OnExpenseTransactionTypeIdChanging(int value);
+    partial void OnExpenseTransactionTypeIdChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
     partial void OnExpenseAmountChanging(decimal value);
@@ -11300,6 +11334,7 @@ namespace Lending.Data
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			this._mstUser2 = default(EntityRef<mstUser>);
+			this._sysTransactionType = default(EntityRef<sysTransactionType>);
 			OnCreated();
 		}
 		
@@ -11431,6 +11466,30 @@ namespace Lending.Data
 					this._ExpenseTypeId = value;
 					this.SendPropertyChanged("ExpenseTypeId");
 					this.OnExpenseTypeIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExpenseTransactionTypeId", DbType="Int NOT NULL")]
+		public int ExpenseTransactionTypeId
+		{
+			get
+			{
+				return this._ExpenseTransactionTypeId;
+			}
+			set
+			{
+				if ((this._ExpenseTransactionTypeId != value))
+				{
+					if (this._sysTransactionType.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnExpenseTransactionTypeIdChanging(value);
+					this.SendPropertyChanging();
+					this._ExpenseTransactionTypeId = value;
+					this.SendPropertyChanged("ExpenseTransactionTypeId");
+					this.OnExpenseTransactionTypeIdChanged();
 				}
 			}
 		}
@@ -11807,6 +11866,40 @@ namespace Lending.Data
 						this._UpdatedByUserId = default(int);
 					}
 					this.SendPropertyChanged("mstUser2");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="sysTransactionType_trnExpense", Storage="_sysTransactionType", ThisKey="ExpenseTransactionTypeId", OtherKey="Id", IsForeignKey=true)]
+		public sysTransactionType sysTransactionType
+		{
+			get
+			{
+				return this._sysTransactionType.Entity;
+			}
+			set
+			{
+				sysTransactionType previousValue = this._sysTransactionType.Entity;
+				if (((previousValue != value) 
+							|| (this._sysTransactionType.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._sysTransactionType.Entity = null;
+						previousValue.trnExpenses.Remove(this);
+					}
+					this._sysTransactionType.Entity = value;
+					if ((value != null))
+					{
+						value.trnExpenses.Add(this);
+						this._ExpenseTransactionTypeId = value.Id;
+					}
+					else
+					{
+						this._ExpenseTransactionTypeId = default(int);
+					}
+					this.SendPropertyChanged("sysTransactionType");
 				}
 			}
 		}

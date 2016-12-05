@@ -210,6 +210,7 @@ namespace Lending.Reports
                                        where d.ExpenseDate == Convert.ToDateTime(collectionDate)
                                        && d.CollectorStaffId == area.FirstOrDefault().CollectorStaffId
                                        && d.IsLocked == true
+                                       && d.ExpenseTransactionTypeId == 2
                                        select d;
 
                         Decimal gasAllowanceExpenses = 0;

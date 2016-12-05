@@ -447,6 +447,7 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="TransactionType" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Association Name="sysTransactionType_mstAccount" Member="mstAccounts" ThisKey="Id" OtherKey="AccountTransactionTypeId" Type="mstAccount" />
+      <Association Name="sysTransactionType_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="ExpenseTransactionTypeId" Type="trnExpense" />
     </Type>
   </Table>
   <Table Name="dbo.trnCollection" Member="trnCollections">
@@ -485,6 +486,7 @@
       <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CollectorStaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ExpenseTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExpenseTransactionTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ExpenseAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -499,6 +501,7 @@
       <Association Name="mstUser_trnExpense" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnExpense1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnExpense2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="sysTransactionType_trnExpense" Member="sysTransactionType" ThisKey="ExpenseTransactionTypeId" OtherKey="Id" Type="sysTransactionType" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnLoanApplication" Member="trnLoanApplications">
