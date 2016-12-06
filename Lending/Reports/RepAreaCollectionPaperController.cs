@@ -56,7 +56,7 @@ namespace Lending.Reports
                 collectionHeader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.Company, fontArial17Bold)) { Border = 0 });
                 collectionHeader.AddCell(new PdfPCell(new Phrase("Area Collection Paper", fontArial17Bold)) { Border = 0, HorizontalAlignment = 2 });
                 collectionHeader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.Address, fontArial12)) { Border = 0, PaddingTop = 5f });
-                collectionHeader.AddCell(new PdfPCell(new Phrase("", fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
+                collectionHeader.AddCell(new PdfPCell(new Phrase("Collection Date: " + collectionDate, fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2, });
                 collectionHeader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.ContactNumber, fontArial12)) { Border = 0, PaddingTop = 5f });
                 collectionHeader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
                 document.Add(collectionHeader);

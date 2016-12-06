@@ -61,7 +61,7 @@ namespace Lending.Reports
                         loanApplicationheader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
                         document.Add(loanApplicationheader);
 
-                        // table collection lines data
+                        // table header
                         PdfPTable loanHeaderLabel = new PdfPTable(1);
                         float[] loanHeaderLabelWidthCells = new float[] { 100f };
                         loanHeaderLabel.SetWidths(loanHeaderLabelWidthCells);

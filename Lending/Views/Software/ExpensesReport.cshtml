@@ -96,7 +96,8 @@
                 mask: '99-99-9999',
                 max: new Date(cboExpensesSummaryReportEndDateDefaultValue),
                 onValueChanged: function () {
-                    cboExpensesSummaryReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboExpensesSummaryReportStartDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboExpensesSummaryReportEndDate();
                     }, 50);
@@ -113,7 +114,8 @@
                 mask: '99-99-9999',
                 min: new Date(cboExpensesSummaryReportStartDateDefaultValue),
                 onValueChanged: function () {
-                    cboExpensesSummaryReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboExpensesSummaryReportEndDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboExpensesSummaryReportStartDate();
                     }, 50);

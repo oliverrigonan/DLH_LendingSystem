@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
-                                            <button class="btn btn-primary"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            <button class="btn btn-primary" onclick="btnLoanDetailReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +109,7 @@
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
-                                            <button class="btn btn-primary"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            <button class="btn btn-primary" onclick="btnDailyReleaseMonitoringSummaryReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="panel-footer">
                                             <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
-                                            <button class="btn btn-primary"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            <button class="btn btn-primary" onclick="btnDailyReleaseMonitoringDetailReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
                                         </div>
                                     </div>
                                 </div>
@@ -184,7 +184,8 @@
                 mask: '99-99-9999',
                 max: new Date(cboLoanSummaryReportEndDateDefaultValue),
                 onValueChanged: function () {
-                    cboLoanSummaryReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboLoanSummaryReportStartDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboLoanSummaryReportEndDate();
                     }, 50);
@@ -201,7 +202,8 @@
                 mask: '99-99-9999',
                 min: new Date(cboLoanSummaryReportStartDateDefaultValue),
                 onValueChanged: function () {
-                    cboLoanSummaryReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboLoanSummaryReportEndDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboLoanSummaryReportStartDate();
                     }, 50);
@@ -254,7 +256,8 @@
                 mask: '99-99-9999',
                 max: new Date(cboLoanDetailReportEndDateDefaultValue),
                 onValueChanged: function () {
-                    cboLoanDetailReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboLoanDetailReportStartDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboLoanDetailReportEndDate();
                     }, 50);
@@ -271,7 +274,8 @@
                 mask: '99-99-9999',
                 min: new Date(cboLoanDetailReportStartDateDefaultValue),
                 onValueChanged: function () {
-                    cboLoanDetailReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboLoanDetailReportEndDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboLoanDetailReportStartDate();
                     }, 50);
@@ -288,7 +292,8 @@
                 mask: '99-99-9999',
                 max: new Date(cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue),
                 onValueChanged: function () {
-                    cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboDailyReleaseMonitoringSummaryReportEndDate();
                     }, 50);
@@ -305,7 +310,8 @@
                 mask: '99-99-9999',
                 min: new Date(cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue),
                 onValueChanged: function () {
-                    cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboDailyReleaseMonitoringSummaryReportStartDate();
                     }, 50);
@@ -358,7 +364,8 @@
                 mask: '99-99-9999',
                 max: new Date(cboDailyReleaseMonitoringDetailReportEndDateDefaultValue),
                 onValueChanged: function () {
-                    cboDailyReleaseMonitoringDetailReportStartDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboDailyReleaseMonitoringDetailReportStartDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboDailyReleaseMonitoringDetailReportEndDate();
                     }, 50);
@@ -375,7 +382,8 @@
                 mask: '99-99-9999',
                 min: new Date(cboDailyReleaseMonitoringDetailReportStartDateDefaultValue),
                 onValueChanged: function () {
-                    cboDailyReleaseMonitoringDetailReportEndDateDefaultValue = this.value.toLocaleDateString();
+                    var thisDate = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboDailyReleaseMonitoringDetailReportEndDateDefaultValue = thisDate;
                     setTimeout(function () {
                         createCboDailyReleaseMonitoringDetailReportStartDate();
                     }, 50);
@@ -386,6 +394,21 @@
         // print loan summary report pdf
         function btnLoanSummaryReportPrintOnclick() {
             window.open('/RepLoanSummaryReport/loanSummaryReport?startDate=' + cboLoanSummaryReportStartDateDefaultValue + '&endDate=' + cboLoanSummaryReportEndDateDefaultValue, '_blank');
+        }
+
+        // print loan detail report pdf
+        function btnLoanDetailReportPrintOnclick() {
+            window.open('/RepLoanDetailReport/loanDetailReport?applicantId=' + cboLoanDetailReportApplicant.selectedItem["Id"] + '&startDate=' + cboLoanDetailReportStartDateDefaultValue + '&endDate=' + cboLoanDetailReportEndDateDefaultValue, '_blank');
+        }
+
+        // print daily release monitoring summary report
+        function btnDailyReleaseMonitoringSummaryReportPrintOnclick() {
+            window.open('/RepDailyReleaseMonitoringSummaryReport/dailyReleaseMonitoringSummaryReport?startDate=' + cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue + '&endDate=' + cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue, '_blank');
+        }
+
+        // print daily release monitoring detail report
+        function btnDailyReleaseMonitoringDetailReportPrintOnclick() {
+            window.open('/RepDailyReleaseMonitoringDetailReport/dailyReleaseMonitoringDetailReport?areaId=' + cboDailyReleaseMonitoringDetailReportArea.selectedItem["Id"] + '&startDate=' + cboDailyReleaseMonitoringSummaryReportStartDateDefaultValue + '&endDate=' + cboDailyReleaseMonitoringSummaryReportEndDateDefaultValue, '_blank');
         }
 
         // on load page

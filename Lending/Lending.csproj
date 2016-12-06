@@ -248,7 +248,9 @@
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
     <Compile Include="Models\TrnLoanApplicationRequirements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\RepApplicantCollectionPaperController.cs" />
     <Compile Include="Reports\RepAreaCollectionPaperController.cs" />
+    <Compile Include="Reports\RepDailyReleaseMonitoringDetailReportController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringSummaryReportController.cs" />
     <Compile Include="Reports\RepLoanApplicationCashVoucherController.cs" />
     <Compile Include="Reports\RepLoanDetailReportController.cs" />
@@ -545,9 +547,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\RepDailyReleaseMonitoringSummaryReport\" />
-    <Folder Include="Views\RepLoanDetailReport\" />
-    <Folder Include="Views\RepLoanSummaryReport\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

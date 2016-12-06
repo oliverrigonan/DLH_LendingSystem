@@ -1723,11 +1723,6 @@
             collectionFlexGrid.trackChanges = true;
         }
 
-        // print applicant collection paper
-        function btnPrintApplicantCollectionPaper() {
-
-        }
-
         // link extend collection
         function linkExtendCollectionPaymentOnclick() {
             document.getElementById("btnExtendPaymentYes").innerHTML = "Yes";
@@ -1884,6 +1879,11 @@
                     }
                 }
             });
+        }
+
+        // applicant collection report
+        function btnPrintApplicantCollectionPaper() {
+            window.open('/RepApplicantCollectionPaper/applicantCollectionPaper?applicantId=' + getUrlParameter("applicantId") + '&loanId=' + urlParameterLoanId, '_blank');
         }
 
         // on load page
