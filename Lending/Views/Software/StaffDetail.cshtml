@@ -253,6 +253,7 @@
         window.onload = function () {
             NProgress.start();
             toastrModification();
+            getStaffDetailData();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {
