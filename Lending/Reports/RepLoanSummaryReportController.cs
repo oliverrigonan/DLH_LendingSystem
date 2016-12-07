@@ -22,7 +22,6 @@ namespace Lending.Reports
             {
                 // PDF settings
                 MemoryStream workStream = new MemoryStream();
-                //Rectangle rectangle = new Rectangle(PageSize.A3);
                 Document document = new Document();
                 document.SetPageSize(iTextSharp.text.PageSize.A3.Rotate());
                 document.SetMargins(30f, 30f, 30f, 30f);

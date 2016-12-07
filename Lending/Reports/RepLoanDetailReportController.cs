@@ -16,7 +16,7 @@ namespace Lending.Reports
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
         // loan detail report
-        public ActionResult loanDetailReport(Int32 applicantId, String startDate, String endDate)
+        public ActionResult loanDetailReport(String applicantId, String startDate, String endDate)
         {
             if (applicantId != null)
             {
@@ -70,7 +70,7 @@ namespace Lending.Reports
 
                     // loan applications
                     var loanApplications = from d in db.trnLoanApplications
-                                           where d.ApplicantId == applicantId
+                                           where d.ApplicantId == Convert.ToInt32(applicantId)
                                            && d.LoanDate >= Convert.ToDateTime(startDate)
                                            && d.LoanDate <= Convert.ToDateTime(endDate)
                                            && d.IsLocked == true

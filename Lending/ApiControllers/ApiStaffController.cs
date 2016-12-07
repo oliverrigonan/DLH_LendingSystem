@@ -27,9 +27,6 @@ namespace Lending.ApiControllers
                              Staff = d.Staff,
                              ContactNumber = d.ContactNumber,
                              Address = d.Address,
-                             StaffManualNumber = d.StaffManualNumber,
-                             StaffRoleId = d.StaffRoleId,
-                             StaffRole = d.sysStaffRole.StaffRole,
                              IsLocked = d.IsLocked,
                              CreatedByUserId = d.CreatedByUserId,
                              CreatedByUser = d.mstUser.FullName,
@@ -57,9 +54,6 @@ namespace Lending.ApiControllers
                              Staff = d.Staff,
                              ContactNumber = d.ContactNumber,
                              Address = d.Address,
-                             StaffManualNumber = d.StaffManualNumber,
-                             StaffRoleId = d.StaffRoleId,
-                             StaffRole = d.sysStaffRole.StaffRole,
                              IsLocked = d.IsLocked,
                              CreatedByUserId = d.CreatedByUserId,
                              CreatedByUser = d.mstUser.FullName,
@@ -70,36 +64,6 @@ namespace Lending.ApiControllers
                          };
 
             return (Models.MstStaff)staffs.FirstOrDefault();
-        }
-
-        // staff list by staffroleid
-        [Authorize]
-        [HttpGet]
-        [Route("api/staff/list/byStaffRoleId/{staffRoleId}")]
-        public List<Models.MstStaff> listStaffByStaffRoleId(String staffRoleId)
-        {
-            var staffs = from d in db.mstStaffs
-                         where d.StaffRoleId == Convert.ToInt32(staffRoleId)
-                         select new Models.MstStaff
-                         {
-                             Id = d.Id,
-                             StaffNumber = d.StaffNumber,
-                             Staff = d.Staff,
-                             ContactNumber = d.ContactNumber,
-                             Address = d.Address,
-                             StaffManualNumber = d.StaffManualNumber,
-                             StaffRoleId = d.StaffRoleId,
-                             StaffRole = d.sysStaffRole.StaffRole,
-                             IsLocked = d.IsLocked,
-                             CreatedByUserId = d.CreatedByUserId,
-                             CreatedByUser = d.mstUser.FullName,
-                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                             UpdatedByUserId = d.UpdatedByUserId,
-                             UpdatedByUser = d.mstUser1.FullName,
-                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                         };
-
-            return staffs.ToList();
         }
 
         // zero fill
@@ -167,8 +131,6 @@ namespace Lending.ApiControllers
                         newStaff.Staff = "NA";
                         newStaff.ContactNumber = "NA";
                         newStaff.Address = "NA";
-                        newStaff.StaffManualNumber = "NA";
-                        newStaff.StaffRoleId = (from d in db.sysStaffRoles select d.Id).FirstOrDefault();
                         newStaff.IsLocked = false;
                         newStaff.CreatedByUserId = userId;
                         newStaff.CreatedDateTime = DateTime.Now;
@@ -243,8 +205,6 @@ namespace Lending.ApiControllers
                                 lockStaff.Staff = staff.Staff;
                                 lockStaff.ContactNumber = staff.ContactNumber;
                                 lockStaff.Address = staff.Address;
-                                lockStaff.StaffManualNumber = staff.StaffManualNumber;
-                                lockStaff.StaffRoleId = staff.StaffRoleId;
                                 lockStaff.IsLocked = true;
                                 lockStaff.UpdatedByUserId = userId;
                                 lockStaff.UpdatedDateTime = DateTime.Now;

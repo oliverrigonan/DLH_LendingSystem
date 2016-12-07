@@ -136,8 +136,8 @@ namespace Lending.ApiControllers
                         newArea.AreaNumber = zeroFill(Convert.ToInt32(areaNumber), 10);
                         newArea.Area = "NA";
                         newArea.Description = "NA";
-                        newArea.SupervisorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 1 select d.Id).FirstOrDefault();
-                        newArea.CollectorStaffId = (from d in db.mstStaffs where d.StaffRoleId == 2 select d.Id).FirstOrDefault();
+                        newArea.SupervisorStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
+                        newArea.CollectorStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
                         newArea.IsLocked = false;
                         newArea.CreatedByUserId = userId;
                         newArea.CreatedDateTime = DateTime.Now;

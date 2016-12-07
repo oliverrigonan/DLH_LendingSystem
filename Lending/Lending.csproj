@@ -190,7 +190,6 @@
     <Compile Include="ApiControllers\ApiCoMakerStatementController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiStaffController.cs" />
-    <Compile Include="ApiControllers\ApiStaffRoleController.cs" />
     <Compile Include="ApiControllers\ApiTransactionTypeController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationController.cs" />
@@ -239,7 +238,6 @@
     <Compile Include="Models\MstExpenseType.cs" />
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstStaff.cs" />
-    <Compile Include="Models\SysStaffRole.cs" />
     <Compile Include="Models\SysTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
@@ -252,6 +250,7 @@
     <Compile Include="Reports\RepAreaCollectionPaperController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringDetailReportController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringSummaryReportController.cs" />
+    <Compile Include="Reports\RepExpensesSummaryReportController.cs" />
     <Compile Include="Reports\RepLoanApplicationCashVoucherController.cs" />
     <Compile Include="Reports\RepLoanDetailReportController.cs" />
     <Compile Include="Reports\RepLoanSummaryReportController.cs" />

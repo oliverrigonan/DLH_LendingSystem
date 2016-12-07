@@ -59,12 +59,6 @@
                                     <div id="cboArea"></div>
                                 </div>
                             </td>
-                            <td>
-                                &nbsp; &nbsp; &nbsp;
-                            </td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="btnCollectionPaperOnclick()"> <i class="fa fa-print fa-fw"></i> Print Area Collection Paper</button>
-                            </td>
                         </tr>
                     </table>
                 </div>
@@ -742,11 +736,6 @@
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
             window.open('/Software/CollectionDetail?applicantId=' + collectionItem.ApplicantId + '&loanId=' + collectionItem.LoanId, '_blank');
-        }
-
-        // collection report
-        function btnCollectionPaperOnclick() {
-            window.open('/RepAreaCollectionPaper/areaCollectionPaper?collectionDate=' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-') + '&areaId=' + cboArea.selectedItem["Id"], '_blank');
         }
 
         // on load page

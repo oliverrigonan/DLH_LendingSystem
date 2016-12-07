@@ -108,9 +108,6 @@ namespace Lending.Data
     partial void InsertsysResidenceType(sysResidenceType instance);
     partial void UpdatesysResidenceType(sysResidenceType instance);
     partial void DeletesysResidenceType(sysResidenceType instance);
-    partial void InsertsysStaffRole(sysStaffRole instance);
-    partial void UpdatesysStaffRole(sysStaffRole instance);
-    partial void DeletesysStaffRole(sysStaffRole instance);
     partial void InsertsysTransactionType(sysTransactionType instance);
     partial void UpdatesysTransactionType(sysTransactionType instance);
     partial void DeletesysTransactionType(sysTransactionType instance);
@@ -363,14 +360,6 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<sysResidenceType>();
-			}
-		}
-		
-		public System.Data.Linq.Table<sysStaffRole> sysStaffRoles
-		{
-			get
-			{
-				return this.GetTable<sysStaffRole>();
 			}
 		}
 		
@@ -7753,10 +7742,6 @@ namespace Lending.Data
 		
 		private string _Address;
 		
-		private string _StaffManualNumber;
-		
-		private int _StaffRoleId;
-		
 		private bool _IsLocked;
 		
 		private int _CreatedByUserId;
@@ -7777,8 +7762,6 @@ namespace Lending.Data
 		
 		private EntityRef<mstUser> _mstUser1;
 		
-		private EntityRef<sysStaffRole> _sysStaffRole;
-		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -7793,10 +7776,6 @@ namespace Lending.Data
     partial void OnContactNumberChanged();
     partial void OnAddressChanging(string value);
     partial void OnAddressChanged();
-    partial void OnStaffManualNumberChanging(string value);
-    partial void OnStaffManualNumberChanged();
-    partial void OnStaffRoleIdChanging(int value);
-    partial void OnStaffRoleIdChanged();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
@@ -7816,7 +7795,6 @@ namespace Lending.Data
 			this._trnExpenses = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses), new Action<trnExpense>(this.detach_trnExpenses));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
-			this._sysStaffRole = default(EntityRef<sysStaffRole>);
 			OnCreated();
 		}
 		
@@ -7916,50 +7894,6 @@ namespace Lending.Data
 					this._Address = value;
 					this.SendPropertyChanged("Address");
 					this.OnAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StaffManualNumber", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string StaffManualNumber
-		{
-			get
-			{
-				return this._StaffManualNumber;
-			}
-			set
-			{
-				if ((this._StaffManualNumber != value))
-				{
-					this.OnStaffManualNumberChanging(value);
-					this.SendPropertyChanging();
-					this._StaffManualNumber = value;
-					this.SendPropertyChanged("StaffManualNumber");
-					this.OnStaffManualNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StaffRoleId", DbType="Int NOT NULL")]
-		public int StaffRoleId
-		{
-			get
-			{
-				return this._StaffRoleId;
-			}
-			set
-			{
-				if ((this._StaffRoleId != value))
-				{
-					if (this._sysStaffRole.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnStaffRoleIdChanging(value);
-					this.SendPropertyChanging();
-					this._StaffRoleId = value;
-					this.SendPropertyChanged("StaffRoleId");
-					this.OnStaffRoleIdChanged();
 				}
 			}
 		}
@@ -8175,40 +8109,6 @@ namespace Lending.Data
 						this._UpdatedByUserId = default(int);
 					}
 					this.SendPropertyChanged("mstUser1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="sysStaffRole_mstStaff", Storage="_sysStaffRole", ThisKey="StaffRoleId", OtherKey="Id", IsForeignKey=true)]
-		public sysStaffRole sysStaffRole
-		{
-			get
-			{
-				return this._sysStaffRole.Entity;
-			}
-			set
-			{
-				sysStaffRole previousValue = this._sysStaffRole.Entity;
-				if (((previousValue != value) 
-							|| (this._sysStaffRole.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._sysStaffRole.Entity = null;
-						previousValue.mstStaffs.Remove(this);
-					}
-					this._sysStaffRole.Entity = value;
-					if ((value != null))
-					{
-						value.mstStaffs.Add(this);
-						this._StaffRoleId = value.Id;
-					}
-					else
-					{
-						this._StaffRoleId = default(int);
-					}
-					this.SendPropertyChanged("sysStaffRole");
 				}
 			}
 		}
@@ -10333,120 +10233,6 @@ namespace Lending.Data
 		{
 			this.SendPropertyChanging();
 			entity.sysResidenceType1 = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.sysStaffRole")]
-	public partial class sysStaffRole : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _StaffRole;
-		
-		private EntitySet<mstStaff> _mstStaffs;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnStaffRoleChanging(string value);
-    partial void OnStaffRoleChanged();
-    #endregion
-		
-		public sysStaffRole()
-		{
-			this._mstStaffs = new EntitySet<mstStaff>(new Action<mstStaff>(this.attach_mstStaffs), new Action<mstStaff>(this.detach_mstStaffs));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StaffRole", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string StaffRole
-		{
-			get
-			{
-				return this._StaffRole;
-			}
-			set
-			{
-				if ((this._StaffRole != value))
-				{
-					this.OnStaffRoleChanging(value);
-					this.SendPropertyChanging();
-					this._StaffRole = value;
-					this.SendPropertyChanged("StaffRole");
-					this.OnStaffRoleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="sysStaffRole_mstStaff", Storage="_mstStaffs", ThisKey="Id", OtherKey="StaffRoleId")]
-		public EntitySet<mstStaff> mstStaffs
-		{
-			get
-			{
-				return this._mstStaffs;
-			}
-			set
-			{
-				this._mstStaffs.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_mstStaffs(mstStaff entity)
-		{
-			this.SendPropertyChanging();
-			entity.sysStaffRole = this;
-		}
-		
-		private void detach_mstStaffs(mstStaff entity)
-		{
-			this.SendPropertyChanging();
-			entity.sysStaffRole = null;
 		}
 	}
 	

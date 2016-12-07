@@ -329,8 +329,6 @@
       <Column Name="Staff" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ContactNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Address" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="StaffManualNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="StaffRoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -341,7 +339,6 @@
       <Association Name="mstStaff_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="CollectorStaffId" Type="trnExpense" />
       <Association Name="mstUser_mstStaff" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstStaff1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-      <Association Name="sysStaffRole_mstStaff" Member="sysStaffRole" ThisKey="StaffRoleId" OtherKey="Id" Type="sysStaffRole" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.mstUser" Member="mstUsers">
@@ -433,13 +430,6 @@
       <Association Name="sysResidenceType_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstApplicant" />
       <Association Name="sysResidenceType_mstCoMakerStatement" Member="mstCoMakerStatements" ThisKey="Id" OtherKey="ResidenceTypeId" Type="mstCoMakerStatement" />
       <Association Name="sysResidenceType_mstCoMakerStatement1" Member="mstCoMakerStatements1" ThisKey="Id" OtherKey="LandResidenceTypeId" Type="mstCoMakerStatement" />
-    </Type>
-  </Table>
-  <Table Name="dbo.sysStaffRole" Member="sysStaffRoles">
-    <Type Name="sysStaffRole">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="StaffRole" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="sysStaffRole_mstStaff" Member="mstStaffs" ThisKey="Id" OtherKey="StaffRoleId" Type="mstStaff" />
     </Type>
   </Table>
   <Table Name="dbo.sysTransactionType" Member="sysTransactionTypes">

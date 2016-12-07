@@ -17,7 +17,7 @@ namespace Lending.Reports
         private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // Collection Paper
-        public ActionResult applicantCollectionPaper(Int32 applicantId, Int32 loanId)
+        public ActionResult applicantCollectionPaper(String applicantId, String loanId)
         {
             if (applicantId != null && loanId != null)
             {
@@ -62,8 +62,8 @@ namespace Lending.Reports
 
                 // query collection
                 var collections = from d in db.trnCollections
-                                  where d.trnLoanApplication.ApplicantId == applicantId
-                                  && d.LoanId == loanId
+                                  where d.trnLoanApplication.ApplicantId == Convert.ToInt32(applicantId)
+                                  && d.LoanId == Convert.ToInt32(loanId)
                                   select new Models.TrnCollection
                                   {
                                       Id = d.Id,
@@ -107,7 +107,7 @@ namespace Lending.Reports
 
                 if (collections.Any())
                 {
-                    var loanApplications = from d in db.trnLoanApplications where d.Id == loanId select d;
+                    var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
                     if (loanApplications.Any())
                     {
                         // table data
@@ -202,7 +202,7 @@ namespace Lending.Reports
                     tableFooter.SetWidths(widthsCells2);
                     tableFooter.AddCell(new PdfPCell(new Phrase("Prepared by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0 });
-                    tableFooter.AddCell(new PdfPCell(new Phrase("Released by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
+                    tableFooter.AddCell(new PdfPCell(new Phrase("Verified by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
                     tableFooter.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0 });
                     tableFooter.AddCell(new PdfPCell(new Phrase("Checked by:", fontArial12Bold)) { Border = 0, HorizontalAlignment = 0 });
                     tableFooter.AddCell(new PdfPCell(new Phrase(loanApplications.FirstOrDefault().mstUser.FullName.ToUpper())) { Border = 0, PaddingTop = 50f, PaddingBottom = 10f, HorizontalAlignment = 1 });

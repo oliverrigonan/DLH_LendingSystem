@@ -139,9 +139,6 @@
                                 Staff: staffListResult[i]["Staff"],
                                 ContactNumber: staffListResult[i]["ContactNumber"],
                                 Address: staffListResult[i]["Address"],
-                                StaffManualNumber: staffListResult[i]["StaffManualNumber"],
-                                StaffRoleId: staffListResult[i]["StaffRoleId"],
-                                StaffRole: staffListResult[i]["StaffRole"],
                                 IsLocked: staffListResult[i]["IsLocked"],
                                 CreatedByUserId: staffListResult[i]["CreatedByUserId"],
                                 CreatedByUser: staffListResult[i]["CreatedByUser"],
@@ -282,9 +279,7 @@
             staffCollectionView.filter = function (item) {
                 return !filterText || (item.StaffNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Staff.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.StaffManualNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.StaffRole.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             staffCollectionView.currentChanged.addHandler(function (sender, args) {
@@ -324,22 +319,10 @@
                                 "width": "3*"
                             },
                             {
-                                "header": "Manual Number",
-                                "binding": "StaffManualNumber",
-                                "allowSorting": true,
-                                "width": "2*"
-                            },
-                            {
                                 "header": "Contact Number",
                                 "binding": "ContactNumber",
                                 "allowSorting": true,
                                 "width": "2.5*"
-                            },
-                            {
-                                "header": "Role",
-                                "binding": "StaffRole",
-                                "allowSorting": true,
-                                "width": "2*"
                             },
                             {
                                 "header": "L",

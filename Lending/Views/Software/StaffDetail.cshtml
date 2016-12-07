@@ -61,14 +61,6 @@
                                         <label>Address</label><br />
                                         <textarea class="form-control requiredStaff" rows="5" id="staffAddress" placeholder="Address"></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label>Manual Staff Number</label><br />
-                                        <input type="text" class="form-control requiredStaff" id="staffManualStaffNumber" placeholder="Manual Staff Number" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Role</label><br />
-                                        <div id="cboStaffRole"></div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +101,6 @@
         var branchFlexGrid;
         var branchId = 0;
         var isLocked = false;
-        var cboStaffRole;
 
         // get staff data
         function getStaffDetailData() {
@@ -124,8 +115,6 @@
                         document.getElementById("staffName").value = staffDetailResult.Staff;
                         document.getElementById("staffContactNumber").value = staffDetailResult.ContactNumber;
                         document.getElementById("staffAddress").value = staffDetailResult.Address;
-                        document.getElementById("staffManualStaffNumber").value = staffDetailResult.StaffManualNumber;
-                        cboStaffRole.selectedValue = staffDetailResult.StaffRole;
 
                         document.getElementById('stampCreatedBy').innerHTML = staffDetailResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = staffDetailResult.CreatedDateTime;
@@ -136,11 +125,8 @@
                             document.getElementById("staffName").disabled = true;
                             document.getElementById("staffContactNumber").disabled = true;
                             document.getElementById("staffAddress").disabled = true;
-                            document.getElementById("staffManualStaffNumber").disabled = true;
-                            cboStaffRole.disabled = true;
 
                             $("#btnLockStaff").prop("disabled", true);
-                            $("#btnAddBranch").prop("disabled", true);
 
                             isLocked = true;
                         } else {
@@ -151,43 +137,6 @@
                         window.history.back();
                     }
                     NProgress.done();
-                }
-            });
-        }
-
-        // get staff
-        function getStaffRole() {
-            var staffRoleArray = new Array();
-            $.ajax({
-                url: '/api/staffRole/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (staffRoleResults) {
-                    var disabled = true;
-                    if (staffRoleResults.length > 0) {
-                        for (i = 0; i < staffRoleResults.length; i++) {
-                            staffRoleArray.push({
-                                Id: staffRoleResults[i]["Id"],
-                                StaffRole: staffRoleResults[i]["StaffRole"],
-                            });
-                        }
-                        disabled = false;
-                    }
-
-                    cboStaffRole.dispose();
-                    cboStaffRole = new wijmo.input.ComboBox('#cboStaffRole', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: staffRoleArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "StaffRole",
-                        selectedValuePath: "StaffRole"
-                    });
-
-                    getStaffDetailData();
                 }
             });
         }
@@ -218,14 +167,11 @@
                 $("#btnLockStaff").prop("disabled", true);
                 $("#btnUnlockStaff").prop("disabled", true);
                 $("#btnCloseStaff").prop("disabled", true);
-                $("#btnAddBranch").prop("disabled", true);
 
                 var staffDetailObject = new Object();
                 staffDetailObject.Staff = document.getElementById('staffName').value;
                 staffDetailObject.ContactNumber = document.getElementById('staffContactNumber').value;
                 staffDetailObject.Address = document.getElementById('staffAddress').value;
-                staffDetailObject.StaffManualNumber = document.getElementById('staffManualStaffNumber').value;
-                staffDetailObject.StaffRoleId = cboStaffRole.selectedItem["Id"];
                 var staffDetailData = JSON.stringify(staffDetailObject);
 
                 $.ajax({
@@ -270,7 +216,6 @@
             $("#btnUnlockStaff").prop("disabled", true);
             $("#btnLockStaff").prop("disabled", true);
             $("#btnCloseStaff").prop("disabled", true);
-            $("#btnAddBranch").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",
@@ -308,8 +253,6 @@
         window.onload = function () {
             NProgress.start();
             toastrModification();
-            cboStaffRole = new wijmo.input.ComboBox('#cboStaffRole');
-            getStaffRole();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {

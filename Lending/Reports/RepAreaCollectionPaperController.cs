@@ -18,7 +18,7 @@ namespace Lending.Reports
         private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // Collection Paper
-        public ActionResult areaCollectionPaper(String collectionDate, Int32 areaId)
+        public ActionResult areaCollectionPaper(String collectionDate, String areaId)
         {
             if (collectionDate != null && areaId != null)
             {
@@ -72,7 +72,7 @@ namespace Lending.Reports
 
                 var collections = from d in db.trnCollections
                                   where d.CollectionDate == Convert.ToDateTime(collectionDate)
-                                  && d.trnLoanApplication.mstApplicant.AreaId == areaId
+                                  && d.trnLoanApplication.mstApplicant.AreaId == Convert.ToInt32(areaId)
                                   select new Models.TrnCollection
                                   {
                                       Id = d.Id,
@@ -107,7 +107,7 @@ namespace Lending.Reports
 
                 if (collections.Any())
                 {
-                    var area = from d in db.mstAreas where d.Id == areaId select d;
+                    var area = from d in db.mstAreas where d.Id == Convert.ToInt32(areaId) select d;
                     if (area.Any())
                     {
                         PdfPTable areaLabel = new PdfPTable(1);
