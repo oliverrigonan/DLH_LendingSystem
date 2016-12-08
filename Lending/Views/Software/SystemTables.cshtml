@@ -42,13 +42,28 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#ExpenseTypes" data-toggle="tab" id="expenseTypesTab">
-                                Expense Types
+                            <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
+                                Requirements
                             </a>
                         </li>
                         <li>
-                            <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
-                                Requirements
+                            <a href="#Terms" data-toggle="tab" id="TermsTab">
+                                Terms
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
+                                Penalties
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#Interests" data-toggle="tab" id="InterestsTab">
+                                Interests & Rates
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#ExpenseTypes" data-toggle="tab" id="expenseTypesTab">
+                                Expense Types
                             </a>
                         </li>
                         <li>
@@ -109,7 +124,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="Accounts">
+                        <div class="tab-pane fade" id="Terms">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <table style="width: 100%">
@@ -117,12 +132,12 @@
                                             <td>
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
+                                                    <input type="text" id="searchTerms" class="form-control" placeholder="Search" />
                                                 </div>
                                             </td>
                                             <td>&nbsp;&nbsp;&nbsp;</td>
                                             <td align="right">
-                                                <button class="btn btn-primary" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
+                                                <button class="btn btn-primary" id="btnAddTerms" onclick="btnAddTermsOnclick()">
                                                     <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                                 </button>
                                             </td>
@@ -130,10 +145,62 @@
                                     </table>
                                 </div>
                                 <div class="panel-body">
-                                    <div id="AccountsListFlexGrid" class="grid"></div>
+                                    <div id="TermsListFlexGrid" class="grid"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="Penalties">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchPenalties" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddPenalties" onclick="btnAddPenaltiesOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="PenaltiesListFlexGrid" class="grid"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="Interests">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchInterests" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddInterests" onclick="btnAddInterestsOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="InterestsListFlexGrid" class="grid"></div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="tab-pane fade" id="ExpenseTypes">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -156,6 +223,31 @@
                                 </div>
                                 <div class="panel-body">
                                     <div id="ExpenseTypesListFlexGrid" class="grid"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="Accounts">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                    <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <button class="btn btn-primary" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
+                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="AccountsListFlexGrid" class="grid"></div>
                                 </div>
                             </div>
                         </div>
@@ -202,7 +294,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> LoanType Detail</h4>
+                    <h4 class="modal-title"> Loan Type Detail</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -229,7 +321,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete LoanTypes</h4>
+                    <h4 class="modal-title">Delete Loan Type</h4>
                 </div>
                 <div class="modal-body">
                     Are you sure that you want to delete this LoanType?
@@ -387,6 +479,198 @@
         </div>
     </div>
 
+    <!-- Terms Detail Modal -->
+    <div class="modal fade" id="TermsEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Term Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Term</label><br />
+                        <input type="text" class="form-control requiredTerms" id="termName" placeholder="LoanType" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label><br />
+                        <textarea class="form-control requiredTerms" rows="5" id="termDescription" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Days</label><br />
+                        <input type="text" class="form-control numberField requiredTerms" id="termNoOfDays" placeholder="0.00" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveTerms" onclick="saveTermsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseTerms" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Terms modal -->
+    <div class="modal fade" id="deleteConfirmationTermsModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Term</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Term?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteTerms" onclick="btnConfirmDeleteTermsOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteTermsModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Penalties Detail Modal -->
+    <div class="modal fade" id="PenaltiesEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Penalty Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Penalty Name</label><br />
+                        <input type="text" class="form-control requiredPenalties" id="penaltyName" placeholder="LoanType" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label><br />
+                        <textarea class="form-control requiredPenalties" rows="5" id="penaltyDescription" placeholder="Description"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Every Absent Pen. Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>No. of Absent Limit</label><br />
+                                <input type="text" class="form-control numberField requiredPenalties" id="penaltyNoOfAbsentLimit" placeholder="0.00" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Pen. Amount over No. of Absent Limit</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmontOverNoOfAbsentLimit" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Loan Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyLoanAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSavePenalties" onclick="savePenaltiesOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnClosePenalties" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Penalties modal -->
+    <div class="modal fade" id="deleteConfirmationPenaltiesModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Penalty</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Penalty?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeletePenalties" onclick="btnConfirmDeletePenaltiesOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeletePenaltiesModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interests Detail Modal -->
+    <div class="modal fade" id="InterestsEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Interest Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Interest Name</label><br />
+                        <input type="text" class="form-control requiredInterests" id="interestName" placeholder="LoanType" />
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label><br />
+                        <textarea class="form-control requiredInterests" rows="5" id="interestDescription" placeholder="Description"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rate</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredInterests" id="interestRate" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>No. of Days Limit</label><br />
+                                <input type="text" class="form-control numberField requiredInterests" id="interestNoOfDays" placeholder="0.00" />
+                            </div>
+                        </div>
+                        <div class="col-md-6"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveInterests" onclick="saveInterestsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseInterests" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation Interests modal -->
+    <div class="modal fade" id="deleteConfirmationInterestsModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Interest</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Interest?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteInterests" onclick="btnConfirmDeleteInterestsOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteInterestsModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -404,6 +688,15 @@
         var cboArea;
         var expenseTypesCollectionView;
         var expenseTypesFlexGrid;
+        var termsCollectionView;
+        var termsFlexGrid;
+        var termId = 0;
+        var penaltiesCollectionView;
+        var penaltiesFlexGrid;
+        var penaltyId = 0;
+        var interestsCollectionView;
+        var interestsFlexGrid;
+        var interestId = 0;
 
         // get Accounts
         function getAccountsList() {
@@ -832,6 +1125,9 @@
             $("#Accounts").show();
             $("#ExpenseTypes").hide();
             $("#LoanTypes").hide();
+            $("#Terms").hide();
+            $("#Penalties").hide();
+            $("#Interests").hide();
 
             createAccountFlexGrid();
             window.createAccountFlexGrid = function () {
@@ -1236,6 +1532,9 @@
             $("#Accounts").hide();
             $("#ExpenseTypes").show();
             $("#LoanTypes").hide();
+            $("#Terms").hide();
+            $("#Penalties").hide();
+            $("#Interests").hide();
 
             createExpenseTypeFlexGrid();
             window.createExpenseTypeFlexGrid = function () {
@@ -1640,6 +1939,9 @@
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
             $("#LoanTypes").hide();
+            $("#Terms").hide();
+            $("#Penalties").hide();
+            $("#Interests").hide();
 
             createRequirementFlexGrid();
             window.createRequirementFlexGrid = function () {
@@ -2044,6 +2346,9 @@
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
             $("#LoanTypes").show();
+            $("#Terms").hide();
+            $("#Penalties").hide();
+            $("#Interests").hide();
 
             loanTypesCollectionView = new wijmo.collections.CollectionView(getLoanTypesList());
             loanTypesCollectionView.canFilter = true;
@@ -2066,6 +2371,1297 @@
             // Flex Grid
             loanTypesFlexGrid.itemsSource = loanTypesCollectionView;
             loanTypesFlexGrid.trackChanges = true;
+        });
+
+        // get Terms
+        function getTermsList() {
+            var terms = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/term/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (termsListResult) {
+                    if (termsListResult.length > 0) {
+                        for (i = 0; i < termsListResult.length; i++) {
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
+                            terms.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editTermsOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteTermsOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: termsListResult[i]["Id"],
+                                Term: termsListResult[i]["Term"],
+                                Description: termsListResult[i]["Description"],
+                                NoOfDays: termsListResult[i]["NoOfDays"],
+                                CreatedByUserId: termsListResult[i]["CreatedByUserId"],
+                                CreatedByUser: termsListResult[i]["CreatedByUser"],
+                                CreatedDateTime: termsListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: termsListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: termsListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: termsListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return terms;
+        }
+
+        // add new Terms
+        function btnAddTermsOnclick() {
+            $("#TermsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredTerms').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveTerms").prop("disabled", false);
+            $("#btnCloseTerms").prop("disabled", false);
+
+            termId = 0;
+            document.getElementById("termName").value = "NA";
+            document.getElementById("termDescription").value = "NA";
+            document.getElementById("termNoOfDays").value = 0;
+        }
+
+        // edit Terms
+        function editTermsOnclick() {
+            $("#TermsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredTerms').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveTerms").prop("disabled", false);
+            $("#btnCloseTerms").prop("disabled", false);
+
+            termsCollectionView.editItem(termsCollectionView.currentItem);
+            var termCurrentEditItem = termsCollectionView.currentEditItem;
+
+            termId = termCurrentEditItem.Id;
+            document.getElementById("termName").value = termCurrentEditItem.Term;
+            document.getElementById("termDescription").value = termCurrentEditItem.Description;
+            document.getElementById("termNoOfDays").value = termCurrentEditItem.NoOfDays;
+        }
+
+        // form input validation
+        function inputValidationForTerms() {
+            var isValid = true;
+            $('.requiredTerms').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save Terms
+        function saveTermsOnclick() {
+            if (inputValidationForTerms()) {
+                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                $("#btnSaveTerms").prop("disabled", true);
+                $("#btnCloseTerms").prop("disabled", true);
+
+                var termsObject = new Object();
+                termsObject.Term = document.getElementById('termName').value;
+                termsObject.Description = document.getElementById('termDescription').value;
+                termsObject.NoOfDays = document.getElementById('termNoOfDays').value;
+                var termData = JSON.stringify(termsObject);
+
+                if (termId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/term/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: termData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Save Successful");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                                termsCollectionView.canFilter = true;
+
+                                var filterText = '';
+                                $('#searchTerms').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    termsCollectionView.refresh();
+                                });
+
+                                termsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateTermsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                termsFlexGrid.itemsSource = termsCollectionView;
+                                termsFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveTerms").prop("disabled", false);
+                                $("#btnCloseTerms").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/term/update/' + termId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: termData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Update Successful");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                                termsCollectionView.canFilter = true;
+
+                                var filterText = '';
+                                $('#searchTerms').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    termsCollectionView.refresh();
+                                });
+
+                                termsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateTermsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                termsFlexGrid.itemsSource = termsCollectionView;
+                                termsFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveTerms").prop("disabled", false);
+                                $("#btnCloseTerms").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveTerms").prop("disabled", false);
+                                $("#btnCloseTerms").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        // delete Terms
+        function deleteTermsOnclick() {
+            $("#deleteConfirmationTermsModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteTerms").innerHTML = "Delete";
+            $("#btnConfirmDeleteTerms").prop("disabled", false);
+            $("#btnCloseDeleteTermsModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteTermsOnclick() {
+            document.getElementById("btnConfirmDeleteTerms").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteTerms").prop("disabled", true);
+            $("#btnCloseDeleteTermsModal").prop("disabled", true);
+
+            termsCollectionView.editItem(termsCollectionView.currentItem);
+            var id = termsCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/term/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationTermsModal').modal('hide');
+
+                        termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                        termsCollectionView.canFilter = true;
+
+                        var filterText = '';
+                        $('#searchTerms').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            termsCollectionView.refresh();
+                        });
+
+                        termsCollectionView.filter = function (item) {
+                            return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateTermsStampSecurity();
+                        });
+
+                        // Flex Grid
+                        termsFlexGrid.itemsSource = termsCollectionView;
+                        termsFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Not Found");
+                        $('#deleteConfirmationTermsModal').modal('hide');
+                        $("#btnConfirmDeleteTerms").prop("disabled", false);
+                        $("#btnCloseDeleteTermsModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationTermsModal').modal('hide');
+                        $("#btnConfirmDeleteTerms").prop("disabled", false);
+                        $("#btnCloseDeleteTermsModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // stamp security
+        function updateTermsStampSecurity() {
+            var item = termsCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        //  Terms flexgrid
+        function createTermFlexGrid() {
+            NProgress.start();
+            toastrModification();
+
+            termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+            termsCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchTerms').keyup(function () {
+                filterText = this.value.toLowerCase();
+                termsCollectionView.refresh();
+            });
+
+            termsCollectionView.filter = function (item) {
+                return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateTermsStampSecurity();
+            });
+
+            // Flex Grid
+            termsFlexGrid = new wijmo.grid.FlexGrid('#TermsListFlexGrid');
+            termsFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Term",
+                                "binding": "Term",
+                                "allowSorting": true,
+                                "width": "2*"
+                            },
+                            {
+                                "header": "Description",
+                                "binding": "Description",
+                                "allowSorting": true,
+                                "width": "3*"
+                            },
+                            {
+                                "header": "No. of Days",
+                                "binding": "NoOfDays",
+                                "allowSorting": true,
+                                "width": "1*"
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: termsCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            termsFlexGrid.trackChanges = true;
+        }
+
+        // Expense Types tab
+        $('#TermsTab').click(function () {
+            NProgress.start();
+            $("#Requirements").hide();
+            $("#Accounts").hide();
+            $("#ExpenseTypes").hide();
+            $("#LoanTypes").hide();
+            $("#Terms").show();
+            $("#Penalties").hide();
+            $("#Interests").hide();
+
+            createTermFlexGrid();
+            window.createTermFlexGrid = function () {
+                return true;
+            }
+
+            termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+            termsCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchTerms').keyup(function () {
+                filterText = this.value.toLowerCase();
+                termsCollectionView.refresh();
+            });
+
+            termsCollectionView.filter = function (item) {
+                return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateTermsStampSecurity();
+            });
+
+            // Flex Grid
+            termsFlexGrid.itemsSource = termsCollectionView;
+            termsFlexGrid.trackChanges = true;
+        });
+
+        // get Penalties
+        function getPenaltiesList() {
+            var penalties = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/penalty/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (penaltiesListResult) {
+                    if (penaltiesListResult.length > 0) {
+                        for (i = 0; i < penaltiesListResult.length; i++) {
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
+                            penalties.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editPenaltiesOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deletePenaltiesOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: penaltiesListResult[i]["Id"],
+                                Penalty: penaltiesListResult[i]["Penalty"],
+                                Description: penaltiesListResult[i]["Description"],
+                                PenaltyAmount: penaltiesListResult[i]["PenaltyAmount"],
+                                NoOfAbsentLimit: penaltiesListResult[i]["NoOfAbsentLimit"],
+                                PenaltyAmountOverNoOfAbsentLimit: penaltiesListResult[i]["PenaltyAmountOverNoOfAbsentLimit"],
+                                LoanAmount: penaltiesListResult[i]["LoanAmount"],
+                                CreatedByUserId: penaltiesListResult[i]["CreatedByUserId"],
+                                CreatedByUser: penaltiesListResult[i]["CreatedByUser"],
+                                CreatedDateTime: penaltiesListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: penaltiesListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: penaltiesListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: penaltiesListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return penalties;
+        }
+
+        // add new Penalties
+        function btnAddPenaltiesOnclick() {
+            $("#PenaltiesEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredPenalties').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSavePenalties").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSavePenalties").prop("disabled", false);
+            $("#btnClosePenalties").prop("disabled", false);
+
+            penaltyId = 0;
+            document.getElementById("penaltyName").value = "NA";
+            document.getElementById("penaltyDescription").value = "NA";
+            document.getElementById("penaltyAmount").value = 0;
+            document.getElementById("penaltyNoOfAbsentLimit").value = 0;
+            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = 0;
+            document.getElementById("penaltyLoanAmount").value = 0;
+        }
+
+        // edit Penalties
+        function editPenaltiesOnclick() {
+            $("#PenaltiesEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredPenalties').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSavePenalties").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSavePenalties").prop("disabled", false);
+            $("#btnClosePenalties").prop("disabled", false);
+
+            penaltiesCollectionView.editItem(penaltiesCollectionView.currentItem);
+            var penaltyCurrentEditItem = penaltiesCollectionView.currentEditItem;
+
+            penaltyId = penaltyCurrentEditItem.Id;
+            document.getElementById("penaltyName").value = penaltyCurrentEditItem.Penalty;
+            document.getElementById("penaltyDescription").value = penaltyCurrentEditItem.Description;
+            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.PenaltyAmount;
+            document.getElementById("penaltyNoOfAbsentLimit").value = penaltyCurrentEditItem.NoOfAbsentLimit;
+            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = penaltyCurrentEditItem.PenaltyAmountOverNoOfAbsentLimit;
+            document.getElementById("penaltyLoanAmount").value = penaltyCurrentEditItem.LoanAmount;
+        }
+
+        // form input validation
+        function inputValidationForPenalties() {
+            var isValid = true;
+            $('.requiredPenalties').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save Penalties
+        function savePenaltiesOnclick() {
+            if (inputValidationForPenalties()) {
+                document.getElementById("btnSavePenalties").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                $("#btnSavePenalties").prop("disabled", true);
+                $("#btnClosePenalties").prop("disabled", true);
+
+                var penaltiesObject = new Object();
+                penaltiesObject.Penalty = document.getElementById('penaltyName').value;
+                penaltiesObject.Description = document.getElementById('penaltyDescription').value;
+                penaltiesObject.PenaltyAmount = document.getElementById('penaltyAmount').value;
+                penaltiesObject.NoOfAbsentLimit = document.getElementById('penaltyNoOfAbsentLimit').value;
+                penaltiesObject.PenaltyAmountOverNoOfAbsentLimit = document.getElementById('penaltyAmontOverNoOfAbsentLimit').value;
+                penaltiesObject.LoanAmount = document.getElementById('penaltyLoanAmount').value;
+                var penaltyData = JSON.stringify(penaltiesObject);
+
+                if (penaltyId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/penalty/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: penaltyData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Save Successful");
+
+                                $("#PenaltiesEditDetailModal").modal("hide");
+
+                                penaltiesCollectionView = new wijmo.collections.CollectionView(getPenaltiesList());
+                                penaltiesCollectionView.canFilter = true;
+
+                                var filterText = '';
+                                $('#searchPenalties').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    penaltiesCollectionView.refresh();
+                                });
+
+                                penaltiesCollectionView.filter = function (item) {
+                                    return !filterText || (item.Penalty.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                penaltiesCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updatePenaltiesStampSecurity();
+                                });
+
+                                // Flex Grid
+                                penaltiesFlexGrid.itemsSource = penaltiesCollectionView;
+                                penaltiesFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#PenaltiesEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSavePenalties").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSavePenalties").prop("disabled", false);
+                                $("#btnClosePenalties").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/penalty/update/' + penaltyId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: penaltyData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Update Successful");
+
+                                $("#PenaltiesEditDetailModal").modal("hide");
+
+                                penaltiesCollectionView = new wijmo.collections.CollectionView(getPenaltiesList());
+                                penaltiesCollectionView.canFilter = true;
+
+                                var filterText = '';
+                                $('#searchPenalties').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    penaltiesCollectionView.refresh();
+                                });
+
+                                penaltiesCollectionView.filter = function (item) {
+                                    return !filterText || (item.Penalty.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                penaltiesCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updatePenaltiesStampSecurity();
+                                });
+
+                                // Flex Grid
+                                penaltiesFlexGrid.itemsSource = penaltiesCollectionView;
+                                penaltiesFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#PenaltiesEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSavePenalties").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSavePenalties").prop("disabled", false);
+                                $("#btnClosePenalties").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#PenaltiesEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSavePenalties").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSavePenalties").prop("disabled", false);
+                                $("#btnClosePenalties").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        // delete Penalties
+        function deletePenaltiesOnclick() {
+            $("#deleteConfirmationPenaltiesModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeletePenalties").innerHTML = "Delete";
+            $("#btnConfirmDeletePenalties").prop("disabled", false);
+            $("#btnCloseDeletePenaltiesModal").prop("disabled", false);
+        }
+        function btnConfirmDeletePenaltiesOnclick() {
+            document.getElementById("btnConfirmDeletePenalties").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeletePenalties").prop("disabled", true);
+            $("#btnCloseDeletePenaltiesModal").prop("disabled", true);
+
+            penaltiesCollectionView.editItem(penaltiesCollectionView.currentItem);
+            var id = penaltiesCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/penalty/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationPenaltiesModal').modal('hide');
+
+                        penaltiesCollectionView = new wijmo.collections.CollectionView(getPenaltiesList());
+                        penaltiesCollectionView.canFilter = true;
+
+                        var filterText = '';
+                        $('#searchPenalties').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            penaltiesCollectionView.refresh();
+                        });
+
+                        penaltiesCollectionView.filter = function (item) {
+                            return !filterText || (item.Penalty.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        penaltiesCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updatePenaltiesStampSecurity();
+                        });
+
+                        // Flex Grid
+                        penaltiesFlexGrid.itemsSource = penaltiesCollectionView;
+                        penaltiesFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Not Found");
+                        $('#deleteConfirmationPenaltiesModal').modal('hide');
+                        $("#btnConfirmDeletePenalties").prop("disabled", false);
+                        $("#btnCloseDeletePenaltiesModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationPenaltiesModal').modal('hide');
+                        $("#btnConfirmDeletePenalties").prop("disabled", false);
+                        $("#btnCloseDeletePenaltiesModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // stamp security
+        function updatePenaltiesStampSecurity() {
+            var item = penaltiesCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        //  Penalties flexgrid
+        function createPenaltyFlexGrid() {
+            NProgress.start();
+            toastrModification();
+
+            penaltiesCollectionView = new wijmo.collections.CollectionView(getPenaltiesList());
+            penaltiesCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchPenalties').keyup(function () {
+                filterText = this.value.toLowerCase();
+                penaltiesCollectionView.refresh();
+            });
+
+            penaltiesCollectionView.filter = function (item) {
+                return !filterText || (item.Penalty.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            penaltiesCollectionView.currentChanged.addHandler(function (sender, args) {
+                updatePenaltiesStampSecurity();
+            });
+
+            // Flex Grid
+            penaltiesFlexGrid = new wijmo.grid.FlexGrid('#PenaltiesListFlexGrid');
+            penaltiesFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Penalty",
+                                "binding": "Penalty",
+                                "allowSorting": true,
+                                "width": "2*"
+                            },
+                            {
+                                "header": "Description",
+                                "binding": "Description",
+                                "allowSorting": true,
+                                "width": "2.5*"
+                            },
+                            {
+                                "header": "Pen. Amount",
+                                "binding": "PenaltyAmount",
+                                "allowSorting": true,
+                                "width": "1*"
+                            },
+                            {
+                                "header": "Absent",
+                                "binding": "NoOfAbsentLimit",
+                                "allowSorting": true,
+                                "width": "1*"
+                            },
+                            {
+                                "header": "Pen. Over AL",
+                                "binding": "PenaltyAmountOverNoOfAbsentLimit",
+                                "allowSorting": true,
+                                "width": "1*"
+                            },
+                            {
+                                "header": "Loan",
+                                "binding": "LoanAmount",
+                                "allowSorting": true,
+                                "width": "1*"
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: penaltiesCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            penaltiesFlexGrid.trackChanges = true;
+        }
+
+        // Penalty Types tab
+        $('#PenaltiesTab').click(function () {
+            NProgress.start();
+            $("#Requirements").hide();
+            $("#Accounts").hide();
+            $("#ExpenseTypes").hide();
+            $("#LoanTypes").hide();
+            $("#Terms").hide();
+            $("#Penalties").show();
+            $("#Interests").hide();
+
+            createPenaltyFlexGrid();
+            window.createPenaltyFlexGrid = function () {
+                return true;
+            }
+
+            penaltiesCollectionView = new wijmo.collections.CollectionView(getPenaltiesList());
+            penaltiesCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchPenalties').keyup(function () {
+                filterText = this.value.toLowerCase();
+                penaltiesCollectionView.refresh();
+            });
+
+            penaltiesCollectionView.filter = function (item) {
+                return !filterText || (item.Penalty.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            penaltiesCollectionView.currentChanged.addHandler(function (sender, args) {
+                updatePenaltiesStampSecurity();
+            });
+
+            // Flex Grid
+            penaltiesFlexGrid.itemsSource = penaltiesCollectionView;
+            penaltiesFlexGrid.trackChanges = true;
+        });
+
+        // get Interests
+        function getInterestsList() {
+            var interests = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/interest/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (interestsListResult) {
+                    if (interestsListResult.length > 0) {
+                        for (i = 0; i < interestsListResult.length; i++) {
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
+                            interests.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editInterestsOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteInterestsOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: interestsListResult[i]["Id"],
+                                Interest: interestsListResult[i]["Interest"],
+                                Description: interestsListResult[i]["Description"],
+                                Rate: interestsListResult[i]["Rate"],
+                                NoOfDays: interestsListResult[i]["NoOfDays"],
+                                CreatedByUserId: interestsListResult[i]["CreatedByUserId"],
+                                CreatedByUser: interestsListResult[i]["CreatedByUser"],
+                                CreatedDateTime: interestsListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: interestsListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: interestsListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: interestsListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return interests;
+        }
+
+        // add new Interests
+        function btnAddInterestsOnclick() {
+            $("#InterestsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredInterests').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveInterests").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveInterests").prop("disabled", false);
+            $("#btnCloseInterests").prop("disabled", false);
+
+            interestId = 0;
+            document.getElementById("interestName").value = "NA";
+            document.getElementById("interestDescription").value = "NA";
+            document.getElementById("interestRate").value = 0;
+            document.getElementById("interestNoOfDays").value = 0;
+        }
+
+        // edit Interests
+        function editInterestsOnclick() {
+            $("#InterestsEditDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredInterests').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveInterests").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveInterests").prop("disabled", false);
+            $("#btnCloseInterests").prop("disabled", false);
+
+            interestsCollectionView.editItem(interestsCollectionView.currentItem);
+            var interestCurrentEditItem = interestsCollectionView.currentEditItem;
+
+            interestId = interestCurrentEditItem.Id;
+            document.getElementById("interestName").value = interestCurrentEditItem.Interest;
+            document.getElementById("interestDescription").value = interestCurrentEditItem.Description;
+            document.getElementById("interestRate").value = interestCurrentEditItem.Rate;
+            document.getElementById("interestNoOfDays").value = interestCurrentEditItem.NoOfDays;
+        }
+
+        // form input validation
+        function inputValidationForInterests() {
+            var isValid = true;
+            $('.requiredInterests').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save Interests
+        function saveInterestsOnclick() {
+            if (inputValidationForInterests()) {
+                document.getElementById("btnSaveInterests").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                $("#btnSaveInterests").prop("disabled", true);
+                $("#btnCloseInterests").prop("disabled", true);
+
+                var interestsObject = new Object();
+                interestsObject.Interest = document.getElementById('interestName').value;
+                interestsObject.Description = document.getElementById('interestDescription').value;
+                interestsObject.Rate = document.getElementById('interestRate').value;
+                interestsObject.NoOfDays = document.getElementById('interestNoOfDays').value;
+                var interestData = JSON.stringify(interestsObject);
+
+                if (interestId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/interest/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: interestData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Save Successful");
+
+                                $("#InterestsEditDetailModal").modal("hide");
+
+                                interestsCollectionView = new wijmo.collections.CollectionView(getInterestsList());
+                                interestsCollectionView.canFilter = true;
+
+                                var filterText = '';
+                                $('#searchInterests').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    interestsCollectionView.refresh();
+                                });
+
+                                interestsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Interest.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                interestsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateInterestsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                interestsFlexGrid.itemsSource = interestsCollectionView;
+                                interestsFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#InterestsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveInterests").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveInterests").prop("disabled", false);
+                                $("#btnCloseInterests").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/interest/update/' + interestId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: interestData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Update Successful");
+
+                                $("#InterestsEditDetailModal").modal("hide");
+
+                                interestsCollectionView = new wijmo.collections.CollectionView(getInterestsList());
+                                interestsCollectionView.canFilter = true;
+
+                                var filterText = '';
+                                $('#searchInterests').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    interestsCollectionView.refresh();
+                                });
+
+                                interestsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Interest.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                interestsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateInterestsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                interestsFlexGrid.itemsSource = interestsCollectionView;
+                                interestsFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#InterestsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveInterests").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveInterests").prop("disabled", false);
+                                $("#btnCloseInterests").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#InterestsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveInterests").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveInterests").prop("disabled", false);
+                                $("#btnCloseInterests").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        // delete Interests
+        function deleteInterestsOnclick() {
+            $("#deleteConfirmationInterestsModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteInterests").innerHTML = "Delete";
+            $("#btnConfirmDeleteInterests").prop("disabled", false);
+            $("#btnCloseDeleteInterestsModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteInterestsOnclick() {
+            document.getElementById("btnConfirmDeleteInterests").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteInterests").prop("disabled", true);
+            $("#btnCloseDeleteInterestsModal").prop("disabled", true);
+
+            interestsCollectionView.editItem(interestsCollectionView.currentItem);
+            var id = interestsCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/interest/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationInterestsModal').modal('hide');
+
+                        interestsCollectionView = new wijmo.collections.CollectionView(getInterestsList());
+                        interestsCollectionView.canFilter = true;
+
+                        var filterText = '';
+                        $('#searchInterests').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            interestsCollectionView.refresh();
+                        });
+
+                        interestsCollectionView.filter = function (item) {
+                            return !filterText || (item.Interest.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        interestsCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateInterestsStampSecurity();
+                        });
+
+                        // Flex Grid
+                        interestsFlexGrid.itemsSource = interestsCollectionView;
+                        interestsFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Not Found");
+                        $('#deleteConfirmationInterestsModal').modal('hide');
+                        $("#btnConfirmDeleteInterests").prop("disabled", false);
+                        $("#btnCloseDeleteInterestsModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationInterestsModal').modal('hide');
+                        $("#btnConfirmDeleteInterests").prop("disabled", false);
+                        $("#btnCloseDeleteInterestsModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // stamp security
+        function updateInterestsStampSecurity() {
+            var item = interestsCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        //  Interests flexgrid
+        function createInterestFlexGrid() {
+            NProgress.start();
+            toastrModification();
+
+            interestsCollectionView = new wijmo.collections.CollectionView(getInterestsList());
+            interestsCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchInterests').keyup(function () {
+                filterText = this.value.toLowerCase();
+                interestsCollectionView.refresh();
+            });
+
+            interestsCollectionView.filter = function (item) {
+                return !filterText || (item.Interest.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            interestsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateInterestsStampSecurity();
+            });
+
+            // Flex Grid
+            interestsFlexGrid = new wijmo.grid.FlexGrid('#InterestsListFlexGrid');
+            interestsFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Interest",
+                                "binding": "Interest",
+                                "allowSorting": true,
+                                "width": "2*"
+                            },
+                            {
+                                "header": "Description",
+                                "binding": "Description",
+                                "allowSorting": true,
+                                "width": "2.5*"
+                            },
+                            {
+                                "header": "Rate",
+                                "binding": "Rate",
+                                "allowSorting": true,
+                                "width": "1.5*"
+                            },
+                            {
+                                "header": "No. of Days",
+                                "binding": "NoOfDays",
+                                "allowSorting": true,
+                                "width": "1*"
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: interestsCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            interestsFlexGrid.trackChanges = true;
+        }
+
+        // Interest Types tab
+        $('#InterestsTab').click(function () {
+            NProgress.start();
+            $("#Requirements").hide();
+            $("#Accounts").hide();
+            $("#ExpenseTypes").hide();
+            $("#LoanTypes").hide();
+            $("#Terms").hide();
+            $("#Interests").show();
+            $("#Penalties").hide();
+
+            createInterestFlexGrid();
+            window.createInterestFlexGrid = function () {
+                return true;
+            }
+
+            interestsCollectionView = new wijmo.collections.CollectionView(getInterestsList());
+            interestsCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchInterests').keyup(function () {
+                filterText = this.value.toLowerCase();
+                interestsCollectionView.refresh();
+            });
+
+            interestsCollectionView.filter = function (item) {
+                return !filterText || (item.Interest.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            interestsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateInterestsStampSecurity();
+            });
+
+            // Flex Grid
+            interestsFlexGrid.itemsSource = interestsCollectionView;
+            interestsFlexGrid.trackChanges = true;
         });
 
         // ready function

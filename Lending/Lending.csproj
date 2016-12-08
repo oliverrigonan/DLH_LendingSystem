@@ -181,9 +181,11 @@
     <Compile Include="ApiControllers\ApiExpensesController.cs" />
     <Compile Include="ApiControllers\ApiExpenseTypeController.cs" />
     <Compile Include="ApiControllers\ApiFormsController.cs" />
+    <Compile Include="ApiControllers\ApiInterestController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationCollateralController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiLoanTypeController.cs" />
+    <Compile Include="ApiControllers\ApiPenaltyController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="ApiControllers\ApiCoMakerStatementController.cs" />
     <Compile Include="ApiControllers\ApiCoMakerStatementRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiStaffController.cs" />
+    <Compile Include="ApiControllers\ApiTermController.cs" />
     <Compile Include="ApiControllers\ApiTransactionTypeController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
     <Compile Include="ApiControllers\ApiLoanApplicationController.cs" />
@@ -223,7 +226,10 @@
     <Compile Include="Models\MstAccount.cs" />
     <Compile Include="Models\MstApplicant.cs" />
     <Compile Include="Models\MstApplicantApplianceOwned.cs" />
+    <Compile Include="Models\MstInterest.cs" />
     <Compile Include="Models\MstLoanType.cs" />
+    <Compile Include="Models\MstPenalty.cs" />
+    <Compile Include="Models\MstTerm.cs" />
     <Compile Include="Models\MstUserForm.cs" />
     <Compile Include="Models\SysCivilStatus.cs" />
     <Compile Include="Models\MstApplicantRealPropertiesOwned.cs" />

@@ -112,47 +112,6 @@
         </div>
     </section>
 
-    <!-- Detail Modal -->
-    <div class="modal fade" id="detailModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Details</h4>
-                </div>
-                <div class="modal-body">
-                    <button class="btn btn-info btn-block" onclick="btnLoanApplicationDetailOnclick()"> Loan Application Detail</button>
-                    <button class="btn btn-info btn-block" onclick="btnCollectionDetailOnclick()"> Collection Detail</button>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- due date modal -->
-    <div class="modal fade" id="overdueExtensionModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Collection Due Date</h4>
-                </div>
-                <div class="modal-body">
-                    The current collection is in due date. Click the button below for more details.
-                    <br /><br />
-                    <button class="btn btn-info btn-block" onclick="btnCollectionDetailOnclick()"> Go to Collection Detail</button>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Footer -->
     @Html.Partial("HomeFooter")
 
@@ -303,10 +262,9 @@
 
         // detail collection
         function btnDetailOnclick() {
-            $("#detailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var collectionItem = collectionCollectionView.currentEditItem;
+            window.open('/Software/CollectionDetail?applicantId=' + collectionItem.ApplicantId + '&loanId=' + collectionItem.LoanId, '_blank');
         }
 
         // clear collection
@@ -379,10 +337,7 @@
             var collectionItem = collectionCollectionView.currentEditItem;
             if (collectionItem.IsDueDate) {
                 NProgress.done();
-                $("#overdueExtensionModal").modal({
-                    "show": true,
-                    "backdrop": "static"
-                });
+                toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, go to detail page and do some extensions.");
             } else {
                 if (!collectionItem.IsAbsent) {
                     $.ajax({
@@ -722,20 +677,6 @@
                     createCollectionFlexGrid();
                 }
             });
-        }
-
-        // loan applicaion detail onclick
-        function btnLoanApplicationDetailOnclick() {
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var collectionItem = collectionCollectionView.currentEditItem;
-            window.open('/Software/LoanApplicationDetail?id=' + collectionItem.LoanId, '_blank');
-        }
-
-        // collection detail onclick
-        function btnCollectionDetailOnclick() {
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var collectionItem = collectionCollectionView.currentEditItem;
-            window.open('/Software/CollectionDetail?applicantId=' + collectionItem.ApplicantId + '&loanId=' + collectionItem.LoanId, '_blank');
         }
 
         // on load page

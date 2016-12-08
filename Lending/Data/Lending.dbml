@@ -294,6 +294,21 @@
       <Association Name="mstUser_mstExpenseType1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.mstInterest" Member="mstInterests">
+    <Type Name="mstInterest">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Interest" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstUser_mstInterest" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstInterest1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.mstLoanType" Member="mstLoanTypes">
     <Type Name="mstLoanType">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -306,6 +321,23 @@
       <Association Name="mstLoanType_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="LoanTypeId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstLoanType" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstLoanType1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.mstPenalty" Member="mstPenalties">
+    <Type Name="mstPenalty">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Penalty" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NoOfAbsentLimit" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyAmountOverNoOfAbsentLimit" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="LoanAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstUser_mstPenalty" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstPenalty1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.mstRequirements" Member="mstRequirements">
@@ -341,6 +373,20 @@
       <Association Name="mstUser_mstStaff1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.mstTerm" Member="mstTerms">
+    <Type Name="mstTerm">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Term" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="NoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstUser_mstTerm" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_mstTerm1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.mstUser" Member="mstUsers">
     <Type Name="mstUser">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -362,12 +408,18 @@
       <Association Name="mstUser_mstCompany1" Member="mstCompanies1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstCompany" />
       <Association Name="mstUser_mstExpenseType" Member="mstExpenseTypes" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstExpenseType" />
       <Association Name="mstUser_mstExpenseType1" Member="mstExpenseTypes1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstExpenseType" />
+      <Association Name="mstUser_mstInterest" Member="mstInterests" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstInterest" />
+      <Association Name="mstUser_mstInterest1" Member="mstInterests1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstInterest" />
       <Association Name="mstUser_mstLoanType" Member="mstLoanTypes" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstLoanType" />
       <Association Name="mstUser_mstLoanType1" Member="mstLoanTypes1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstLoanType" />
+      <Association Name="mstUser_mstPenalty" Member="mstPenalties" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstPenalty" />
+      <Association Name="mstUser_mstPenalty1" Member="mstPenalties1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstPenalty" />
       <Association Name="mstUser_mstRequirement" Member="mstRequirements" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstRequirement" />
       <Association Name="mstUser_mstRequirement1" Member="mstRequirements1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstRequirement" />
       <Association Name="mstUser_mstStaff" Member="mstStaffs" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstStaff" />
       <Association Name="mstUser_mstStaff1" Member="mstStaffs1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstStaff" />
+      <Association Name="mstUser_mstTerm" Member="mstTerms" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstTerm" />
+      <Association Name="mstUser_mstTerm1" Member="mstTerms1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstTerm" />
       <Association Name="mstUser_mstUserForm" Member="mstUserForms" ThisKey="Id" OtherKey="UserId" Type="mstUserForm" />
       <Association Name="mstUser_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense1" Member="trnExpenses1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnExpense" />
