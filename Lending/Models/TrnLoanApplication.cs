@@ -39,6 +39,13 @@ namespace Lending.Models
         public Decimal InsuranceIPIorPPIAmount { get; set; }
         public Decimal NetAmount { get; set; }
         public Boolean IsFullyPaid { get; set; }
+        public Int32 TermId { get; set; }
+        public String Term { get; set; }
+        public Decimal TermNoOfDays { get; set; }
+        public Int32 InterestId { get; set; }
+        public String Interest { get; set; }
+        public Int32 PenaltyId { get; set; }
+        public String Penalty { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }

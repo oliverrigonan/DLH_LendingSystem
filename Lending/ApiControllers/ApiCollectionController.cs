@@ -310,6 +310,7 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplication.FirstOrDefault().IsLocked)
                     {
+                        var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                         var collection = from d in db.trnCollections where d.Id == Convert.ToInt32(id) select d;
                         if (collection.Any())
                         {
@@ -363,7 +364,7 @@ namespace Lending.ApiControllers
                                                 updateCollection.IsFullPayment = false;
                                                 db.SubmitChanges();
 
-                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                 if (collectionPrevoiusDate.Any())
                                                 {
                                                     var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -371,7 +372,7 @@ namespace Lending.ApiControllers
                                                     updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                     db.SubmitChanges();
 
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -390,7 +391,7 @@ namespace Lending.ApiControllers
                                                 }
                                                 else
                                                 {
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -472,6 +473,7 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplication.FirstOrDefault().IsLocked)
                     {
+                        var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                         var collection = from d in db.trnCollections where d.Id == Convert.ToInt32(id) select d;
                         if (collection.Any())
                         {
@@ -527,7 +529,7 @@ namespace Lending.ApiControllers
                                                 updateCollection.IsFullPayment = false;
                                                 db.SubmitChanges();
 
-                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                 if (collectionPrevoiusDate.Any())
                                                 {
                                                     var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -535,7 +537,7 @@ namespace Lending.ApiControllers
                                                     updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                     db.SubmitChanges();
 
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -554,7 +556,7 @@ namespace Lending.ApiControllers
                                                 }
                                                 else
                                                 {
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -596,7 +598,7 @@ namespace Lending.ApiControllers
                                                     updateCollection.IsFullPayment = false;
                                                     db.SubmitChanges();
 
-                                                    var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                    var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionPrevoiusDate.Any())
                                                     {
                                                         var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -604,7 +606,7 @@ namespace Lending.ApiControllers
                                                         updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                         db.SubmitChanges();
 
-                                                        var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                        var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                         if (collectionNextDate.Any())
                                                         {
                                                             var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -623,7 +625,7 @@ namespace Lending.ApiControllers
                                                     }
                                                     else
                                                     {
-                                                        var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                        var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                         if (collectionNextDate.Any())
                                                         {
                                                             var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -709,6 +711,7 @@ namespace Lending.ApiControllers
                         var collection = from d in db.trnCollections where d.Id == Convert.ToInt32(id) select d;
                         if (collection.Any())
                         {
+                            var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
                                                where d.UserId == userId
@@ -744,7 +747,7 @@ namespace Lending.ApiControllers
                                     {
                                         if (collection.FirstOrDefault().IsLastDay)
                                         {
-                                            var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                            var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                             if (collectionPrevoiusDate.Any())
                                             {
                                                 if (loanApplication.FirstOrDefault().IsFullyPaid)
@@ -816,7 +819,7 @@ namespace Lending.ApiControllers
                                     {
                                         if (collection.FirstOrDefault().IsAction)
                                         {
-                                            var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                            var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                             if (collectionPrevoiusDate.Any())
                                             {
                                                 var updateCollection = collection.FirstOrDefault();
@@ -839,7 +842,7 @@ namespace Lending.ApiControllers
                                                 updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                 db.SubmitChanges();
 
-                                                var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                 if (collectionNextDate.Any())
                                                 {
                                                     var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -873,7 +876,7 @@ namespace Lending.ApiControllers
                                                 updateCollection.IsFullPayment = false;
                                                 db.SubmitChanges();
 
-                                                var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collection.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                 if (collectionNextDate.Any())
                                                 {
                                                     var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -944,6 +947,7 @@ namespace Lending.ApiControllers
                 var loanApplication = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
                 if (loanApplication.Any())
                 {
+                    var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                     if (loanApplication.FirstOrDefault().IsLocked)
                     {
                         var collections = from d in db.trnCollections
@@ -1016,7 +1020,7 @@ namespace Lending.ApiControllers
                                                                 updateCollection.IsFullPayment = false;
                                                                 db.SubmitChanges();
 
-                                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                                 if (collectionPrevoiusDate.Any())
                                                                 {
                                                                     var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -1024,7 +1028,7 @@ namespace Lending.ApiControllers
                                                                     updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                                     db.SubmitChanges();
 
-                                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                                     if (collectionNextDate.Any())
                                                                     {
                                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1046,7 +1050,7 @@ namespace Lending.ApiControllers
                                                                 }
                                                                 else
                                                                 {
-                                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                                     if (collectionNextDate.Any())
                                                                     {
                                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1141,7 +1145,7 @@ namespace Lending.ApiControllers
                                                                         updateCollection.IsFullPayment = false;
                                                                         db.SubmitChanges();
 
-                                                                        var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(-1) select d;
+                                                                        var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                                         if (collectionPrevoiusDate.Any())
                                                                         {
                                                                             var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -1149,7 +1153,7 @@ namespace Lending.ApiControllers
                                                                             updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                                             db.SubmitChanges();
 
-                                                                            var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                                            var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                                             if (collectionNextDate.Any())
                                                                             {
                                                                                 var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1171,7 +1175,7 @@ namespace Lending.ApiControllers
                                                                         }
                                                                         else
                                                                         {
-                                                                            var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(1) select d;
+                                                                            var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == collections.FirstOrDefault().CollectionDate.Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                                             if (collectionNextDate.Any())
                                                                             {
                                                                                 var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1280,6 +1284,7 @@ namespace Lending.ApiControllers
                 var loanApplication = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
                 if (loanApplication.Any())
                 {
+                    var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                     if (loanApplication.FirstOrDefault().IsLocked)
                     {
                         var currentCollection = from d in db.trnCollections
@@ -1354,7 +1359,7 @@ namespace Lending.ApiControllers
                                                 updateCollection.IsFullPayment = false;
                                                 db.SubmitChanges();
 
-                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(advancePaymentCollection.CollectionDate).Date.AddDays(-1) select d;
+                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(advancePaymentCollection.CollectionDate).Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                 if (collectionPrevoiusDate.Any())
                                                 {
                                                     var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -1362,7 +1367,7 @@ namespace Lending.ApiControllers
                                                     updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                     db.SubmitChanges();
 
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(advancePaymentCollection.CollectionDate).Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(advancePaymentCollection.CollectionDate).Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1379,7 +1384,7 @@ namespace Lending.ApiControllers
                                                 }
                                                 else
                                                 {
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(advancePaymentCollection.CollectionDate).Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(advancePaymentCollection.CollectionDate).Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1449,6 +1454,7 @@ namespace Lending.ApiControllers
                 var loanApplication = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
                 if (loanApplication.Any())
                 {
+                    var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                     if (loanApplication.FirstOrDefault().IsLocked)
                     {
                         var currentCollection = from d in db.trnCollections
@@ -1522,7 +1528,7 @@ namespace Lending.ApiControllers
                                                 updateCollection.IsFullPayment = true;
                                                 db.SubmitChanges();
 
-                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(fullPaymentCollection.CollectionDate).Date.AddDays(-1) select d;
+                                                var collectionPrevoiusDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(fullPaymentCollection.CollectionDate).Date.AddDays(-Convert.ToInt32(termNoOfDays)) select d;
                                                 if (collectionPrevoiusDate.Any())
                                                 {
                                                     var updateCollectionPrevoiusDate = collectionPrevoiusDate.FirstOrDefault();
@@ -1530,7 +1536,7 @@ namespace Lending.ApiControllers
                                                     updateCollectionPrevoiusDate.IsCurrentCollection = false;
                                                     db.SubmitChanges();
 
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(fullPaymentCollection.CollectionDate).Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(fullPaymentCollection.CollectionDate).Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1547,7 +1553,7 @@ namespace Lending.ApiControllers
                                                 }
                                                 else
                                                 {
-                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(fullPaymentCollection.CollectionDate).Date.AddDays(1) select d;
+                                                    var collectionNextDate = from d in db.trnCollections where d.LoanId == Convert.ToInt32(loanId) && d.CollectionDate == Convert.ToDateTime(fullPaymentCollection.CollectionDate).Date.AddDays(Convert.ToInt32(termNoOfDays)) select d;
                                                     if (collectionNextDate.Any())
                                                     {
                                                         var updateCollectionNextDate = collectionNextDate.FirstOrDefault();
@@ -1766,6 +1772,7 @@ namespace Lending.ApiControllers
                 var loanApplication = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
                 if (loanApplication.Any())
                 {
+                    var termNoOfDays = loanApplication.FirstOrDefault().mstTerm.NoOfDays;
                     if (loanApplication.FirstOrDefault().IsLocked)
                     {
                         var collection = from d in db.trnCollections
@@ -1817,7 +1824,7 @@ namespace Lending.ApiControllers
                                                 Data.trnCollection newCollection = new Data.trnCollection();
                                                 newCollection.LoanId = collection.FirstOrDefault().LoanId;
                                                 newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-                                                newCollection.CollectionDate = Convert.ToDateTime(collection.FirstOrDefault().CollectionDate).Date.AddDays(1);
+                                                newCollection.CollectionDate = Convert.ToDateTime(collection.FirstOrDefault().CollectionDate).Date.AddDays(Convert.ToInt32(termNoOfDays));
                                                 newCollection.NetAmount = collection.FirstOrDefault().NetAmount;
                                                 newCollection.CollectibleAmount = collection.FirstOrDefault().CollectibleAmount;
                                                 newCollection.PenaltyAmount = 0;

@@ -571,7 +571,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Loan Amount</label><br />
+                                <label>Loan Amount Range</label><br />
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredPenalties" id="penaltyLoanAmount" placeholder="0.00" />
@@ -631,7 +631,7 @@
                             <div class="form-group">
                                 <label>Rate</label><br />
                                 <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
+                                    <span class="input-group-addon">%</span>
                                     <input type="text" class="form-control numberField requiredInterests" id="interestRate" placeholder="0.00" />
                                 </div>
                             </div>
@@ -2883,10 +2883,10 @@
             penaltyId = penaltyCurrentEditItem.Id;
             document.getElementById("penaltyName").value = penaltyCurrentEditItem.Penalty;
             document.getElementById("penaltyDescription").value = penaltyCurrentEditItem.Description;
-            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.PenaltyAmount;
-            document.getElementById("penaltyNoOfAbsentLimit").value = penaltyCurrentEditItem.NoOfAbsentLimit;
-            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = penaltyCurrentEditItem.PenaltyAmountOverNoOfAbsentLimit;
-            document.getElementById("penaltyLoanAmount").value = penaltyCurrentEditItem.LoanAmount;
+            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.PenaltyAmount.toLocaleString();
+            document.getElementById("penaltyNoOfAbsentLimit").value = penaltyCurrentEditItem.NoOfAbsentLimit.toLocaleString();
+            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = penaltyCurrentEditItem.PenaltyAmountOverNoOfAbsentLimit.toLocaleString();
+            document.getElementById("penaltyLoanAmount").value = penaltyCurrentEditItem.LoanAmount.toLocaleString();
         }
 
         // form input validation
@@ -3326,8 +3326,8 @@
             interestId = interestCurrentEditItem.Id;
             document.getElementById("interestName").value = interestCurrentEditItem.Interest;
             document.getElementById("interestDescription").value = interestCurrentEditItem.Description;
-            document.getElementById("interestRate").value = interestCurrentEditItem.Rate;
-            document.getElementById("interestNoOfDays").value = interestCurrentEditItem.NoOfDays;
+            document.getElementById("interestRate").value = interestCurrentEditItem.Rate.toLocaleString();
+            document.getElementById("interestNoOfDays").value = interestCurrentEditItem.NoOfDays.toLocaleString();
         }
 
         // form input validation

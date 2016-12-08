@@ -305,6 +305,7 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstInterest_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="InterestId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstInterest" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstInterest1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -336,6 +337,7 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstPenalty_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="PenaltyId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstPenalty" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstPenalty1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -383,6 +385,7 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstTerm_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="TermId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstTerm" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstTerm1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -568,6 +571,9 @@
       <Column Name="InsuranceIPIorPPIAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="NetAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InterestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -578,7 +584,10 @@
       <Association Name="trnLoanApplication_trnLoanApplicationCollateral" Member="trnLoanApplicationCollaterals" ThisKey="Id" OtherKey="LoanId" Type="trnLoanApplicationCollateral" />
       <Association Name="mstAccount_trnLoanApplication" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
       <Association Name="mstApplicant_trnLoanApplication" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
+      <Association Name="mstInterest_trnLoanApplication" Member="mstInterest" ThisKey="InterestId" OtherKey="Id" Type="mstInterest" IsForeignKey="true" />
       <Association Name="mstLoanType_trnLoanApplication" Member="mstLoanType" ThisKey="LoanTypeId" OtherKey="Id" Type="mstLoanType" IsForeignKey="true" />
+      <Association Name="mstPenalty_trnLoanApplication" Member="mstPenalty" ThisKey="PenaltyId" OtherKey="Id" Type="mstPenalty" IsForeignKey="true" />
+      <Association Name="mstTerm_trnLoanApplication" Member="mstTerm" ThisKey="TermId" OtherKey="Id" Type="mstTerm" IsForeignKey="true" />
       <Association Name="mstUser_trnLoanApplication" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnLoanApplication1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnLoanApplication2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />

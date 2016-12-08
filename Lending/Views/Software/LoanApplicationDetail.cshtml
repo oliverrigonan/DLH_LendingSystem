@@ -47,9 +47,6 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    Loan Detail
-                                </div>
                                 <div class="panel-body">
                                     <div class="form-group">
                                         <label>Loan Number</label><br />
@@ -86,6 +83,47 @@
                                     <div class="form-group">
                                         <label>Prepared by</label><br />
                                         <div id="loanApplicationPreparedBy"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Terms (Payment)</label><br />
+                                        <div id="cboTerm"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Interest</label><br />
+                                        <div id="cboInterest"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Rate</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">%</span>
+                                            <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Penalty</label><br />
+                                        <div id="cboPenalty"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Every Absent Pen. Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="penaltyAmount" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>No. of Absent Limit</label><br />
+                                        <input type="text" class="form-control numberField" id="penaltyNoOfAbsentLimit" placeholder="0.00" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Pen. Amount over No. of Absent Limit</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="penaltyAmontOverNoOfAbsentLimit" placeholder="0.00" disabled />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -505,6 +543,9 @@
         var loanApplicationMaturityDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
         var cboLoanNumberLogHistory;
         var cboLoanType;
+        var cboTerm;
+        var cboPenalty;
+        var cboInterest;
 
         // create loan Application Loan Date
         function createloanApplicationLoanDate() {
@@ -793,11 +834,11 @@
 
                         disabled = false;
 
-                        cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
-                        getUser();
+                        cboTerm = new wijmo.input.ComboBox('#cboTerm');
+                        getTerm();
                     } else {
-                        cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
-                        getUser();
+                        cboTerm = new wijmo.input.ComboBox('#cboTerm');
+                        getTerm();
                     }
 
                     cboLoanType.dispose();
@@ -886,6 +927,9 @@
                         document.getElementById('loanApplicationRequirements').value = loanApplicationResult.RequirementsAmount.toLocaleString();
                         document.getElementById('loanApplicationInsuranceIPIorPPI').value = loanApplicationResult.InsuranceIPIorPPIAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
+                        cboTerm.selectedValue = loanApplicationResult.Term;
+                        cboInterest.selectedValue = loanApplicationResult.Interest;
+                        cboPenalty.selectedValue = loanApplicationResult.Penalty;
                         document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
@@ -903,6 +947,9 @@
                             cboloanApplicationApplicant.disabled = true;
                             cboloanApplicationPreparedBy.disabled = true;
                             cboLoanType.disabled = true;
+                            cboTerm.disabled = true;
+                            cboInterest.disabled = true;
+                            cboPenalty.disabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
                             document.getElementById('loanApplicationProcessingFee').disabled = true;
@@ -975,6 +1022,9 @@
                 loanApplicationObject.RequirementsAmount = document.getElementById('loanApplicationRequirements').value;
                 loanApplicationObject.InsuranceIPIorPPIAmount = document.getElementById('loanApplicationInsuranceIPIorPPI').value;
                 loanApplicationObject.NetAmount = document.getElementById('loanApplicationTotalNetAmount').value;
+                loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
+                loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
+                loanApplicationObject.PenaltyId = cboPenalty.selectedItem["Id"];
                 var loanApplicationData = JSON.stringify(loanApplicationObject);
 
                 $("#processingModal").modal({
@@ -2090,6 +2140,150 @@
         // view collection detail
         function btnViewCollectionDetail() {
             window.open('/Software/CollectionDetail?applicantId=' + cboloanApplicationApplicant.selectedItem["Id"] + '&loanId=' + cboLoanNumberLogHistory.selectedItem["Id"], '_blank');
+        }
+
+        // Term
+        function getTerm() {
+            var termArray = new Array();
+            $.ajax({
+                url: '/api/term/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (termResults) {
+                    var disabled = true;
+                    if (termResults.length > 0) {
+                        for (i = 0; i < termResults.length; i++) {
+                            termArray.push({
+                                Id: termResults[i]["Id"],
+                                Term: termResults[i]["Term"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboInterest = new wijmo.input.ComboBox('#cboInterest');
+                        getInterest();
+                    } else {
+                        cboInterest = new wijmo.input.ComboBox('#cboInterest');
+                        getInterest();
+                    }
+
+                    cboTerm.dispose();
+                    cboTerm = new wijmo.input.ComboBox('#cboTerm', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: termResults,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Term",
+                        selectedValuePath: "Term"
+                    });
+                }
+            });
+        }
+
+        // interest
+        function getInterest() {
+            var interestArray = new Array();
+            $.ajax({
+                url: '/api/interest/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (interestResults) {
+                    var disabled = true;
+                    if (interestResults.length > 0) {
+                        for (i = 0; i < interestResults.length; i++) {
+                            interestArray.push({
+                                Id: interestResults[i]["Id"],
+                                Interest: interestResults[i]["Interest"],
+                                Rate: interestResults[i]["Rate"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboPenalty = new wijmo.input.ComboBox('#cboPenalty');
+                        getPenalty();
+                    } else {
+                        cboPenalty = new wijmo.input.ComboBox('#cboPenalty');
+                        getPenalty();
+                    }
+
+                    cboInterest.dispose();
+                    cboInterest = new wijmo.input.ComboBox('#cboInterest', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: interestArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Interest",
+                        selectedValuePath: "Interest",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("interestRate").value = this.selectedItem["Rate"];
+                        }
+                    });
+
+                    document.getElementById("interestRate").value = cboInterest.selectedItem["Rate"];
+                }
+            });
+        }
+
+        // penalty
+        function getPenalty() {
+            var penaltyArray = new Array();
+            $.ajax({
+                url: '/api/penalty/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (penaltyResults) {
+                    var disabled = true;
+                    if (penaltyResults.length > 0) {
+                        for (i = 0; i < penaltyResults.length; i++) {
+                            penaltyArray.push({
+                                Id: penaltyResults[i]["Id"],
+                                Penalty: penaltyResults[i]["Penalty"],
+                                PenaltyAmount: penaltyResults[i]["PenaltyAmount"],
+                                NoOfAbsentLimit: penaltyResults[i]["NoOfAbsentLimit"],
+                                PenaltyAmountOverNoOfAbsentLimit: penaltyResults[i]["PenaltyAmountOverNoOfAbsentLimit"],
+                            });
+                        }
+
+                        disabled = false;
+
+                        cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
+                        getUser();
+                    } else {
+                        cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
+                        getUser();
+                    }
+
+                    cboPenalty.dispose();
+                    cboPenalty = new wijmo.input.ComboBox('#cboPenalty', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: penaltyArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Penalty",
+                        selectedValuePath: "Penalty",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("penaltyAmount").value = this.selectedItem["PenaltyAmount"];
+                            document.getElementById("penaltyNoOfAbsentLimit").value = this.selectedItem["NoOfAbsentLimit"];
+                            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = this.selectedItem["PenaltyAmountOverNoOfAbsentLimit"];
+                        }
+                    });
+
+                    document.getElementById("penaltyAmount").value = cboPenalty.selectedItem["PenaltyAmount"];
+                    document.getElementById("penaltyNoOfAbsentLimit").value = cboPenalty.selectedItem["NoOfAbsentLimit"];
+                    document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = cboPenalty.selectedItem["PenaltyAmountOverNoOfAbsentLimit"];
+                }
+            });
         }
 
         // on load page

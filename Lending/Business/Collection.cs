@@ -42,8 +42,15 @@ namespace Lending.Business
                                        RequirementsAmount = d.RequirementsAmount,
                                        InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
                                        NetAmount = d.NetAmount,
-                                       IsLocked = d.IsLocked,
                                        IsFullyPaid = d.IsFullyPaid,
+                                       TermId = d.TermId,
+                                       Term = d.mstTerm.Term,
+                                       TermNoOfDays = d.mstTerm.NoOfDays,
+                                       InterestId = d.InterestId,
+                                       Interest = d.mstInterest.Interest,
+                                       PenaltyId = d.PenaltyId,
+                                       Penalty = d.mstPenalty.Penalty,
+                                       IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
                                        CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -65,91 +72,94 @@ namespace Lending.Business
 
                     for (var i = 1; i <= numberOfDays; i++)
                     {
-                        if (netAmount > collectibleAmountCeil)
+                        if (i % loanApplication.FirstOrDefault().TermNoOfDays == 0)
                         {
-                            Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false, isLastDay = false;
-
-                            if (i == 1)
+                            if (netAmount > (collectibleAmountCeil * loanApplication.FirstOrDefault().TermNoOfDays))
                             {
-                                isActionValue = true;
-                                isCurrentCollectionValue = true;
-                            }
+                                Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false, isLastDay = false;
 
-                            if (i == numberOfDays)
+                                if (i == loanApplication.FirstOrDefault().TermNoOfDays)
+                                {
+                                    isActionValue = true;
+                                    isCurrentCollectionValue = true;
+                                }
+
+                                if (i == numberOfDays)
+                                {
+                                    isDueDateValue = true;
+                                    isLastDay = true;
+                                }
+
+                                Data.trnCollection newCollection = new Data.trnCollection();
+                                newCollection.LoanId = loanId;
+                                newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                newCollection.CollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
+                                newCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
+                                newCollection.CollectibleAmount = collectibleAmountCeil * loanApplication.FirstOrDefault().TermNoOfDays;
+                                newCollection.PenaltyAmount = 0;
+                                newCollection.PaidAmount = 0;
+                                newCollection.PreviousBalanceAmount = 0;
+                                newCollection.CurrentBalanceAmount = collectibleAmountCeil * loanApplication.FirstOrDefault().TermNoOfDays;
+                                newCollection.IsCleared = false;
+                                newCollection.IsAbsent = false;
+                                newCollection.IsPartialPayment = false;
+                                newCollection.IsAdvancePayment = false;
+                                newCollection.IsFullPayment = false;
+                                newCollection.IsDueDate = isDueDateValue;
+                                newCollection.IsExtendCollection = false;
+                                newCollection.IsOverdueCollection = false;
+                                newCollection.IsCurrentCollection = isCurrentCollectionValue;
+                                newCollection.IsProcessed = false;
+                                newCollection.IsAction = isActionValue;
+                                newCollection.IsLastDay = isLastDay;
+                                db.trnCollections.InsertOnSubmit(newCollection);
+                                db.SubmitChanges();
+
+                                netAmount -= (collectibleAmountCeil * loanApplication.FirstOrDefault().TermNoOfDays);
+                            }
+                            else
                             {
-                                isDueDateValue = true;
-                                isLastDay = true;
+                                Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false, isLastDay = false;
+
+                                if (i == 1)
+                                {
+                                    isActionValue = true;
+                                    isCurrentCollectionValue = true;
+                                }
+
+                                if (i == numberOfDays)
+                                {
+                                    isDueDateValue = true;
+                                    isLastDay = true;
+                                }
+
+                                Data.trnCollection newCollection = new Data.trnCollection();
+                                newCollection.LoanId = loanId;
+                                newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                newCollection.CollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
+                                newCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
+                                newCollection.CollectibleAmount = netAmount;
+                                newCollection.PenaltyAmount = 0;
+                                newCollection.PaidAmount = 0;
+                                newCollection.PreviousBalanceAmount = 0;
+                                newCollection.CurrentBalanceAmount = netAmount;
+                                newCollection.IsCleared = false;
+                                newCollection.IsAbsent = false;
+                                newCollection.IsPartialPayment = false;
+                                newCollection.IsAdvancePayment = false;
+                                newCollection.IsFullPayment = false;
+                                newCollection.IsDueDate = isDueDateValue;
+                                newCollection.IsExtendCollection = false;
+                                newCollection.IsOverdueCollection = false;
+                                newCollection.IsCurrentCollection = isCurrentCollectionValue;
+                                newCollection.IsProcessed = false;
+                                newCollection.IsAction = isActionValue;
+                                newCollection.IsLastDay = isLastDay;
+                                db.trnCollections.InsertOnSubmit(newCollection);
+                                db.SubmitChanges();
+
+                                netAmount *= 0;
                             }
-
-                            Data.trnCollection newCollection = new Data.trnCollection();
-                            newCollection.LoanId = loanId;
-                            newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-                            newCollection.CollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
-                            newCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
-                            newCollection.CollectibleAmount = collectibleAmountCeil;
-                            newCollection.PenaltyAmount = 0;
-                            newCollection.PaidAmount = 0;
-                            newCollection.PreviousBalanceAmount = 0;
-                            newCollection.CurrentBalanceAmount = collectibleAmountCeil;
-                            newCollection.IsCleared = false;
-                            newCollection.IsAbsent = false;
-                            newCollection.IsPartialPayment = false;
-                            newCollection.IsAdvancePayment = false;
-                            newCollection.IsFullPayment = false;
-                            newCollection.IsDueDate = isDueDateValue;
-                            newCollection.IsExtendCollection = false;
-                            newCollection.IsOverdueCollection = false;
-                            newCollection.IsCurrentCollection = isCurrentCollectionValue;
-                            newCollection.IsProcessed = false;
-                            newCollection.IsAction = isActionValue;
-                            newCollection.IsLastDay = isLastDay;
-                            db.trnCollections.InsertOnSubmit(newCollection);
-                            db.SubmitChanges();
-
-                            netAmount -= collectibleAmountCeil;
-                        }
-                        else
-                        {
-                            Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false, isLastDay = false;
-
-                            if (i == 1)
-                            {
-                                isActionValue = true;
-                                isCurrentCollectionValue = true;
-                            }
-
-                            if (i == numberOfDays)
-                            {
-                                isDueDateValue = true;
-                                isLastDay = true;
-                            }
-
-                            Data.trnCollection newCollection = new Data.trnCollection();
-                            newCollection.LoanId = loanId;
-                            newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-                            newCollection.CollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
-                            newCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
-                            newCollection.CollectibleAmount = netAmount;
-                            newCollection.PenaltyAmount = 0;
-                            newCollection.PaidAmount = 0;
-                            newCollection.PreviousBalanceAmount = 0;
-                            newCollection.CurrentBalanceAmount = netAmount;
-                            newCollection.IsCleared = false;
-                            newCollection.IsAbsent = false;
-                            newCollection.IsPartialPayment = false;
-                            newCollection.IsAdvancePayment = false;
-                            newCollection.IsFullPayment = false;
-                            newCollection.IsDueDate = isDueDateValue;
-                            newCollection.IsExtendCollection = false;
-                            newCollection.IsOverdueCollection = false;
-                            newCollection.IsCurrentCollection = isCurrentCollectionValue;
-                            newCollection.IsProcessed = false;
-                            newCollection.IsAction = isActionValue;
-                            newCollection.IsLastDay = isLastDay;
-                            db.trnCollections.InsertOnSubmit(newCollection);
-                            db.SubmitChanges();
-
-                            netAmount *= 0;
                         }
                     }
                 }
