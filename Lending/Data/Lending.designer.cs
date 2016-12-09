@@ -13076,6 +13076,8 @@ namespace Lending.Data
 		
 		private int _TermId;
 		
+		private decimal _TermNoOfDays;
+		
 		private int _InterestId;
 		
 		private int _PenaltyId;
@@ -13160,6 +13162,8 @@ namespace Lending.Data
     partial void OnIsFullyPaidChanged();
     partial void OnTermIdChanging(int value);
     partial void OnTermIdChanged();
+    partial void OnTermNoOfDaysChanging(decimal value);
+    partial void OnTermNoOfDaysChanged();
     partial void OnInterestIdChanging(int value);
     partial void OnInterestIdChanged();
     partial void OnPenaltyIdChanging(int value);
@@ -13629,6 +13633,26 @@ namespace Lending.Data
 					this._TermId = value;
 					this.SendPropertyChanged("TermId");
 					this.OnTermIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TermNoOfDays", DbType="Decimal(18,5) NOT NULL")]
+		public decimal TermNoOfDays
+		{
+			get
+			{
+				return this._TermNoOfDays;
+			}
+			set
+			{
+				if ((this._TermNoOfDays != value))
+				{
+					this.OnTermNoOfDaysChanging(value);
+					this.SendPropertyChanging();
+					this._TermNoOfDays = value;
+					this.SendPropertyChanged("TermNoOfDays");
+					this.OnTermNoOfDaysChanged();
 				}
 			}
 		}

@@ -51,6 +51,7 @@ namespace Lending.ApiControllers
                                        IsFullyPaid = d.IsFullyPaid,
                                        TermId = d.TermId,
                                        Term = d.mstTerm.Term,
+                                       TermNoOfDays = d.TermNoOfDays,
                                        InterestId = d.InterestId,
                                        Interest = d.mstInterest.Interest,
                                        PenaltyId = d.PenaltyId,
@@ -104,6 +105,7 @@ namespace Lending.ApiControllers
                                       IsFullyPaid = d.IsFullyPaid,
                                       TermId = d.TermId,
                                       Term = d.mstTerm.Term,
+                                      TermNoOfDays = d.TermNoOfDays,
                                       InterestId = d.InterestId,
                                       Interest = d.mstInterest.Interest,
                                       PenaltyId = d.PenaltyId,
@@ -157,6 +159,7 @@ namespace Lending.ApiControllers
                                       IsFullyPaid = d.IsFullyPaid,
                                       TermId = d.TermId,
                                       Term = d.mstTerm.Term,
+                                      TermNoOfDays = d.TermNoOfDays,
                                       InterestId = d.InterestId,
                                       Interest = d.mstInterest.Interest,
                                       PenaltyId = d.PenaltyId,
@@ -233,6 +236,7 @@ namespace Lending.ApiControllers
                             loanNumber = newLoanNumber.ToString();
                         }
 
+                        var termId = (from d in db.mstTerms select d.Id).FirstOrDefault();
                         Data.trnLoanApplication newLoanApplication = new Data.trnLoanApplication();
                         newLoanApplication.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                         newLoanApplication.LoanDate = DateTime.Today;
@@ -253,7 +257,8 @@ namespace Lending.ApiControllers
                         newLoanApplication.InsuranceIPIorPPIAmount = 0;
                         newLoanApplication.NetAmount = 0;
                         newLoanApplication.IsFullyPaid = false;
-                        newLoanApplication.TermId = (from d in db.mstTerms select d.Id).FirstOrDefault();
+                        newLoanApplication.TermId = termId;
+                        newLoanApplication.TermNoOfDays = (from d in db.mstTerms where d.Id == termId select d.NoOfDays).FirstOrDefault();
                         newLoanApplication.InterestId = (from d in db.mstInterests select d.Id).FirstOrDefault();
                         newLoanApplication.PenaltyId = (from d in db.mstPenalties select d.Id).FirstOrDefault();
                         newLoanApplication.IsLocked = false;
@@ -350,6 +355,7 @@ namespace Lending.ApiControllers
                                     lockLoanApplication.InsuranceIPIorPPIAmount = loanApplication.InsuranceIPIorPPIAmount;
                                     lockLoanApplication.NetAmount = loanApplication.NetAmount;
                                     lockLoanApplication.TermId = loanApplication.TermId;
+                                    lockLoanApplication.TermNoOfDays = (from d in db.mstTerms where d.Id == loanApplication.TermId select d.NoOfDays).FirstOrDefault();
                                     lockLoanApplication.InterestId = loanApplication.InterestId;
                                     lockLoanApplication.PenaltyId = loanApplication.PenaltyId;
                                     lockLoanApplication.IsLocked = true;

@@ -2314,8 +2314,8 @@
             }
         }
 
-        // jqueries codes
-        $('#loanApplicationPrincipalAmount').keyup(function () {
+        // compute deductions to net amount
+        function computeDeductions() {
             var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
             var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
             var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
@@ -2331,6 +2331,37 @@
                 var totalLoanAmountDeductions = principalAmountValue - (principalAmountValue * 0.03) - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIorPPIValue;
                 document.getElementById('loanApplicationTotalNetAmount').value = totalLoanAmountDeductions.toLocaleString();
             }, 500);
+        }
+
+        // jqueries codes
+        $('#loanApplicationPrincipalAmount').keyup(function () {
+            computeDeductions();
+        });
+
+        $('#loanApplicationPassbook').keyup(function () {
+            computeDeductions();
+        });
+
+        $('#loanApplicationBalance').keyup(function () {
+            computeDeductions();
+        });
+
+        $('#loanApplicationPenalty').keyup(function () {
+            computeDeductions();
+        });
+
+        $('#loanApplicationLateInt').keyup(function () {
+            computeDeductions();
+        });
+        $('#loanApplicationAdvance').keyup(function () {
+            computeDeductions();
+        });
+
+        $('#loanApplicationRequirements').keyup(function () {
+            computeDeductions();
+        });
+        $('#loanApplicationInsuranceIPIorPPI').keyup(function () {
+            computeDeductions();
         });
     </script>
 </body>
