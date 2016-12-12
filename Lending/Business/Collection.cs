@@ -161,6 +161,49 @@ namespace Lending.Business
                                 netAmount *= 0;
                             }
                         }
+                        else
+                        {
+                            if (i == numberOfDays)
+                            {
+                                Boolean isActionValue = false, isDueDateValue = false, isCurrentCollectionValue = false, isLastDay = false;
+
+                                if (i == 1)
+                                {
+                                    isActionValue = true;
+                                    isCurrentCollectionValue = true;
+                                }
+
+                                isDueDateValue = true;
+                                isLastDay = true;
+
+                                Data.trnCollection newCollection = new Data.trnCollection();
+                                newCollection.LoanId = loanId;
+                                newCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                newCollection.CollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
+                                newCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
+                                newCollection.CollectibleAmount = netAmount;
+                                newCollection.PenaltyAmount = 0;
+                                newCollection.PaidAmount = 0;
+                                newCollection.PreviousBalanceAmount = 0;
+                                newCollection.CurrentBalanceAmount = netAmount;
+                                newCollection.IsCleared = false;
+                                newCollection.IsAbsent = false;
+                                newCollection.IsPartialPayment = false;
+                                newCollection.IsAdvancePayment = false;
+                                newCollection.IsFullPayment = false;
+                                newCollection.IsDueDate = isDueDateValue;
+                                newCollection.IsExtendCollection = false;
+                                newCollection.IsOverdueCollection = false;
+                                newCollection.IsCurrentCollection = isCurrentCollectionValue;
+                                newCollection.IsProcessed = false;
+                                newCollection.IsAction = isActionValue;
+                                newCollection.IsLastDay = isLastDay;
+                                db.trnCollections.InsertOnSubmit(newCollection);
+                                db.SubmitChanges();
+
+                                netAmount *= 0;
+                            }
+                        }
                     }
                 }
             }

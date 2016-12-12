@@ -204,54 +204,18 @@ namespace Lending.ApiControllers
         [Route("api/collection/penaltyAmount/get/byLoanId/byCollectionDate/{loanId}/{collectionDate}")]
         public Decimal getPenaltyAmount(Int32 loanId, String collectionDate)
         {
-            //var termNoOfDays = loanApplication.FirstOrDefault().TermNoOfDays;
-
-            //Decimal penaltyAmount = loanApplication.FirstOrDefault().mstPenalty.PenaltyAmount;
-            //var previousCollectionDay = from d in db.trnCollections
-            //                            where d.LoanId == loanId
-            //                            && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-Convert.ToInt32(termNoOfDays))
-            //                            select d;
-
-            //if (previousCollectionDay.Any())
-            //{
-            //    if (previousCollectionDay.FirstOrDefault().IsAbsent)
-            //    {
-            //        if (previousCollectionDay.FirstOrDefault().PenaltyAmount == 10)
-            //        {
-            //            var previousCollectionDay2 = from d in db.trnCollections
-            //                                         where d.LoanId == loanId
-            //                                         && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-Convert.ToInt32(termNoOfDays * 2))
-            //                                         select d;
-
-            //            if (previousCollectionDay2.Any())
-            //            {
-            //                if (previousCollectionDay2.FirstOrDefault().IsAbsent)
-            //                {
-            //                    if (previousCollectionDay2.FirstOrDefault().PenaltyAmount == 10)
-            //                    {
-            //                        penaltyAmount = 20;
-            //                    }
-            //                    else
-            //                    {
-            //                        penaltyAmount = 10;
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
             var loanApplication = from d in db.trnLoanApplications where d.Id == loanId select d;
 
             Decimal defaultPenaltyAmount = loanApplication.FirstOrDefault().mstPenalty.PenaltyAmount;
             Decimal numberOfAbsentLimit = loanApplication.FirstOrDefault().mstPenalty.NoOfAbsentLimit;
+            Decimal termsNoOfDays = loanApplication.FirstOrDefault().TermNoOfDays;
 
             Int32 absentCount = 0;
             for (Int32 i = Convert.ToInt32(numberOfAbsentLimit); i >= 1; i--)
             {
                 var collection = from d in db.trnCollections
                                  where d.LoanId == loanId
-                                 && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-Convert.ToInt32(i))
+                                 && d.CollectionDate == Convert.ToDateTime(collectionDate).Date.AddDays(-(Convert.ToInt32(i) * Convert.ToInt32(termsNoOfDays)))
                                  select d;
 
                 if (collection.Any())
