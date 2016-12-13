@@ -7825,8 +7825,6 @@ namespace Lending.Data
 		
 		private decimal _PenaltyAmountOverNoOfAbsentLimit;
 		
-		private decimal _LoanAmount;
-		
 		private int _CreatedByUserId;
 		
 		private System.DateTime _CreatedDateTime;
@@ -7857,8 +7855,6 @@ namespace Lending.Data
     partial void OnNoOfAbsentLimitChanged();
     partial void OnPenaltyAmountOverNoOfAbsentLimitChanging(decimal value);
     partial void OnPenaltyAmountOverNoOfAbsentLimitChanged();
-    partial void OnLoanAmountChanging(decimal value);
-    partial void OnLoanAmountChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -7993,26 +7989,6 @@ namespace Lending.Data
 					this._PenaltyAmountOverNoOfAbsentLimit = value;
 					this.SendPropertyChanged("PenaltyAmountOverNoOfAbsentLimit");
 					this.OnPenaltyAmountOverNoOfAbsentLimitChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LoanAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal LoanAmount
-		{
-			get
-			{
-				return this._LoanAmount;
-			}
-			set
-			{
-				if ((this._LoanAmount != value))
-				{
-					this.OnLoanAmountChanging(value);
-					this.SendPropertyChanging();
-					this._LoanAmount = value;
-					this.SendPropertyChanged("LoanAmount");
-					this.OnLoanAmountChanged();
 				}
 			}
 		}

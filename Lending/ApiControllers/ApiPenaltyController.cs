@@ -28,7 +28,6 @@ namespace Lending.ApiControllers
                               PenaltyAmount = d.PenaltyAmount,
                               NoOfAbsentLimit = d.NoOfAbsentLimit,
                               PenaltyAmountOverNoOfAbsentLimit = d.PenaltyAmountOverNoOfAbsentLimit,
-                              LoanAmount = d.LoanAmount,
                               CreatedByUserId = d.CreatedByUserId,
                               CreatedByUser = d.mstUser.FullName,
                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -84,7 +83,6 @@ namespace Lending.ApiControllers
                         newPenalty.PenaltyAmount = penalty.PenaltyAmount;
                         newPenalty.NoOfAbsentLimit = penalty.NoOfAbsentLimit;
                         newPenalty.PenaltyAmountOverNoOfAbsentLimit = penalty.PenaltyAmountOverNoOfAbsentLimit;
-                        newPenalty.LoanAmount = penalty.LoanAmount;
                         newPenalty.CreatedByUserId = userId;
                         newPenalty.CreatedDateTime = DateTime.Now;
                         newPenalty.UpdatedByUserId = userId;
@@ -159,7 +157,6 @@ namespace Lending.ApiControllers
                             updatePenalty.PenaltyAmount = penalty.PenaltyAmount;
                             updatePenalty.NoOfAbsentLimit = penalty.NoOfAbsentLimit;
                             updatePenalty.PenaltyAmountOverNoOfAbsentLimit = penalty.PenaltyAmountOverNoOfAbsentLimit;
-                            updatePenalty.LoanAmount = penalty.LoanAmount;
                             updatePenalty.UpdatedByUserId = userId;
                             updatePenalty.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();

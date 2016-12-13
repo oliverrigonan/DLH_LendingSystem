@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Applicant</label><br />
-                                        <div id="loanApplicationApplicant"></div> <button class="btn btn-primary btn-sm" id="btnViewCollection" onclick="btnViewCollectionOnclick()"><i class="fa fa-eye fa-fw"></i> View Collections</button>
+                                        <div id="loanApplicationApplicant"></div>
                                     </div>
                                     <div class="form-group">
                                         <label>Area</label><br />
@@ -236,6 +236,11 @@
                     <br />
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active">
+                            <a href="#dailyCollections" data-toggle="tab" id="dailyCollectionsTab">
+                                Daily Collection
+                            </a>
+                        </li>
+                        <li>
                             <a href="#loanApplicationCollateral" data-toggle="tab" id="loanApplicationCollateralTab">
                                 Collateral
                             </a>
@@ -248,7 +253,32 @@
                     </ul>
                     <br />
                     <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade in active" id="loanApplicationCollateral">
+                        <div class="tab-pane fade in active" id="dailyCollections">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Number</span>
+                                                    <div id="cboLoanNumberLogHistory" style="width: 100%"></div>
+                                                </div>
+                                            </td>
+                                            <td>&nbsp;&nbsp;&nbsp;</td>
+                                            <td align="right">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-info btn-sm" onclick="btnViewCollectionDetail()"><i class="fa fa-money fa-fw"></i> Collection Detail</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="collectionFlexGrid" class="grid"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade in" id="loanApplicationCollateral">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <table style="width: 100%">
@@ -393,101 +423,6 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteLoanApplicationCollateral" onclick="btnConfirmDeleteLoanApplicationCollateralOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteLoanApplicationCollateralModal" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- loan applciation collection Modal -->
-    <div class="modal fade" id="collectionModal" role="dialog">
-        <div class="modal-dialog modal-lg">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Collections <span id="loadingData"><i class="fa fa-spinner fa-spin"></i></span></h4>
-                </div>
-                <div class="modal-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Number</span>
-                                            <div id="cboLoanNumberLogHistory" style="width: 100%"></div>
-                                        </div>
-                                    </td>
-                                    <td>&nbsp;&nbsp;&nbsp;</td>
-                                    <td align="right">
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-info btn-sm" onclick="btnViewCollectionDetail()"><i class="fa fa-money fa-fw"></i> Collection Detail</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-body">
-                            <div id="collectionFlexGrid" class="grid"></div>
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Principal Amount</label><br />
-                                        <div class="input-group numberField">
-                                            <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" class="form-control numberField" id="collectionPrincipalAmount" placeholder="0.00" disabled />
-                                        </div>
-                                    </div>
-                                    @*<div class="form-group">
-                                            <label>Total Penalty</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="collectionTotalPenalty" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>*@
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Total Deductions</label><br />
-                                        <div class="input-group numberField">
-                                            <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" class="form-control numberField" id="collectionTotalDeductions" placeholder="0.00" disabled />
-                                        </div>
-                                    </div>
-                                    @*<div class="form-group">
-                                            <label>Total Amount Paid</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="collectionTotalAmountPaid" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>*@
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Net Amount</label><br />
-                                        <div class="input-group numberField">
-                                            <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" class="form-control numberField" id="collectionNetAmount" placeholder="0.00" disabled />
-                                        </div>
-                                    </div>
-                                    @*<div class="form-group">
-                                            <label>Total Current Balance</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="collectionTotalBalance" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>*@
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -688,7 +623,7 @@
                                         }
                                         disabled = false;
                                     } else {
-                                        toastr.info("No logs / History at this time");
+                                        toastr.info("No Collections at this time");
                                     }
 
                                     cboLoanNumberLogHistory.dispose();
@@ -708,62 +643,13 @@
 
                                             collectionFlexGrid.itemsSource = collectionCollectionView;
                                             collectionFlexGrid.trackChanges = true;
-
-                                            var processingFee = this.selectedItem["ProcessingFeeAmount"];
-                                            var passbook = this.selectedItem["PassbookAmount"];
-                                            var balance = this.selectedItem["BalanceAmount"];
-                                            var penalty = this.selectedItem["PenaltyAmount"];
-                                            var lateInt = this.selectedItem["LateIntAmount"];
-                                            var advance = this.selectedItem["AdvanceAmount"];
-                                            var requirements = this.selectedItem["RequirementsAmount"];
-                                            var insuranceIPIorPPI = this.selectedItem["InsuranceIPIorPPIAmount"];
-
-                                            var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-                                            var collectionPrincipalAmount = 0;
-                                            var collectionTotalDeductions = 0;
-                                            var collectionNetAmount = 0;
-                                            if (this.selectedItem["IsLocked"]) {
-                                                collectionPrincipalAmount = this.selectedItem["PrincipalAmount"].toLocaleString();
-                                                collectionTotalDeductions = totalDeductions.toLocaleString();
-                                                collectionNetAmount = this.selectedItem["NetAmount"].toLocaleString();
-                                            }
-
-                                            document.getElementById("collectionPrincipalAmount").value = collectionPrincipalAmount;
-                                            document.getElementById("collectionTotalDeductions").value = collectionTotalDeductions;
-                                            document.getElementById("collectionNetAmount").value = collectionNetAmount;
                                         }
                                     });
 
-                                    if (cboLoanNumberLogHistory.itemsSource.length > 0) {
-                                        var processingFee = cboLoanNumberLogHistory.selectedItem["ProcessingFeeAmount"];
-                                        var passbook = cboLoanNumberLogHistory.selectedItem["PassbookAmount"];
-                                        var balance = cboLoanNumberLogHistory.selectedItem["BalanceAmount"];
-                                        var penalty = cboLoanNumberLogHistory.selectedItem["PenaltyAmount"];
-                                        var lateInt = cboLoanNumberLogHistory.selectedItem["LateIntAmount"];
-                                        var advance = cboLoanNumberLogHistory.selectedItem["AdvanceAmount"];
-                                        var requirements = cboLoanNumberLogHistory.selectedItem["RequirementsAmount"];
-                                        var insuranceIPIorPPI = cboLoanNumberLogHistory.selectedItem["InsuranceIPIorPPIAmount"];
+                                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
 
-                                        var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-                                        var collectionPrincipalAmount = 0;
-                                        var collectionTotalDeductions = 0;
-                                        var collectionNetAmount = 0;
-                                        if (cboLoanNumberLogHistory.selectedItem["IsLocked"]) {
-                                            collectionPrincipalAmount = cboLoanNumberLogHistory.selectedItem["PrincipalAmount"].toLocaleString();
-                                            collectionTotalDeductions = totalDeductions.toLocaleString();
-                                            collectionNetAmount = cboLoanNumberLogHistory.selectedItem["NetAmount"].toLocaleString();
-                                        }
-
-                                        document.getElementById("collectionPrincipalAmount").value = collectionPrincipalAmount;
-                                        document.getElementById("collectionTotalDeductions").value = collectionTotalDeductions;
-                                        document.getElementById("collectionNetAmount").value = collectionNetAmount;
-                                    } else {
-                                        document.getElementById("collectionPrincipalAmount").value = 0;
-                                        document.getElementById("collectionTotalDeductions").value = 0;
-                                        document.getElementById("collectionNetAmount").value = 0;
-                                    }
+                                    collectionFlexGrid.itemsSource = collectionCollectionView;
+                                    collectionFlexGrid.trackChanges = true;
                                 }
                             });
                         }
@@ -1475,6 +1361,7 @@
             NProgress.start();
             $("#loanApplicationCollateral").show();
             $("#applicantRequirements").hide();
+            $("#dailyCollections").hide();
 
             loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
             loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
@@ -1486,6 +1373,7 @@
             NProgress.start();
             $("#loanApplicationCollateral").hide();
             $("#applicantRequirements").show();
+            $("#dailyCollections").hide();
 
 
             createloanRequirementsFlexGrid();
@@ -1496,6 +1384,19 @@
             loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
             loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
             loanRequirementFlexGrid.trackChanges = true;
+        });
+
+        // applicant requirement tab
+        $('#dailyCollectionsTab').click(function () {
+            NProgress.start();
+            $("#loanApplicationCollateral").hide();
+            $("#applicantRequirements").hide();
+            $("#dailyCollections").show();
+
+            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
+
+            collectionFlexGrid.itemsSource = collectionCollectionView;
+            collectionFlexGrid.trackChanges = true;
         });
 
         // get loan application collateral by loan id
@@ -1825,11 +1726,11 @@
 
             loanApplicationCollateralFlexGrid.trackChanges = true;
             cboLoanNumberLogHistory = new wijmo.input.ComboBox('#cboLoanNumberLogHistory');
-            createCboForLoanNumberInLogHistory()
+            createCboForLoanNumberCollections()
         }
 
         // cbo loan number
-        function createCboForLoanNumberInLogHistory() {
+        function createCboForLoanNumberCollections() {
             var loanNumberArray = new Array();
             $.ajax({
                 url: '/api/loanApplication/listByApplicantId/' + cboloanApplicationApplicant.selectedItem["Id"],
@@ -1871,6 +1772,7 @@
                                 LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"] + " " + currentLabel
                             });
                         }
+
                         disabled = false;
 
                         cboLoanNumberLogHistory.dispose();
@@ -1890,59 +1792,16 @@
 
                                 collectionFlexGrid.itemsSource = collectionCollectionView;
                                 collectionFlexGrid.trackChanges = true;
-
-                                var processingFee = this.selectedItem["ProcessingFeeAmount"];
-                                var passbook = this.selectedItem["PassbookAmount"];
-                                var balance = this.selectedItem["BalanceAmount"];
-                                var penalty = this.selectedItem["PenaltyAmount"];
-                                var lateInt = this.selectedItem["LateIntAmount"];
-                                var advance = this.selectedItem["AdvanceAmount"];
-                                var requirements = this.selectedItem["RequirementsAmount"];
-                                var insuranceIPIorPPI = this.selectedItem["InsuranceIPIorPPIAmount"];
-
-                                var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-                                var collectionPrincipalAmount = 0;
-                                var collectionTotalDeductions = 0;
-                                var collectionNetAmount = 0;
-                                if (this.selectedItem["IsLocked"]) {
-                                    collectionPrincipalAmount = this.selectedItem["PrincipalAmount"].toLocaleString();
-                                    collectionTotalDeductions = totalDeductions.toLocaleString();
-                                    collectionNetAmount = this.selectedItem["NetAmount"].toLocaleString();
-                                }
-
-                                document.getElementById("collectionPrincipalAmount").value = collectionPrincipalAmount;
-                                document.getElementById("collectionTotalDeductions").value = collectionTotalDeductions;
-                                document.getElementById("collectionNetAmount").value = collectionNetAmount;
                             }
                         });
-
-                        var processingFee = cboLoanNumberLogHistory.selectedItem["ProcessingFeeAmount"];
-                        var passbook = cboLoanNumberLogHistory.selectedItem["PassbookAmount"];
-                        var balance = cboLoanNumberLogHistory.selectedItem["BalanceAmount"];
-                        var penalty = cboLoanNumberLogHistory.selectedItem["PenaltyAmount"];
-                        var lateInt = cboLoanNumberLogHistory.selectedItem["LateIntAmount"];
-                        var advance = cboLoanNumberLogHistory.selectedItem["AdvanceAmount"];
-                        var requirements = cboLoanNumberLogHistory.selectedItem["RequirementsAmount"];
-                        var insuranceIPIorPPI = cboLoanNumberLogHistory.selectedItem["InsuranceIPIorPPIAmount"];
-
-                        var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-                        var collectionPrincipalAmount = 0;
-                        var collectionTotalDeductions = 0;
-                        var collectionNetAmount = 0;
-                        if (cboLoanNumberLogHistory.selectedItem["IsLocked"]) {
-                            collectionPrincipalAmount = cboLoanNumberLogHistory.selectedItem["PrincipalAmount"].toLocaleString();
-                            collectionTotalDeductions = totalDeductions.toLocaleString();
-                            collectionNetAmount = cboLoanNumberLogHistory.selectedItem["NetAmount"].toLocaleString();
-                        }
-
-                        document.getElementById("collectionPrincipalAmount").value = collectionPrincipalAmount;
-                        document.getElementById("collectionTotalDeductions").value = collectionTotalDeductions;
-                        document.getElementById("collectionNetAmount").value = collectionNetAmount;
                     } else {
-                        toastr.info("No logs / History at this time");
+                        toastr.info("No Collections at this time");
                     }
+
+                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
+
+                    collectionFlexGrid.itemsSource = collectionCollectionView;
+                    collectionFlexGrid.trackChanges = true;
 
                     createFlexGridForCollection();
                 }
@@ -2078,7 +1937,7 @@
                 isReadOnly: true,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.None
+                selectionMode: wijmo.grid.SelectionMode.Row
             });
 
             collectionFlexGrid.trackChanges = true;
@@ -2109,24 +1968,6 @@
 
             collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
             collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Status');
-        }
-
-        // view collection
-        function btnViewCollectionOnclick() {
-            $("#collectionModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            NProgress.start();
-            $("#loadingData").show();
-
-            setTimeout(function () {
-                collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-                collectionFlexGrid.itemsSource = collectionCollectionView;
-                collectionFlexGrid.trackChanges = true;
-            }, 500)
         }
 
         // action on lick

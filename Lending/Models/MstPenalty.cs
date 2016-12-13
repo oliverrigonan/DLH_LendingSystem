@@ -15,7 +15,6 @@ namespace Lending.Models
         public Decimal PenaltyAmount { get; set; }
         public Decimal NoOfAbsentLimit { get; set; }
         public Decimal PenaltyAmountOverNoOfAbsentLimit { get; set; }
-        public Decimal LoanAmount { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }
