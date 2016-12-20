@@ -8,37 +8,30 @@ namespace Lending.Business
     public class CollectionStatus
     {
         // get status
-        public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsPartialPayment, Boolean IsAdvancePayment, Boolean IsFullPayment, Boolean IsExtendCollection, Boolean IsOverdueCollection)
+        public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsPartiallyPaid, Boolean IsPaidInAdvanced, Boolean IsFullyPaid, Boolean IsOverdue)
         {
             String status = "?";
             if (IsCleared)
             {
-                if (IsAdvancePayment)
+                if (IsPaidInAdvanced)
                 {
                     status = "Advance";
                 }
                 else
                 {
-                    if (IsFullPayment)
+                    if (IsFullyPaid)
                     {
                         status = "Full";
                     }
                     else
                     {
-                        if (IsExtendCollection)
+                        if (IsOverdue)
                         {
-                            status = "Paid (Extend)";
+                            status = "Paid (Overdue)";
                         }
                         else
                         {
-                            if (IsOverdueCollection)
-                            {
-                                status = "Paid (Overdue)";
-                            }
-                            else
-                            {
-                                status = "Paid";
-                            }
+                            status = "Paid";
                         }
                     }
                 }
@@ -47,40 +40,26 @@ namespace Lending.Business
             {
                 if (IsAbsent)
                 {
-                    if (IsExtendCollection)
+                    if (IsOverdue)
                     {
-                        status = "Absent (Extend)";
+                        status = "Absent (Overdue)";
                     }
                     else
                     {
-                        if (IsOverdueCollection)
-                        {
-                            status = "Absent (Overdue)";
-                        }
-                        else
-                        {
-                            status = "Absent";
-                        }
+                        status = "Absent";
                     }
                 }
                 else
                 {
-                    if (IsPartialPayment)
+                    if (IsPartiallyPaid)
                     {
-                        if (IsExtendCollection)
+                        if (IsOverdue)
                         {
-                            status = "Partial (Extend)";
+                            status = "Partial (Overdue)";
                         }
                         else
                         {
-                            if (IsOverdueCollection)
-                            {
-                                status = "Partial (Overdue)";
-                            }
-                            else
-                            {
-                                status = "Partial";
-                            }
+                            status = "Partial";
                         }
                     }
                 }

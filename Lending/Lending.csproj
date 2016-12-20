@@ -177,6 +177,8 @@
     <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
+    <Compile Include="ApiControllers\ApiCollectionReconstructController.cs" />
+    <Compile Include="ApiControllers\ApiDailyCollectionController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiExpensesController.cs" />
     <Compile Include="ApiControllers\ApiExpenseTypeController.cs" />
@@ -248,6 +250,8 @@
     <Compile Include="Models\SysTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
+    <Compile Include="Models\TrnCollectionReconstruct.cs" />
+    <Compile Include="Models\TrnDailyCollection.cs" />
     <Compile Include="Models\TrnExpenses.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />

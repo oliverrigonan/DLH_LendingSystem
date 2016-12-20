@@ -8,41 +8,44 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiTermController : ApiController
+    public class ApiCollectionReconstructController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // Terms list
+        // collection reconstruct list
         [Authorize]
         [HttpGet]
-        [Route("api/term/list")]
-        public List<Models.MstTerm> listTerm()
+        [Route("api/collectionReconstruct/list/ByCollectionId/{collectionId}")]
+        public List<Models.TrnCollectionReconstruct> listCollectionReconstructByCollectionId(String collectionId)
         {
-            var term = from d in db.mstTerms
-                            select new Models.MstTerm
-                            {
-                                Id = d.Id,
-                                Term = d.Term,
-                                Description = d.Description,
-                                NoOfDays = d.NoOfDays,
-                                NoOfAllowanceDays = d.NoOfAllowanceDays,
-                                CreatedByUserId = d.CreatedByUserId,
-                                CreatedByUser = d.mstUser.FullName,
-                                CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                UpdatedByUserId = d.UpdatedByUserId,
-                                UpdatedByUser = d.mstUser1.FullName,
-                                UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                            };
+            var collecionReconstruct = from d in db.trnCollectionReconstructs
+                                       where d.CollectionId == Convert.ToInt32(collectionId)
+                                       select new Models.TrnCollectionReconstruct
+                                       {
+                                           Id = d.Id,
+                                           CollectionId = d.CollectionId,
+                                           ReconstructNumber = d.ReconstructNumber,
+                                           StartDate = d.StartDate.ToShortDateString(),
+                                           EndDate = d.EndDate.ToShortDateString(),
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           TermNoOfAllowanceDays = d.TermNoOfAllowanceDays,
+                                           InterestId = d.InterestId,
+                                           InterestRate = d.InterestRate,
+                                           PenaltyId = d.PenaltyId,
+                                           Penalty = d.mstPenalty.Penalty
+                                       };
 
-            return term.ToList();
+            return collecionReconstruct.ToList();
         }
 
-        // add Terms 
+        // add collection reconstruct
         [Authorize]
         [HttpPost]
-        [Route("api/term/add")]
-        public HttpResponseMessage addTerm(Models.MstTerm loanType)
+        [Route("api/collectionReconstruct/add")]
+        public HttpResponseMessage addCollectionReconstruct(Models.TrnCollectionReconstruct collectionReconstruct)
         {
             try
             {
@@ -58,7 +61,7 @@ namespace Lending.ApiControllers
 
                 if (mstUserForms.Any())
                 {
-                    String matchPageString = "SystemTables";
+                    String matchPageString = "CollectionDetail";
                     Boolean canPerformActions = false;
 
                     foreach (var mstUserForm in mstUserForms)
@@ -76,18 +79,18 @@ namespace Lending.ApiControllers
 
                     if (canPerformActions)
                     {
-                        Data.mstTerm newTerm = new Data.mstTerm();
-
-                        newTerm.Term = loanType.Term;
-                        newTerm.Description = loanType.Description;
-                        newTerm.NoOfDays = loanType.NoOfDays;
-                        newTerm.NoOfAllowanceDays = loanType.NoOfAllowanceDays;
-                        newTerm.CreatedByUserId = userId;
-                        newTerm.CreatedDateTime = DateTime.Now;
-                        newTerm.UpdatedByUserId = userId;
-                        newTerm.UpdatedDateTime = DateTime.Now;
-
-                        db.mstTerms.InsertOnSubmit(newTerm);
+                        Data.trnCollectionReconstruct newCollectionReconstruct = new Data.trnCollectionReconstruct();
+                        newCollectionReconstruct.CollectionId = collectionReconstruct.CollectionId;
+                        newCollectionReconstruct.ReconstructNumber = collectionReconstruct.ReconstructNumber;
+                        newCollectionReconstruct.StartDate = Convert.ToDateTime(collectionReconstruct.StartDate);
+                        newCollectionReconstruct.EndDate = Convert.ToDateTime(collectionReconstruct.EndDate);
+                        newCollectionReconstruct.TermId = collectionReconstruct.TermId;
+                        newCollectionReconstruct.TermNoOfDays = collectionReconstruct.TermNoOfDays;
+                        newCollectionReconstruct.TermNoOfAllowanceDays = collectionReconstruct.TermNoOfAllowanceDays;
+                        newCollectionReconstruct.InterestId = collectionReconstruct.InterestId;
+                        newCollectionReconstruct.InterestRate = collectionReconstruct.InterestRate;
+                        newCollectionReconstruct.PenaltyId = collectionReconstruct.PenaltyId;
+                        db.trnCollectionReconstructs.InsertOnSubmit(newCollectionReconstruct);
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);
@@ -108,16 +111,16 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update Terms 
+        // update collection reconstruct
         [Authorize]
         [HttpPut]
-        [Route("api/term/update/{id}")]
-        public HttpResponseMessage updateTerm(String id, Models.MstTerm loanType)
+        [Route("api/collectionReconstruct/update/{id}")]
+        public HttpResponseMessage updateCollectionReconstruct(String id, Models.TrnCollectionReconstruct collectionReconstruct)
         {
             try
             {
-                var term = from d in db.mstTerms where d.Id == Convert.ToInt32(id) select d;
-                if (term.Any())
+                var collectionReconstructs = from d in db.trnCollectionReconstructs where d.Id == Convert.ToInt32(id) select d;
+                if (collectionReconstructs.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                     var mstUserForms = from d in db.mstUserForms
@@ -131,7 +134,7 @@ namespace Lending.ApiControllers
 
                     if (mstUserForms.Any())
                     {
-                        String matchPageString = "SystemTables";
+                        String matchPageString = "CollectionDetail";
                         Boolean canPerformActions = false;
 
                         foreach (var mstUserForm in mstUserForms)
@@ -149,14 +152,17 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            var updateTerm = term.FirstOrDefault();
-
-                            updateTerm.Term = loanType.Term;
-                            updateTerm.Description = loanType.Description;
-                            updateTerm.NoOfDays = loanType.NoOfDays;
-                            updateTerm.NoOfAllowanceDays = loanType.NoOfAllowanceDays;
-                            updateTerm.UpdatedByUserId = userId;
-                            updateTerm.UpdatedDateTime = DateTime.Now;
+                            var updateCollectionReconstruct = collectionReconstructs.FirstOrDefault();
+                            updateCollectionReconstruct.CollectionId = collectionReconstruct.CollectionId;
+                            updateCollectionReconstruct.ReconstructNumber = collectionReconstruct.ReconstructNumber;
+                            updateCollectionReconstruct.StartDate = Convert.ToDateTime(collectionReconstruct.StartDate);
+                            updateCollectionReconstruct.EndDate = Convert.ToDateTime(collectionReconstruct.EndDate);
+                            updateCollectionReconstruct.TermId = collectionReconstruct.TermId;
+                            updateCollectionReconstruct.TermNoOfDays = collectionReconstruct.TermNoOfDays;
+                            updateCollectionReconstruct.TermNoOfAllowanceDays = collectionReconstruct.TermNoOfAllowanceDays;
+                            updateCollectionReconstruct.InterestId = collectionReconstruct.InterestId;
+                            updateCollectionReconstruct.InterestRate = collectionReconstruct.InterestRate;
+                            updateCollectionReconstruct.PenaltyId = collectionReconstruct.PenaltyId;
                             db.SubmitChanges();
 
                             return Request.CreateResponse(HttpStatusCode.OK);
@@ -182,16 +188,16 @@ namespace Lending.ApiControllers
             }
         }
 
-        // delete Terms
+        // delete collection reconstruct
         [Authorize]
         [HttpDelete]
-        [Route("api/term/delete/{id}")]
-        public HttpResponseMessage deleteTerm(String id)
+        [Route("api/collectionReconstruct/delete/{id}")]
+        public HttpResponseMessage deleteCollectionReconstruct(String id)
         {
             try
             {
-                var term = from d in db.mstTerms where d.Id == Convert.ToInt32(id) select d;
-                if (term.Any())
+                var collectionReconstructs = from d in db.trnCollectionReconstructs where d.Id == Convert.ToInt32(id) select d;
+                if (collectionReconstructs.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                     var mstUserForms = from d in db.mstUserForms
@@ -205,7 +211,7 @@ namespace Lending.ApiControllers
 
                     if (mstUserForms.Any())
                     {
-                        String matchPageString = "SystemTables";
+                        String matchPageString = "CollectionDetail";
                         Boolean canPerformActions = false;
 
                         foreach (var mstUserForm in mstUserForms)
@@ -223,7 +229,7 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            db.mstTerms.DeleteOnSubmit(term.First());
+                            db.trnCollectionReconstructs.DeleteOnSubmit(collectionReconstructs.First());
                             db.SubmitChanges();
 
                             return Request.CreateResponse(HttpStatusCode.OK);

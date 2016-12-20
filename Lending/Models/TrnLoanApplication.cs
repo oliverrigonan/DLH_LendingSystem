@@ -21,6 +21,13 @@ namespace Lending.Models
         public String Particulars { get; set; }
         public Int32 LoanTypeId { get; set; }
         public String LoanType { get; set; }
+        public Int32 TermId { get; set; }
+        public String Term { get; set; }
+        public Int32 InterestId { get; set; }
+        public String Interest { get; set; }
+        public Decimal InterestRate { get; set; }
+        public Int32 PenaltyId { get; set; }
+        public String Penalty { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Int32 AssignedCollectorId { get; set; }
@@ -29,23 +36,15 @@ namespace Lending.Models
         public String CurrentCollector { get; set; }
         public String CollectorAreaAssigned { get; set; }
         public Decimal PrincipalAmount { get; set; }
-        public Decimal ProcessingFeeAmount { get; set; }
-        public Decimal PassbookAmount { get; set; }
-        public Decimal BalanceAmount { get; set; }
-        public Decimal PenaltyAmount { get; set; }
-        public Decimal LateIntAmount { get; set; }
-        public Decimal AdvanceAmount { get; set; }
-        public Decimal RequirementsAmount { get; set; }
-        public Decimal InsuranceIPIorPPIAmount { get; set; }
+        public Decimal ProcessingFeeAmountDeduction { get; set; }
+        public Decimal PassbookAmountDeduction { get; set; }
+        public Decimal BalanceAmountDeduction { get; set; }
+        public Decimal PenaltyAmountDeduction { get; set; }
+        public Decimal LateIntAmountDeduction { get; set; }
+        public Decimal AdvanceAmountDeduction { get; set; }
+        public Decimal RequirementsAmountDeduction { get; set; }
+        public Decimal InsuranceIPIorPPIAmountDeduction { get; set; }
         public Decimal NetAmount { get; set; }
-        public Boolean IsFullyPaid { get; set; }
-        public Int32 TermId { get; set; }
-        public String Term { get; set; }
-        public Decimal TermNoOfDays { get; set; }
-        public Int32 InterestId { get; set; }
-        public String Interest { get; set; }
-        public Int32 PenaltyId { get; set; }
-        public String Penalty { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }

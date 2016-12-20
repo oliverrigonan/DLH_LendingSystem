@@ -12,9 +12,10 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public String Penalty { get; set; }
         public String Description { get; set; }
-        public Decimal PenaltyAmount { get; set; }
-        public Decimal NoOfAbsentLimit { get; set; }
-        public Decimal PenaltyAmountOverNoOfAbsentLimit { get; set; }
+        public Decimal DefaultPenaltyAmount { get; set; }
+        public Boolean IsPenaltyEveryAbsent { get; set; }
+        public Decimal NoOfLimitAbsent { get; set; }
+        public Decimal PenaltyAmountOverNoOfLimitAbsent { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

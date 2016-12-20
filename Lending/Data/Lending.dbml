@@ -74,7 +74,7 @@
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="mstAccount_sysJournal" Member="sysJournals" ThisKey="Id" OtherKey="AccountId" Type="sysJournal" />
-      <Association Name="mstAccount_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="AccountId" Type="trnCollection" />
+      <Association Name="mstAccount_trnDailyCollection" Member="trnDailyCollections" ThisKey="Id" OtherKey="AccountId" Type="trnDailyCollection" />
       <Association Name="mstAccount_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="AccountId" Type="trnExpense" />
       <Association Name="mstAccount_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="AccountId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstAccount" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -300,11 +300,11 @@
       <Column Name="Interest" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="NoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstInterest_trnCollectionReconstruct" Member="trnCollectionReconstructs" ThisKey="Id" OtherKey="InterestId" Type="trnCollectionReconstruct" />
       <Association Name="mstInterest_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="InterestId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstInterest" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstInterest1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -329,13 +329,15 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Penalty" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="NoOfAbsentLimit" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="PenaltyAmountOverNoOfAbsentLimit" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="DefaultPenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsPenaltyEveryAbsent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="NoOfLimitAbsent" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyAmountOverNoOfLimitAbsent" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstPenalty_trnCollectionReconstruct" Member="trnCollectionReconstructs" ThisKey="Id" OtherKey="PenaltyId" Type="trnCollectionReconstruct" />
       <Association Name="mstPenalty_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="PenaltyId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstPenalty" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstPenalty1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -380,10 +382,13 @@
       <Column Name="Term" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="NoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="NoOfAllowanceDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstTerm_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="TermId" Type="trnCollection" />
+      <Association Name="mstTerm_trnCollectionReconstruct" Member="trnCollectionReconstructs" ThisKey="Id" OtherKey="TermId" Type="trnCollectionReconstruct" />
       <Association Name="mstTerm_trnLoanApplication" Member="trnLoanApplications" ThisKey="Id" OtherKey="TermId" Type="trnLoanApplication" />
       <Association Name="mstUser_mstTerm" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstTerm1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -423,6 +428,8 @@
       <Association Name="mstUser_mstTerm" Member="mstTerms" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstTerm" />
       <Association Name="mstUser_mstTerm1" Member="mstTerms1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstTerm" />
       <Association Name="mstUser_mstUserForm" Member="mstUserForms" ThisKey="Id" OtherKey="UserId" Type="mstUserForm" />
+      <Association Name="mstUser_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnCollection" />
+      <Association Name="mstUser_trnCollection1" Member="trnCollections1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnCollection" />
       <Association Name="mstUser_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense1" Member="trnExpenses1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense2" Member="trnExpenses2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnExpense" />
@@ -497,29 +504,75 @@
   <Table Name="dbo.trnCollection" Member="trnCollections">
     <Type Name="trnCollection">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CollectionNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="CollectionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TermNoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="TermNoOfAllowanceDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsOverdue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="trnCollection_trnCollectionReconstruct" Member="trnCollectionReconstructs" ThisKey="Id" OtherKey="CollectionId" Type="trnCollectionReconstruct" />
+      <Association Name="trnCollection_trnDailyCollection" Member="trnDailyCollections" ThisKey="Id" OtherKey="CollectionId" Type="trnDailyCollection" />
+      <Association Name="mstTerm_trnCollection" Member="mstTerm" ThisKey="TermId" OtherKey="Id" Type="mstTerm" IsForeignKey="true" />
+      <Association Name="mstUser_trnCollection" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnCollection1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="trnLoanApplication_trnCollection" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.trnCollectionReconstruct" Member="trnCollectionReconstructs">
+    <Type Name="trnCollectionReconstruct">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CollectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReconstructNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TermNoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="TermNoOfAllowanceDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="InterestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InterestRate" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="trnCollectionReconstruct_trnDailyCollection" Member="trnDailyCollections" ThisKey="Id" OtherKey="ReconstructId" Type="trnDailyCollection" />
+      <Association Name="mstInterest_trnCollectionReconstruct" Member="mstInterest" ThisKey="InterestId" OtherKey="Id" Type="mstInterest" IsForeignKey="true" />
+      <Association Name="mstPenalty_trnCollectionReconstruct" Member="mstPenalty" ThisKey="PenaltyId" OtherKey="Id" Type="mstPenalty" IsForeignKey="true" />
+      <Association Name="mstTerm_trnCollectionReconstruct" Member="mstTerm" ThisKey="TermId" OtherKey="Id" Type="mstTerm" IsForeignKey="true" />
+      <Association Name="trnCollection_trnCollectionReconstruct" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.trnDailyCollection" Member="trnDailyCollections">
+    <Type Name="trnDailyCollection">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CollectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DailyCollectionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="NetAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CollectibleAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PreviousBalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CurrentBalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsCurrentCollection" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsCleared" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsAbsent" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsPartialPayment" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsAdvancePayment" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsFullPayment" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsDueDate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsExtendCollection" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsOverdueCollection" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsCurrentCollection" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsPartiallyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsPaidInAdvanced" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsProcessed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsAction" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanPerformAction" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsDueDate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsAllowanceDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsLastDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Association Name="mstAccount_trnCollection" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
-      <Association Name="trnLoanApplication_trnCollection" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
+      <Column Name="ReconstructId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsReconstructed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="mstAccount_trnDailyCollection" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
+      <Association Name="trnCollection_trnDailyCollection" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" />
+      <Association Name="trnCollectionReconstruct_trnDailyCollection" Member="trnCollectionReconstruct" ThisKey="ReconstructId" OtherKey="Id" Type="trnCollectionReconstruct" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnExpenses" Member="trnExpenses">
@@ -558,22 +611,21 @@
       <Column Name="ApplicantId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="LoanTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InterestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InterestRate" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PrincipalAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="ProcessingFeeAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="PassbookAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="BalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="LateIntAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="AdvanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="RequirementsAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="InsuranceIPIorPPIAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="ProcessingFeeAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PassbookAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="BalanceAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="LateIntAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="AdvanceAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="RequirementsAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="InsuranceIPIorPPIAmountDeduction" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="NetAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TermNoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="InterestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="PenaltyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />

@@ -10,39 +10,24 @@ namespace Lending.Models
     {
         [Key]
         public Int32 Id { get; set; }
+        public String CollectionNumber { get; set; }
+        public String CollectionDate { get; set; }
         public Int32 LoanId { get; set; }
         public String LoanNumber { get; set; }
-        public Int32 ApplicantId { get; set; }
+        public Decimal NetAmount { get; set; }
         public String Applicant { get; set; }
         public String Area { get; set; }
+        public Int32 TermId { get; set; }
+        public Decimal TermNoOfDays { get; set; }
+        public Decimal TermNoOfAllowanceDays { get; set; }
         public Boolean IsFullyPaid { get; set; }
-        public Int32 AccountId { get; set; }
-        public String Account { get; set; }
-        public String CollectionDate { get; set; }
-        public Decimal NetAmount { get; set; }
-        public Decimal CollectibleAmount { get; set; }
-        public Decimal PenaltyAmount { get; set; }
-        public Decimal PaidAmount { get; set; }
-        public Decimal PreviousBalanceAmount { get; set; }
-        public Decimal CurrentBalanceAmount { get; set; }
-        public Boolean IsCleared { get; set; }
-        public Boolean IsAbsent { get; set; }
-        public Boolean IsPartialPayment { get; set; }
-        public Boolean IsAdvancePayment { get; set; }
-        public Boolean IsFullPayment { get; set; }
-        public Boolean IsDueDate { get; set; }
-        public Boolean IsExtendCollection { get; set; }
-        public Boolean IsOverdueCollection { get; set; }
-        public Boolean IsCurrentCollection { get; set; }
-        public Boolean IsProcessed { get; set; }
-        public Boolean IsAction { get; set; }
-        public Boolean IsLastDay { get; set; }
-        public Int32 AssignedCollectorId { get; set; }
-        public String AssignedCollector { get; set; }
-        public String AssignedCollectorArea { get; set; }
-        public Int32 CurrentCollectorId { get; set; }
-        public String CurrentCollector { get; set; }
-        public String CurrentCollectorArea { get; set; }
-        public String Status { get; set; }
+        public Boolean IsOverdue { get; set; }
+        public Boolean IsLocked { get; set; }
+        public Int32 CreatedByUserId { get; set; }
+        public String CreatedByUser { get; set; }
+        public String CreatedDateTime { get; set; }
+        public Int32 UpdatedByUserId { get; set; }
+        public String UpdatedByUser { get; set; }
+        public String UpdatedDateTime { get; set; }
     }
 }

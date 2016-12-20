@@ -37,25 +37,24 @@ namespace Lending.ApiControllers
                                        LoanTypeId = d.LoanTypeId,
                                        LoanType = d.mstLoanType.LoanType,
                                        PreparedByUserId = d.PreparedByUserId,
-                                       PreparedByUser = d.mstUser.FullName,
-                                       PrincipalAmount = d.PrincipalAmount,
-                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
-                                       PassbookAmount = d.PassbookAmount,
-                                       BalanceAmount = d.BalanceAmount,
-                                       PenaltyAmount = d.PenaltyAmount,
-                                       LateIntAmount = d.LateIntAmount,
-                                       AdvanceAmount = d.AdvanceAmount,
-                                       RequirementsAmount = d.RequirementsAmount,
-                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
-                                       NetAmount = d.NetAmount,
-                                       IsFullyPaid = d.IsFullyPaid,
                                        TermId = d.TermId,
                                        Term = d.mstTerm.Term,
-                                       TermNoOfDays = d.TermNoOfDays,
                                        InterestId = d.InterestId,
                                        Interest = d.mstInterest.Interest,
+                                       InterestRate = d.InterestRate,
                                        PenaltyId = d.PenaltyId,
                                        Penalty = d.mstPenalty.Penalty,
+                                       PreparedByUser = d.mstUser.FullName,
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                                       PassbookAmountDeduction = d.PassbookAmountDeduction,
+                                       BalanceAmountDeduction = d.BalanceAmountDeduction,
+                                       PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                                       LateIntAmountDeduction = d.LateIntAmountDeduction,
+                                       AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                                       RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                                       InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
+                                       NetAmount = d.NetAmount,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -91,25 +90,24 @@ namespace Lending.ApiControllers
                                       LoanTypeId = d.LoanTypeId,
                                       LoanType = d.mstLoanType.LoanType,
                                       PreparedByUserId = d.PreparedByUserId,
-                                      PreparedByUser = d.mstUser.FullName,
-                                      PrincipalAmount = d.PrincipalAmount,
-                                      ProcessingFeeAmount = d.ProcessingFeeAmount,
-                                      PassbookAmount = d.PassbookAmount,
-                                      BalanceAmount = d.BalanceAmount,
-                                      PenaltyAmount = d.PenaltyAmount,
-                                      LateIntAmount = d.LateIntAmount,
-                                      AdvanceAmount = d.AdvanceAmount,
-                                      RequirementsAmount = d.RequirementsAmount,
-                                      InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
-                                      NetAmount = d.NetAmount,
-                                      IsFullyPaid = d.IsFullyPaid,
                                       TermId = d.TermId,
                                       Term = d.mstTerm.Term,
-                                      TermNoOfDays = d.TermNoOfDays,
                                       InterestId = d.InterestId,
                                       Interest = d.mstInterest.Interest,
+                                      InterestRate = d.InterestRate,
                                       PenaltyId = d.PenaltyId,
                                       Penalty = d.mstPenalty.Penalty,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      PrincipalAmount = d.PrincipalAmount,
+                                      ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                                      PassbookAmountDeduction = d.PassbookAmountDeduction,
+                                      BalanceAmountDeduction = d.BalanceAmountDeduction,
+                                      PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                                      LateIntAmountDeduction = d.LateIntAmountDeduction,
+                                      AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                                      RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                                      InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
+                                      NetAmount = d.NetAmount,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
                                       CreatedByUser = d.mstUser1.FullName,
@@ -145,25 +143,24 @@ namespace Lending.ApiControllers
                                       LoanTypeId = d.LoanTypeId,
                                       LoanType = d.mstLoanType.LoanType,
                                       PreparedByUserId = d.PreparedByUserId,
-                                      PreparedByUser = d.mstUser.FullName,
-                                      PrincipalAmount = d.PrincipalAmount,
-                                      ProcessingFeeAmount = d.ProcessingFeeAmount,
-                                      PassbookAmount = d.PassbookAmount,
-                                      BalanceAmount = d.BalanceAmount,
-                                      PenaltyAmount = d.PenaltyAmount,
-                                      LateIntAmount = d.LateIntAmount,
-                                      AdvanceAmount = d.AdvanceAmount,
-                                      RequirementsAmount = d.RequirementsAmount,
-                                      InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
-                                      NetAmount = d.NetAmount,
-                                      IsFullyPaid = d.IsFullyPaid,
                                       TermId = d.TermId,
                                       Term = d.mstTerm.Term,
-                                      TermNoOfDays = d.TermNoOfDays,
                                       InterestId = d.InterestId,
                                       Interest = d.mstInterest.Interest,
+                                      InterestRate = d.InterestRate,
                                       PenaltyId = d.PenaltyId,
                                       Penalty = d.mstPenalty.Penalty,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      PrincipalAmount = d.PrincipalAmount,
+                                      ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                                      PassbookAmountDeduction = d.PassbookAmountDeduction,
+                                      BalanceAmountDeduction = d.BalanceAmountDeduction,
+                                      PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                                      LateIntAmountDeduction = d.LateIntAmountDeduction,
+                                      AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                                      RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                                      InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
+                                      NetAmount = d.NetAmount,
                                       IsLocked = d.IsLocked,
                                       CreatedByUserId = d.CreatedByUserId,
                                       CreatedByUser = d.mstUser1.FullName,
@@ -246,21 +243,20 @@ namespace Lending.ApiControllers
                         newLoanApplication.Particulars = "NA";
                         newLoanApplication.LoanTypeId = (from d in db.mstLoanTypes select d.Id).FirstOrDefault();
                         newLoanApplication.PreparedByUserId = userId;
-                        newLoanApplication.PrincipalAmount = 0;
-                        newLoanApplication.ProcessingFeeAmount = 0;
-                        newLoanApplication.PassbookAmount = 0;
-                        newLoanApplication.BalanceAmount = 0;
-                        newLoanApplication.PenaltyAmount = 0;
-                        newLoanApplication.LateIntAmount = 0;
-                        newLoanApplication.AdvanceAmount = 0;
-                        newLoanApplication.RequirementsAmount = 0;
-                        newLoanApplication.InsuranceIPIorPPIAmount = 0;
-                        newLoanApplication.NetAmount = 0;
-                        newLoanApplication.IsFullyPaid = false;
                         newLoanApplication.TermId = termId;
-                        newLoanApplication.TermNoOfDays = (from d in db.mstTerms where d.Id == termId select d.NoOfDays).FirstOrDefault();
                         newLoanApplication.InterestId = (from d in db.mstInterests select d.Id).FirstOrDefault();
+                        newLoanApplication.InterestRate = (from d in db.mstInterests select d.Rate).FirstOrDefault();
                         newLoanApplication.PenaltyId = (from d in db.mstPenalties select d.Id).FirstOrDefault();
+                        newLoanApplication.PrincipalAmount = 0;
+                        newLoanApplication.ProcessingFeeAmountDeduction = 0;
+                        newLoanApplication.PassbookAmountDeduction = 0;
+                        newLoanApplication.BalanceAmountDeduction = 0;
+                        newLoanApplication.PenaltyAmountDeduction = 0;
+                        newLoanApplication.LateIntAmountDeduction = 0;
+                        newLoanApplication.AdvanceAmountDeduction = 0;
+                        newLoanApplication.RequirementsAmountDeduction = 0;
+                        newLoanApplication.InsuranceIPIorPPIAmountDeduction = 0;
+                        newLoanApplication.NetAmount = 0;
                         newLoanApplication.IsLocked = false;
                         newLoanApplication.CreatedByUserId = userId;
                         newLoanApplication.CreatedDateTime = DateTime.Now;
@@ -344,20 +340,20 @@ namespace Lending.ApiControllers
                                     lockLoanApplication.Particulars = loanApplication.Particulars;
                                     lockLoanApplication.LoanTypeId = loanApplication.LoanTypeId;
                                     lockLoanApplication.PreparedByUserId = loanApplication.PreparedByUserId;
-                                    lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
-                                    lockLoanApplication.ProcessingFeeAmount = loanApplication.ProcessingFeeAmount;
-                                    lockLoanApplication.PassbookAmount = loanApplication.PassbookAmount;
-                                    lockLoanApplication.BalanceAmount = loanApplication.BalanceAmount;
-                                    lockLoanApplication.PenaltyAmount = loanApplication.PenaltyAmount;
-                                    lockLoanApplication.LateIntAmount = loanApplication.LateIntAmount;
-                                    lockLoanApplication.AdvanceAmount = loanApplication.AdvanceAmount;
-                                    lockLoanApplication.RequirementsAmount = loanApplication.RequirementsAmount;
-                                    lockLoanApplication.InsuranceIPIorPPIAmount = loanApplication.InsuranceIPIorPPIAmount;
-                                    lockLoanApplication.NetAmount = loanApplication.NetAmount;
                                     lockLoanApplication.TermId = loanApplication.TermId;
-                                    lockLoanApplication.TermNoOfDays = (from d in db.mstTerms where d.Id == loanApplication.TermId select d.NoOfDays).FirstOrDefault();
                                     lockLoanApplication.InterestId = loanApplication.InterestId;
+                                    lockLoanApplication.InterestRate = loanApplication.InterestRate;
                                     lockLoanApplication.PenaltyId = loanApplication.PenaltyId;
+                                    lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
+                                    lockLoanApplication.ProcessingFeeAmountDeduction = loanApplication.ProcessingFeeAmountDeduction;
+                                    lockLoanApplication.PassbookAmountDeduction = loanApplication.PassbookAmountDeduction;
+                                    lockLoanApplication.BalanceAmountDeduction = loanApplication.BalanceAmountDeduction;
+                                    lockLoanApplication.PenaltyAmountDeduction = loanApplication.PenaltyAmountDeduction;
+                                    lockLoanApplication.LateIntAmountDeduction = loanApplication.LateIntAmountDeduction;
+                                    lockLoanApplication.AdvanceAmountDeduction = loanApplication.AdvanceAmountDeduction;
+                                    lockLoanApplication.RequirementsAmountDeduction = loanApplication.RequirementsAmountDeduction;
+                                    lockLoanApplication.InsuranceIPIorPPIAmountDeduction = loanApplication.InsuranceIPIorPPIAmountDeduction;
+                                    lockLoanApplication.NetAmount = loanApplication.NetAmount;
                                     lockLoanApplication.IsLocked = true;
                                     lockLoanApplication.UpdatedByUserId = userId;
                                     lockLoanApplication.UpdatedDateTime = DateTime.Now;
@@ -411,12 +407,12 @@ namespace Lending.ApiControllers
                 {
                     if (loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var collections = from d in db.trnCollections
-                                          where d.LoanId == Convert.ToInt32(id)
-                                          && d.IsProcessed == true
-                                          select d;
+                        var dailyCollections = from d in db.trnDailyCollections
+                                               where d.trnCollection.LoanId == Convert.ToInt32(id)
+                                               && d.IsProcessed == true
+                                               select d;
 
-                        if (!collections.Any())
+                        if (!dailyCollections.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms

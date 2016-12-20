@@ -11,62 +11,42 @@ namespace Lending.Business
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
         // loan collection
-        public void postCollection(Int32 loanId)
+        public void postCollection(Int32 collectionId)
         {
-            var loanApplication = from d in db.trnLoanApplications
-                                   where d.Id == loanId
-                                   && d.IsLocked == true
-                                   select new Models.TrnLoanApplication
-                                   {
-                                       Id = d.Id,
-                                       LoanNumber = d.LoanNumber,
-                                       LoanDate = d.LoanDate.ToShortDateString(),
-                                       MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       AccountId = d.AccountId,
-                                       Account = d.mstAccount.Account,
-                                       ApplicantId = d.ApplicantId,
-                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                       Area = d.mstApplicant.mstArea.Area,
-                                       Particulars = d.Particulars,
-                                       LoanTypeId = d.LoanTypeId,
-                                       LoanType = d.mstLoanType.LoanType,
-                                       PreparedByUserId = d.PreparedByUserId,
-                                       PreparedByUser = d.mstUser.FullName,
-                                       PrincipalAmount = d.PrincipalAmount,
-                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
-                                       PassbookAmount = d.PassbookAmount,
-                                       BalanceAmount = d.BalanceAmount,
-                                       PenaltyAmount = d.PenaltyAmount,
-                                       LateIntAmount = d.LateIntAmount,
-                                       AdvanceAmount = d.AdvanceAmount,
-                                       RequirementsAmount = d.RequirementsAmount,
-                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
-                                       NetAmount = d.NetAmount,
-                                       IsFullyPaid = d.IsFullyPaid,
-                                       TermId = d.TermId,
-                                       Term = d.mstTerm.Term,
-                                       TermNoOfDays = d.mstTerm.NoOfDays,
-                                       InterestId = d.InterestId,
-                                       Interest = d.mstInterest.Interest,
-                                       PenaltyId = d.PenaltyId,
-                                       Penalty = d.mstPenalty.Penalty,
-                                       IsLocked = d.IsLocked,
-                                       CreatedByUserId = d.CreatedByUserId,
-                                       CreatedByUser = d.mstUser1.FullName,
-                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                       UpdatedByUserId = d.UpdatedByUserId,
-                                       UpdatedByUser = d.mstUser2.FullName,
-                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                                   };
+            var collection = from d in db.trnCollections
+                             where d.Id == Convert.ToInt32(collectionId)
+                             select new Models.TrnCollection
+                             {
+                                 Id = d.Id,
+                                 CollectionNumber = d.CollectionNumber,
+                                 CollectionDate = d.CollectionDate.ToShortDateString(),
+                                 LoanId = d.LoanId,
+                                 LoanNumber = d.trnLoanApplication.LoanNumber + " - from " + d.trnLoanApplication.LoanDate + " to " + d.trnLoanApplication.MaturityDate,
+                                 NetAmount = d.trnLoanApplication.NetAmount,
+                                 Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
+                                 Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
+                                 TermId = d.TermId,
+                                 TermNoOfDays = d.TermNoOfAllowanceDays,
+                                 TermNoOfAllowanceDays = d.TermNoOfAllowanceDays,
+                                 IsFullyPaid = d.IsFullyPaid,
+                                 IsOverdue = d.IsOverdue,
+                                 IsLocked = d.IsLocked,
+                                 CreatedByUserId = d.CreatedByUserId,
+                                 CreatedByUser = d.mstUser.FullName,
+                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                 UpdatedByUserId = d.UpdatedByUserId,
+                                 UpdatedByUser = d.mstUser1.FullName,
+                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                             };
 
-            if (loanApplication.Any())
+            if (collection.Any())
             {
-                if (loanApplication.FirstOrDefault().NetAmount > 0)
+                if (collection.FirstOrDefault().NetAmount > 0)
                 {
                     var numberOfDays = (Convert.ToDateTime(loanApplication.FirstOrDefault().MaturityDate) - Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate)).TotalDays;
-                    
+
                     Decimal netAmount = loanApplication.FirstOrDefault().NetAmount;
-                    
+
                     Decimal collectibleAmount = Math.Round(loanApplication.FirstOrDefault().NetAmount / Convert.ToDecimal(numberOfDays), 1);
                     Decimal collectibleAmountCeil = Math.Ceiling((collectibleAmount + 1) / 5) * 5;
 
