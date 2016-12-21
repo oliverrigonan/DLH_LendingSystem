@@ -30,14 +30,14 @@ namespace Lending.Business
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
                                        PrincipalAmount = d.PrincipalAmount,
-                                       ProcessingFeeAmount = d.ProcessingFeeAmount,
-                                       PassbookAmount = d.PassbookAmount,
-                                       BalanceAmount = d.BalanceAmount,
-                                       PenaltyAmount = d.PenaltyAmount,
-                                       LateIntAmount = d.LateIntAmount,
-                                       AdvanceAmount = d.AdvanceAmount,
-                                       RequirementsAmount = d.RequirementsAmount,
-                                       InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
+                                       ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                                       PassbookAmountDeduction = d.PassbookAmountDeduction,
+                                       BalanceAmountDeduction = d.BalanceAmountDeduction,
+                                       PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                                       LateIntAmountDeduction = d.LateIntAmountDeduction,
+                                       AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                                       RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                                       InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
                                        NetAmount = d.NetAmount,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
@@ -86,54 +86,52 @@ namespace Lending.Business
         // collection journal
         public void postCollectionJournal(Int32 collectionId)
         {
-            var collections = from d in db.trnCollections
-                              where d.Id == collectionId
-                              select new Models.TrnCollection
-                              {
-                                  Id = d.Id,
-                                  LoanId = d.LoanId,
-                                  LoanNumber = d.trnLoanApplication.LoanNumber,
-                                  ApplicantId = d.trnLoanApplication.ApplicantId,
-                                  Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
-                                  Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
-                                  IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
-                                  AccountId = d.AccountId,
-                                  Account = d.mstAccount.Account,
-                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  NetAmount = d.NetAmount,
-                                  CollectibleAmount = d.CollectibleAmount,
-                                  PenaltyAmount = d.PenaltyAmount,
-                                  PaidAmount = d.PaidAmount,
-                                  PreviousBalanceAmount = d.PreviousBalanceAmount,
-                                  CurrentBalanceAmount = d.CurrentBalanceAmount,
-                                  IsCleared = d.IsCleared,
-                                  IsAbsent = d.IsAbsent,
-                                  IsPartialPayment = d.IsPartialPayment,
-                                  IsAdvancePayment = d.IsAdvancePayment,
-                                  IsFullPayment = d.IsFullPayment,
-                                  IsDueDate = d.IsDueDate,
-                                  IsExtendCollection = d.IsExtendCollection,
-                                  IsOverdueCollection = d.IsOverdueCollection,
-                                  IsCurrentCollection = d.IsCurrentCollection,
-                                  IsProcessed = d.IsProcessed,
-                                  IsAction = d.IsAction,
-                                  IsLastDay = d.IsLastDay,
-                                  Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
-                              };
+            var dailyCollections = from d in db.trnDailyCollections
+                                   where d.CollectionId == Convert.ToInt32(collectionId)
+                                   select new Models.TrnDailyCollection
+                                   {
+                                       Id = d.Id,
+                                       CollectionId = d.CollectionId,
+                                       CollectionNumber = d.trnCollection.CollectionNumber,
+                                       AccountId = d.AccountId,
+                                       Applicant = d.trnCollection.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnCollection.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnCollection.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnCollection.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
+                                       DailyCollectionDate = d.DailyCollectionDate.ToShortDateString(),
+                                       NetAmount = d.NetAmount,
+                                       CollectibleAmount = d.CollectibleAmount,
+                                       PenaltyAmount = d.PenaltyAmount,
+                                       PaidAmount = d.PaidAmount,
+                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                       CurrentBalanceAmount = d.CurrentBalanceAmount,
+                                       IsCurrentCollection = d.IsCurrentCollection,
+                                       IsCleared = d.IsCleared,
+                                       IsAbsent = d.IsAbsent,
+                                       IsPartiallyPaid = d.IsPartiallyPaid,
+                                       IsPaidInAdvanced = d.IsPaidInAdvanced,
+                                       IsFullyPaid = d.IsFullyPaid,
+                                       IsProcessed = d.IsProcessed,
+                                       CanPerformAction = d.CanPerformAction,
+                                       IsDueDate = d.IsDueDate,
+                                       IsAllowanceDay = d.IsAllowanceDay,
+                                       IsLastDay = d.IsLastDay,
+                                       ReconstructId = d.ReconstructId != null ? d.ReconstructId : 0,
+                                       IsReconstructed = d.IsReconstructed,
+                                       Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartiallyPaid, d.IsPaidInAdvanced, d.IsFullyPaid, d.trnCollection.IsOverdue)
+                                   };
 
-            if (collections.Any())
+
+            if (dailyCollections.Any())
             {
-                foreach (var collection in collections)
+                foreach (var dailyCollection in dailyCollections)
                 {
-                    if (collection.PaidAmount > 0)
+                    if (dailyCollection.PaidAmount > 0)
                     {
                         Data.sysJournal newCollectionJournal = new Data.sysJournal();
-                        newCollectionJournal.JournalDate = Convert.ToDateTime(collection.CollectionDate);
-                        newCollectionJournal.AccountId = collection.AccountId;
+                        newCollectionJournal.JournalDate = Convert.ToDateTime(dailyCollection.DailyCollectionDate);
+                        newCollectionJournal.AccountId = dailyCollection.AccountId;
                         newCollectionJournal.Particulars = "Collection";
                         newCollectionJournal.ReleasedAmount = 0;
-                        newCollectionJournal.ReceivedAmount = collection.PaidAmount;
-                        newCollectionJournal.DocumentReference = "Collection - " + collection.LoanNumber;
+                        newCollectionJournal.ReceivedAmount = dailyCollection.PaidAmount;
+                        newCollectionJournal.DocumentReference = "Collection - " + dailyCollection.CollectionNumber;
                         newCollectionJournal.LoanId = null;
                         newCollectionJournal.CollectionId = collectionId;
                         newCollectionJournal.ExpenseId = null;

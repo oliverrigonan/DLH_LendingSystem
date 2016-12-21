@@ -96,12 +96,6 @@ namespace Lending.ApiControllers
                                 lockCollection.UpdatedDateTime = DateTime.Now;
                                 db.SubmitChanges();
 
-                                Business.Collection collection = new Business.Collection();
-                                collection.postCollection(Convert.ToInt32(id));
-
-                                Business.Journal journal = new Business.Journal();
-                                journal.postLoanJournal(Convert.ToInt32(id));
-
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }
                             else
@@ -185,12 +179,6 @@ namespace Lending.ApiControllers
                                     unlockCollection.UpdatedByUserId = userId;
                                     unlockCollection.UpdatedDateTime = DateTime.Now;
                                     db.SubmitChanges();
-
-                                    Business.Collection collection = new Business.Collection();
-                                    collection.deleteCollection(Convert.ToInt32(id));
-
-                                    Business.Journal journal = new Business.Journal();
-                                    journal.deleteLoanJournal(Convert.ToInt32(id));
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }

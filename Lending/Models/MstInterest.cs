@@ -13,7 +13,6 @@ namespace Lending.Models
         public String Interest { get; set; }
         public String Description { get; set; }
         public Decimal Rate { get; set; }
-        public Decimal NoOfDays { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

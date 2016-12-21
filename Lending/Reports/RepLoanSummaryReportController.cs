@@ -88,18 +88,24 @@ namespace Lending.Reports
                                            LoanTypeId = d.LoanTypeId,
                                            LoanType = d.mstLoanType.LoanType,
                                            PreparedByUserId = d.PreparedByUserId,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           PenaltyId = d.PenaltyId,
+                                           Penalty = d.mstPenalty.Penalty,
                                            PreparedByUser = d.mstUser.FullName,
                                            PrincipalAmount = d.PrincipalAmount,
-                                           ProcessingFeeAmount = d.ProcessingFeeAmount,
-                                           PassbookAmount = d.PassbookAmount,
-                                           BalanceAmount = d.BalanceAmount,
-                                           PenaltyAmount = d.PenaltyAmount,
-                                           LateIntAmount = d.LateIntAmount,
-                                           AdvanceAmount = d.AdvanceAmount,
-                                           RequirementsAmount = d.RequirementsAmount,
-                                           InsuranceIPIorPPIAmount = d.InsuranceIPIorPPIAmount,
+                                           ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                                           PassbookAmountDeduction = d.PassbookAmountDeduction,
+                                           BalanceAmountDeduction = d.BalanceAmountDeduction,
+                                           PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                                           LateIntAmountDeduction = d.LateIntAmountDeduction,
+                                           AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                                           RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                                           InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
                                            NetAmount = d.NetAmount,
-                                           IsFullyPaid = d.IsFullyPaid,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -151,17 +157,17 @@ namespace Lending.Reports
 
                     foreach (var loanApplication in loanApplications)
                     {
-                        Decimal totalDeductions = loanApplication.ProcessingFeeAmount + loanApplication.PassbookAmount + loanApplication.BalanceAmount + loanApplication.PenaltyAmount + loanApplication.LateIntAmount + loanApplication.AdvanceAmount + loanApplication.RequirementsAmount + loanApplication.InsuranceIPIorPPIAmount;
+                        Decimal totalDeductions = loanApplication.ProcessingFeeAmountDeduction + loanApplication.PassbookAmountDeduction + loanApplication.BalanceAmountDeduction + loanApplication.PenaltyAmountDeduction + loanApplication.LateIntAmountDeduction + loanApplication.AdvanceAmountDeduction + loanApplication.RequirementsAmountDeduction + loanApplication.InsuranceIPIorPPIAmountDeduction;
 
                         totalPricipal += loanApplication.PrincipalAmount;
-                        totalProcessingFee += loanApplication.ProcessingFeeAmount;
-                        totalPassbook += loanApplication.PassbookAmount;
-                        totalBalance += loanApplication.BalanceAmount;
-                        totalPenalty += loanApplication.PenaltyAmount;
-                        totalLateInt += loanApplication.LateIntAmount;
-                        totalAdvance += loanApplication.AdvanceAmount;
-                        totalRequirements += loanApplication.RequirementsAmount;
-                        totalPPIPI += loanApplication.InsuranceIPIorPPIAmount;
+                        totalProcessingFee += loanApplication.ProcessingFeeAmountDeduction;
+                        totalPassbook += loanApplication.PassbookAmountDeduction;
+                        totalBalance += loanApplication.BalanceAmountDeduction;
+                        totalPenalty += loanApplication.PenaltyAmountDeduction;
+                        totalLateInt += loanApplication.LateIntAmountDeduction;
+                        totalAdvance += loanApplication.AdvanceAmountDeduction;
+                        totalRequirements += loanApplication.RequirementsAmountDeduction;
+                        totalPPIPI += loanApplication.InsuranceIPIorPPIAmountDeduction;
                         totalAllDeductions += totalDeductions;
                         totalNetAmount += loanApplication.NetAmount;
 
@@ -169,14 +175,14 @@ namespace Lending.Reports
                         loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
                         loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Area, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
                         loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PrincipalAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.ProcessingFeeAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PassbookAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.BalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LateIntAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.AdvanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.RequirementsAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.InsuranceIPIorPPIAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.ProcessingFeeAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PassbookAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.BalanceAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PenaltyAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LateIntAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.AdvanceAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.RequirementsAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.InsuranceIPIorPPIAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                         loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalDeductions.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                         loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.NetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                     }

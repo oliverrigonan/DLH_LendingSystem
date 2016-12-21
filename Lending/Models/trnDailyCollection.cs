@@ -12,6 +12,8 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public Int32 CollectionId { get; set; }
         public String CollectionNumber { get; set; }
+        public Int32 LoanId { get; set; }
+        public Int32 AccountId { get; set; }
         public String Applicant { get; set; }
         public String DailyCollectionDate { get; set; }
         public Decimal NetAmount { get; set; }
@@ -34,5 +36,7 @@ namespace Lending.Models
         public Int32? ReconstructId { get; set; }
         public Boolean IsReconstructed { get; set; }
         public String Status { get; set; }
+        public Boolean IsOverdue { get; set; }
+        public String Duedate { get; set; }
     }
 }

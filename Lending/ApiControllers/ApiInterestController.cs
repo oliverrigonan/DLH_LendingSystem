@@ -26,7 +26,6 @@ namespace Lending.ApiControllers
                                 Interest = d.Interest,
                                 Description = d.Description,
                                 Rate = d.Rate,
-                                NoOfDays = d.NoOfDays,
                                 CreatedByUserId = d.CreatedByUserId,
                                 CreatedByUser = d.mstUser.FullName,
                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -81,7 +80,6 @@ namespace Lending.ApiControllers
                         newInterest.Interest = interest.Interest;
                         newInterest.Description = interest.Description;
                         newInterest.Rate = interest.Rate;
-                        newInterest.NoOfDays = interest.NoOfDays;
                         newInterest.CreatedByUserId = userId;
                         newInterest.CreatedDateTime = DateTime.Now;
                         newInterest.UpdatedByUserId = userId;
@@ -154,7 +152,6 @@ namespace Lending.ApiControllers
                             updateInterest.Interest = interest.Interest;
                             updateInterest.Description = interest.Description;
                             updateInterest.Rate = interest.Rate;
-                            updateInterest.NoOfDays = interest.NoOfDays;
                             updateInterest.UpdatedByUserId = userId;
                             updateInterest.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();

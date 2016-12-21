@@ -360,7 +360,7 @@ namespace Lending.ApiControllers
                                     db.SubmitChanges();
 
                                     Business.Collection collection = new Business.Collection();
-                                    collection.postCollection(Convert.ToInt32(id));
+                                    collection.postCollection(Convert.ToInt32(id), userId);
 
                                     Business.Journal journal = new Business.Journal();
                                     journal.postLoanJournal(Convert.ToInt32(id));

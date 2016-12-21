@@ -17,9 +17,9 @@ namespace Lending.Reports
         private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // Collection Paper
-        public ActionResult applicantCollectionPaper(String applicantId, String loanId)
+        public ActionResult applicantCollectionPaper(String applicantId, String collectionId)
         {
-            if (applicantId != null && loanId != null)
+            if (applicantId != null && collectionId != null)
             {
                 // PDF settings
                 MemoryStream workStream = new MemoryStream();
@@ -60,41 +60,38 @@ namespace Lending.Reports
                 collectionHeader.AddCell(new PdfPCell(new Phrase("Printed " + DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToString("hh:mm:ss tt"), fontArial12)) { Border = 0, PaddingTop = 5f, HorizontalAlignment = 2 });
                 document.Add(collectionHeader);
 
-                // query collection
-                var collections = from d in db.trnCollections
-                                  where d.trnLoanApplication.ApplicantId == Convert.ToInt32(applicantId)
-                                  && d.LoanId == Convert.ToInt32(loanId)
-                                  select new Models.TrnCollection
-                                  {
-                                      Id = d.Id,
-                                      LoanId = d.LoanId,
-                                      LoanNumber = d.trnLoanApplication.LoanNumber,
-                                      ApplicantId = d.trnLoanApplication.ApplicantId,
-                                      Applicant = d.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
-                                      Area = d.trnLoanApplication.mstApplicant.mstArea.Area,
-                                      IsFullyPaid = d.trnLoanApplication.IsFullyPaid,
-                                      AccountId = d.AccountId,
-                                      Account = d.mstAccount.Account,
-                                      CollectionDate = d.CollectionDate.ToShortDateString(),
-                                      NetAmount = d.NetAmount,
-                                      CollectibleAmount = d.CollectibleAmount,
-                                      PenaltyAmount = d.PenaltyAmount,
-                                      PaidAmount = d.PaidAmount,
-                                      PreviousBalanceAmount = d.PreviousBalanceAmount,
-                                      CurrentBalanceAmount = d.CurrentBalanceAmount,
-                                      IsCleared = d.IsCleared,
-                                      IsAbsent = d.IsAbsent,
-                                      IsPartialPayment = d.IsPartialPayment,
-                                      IsAdvancePayment = d.IsAdvancePayment,
-                                      IsFullPayment = d.IsFullPayment,
-                                      IsDueDate = d.IsDueDate,
-                                      IsExtendCollection = d.IsExtendCollection,
-                                      IsOverdueCollection = d.IsOverdueCollection,
-                                      IsCurrentCollection = d.IsCurrentCollection,
-                                      IsProcessed = d.IsProcessed,
-                                      IsAction = d.IsAction,
-                                      Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartialPayment, d.IsAdvancePayment, d.IsFullPayment, d.IsExtendCollection, d.IsOverdueCollection)
-                                  };
+                var dailyCollections = from d in db.trnDailyCollections
+                                       where d.CollectionId == Convert.ToInt32(collectionId)
+                                       && d.trnCollection.trnLoanApplication.ApplicantId == Convert.ToInt32(applicantId)
+                                       select new Models.TrnDailyCollection
+                                       {
+                                           Id = d.Id,
+                                           CollectionId = d.CollectionId,
+                                           CollectionNumber = d.trnCollection.CollectionNumber,
+                                           Applicant = d.trnCollection.trnLoanApplication.mstApplicant.ApplicantLastName + ", " + d.trnCollection.trnLoanApplication.mstApplicant.ApplicantFirstName + " " + (d.trnCollection.trnLoanApplication.mstApplicant.ApplicantMiddleName != null ? d.trnCollection.trnLoanApplication.mstApplicant.ApplicantMiddleName : " "),
+                                           DailyCollectionDate = d.DailyCollectionDate.ToShortDateString(),
+                                           LoanId = d.trnCollection.LoanId,
+                                           NetAmount = d.NetAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           PenaltyAmount = d.PenaltyAmount,
+                                           PaidAmount = d.PaidAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           CurrentBalanceAmount = d.CurrentBalanceAmount,
+                                           IsCurrentCollection = d.IsCurrentCollection,
+                                           IsCleared = d.IsCleared,
+                                           IsAbsent = d.IsAbsent,
+                                           IsPartiallyPaid = d.IsPartiallyPaid,
+                                           IsPaidInAdvanced = d.IsPaidInAdvanced,
+                                           IsFullyPaid = d.IsFullyPaid,
+                                           IsProcessed = d.IsProcessed,
+                                           CanPerformAction = d.CanPerformAction,
+                                           IsDueDate = d.IsDueDate,
+                                           IsAllowanceDay = d.IsAllowanceDay,
+                                           IsLastDay = d.IsLastDay,
+                                           ReconstructId = d.ReconstructId != null ? d.ReconstructId : 0,
+                                           IsReconstructed = d.IsReconstructed,
+                                           Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartiallyPaid, d.IsPaidInAdvanced, d.IsFullyPaid, d.trnCollection.IsOverdue)
+                                       };
 
                 // table collection lines data
                 PdfPTable collectionHeaderLabel = new PdfPTable(1);
@@ -105,9 +102,9 @@ namespace Lending.Reports
                 document.Add(line);
                 document.Add(collectionHeaderLabel);
 
-                if (collections.Any())
+                if (dailyCollections.Any())
                 {
-                    var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(loanId) select d;
+                    var loanApplications = from d in db.trnLoanApplications where d.Id == Convert.ToInt32(dailyCollections.FirstOrDefault().LoanId) select d;
                     if (loanApplications.Any())
                     {
                         // table data
@@ -165,9 +162,9 @@ namespace Lending.Reports
                         Decimal totalCurrentBalance = 0;
                         Decimal totalPreviousBalance = 0;
                         Decimal totalPaidAmount = 0;
-                        foreach (var collection in collections)
+                        foreach (var collection in dailyCollections)
                         {
-                            dailyCollection.AddCell(new PdfPCell(new Phrase(collection.CollectionDate, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                            dailyCollection.AddCell(new PdfPCell(new Phrase(collection.DailyCollectionDate, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
                             dailyCollection.AddCell(new PdfPCell(new Phrase(collection.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                             dailyCollection.AddCell(new PdfPCell(new Phrase(collection.PenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
                             dailyCollection.AddCell(new PdfPCell(new Phrase(collection.CurrentBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
