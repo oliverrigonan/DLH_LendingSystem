@@ -12,96 +12,107 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <table style="width: 100%">
-                        <tr>
-                            <td>
-                                <h4><i class="fa fa-credit-card fa-fw"></i> Expenses Detail</h4>
-                            </td>
-                            <td align="right">
-                                <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
-                                    <i class="fa fa-lock fa-fw"></i> Lock
-                                </button>
-                                <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
-                                    <i class="fa fa-unlock fa-fw"></i> Unlock
-                                </button>
-                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ExpensesList'">
-                                    <i class="fa fa-close fa-fw"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-credit-card fa-fw"></i>  Expenses Detail <small>Edit detail page</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/Software/ExpensesList">Expenses</a>
+                            </li>
+                            <li class="active">
+                                Expenses Detail
+                            </li>
+                        </ol>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label>Expenses Number</label><br />
-                                        <input type="text" class="form-control requiredExpenses" id="expensesNumber" placeholder="Expenses Number" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Expenses Date</label><br />
-                                        <div id="expensesDate"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Account</label><br />
-                                        <div id="expensesAccount"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Assign Staff / Collector</label><br />
-                                        <div id="cboStaff"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Expense Type</label><br />
-                                        <div id="cboExpenseType"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Expense Trasaction Type</label><br />
-                                        <div id="cboExpenseTransactionType"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Particulars</label><br />
-                                        <textarea class="form-control requiredExpenses" rows="5" id="expensesParticulars" placeholder="Particulars"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Expense Amount</label><br />
-                                        <div class="input-group numberField">
-                                            <span class="input-group-addon">&#8369;</span>
-                                            <input type="text" id="expensesAmount" class="form-control numberField requiredExpenses" placeholder="0.00">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
+                            <i class="fa fa-lock fa-fw"></i> Lock
+                        </button>
+                        <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
+                            <i class="fa fa-unlock fa-fw"></i> Unlock
+                        </button>
+                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ExpensesList'">
+                            <i class="fa fa-close fa-fw"></i> Close
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Expenses Number</label><br />
+                                            <input type="text" class="form-control requiredExpenses" id="expensesNumber" placeholder="Expenses Number" />
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Prepared by</label><br />
-                                        <div id="expensesPreparedBy"></div>
+                                        <div class="form-group">
+                                            <label>Expenses Date</label><br />
+                                            <div id="expensesDate"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Account</label><br />
+                                            <div id="expensesAccount"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Assign Staff / Collector</label><br />
+                                            <div id="cboStaff"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Expense Type</label><br />
+                                            <div id="cboExpenseType"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Expense Trasaction Type</label><br />
+                                            <div id="cboExpenseTransactionType"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Particulars</label><br />
+                                            <textarea class="form-control requiredExpenses" rows="5" id="expensesParticulars" placeholder="Particulars"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Expense Amount</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" id="expensesAmount" class="form-control numberField requiredExpenses" placeholder="0.00">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Prepared by</label><br />
+                                            <div id="expensesPreparedBy"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <p>Created by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <p>Created by:</p>
+                                        <div style="padding-left: 10px;">
+                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                            <br />
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                        </div>
                                         <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                    <br />
-                                    <p>Updated by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                        <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        <p>Updated by:</p>
+                                        <div style="padding-left: 10px;">
+                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                            <br />
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -110,10 +121,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
+    </div>
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

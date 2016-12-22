@@ -12,71 +12,84 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4><i class="fa fa-building fa-fw"></i> Companies</h4>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-building fa-fw"></i>  Company <small>List of Companies</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                Companies
+                            </li>
+                        </ol>
+                    </div>
                 </div>
-                <div class="panel-heading">
-                    <table style="width: 100%">
-                        <tr>
-                            <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                    <input type="text" id="searchCompany" class="form-control" placeholder="Search" />
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                        <input type="text" id="searchCompany" class="form-control" placeholder="Search" />
+                                    </div>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td align="right">
+                                    <button class="btn btn-primary" id="btnAddNewCompany" onclick="btnAddNewCompanyOnclick()">
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                    </button>
+                                    <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                        <i class="fa fa-close fa-fw"></i> Close
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        <div id="companyListFlexGrid" class="grid"></div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        User security stamp
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Created by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
                                 </div>
-                            </td>
-                            <td>&nbsp;&nbsp;&nbsp;</td>
-                            <td align="right">
-                                <button class="btn btn-primary" id="btnAddNewCompany" onclick="btnAddNewCompanyOnclick()">
-                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                </button>
-                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
-                                    <i class="fa fa-close fa-fw"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="panel-body">
-                    <div id="companyListFlexGrid" class="grid"></div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    User security stamp
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p>Created by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
                                 <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
                             </div>
-                            <br />
-                        </div>
-                        <div class="col-md-6">
-                            <p>Updated by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                            <div class="col-md-6">
+                                <p>Updated by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                </div>
                                 <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
                             </div>
-                            <br />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- delete confirmation company modal -->
     <div class="modal fade" id="deleteConfirmationCompanyModal" role="dialog">
@@ -97,9 +110,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

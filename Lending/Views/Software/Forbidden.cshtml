@@ -12,24 +12,25 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
 
-    <section class="software-section">
-        <div class="container">
-            <center>
-                <h1 style="color: #ffdb00"><i class="fa fa-hand-stop-o fa-5x fa-fw"></i></h1>
+        <div id="page-wrapper">
+            <div class="container-fluid">
                 <br />
-                <h1>Page Forbidden</h1>
                 <br />
-                <p>Sorry. You have no rights to access this page.</p> <br />
-                <p>Please ask permission from the admin or from the user that has full access of the system.</p>
-            </center>
+                <center>
+                    <h1 style="color: #ffdb00"><i class="fa fa-hand-stop-o fa-5x fa-fw"></i></h1>
+                    <br />
+                    <h1>Page Forbidden</h1>
+                    <br />
+                    <p>Sorry. You have no rights to access this page.</p> <br />
+                    <p>Please ask permission from the admin or from the user that has full access of the system.</p>
+                </center>
+            </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
+    </div>
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

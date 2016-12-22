@@ -12,364 +12,375 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        <h4><i class="fa fa-users fa-fw"></i> Applicant Detail</h4>
-                                    </td>
-                                    <td align="right">
-                                        <button class="btn btn-primary" id="btnLockApplicant" onclick="btnLockApplicantOnclick()">
-                                            <i class="fa fa-lock fa-fw"></i> Lock
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-users fa-fw"></i>  Applicant Detail <small>Edit detail page</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/Software/ApplicantList">Applicants</a>
+                            </li>
+                            <li class="active">
+                                Applicant Detail
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" align="right">
+                                <button class="btn btn-primary" id="btnLockApplicant" onclick="btnLockApplicantOnclick()">
+                                    <i class="fa fa-lock fa-fw"></i> Lock
+                                </button>
+                                <button class="btn btn-primary" id="btnUnlockApplicant" onclick="btnUnlockApplicantOnclick()">
+                                    <i class="fa fa-unlock fa-fw"></i> Unlock
+                                </button>
+                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
+                                    <i class="fa fa-close fa-fw"></i> Close
+                                </button>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div id="photoDiv" style="width: 100%" align="center"></div>
+                                        <hr />
+                                        <button class="btn btn-default btn-sm btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                                        <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()">
+                                            <i class="fa fa-trash fa-fw"></i> Rmove and Set to <br /> Default Photo
                                         </button>
-                                        <button class="btn btn-primary" id="btnUnlockApplicant" onclick="btnUnlockApplicantOnclick()">
-                                            <i class="fa fa-unlock fa-fw"></i> Unlock
-                                        </button>
-                                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/ApplicantList'">
-                                            <i class="fa fa-close fa-fw"></i> Close
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div id="photoDiv" style="width: 100%" align="center"></div>
-                                    <hr />
-                                    <button class="btn btn-default btn-sm btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                                    <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()">
-                                        <i class="fa fa-trash fa-fw"></i> Rmove and Set to <br /> Default Photo
-                                    </button>
-                                    <br />
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <label>Applicant Number</label><br />
-                                                <input type="text" class="form-control" id="applicantNumber" placeholder="Last Name" />
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Area</label><br />
-                                                <div id="applicantArea"></div>
+                                        <br />
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Applicant Number</label><br />
+                                                    <input type="text" class="form-control" id="applicantNumber" placeholder="Last Name" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Area</label><br />
+                                                    <div id="applicantArea"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-9">
-                                    <ul id="myTab" class="nav nav-tabs">
-                                        <li class="active">
-                                            <a href="#applicantDetail" id="applicantDetailTab" data-toggle="tab">Applicant Detail </a>
-                                        </li>
-                                        <li>
-                                            <a href="#propertiesAndAppliances" id="propertiesAndAppliancesTab" data-toggle="tab">More Details</a>
-                                        </li>
-                                    </ul>
-                                    <br />
-                                    <div id="myTabContent" class="tab-content">
-                                        <div class="tab-pane fade in active" id="applicantDetail">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            Applicants Personal Detail
+                                    <div class="col-md-9">
+                                        <ul id="myTab" class="nav nav-tabs">
+                                            <li class="active">
+                                                <a href="#applicantDetail" id="applicantDetailTab" data-toggle="tab">Applicant Detail </a>
+                                            </li>
+                                            <li>
+                                                <a href="#propertiesAndAppliances" id="propertiesAndAppliancesTab" data-toggle="tab">More Details</a>
+                                            </li>
+                                        </ul>
+                                        <br />
+                                        <div id="myTabContent" class="tab-content">
+                                            <div class="tab-pane fade in active" id="applicantDetail">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                Applicants Personal Detail
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="form-group">
+                                                                    <label>Last Name</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantLastName" placeholder="Last Name" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>First Name</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantFirstName" placeholder="First Name" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Middle Name / Middle Initial</label><br />
+                                                                    <input type="text" class="form-control" id="applicantMiddleName" placeholder=" " />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Birth Date</label><br />
+                                                                    <div id="applicantBirthDate"></div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Civil Status</label><br />
+                                                                    <div id="applicantCivilStatus"></div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>City Address</label><br />
+                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantCityAddress" placeholder="City Address"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Province Address</label><br />
+                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantProvinceAddress" placeholder="City Address"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Contact Number</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantContactNumber" placeholder="Contact Number" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Residence Type</label><br />
+                                                                    <div id="applicantResidenceType"></div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Monthly Rent</label><br />
+                                                                    <div class="input-group numberField">
+                                                                        <span class="input-group-addon">&#8369;</span>
+                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantResidenceMonthyRent" placeholder="0.00" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Land Residence Type</label><br />
+                                                                    <div id="applicantLandResidenceType"></div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Monthly Rent</label><br />
+                                                                    <div class="input-group numberField">
+                                                                        <span class="input-group-addon">&#8369;</span>
+                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLandResidenceMonthyRent" placeholder="0.00" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Length of Stay</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantLengthOfStay" placeholder="How many months, years or days?" />
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="panel-body">
-                                                            <div class="form-group">
-                                                                <label>Last Name</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantLastName" placeholder="Last Name" />
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                Business Detail
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label>First Name</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantFirstName" placeholder="First Name" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Middle Name / Middle Initial</label><br />
-                                                                <input type="text" class="form-control" id="applicantMiddleName" placeholder=" " />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Birth Date</label><br />
-                                                                <div id="applicantBirthDate"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Civil Status</label><br />
-                                                                <div id="applicantCivilStatus"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>City Address</label><br />
-                                                                <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantCityAddress" placeholder="City Address"></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Province Address</label><br />
-                                                                <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantProvinceAddress" placeholder="City Address"></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Contact Number</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantContactNumber" placeholder="Contact Number" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Residence Type</label><br />
-                                                                <div id="applicantResidenceType"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Monthly Rent</label><br />
-                                                                <div class="input-group numberField">
-                                                                    <span class="input-group-addon">&#8369;</span>
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantResidenceMonthyRent" placeholder="0.00" />
+                                                            <div class="panel-body">
+                                                                <div class="form-group">
+                                                                    <label>Business Address</label><br />
+                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantBusinessAddress" placeholder="Business Address"></textarea>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Land Residence Type</label><br />
-                                                                <div id="applicantLandResidenceType"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Monthly Rent</label><br />
-                                                                <div class="input-group numberField">
-                                                                    <span class="input-group-addon">&#8369;</span>
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLandResidenceMonthyRent" placeholder="0.00" />
+                                                                <div class="form-group">
+                                                                    <label>Karatula Name</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessKaratulaName" placeholder="Karatula Name" />
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Length of Stay</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantLengthOfStay" placeholder="How many months, years or days?" />
+                                                                <div class="form-group">
+                                                                    <label>Telephone Number</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessTelephoneNumber" placeholder="Telephone Number" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Business Years</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessYears" placeholder="How long on said business" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Merchandise</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBBusinessMerchandise" placeholder="Business Merchandise" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Value of Stocks</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantValuesOfStocks" placeholder="0" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Beginning Capital</label><br />
+                                                                    <div class="input-group numberField">
+                                                                        <span class="input-group-addon">&#8369;</span>
+                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantBusinessBeginningCapital" placeholder="0.00" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Sales are low during</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSalesLowPeriod" placeholder="Sales are low during" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Lowest daily sales</label><br />
+                                                                    <div class="input-group numberField">
+                                                                        <span class="input-group-addon">&#8369;</span>
+                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLowestDailySales" placeholder="0" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Average daily sales</label><br />
+                                                                    <div class="input-group numberField">
+                                                                        <span class="input-group-addon">&#8369;</span>
+                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantAverageDailySales" placeholder="0" />
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            Business Detail
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <div class="form-group">
-                                                                <label>Business Address</label><br />
-                                                                <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantBusinessAddress" placeholder="Business Address"></textarea>
+                                                    <div class="col-md-6">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                If Employed
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label>Karatula Name</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessKaratulaName" placeholder="Karatula Name" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Telephone Number</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessTelephoneNumber" placeholder="Telephone Number" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Business Years</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessYears" placeholder="How long on said business" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Merchandise</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantBBusinessMerchandise" placeholder="Business Merchandise" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Value of Stocks</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantValuesOfStocks" placeholder="0" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Beginning Capital</label><br />
-                                                                <div class="input-group numberField">
-                                                                    <span class="input-group-addon">&#8369;</span>
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantBusinessBeginningCapital" placeholder="0.00" />
+                                                            <div class="panel-body">
+                                                                <div class="form-group">
+                                                                    <label>Name of Company</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedCompanyName" placeholder="Name of Company" />
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Sales are low during</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSalesLowPeriod" placeholder="Sales are low during" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Lowest daily sales</label><br />
-                                                                <div class="input-group numberField">
-                                                                    <span class="input-group-addon">&#8369;</span>
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLowestDailySales" placeholder="0" />
+                                                                <div class="form-group">
+                                                                    <label>Company Address</label><br />
+                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantEmployedCompanyAddress" placeholder="Company Address"></textarea>
                                                                 </div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Average daily sales</label><br />
-                                                                <div class="input-group numberField">
-                                                                    <span class="input-group-addon">&#8369;</span>
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantAverageDailySales" placeholder="0" />
+                                                                <div class="form-group">
+                                                                    <label>Position Occupied</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedPositionOccupied" placeholder="Position Occupied" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Length of Service</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedLengthOfService" placeholder="Length of Service" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Telephone Number</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedTelephoneNumber" placeholder="Telephone Number" />
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            If Employed
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <div class="form-group">
-                                                                <label>Name of Company</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedCompanyName" placeholder="Name of Company" />
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                Spouse's Information and Income Detail
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label>Company Address</label><br />
-                                                                <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantEmployedCompanyAddress" placeholder="Company Address"></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Position Occupied</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedPositionOccupied" placeholder="Position Occupied" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Length of Service</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedLengthOfService" placeholder="Length of Service" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Telephone Number</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedTelephoneNumber" placeholder="Telephone Number" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-heading">
-                                                            Spouse's Information and Income Detail
-                                                        </div>
-                                                        <div class="panel-body">
-                                                            <div class="form-group">
-                                                                <label>Name of Spouse</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseName" placeholder="Name of Spouse" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Employer or Business</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseEmployerOrBusiness" placeholder="Employer or Business of Spouse" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Business Address</label><br />
-                                                                <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseBusinessAddress" placeholder="Employer or Business Address"></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Telephone Number</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseTelephoneNumber" placeholder="Telephone Number" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Position Occupied</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpousePositionOccupied" placeholder="Position Occupied" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Monthly Salary</label><br />
-                                                                <div class="input-group numberField">
-                                                                    <span class="input-group-addon">&#8369;</span>
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantSpouseMonthlySalary" placeholder="0.00" />
+                                                            <div class="panel-body">
+                                                                <div class="form-group">
+                                                                    <label>Name of Spouse</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseName" placeholder="Name of Spouse" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Employer or Business</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseEmployerOrBusiness" placeholder="Employer or Business of Spouse" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Business Address</label><br />
+                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseBusinessAddress" placeholder="Employer or Business Address"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Telephone Number</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseTelephoneNumber" placeholder="Telephone Number" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Position Occupied</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpousePositionOccupied" placeholder="Position Occupied" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Monthly Salary</label><br />
+                                                                    <div class="input-group numberField">
+                                                                        <span class="input-group-addon">&#8369;</span>
+                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantSpouseMonthlySalary" placeholder="0.00" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Length of Service</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseLengthOfService" placeholder="Length of Service" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Number of Children</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfChildren" placeholder="How many children?" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Number of Studying</label><br />
+                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfStudying" placeholder="How many are studying?" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Schools</label><br />
+                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseChildrenSchools" placeholder="What Schools?"></textarea>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-group">
-                                                                <label>Length of Service</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseLengthOfService" placeholder="Length of Service" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Number of Children</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfChildren" placeholder="How many children?" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Number of Studying</label><br />
-                                                                <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfStudying" placeholder="How many are studying?" />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label>Schools</label><br />
-                                                                <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseChildrenSchools" placeholder="What Schools?"></textarea>
-                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="panel panel-default">
-                                                        <div class="panel-body">
-                                                            <p>Created by:</p>
-                                                            <div style="padding-left: 10px;">
-                                                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-body">
+                                                                <p>Created by:</p>
+                                                                <div style="padding-left: 10px;">
+                                                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                                    <br />
+                                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                                </div>
                                                                 <br />
-                                                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                                            </div>
-                                                            <br />
-                                                            <p>Updated by:</p>
-                                                            <div style="padding-left: 10px;">
-                                                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                                                <br />
-                                                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                                <p>Updated by:</p>
+                                                                <div style="padding-left: 10px;">
+                                                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                                    <br />
+                                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="propertiesAndAppliances">
-                                            <div id="coMakerApplianceOwnedsGridData">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <ul class="nav nav-pills" style="background-color: #f7f7f7">
-                                                            <li class="active"><a data-toggle="pill" href="#realPropertiesOwned" id="realPropertiesOwnedPillTab">Real Properties Owned</a></li>
-                                                            <li><a data-toggle="pill" href="#ApplianceOwned" id="appplianceOwnedPillTab">Appliance Owned</a></li>
-                                                            <li><a data-toggle="pill" href="#Co-MakersStatement" id="co-MakersStatement">Co-Maker's Statement</a></li>
-                                                        </ul>
-                                                        <br />
-                                                        <div class="tab-content">
-                                                            <div id="realPropertiesOwned" class="tab-pane fade in active">
-                                                                <div class="panel panel-default">
-                                                                    <div class="panel-heading">
-                                                                        <table style="width: 100%">
-                                                                            <tr>
-                                                                                <td>
-                                                                                    Real Properties Owned
-                                                                                </td>
-                                                                                <td align="right">
-                                                                                    <button class="btn btn-primary btn-sm" id="btnAddApplicantRealPropertiesOwned" onclick="btnAddApplicantRealPropertiesOwnedOnclick()">
-                                                                                        <i class="fa fa-plus fa-fw"></i> Add
-                                                                                    </button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </div>
-                                                                    <div class="panel-body">
-                                                                        <div id="applicantRealPropertiesOwnedFlexGrid"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div id="ApplianceOwned" class="tab-pane fade">
-                                                                <div class="panel panel-default">
-                                                                    <div class="panel-heading">
-                                                                        <table style="width: 100%">
-                                                                            <tr>
-                                                                                <td>
-                                                                                    Appliance Owned
-                                                                                </td>
-                                                                                <td align="right">
-                                                                                    <button class="btn btn-primary btn-sm" id="btnAddApplicantApplianceOwned" onclick="btnAddApplicantApplianceOwnedOnclick()">
-                                                                                        <i class="fa fa-plus fa-fw"></i> Add
-                                                                                    </button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
-                                                                    </div>
-                                                                    <div class="panel-body">
-                                                                        <div id="applicantApplianceOwnedFlexGrid"></div>
+                                            <div class="tab-pane fade" id="propertiesAndAppliances">
+                                                <div id="coMakerApplianceOwnedsGridData">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <ul class="nav nav-pills" style="background-color: #f7f7f7">
+                                                                <li class="active"><a data-toggle="pill" href="#realPropertiesOwned" id="realPropertiesOwnedPillTab">Real Properties Owned</a></li>
+                                                                <li><a data-toggle="pill" href="#ApplianceOwned" id="appplianceOwnedPillTab">Appliance Owned</a></li>
+                                                                <li><a data-toggle="pill" href="#Co-MakersStatement" id="co-MakersStatement">Co-Maker's Statement</a></li>
+                                                            </ul>
+                                                            <br />
+                                                            <div class="tab-content">
+                                                                <div id="realPropertiesOwned" class="tab-pane fade in active">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        Real Properties Owned
+                                                                                    </td>
+                                                                                    <td align="right">
+                                                                                        <button class="btn btn-primary btn-sm" id="btnAddApplicantRealPropertiesOwned" onclick="btnAddApplicantRealPropertiesOwnedOnclick()">
+                                                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div id="applicantRealPropertiesOwnedFlexGrid"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <div id="Co-MakersStatement" class="tab-pane fade">
-                                                                <div class="panel panel-default">
-                                                                    <div class="panel-heading">
-                                                                        <table style="width: 100%">
-                                                                            <tr>
-                                                                                <td>
-                                                                                    Co-Maker's Statement
-                                                                                </td>
-                                                                                <td align="right">
-                                                                                    <button class="btn btn-primary btn-sm" id="btnAddApplicantDetailCoMakersStatement" onclick="btnAddApplicantDetailCoMakersStatementOnclick()">
-                                                                                        <i class="fa fa-plus fa-fw"></i> Add
-                                                                                    </button>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
+                                                                <div id="ApplianceOwned" class="tab-pane fade">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        Appliance Owned
+                                                                                    </td>
+                                                                                    <td align="right">
+                                                                                        <button class="btn btn-primary btn-sm" id="btnAddApplicantApplianceOwned" onclick="btnAddApplicantApplianceOwnedOnclick()">
+                                                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div id="applicantApplianceOwnedFlexGrid"></div>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="panel-body">
-                                                                        <div id="co-MakersStatementGrid" class="grid"></div>
+                                                                </div>
+                                                                <div id="Co-MakersStatement" class="tab-pane fade">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <table style="width: 100%">
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        Co-Maker's Statement
+                                                                                    </td>
+                                                                                    <td align="right">
+                                                                                        <button class="btn btn-primary btn-sm" id="btnAddApplicantDetailCoMakersStatement" onclick="btnAddApplicantDetailCoMakersStatementOnclick()">
+                                                                                            <i class="fa fa-plus fa-fw"></i> Add
+                                                                                        </button>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div class="panel-body">
+                                                                            <div id="co-MakersStatementGrid" class="grid"></div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -386,7 +397,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- applicant detail change photo -->
     <div class="modal fade" id="applicantDetailChangePhotoModal" role="dialog">
@@ -957,9 +968,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

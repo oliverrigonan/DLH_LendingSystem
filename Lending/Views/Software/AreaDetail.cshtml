@@ -12,77 +12,87 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <table style="width: 100%">
-                        <tr>
-                            <td>
-                                <h4><i class="fa fa-map-pin fa-fw"></i> Area Detail</h4>
-                            </td>
-                            <td align="right">
-                                <button class="btn btn-primary" id="btnLockArea" onclick="btnLockAreaOnclick()">
-                                    <i class="fa fa-lock fa-fw"></i> Lock
-                                </button>
-                                <button class="btn btn-primary" id="btnUnlockArea" onclick="btnUnlockAreaOnclick()">
-                                    <i class="fa fa-unlock fa-fw"></i> Unlock
-                                </button>
-                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/AreaList'">
-                                    <i class="fa fa-close fa-fw"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-map-marker fa-fw"></i>  Area Detail <small>Edit detail page</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                <a href="/Software/AreaList">Areas</a>
+                            </li>
+                            <li class="active">
+                                Area Detail
+                            </li>
+                        </ol>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label>Area Number</label><br />
-                                        <input type="text" class="form-control requiredArea" id="areaNumber" placeholder="Area Number" disabled />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Area</label><br />
-                                        <input type="text" class="form-control requiredArea" id="areaName" placeholder="Area" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Description</label><br />
-                                        <textarea class="form-control requiredArea" rows="5" id="areaDescription" placeholder="Description"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Supervisor</label><br />
-                                        <div id="cboAreaSuperVisor"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Collector</label><br />
-                                        <div id="cboAreaCollector"></div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <button class="btn btn-primary" id="btnLockArea" onclick="btnLockAreaOnclick()">
+                            <i class="fa fa-lock fa-fw"></i> Lock
+                        </button>
+                        <button class="btn btn-primary" id="btnUnlockArea" onclick="btnUnlockAreaOnclick()">
+                            <i class="fa fa-unlock fa-fw"></i> Unlock
+                        </button>
+                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/AreaList'">
+                            <i class="fa fa-close fa-fw"></i> Close
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Area Number</label><br />
+                                            <input type="text" class="form-control requiredArea" id="areaNumber" placeholder="Area Number" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Area</label><br />
+                                            <input type="text" class="form-control requiredArea" id="areaName" placeholder="Area" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Description</label><br />
+                                            <textarea class="form-control requiredArea" rows="5" id="areaDescription" placeholder="Description"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Supervisor</label><br />
+                                            <div id="cboAreaSuperVisor"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Collector</label><br />
+                                            <div id="cboAreaCollector"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <p>Created by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <p>Created by:</p>
+                                        <div style="padding-left: 10px;">
+                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                            <br />
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                        </div>
                                         <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                    <br />
-                                    <p>Updated by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                        <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        <p>Updated by:</p>
+                                        <div style="padding-left: 10px;">
+                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                            <br />
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -91,10 +101,7 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
+    </div>
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

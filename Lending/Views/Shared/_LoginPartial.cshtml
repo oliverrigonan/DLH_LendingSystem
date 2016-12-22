@@ -1,24 +1,18 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right top-nav" }))
     {
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a href="/Home/Index#services">Services</a>
-            </li>
-            <li>
-                <a href="/Home/Index#contact">Contact</a>
-            </li>
             <li>
                 <a href="/Account/Login">
                     @ViewData["FullName"]
                 </a>
             </li>
             <li>
-                <a href="javascript:document.getElementById('logoutForm').submit()">Log Off</a>
+                <a href="javascript:document.getElementById('logoutForm').submit()"> <i class="fa fa-power-off fa-fw"></i> </a>
             </li>
         </ul>
     }
@@ -26,14 +20,6 @@
 else
 {
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            <a href="/Home/Index#services">Services</a>
-        </li>
-        <li>
-            <a href="/Home/Index#contact">Contact</a>
-        </li>
-        <li>
-            <a href="/Manage/Index">Login</a>
-        </li>
+
     </ul>
 }

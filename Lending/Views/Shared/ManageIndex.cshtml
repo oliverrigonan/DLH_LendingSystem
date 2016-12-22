@@ -1,81 +1,54 @@
 ﻿@if (Request.IsAuthenticated)
 {
     <!-- Section -->
-    <section class="manage-section-custom">
-        <div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading" align="right">
+            <button class="btn btn-default" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
+                <i class="fa fa-edit"></i> Edit
+            </button>
+            <a href="/Manage/ChangePassword" class="btn btn-default" data-toggle="tooltip" title="Change your password">
+                <i class="fa fa-pencil"></i> Change Password
+            </a>
+        </div>
+        <div class="panel-body">
             <div class="row">
-                <div class="col-lg-3">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h4>Launch Software</h4>
-                        </div>
-                        <div class="panel-body">
-                            <a href="/Software" class="btn btn-primary btn-lg btn-block">Launch Software</a>
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Fullname</label><br />
+                        <input class="form-control" id="userFullName" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label><br />
+                        <input class="form-control" id="userUsername" disabled />
                     </div>
                 </div>
-                <div class="col-lg-9">
+                <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%" border="0">
-                                <tr>
-                                    <td>
-                                        <h4>Manage Settings</h4>
-                                    </td>
-                                    <td align="right">
-                                        <button class="btn btn-default" data-toggle="tooltip" title="Edit" onclick="editPerosnalInformation()">
-                                            <i class="fa fa-edit"></i> Edit
-                                        </button>
-                                        <a href="/Manage/ChangePassword" class="btn btn-default" data-toggle="tooltip" title="Change your password">
-                                            <i class="fa fa-pencil"></i> Change Password
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
                         <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Fullname</label><br />
-                                        <input class="form-control" id="userFullName" disabled />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Username</label><br />
-                                        <input class="form-control" id="userUsername" disabled />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <p>Created Date:</p>
-                                            <div style="padding-left: 10px;">
-                                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                            </div>
-                                            <br />
-                                            <p>Updated Date:</p>
-                                            <div style="padding-left: 10px;">
-                                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <p>Created Date:</p>
+                            <div style="padding-left: 10px;">
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
                             </div>
-
+                            <br />
+                            <p>Updated Date:</p>
+                            <div style="padding-left: 10px;">
+                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3">
 
-                </div>
-                <div class="col-md-9">
+        </div>
+        <div class="row">
+            <div class="col-md-3">
 
-                </div>
+            </div>
+            <div class="col-md-9">
+
             </div>
         </div>
-    </section>
+    </div>
 }
 else
 {

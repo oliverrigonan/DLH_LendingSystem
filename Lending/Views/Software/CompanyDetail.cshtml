@@ -12,97 +12,106 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <table style="width: 100%">
-                        <tr>
-                            <td>
-                                <h4><i class="fa fa-building fa-fw"></i> Company Detail</h4>
-                            </td>
-                            <td align="right">
-                                <button class="btn btn-primary" id="btnLockCompany" onclick="btnLockCompanyOnclick()">
-                                    <i class="fa fa-lock fa-fw"></i> Lock
-                                </button>
-                                <button class="btn btn-primary" id="btnUnlockCompany" onclick="btnUnlockCompanyOnclick()">
-                                    <i class="fa fa-unlock fa-fw"></i> Unlock
-                                </button>
-                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/CompanyList'">
-                                    <i class="fa fa-close fa-fw"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label>Company Name</label><br />
-                                        <input type="text" class="form-control requiredCompany" id="companyName" placeholder="Company Name" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Address</label><br />
-                                        <textarea class="form-control requiredCompany" rows="5" id="companyAddress" placeholder="Company Address"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Contact Number</label><br />
-                                        <input type="text" class="form-control requiredCompany" id="companyContactNumber" placeholder="Contact Number" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <p>Created by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                        <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                    <br />
-                                    <p>Updated by:</p>
-                                    <div style="padding-left: 10px;">
-                                        <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                        <br />
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-building fa-fw"></i>  Company Detail <small>Edit detail page</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/Software/CompanyList">Companies</a>
+                            </li>
+                            <li class="active">
+                                Company Detail
+                            </li>
+                        </ol>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        List of Branches
-                                    </td>
-                                    <td align="right">
-                                        <button class="btn btn-primary btn-sm" id="btnAddBranch" onclick="btnAddBranchOnclick()">
-                                            <i class="fa fa-plus fa-fw"></i> Add
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <button class="btn btn-primary" id="btnLockCompany" onclick="btnLockCompanyOnclick()">
+                            <i class="fa fa-lock fa-fw"></i> Lock
+                        </button>
+                        <button class="btn btn-primary" id="btnUnlockCompany" onclick="btnUnlockCompanyOnclick()">
+                            <i class="fa fa-unlock fa-fw"></i> Unlock
+                        </button>
+                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/CompanyList'">
+                            <i class="fa fa-close fa-fw"></i> Close
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Company Name</label><br />
+                                            <input type="text" class="form-control requiredCompany" id="companyName" placeholder="Company Name" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address</label><br />
+                                            <textarea class="form-control requiredCompany" rows="5" id="companyAddress" placeholder="Company Address"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Contact Number</label><br />
+                                            <input type="text" class="form-control requiredCompany" id="companyContactNumber" placeholder="Contact Number" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <p>Created by:</p>
+                                        <div style="padding-left: 10px;">
+                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                            <br />
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                        </div>
+                                        <br />
+                                        <p>Updated by:</p>
+                                        <div style="padding-left: 10px;">
+                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                            <br />
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <div id="branchFlexGrid" class="grid"></div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            List of Branches
+                                        </td>
+                                        <td align="right">
+                                            <button class="btn btn-primary btn-sm" id="btnAddBranch" onclick="btnAddBranchOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i> Add
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="branchFlexGrid" class="grid"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- company detail branch edit  -->
     <div class="modal fade" id="companyDetailBranchEditModal" role="dialog">
@@ -154,9 +163,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")

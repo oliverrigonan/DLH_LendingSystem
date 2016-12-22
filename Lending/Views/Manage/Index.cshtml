@@ -12,14 +12,30 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
 
-    <!-- Login -->
-    @Html.Partial("ManageIndex")
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
 
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-user fa-fw"></i>  Manage <small>Manage account settings</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li class="active">
+                                Manage
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- manage -->
+                @Html.Partial("ManageIndex")
+            </div>
+        </div>
+    </div>
 
     <!-- user Personal Information Modal -->
     <div class="modal fade" id="userEditDetailModal" role="dialog">

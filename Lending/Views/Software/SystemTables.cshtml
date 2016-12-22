@@ -12,280 +12,285 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <table style="width: 100%">
-                        <tr>
-                            <td>
-                                <h4><i class="fa fa-table fa-fw"></i> System Tables</h4>
-                            </td>
-                            <td align="right">
-                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
-                                    <i class="fa fa-close fa-fw"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-table fa-fw"></i> System Tables <small>List of master tables</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                System Tables
+                            </li>
+                        </ol>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <ul id="myTab" class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#LoanTypes" data-toggle="tab" id="LoanTypesTab">
-                                Loan Types
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
-                                Requirements
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#Terms" data-toggle="tab" id="TermsTab">
-                                Terms
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
-                                Penalties
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#Interests" data-toggle="tab" id="InterestsTab">
-                                Interests & Rates
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#ExpenseTypes" data-toggle="tab" id="expenseTypesTab">
-                                Expense Types
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#Accounts" data-toggle="tab" id="accountTab">
-                                Accounts
-                            </a>
-                        </li>
-                    </ul>
-                    <br />
-                    <div id="myTabContent" class="tab-content">
-                        <div class="tab-pane fade in active" id="LoanTypes">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchLoanTypes" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddLoanTypes" onclick="btnAddLoanTypesOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="LoanTypesListFlexGrid" class="grid"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="Requirements">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="RequirementsListFlexGrid" class="grid"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="Terms">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchTerms" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddTerms" onclick="btnAddTermsOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="TermsListFlexGrid" class="grid"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="Penalties">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchPenalties" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddPenalties" onclick="btnAddPenaltiesOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="PenaltiesListFlexGrid" class="grid"></div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="tab-pane fade" id="Interests">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchInterests" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddInterests" onclick="btnAddInterestsOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="InterestsListFlexGrid" class="grid"></div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                            <i class="fa fa-close fa-fw"></i> Close
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#LoanTypes" data-toggle="tab" id="LoanTypesTab">
+                                    Loan Types
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
+                                    Requirements
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Terms" data-toggle="tab" id="TermsTab">
+                                    Terms
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
+                                    Penalties
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Interests" data-toggle="tab" id="InterestsTab">
+                                    Interests
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#ExpenseTypes" data-toggle="tab" id="expenseTypesTab">
+                                    Expense Types
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#Accounts" data-toggle="tab" id="accountTab">
+                                    Accounts
+                                </a>
+                            </li>
+                        </ul>
+                        <br />
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade in active" id="LoanTypes">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchLoanTypes" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddLoanTypes" onclick="btnAddLoanTypesOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="LoanTypesListFlexGrid" class="grid"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="tab-pane fade" id="Requirements">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="RequirementsListFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Terms">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchTerms" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddTerms" onclick="btnAddTermsOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="TermsListFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="Penalties">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchPenalties" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddPenalties" onclick="btnAddPenaltiesOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="PenaltiesListFlexGrid" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <div class="tab-pane fade" id="ExpenseTypes">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchExpenseTypes" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddExpenseTypes" onclick="btnAddExpenseTypesOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="panel-body">
-                                    <div id="ExpenseTypesListFlexGrid" class="grid"></div>
+                            <div class="tab-pane fade" id="Interests">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchInterests" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddInterests" onclick="btnAddInterestsOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="InterestsListFlexGrid" class="grid"></div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="tab-pane fade" id="Accounts">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <table style="width: 100%">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                    <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
-                                                </div>
-                                            </td>
-                                            <td>&nbsp;&nbsp;&nbsp;</td>
-                                            <td align="right">
-                                                <button class="btn btn-primary" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
-                                                    <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </table>
+
+                            <div class="tab-pane fade" id="ExpenseTypes">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchExpenseTypes" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddExpenseTypes" onclick="btnAddExpenseTypesOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="ExpenseTypesListFlexGrid" class="grid"></div>
+                                    </div>
                                 </div>
-                                <div class="panel-body">
-                                    <div id="AccountsListFlexGrid" class="grid"></div>
+                            </div>
+                            <div class="tab-pane fade" id="Accounts">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                                <td align="right">
+                                                    <button class="btn btn-primary" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
+                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="AccountsListFlexGrid" class="grid"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    User security stamp
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p>Created by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        User security stamp
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Created by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                </div>
                                 <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
                             </div>
-                            <br />
-                        </div>
-                        <div class="col-md-6">
-                            <p>Updated by:</p>
-                            <div style="padding-left: 10px;">
-                                <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                            <div class="col-md-6">
+                                <p>Updated by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                </div>
                                 <br />
-                                <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
                             </div>
-                            <br />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
+    </div>
 
     <!-- LoanTypes Detail Modal -->
     <div class="modal fade" id="LoanTypesEditDetailModal" role="dialog">
@@ -499,7 +504,11 @@
                     </div>
                     <div class="form-group">
                         <label>Number of Days</label><br />
-                        <input type="text" class="form-control numberField requiredTerms" id="termNoOfDays" placeholder="0.00" />
+                        <div id="cboNoOfDays"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Allowance Days</label><br />
+                        <div id="cboNoOfAllowanceDays"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -558,11 +567,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>No. of Absent Limit</label><br />
-                                <input type="text" class="form-control numberField requiredPenalties" id="penaltyNoOfAbsentLimit" placeholder="0.00" />
+                                <label>Is Penalty Every Absent</label><br />
+                                <input type="checkbox" id="penaltyEveryAbsent">
                             </div>
                         </div>
                         <div class="col-md-6">
+                            <div class="form-group">
+                                <label>No. of Absent Limit</label><br />
+                                <div id="cboNumberOfLimitAbsent"></div>
+                            </div>
                             <div class="form-group">
                                 <label>Pen. Amount over No. of Absent Limit</label><br />
                                 <div class="input-group numberField">
@@ -627,10 +640,6 @@
                                     <span class="input-group-addon">%</span>
                                     <input type="text" class="form-control numberField requiredInterests" id="interestRate" placeholder="0.00" />
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label>No. of Days Limit</label><br />
-                                <input type="text" class="form-control numberField requiredInterests" id="interestNoOfDays" placeholder="0.00" />
                             </div>
                         </div>
                         <div class="col-md-6"></div>
@@ -2391,6 +2400,7 @@
                                 Term: termsListResult[i]["Term"],
                                 Description: termsListResult[i]["Description"],
                                 NoOfDays: termsListResult[i]["NoOfDays"],
+                                NoOfAllowanceDays: termsListResult[i]["NoOfAllowanceDays"],
                                 CreatedByUserId: termsListResult[i]["CreatedByUserId"],
                                 CreatedByUser: termsListResult[i]["CreatedByUser"],
                                 CreatedDateTime: termsListResult[i]["CreatedDateTime"],
@@ -2405,6 +2415,28 @@
                 }
             });
             return terms;
+        }
+
+        var cboNoOfDays;
+        var cboNoOfAllowanceDays;
+
+        // allowance days
+        function createCboNoOfAllowanceDays() {
+            var days = new Array();
+
+            for (var i = 0; i <= 50; i++) {
+                days[i] = i;
+            }
+
+            cboNoOfAllowanceDays.dispose();
+            cboNoOfAllowanceDays = new wijmo.input.ComboBox('#cboNoOfAllowanceDays', {
+                itemsSource: days
+            });
+
+            cboNoOfDays.dispose();
+            cboNoOfDays = new wijmo.input.ComboBox('#cboNoOfDays', {
+                itemsSource: days
+            });
         }
 
         // add new Terms
@@ -2427,7 +2459,8 @@
             termId = 0;
             document.getElementById("termName").value = "NA";
             document.getElementById("termDescription").value = "NA";
-            document.getElementById("termNoOfDays").value = 0;
+            cboNoOfDays.selectedValue = "0";
+            cboNoOfAllowanceDays.selectedValue = "0";
         }
 
         // edit Terms
@@ -2453,7 +2486,8 @@
             termId = termCurrentEditItem.Id;
             document.getElementById("termName").value = termCurrentEditItem.Term;
             document.getElementById("termDescription").value = termCurrentEditItem.Description;
-            document.getElementById("termNoOfDays").value = termCurrentEditItem.NoOfDays;
+            cboNoOfDays.selectedValue = termCurrentEditItem.NoOfDays;
+            cboNoOfAllowanceDays.selectedValue = termCurrentEditItem.NoOfAllowanceDays;
         }
 
         // form input validation
@@ -2485,9 +2519,9 @@
                 var termsObject = new Object();
                 termsObject.Term = document.getElementById('termName').value;
                 termsObject.Description = document.getElementById('termDescription').value;
-                termsObject.NoOfDays = document.getElementById('termNoOfDays').value;
+                termsObject.NoOfDays = cboNoOfDays.selectedValue;
+                termsObject.NoOfAllowanceDays = cboNoOfAllowanceDays.selectedValue;
                 var termData = JSON.stringify(termsObject);
-
                 if (termId == 0) {
                     $.ajax({
                         type: "POST",
@@ -2731,6 +2765,12 @@
                                 "binding": "NoOfDays",
                                 "allowSorting": true,
                                 "width": "1*"
+                            },
+                            {
+                                "header": "Allowance Days",
+                                "binding": "NoOfAllowanceDays",
+                                "allowSorting": true,
+                                "width": "1*"
                             }
                 ],
                 autoGenerateColumns: false,
@@ -2807,9 +2847,10 @@
                                 Id: penaltiesListResult[i]["Id"],
                                 Penalty: penaltiesListResult[i]["Penalty"],
                                 Description: penaltiesListResult[i]["Description"],
-                                PenaltyAmount: penaltiesListResult[i]["PenaltyAmount"],
-                                NoOfAbsentLimit: penaltiesListResult[i]["NoOfAbsentLimit"],
-                                PenaltyAmountOverNoOfAbsentLimit: penaltiesListResult[i]["PenaltyAmountOverNoOfAbsentLimit"],
+                                DefaultPenaltyAmount: penaltiesListResult[i]["DefaultPenaltyAmount"],
+                                IsPenaltyEveryAbsent: penaltiesListResult[i]["IsPenaltyEveryAbsent"],
+                                NoOfLimitAbsent: penaltiesListResult[i]["NoOfLimitAbsent"],
+                                PenaltyAmountOverNoOfLimitAbsent: penaltiesListResult[i]["PenaltyAmountOverNoOfLimitAbsent"],
                                 CreatedByUserId: penaltiesListResult[i]["CreatedByUserId"],
                                 CreatedByUser: penaltiesListResult[i]["CreatedByUser"],
                                 CreatedDateTime: penaltiesListResult[i]["CreatedDateTime"],
@@ -2824,6 +2865,22 @@
                 }
             });
             return penalties;
+        }
+
+        var cboNumberOfLimitAbsent;
+
+        // limit absent
+        function createCboNumberOfLimitAbsent() {
+            var days = new Array();
+
+            for (var i = 0; i <= 50; i++) {
+                days[i] = i;
+            }
+
+            cboNumberOfLimitAbsent.dispose();
+            cboNumberOfLimitAbsent = new wijmo.input.ComboBox('#cboNumberOfLimitAbsent', {
+                itemsSource: days
+            });
         }
 
         // add new Penalties
@@ -2847,7 +2904,8 @@
             document.getElementById("penaltyName").value = "NA";
             document.getElementById("penaltyDescription").value = "NA";
             document.getElementById("penaltyAmount").value = 0;
-            document.getElementById("penaltyNoOfAbsentLimit").value = 0;
+            document.getElementById('penaltyEveryAbsent').checked = false;
+            cboNumberOfLimitAbsent.selectedValue = 0;
             document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = 0;
         }
 
@@ -2874,9 +2932,10 @@
             penaltyId = penaltyCurrentEditItem.Id;
             document.getElementById("penaltyName").value = penaltyCurrentEditItem.Penalty;
             document.getElementById("penaltyDescription").value = penaltyCurrentEditItem.Description;
-            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.PenaltyAmount.toLocaleString();
-            document.getElementById("penaltyNoOfAbsentLimit").value = penaltyCurrentEditItem.NoOfAbsentLimit.toLocaleString();
-            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = penaltyCurrentEditItem.PenaltyAmountOverNoOfAbsentLimit.toLocaleString();
+            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.DefaultPenaltyAmount.toLocaleString();
+            document.getElementById('penaltyEveryAbsent').checked = penaltyCurrentEditItem.IsPenaltyEveryAbsent;
+            cboNumberOfLimitAbsent.selectedValue = penaltyCurrentEditItem.NoOfLimitAbsent;
+            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = penaltyCurrentEditItem.PenaltyAmountOverNoOfLimitAbsent.toLocaleString();
         }
 
         // form input validation
@@ -2908,11 +2967,11 @@
                 var penaltiesObject = new Object();
                 penaltiesObject.Penalty = document.getElementById('penaltyName').value;
                 penaltiesObject.Description = document.getElementById('penaltyDescription').value;
-                penaltiesObject.PenaltyAmount = document.getElementById('penaltyAmount').value;
-                penaltiesObject.NoOfAbsentLimit = document.getElementById('penaltyNoOfAbsentLimit').value;
-                penaltiesObject.PenaltyAmountOverNoOfAbsentLimit = document.getElementById('penaltyAmontOverNoOfAbsentLimit').value;
+                penaltiesObject.DefaultPenaltyAmount = document.getElementById('penaltyAmount').value;
+                penaltiesObject.IsPenaltyEveryAbsent = document.getElementById('penaltyEveryAbsent').checked;
+                penaltiesObject.NoOfLimitAbsent = cboNumberOfLimitAbsent.selectedValue;
+                penaltiesObject.PenaltyAmountOverNoOfLimitAbsent = document.getElementById('penaltyAmontOverNoOfAbsentLimit').value;
                 var penaltyData = JSON.stringify(penaltiesObject);
-
                 if (penaltyId == 0) {
                     $.ajax({
                         type: "POST",
@@ -3153,19 +3212,25 @@
                             },
                             {
                                 "header": "Pen. Amount",
-                                "binding": "PenaltyAmount",
+                                "binding": "DefaultPenaltyAmount",
                                 "allowSorting": true,
                                 "width": "1*"
                             },
                             {
+                                "header": "Is P",
+                                "binding": "IsPenaltyEveryAbsent",
+                                "allowSorting": true,
+                                "width": "0.5*"
+                            },
+                            {
                                 "header": "Absent",
-                                "binding": "NoOfAbsentLimit",
+                                "binding": "NoOfLimitAbsent",
                                 "allowSorting": true,
                                 "width": "1*"
                             },
                             {
                                 "header": "Pen. Over AL",
-                                "binding": "PenaltyAmountOverNoOfAbsentLimit",
+                                "binding": "PenaltyAmountOverNoOfLimitAbsent",
                                 "allowSorting": true,
                                 "width": "1*"
                             }
@@ -3283,7 +3348,6 @@
             document.getElementById("interestName").value = "NA";
             document.getElementById("interestDescription").value = "NA";
             document.getElementById("interestRate").value = 0;
-            document.getElementById("interestNoOfDays").value = 0;
         }
 
         // edit Interests
@@ -3310,7 +3374,6 @@
             document.getElementById("interestName").value = interestCurrentEditItem.Interest;
             document.getElementById("interestDescription").value = interestCurrentEditItem.Description;
             document.getElementById("interestRate").value = interestCurrentEditItem.Rate.toLocaleString();
-            document.getElementById("interestNoOfDays").value = interestCurrentEditItem.NoOfDays.toLocaleString();
         }
 
         // form input validation
@@ -3343,7 +3406,6 @@
                 interestsObject.Interest = document.getElementById('interestName').value;
                 interestsObject.Description = document.getElementById('interestDescription').value;
                 interestsObject.Rate = document.getElementById('interestRate').value;
-                interestsObject.NoOfDays = document.getElementById('interestNoOfDays').value;
                 var interestData = JSON.stringify(interestsObject);
 
                 if (interestId == 0) {
@@ -3589,13 +3651,7 @@
                                 "binding": "Rate",
                                 "allowSorting": true,
                                 "width": "1.5*"
-                            },
-                            {
-                                "header": "No. of Days",
-                                "binding": "NoOfDays",
-                                "allowSorting": true,
-                                "width": "1*"
-                            },
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: interestsCollectionView,
@@ -3654,6 +3710,7 @@
             createLoanTypeFlexGrid();
 
             cboTransactionType = new wijmo.input.ComboBox('#transactionType');
+            cboNoOfDays = new wijmo.input.ComboBox('#cboNoOfDays');
             getTransactionType();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
@@ -3664,6 +3721,12 @@
                 $('#btnClose').prop('disabled', false);
                 getUserRightsMessageError();
             }
+
+            cboNoOfAllowanceDays = new wijmo.input.ComboBox('#cboNoOfAllowanceDays');
+            createCboNoOfAllowanceDays();
+
+            cboNumberOfLimitAbsent = new wijmo.input.ComboBox('#cboNumberOfLimitAbsent');
+            createCboNumberOfLimitAbsent();
         }
     </script>
 </body>

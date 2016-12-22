@@ -1,46 +1,164 @@
-﻿/* software custom styles */
-.software-section {
-    margin-top: 70px;
+﻿/*!
+ * Start Bootstrap - SB Admin (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+/* Global Styles */
+
+body {
+    margin-top: 100px;
 }
 
-/*.item-header {
-    font-weight: bold;
-    font-size: 100%;
-}*/
-
-/*.button-item {
-    padding-top: 2px;
-    padding-left: 15px;
-    padding-right: 15px;
-}*/
-
-.flexgridHeight {
-    height: 500px;
-}
-
-/*@media screen and (max-width: 768px) {
-    .flexgridHeight {
-        height: 870px;
+@media(min-width:768px) {
+    body {
+        margin-top: 50px;
     }
-}*/
-
-.form-table {
-    width: 100%;
 }
 
-td.td-label {
-    color: #808080;
-    width: 30%;
-    padding-left: 5px;
-    padding-right: 5px;
+#wrapper {
+    padding-left: 0;
+}
+
+#page-wrapper {
+    width: 100%;
+    padding: 0;
+    background-color: #fff;
+}
+
+.huge {
+    font-size: 50px;
+    line-height: normal;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 225px;
+    }
+
+    #page-wrapper {
+        padding: 0px;
+    }
+}
+
+/* Top Navigation */
+
+.top-nav {
+    padding-right: 15px;
+}
+
+.top-nav>li {
+    display: inline-block;
+    float: left;
+}
+
+.top-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height: 20px;
+    color: #fff;
+}
+
+.top-nav>li>a:hover,
+.top-nav>li>a:focus,
+.top-nav>.open>a,
+.top-nav>.open>a:hover,
+.top-nav>.open>a:focus {
+    color: #fff;
+    background-color: #009999;
+    transition: 0.5s all;
+}
+
+.top-nav>.open>.dropdown-menu {
+    float: left;
+    position: absolute;
+    margin-top: 0;
+    border: 1px solid rgba(0,0,0,.15);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #fff;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    width: 200px;
+}
+
+.top-nav>.open>.dropdown-menu>li>a {
+    white-space: normal;
+}
+
+/* Side Navigation */
+
+@media(min-width:768px) {
+    .side-nav {
+        position: fixed;
+        top: 49px;
+        left: 225px;
+        width: 225px;
+        margin-left: -225px;
+        border: none;
+        border-radius: 0;
+        overflow-y: auto;
+        background-color: #006666;
+        bottom: 0;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+        color: #fff;
+    }
+
+    .side-nav>li>a {
+        width: 225px;
+        color: #fff;
+        border-top: 0.1px solid #004d4d;
+    }
+
+    .side-nav li a:hover {
+        background-color: #009999 !important;
+        color: #fff;
+        transition: 0.5s all;
+    }
+
+    .side-nav li a:focus {
+        background-color: transparent;
+        color: #fff;
+        transition: 0.5s all;
+    }
+}
+
+.side-nav>li>ul {
+    padding: 0;
+    color: #fff;
+}
+
+.side-nav>li>ul>li>a {
+    display: block;
+    padding: 10px 15px 10px 38px;
+    text-decoration: none;
+    color: #fff;
+    border-top: 0.1px solid #004d4d;
+    background-color: #004d4d !important;
+}
+
+.side-nav>li>ul>li>a:hover {
+    color: #fff;
+    background-color: #004d4d;
+}
+
+.navbar-inverse {
+    background-color: #004d4d;;
+    border-bottom: none;
+    box-shadow: -1px 1px 10px 1px;
+}
+
+/* title */
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
 }
 
 .numberField {
     text-align: right;
-}
-
-.wijmo-combobox-width-50 {
-    width: 50%;
 }
 
 @media screen and (max-width: 768px) {
@@ -54,26 +172,3 @@ td.td-label {
     }
 }
 
-a:hover, a:focus {
-    text-decoration: none;
-}
-
-/*button,
-.dropdown-menu,
-.btn,
-input,
-textarea,
-.panel,
-.wj-control,
-.input-group-addon,
-.modal-content,
-img,
-.nav-pills > li > a,
-.nav-tabs > li > a,
-.list-group > a {
-    border-radius: 0 !important;
-}*/
-
-textarea {
-    resize: vertical;
-}

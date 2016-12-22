@@ -292,9 +292,10 @@
     <Content Include="Images\landing-page\me.jpg" />
     <Content Include="Images\landing-page\banner-bg.jpg" />
     <Content Include="Images\landing-page\dog.png" />
-    <Content Include="Images\landing-page\intro-bg.jpg" />
+    <Content Include="Images\landing-page\intro-bg2.jpg" />
     <Content Include="Images\landing-page\ipad.png" />
     <Content Include="Images\landing-page\phones.png" />
+    <Content Include="Images\landing-page\intro-bg.jpg" />
     <Content Include="Images\wood.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -419,6 +420,7 @@
     <Content Include="Views\Software\CollectionReport.cshtml" />
     <Content Include="Views\Software\ExpensesReport.cshtml" />
     <Content Include="Views\Shared\SoftwareMenu.cshtml" />
+    <Content Include="Views\Shared\SoftwareHeader.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

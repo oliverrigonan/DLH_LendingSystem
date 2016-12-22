@@ -12,136 +12,145 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <!-- Header -->
-    @Html.Partial("HomeHeader")
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
 
-    <section class="software-section">
-        <div class="container">
-            @Html.Partial("SoftwareMenu")
-            <br /><br />
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <table style="width: 100%">
-                        <tr>
-                            <td>
-                                <h4><i class="fa fa-key fa-fw"></i> User Detail</h4>
-                            </td>
-                            <td align="right">
-                                <button class="btn btn-primary" id="btnLockUser" onclick="btnLockUserOnclick()">
-                                    <i class="fa fa-lock fa-fw"></i> Lock
-                                </button>
-                                <button class="btn btn-primary" id="btnUnlockUser" onclick="btnUnlockUserOnclick()">
-                                    <i class="fa fa-unlock fa-fw"></i> Unlock
-                                </button>
-                                <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/UserList'">
-                                    <i class="fa fa-close fa-fw"></i> Close
-                                </button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="form-group">
-                                        <label>Username</label><br />
-                                        <input type="text" class="form-control" id="Username" placeholder="Username" disabled />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Fullname</label><br />
-                                        <input type="text" class="form-control" id="Fullname" placeholder="Fullname" disabled />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <p>Created Date:</p>
-                                    <div style="padding-left: 10px;">
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                    <br />
-                                    <p>Updated Date:</p>
-                                    <div style="padding-left: 10px;">
-                                        <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-key fa-fw"></i>  User Detail <small>Edit detail page</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/Software/UserList">Users</a>
+                            </li>
+                            <li class="active">
+                                User Detail
+                            </li>
+                        </ol>
                     </div>
                 </div>
-            </div>
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#companyDetail" id="companyDetailTab">Company Detail</a></li>
-                <li><a data-toggle="tab" href="#userRights" id="userRightsTab">User Rights</a></li>
-            </ul>
-            <br />
-            <div class="tab-content">
-                <div id="companyDetail" class="tab-pane fade in active">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Company Detail
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-7">
-                                    <div class="form-group">
-                                        <label>Assigned Company</label><br />
-                                        <div id="cboCompanyName" style="width: 100%;"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Address</label><br />
-                                        <textarea class="form-control" rows="5" id="companyAddress" placeholder="Company Address" disabled></textarea>
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <button class="btn btn-primary" id="btnLockUser" onclick="btnLockUserOnclick()">
+                            <i class="fa fa-lock fa-fw"></i> Lock
+                        </button>
+                        <button class="btn btn-primary" id="btnUnlockUser" onclick="btnUnlockUserOnclick()">
+                            <i class="fa fa-unlock fa-fw"></i> Unlock
+                        </button>
+                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/UserList'">
+                            <i class="fa fa-close fa-fw"></i> Close
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Username</label><br />
+                                            <input type="text" class="form-control" id="Username" placeholder="Username" disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Fullname</label><br />
+                                            <input type="text" class="form-control" id="Fullname" placeholder="Fullname" disabled />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
-                                    <div class="form-group">
-                                        <label>Contact Number</label><br />
-                                        <input type="text" class="form-control" id="companyContactNumber" placeholder="Contact Number" disabled />
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <p>Created Date:</p>
+                                        <div style="padding-left: 10px;">
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                        </div>
+                                        <br />
+                                        <p>Updated Date:</p>
+                                        <div style="padding-left: 10px;">
+                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Branches
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#companyDetail" id="companyDetailTab">Company Detail</a></li>
+                    <li><a data-toggle="tab" href="#userRights" id="userRightsTab">User Rights</a></li>
+                </ul>
+                <br />
+                <div class="tab-content">
+                    <div id="companyDetail" class="tab-pane fade in active">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Company Detail
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label>Assigned Company</label><br />
+                                            <div id="cboCompanyName" style="width: 100%;"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Address</label><br />
+                                            <textarea class="form-control" rows="5" id="companyAddress" placeholder="Company Address" disabled></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Contact Number</label><br />
+                                            <input type="text" class="form-control" id="companyContactNumber" placeholder="Contact Number" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body">
-                            <div id="branchFlexGrid"></div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Branches
+                            </div>
+                            <div class="panel-body">
+                                <div id="branchFlexGrid"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div id="userRights" class="tab-pane fade">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <table style="width: 100%">
-                                <tr>
-                                    <td>
-                                        List of Forms for user rights
-                                    </td>
-                                    <td align="right">
-                                        <button class="btn btn-primary btn-sm" id="btnAddUserForm" onclick="bbtnAddUserFormOnclick()">
-                                            <i class="fa fa-plus fa-fw"></i> Add
-                                        </button>
-                                        <button class="btn btn-primary btn-sm" id="btnCopyRightsUserForm" onclick="btnCopyRightsUserFormOnclick()">
-                                            <i class="fa fa-copy fa-fw"></i> Copy Rights
-                                        </button>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="panel-body">
-                            <div id="userFormFlexgrid"></div>
+                    <div id="userRights" class="tab-pane fade">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            List of Forms for user rights
+                                        </td>
+                                        <td align="right">
+                                            <button class="btn btn-primary btn-sm" id="btnAddUserForm" onclick="bbtnAddUserFormOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i> Add
+                                            </button>
+                                            <button class="btn btn-primary btn-sm" id="btnCopyRightsUserForm" onclick="btnCopyRightsUserFormOnclick()">
+                                                <i class="fa fa-copy fa-fw"></i> Copy Rights
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="userFormFlexgrid"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- user form detail edit  -->
     <div class="modal fade" id="userFormDetailEditModal" role="dialog">
@@ -212,9 +221,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    @Html.Partial("HomeFooter")
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
