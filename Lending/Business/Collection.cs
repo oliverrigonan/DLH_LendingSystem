@@ -48,11 +48,6 @@ namespace Lending.Business
                 newCollection.TermNoOfAllowanceDays = loanApplication.FirstOrDefault().mstTerm.NoOfAllowanceDays;
                 newCollection.IsFullyPaid = false;
                 newCollection.IsOverdue = false;
-                newCollection.IsLocked = true;
-                newCollection.CreatedByUserId = userId;
-                newCollection.CreatedDateTime = DateTime.Now;
-                newCollection.UpdatedByUserId = userId;
-                newCollection.UpdatedDateTime = DateTime.Now;
                 db.trnCollections.InsertOnSubmit(newCollection);
                 db.SubmitChanges();
 

@@ -428,8 +428,6 @@
       <Association Name="mstUser_mstTerm" Member="mstTerms" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstTerm" />
       <Association Name="mstUser_mstTerm1" Member="mstTerms1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstTerm" />
       <Association Name="mstUser_mstUserForm" Member="mstUserForms" ThisKey="Id" OtherKey="UserId" Type="mstUserForm" />
-      <Association Name="mstUser_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnCollection" />
-      <Association Name="mstUser_trnCollection1" Member="trnCollections1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnCollection" />
       <Association Name="mstUser_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense1" Member="trnExpenses1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense2" Member="trnExpenses2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnExpense" />
@@ -512,16 +510,9 @@
       <Column Name="TermNoOfAllowanceDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="IsFullyPaid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsOverdue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="trnCollection_trnCollectionReconstruct" Member="trnCollectionReconstructs" ThisKey="Id" OtherKey="CollectionId" Type="trnCollectionReconstruct" />
       <Association Name="trnCollection_trnDailyCollection" Member="trnDailyCollections" ThisKey="Id" OtherKey="CollectionId" Type="trnDailyCollection" />
       <Association Name="mstTerm_trnCollection" Member="mstTerm" ThisKey="TermId" OtherKey="Id" Type="mstTerm" IsForeignKey="true" />
-      <Association Name="mstUser_trnCollection" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-      <Association Name="mstUser_trnCollection1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="trnLoanApplication_trnCollection" Member="trnLoanApplication" ThisKey="LoanId" OtherKey="Id" Type="trnLoanApplication" IsForeignKey="true" />
     </Type>
   </Table>

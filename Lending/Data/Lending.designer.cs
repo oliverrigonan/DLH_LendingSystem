@@ -9523,10 +9523,6 @@ namespace Lending.Data
 		
 		private EntitySet<mstUserForm> _mstUserForms;
 		
-		private EntitySet<trnCollection> _trnCollections;
-		
-		private EntitySet<trnCollection> _trnCollections1;
-		
 		private EntitySet<trnExpense> _trnExpenses;
 		
 		private EntitySet<trnExpense> _trnExpenses1;
@@ -9592,8 +9588,6 @@ namespace Lending.Data
 			this._mstTerms = new EntitySet<mstTerm>(new Action<mstTerm>(this.attach_mstTerms), new Action<mstTerm>(this.detach_mstTerms));
 			this._mstTerms1 = new EntitySet<mstTerm>(new Action<mstTerm>(this.attach_mstTerms1), new Action<mstTerm>(this.detach_mstTerms1));
 			this._mstUserForms = new EntitySet<mstUserForm>(new Action<mstUserForm>(this.attach_mstUserForms), new Action<mstUserForm>(this.detach_mstUserForms));
-			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
-			this._trnCollections1 = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections1), new Action<trnCollection>(this.detach_trnCollections1));
 			this._trnExpenses = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses), new Action<trnExpense>(this.detach_trnExpenses));
 			this._trnExpenses1 = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses1), new Action<trnExpense>(this.detach_trnExpenses1));
 			this._trnExpenses2 = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses2), new Action<trnExpense>(this.detach_trnExpenses2));
@@ -10092,32 +10086,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnCollection", Storage="_trnCollections", ThisKey="Id", OtherKey="CreatedByUserId")]
-		public EntitySet<trnCollection> trnCollections
-		{
-			get
-			{
-				return this._trnCollections;
-			}
-			set
-			{
-				this._trnCollections.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnCollection1", Storage="_trnCollections1", ThisKey="Id", OtherKey="UpdatedByUserId")]
-		public EntitySet<trnCollection> trnCollections1
-		{
-			get
-			{
-				return this._trnCollections1;
-			}
-			set
-			{
-				this._trnCollections1.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnExpense", Storage="_trnExpenses", ThisKey="Id", OtherKey="PreparedByUserId")]
 		public EntitySet<trnExpense> trnExpenses
 		{
@@ -10558,30 +10526,6 @@ namespace Lending.Data
 		{
 			this.SendPropertyChanging();
 			entity.mstUser = null;
-		}
-		
-		private void attach_trnCollections(trnCollection entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser = this;
-		}
-		
-		private void detach_trnCollections(trnCollection entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser = null;
-		}
-		
-		private void attach_trnCollections1(trnCollection entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser1 = this;
-		}
-		
-		private void detach_trnCollections1(trnCollection entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstUser1 = null;
 		}
 		
 		private void attach_trnExpenses(trnExpense entity)
@@ -11909,25 +11853,11 @@ namespace Lending.Data
 		
 		private bool _IsOverdue;
 		
-		private bool _IsLocked;
-		
-		private int _CreatedByUserId;
-		
-		private System.DateTime _CreatedDateTime;
-		
-		private int _UpdatedByUserId;
-		
-		private System.DateTime _UpdatedDateTime;
-		
 		private EntitySet<trnCollectionReconstruct> _trnCollectionReconstructs;
 		
 		private EntitySet<trnDailyCollection> _trnDailyCollections;
 		
 		private EntityRef<mstTerm> _mstTerm;
-		
-		private EntityRef<mstUser> _mstUser;
-		
-		private EntityRef<mstUser> _mstUser1;
 		
 		private EntityRef<trnLoanApplication> _trnLoanApplication;
 		
@@ -11953,16 +11883,6 @@ namespace Lending.Data
     partial void OnIsFullyPaidChanged();
     partial void OnIsOverdueChanging(bool value);
     partial void OnIsOverdueChanged();
-    partial void OnIsLockedChanging(bool value);
-    partial void OnIsLockedChanged();
-    partial void OnCreatedByUserIdChanging(int value);
-    partial void OnCreatedByUserIdChanged();
-    partial void OnCreatedDateTimeChanging(System.DateTime value);
-    partial void OnCreatedDateTimeChanged();
-    partial void OnUpdatedByUserIdChanging(int value);
-    partial void OnUpdatedByUserIdChanged();
-    partial void OnUpdatedDateTimeChanging(System.DateTime value);
-    partial void OnUpdatedDateTimeChanged();
     #endregion
 		
 		public trnCollection()
@@ -11970,8 +11890,6 @@ namespace Lending.Data
 			this._trnCollectionReconstructs = new EntitySet<trnCollectionReconstruct>(new Action<trnCollectionReconstruct>(this.attach_trnCollectionReconstructs), new Action<trnCollectionReconstruct>(this.detach_trnCollectionReconstructs));
 			this._trnDailyCollections = new EntitySet<trnDailyCollection>(new Action<trnDailyCollection>(this.attach_trnDailyCollections), new Action<trnDailyCollection>(this.detach_trnDailyCollections));
 			this._mstTerm = default(EntityRef<mstTerm>);
-			this._mstUser = default(EntityRef<mstUser>);
-			this._mstUser1 = default(EntityRef<mstUser>);
 			this._trnLoanApplication = default(EntityRef<trnLoanApplication>);
 			OnCreated();
 		}
@@ -12164,114 +12082,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
-		public bool IsLocked
-		{
-			get
-			{
-				return this._IsLocked;
-			}
-			set
-			{
-				if ((this._IsLocked != value))
-				{
-					this.OnIsLockedChanging(value);
-					this.SendPropertyChanging();
-					this._IsLocked = value;
-					this.SendPropertyChanged("IsLocked");
-					this.OnIsLockedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedByUserId", DbType="Int NOT NULL")]
-		public int CreatedByUserId
-		{
-			get
-			{
-				return this._CreatedByUserId;
-			}
-			set
-			{
-				if ((this._CreatedByUserId != value))
-				{
-					if (this._mstUser.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCreatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedByUserId = value;
-					this.SendPropertyChanged("CreatedByUserId");
-					this.OnCreatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedDateTime
-		{
-			get
-			{
-				return this._CreatedDateTime;
-			}
-			set
-			{
-				if ((this._CreatedDateTime != value))
-				{
-					this.OnCreatedDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedDateTime = value;
-					this.SendPropertyChanged("CreatedDateTime");
-					this.OnCreatedDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedByUserId", DbType="Int NOT NULL")]
-		public int UpdatedByUserId
-		{
-			get
-			{
-				return this._UpdatedByUserId;
-			}
-			set
-			{
-				if ((this._UpdatedByUserId != value))
-				{
-					if (this._mstUser1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnUpdatedByUserIdChanging(value);
-					this.SendPropertyChanging();
-					this._UpdatedByUserId = value;
-					this.SendPropertyChanged("UpdatedByUserId");
-					this.OnUpdatedByUserIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UpdatedDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime UpdatedDateTime
-		{
-			get
-			{
-				return this._UpdatedDateTime;
-			}
-			set
-			{
-				if ((this._UpdatedDateTime != value))
-				{
-					this.OnUpdatedDateTimeChanging(value);
-					this.SendPropertyChanging();
-					this._UpdatedDateTime = value;
-					this.SendPropertyChanged("UpdatedDateTime");
-					this.OnUpdatedDateTimeChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnCollection_trnCollectionReconstruct", Storage="_trnCollectionReconstructs", ThisKey="Id", OtherKey="CollectionId")]
 		public EntitySet<trnCollectionReconstruct> trnCollectionReconstructs
 		{
@@ -12328,74 +12138,6 @@ namespace Lending.Data
 						this._TermId = default(int);
 					}
 					this.SendPropertyChanged("mstTerm");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnCollection", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
-		public mstUser mstUser
-		{
-			get
-			{
-				return this._mstUser.Entity;
-			}
-			set
-			{
-				mstUser previousValue = this._mstUser.Entity;
-				if (((previousValue != value) 
-							|| (this._mstUser.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstUser.Entity = null;
-						previousValue.trnCollections.Remove(this);
-					}
-					this._mstUser.Entity = value;
-					if ((value != null))
-					{
-						value.trnCollections.Add(this);
-						this._CreatedByUserId = value.Id;
-					}
-					else
-					{
-						this._CreatedByUserId = default(int);
-					}
-					this.SendPropertyChanged("mstUser");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnCollection1", Storage="_mstUser1", ThisKey="UpdatedByUserId", OtherKey="Id", IsForeignKey=true)]
-		public mstUser mstUser1
-		{
-			get
-			{
-				return this._mstUser1.Entity;
-			}
-			set
-			{
-				mstUser previousValue = this._mstUser1.Entity;
-				if (((previousValue != value) 
-							|| (this._mstUser1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstUser1.Entity = null;
-						previousValue.trnCollections1.Remove(this);
-					}
-					this._mstUser1.Entity = value;
-					if ((value != null))
-					{
-						value.trnCollections1.Add(this);
-						this._UpdatedByUserId = value.Id;
-					}
-					else
-					{
-						this._UpdatedByUserId = default(int);
-					}
-					this.SendPropertyChanged("mstUser1");
 				}
 			}
 		}

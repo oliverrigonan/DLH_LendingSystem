@@ -203,7 +203,7 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult CollectionDetail(Int32 collectionId)
+        public ActionResult CollectionDetail(Int32? collectionId)
         {
             if (pageAccess("CollectionDetail").Equals("CollectionDetail"))
             {
