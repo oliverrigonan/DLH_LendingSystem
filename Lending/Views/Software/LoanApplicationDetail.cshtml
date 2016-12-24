@@ -102,22 +102,11 @@
                                             <div id="cboTerm"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Interest</label><br />
-                                            <div id="cboInterest"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Rate</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">%</span>
-                                                <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>Penalty</label><br />
                                             <div id="cboPenalty"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Every Absent Pen. Amount</label><br />
+                                            <label>Default Pen. Amount</label><br />
                                             <div class="input-group numberField">
                                                 <span class="input-group-addon">&#8369;</span>
                                                 <input type="text" class="form-control numberField" id="penaltyAmount" placeholder="0.00" disabled />
@@ -166,11 +155,34 @@
                                         </div>
                                     </div>
                                 </div>
+                                 <div class="panel panel-default">
+                                     <div class="panel-body">
+                                         <div class="form-group">
+                                             <label>Interest</label><br />
+                                             <div id="cboInterest"></div>
+                                         </div>
+                                         <div class="form-group">
+                                             <label>Rate</label><br />
+                                             <div class="input-group numberField">
+                                                 <span class="input-group-addon">%</span>
+                                                 <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
+                                             </div>
+                                         </div>
+                                         <div class="form-group">
+                                             <label>Interest Amount</label><br />
+                                             <div class="input-group numberField">
+                                                 <span class="input-group-addon">&#8369;</span>
+                                                 <input type="text" class="form-control numberField" id="interestAmount" placeholder="0.00" disabled />
+                                             </div>
+                                         </div>
+                                     </div>
+                                </div>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         Deductions
                                     </div>
                                     <div class="panel-body">
+                                        
                                         <div class="form-group">
                                             <label>3% Processing Fee</label><br />
                                             <div class="input-group numberField">
@@ -245,11 +257,6 @@
                         <br />
                         <ul id="myTab" class="nav nav-tabs">
                             <li class="active">
-                                <a href="#dailyCollections" data-toggle="tab" id="dailyCollectionsTab">
-                                    Daily Collection
-                                </a>
-                            </li>
-                            <li>
                                 <a href="#loanApplicationCollateral" data-toggle="tab" id="loanApplicationCollateralTab">
                                     Collateral
                                 </a>
@@ -262,32 +269,7 @@
                         </ul>
                         <br />
                         <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade in active" id="dailyCollections">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Number</span>
-                                                        <div id="cboLoanNumberLogHistory" style="width: 100%"></div>
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info btn-sm" onclick="btnViewCollectionDetail()"><i class="fa fa-money fa-fw"></i> Collection Detail</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="collectionFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade in" id="loanApplicationCollateral">
+                            <div class="tab-pane fade in active" id="loanApplicationCollateral">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <table style="width: 100%">
@@ -584,81 +566,6 @@
                         selectedValuePath: "ApplicantFullName",
                         onSelectedIndexChanged: function () {
                             document.getElementById("loanApplicationApplicantArea").value = this.selectedItem["Area"];
-
-                            $("#btnViewCollection").prop("disabled", true)
-                            var loanNumberArray = new Array();
-                            $.ajax({
-                                url: '/api/loanApplication/listByApplicantId/' + this.selectedItem["Id"],
-                                cache: false,
-                                type: 'GET',
-                                contentType: 'application/json; charset=utf-8',
-                                data: {},
-                                success: function (loanNumberResults) {
-                                    $("#btnViewCollection").prop("disabled", false)
-                                    var disabled = true;
-                                    if (loanNumberResults.length > 0) {
-                                        for (i = 0; i < loanNumberResults.length; i++) {
-
-                                            var lockedLabel = "- Locked";
-                                            if (loanNumberResults[i]["IsLocked"] == false) {
-                                                lockedLabel = "- Unlocked";
-                                            }
-
-                                            var currentLabel = lockedLabel;
-                                            if (loanNumberResults[i]["Id"] == getUrlParameter("id")) {
-                                                currentLabel = lockedLabel + " " + "(Current)";
-                                            }
-
-                                            loanNumberArray.push({
-                                                Id: loanNumberResults[i]["Id"],
-                                                LoanNumber: loanNumberResults[i]["LoanNumber"],
-                                                LoanDate: loanNumberResults[i]["LoanDate"],
-                                                MaturityDate: loanNumberResults[i]["MaturityDate"],
-                                                NetAmount: loanNumberResults[i]["NetAmount"],
-                                                PrincipalAmount: loanNumberResults[i]["PrincipalAmount"],
-                                                ProcessingFeeAmount: loanNumberResults[i]["ProcessingFeeAmount"],
-                                                PassbookAmount: loanNumberResults[i]["PassbookAmount"],
-                                                BalanceAmount: loanNumberResults[i]["BalanceAmount"],
-                                                PenaltyAmount: loanNumberResults[i]["PenaltyAmount"],
-                                                LateIntAmount: loanNumberResults[i]["LateIntAmount"],
-                                                AdvanceAmount: loanNumberResults[i]["AdvanceAmount"],
-                                                RequirementsAmount: loanNumberResults[i]["RequirementsAmount"],
-                                                InsuranceIPIorPPIAmount: loanNumberResults[i]["InsuranceIPIorPPIAmount"],
-                                                IsLocked: loanNumberResults[i]["IsLocked"],
-                                                LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"] + " " + currentLabel
-                                            });
-                                        }
-                                        disabled = false;
-                                    } else {
-                                        toastr.info("No Collections at this time");
-                                    }
-
-                                    cboLoanNumberLogHistory.dispose();
-                                    cboLoanNumberLogHistory = new wijmo.input.ComboBox('#cboLoanNumberLogHistory', {
-                                        disabled: disabled,
-                                        placeholder: "Select",
-                                        itemsSource: loanNumberArray,
-                                        isEditable: false,
-                                        required: true,
-                                        displayMemberPath: "LoanNumberDetailed",
-                                        selectedValuePath: "LoanNumberDetailed",
-                                        onSelectedIndexChanged: function () {
-                                            NProgress.start();
-                                            $("#loadingData").show();
-
-                                            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-                                            collectionFlexGrid.itemsSource = collectionCollectionView;
-                                            collectionFlexGrid.trackChanges = true;
-                                        }
-                                    });
-
-                                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-                                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                                    collectionFlexGrid.trackChanges = true;
-                                }
-                            });
                         }
                     });
                 }
@@ -811,17 +718,19 @@
                         cboLoanType.selectedValue = loanApplicationResult.LoanType;
                         cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
                         document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
-                        document.getElementById('loanApplicationProcessingFee').value = loanApplicationResult.ProcessingFeeAmount.toLocaleString();
-                        document.getElementById('loanApplicationPassbook').value = loanApplicationResult.PassbookAmount.toLocaleString();
-                        document.getElementById('loanApplicationBalance').value = loanApplicationResult.BalanceAmount.toLocaleString();
-                        document.getElementById('loanApplicationPenalty').value = loanApplicationResult.PenaltyAmount.toLocaleString();
-                        document.getElementById('loanApplicationLateInt').value = loanApplicationResult.LateIntAmount.toLocaleString();
-                        document.getElementById('loanApplicationAdvance').value = loanApplicationResult.AdvanceAmount.toLocaleString();
-                        document.getElementById('loanApplicationRequirements').value = loanApplicationResult.RequirementsAmount.toLocaleString();
-                        document.getElementById('loanApplicationInsuranceIPIorPPI').value = loanApplicationResult.InsuranceIPIorPPIAmount.toLocaleString();
+                        document.getElementById('loanApplicationProcessingFee').value = loanApplicationResult.ProcessingFeeAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationPassbook').value = loanApplicationResult.PassbookAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationBalance').value = loanApplicationResult.BalanceAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationPenalty').value = loanApplicationResult.PenaltyAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationLateInt').value = loanApplicationResult.LateIntAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationAdvance').value = loanApplicationResult.AdvanceAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationRequirements').value = loanApplicationResult.RequirementsAmountDeduction.toLocaleString();
+                        document.getElementById('loanApplicationInsuranceIPIorPPI').value = loanApplicationResult.InsuranceIPIorPPIAmountDeduction.toLocaleString();
                         document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
                         cboTerm.selectedValue = loanApplicationResult.Term;
                         cboInterest.selectedValue = loanApplicationResult.Interest;
+                        document.getElementById('interestRate').value = loanApplicationResult.InterestRate;
+                        document.getElementById('interestAmount').value = loanApplicationResult.InterestAmount;
                         cboPenalty.selectedValue = loanApplicationResult.Penalty;
                         document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
@@ -861,12 +770,12 @@
                             $("#btnUnlock").prop("disabled", true);
                             $("#btnPrint").prop("disabled", true);
                         }
-
-                        createFlexGridForLoanApplicationCollateral();
                     } else {
                         alert("The record you'd requested has no data");
                         window.history.back();
                     }
+
+                    createFlexGridForLoanApplicationCollateral();
                 }
             });
         }
@@ -904,6 +813,11 @@
                 loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                 loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
                 loanApplicationObject.LoanTypeId = cboLoanType.selectedItem["Id"];
+                loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
+                loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
+                loanApplicationObject.InterestRate = document.getElementById("interestRate").value;
+                loanApplicationObject.InterestAmount = document.getElementById("interestAmount").value;
+                loanApplicationObject.PenaltyId = cboPenalty.selectedItem["Id"];
                 loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
                 loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                 loanApplicationObject.ProcessingFeeAmount = document.getElementById('loanApplicationProcessingFee').value;
@@ -915,9 +829,6 @@
                 loanApplicationObject.RequirementsAmount = document.getElementById('loanApplicationRequirements').value;
                 loanApplicationObject.InsuranceIPIorPPIAmount = document.getElementById('loanApplicationInsuranceIPIorPPI').value;
                 loanApplicationObject.NetAmount = document.getElementById('loanApplicationTotalNetAmount').value;
-                loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
-                loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
-                loanApplicationObject.PenaltyId = cboPenalty.selectedItem["Id"];
                 var loanApplicationData = JSON.stringify(loanApplicationObject);
 
                 $("#processingModal").modal({
@@ -1368,7 +1279,6 @@
             NProgress.start();
             $("#loanApplicationCollateral").show();
             $("#applicantRequirements").hide();
-            $("#dailyCollections").hide();
 
             loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
             loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
@@ -1380,8 +1290,6 @@
             NProgress.start();
             $("#loanApplicationCollateral").hide();
             $("#applicantRequirements").show();
-            $("#dailyCollections").hide();
-
 
             createloanRequirementsFlexGrid();
             window.createloanRequirementsFlexGrid = function () {
@@ -1391,19 +1299,6 @@
             loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
             loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
             loanRequirementFlexGrid.trackChanges = true;
-        });
-
-        // applicant requirement tab
-        $('#dailyCollectionsTab').click(function () {
-            NProgress.start();
-            $("#loanApplicationCollateral").hide();
-            $("#applicantRequirements").hide();
-            $("#dailyCollections").show();
-
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-            collectionFlexGrid.itemsSource = collectionCollectionView;
-            collectionFlexGrid.trackChanges = true;
         });
 
         // get loan application collateral by loan id
@@ -1732,262 +1627,6 @@
             });
 
             loanApplicationCollateralFlexGrid.trackChanges = true;
-            cboLoanNumberLogHistory = new wijmo.input.ComboBox('#cboLoanNumberLogHistory');
-            createCboForLoanNumberCollections()
-        }
-
-        // cbo loan number
-        function createCboForLoanNumberCollections() {
-            var loanNumberArray = new Array();
-            $.ajax({
-                url: '/api/loanApplication/listByApplicantId/' + cboloanApplicationApplicant.selectedItem["Id"],
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (loanNumberResults) {
-                    var disabled = true;
-                    if (loanNumberResults.length > 0) {
-                        for (i = 0; i < loanNumberResults.length; i++) {
-
-                            var lockedLabel = "- Locked";
-                            if (loanNumberResults[i]["IsLocked"] == false) {
-                                lockedLabel = "- Unlocked";
-                            }
-
-                            var currentLabel = lockedLabel;
-                            if (loanNumberResults[i]["Id"] == getUrlParameter("id")) {
-                                currentLabel = lockedLabel + " " + "(Current)";
-                            }
-
-                            loanNumberArray.push({
-                                Id: loanNumberResults[i]["Id"],
-                                LoanNumber: loanNumberResults[i]["LoanNumber"],
-                                LoanDate: loanNumberResults[i]["LoanDate"],
-                                MaturityDate: loanNumberResults[i]["MaturityDate"],
-                                NetAmount: loanNumberResults[i]["NetAmount"],
-                                PrincipalAmount: loanNumberResults[i]["PrincipalAmount"],
-                                ProcessingFeeAmount: loanNumberResults[i]["ProcessingFeeAmount"],
-                                PassbookAmount: loanNumberResults[i]["PassbookAmount"],
-                                BalanceAmount: loanNumberResults[i]["BalanceAmount"],
-                                PenaltyAmount: loanNumberResults[i]["PenaltyAmount"],
-                                LateIntAmount: loanNumberResults[i]["LateIntAmount"],
-                                AdvanceAmount: loanNumberResults[i]["AdvanceAmount"],
-                                RequirementsAmount: loanNumberResults[i]["RequirementsAmount"],
-                                InsuranceIPIorPPIAmount: loanNumberResults[i]["InsuranceIPIorPPIAmount"],
-                                IsLocked: loanNumberResults[i]["IsLocked"],
-                                LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"] + " " + currentLabel
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboLoanNumberLogHistory.dispose();
-                        cboLoanNumberLogHistory = new wijmo.input.ComboBox('#cboLoanNumberLogHistory', {
-                            disabled: disabled,
-                            placeholder: "Select",
-                            itemsSource: loanNumberArray,
-                            isEditable: false,
-                            required: true,
-                            displayMemberPath: "LoanNumberDetailed",
-                            selectedValuePath: "LoanNumberDetailed",
-                            onSelectedIndexChanged: function () {
-                                NProgress.start();
-                                $("#loadingData").show();
-
-                                collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-                                collectionFlexGrid.itemsSource = collectionCollectionView;
-                                collectionFlexGrid.trackChanges = true;
-                            }
-                        });
-                    } else {
-                        toastr.info("No Collections at this time");
-                    }
-
-                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                    collectionFlexGrid.trackChanges = true;
-
-                    createFlexGridForCollection();
-                }
-            });
-        }
-
-        // loan collection data
-        function getCollectionData() {
-            var collectionListArray = new wijmo.collections.ObservableArray;
-            if (cboLoanNumberLogHistory.itemsSource.length > 0) {
-                $.ajax({
-                    url: '/api/collection/list/byApplicantId/byLoanId/' + cboloanApplicationApplicant.selectedItem["Id"] + "/" + cboLoanNumberLogHistory.selectedItem["Id"],
-                    cache: false,
-                    type: 'GET',
-                    contentType: 'application/json; charset=utf-8',
-                    success: function (collectionListResult) {
-                        if (collectionListResult.length > 0) {
-                            for (i = 0; i < collectionListResult.length; i++) {
-                                var newCollectionDate = new Date(collectionListResult[i]["CollectionDate"]);
-                                var collectionDateValue = ('0' + (newCollectionDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newCollectionDate.getDate()).slice(-2) + '-' + newCollectionDate.getFullYear();
-
-                                collectionListArray.push({
-                                    Id: collectionListResult[i]["Id"],
-                                    LoanId: collectionListResult[i]["LoanId"],
-                                    LoanNumber: collectionListResult[i]["LoanNumber"],
-                                    DayNumber: collectionListResult[i]["DayNumber"],
-                                    ApplicantId: collectionListResult[i]["ApplicantId"],
-                                    Applicant: collectionListResult[i]["Applicant"],
-                                    Area: collectionListResult[i]["Area"],
-                                    IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                    CollectionDate: collectionDateValue,
-                                    NetAmount: collectionListResult[i]["NetAmount"],
-                                    CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
-                                    PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                    PaidAmount: (collectionListResult[i]["PaidAmount"].toLocaleString()).toString().bold(),
-                                    PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
-                                    CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
-                                    IsCleared: collectionListResult[i]["IsCleared"],
-                                    IsAbsent: collectionListResult[i]["IsAbsent"],
-                                    IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
-                                    IsAdvancePayment: collectionListResult[i]["IsAdvancePayment"],
-                                    IsFullPayment: collectionListResult[i]["IsFullPayment"],
-                                    IsDueDate: collectionListResult[i]["IsDueDate"],
-                                    IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
-                                    IsOverdueCollection: collectionListResult[i]["IsOverdueCollection"],
-                                    IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
-                                    IsProcessed: collectionListResult[i]["IsProcessed"],
-                                    IsAction: collectionListResult[i]["IsAction"],
-                                    AssignedCollectorId: collectionListResult[i]["AssignedCollectorId"],
-                                    AssignedCollector: collectionListResult[i]["AssignedCollector"],
-                                    AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
-                                    CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
-                                    CurrentCollector: collectionListResult[i]["CurrentCollector"],
-                                    CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
-                                    Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString(),
-                                });
-                            }
-                        }
-
-                        NProgress.done();
-                        $("#loadingData").hide();
-                    }
-                });
-            } else {
-                NProgress.done();
-                $("#loadingData").hide();
-            }
-
-            return collectionListArray;
-        }
-
-        // flexgrid of collection
-        function createFlexGridForCollection() {
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionData());
-
-            collectionFlexGrid = new wijmo.grid.FlexGrid('#collectionFlexGrid');
-            collectionFlexGrid.initialize({
-                columns: [
-                            {
-                                "header": "Date",
-                                "binding": "CollectionDate",
-                                "allowSorting": false,
-                                "width": "1.6*",
-                            },
-                            {
-                                "header": "Collectibles",
-                                "binding": "CollectibleAmount",
-                                "allowSorting": false,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Penalty",
-                                "binding": "PenaltyAmount",
-                                "allowSorting": false,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Previous",
-                                "binding": "PreviousBalanceAmount",
-                                "allowSorting": false,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Current",
-                                "binding": "CurrentBalanceAmount",
-                                "allowSorting": false,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Paid Amount",
-                                "binding": "PaidAmount",
-                                "align": "right",
-                                "allowSorting": false,
-                                "isContentHtml": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "C",
-                                "binding": "IsCurrentCollection",
-                                "allowSorting": false,
-                                "width": "0.7*",
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "Status",
-                                "allowSorting": false,
-                                "isContentHtml": true,
-                                "width": "2.5*",
-                            }
-                ],
-                autoGenerateColumns: false,
-                itemsSource: collectionCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            collectionFlexGrid.trackChanges = true;
-
-            var hr = new wijmo.grid.Row();
-            collectionFlexGrid.allowMerging = wijmo.grid.AllowMerging.AllHeaders;
-            collectionFlexGrid.columnHeaders.rows.push(hr);
-            collectionFlexGrid.columnHeaders.rows[0].allowMerging = true;
-
-            collectionFlexGrid.columnHeaders.columns[0].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 0, 'Date');
-
-            collectionFlexGrid.columnHeaders.columns[1].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 1, 'Collectibles');
-
-            collectionFlexGrid.columnHeaders.columns[2].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 2, 'Penalty');
-
-            for (var balancesColumn = 3; balancesColumn <= 4; balancesColumn++) {
-                collectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
-            }
-
-            collectionFlexGrid.columnHeaders.columns[5].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 5, 'Paid Amount');
-
-            collectionFlexGrid.columnHeaders.columns[6].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'C');
-
-            collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Status');
-        }
-
-        // action on lick
-        function btnActionOnclick() {
-            $("#actionCollectionModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-        }
-
-        // view collection detail
-        function btnViewCollectionDetail() {
-            window.open('/Software/CollectionDetail?applicantId=' + cboloanApplicationApplicant.selectedItem["Id"] + '&loanId=' + cboLoanNumberLogHistory.selectedItem["Id"], '_blank');
         }
 
         // Term
@@ -2072,10 +1711,9 @@
                         selectedValuePath: "Interest",
                         onSelectedIndexChanged: function () {
                             document.getElementById("interestRate").value = this.selectedItem["Rate"];
+                            computeDeductions();
                         }
                     });
-
-                    document.getElementById("interestRate").value = cboInterest.selectedItem["Rate"];
                 }
             });
         }
@@ -2096,9 +1734,9 @@
                             penaltyArray.push({
                                 Id: penaltyResults[i]["Id"],
                                 Penalty: penaltyResults[i]["Penalty"],
-                                PenaltyAmount: penaltyResults[i]["PenaltyAmount"],
-                                NoOfAbsentLimit: penaltyResults[i]["NoOfAbsentLimit"],
-                                PenaltyAmountOverNoOfAbsentLimit: penaltyResults[i]["PenaltyAmountOverNoOfAbsentLimit"],
+                                DefaultPenaltyAmount: penaltyResults[i]["DefaultPenaltyAmount"],
+                                NoOfLimitAbsent: penaltyResults[i]["NoOfLimitAbsent"],
+                                PenaltyAmountOverNoOfLimitAbsent: penaltyResults[i]["PenaltyAmountOverNoOfLimitAbsent"],
                             });
                         }
 
@@ -2121,15 +1759,15 @@
                         displayMemberPath: "Penalty",
                         selectedValuePath: "Penalty",
                         onSelectedIndexChanged: function () {
-                            document.getElementById("penaltyAmount").value = this.selectedItem["PenaltyAmount"];
-                            document.getElementById("penaltyNoOfAbsentLimit").value = this.selectedItem["NoOfAbsentLimit"];
-                            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = this.selectedItem["PenaltyAmountOverNoOfAbsentLimit"];
+                            document.getElementById("penaltyAmount").value = this.selectedItem["DefaultPenaltyAmount"];
+                            document.getElementById("penaltyNoOfAbsentLimit").value = this.selectedItem["NoOfLimitAbsent"];
+                            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = this.selectedItem["PenaltyAmountOverNoOfLimitAbsent"];
                         }
                     });
 
-                    document.getElementById("penaltyAmount").value = cboPenalty.selectedItem["PenaltyAmount"];
-                    document.getElementById("penaltyNoOfAbsentLimit").value = cboPenalty.selectedItem["NoOfAbsentLimit"];
-                    document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = cboPenalty.selectedItem["PenaltyAmountOverNoOfAbsentLimit"];
+                    document.getElementById("penaltyAmount").value = cboPenalty.selectedItem["DefaultPenaltyAmount"];
+                    document.getElementById("penaltyNoOfAbsentLimit").value = cboPenalty.selectedItem["NoOfLimitAbsent"];
+                    document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = cboPenalty.selectedItem["PenaltyAmountOverNoOfLimitAbsent"];
                 }
             });
         }
@@ -2175,8 +1813,13 @@
 
             document.getElementById('loanApplicationProcessingFee').value = (principalAmountValue * 0.03).toLocaleString();
 
+            var interestRate = document.getElementById('interestRate').value.replace(/\,/g, '');
+            var interestAmount = (principalAmountValue / 100) * interestRate;
+
+            document.getElementById('interestAmount').value = interestAmount;
+
             setTimeout(function () {
-                var totalLoanAmountDeductions = principalAmountValue - (principalAmountValue * 0.03) - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIorPPIValue;
+                var totalLoanAmountDeductions = interestAmount + (principalAmountValue - (principalAmountValue * 0.03) - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIorPPIValue);
                 document.getElementById('loanApplicationTotalNetAmount').value = totalLoanAmountDeductions.toLocaleString();
             }, 500);
         }

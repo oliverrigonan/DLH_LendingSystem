@@ -571,7 +571,7 @@
       <Column Name="ReconstructId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="IsReconstructed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="mstAccount_trnDailyCollection" Member="mstAccount" ThisKey="AccountId" OtherKey="Id" Type="mstAccount" IsForeignKey="true" />
-      <Association Name="trnCollection_trnDailyCollection" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" />
+      <Association Name="trnCollection_trnDailyCollection" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="trnCollectionReconstruct_trnDailyCollection" Member="trnCollectionReconstruct" ThisKey="ReconstructId" OtherKey="Id" Type="trnCollectionReconstruct" IsForeignKey="true" />
     </Type>
   </Table>
@@ -614,6 +614,7 @@
       <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="InterestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="InterestRate" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="InterestAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PenaltyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PrincipalAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />

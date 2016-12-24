@@ -181,18 +181,13 @@
         function getCollectionByCollectionDateAndAreaIdList() {
             var collectionListArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/collection/list/byCollectionDate/byAreaId/' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-') + "/" + cboArea.selectedItem["Id"],
+                url: '/api/dailyCollection/list/byCollectionDate/byAreaId/' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-') + "/" + cboArea.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (collectionListResult) {
                     if (collectionListResult.length > 0) {
                         for (i = 0; i < collectionListResult.length; i++) {
-                            var isLocked = false;
-                            if (collectionListResult[i]["IsLocked"]) {
-                                isLocked = true;
-                            }
-
                             var btnClearClass = "btn btn-default btn-xs btn-block";
                             if (collectionListResult[i]["IsCleared"]) {
                                 btnClearClass = "btn btn-success btn-xs btn-block";
@@ -206,7 +201,7 @@
                             var disableButton = "disabled";
                             var canPerformActions = "@ViewData["CanPerformActions"]";
                             if (canPerformActions == 1) {
-                                if (!collectionListResult[i]["IsAction"]) {
+                                if (!collectionListResult[i]["CanPerformAction"]) {
                                     disableButton = "disabled";
                                 } else {
                                     disableButton = "";
@@ -227,37 +222,29 @@
                                 AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disableButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
                                 UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disableButton + "><i class='fa fa-undo fa-fw'></i></button>",
                                 Id: collectionListResult[i]["Id"],
-                                LoanId: collectionListResult[i]["LoanId"],
-                                LoanNumber: collectionListResult[i]["LoanNumber"],
-                                DayNumber: collectionListResult[i]["DayNumber"],
-                                ApplicantId: collectionListResult[i]["ApplicantId"],
+                                CollectionId: collectionListResult[i]["CollectionId"],
+                                CollectionNumber: collectionListResult[i]["CollectionNumber"],
                                 Applicant: collectionListResult[i]["Applicant"],
-                                Area: collectionListResult[i]["Area"],
-                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                CollectionDate: collectionDateValue,
+                                DailyCollectionDate: collectionListResult[i]["DailyCollectionDate"],
                                 NetAmount: collectionListResult[i]["NetAmount"],
                                 CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
                                 PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
                                 PaidAmount: collectionListResult[i]["PaidAmount"],
                                 PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
                                 CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
+                                IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
                                 IsCleared: collectionListResult[i]["IsCleared"],
                                 IsAbsent: collectionListResult[i]["IsAbsent"],
-                                IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
-                                IsAdvancePayment: collectionListResult[i]["IsAdvancePayment"],
-                                IsFullPayment: collectionListResult[i]["IsFullPayment"],
-                                IsDueDate: collectionListResult[i]["IsDueDate"],
-                                IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
-                                IsOverdueCollection: collectionListResult[i]["IsOverdueCollection"],
-                                IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
+                                IsPartiallyPaid: collectionListResult[i]["IsPartiallyPaid"],
+                                IsPaidInAdvanced: collectionListResult[i]["IsPaidInAdvanced"],
+                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
                                 IsProcessed: collectionListResult[i]["IsProcessed"],
-                                IsAction: collectionListResult[i]["IsAction"],
-                                AssignedCollectorId: collectionListResult[i]["AssignedCollectorId"],
-                                AssignedCollector: collectionListResult[i]["AssignedCollector"],
-                                AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
-                                CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
-                                CurrentCollector: collectionListResult[i]["CurrentCollector"],
-                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
+                                CanPerformAction: collectionListResult[i]["CanPerformAction"],
+                                IsDueDate: collectionListResult[i]["IsDueDate"],
+                                IsAllowanceDay: collectionListResult[i]["IsAllowanceDay"],
+                                IsLastDay: collectionListResult[i]["IsLastDay"],
+                                ReconstructId: collectionListResult[i]["ReconstructId"],
+                                IsReconstructed: collectionListResult[i]["IsReconstructed"],
                                 Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString(),
                             });
                         }
@@ -273,7 +260,7 @@
         function btnDetailOnclick() {
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var collectionItem = collectionCollectionView.currentEditItem;
-            window.open('/Software/CollectionDetail?applicantId=' + collectionItem.ApplicantId + '&loanId=' + collectionItem.LoanId, '_blank');
+            window.open('/Software/CollectionDetail?collectionId=' + collectionItem.CollectionId, '_blank');
         }
 
         // clear collection
@@ -285,14 +272,14 @@
                 if (collectionItem.CurrentBalanceAmount > 0) {
                     $.ajax({
                         type: "PUT",
-                        url: '/api/collection/cleared/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                        url: '/api/dailyCollection/cleared/byId/' + collectionItem.Id,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         statusCode: {
                             200: function () {
                                 $.ajax({
                                     type: "GET",
-                                    url: '/api/collection/isFullyPaid/get/byId/' + collectionItem.Id,
+                                    url: '/api/dailyCollection/get/isFullyPaid/byId/' + collectionItem.Id,
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (isFullyPaidResult) {
@@ -351,22 +338,22 @@
                 if (!collectionItem.IsAbsent) {
                     $.ajax({
                         type: "PUT",
-                        url: '/api/collection/absent/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                        url: '/api/dailyCollection/absent/byId/' + collectionItem.Id,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         statusCode: {
                             200: function () {
-                                var newDate = new Date(collectionItem.CollectionDate);
+                                var newDate = new Date(collectionItem.DailyCollectionDate);
                                 var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
                                 $.ajax({
                                     type: "GET",
-                                    url: '/api/collection/penaltyAmount/get/byLoanId/byCollectionDate/' + collectionItem.LoanId + '/' + collectionDateValue,
+                                    url: '/api/dailyCollection/get/penaltyAmount/byCollectionId/byCollectionDate/' + collectionItem.CollectionId + '/' + collectionDateValue,
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (penaltyValueResult) {
                                         $.ajax({
                                             type: "GET",
-                                            url: '/api/collection/isFullyPaid/get/byId/' + collectionItem.Id,
+                                            url: '/api/dailyCollection/get/isFullyPaid/byId/' + collectionItem.Id,
                                             contentType: "application/json; charset=utf-8",
                                             dataType: "json",
                                             success: function (isFullyPaidResult) {
@@ -419,22 +406,22 @@
             var collectionItem = collectionCollectionView.currentEditItem;
             $.ajax({
                 type: "PUT",
-                url: '/api/collection/undoChanges/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                url: '/api/dailyCollection/undoChanges/byId/' + collectionItem.Id,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        var newDate = new Date(collectionItem.CollectionDate);
+                        var newDate = new Date(collectionItem.DailyCollectionDate);
                         var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
                         $.ajax({
                             type: "GET",
-                            url: '/api/collection/previousBalance/get/byLoanId/byCollectionDate/' + collectionItem.LoanId + '/' + collectionDateValue,
+                            url: '/api/dailyCollection/get/previousBalance/byCollectionId/byCollectionDate/' + collectionItem.CollectionId + '/' + collectionDateValue,
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function (previousBalanceValueResult) {
                                 $.ajax({
                                     type: "GET",
-                                    url: '/api/collection/isFullyPaid/get/byId/' + collectionItem.Id,
+                                    url: '/api/dailyCollection/get/isFullyPaid/byId/' + collectionItem.Id,
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (isFullyPaidResult) {

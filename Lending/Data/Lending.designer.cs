@@ -13597,7 +13597,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnCollection_trnDailyCollection", Storage="_trnCollection", ThisKey="CollectionId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnCollection_trnDailyCollection", Storage="_trnCollection", ThisKey="CollectionId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnCollection trnCollection
 		{
 			get
@@ -14399,6 +14399,8 @@ namespace Lending.Data
 		
 		private decimal _InterestRate;
 		
+		private decimal _InterestAmount;
+		
 		private int _PenaltyId;
 		
 		private int _PreparedByUserId;
@@ -14483,6 +14485,8 @@ namespace Lending.Data
     partial void OnInterestIdChanged();
     partial void OnInterestRateChanging(decimal value);
     partial void OnInterestRateChanged();
+    partial void OnInterestAmountChanging(decimal value);
+    partial void OnInterestAmountChanged();
     partial void OnPenaltyIdChanging(int value);
     partial void OnPenaltyIdChanged();
     partial void OnPreparedByUserIdChanging(int value);
@@ -14772,6 +14776,26 @@ namespace Lending.Data
 					this._InterestRate = value;
 					this.SendPropertyChanged("InterestRate");
 					this.OnInterestRateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InterestAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal InterestAmount
+		{
+			get
+			{
+				return this._InterestAmount;
+			}
+			set
+			{
+				if ((this._InterestAmount != value))
+				{
+					this.OnInterestAmountChanging(value);
+					this.SendPropertyChanging();
+					this._InterestAmount = value;
+					this.SendPropertyChanged("InterestAmount");
+					this.OnInterestAmountChanged();
 				}
 			}
 		}

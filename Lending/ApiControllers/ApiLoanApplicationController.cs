@@ -94,6 +94,7 @@ namespace Lending.ApiControllers
                                       Term = d.mstTerm.Term,
                                       InterestId = d.InterestId,
                                       Interest = d.mstInterest.Interest,
+                                      InterestAmount = d.InterestAmount,
                                       InterestRate = d.InterestRate,
                                       PenaltyId = d.PenaltyId,
                                       Penalty = d.mstPenalty.Penalty,
@@ -148,6 +149,7 @@ namespace Lending.ApiControllers
                                       InterestId = d.InterestId,
                                       Interest = d.mstInterest.Interest,
                                       InterestRate = d.InterestRate,
+                                      InterestAmount = d.InterestAmount,
                                       PenaltyId = d.PenaltyId,
                                       Penalty = d.mstPenalty.Penalty,
                                       PreparedByUser = d.mstUser.FullName,
@@ -246,6 +248,7 @@ namespace Lending.ApiControllers
                         newLoanApplication.TermId = termId;
                         newLoanApplication.InterestId = (from d in db.mstInterests select d.Id).FirstOrDefault();
                         newLoanApplication.InterestRate = (from d in db.mstInterests select d.Rate).FirstOrDefault();
+                        newLoanApplication.InterestAmount = 0;
                         newLoanApplication.PenaltyId = (from d in db.mstPenalties select d.Id).FirstOrDefault();
                         newLoanApplication.PrincipalAmount = 0;
                         newLoanApplication.ProcessingFeeAmountDeduction = 0;
@@ -343,6 +346,7 @@ namespace Lending.ApiControllers
                                     lockLoanApplication.TermId = loanApplication.TermId;
                                     lockLoanApplication.InterestId = loanApplication.InterestId;
                                     lockLoanApplication.InterestRate = loanApplication.InterestRate;
+                                    lockLoanApplication.InterestAmount = loanApplication.InterestAmount;
                                     lockLoanApplication.PenaltyId = loanApplication.PenaltyId;
                                     lockLoanApplication.PrincipalAmount = loanApplication.PrincipalAmount;
                                     lockLoanApplication.ProcessingFeeAmountDeduction = loanApplication.ProcessingFeeAmountDeduction;

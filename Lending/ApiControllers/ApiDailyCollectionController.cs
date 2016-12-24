@@ -634,7 +634,7 @@ namespace Lending.ApiControllers
                 var dailyCollection = from d in db.trnDailyCollections where d.Id == Convert.ToInt32(id) select d;
                 if (dailyCollection.Any())
                 {
-                    var loanApplication = from d in db.trnLoanApplications where d.Id == dailyCollection.FirstOrDefault().CollectionId select d;
+                    var loanApplication = from d in db.trnLoanApplications where d.Id == dailyCollection.FirstOrDefault().trnCollection.LoanId select d;
                     if (loanApplication.Any())
                     {
                         if (loanApplication.FirstOrDefault().IsLocked)

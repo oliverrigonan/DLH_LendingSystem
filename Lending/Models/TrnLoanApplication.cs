@@ -26,6 +26,7 @@ namespace Lending.Models
         public Int32 InterestId { get; set; }
         public String Interest { get; set; }
         public Decimal InterestRate { get; set; }
+        public Decimal InterestAmount { get; set; }
         public Int32 PenaltyId { get; set; }
         public String Penalty { get; set; }
         public Int32 PreparedByUserId { get; set; }
