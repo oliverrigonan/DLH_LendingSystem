@@ -90,7 +90,7 @@ namespace Lending.Reports
                                            IsLastDay = d.IsLastDay,
                                            ReconstructId = d.ReconstructId != null ? d.ReconstructId : 0,
                                            IsReconstructed = d.IsReconstructed,
-                                           Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartiallyPaid, d.IsPaidInAdvanced, d.IsFullyPaid, d.trnCollection.IsOverdue)
+                                           Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartiallyPaid, d.IsPaidInAdvanced, d.IsFullyPaid, d.trnCollection.IsOverdue, d.IsReconstructed)
                                        };
 
                 // table collection lines data

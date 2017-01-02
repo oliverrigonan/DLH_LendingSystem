@@ -225,6 +225,7 @@
                                 CollectionId: collectionListResult[i]["CollectionId"],
                                 CollectionNumber: collectionListResult[i]["CollectionNumber"],
                                 Applicant: collectionListResult[i]["Applicant"],
+                                DayNumber: collectionListResult[i]["DayNumber"],
                                 DailyCollectionDate: collectionListResult[i]["DailyCollectionDate"],
                                 NetAmount: collectionListResult[i]["NetAmount"],
                                 CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
@@ -347,7 +348,7 @@
                                 var collectionDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
                                 $.ajax({
                                     type: "GET",
-                                    url: '/api/dailyCollection/get/penaltyAmount/byCollectionId/byCollectionDate/' + collectionItem.CollectionId + '/' + collectionDateValue,
+                                    url: '/api/dailyCollection/get/penaltyAmount/byCollectionId/byDayNumber/' + collectionItem.CollectionId + '/' + collectionItem.DayNumber,
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (penaltyValueResult) {

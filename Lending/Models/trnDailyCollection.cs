@@ -15,6 +15,7 @@ namespace Lending.Models
         public Int32 LoanId { get; set; }
         public Int32 AccountId { get; set; }
         public String Applicant { get; set; }
+        public Decimal DayNumber { get; set; }
         public String DailyCollectionDate { get; set; }
         public Decimal NetAmount { get; set; }
         public Decimal CollectibleAmount { get; set; }

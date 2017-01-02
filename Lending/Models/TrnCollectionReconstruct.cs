@@ -20,7 +20,10 @@ namespace Lending.Models
         public Decimal TermNoOfAllowanceDays { get; set; }
         public Int32 InterestId { get; set; }
         public Decimal InterestRate { get; set; }
+        public Decimal InterestAmount { get; set; }
         public Int32 PenaltyId { get; set; }
         public String Penalty { get; set; }
+        public Decimal CurrentBalanceAmount { get; set; }
+        public Decimal BalanceAmount { get; set; }
     }
 }

@@ -12247,7 +12247,13 @@ namespace Lending.Data
 		
 		private decimal _InterestRate;
 		
+		private decimal _InterestAmount;
+		
 		private int _PenaltyId;
+		
+		private decimal _CurrentBalanceAmount;
+		
+		private decimal _BalanceAmount;
 		
 		private EntitySet<trnDailyCollection> _trnDailyCollections;
 		
@@ -12283,8 +12289,14 @@ namespace Lending.Data
     partial void OnInterestIdChanged();
     partial void OnInterestRateChanging(decimal value);
     partial void OnInterestRateChanged();
+    partial void OnInterestAmountChanging(decimal value);
+    partial void OnInterestAmountChanged();
     partial void OnPenaltyIdChanging(int value);
     partial void OnPenaltyIdChanged();
+    partial void OnCurrentBalanceAmountChanging(decimal value);
+    partial void OnCurrentBalanceAmountChanged();
+    partial void OnBalanceAmountChanging(decimal value);
+    partial void OnBalanceAmountChanged();
     #endregion
 		
 		public trnCollectionReconstruct()
@@ -12509,6 +12521,26 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InterestAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal InterestAmount
+		{
+			get
+			{
+				return this._InterestAmount;
+			}
+			set
+			{
+				if ((this._InterestAmount != value))
+				{
+					this.OnInterestAmountChanging(value);
+					this.SendPropertyChanging();
+					this._InterestAmount = value;
+					this.SendPropertyChanged("InterestAmount");
+					this.OnInterestAmountChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PenaltyId", DbType="Int NOT NULL")]
 		public int PenaltyId
 		{
@@ -12529,6 +12561,46 @@ namespace Lending.Data
 					this._PenaltyId = value;
 					this.SendPropertyChanged("PenaltyId");
 					this.OnPenaltyIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CurrentBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal CurrentBalanceAmount
+		{
+			get
+			{
+				return this._CurrentBalanceAmount;
+			}
+			set
+			{
+				if ((this._CurrentBalanceAmount != value))
+				{
+					this.OnCurrentBalanceAmountChanging(value);
+					this.SendPropertyChanging();
+					this._CurrentBalanceAmount = value;
+					this.SendPropertyChanged("CurrentBalanceAmount");
+					this.OnCurrentBalanceAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal BalanceAmount
+		{
+			get
+			{
+				return this._BalanceAmount;
+			}
+			set
+			{
+				if ((this._BalanceAmount != value))
+				{
+					this.OnBalanceAmountChanging(value);
+					this.SendPropertyChanging();
+					this._BalanceAmount = value;
+					this.SendPropertyChanged("BalanceAmount");
+					this.OnBalanceAmountChanged();
 				}
 			}
 		}
@@ -12729,6 +12801,8 @@ namespace Lending.Data
 		
 		private System.DateTime _DailyCollectionDate;
 		
+		private decimal _DayNumber;
+		
 		private decimal _NetAmount;
 		
 		private decimal _CollectibleAmount;
@@ -12785,6 +12859,8 @@ namespace Lending.Data
     partial void OnAccountIdChanged();
     partial void OnDailyCollectionDateChanging(System.DateTime value);
     partial void OnDailyCollectionDateChanged();
+    partial void OnDayNumberChanging(decimal value);
+    partial void OnDayNumberChanged();
     partial void OnNetAmountChanging(decimal value);
     partial void OnNetAmountChanged();
     partial void OnCollectibleAmountChanging(decimal value);
@@ -12917,6 +12993,26 @@ namespace Lending.Data
 					this._DailyCollectionDate = value;
 					this.SendPropertyChanged("DailyCollectionDate");
 					this.OnDailyCollectionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DayNumber", DbType="Decimal(18,5) NOT NULL")]
+		public decimal DayNumber
+		{
+			get
+			{
+				return this._DayNumber;
+			}
+			set
+			{
+				if ((this._DayNumber != value))
+				{
+					this.OnDayNumberChanging(value);
+					this.SendPropertyChanging();
+					this._DayNumber = value;
+					this.SendPropertyChanged("DayNumber");
+					this.OnDayNumberChanged();
 				}
 			}
 		}

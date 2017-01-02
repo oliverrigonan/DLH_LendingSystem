@@ -66,6 +66,7 @@ namespace Lending.Business
                         Decimal collectibleAmountCeil = Math.Ceiling((collectibleAmount + 1) / 5) * 5;
                         Decimal termNoOfAllowanceDay = newCollection.TermNoOfAllowanceDays;
 
+                        Decimal dayNumber = 0;
                         for (var i = 1; i <= numberOfDays + Convert.ToInt32(termNoOfAllowanceDay); i++)
                         {
                             if (i <= numberOfDays)
@@ -91,9 +92,12 @@ namespace Lending.Business
                                             }
                                         }
 
+                                        dayNumber += 1;
+
                                         Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
                                         newDailyCollection.CollectionId = newCollection.Id;
                                         newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                        newDailyCollection.DayNumber = dayNumber;
                                         newDailyCollection.DailyCollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
                                         newDailyCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
                                         newDailyCollection.CollectibleAmount = collectibleAmountCeil * collection.FirstOrDefault().TermNoOfDays;
@@ -107,10 +111,13 @@ namespace Lending.Business
                                         newDailyCollection.IsPartiallyPaid = false;
                                         newDailyCollection.IsPaidInAdvanced = false;
                                         newDailyCollection.IsFullyPaid = false;
-                                        newDailyCollection.IsDueDate = isDueDateValue;
                                         newDailyCollection.IsProcessed = false;
                                         newDailyCollection.CanPerformAction = isActionValue;
+                                        newDailyCollection.IsAllowanceDay = false;
+                                        newDailyCollection.IsDueDate = isDueDateValue;
                                         newDailyCollection.IsLastDay = isLastDay;
+                                        newDailyCollection.ReconstructId = null;
+                                        newDailyCollection.IsReconstructed = false;
                                         db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
                                         db.SubmitChanges();
 
@@ -135,9 +142,12 @@ namespace Lending.Business
                                             }
                                         }
 
+                                        dayNumber += 1;
+
                                         Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
                                         newDailyCollection.CollectionId = newCollection.Id;
                                         newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                        newDailyCollection.DayNumber = dayNumber;
                                         newDailyCollection.DailyCollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
                                         newDailyCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
                                         newDailyCollection.CollectibleAmount = netAmount;
@@ -151,10 +161,13 @@ namespace Lending.Business
                                         newDailyCollection.IsPartiallyPaid = false;
                                         newDailyCollection.IsPaidInAdvanced = false;
                                         newDailyCollection.IsFullyPaid = false;
-                                        newDailyCollection.IsDueDate = isDueDateValue;
                                         newDailyCollection.IsProcessed = false;
                                         newDailyCollection.CanPerformAction = isActionValue;
+                                        newDailyCollection.IsAllowanceDay = false;
+                                        newDailyCollection.IsDueDate = isDueDateValue;
                                         newDailyCollection.IsLastDay = isLastDay;
+                                        newDailyCollection.ReconstructId = null;
+                                        newDailyCollection.IsReconstructed = false;
                                         db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
                                         db.SubmitChanges();
 
@@ -179,9 +192,12 @@ namespace Lending.Business
                                             isLastDay = true;
                                         }
 
+                                        dayNumber += 1;
+
                                         Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
                                         newDailyCollection.CollectionId = newCollection.Id;
                                         newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                        newDailyCollection.DayNumber = dayNumber;
                                         newDailyCollection.DailyCollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
                                         newDailyCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
                                         newDailyCollection.CollectibleAmount = netAmount;
@@ -195,10 +211,13 @@ namespace Lending.Business
                                         newDailyCollection.IsPartiallyPaid = false;
                                         newDailyCollection.IsPaidInAdvanced = false;
                                         newDailyCollection.IsFullyPaid = false;
-                                        newDailyCollection.IsDueDate = isDueDateValue;
                                         newDailyCollection.IsProcessed = false;
                                         newDailyCollection.CanPerformAction = isActionValue;
+                                        newDailyCollection.IsAllowanceDay = false;
+                                        newDailyCollection.IsDueDate = isDueDateValue;
                                         newDailyCollection.IsLastDay = isLastDay;
+                                        newDailyCollection.ReconstructId = null;
+                                        newDailyCollection.IsReconstructed = false;
                                         db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
                                         db.SubmitChanges();
 
@@ -214,9 +233,12 @@ namespace Lending.Business
                                     isLastDay = true;
                                 }
 
+                                dayNumber += 1;
+
                                 Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
                                 newDailyCollection.CollectionId = newCollection.Id;
                                 newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                newDailyCollection.DayNumber = dayNumber;
                                 newDailyCollection.DailyCollectionDate = Convert.ToDateTime(loanApplication.FirstOrDefault().LoanDate).Date.AddDays(i);
                                 newDailyCollection.NetAmount = loanApplication.FirstOrDefault().NetAmount;
                                 newDailyCollection.CollectibleAmount = netAmount;
@@ -230,11 +252,14 @@ namespace Lending.Business
                                 newDailyCollection.IsPartiallyPaid = false;
                                 newDailyCollection.IsPaidInAdvanced = false;
                                 newDailyCollection.IsFullyPaid = false;
-                                newDailyCollection.IsDueDate = false;
                                 newDailyCollection.IsProcessed = false;
                                 newDailyCollection.CanPerformAction = false;
-                                newDailyCollection.IsLastDay = isLastDay;
                                 newDailyCollection.IsAllowanceDay = true;
+                                newDailyCollection.IsDueDate = false;
+                                newDailyCollection.IsLastDay = isLastDay;
+                                newDailyCollection.ReconstructId = null;
+                                newDailyCollection.IsReconstructed = false;
+
                                 db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
                                 db.SubmitChanges();
                             }

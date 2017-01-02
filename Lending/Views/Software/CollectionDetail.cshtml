@@ -38,25 +38,6 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading" align="right">
-                        @*<div class="btn-group">
-                            <div class="btn-group">
-                                <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                    <i class="fa fa-money fa-fw"></i> Payment Options <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#" onclick="btnPartialPaymentOnclick()"> Partial Payment</a></li>
-                                    <li><a href="#" onclick="btnAdvancePaymentOnclick()"> Advance Payment</a></li>
-                                    <li><a href="#" onclick="btnFullPaymentOnclick()"> Full Payment</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#" onclick="btnReconstruct()"> Reconstruct</a></li>
-                                    <li><a href="#" onclick="linkExtendCollectionPaymentOnclick()"> Extend</a></li>
-                                    <li class="divider"></li>
-                                    <li><a href="#" onclick="linkOverdueCollectionPaymentOnclick()"> Overdue</a></li>
-                                </ul>
-                            </div>
-                        </div>*@
-                        <button class="btn btn-primary" id="" onclick="btnPartialPaymentOnclick()"> Partial Payment</button>
-                        <button class="btn btn-primary" id="" onclick="btnAdvancePaymentOnclick()"> Advance Payment</button>
                         <button class="btn btn-primary" id="" onclick="btnFullPaymentOnclick()"> Full Payment</button>
                         <button class="btn btn-primary" id="" onclick="btnPrintApplicantCollectionPaper()"><i class="fa fa-print fa-fw"></i> Print </button>
                         <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/CollectionList'">
@@ -65,8 +46,8 @@
                     </div>
                     <div class="panel-body">
                         <ul class="nav nav-tabs">
-                            <li class="active"><a data-toggle="pill" href="#collection">Collection</a></li>
-                            <li><a data-toggle="pill" href="#reconstruct">Reconstruct</a></li>
+                            <li class="active"><a data-toggle="tab" href="#collection" id="collectionHeaderTabId">Collection</a></li>
+                            <li><a data-toggle="tab" href="#reconstruct" id="reconstructHeaderTabId">Reconstruct</a></li>
                         </ul>
                         <br />
                         <div class="tab-content">
@@ -75,13 +56,19 @@
                                     <div class="col-md-6">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label>Collection Number</label><br />
-                                                    <input type="text" class="form-control" id="collectionNumber" placeholder="Collection Number" disabled />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Collection Date</label><br />
-                                                    <div id="cboCollectionDate"></div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Collection Number</label><br />
+                                                            <input type="text" class="form-control" id="collectionNumber" placeholder="Collection Number" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Collection Date</label><br />
+                                                            <input type="text" class="form-control" id="collectionDate" placeholder="Collection Date" disabled />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Applicant</label><br />
@@ -90,6 +77,52 @@
                                                 <div class="form-group">
                                                     <label>Area</label><br />
                                                     <input type="text" class="form-control" id="collectionApplicantArea" placeholder="Area" disabled />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Collection Start Date</label><br />
+                                                            <input type="text" class="form-control" id="collectionStartDate" disabled />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Collection End Date</label><br />
+                                                            <input type="text" class="form-control" id="collectionEndDate" disabled />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Daily Collectible</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionDailyCollectibles" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Total Penalty</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionTotalPenalty" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Total Current Balance</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionTotalCurrentBalance" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Total Paid Amount</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionTotalPaidAmount" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -111,6 +144,23 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <p>Created by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                                <br />
+                                                <p>Updated by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="panel panel-default">
@@ -119,21 +169,86 @@
                                                     <label>Loan Number</label><br />
                                                     <input type="text" class="form-control" id="collecitonLoanNumber" placeholder="Loan Number" disabled />
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Loan Date</label><br />
+                                                            <input type="text" class="form-control" id="collectionDetailLoanDate" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Maturity Date (Due Date)</label><br />
+                                                            <input type="text" class="form-control" id="collectionDetailMaturityDate" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label>Term</label><br />
                                                     <input type="text" class="form-control" id="collectionTerm" placeholder="=Term" disabled />
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>Term No of Days</label><br />
-                                                    <input type="text" class="form-control numberField" id="collectionTermNoOfDays" placeholder="Term Number of Days" disabled />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Term No of Days</label><br />
+                                                            <input type="text" class="form-control numberField" id="collectionTermNoOfDays" placeholder="Term Number of Days" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>No of Allowance Days</label><br />
+                                                            <input type="text" class="form-control numberField" id="collectionNoOfAllowanceDays" placeholder="Term Number of Allowance Days" disabled />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label>No of Allowance Days</label><br />
-                                                    <input type="text" class="form-control numberField" id="collectionNoOfAllowanceDays" placeholder="Term Number of Allowance Days" disabled />
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Principal Amount</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionDetailPrincipalAmount" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Interest</label><br />
+                                                            <input type="text" class="form-control" id="collectionDetailInterest" placeholder="0.00" disabled />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Rate</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">%</span>
+                                                                <input type="text" class="form-control numberField" id="collectionDetailInterestRate" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Interest Amount</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionDetailInterestAmount" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Total Deductions</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionDetailTotalDeductions" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Net Amount</label><br />
+                                                            <div class="input-group numberField">
+                                                                <span class="input-group-addon">&#8369;</span>
+                                                                <input type="text" class="form-control numberField" id="collectionDetailNetAmount" placeholder="0.00" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="panel-footer">
-                                                <button class="btn btn-info">View Loan Application Detail</button>
+                                                <button class="btn btn-info" onclick="btnViewLoanApplicationDetailOnclick()">View Loan Application Detail</button>
                                             </div>
                                         </div>
                                     </div>
@@ -145,138 +260,23 @@
                                             Daily Collection
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="#moreDetailsTabContent" data-toggle="tab" id="moreDetailsTab">
-                                            More Collection Details
-                                        </a>
-                                    </li>
                                 </ul>
                                 <br />
                                 <div id="myTabContent" class="tab-content">
                                     <div class="tab-pane fade in active" id="collectionsTabContent">
-                                        <div id="collectionFlexGrid"></div>
-                                    </div>
-                                    <div class="tab-pane fade in" id="moreDetailsTabContent">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label>Loan Date</label><br />
-                                                                    <input type="text" class="form-control" id="collectionDetailLoanDate" disabled />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Maturity Date (Due Date)</label><br />
-                                                                    <input type="text" class="form-control" id="collectionDetailMaturityDate" disabled />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Is Fully Paid</label><br />
-                                                                    <input type="checkbox" id="collectionDetailIsFullyPaid" disabled />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label>Principal Amount</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionDetailPrincipalAmount" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Total Deductions</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionDetailTotalDeductions" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Net Amount</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionDetailNetAmount" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="panel-footer">
-                                                        <button class="btn btn-info" onclick="btnViewLoanApplicationDetailOnclick()">View Loan Application Detail</button>
-                                                    </div>
-                                                </div>
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body">
-                                                        <p>Created by:</p>
-                                                        <div style="padding-left: 10px;">
-                                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                                            <br />
-                                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                                        </div>
-                                                        <br />
-                                                        <p>Updated by:</p>
-                                                        <div style="padding-left: 10px;">
-                                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                                            <br />
-                                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="panel panel-default">
-                                                    <div class="panel-body">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label>Collection Start Date</label><br />
-                                                                    <input type="text" class="form-control" id="collectionStartDate" disabled />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Collection End Date</label><br />
-                                                                    <input type="text" class="form-control" id="collectionEndDate" disabled />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <div class="form-group">
-                                                                    <label>Daily Collectible</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionDailyCollectibles" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Total Penalty</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionTotalPenalty" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Total Current Balance</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionTotalCurrentBalance" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Total Paid Amount</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control numberField" id="collectionTotalPaidAmount" placeholder="0.00" disabled />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div id="dailyCollectionFlexGrid"></div>
                                     </div>
                                 </div>
                             </div>
                             <div id="reconstruct" class="tab-pane fade">
-
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <button class="btn btn-primary" onclick="btnCollectionReconstructAddOnclick()"><i class="fa fa-plus fa-fw"></i> Add</button>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="collectionReconstructFlexgrid" class=""></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -285,21 +285,21 @@
         </div>
     </div>
 
-    <!-- due date options -->
-    <div class="modal fade" id="deudatemodal" role="dialog">
+    <!-- undo changes confirmation modal -->
+    <div class="modal fade" id="undoChangesConfirmationModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Collection Due Date</h4>
+                    <h4 class="modal-title">Undo Changes Collection</h4>
                 </div>
                 <div class="modal-body">
-                    <button class="btn btn-warning btn-block" id="" onclick="btnExtedCollectionOnclick()">Extend</button>
-                    <button class="btn btn-warning btn-block" id="" onclick="btnOverdueOnclick()">Overdue</button>
+                    Are you sure that you're going to undo the selected changes in the collection? it will not redo anymore when confirm.
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" id="" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                    <button class="btn btn-default" id="undoChangesConfirmationYes" onclick="undoChangesConfirmationOnclick()" data-dismiss="modal"> Yes </button>
+                    <button class="btn btn-default" id="undoChangesConfirmationNo" data-dismiss="modal"> No </button>
                 </div>
             </div>
         </div>
@@ -578,26 +578,148 @@
         </div>
     </div>
 
+    <!-- reconstruct edit detail modal -->
+    <div class="modal fade" id="collectionReconstructDetailModal" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Reconstruct Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Reconstruct Number</label><br />
+                                        <input type="text" class="form-control" id="collectionReconstructNumber" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Start Date</label><br />
+                                        <div id="cboCollectionReconstructStartDate"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>End Date</label><br />
+                                        <div id="cboCollectionReconstructEndDate"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Term</label><br />
+                                        <div id="cboCollectionReconstructTerm"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Term Number of Days</label><br />
+                                        <input type="text" class="form-control numberField" id="collectionReconstructNoOfDays" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Term Number of Allowance Days</label><br />
+                                        <input type="text" class="form-control numberField" id="collectionReconstructNoOfAllowanceDays" disabled />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Penalty</label><br />
+                                        <div id="cboCollectionReconstructPenalty"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Current Balance Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="collectionReconstructCurrentBalanceAmount" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Interest</label><br />
+                                        <div id="cboCollectionReconstructInterest"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Interest Rate</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">%</span>
+                                            <input type="text" class="form-control numberField" id="collectionReconstructInterestRate" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Interest Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="collectionReconstructInterestAmount" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <label>Balance Amount</label><br />
+                                        <div class="input-group numberField">
+                                            <span class="input-group-addon">&#8369;</span>
+                                            <input type="text" class="form-control numberField" id="collectionReconstructBalanceAmount" placeholder="0.00" disabled />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnCollectionReconstructSave" onclick="btnCollectionReconstructSaveOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCollectionReconstructClose" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation reconstruct  -->
+    <div class="modal fade" id="collectionReconstructDeleteConfirmationModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Reconstruct</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this collection reconstruct?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" id="" onclick="">Yes</button>
+                    <button class="btn btn-default" id="" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         // Global Variables
-        var collectionCollectionView;
-        var collectionFlexGrid;
-        var urlParameterLoanId = getUrlParameter("loanId");
-        var currentCollectionId = 0;
-        var advancePaymentCollectionView;
-        var advancePaymentFlexGrid;
-        var btnFirstPageGridCollectionAdvancePayment;
-        var btnPreviousPageGridCollectionAdvancePayment;
-        var btnNextPageGridCollectionAdvancePayment;
-        var btnLastPageGridCollectionAdvancePayment;
-        var collectionAdvancePaymentId = 0;
-        var cboExtendNumberOfDays;
-        var defaultDailyCollectible = 0;
-        
         var cboCollectionDate;
+        var dailyCollectionCollectionView;
+        var dailyCollectionFlexGrid;
+        var loanApplicationId = 0;
+        var isFullyPaid = false;
+        var collectionReconstructCollectionView;
+        var collectionReconstructFlexgrid;
+
+        var cboCollectionReconstructStartDate;
+        var cboCollectionReconstructEndDate;
+        var newDate = new Date();
+        var cboCollectionReconstructStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboCollectionReconstructEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var cboCollectionReconstructTerm;
+        var cboCollectionReconstructPenalty;
+        var cboCollectionReconstructInterest;
+        var collectionReconstructId;
 
         // get collection
         function getCollectionById() {
@@ -610,235 +732,87 @@
                 success: function (collectionResults) {
                     if (collectionResults != null) {
                         document.getElementById("collectionNumber").value = collectionResults.CollectionNumber;
-
                         var newCollectionDate = new Date(collectionResults.CollectionDate);
                         var collectionDateValue = ('0' + (newCollectionDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newCollectionDate.getDate()).slice(-2) + '-' + newCollectionDate.getFullYear();
-
-                        cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate', {
-                            disabled: true,
-                            format: 'MM-dd-yyyy',
-                            value: new Date(collectionDateValue),
-                            mask: '99-99-9999',
-                        });
-
+                        document.getElementById("collectionDate").value = collectionDateValue;
                         document.getElementById("collectionApplicant").value = collectionResults.Applicant;
                         document.getElementById("collectionApplicantArea").value = collectionResults.Area;
-
-
                         document.getElementById("collectionIsOverdue").checked = collectionResults.IsOverdue;
                         document.getElementById("collectionIsFullyPaid").checked = collectionResults.IsFullyPaid;
-
                         document.getElementById("collecitonLoanNumber").value = collectionResults.LoanNumber;
                         document.getElementById("collectionTerm").value = collectionResults.Term;
                         document.getElementById("collectionTermNoOfDays").value = collectionResults.TermNoOfDays;
                         document.getElementById("collectionNoOfAllowanceDays").value = collectionResults.TermNoOfAllowanceDays;
-
+                        var newCollectionLoanDate = new Date(collectionResults.LoanDate);
+                        var collectionLoanDateValue = ('0' + (newCollectionLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newCollectionLoanDate.getDate()).slice(-2) + '-' + newCollectionLoanDate.getFullYear();
+                        document.getElementById("collectionDetailLoanDate").value = collectionLoanDateValue;
+                        var newCollectionMaturityDate = new Date(collectionResults.MaturityDate);
+                        var collectionMaturityDateValue = ('0' + (newCollectionMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newCollectionMaturityDate.getDate()).slice(-2) + '-' + newCollectionMaturityDate.getFullYear();
+                        document.getElementById("collectionDetailMaturityDate").value = collectionMaturityDateValue;
+                        document.getElementById("collectionDetailPrincipalAmount").value = collectionResults.PrincipalAmount.toLocaleString();
+                        document.getElementById("collectionDetailInterest").value = collectionResults.Interest.toLocaleString();
+                        document.getElementById("collectionDetailInterestRate").value = collectionResults.InterestRate.toLocaleString();
+                        document.getElementById("collectionDetailInterestAmount").value = collectionResults.InterestAmount.toLocaleString();
+                        document.getElementById("collectionDetailTotalDeductions").value = collectionResults.TotalDeductionAmount.toLocaleString();
+                        document.getElementById("collectionDetailNetAmount").value = collectionResults.NetAmount.toLocaleString();
+                        loanApplicationId = collectionResults.LoanId;
+                        createFlexGridForDailyCollection();
+                        isFullyPaid = collectionResults.IsFullyPaid;
                     }
                 }
             });
         }
 
-        // loan application for selected value
-        function getLoanApplicationForSelectedValue() {
-            var loanApplicationDetailSelectedValue = "";
-            $.ajax({
-                url: '/api/loanApplication/getById/' + getUrlParameter("loanId"),
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (loanApplicationResult) {
-                    if (loanApplicationResult != null) {
-
-                        var currentLabel = "";
-                        if (loanApplicationResult.Id == getUrlParameter("loanId")) {
-                            currentLabel = "(Current)";
-                        }
-
-                        loanApplicationDetailSelectedValue = loanApplicationResult.LoanNumber + " - from: " + loanApplicationResult.LoanDate + " to " + loanApplicationResult.MaturityDate + " " + currentLabel
-                    }
-
-                    cboLoanNumberLogHistory = new wijmo.input.ComboBox('#cboLoanNumberLogHistory');
-                    createCboForLoanNumberInLogHistory(loanApplicationDetailSelectedValue);
-                }
-            });
-        }
-
-        // cbo loan number
-        function createCboForLoanNumberInLogHistory(loanApplicationSelectedValue) {
-            var loanNumberArray = new Array();
-            $.ajax({
-                url: '/api/loanApplication/listByApplicantId/' + getUrlParameter("applicantId"),
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (loanNumberResults) {
-                    var disabled = true;
-                    if (loanNumberResults.length > 0) {
-                        for (i = 0; i < loanNumberResults.length; i++) {
-
-                            var currentLabel = "";
-                            if (loanNumberResults[i]["Id"] == urlParameterLoanId) {
-                                currentLabel = "(Current)";
-                            }
-
-                            loanNumberArray.push({
-                                Id: loanNumberResults[i]["Id"],
-                                LoanNumber: loanNumberResults[i]["LoanNumber"],
-                                LoanDate: loanNumberResults[i]["LoanDate"],
-                                MaturityDate: loanNumberResults[i]["MaturityDate"],
-                                Applicant: loanNumberResults[i]["Applicant"],
-                                Area: loanNumberResults[i]["Area"],
-                                NetAmount: loanNumberResults[i]["NetAmount"],
-                                PrincipalAmount: loanNumberResults[i]["PrincipalAmount"],
-                                ProcessingFeeAmount: loanNumberResults[i]["ProcessingFeeAmount"],
-                                PassbookAmount: loanNumberResults[i]["PassbookAmount"],
-                                BalanceAmount: loanNumberResults[i]["BalanceAmount"],
-                                PenaltyAmount: loanNumberResults[i]["PenaltyAmount"],
-                                LateIntAmount: loanNumberResults[i]["LateIntAmount"],
-                                AdvanceAmount: loanNumberResults[i]["AdvanceAmount"],
-                                RequirementsAmount: loanNumberResults[i]["RequirementsAmount"],
-                                InsuranceIPIorPPIAmount: loanNumberResults[i]["InsuranceIPIorPPIAmount"],
-                                IsLocked: loanNumberResults[i]["IsLocked"],
-                                IsFullyPaid: loanNumberResults[i]["IsFullyPaid"],
-                                CreatedByUser: loanNumberResults[i]["CreatedByUser"],
-                                CreatedDateTime: loanNumberResults[i]["CreatedDateTime"],
-                                UpdatedByUser: loanNumberResults[i]["UpdatedByUser"],
-                                UpdatedDateTime: loanNumberResults[i]["UpdatedDateTime"],
-                                LoanNumberDetailed: loanNumberResults[i]["LoanNumber"] + " - from: " + loanNumberResults[i]["LoanDate"] + " to " + loanNumberResults[i]["MaturityDate"] + " " + currentLabel
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboLoanNumberLogHistory.dispose();
-                        cboLoanNumberLogHistory = new wijmo.input.ComboBox('#cboLoanNumberLogHistory', {
-                            disabled: disabled,
-                            placeholder: "Select",
-                            itemsSource: loanNumberArray,
-                            isEditable: false,
-                            required: true,
-                            displayMemberPath: "LoanNumberDetailed",
-                            selectedValuePath: "LoanNumberDetailed",
-                            selectedValue: loanApplicationSelectedValue.toString(),
-                            onSelectedIndexChanged: function () {
-                                NProgress.start();
-
-                                urlParameterLoanId = this.selectedItem["Id"];
-
-                                // flexgrid refresh
-                                collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                                collectionFlexGrid.itemsSource = collectionCollectionView;
-                                collectionFlexGrid.trackChanges = true;
-
-                                updateMoreDetails();
-
-                                setTimeout(function () {
-                                    advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
-                                    advancePaymentCollectionView.pageSize = 5;
-
-                                    advancePaymentCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                        updateNavigateButtonsCollectionAdvancePayment();
-                                    });
-
-                                    advancePaymentFlexGrid.itemsSource = advancePaymentCollectionView;
-                                    advancePaymentFlexGrid.trackChanges = true;
-                                }, 500)
-
-                                document.getElementById('stampCreatedBy').innerHTML = this.selectedItem["CreatedByUser"];
-                                document.getElementById('stampCreatedDate').innerHTML = this.selectedItem["CreatedDateTime"];
-                                document.getElementById('stampUpdatedBy').innerHTML = this.selectedItem["UpdatedByUser"];
-                                document.getElementById('stampUpdatedDate').innerHTML = this.selectedItem["UpdatedDateTime"];
-                            }
-                        });
-
-                        document.getElementById('stampCreatedBy').innerHTML = cboLoanNumberLogHistory.selectedItem["CreatedByUser"];
-                        document.getElementById('stampCreatedDate').innerHTML = cboLoanNumberLogHistory.selectedItem["CreatedDateTime"];
-                        document.getElementById('stampUpdatedBy').innerHTML = cboLoanNumberLogHistory.selectedItem["UpdatedByUser"];
-                        document.getElementById('stampUpdatedDate').innerHTML = cboLoanNumberLogHistory.selectedItem["UpdatedDateTime"];
-
-                        updateMoreDetails();
-                    } else {
-                        toastr.info("No collection at this time");
-                    }
-
-                    createFlexGridForCollection();
-                }
-            });
-        }
-
-        // more detail update
-        function updateMoreDetails() {
-            document.getElementById("applicantName").value = cboLoanNumberLogHistory.selectedItem["Applicant"];
-
-            var newLoanDate = new Date(cboLoanNumberLogHistory.selectedItem["LoanDate"]);
-            var loanDateValue = ('0' + (newLoanDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newLoanDate.getDate()).slice(-2) + '-' + newLoanDate.getFullYear();
-
-            var newMaturityDate = new Date(cboLoanNumberLogHistory.selectedItem["MaturityDate"]);
-            var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
-
-            document.getElementById("collectionDetailLoanDate").value = loanDateValue;
-            document.getElementById("collectionDetailMaturityDate").value = maturityDateValue;
-            document.getElementById("collectionDetailIsFullyPaid").checked = cboLoanNumberLogHistory.selectedItem["IsFullyPaid"];
-
-            document.getElementById("collectionDetailPrincipalAmount").value = cboLoanNumberLogHistory.selectedItem["PrincipalAmount"].toLocaleString();
-
-            var processingFee = cboLoanNumberLogHistory.selectedItem["ProcessingFeeAmount"];
-            var passbook = cboLoanNumberLogHistory.selectedItem["PassbookAmount"];
-            var balance = cboLoanNumberLogHistory.selectedItem["BalanceAmount"];
-            var penalty = cboLoanNumberLogHistory.selectedItem["PenaltyAmount"];
-            var lateInt = cboLoanNumberLogHistory.selectedItem["LateIntAmount"];
-            var advance = cboLoanNumberLogHistory.selectedItem["AdvanceAmount"];
-            var requirements = cboLoanNumberLogHistory.selectedItem["RequirementsAmount"];
-            var insuranceIPIorPPI = cboLoanNumberLogHistory.selectedItem["InsuranceIPIorPPIAmount"];
-
-            var totalDeductions = processingFee + passbook + balance + penalty + lateInt + advance + requirements + insuranceIPIorPPI;
-
-            document.getElementById("collectionDetailTotalDeductions").value = totalDeductions.toLocaleString();
-            document.getElementById("collectionDetailNetAmount").value = cboLoanNumberLogHistory.selectedItem["NetAmount"].toLocaleString();
-
-
-        }
-
-        // get collection by applicantId and by loanId
-        function getCollectionByApplicantIdByLoanId() {
+        // daily collection
+        function getDaiyCollection() {
             NProgress.start();
-            var collectionListArray = new wijmo.collections.ObservableArray;
+            var dailyCollectionListArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/collection/list/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
+                url: '/api/dailyCollection/list/byCollectionId/' + getUrlParameter("collectionId"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
-                success: function (collectionListResult) {
-                    if (collectionListResult.length > 0) {
+                success: function (dailyCollectionListResult) {
+                    if (dailyCollectionListResult.length > 0) {
+
                         var amountValue = 0;
                         var totalPenalty = 0;
                         var totalCurrentBalance = 0;
                         var totalPaidAmount = 0;
-                        for (i = 0; i < collectionListResult.length; i++) {
+                        var advanceAmountValue = 0;
+
+                        for (i = 0; i < dailyCollectionListResult.length; i++) {
                             var btnClearClass = "btn btn-default btn-xs btn-block";
-                            if (collectionListResult[i]["IsCleared"]) {
+                            if (dailyCollectionListResult[i]["IsCleared"]) {
                                 btnClearClass = "btn btn-success btn-xs btn-block";
                             }
 
                             var btnAbsentClass = "btn btn-default btn-xs btn-block";
-                            if (collectionListResult[i]["IsAbsent"]) {
+                            if (dailyCollectionListResult[i]["IsAbsent"]) {
                                 btnAbsentClass = "btn btn-danger btn-xs btn-block";
                             }
 
-                            var trashUndoIcon = "undo";
-                            if (collectionListResult[i]["IsExtendCollection"] || collectionListResult[i]["IsOverdueCollection"]) {
-                                trashUndoIcon = "trash";
-                            }
-
-                            var newDate = new Date(collectionListResult[i]["CollectionDate"]);
-                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+                            var newDate = new Date(dailyCollectionListResult[i]["DailyCollectionDate"]);
+                            var dailyCollectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             var isCurrentCollecitonHTMLContent = "<span class='label label-default'><i class='fa fa-circle-o fa-fw'></i></span>";
-                            if (collectionListResult[i]["IsCurrentCollection"]) {
-                                isCurrentCollecitonHTMLContent = "<span class='label label-success'><i class='fa fa-check fa-fw'></i></span>";
+                            if (dailyCollectionListResult[i]["IsReconstructed"]) {
+                                isCurrentCollecitonHTMLContent = "<span class='label label-danger'><i class='fa fa-circle-o fa-fw'></i></span>";
+                                if (dailyCollectionListResult[i]["IsCurrentCollection"]) {
+                                    isCurrentCollecitonHTMLContent = "<span class='label label-success'><i class='fa fa-check fa-fw'></i></span>";
+                                } else {
+                                    if (dailyCollectionListResult[i]["IsAllowanceDay"]) {
+                                        isCurrentCollecitonHTMLContent = "<span class='label label-warning'><i class='fa fa-circle-o fa-fw'></i></span>";
+                                    }
+                                }
+                            } else {
+                                if (dailyCollectionListResult[i]["IsCurrentCollection"]) {
+                                    isCurrentCollecitonHTMLContent = "<span class='label label-success'><i class='fa fa-check fa-fw'></i></span>";
+                                } else {
+                                    if (dailyCollectionListResult[i]["IsAllowanceDay"]) {
+                                        isCurrentCollecitonHTMLContent = "<span class='label label-warning'><i class='fa fa-circle-o fa-fw'></i></span>";
+                                    }
+                                }
                             }
 
                             var disabledButton = "disabled";
@@ -847,82 +821,95 @@
                                 disabledButton = "";
                             }
 
-                            collectionListArray.push({
-                                OptionButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnOptionOnclick()'" + disabledButton + "><i class='fa fa-wrench fa-fw'></i> Option</button>",
+                            var btnPaymentOptionsClass = "btn btn-default btn-xs";
+                            var paymentOptionIcon = "fa fa-check fa-fw";
+                            if (dailyCollectionListResult[i]["IsCurrentCollection"]) {
+                                btnPaymentOptionsClass = "btn btn-primary btn-xs";
+                                paymentOptionIcon = "fa fa-edit fa-fw";
+                            } else {
+                                if (!dailyCollectionListResult[i]["IsProcessed"]) {
+                                    if (dailyCollectionListResult[i]["CurrentBalanceAmount"] > 0) {
+                                        btnPaymentOptionsClass = "btn btn-success btn-xs";
+                                        paymentOptionIcon = "fa fa-hand-o-right fa-fw";
+                                    } else {
+                                        btnPaymentOptionsClass = "btn btn-default btn-xs";
+                                        paymentOptionIcon = "fa fa-times fa-fw";
+                                    }
+                                }
+                            }
+
+                            if (!dailyCollectionListResult[i]["IsProcessed"]) {
+                                advanceAmountValue = advanceAmountValue + dailyCollectionListResult[i]["CurrentBalanceAmount"];
+                            }
+
+                            dailyCollectionListArray.push({
+                                PaymentOptionsButton: "<button class='" + btnPaymentOptionsClass + "' onclick='btnPaymentOptionOnclick()'" + disabledButton + "><i class='" + paymentOptionIcon + "'></i></button>",
                                 ClearButton: "<button class='" + btnClearClass + "' onclick='btnClearOnclick()'" + disabledButton + "><i class='fa fa-check fa-fw'></i> Clear</button>",
                                 AbsentButton: "<button class='" + btnAbsentClass + "' onclick='btnAbsentOnclick()'" + disabledButton + "><i class='fa fa-circle fa-fw'></i> Absent</button>",
-                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disabledButton + "><i class='fa fa-" + trashUndoIcon + " fa-fw'></i></button>",
-                                Id: collectionListResult[i]["Id"],
-                                LoanId: collectionListResult[i]["LoanId"],
-                                LoanNumber: collectionListResult[i]["LoanNumber"],
-                                DayNumber: collectionListResult[i]["DayNumber"],
-                                ApplicantId: collectionListResult[i]["ApplicantId"],
-                                Applicant: collectionListResult[i]["Applicant"],
-                                Area: collectionListResult[i]["Area"],
-                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                CollectionDate: collectionDateValue,
-                                NetAmount: collectionListResult[i]["NetAmount"],
-                                CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
-                                PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2'),
-                                PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
-                                CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
-                                IsCleared: collectionListResult[i]["IsCleared"],
-                                IsAbsent: collectionListResult[i]["IsAbsent"],
-                                IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
-                                IsAdvancePayment: collectionListResult[i]["IsAdvancePayment"],
-                                IsFullPayment: collectionListResult[i]["IsFullPayment"],
-                                IsDueDate: collectionListResult[i]["IsDueDate"],
-                                IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
-                                IsOverdueCollection: collectionListResult[i]["IsOverdueCollection"],
+                                UndoChangesButton: "<button class='btn btn-default btn-xs btn-block' data-toggle='tooltip' data-placement='top' title='Undo Actions and Changes' onclick='btnUndoChangesOnclick()'" + disabledButton + "><i class='fa fa-undo fa-fw'></i></button>",
+                                Id: dailyCollectionListResult[i]["Id"],
+                                CollectionId: dailyCollectionListResult[i]["CollectionId"],
+                                CollectionNumber: dailyCollectionListResult[i]["CollectionNumber"],
+                                Applicant: dailyCollectionListResult[i]["Applicant"],
+                                DailyCollectionDate: dailyCollectionDateValue,
+                                NetAmount: dailyCollectionListResult[i]["NetAmount"],
+                                CollectibleAmount: dailyCollectionListResult[i]["CollectibleAmount"],
+                                PenaltyAmount: dailyCollectionListResult[i]["PenaltyAmount"],
+                                PaidAmount: dailyCollectionListResult[i]["PaidAmount"].toString().bold().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2'),
+                                PreviousBalanceAmount: dailyCollectionListResult[i]["PreviousBalanceAmount"],
+                                CurrentBalanceAmount: dailyCollectionListResult[i]["CurrentBalanceAmount"],
                                 IsCurrentCollection: isCurrentCollecitonHTMLContent,
-                                IsProcessed: collectionListResult[i]["IsProcessed"],
-                                IsAction: collectionListResult[i]["IsAction"],
-                                AssignedCollectorId: collectionListResult[i]["AssignedCollectorId"],
-                                AssignedCollector: collectionListResult[i]["AssignedCollector"],
-                                AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
-                                CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
-                                CurrentCollector: collectionListResult[i]["CurrentCollector"],
-                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
-                                IsLastDay: collectionListResult[i]["IsLastDay"],
-                                Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString()
+                                IsCurrentCollectionValue: dailyCollectionListResult[i]["IsCurrentCollection"],
+                                IsCleared: dailyCollectionListResult[i]["IsCleared"],
+                                IsAbsent: dailyCollectionListResult[i]["IsAbsent"],
+                                IsPartiallyPaid: dailyCollectionListResult[i]["IsPartialPayment"],
+                                IsPaidInAdvanced: dailyCollectionListResult[i]["IsAdvancePayment"],
+                                IsFullyPaid: dailyCollectionListResult[i]["IsFullyPaid"],
+                                IsProcessed: dailyCollectionListResult[i]["IsProcessed"],
+                                CanPerformAction: dailyCollectionListResult[i]["CanPerformAction"],
+                                IsDueDate: dailyCollectionListResult[i]["IsDueDate"],
+                                IsAllowanceDay: dailyCollectionListResult[i]["IsAllowanceDay"],
+                                IsLastDay: dailyCollectionListResult[i]["IsLastDay"],
+                                ReconstructId: dailyCollectionListResult[i]["ReconstructId"],
+                                IsReconstructed: dailyCollectionListResult[i]["IsReconstructed"],
+                                AdvanceAmount: advanceAmountValue,
+                                Status: "<i class='fa fa-calendar fa-fw'></i>" + " " + dailyCollectionListResult[i]["Status"].toString()
                             });
 
-                            if (!collectionListResult[i]["IsProcessed"]) {
-                                amountValue += collectionListResult[i]["CurrentBalanceAmount"];
+                            if (!dailyCollectionListResult[i]["IsProcessed"]) {
+                                amountValue += dailyCollectionListResult[i]["CurrentBalanceAmount"];
 
-                                if (collectionListResult[i]["IsCurrentCollection"]) {
-                                    document.getElementById("fullPaymentStartDate").value = collectionDateValue;
+                                if (dailyCollectionListResult[i]["IsCurrentCollection"]) {
+                                    document.getElementById("fullPaymentStartDate").value = dailyCollectionDateValue;
                                 }
 
-                                if (i == collectionListResult.length - 1) {
-                                    document.getElementById("fullPaymentEndDate").value = collectionDateValue;
+                                if (i == dailyCollectionListResult.length - 1) {
+                                    document.getElementById("fullPaymentEndDate").value = dailyCollectionDateValue;
                                 }
                             }
 
-                            if (collectionListResult[i]["PenaltyAmount"] > 0) {
-                                totalPenalty += collectionListResult[i]["PenaltyAmount"];
+                            if (dailyCollectionListResult[i]["PenaltyAmount"] > 0) {
+                                totalPenalty += dailyCollectionListResult[i]["PenaltyAmount"];
                             }
 
-                            if (!collectionListResult[i]["IsProcessed"]) {
-                                totalCurrentBalance += collectionListResult[i]["CurrentBalanceAmount"];
+                            if (!dailyCollectionListResult[i]["IsProcessed"]) {
+                                totalCurrentBalance += dailyCollectionListResult[i]["CurrentBalanceAmount"];
                             }
 
-                            if (collectionListResult[i]["PaidAmount"] > 0) {
-                                totalPaidAmount += collectionListResult[i]["PaidAmount"];
+                            if (dailyCollectionListResult[i]["PaidAmount"] > 0) {
+                                totalPaidAmount += dailyCollectionListResult[i]["PaidAmount"];
                             }
 
                             if (i == 0) {
-                                var newStartDate = new Date(collectionListResult[i]["CollectionDate"]);
+                                var newStartDate = new Date(dailyCollectionListResult[i]["DailyCollectionDate"]);
                                 var collectionStartDateValue = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
                                 document.getElementById("collectionStartDate").value = collectionStartDateValue;
-                                document.getElementById("collectionDailyCollectibles").value = collectionListResult[i]["CollectibleAmount"];
+                                document.getElementById("collectionDailyCollectibles").value = dailyCollectionListResult[i]["CollectibleAmount"].toLocaleString();
 
-                                document.getElementById("extendDailyCollectibles").value = collectionListResult[i]["CollectibleAmount"];
-                                defaultDailyCollectible = collectionListResult[i]["CollectibleAmount"];
+                                document.getElementById("extendDailyCollectibles").value = dailyCollectionListResult[i]["CollectibleAmount"].toLocaleString();
                             } else {
-                                if (i == collectionListResult.length - 1) {
-                                    var newEndDate = new Date(collectionListResult[i]["CollectionDate"]);
+                                if (i == dailyCollectionListResult.length - 1) {
+                                    var newEndDate = new Date(dailyCollectionListResult[i]["DailyCollectionDate"]);
                                     var collectionEndDateValue = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
                                     document.getElementById("collectionEndDate").value = collectionEndDateValue;
                                 }
@@ -941,21 +928,37 @@
                 }
             });
 
-            return collectionListArray;
+            return dailyCollectionListArray;
         }
 
         // flexgrid of collection
-        function createFlexGridForCollection() {
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+        function createFlexGridForDailyCollection() {
+            dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-            collectionFlexGrid = new wijmo.grid.FlexGrid('#collectionFlexGrid');
-            collectionFlexGrid.initialize({
+            dailyCollectionFlexGrid = new wijmo.grid.FlexGrid('#dailyCollectionFlexGrid');
+            dailyCollectionFlexGrid.initialize({
                 columns: [
                             {
+                                "header": "O",
+                                "binding": "PaymentOptionsButton",
+                                "width": 35,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
                                 "header": "Date",
-                                "binding": "CollectionDate",
+                                "binding": "DailyCollectionDate",
                                 "allowSorting": false,
-                                "width": "1.5*",
+                                "width": "1.6*",
+                            },
+                            {
+                                "header": "C",
+                                "binding": "IsCurrentCollection",
+                                "isContentHtml": true,
+                                "allowSorting": false,
+                                "width": "0.7*",
+                                "align": "center"
                             },
                             {
                                 "header": "Collectibles",
@@ -990,14 +993,6 @@
                                 "align": "right"
                             },
                             {
-                                "header": "C",
-                                "binding": "IsCurrentCollection",
-                                "isContentHtml": true,
-                                "allowSorting": false,
-                                "width": "0.7*",
-                                "align": "center"
-                            },
-                            {
                                 "header": "Status",
                                 "binding": "Status",
                                 "allowSorting": false,
@@ -1030,57 +1025,60 @@
                             },
                 ],
                 autoGenerateColumns: false,
-                itemsSource: collectionCollectionView,
+                itemsSource: dailyCollectionCollectionView,
                 isReadOnly: true,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
                 selectionMode: wijmo.grid.SelectionMode.Row
             });
 
-            collectionFlexGrid.trackChanges = true;
+            dailyCollectionFlexGrid.trackChanges = true;
 
             var hr = new wijmo.grid.Row();
-            collectionFlexGrid.allowMerging = wijmo.grid.AllowMerging.AllHeaders;
-            collectionFlexGrid.columnHeaders.rows.push(hr);
-            collectionFlexGrid.columnHeaders.rows[0].allowMerging = true;
+            dailyCollectionFlexGrid.allowMerging = wijmo.grid.AllowMerging.AllHeaders;
+            dailyCollectionFlexGrid.columnHeaders.rows.push(hr);
+            dailyCollectionFlexGrid.columnHeaders.rows[0].allowMerging = true;
 
-            collectionFlexGrid.columnHeaders.columns[0].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 0, 'Date');
+            dailyCollectionFlexGrid.columnHeaders.columns[0].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 0, 'O');
 
-            collectionFlexGrid.columnHeaders.columns[1].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 1, 'Collectibles');
+            dailyCollectionFlexGrid.columnHeaders.columns[1].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 1, 'Date');
 
-            collectionFlexGrid.columnHeaders.columns[2].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 2, 'Penalty');
+            dailyCollectionFlexGrid.columnHeaders.columns[2].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 2, 'C');
 
-            for (var balancesColumn = 3; balancesColumn <= 4; balancesColumn++) {
-                collectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
+            dailyCollectionFlexGrid.columnHeaders.columns[3].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 3, 'Collectibles');
+
+            dailyCollectionFlexGrid.columnHeaders.columns[4].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 4, 'Penalty');
+
+            for (var balancesColumn = 5; balancesColumn <= 6; balancesColumn++) {
+                dailyCollectionFlexGrid.columnHeaders.setCellData(0, balancesColumn, 'Balances (Amount)');
             }
 
-            collectionFlexGrid.columnHeaders.columns[5].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 5, 'Paid Amount');
+            dailyCollectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 7, 'Paid Amount');
 
-            collectionFlexGrid.columnHeaders.columns[6].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 6, 'C');
+            dailyCollectionFlexGrid.columnHeaders.columns[8].allowMerging = true;
+            dailyCollectionFlexGrid.columnHeaders.setCellData(0, 8, 'Status');
 
-            collectionFlexGrid.columnHeaders.columns[7].allowMerging = true;
-            collectionFlexGrid.columnHeaders.setCellData(0, 7, 'Status');
-
-            for (var actionsColumn = 8; actionsColumn <= 10; actionsColumn++) {
-                collectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
+            for (var actionsColumn = 9; actionsColumn <= 11; actionsColumn++) {
+                dailyCollectionFlexGrid.columnHeaders.setCellData(0, actionsColumn, 'Actions');
             }
         }
 
         // clear collection
         function btnClearOnclick() {
             NProgress.start();
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var collectionItem = collectionCollectionView.currentEditItem;
-            if (!collectionItem.IsCleared) {
-                if (collectionItem.CurrentBalanceAmount > 0) {
+            dailyCollectionCollectionView.editItem(dailyCollectionCollectionView.currentItem);
+            var dailyCollectionItem = dailyCollectionCollectionView.currentEditItem;
+            if (!dailyCollectionItem.IsCleared) {
+                if (dailyCollectionItem.CurrentBalanceAmount > 0) {
                     $.ajax({
                         type: "PUT",
-                        url: '/api/collection/cleared/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                        url: '/api/dailyCollection/cleared/byId/' + dailyCollectionItem.Id,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         statusCode: {
@@ -1088,12 +1086,10 @@
                                 toastr.success("Cleared");
                                 NProgress.start();
 
-                                urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                                dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-                                collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                                collectionFlexGrid.itemsSource = collectionCollectionView;
-                                collectionFlexGrid.trackChanges = true;
+                                dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                                dailyCollectionFlexGrid.trackChanges = true;
                             },
                             404: function (message) {
                                 NProgress.done();
@@ -1122,116 +1118,89 @@
         // absent collection
         function btnAbsentOnclick() {
             NProgress.start();
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var collectionItem = collectionCollectionView.currentEditItem;
-            if (collectionItem.IsDueDate) {
-                if (!collectionItem.IsLastDay) {
-                    if (!collectionItem.IsAbsent) {
-                        $.ajax({
-                            type: "PUT",
-                            url: '/api/collection/absent/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            statusCode: {
-                                200: function () {
-                                    toastr.success("Absent");
-                                    NProgress.start();
+            dailyCollectionCollectionView.editItem(dailyCollectionCollectionView.currentItem);
+            var dailyCollectionItem = dailyCollectionCollectionView.currentEditItem;
+            if (!dailyCollectionItem.IsAbsent) {
+                if (dailyCollectionItem.CurrentBalanceAmount > 0) {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/dailyCollection/absent/byId/' + dailyCollectionItem.Id,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Absent");
+                                NProgress.start();
 
-                                    urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                                dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-                                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                                dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                                dailyCollectionFlexGrid.trackChanges = true;
 
-                                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                                    collectionFlexGrid.trackChanges = true;
-                                },
-                                404: function (message) {
-                                    NProgress.done();
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                                },
-                                400: function (message) {
-                                    NProgress.done();
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                                },
-                                500: function (message) {
-                                    NProgress.done();
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                if (dailyCollectionItem.IsLastDay) {
+                                    btnCollectionReconstructAddOnclick();
                                 }
+                            },
+                            404: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                            },
+                            400: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                            },
+                            500: function (message) {
+                                NProgress.done();
+                                toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
                             }
-                        });
-                    } else {
-                        NProgress.done();
-                        toastr.info("Already Absent");
-                    }
+                        }
+                    });
                 } else {
                     NProgress.done();
-                    toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
+                    toastr.info("No Current Balance.");
                 }
             } else {
-                if (!collectionItem.IsLastDay) {
-                    if (!collectionItem.IsAbsent) {
-                        $.ajax({
-                            type: "PUT",
-                            url: '/api/collection/absent/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            statusCode: {
-                                200: function () {
-                                    toastr.success("Absent");
-                                    NProgress.start();
-
-                                    urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
-
-                                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                                    collectionFlexGrid.trackChanges = true;
-                                },
-                                404: function (message) {
-                                    NProgress.done();
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                                },
-                                400: function (message) {
-                                    NProgress.done();
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                                },
-                                500: function (message) {
-                                    NProgress.done();
-                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
-                                }
-                            }
-                        });
-                    } else {
-                        NProgress.done();
-                        toastr.error("Already Absent");
-                    }
-                } else {
-                    NProgress.done();
-                    toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
-                }
+                NProgress.done();
+                toastr.info("Already Absent");
             }
         }
 
         // undo changes collection
         function btnUndoChangesOnclick() {
+            $("#undoChangesConfirmationModal").modal({
+                "show": true,
+                "backdrop": "static"
+            })
+        }
+
+        // undo confirm
+        function undoChangesConfirmationOnclick() {
+            $("#undoChangesConfirmationYes").prop("disabled", true);
+            $("#undoChangesConfirmationNo").prop("disabled", true);
+            document.getElementById("undoChangesConfirmationYes").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+
             NProgress.start();
-            collectionCollectionView.editItem(collectionCollectionView.currentItem);
-            var collectionItem = collectionCollectionView.currentEditItem;
+            dailyCollectionCollectionView.editItem(dailyCollectionCollectionView.currentItem);
+            var dailyCollectionItem = dailyCollectionCollectionView.currentEditItem;
             $.ajax({
                 type: "PUT",
-                url: '/api/collection/undoChanges/update/byId/byLoanId/' + collectionItem.Id + '/' + collectionItem.LoanId,
+                url: '/api/dailyCollection/undoChanges/byId/' + dailyCollectionItem.Id,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
                     200: function () {
                         toastr.success("Undo");
                         NProgress.start();
+                        $("#undoChangesConfirmationModal").modal("hide");
 
-                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                        dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                        dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                        dailyCollectionFlexGrid.trackChanges = true;
 
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
+                        $("#undoChangesConfirmationYes").prop("disabled", false);
+                        $("#undoChangesConfirmationNo").prop("disabled", false);
+                        document.getElementById("undoChangesConfirmationYes").innerHTML = "Yes";
                     },
                     404: function (message) {
                         NProgress.done();
@@ -1249,78 +1218,66 @@
             });
         }
 
-        // partial payment
-        function btnPartialPaymentOnclick() {
-            document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-            $("#btnUpdatePartialPayment").prop("disabled", false);
-            $("#btnUpdatePartialPaymentClose").prop("disabled", false);
-
+        // Payment Options
+        function btnPaymentOptionOnclick() {
             NProgress.start();
-            $.ajax({
-                url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (currentCollectionResults) {
-                    if (currentCollectionResults != null) {
-                        if (currentCollectionResults.IsDueDate) {
-                            if (!currentCollectionResults.IsLastDay) {
-                                $('.requiredPartialPayment').each(function () {
-                                    $(this).css({
-                                        "border": "",
-                                    });
-                                });
+            dailyCollectionCollectionView.editItem(dailyCollectionCollectionView.currentItem);
+            var dailyCollectionItem = dailyCollectionCollectionView.currentEditItem;
+            if (dailyCollectionItem.IsCurrentCollectionValue) {
+                document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                $("#btnUpdatePartialPayment").prop("disabled", false);
+                $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
-                                $("#partialPaymentModal").modal({
-                                    "show": true,
-                                    "backdrop": "static"
-                                });
+                if (!dailyCollectionItem.IsLastDay) {
+                    if (dailyCollectionItem.CurrentBalanceAmount > 0) {
+                        $("#partialPaymentModal").modal({
+                            "show": true,
+                            "backdrop": "static"
+                        });
 
-                                var newDate = new Date(currentCollectionResults.CollectionDate);
-                                var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+                        var newDate = new Date(dailyCollectionItem.DailyCollectionDate);
+                        var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                                currentCollectionId = currentCollectionResults.Id;
-                                document.getElementById("partialPaymentCollectionDate").value = collectionDateValue;
-                                document.getElementById("partialPaymentDailyCollectibles").value = currentCollectionResults.CollectibleAmount.toLocaleString();
-                                document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount.toLocaleString();
-                                document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount.toLocaleString();
-                                document.getElementById("partialPaymentPartialAmount").value = 0;
-                            } else {
-                                toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
-                            }
-                        } else {
-                            if (!currentCollectionResults.IsLastDay) {
-                                $('.requiredPartialPayment').each(function () {
-                                    $(this).css({
-                                        "border": "",
-                                    });
-                                });
+                        document.getElementById("partialPaymentCollectionDate").value = collectionDateValue;
+                        document.getElementById("partialPaymentDailyCollectibles").value = dailyCollectionItem.CollectibleAmount.toLocaleString();
+                        document.getElementById("partialPaymentPreviousBalance").value = dailyCollectionItem.PreviousBalanceAmount.toLocaleString();
+                        document.getElementById("partialPaymentCurrentBalance").value = dailyCollectionItem.CurrentBalanceAmount.toLocaleString();
+                        document.getElementById("partialPaymentPartialAmount").value = 0;
 
-                                $("#partialPaymentModal").modal({
-                                    "show": true,
-                                    "backdrop": "static"
-                                });
-
-                                var newDate = new Date(currentCollectionResults.CollectionDate);
-                                var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
-
-                                currentCollectionId = currentCollectionResults.Id;
-                                document.getElementById("partialPaymentCollectionDate").value = collectionDateValue;
-                                document.getElementById("partialPaymentDailyCollectibles").value = currentCollectionResults.CollectibleAmount.toLocaleString();
-                                document.getElementById("partialPaymentPreviousBalance").value = currentCollectionResults.PreviousBalanceAmount.toLocaleString();
-                                document.getElementById("partialPaymentCurrentBalance").value = currentCollectionResults.CurrentBalanceAmount.toLocaleString();
-                                document.getElementById("partialPaymentPartialAmount").value = 0;
-                            } else {
-                                toastr.error("Cannot Processed by this time because the collection is in due date. To solve this, you have to do extensions.");
-                            }
-                        }
+                        NProgress.done();
                     } else {
-                        toastr.error("No Current Collection.");
+                        NProgress.done();
+                        toastr.error("No Current Balance");
                     }
-
+                } else {
                     NProgress.done();
+                    toastr.error("The current is on the last day. to solve this, please reconstruct to complete the collection.");
                 }
-            });
+            } else {
+                if (!dailyCollectionItem.IsProcessed) {
+                    if (dailyCollectionItem.CurrentBalanceAmount > 0) {
+                        document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                        $("#btnUpdateAdvancePayment").prop("disabled", false);
+                        $("#btnUpdateAdvancePaymentClose").prop("disabled", false);
+
+                        $("#advancePaymentUpdateModal").modal({
+                            "show": true,
+                            "backdrop": "static"
+                        });
+
+                        document.getElementById("advancePaymentConfirmationDate").value = dailyCollectionItem.DailyCollectionDate;
+                        document.getElementById("advancePaymentConfirmationAmount").value = dailyCollectionItem.AdvanceAmount.toLocaleString();
+
+                        NProgress.done();
+                    } else {
+                        NProgress.done();
+                        toastr.error("Cannot advance if current balance is zero (0)");
+                    }
+                } else {
+                    NProgress.done();
+                    toastr.error("Not a Current Collection.");
+                }
+            }
         }
 
         // form input validation
@@ -1344,314 +1301,85 @@
 
         // partial payment confirmation
         function btnUpdatePartialPaymentOnclick() {
+            dailyCollectionCollectionView.editItem(dailyCollectionCollectionView.currentItem);
+            var dailyCollectionItem = dailyCollectionCollectionView.currentEditItem;
+
             if (inputValidationForPartialPayment()) {
-                if (inputValidationForPartialPayment()) {
-                    $("#btnUpdatePartialPayment").prop("disabled", true);
-                    $("#btnUpdatePartialPaymentClose").prop("disabled", true);
-                    document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
+                $("#btnUpdatePartialPayment").prop("disabled", true);
+                $("#btnUpdatePartialPaymentClose").prop("disabled", true);
+                document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
-                    var partialAmountValue = document.getElementById("partialPaymentPartialAmount").value;
-                    var currentBalanceAmountValue = document.getElementById("partialPaymentCurrentBalance").value;
+                var partialAmountValue = document.getElementById("partialPaymentPartialAmount").value;
+                var currentBalanceAmountValue = document.getElementById("partialPaymentCurrentBalance").value;
 
-                    var partialAmountObject = new Object();
-                    partialAmountObject.PaidAmount = partialAmountValue;
-                    var partialAmountData = JSON.stringify(partialAmountObject);
+                var partialAmountObject = new Object();
+                partialAmountObject.PaidAmount = document.getElementById("partialPaymentPartialAmount").value;
+                var partialAmountData = JSON.stringify(partialAmountObject);
 
-                    if (parseFloat(partialAmountValue.split(',').join('')) > 0) {
-                        if (parseFloat(partialAmountValue.split(',').join('')) > parseFloat(currentBalanceAmountValue.split(',').join(''))) {
-                            $('.requiredPartialPayment').each(function () {
-                                $(this).css({
-                                    "border": "1px solid red"
-                                });
+                if (parseFloat(partialAmountValue.split(',').join('')) > 0) {
+                    if (parseFloat(partialAmountValue.split(',').join('')) > parseFloat(currentBalanceAmountValue.split(',').join(''))) {
+                        $('.requiredPartialPayment').each(function () {
+                            $(this).css({
+                                "border": "1px solid red"
                             });
+                        });
 
-                            document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-                            $("#btnUpdatePartialPayment").prop("disabled", false);
-                            $("#btnUpdatePartialPaymentClose").prop("disabled", false);
-
-                            toastr.error("The amount to be paid must not be greater than the current balance amount.", "Invalid Entry");
-                        } else {
-                            $.ajax({
-                                type: "PUT",
-                                url: '/api/collection/partialPayment/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId,
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                data: partialAmountData,
-                                statusCode: {
-                                    200: function () {
-                                        toastr.success("Partially Paid");
-                                        NProgress.start();
-
-                                        $("#partialPaymentModal").modal("hide");
-
-                                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
-
-                                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                                        collectionFlexGrid.trackChanges = true;
-                                    },
-                                    404: function (message) {
-                                        NProgress.done();
-                                        $("#partialPaymentModal").modal("hide");
-
-                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                                    },
-                                    400: function (message) {
-                                        NProgress.done();
-                                        $("#partialPaymentModal").modal("hide");
-
-                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                                    },
-                                    500: function (message) {
-                                        NProgress.done();
-                                        $("#partialPaymentModal").modal("hide");
-
-                                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
-                                    }
-                                }
-                            });
-                        }
-                    } else {
                         document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
                         $("#btnUpdatePartialPayment").prop("disabled", false);
                         $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
-                        toastr.error("Zero(0) amount. Please Enter an amount for partial payment.", "Invalid Entry");
+                        toastr.error("The amount to be paid must not be greater than the current balance amount.", "Invalid Entry");
+                    } else {
+                        $.ajax({
+                            type: "PUT",
+                            url: '/api/dailyCollection/partialPayment/byId/' + dailyCollectionItem.Id,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: partialAmountData,
+                            statusCode: {
+                                200: function () {
+                                    toastr.success("Partially Paid");
+                                    NProgress.start();
+
+                                    $("#partialPaymentModal").modal("hide");
+
+                                    dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
+
+                                    dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                                    dailyCollectionFlexGrid.trackChanges = true;
+                                },
+                                404: function (message) {
+                                    NProgress.done();
+                                    $("#partialPaymentModal").modal("hide");
+
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                                },
+                                400: function (message) {
+                                    NProgress.done();
+                                    $("#partialPaymentModal").modal("hide");
+
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                                },
+                                500: function (message) {
+                                    NProgress.done();
+                                    $("#partialPaymentModal").modal("hide");
+
+                                    toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                                }
+                            }
+                        });
                     }
                 } else {
-                    $("#partialPaymentModal").modal("hide");
+                    document.getElementById("btnUpdatePartialPayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
+                    $("#btnUpdatePartialPayment").prop("disabled", false);
+                    $("#btnUpdatePartialPaymentClose").prop("disabled", false);
 
-                    toastr.error("Please fill the empty field.", "Invalid Entry");
+                    toastr.error("Zero(0) amount. Please Enter an amount for partial payment.", "Invalid Entry");
                 }
             } else {
+                $("#partialPaymentModal").modal("hide");
                 toastr.error("Please fill the empty field.", "Invalid Entry");
             }
-        }
-
-        // list collection for advance payment
-        function listCollectionForAdvancePayment() {
-            var collectionListArray = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/collection/list/advancePayment/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (collectionListResult) {
-                    if (collectionListResult.length > 0) {
-
-                        var amountValue = 0;
-
-                        for (i = 0; i < collectionListResult.length; i++) {
-                            var newDate = new Date(collectionListResult[i]["CollectionDate"]);
-                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
-                            amountValue = amountValue + collectionListResult[i]["CurrentBalanceAmount"];
-                            collectionListArray.push({
-                                Id: collectionListResult[i]["Id"],
-                                LoanId: collectionListResult[i]["LoanId"],
-                                LoanNumber: collectionListResult[i]["LoanNumber"],
-                                DayNumber: collectionListResult[i]["DayNumber"],
-                                ApplicantId: collectionListResult[i]["ApplicantId"],
-                                Applicant: collectionListResult[i]["Applicant"],
-                                Area: collectionListResult[i]["Area"],
-                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                CollectionDate: collectionDateValue,
-                                NetAmount: collectionListResult[i]["NetAmount"],
-                                CollectibleAmount: collectionListResult[i]["CollectibleAmount"],
-                                PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                PaidAmount: collectionListResult[i]["PaidAmount"].toString().bold(),
-                                PreviousBalanceAmount: collectionListResult[i]["PreviousBalanceAmount"],
-                                CurrentBalanceAmount: collectionListResult[i]["CurrentBalanceAmount"],
-                                IsCleared: collectionListResult[i]["IsCleared"],
-                                IsAbsent: collectionListResult[i]["IsAbsent"],
-                                IsPartialPayment: collectionListResult[i]["IsPartialPayment"],
-                                IsAdvancePayment: collectionListResult[i]["IsAdvancePayment"],
-                                IsFullPayment: collectionListResult[i]["IsFullPayment"],
-                                IsDueDate: collectionListResult[i]["IsDueDate"],
-                                IsExtendCollection: collectionListResult[i]["IsExtendCollection"],
-                                IsOverdueCollection: collectionListResult[i]["IsOverdueCollection"],
-                                IsCurrentCollection: collectionListResult[i]["IsCurrentCollection"],
-                                IsProcessed: collectionListResult[i]["IsProcessed"],
-                                IsAction: collectionListResult[i]["IsAction"],
-                                AssignedCollectorId: collectionListResult[i]["AssignedCollectorId"],
-                                AssignedCollector: collectionListResult[i]["AssignedCollector"],
-                                AssignedCollectorArea: collectionListResult[i]["AssignedCollectorArea"],
-                                CurrentCollectorId: collectionListResult[i]["CurrentCollectorId"],
-                                CurrentCollector: collectionListResult[i]["CurrentCollector"],
-                                CurrentCollectorArea: collectionListResult[i]["CurrentCollectorArea"],
-                                Status: "<i class='fa fa-info-circle fa-fw'></i>" + " " + collectionListResult[i]["Status"].toString().bold(),
-                                BtnPick: "<button class='btn btn-primary btn-xs' onclick='btnPickOnclick()'><i class='fa fa-hand-o-left fa-fw'></i> Pick</button>",
-                                Amount: amountValue.toString().bold().replace(/(\d+)(\d{3})/, '$1' + ',' + '$2'),
-                                AmountValue: amountValue.toLocaleString()
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                    $("#loadingData").hide();
-                }
-            });
-
-            return collectionListArray;
-        }
-
-        // navigation button for flexgrid
-        function updateNavigateButtonsCollectionAdvancePayment() {
-            if (advancePaymentCollectionView.pageSize <= 0) {
-                document.getElementById('navigationPageGridCollectionAdvancePayment').style.display = 'none';
-                return;
-            }
-            document.getElementById('navigationPageGridCollectionAdvancePayment').style.display = 'block';
-            if (advancePaymentCollectionView.pageIndex === 0) {
-                btnFirstPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
-                btnPreviousPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
-                btnNextPageGridCollectionAdvancePayment.removeAttribute('disabled');
-                btnLastPageGridCollectionAdvancePayment.removeAttribute('disabled');
-            } else if (advancePaymentCollectionView.pageIndex === (advancePaymentCollectionView.pageCount - 1)) {
-                btnFirstPageGridCollectionAdvancePayment.removeAttribute('disabled');
-                btnPreviousPageGridCollectionAdvancePayment.removeAttribute('disabled');
-                btnNextPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
-                btnLastPageGridCollectionAdvancePayment.setAttribute('disabled', 'disabled');
-            } else {
-                btnFirstPageGridCollectionAdvancePayment.removeAttribute('disabled');
-                btnPreviousPageGridCollectionAdvancePayment.removeAttribute('disabled');
-                btnNextPageGridCollectionAdvancePayment.removeAttribute('disabled');
-                btnLastPageGridCollectionAdvancePayment.removeAttribute('disabled');
-            }
-            btnCurrentPageGridCollectionAdvancePayment.innerHTML = (advancePaymentCollectionView.pageIndex + 1) + ' / ' + advancePaymentCollectionView.pageCount;
-        }
-
-        // create flexgrid for advance payment
-        function createFlexgridForAdvancePaymentProcess() {
-            advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
-            advancePaymentCollectionView.pageSize = 5;
-
-            advancePaymentCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtonsCollectionAdvancePayment();
-            });
-
-            advancePaymentFlexGrid = new wijmo.grid.FlexGrid('#advancePaymentGrid');
-            advancePaymentFlexGrid.initialize({
-                columns: [
-                            {
-                                "header": "Date",
-                                "binding": "CollectionDate",
-                                "allowSorting": false,
-                                "width": "1.5*",
-                            },
-                            {
-                                "header": "Collectibles",
-                                "binding": "CollectibleAmount",
-                                "allowSorting": false,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Advance Amount",
-                                "binding": "Amount",
-                                "allowSorting": false,
-                                "width": "2*",
-                                "align": "right",
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Pick",
-                                "binding": "BtnPick",
-                                "width": 70,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            }
-                ],
-                autoGenerateColumns: false,
-                itemsSource: advancePaymentCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            advancePaymentFlexGrid.trackChanges = true;
-
-            //Navigation button
-            btnFirstPageGridCollectionAdvancePayment = document.getElementById('btnMoveToFirstPageGridCollectionAdvancePayment');
-            btnPreviousPageGridCollectionAdvancePayment = document.getElementById('btnMoveToPreviousPageGridCollectionAdvancePayment');
-            btnNextPageGridCollectionAdvancePayment = document.getElementById('btnMoveToNextPageGridCollectionAdvancePayment');
-            btnLastPageGridCollectionAdvancePayment = document.getElementById('btnMoveToLastPageGridCollectionAdvancePayment');
-            btnCurrentPageGridCollectionAdvancePayment = document.getElementById('btnCurrentPageGridCollectionAdvancePayment');
-
-            updateNavigateButtonsCollectionAdvancePayment();
-
-            btnFirstPageGridCollectionAdvancePayment.addEventListener('click', function () {
-                advancePaymentCollectionView.moveToFirstPage();
-                updateNavigateButtonsCollectionAdvancePayment();
-            });
-            btnPreviousPageGridCollectionAdvancePayment.addEventListener('click', function () {
-                advancePaymentCollectionView.moveToPreviousPage();
-                updateNavigateButtonsCollectionAdvancePayment();
-            });
-            btnNextPageGridCollectionAdvancePayment.addEventListener('click', function () {
-                advancePaymentCollectionView.moveToNextPage();
-                updateNavigateButtonsCollectionAdvancePayment();
-            });
-            btnLastPageGridCollectionAdvancePayment.addEventListener('click', function () {
-                advancePaymentCollectionView.moveToLastPage();
-                updateNavigateButtonsCollectionAdvancePayment();
-            });
-        }
-
-        // advance payment
-        function btnAdvancePaymentOnclick() {
-            NProgress.start();
-            $.ajax({
-                url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (currentCollectionResults) {
-                    if (currentCollectionResults != null) {
-                        $("#advancePaymentModal").modal({
-                            "show": true,
-                            "backdrop": "static"
-                        });
-
-                        NProgress.start();
-                        $("#loadingData").show();
-                        setTimeout(function () {
-                            advancePaymentCollectionView = new wijmo.collections.CollectionView(listCollectionForAdvancePayment());
-                            advancePaymentCollectionView.pageSize = 5;
-
-                            advancePaymentCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                updateNavigateButtonsCollectionAdvancePayment();
-                            });
-
-                            advancePaymentFlexGrid.itemsSource = advancePaymentCollectionView;
-                            advancePaymentFlexGrid.trackChanges = true;
-                        }, 500)
-                    } else {
-                        toastr.error("No Current Collection.");
-                    }
-
-                    NProgress.done();
-                }
-            });
-        }
-
-        // pick button
-        function btnPickOnclick() {
-            document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-check fa-fw'></i> Update";
-            $("#btnUpdateAdvancePayment").prop("disabled", false);
-            $("#btnUpdateAdvancePaymentClose").prop("disabled", false);
-
-            advancePaymentCollectionView.editItem(advancePaymentCollectionView.currentItem);
-            var advancePaymentItem = advancePaymentCollectionView.currentEditItem;
-            $("#advancePaymentUpdateModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            collectionAdvancePaymentId = advancePaymentItem.Id;
-            document.getElementById("advancePaymentConfirmationDate").value = advancePaymentItem.CollectionDate;
-            document.getElementById("advancePaymentConfirmationAmount").value = advancePaymentItem.AmountValue.toLocaleString();
         }
 
         // advance payment update
@@ -1660,37 +1388,36 @@
             $("#btnUpdateAdvancePaymentClose").prop("disabled", true);
             document.getElementById("btnUpdateAdvancePayment").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
 
+            NProgress.start();
+            dailyCollectionCollectionView.editItem(dailyCollectionCollectionView.currentItem);
+            var dailyCollectionItem = dailyCollectionCollectionView.currentEditItem;
+
             $.ajax({
                 type: "PUT",
-                url: '/api/collection/advancePayment/update/byId/byLoanId/' + collectionAdvancePaymentId + '/' + urlParameterLoanId,
+                url: '/api/dailyCollection/advancePayment/byId/' + dailyCollectionItem.Id,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
                     200: function () {
-                        toastr.success("Advanced Paid");
-                        NProgress.start();
-
+                        NProgress.done();
                         $("#advancePaymentUpdateModal").modal("hide");
-                        $("#advancePaymentModal").modal("hide");
 
-                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                        toastr.success("Advanced Paid");
 
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
+                        dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
+                        dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                        dailyCollectionFlexGrid.trackChanges = true;
                     },
                     404: function (message) {
                         NProgress.done();
                         $("#advancePaymentUpdateModal").modal("hide");
-                        $("#advancePaymentModal").modal("hide");
 
                         toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
                     },
                     400: function (message) {
                         NProgress.done();
                         $("#advancePaymentUpdateModal").modal("hide");
-                        $("#advancePaymentModal").modal("hide");
 
                         toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
                     },
@@ -1708,25 +1435,17 @@
         // full payment
         function btnFullPaymentOnclick() {
             NProgress.start();
-            $.ajax({
-                url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (currentCollectionResults) {
-                    if (currentCollectionResults != null) {
-                        $("#fullPaymentModal").modal({
-                            "show": true,
-                            "backdrop": "static"
-                        });
-                    } else {
-                        toastr.error("No Current Collection.");
-                    }
+            if (isFullyPaid == false) {
+                $("#fullPaymentModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
 
-                    NProgress.done();
-                }
-            });
-
+                NProgress.done();
+            } else {
+                toastr.error("Already Fully Paid");
+                NProgress.done();
+            }
         }
 
         // full payment amount update
@@ -1748,7 +1467,7 @@
             document.getElementById("btnFullPaymentAmountConfirm").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
             $.ajax({
                 type: "PUT",
-                url: '/api/collection/fullPayment/update/byId/byLoanId/' + collectionAdvancePaymentId + '/' + urlParameterLoanId,
+                url: '/api/collection/fullPayment/byCollectionId/' + getUrlParameter("collectionId"),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
@@ -1759,12 +1478,10 @@
                         $("#fullPaymentModal").modal("hide");
                         $("#fullPaymentConfirmModal").modal("hide");
 
-                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
+                        dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
+                        dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                        dailyCollectionFlexGrid.trackChanges = true;
                     },
                     404: function (message) {
                         NProgress.done();
@@ -1785,194 +1502,12 @@
                         toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
                     }
                 }
-            });
-        }
-
-        // extend collection
-        function btnExtedCollectionOnclick() {
-            $("#extendPaymentModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-        }
-
-        // overdue
-        function btnOverdueOnclick() {
-            $("#overduePaymentModal").modal({
-                "show": true,
-                "backdrop": "static"
             });
         }
 
         // view the loan application detail
         function btnViewLoanApplicationDetailOnclick() {
-            window.open('/Software/LoanApplicationDetail?id=' + urlParameterLoanId, '_blank');
-        }
-
-        // btn refresh the grid
-        function btnRefreshOnclick() {
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-            collectionFlexGrid.itemsSource = collectionCollectionView;
-            collectionFlexGrid.trackChanges = true;
-        }
-
-        // link extend collection
-        function linkExtendCollectionPaymentOnclick() {
-            document.getElementById("btnExtendPaymentYes").innerHTML = "Yes";
-            $("#btnExtendPaymentYes").prop("disabled", false);
-            $("#btnExtendPaymentNo").prop("disabled", false);
-
-            NProgress.start();
-            $.ajax({
-                url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (currentCollectionResults) {
-                    if (currentCollectionResults != null) {
-                        if (currentCollectionResults.IsLastDay) {
-                            $("#extendPaymentModal").modal({
-                                "show": true,
-                                "backdrop": "static"
-                            });
-
-                            currentCollectionId = currentCollectionResults.Id;
-                        } else {
-                            toastr.error("The Collection is not yet on the due date.");
-                        }
-                    } else {
-                        toastr.error("No Current Collection.");
-                    }
-
-                    NProgress.done();
-                }
-            });
-        }
-
-        // btn extend payment confirm
-        function btnExtendPaymentYesOnclick() {
-            var extendDailyCollectibles = document.getElementById("extendDailyCollectibles").value;
-            if (parseFloat(extendDailyCollectibles.split(',').join('')) <= parseFloat(defaultDailyCollectible)) {
-                $("#btnExtendPaymentYes").prop("disabled", true);
-                $("#btnExtendPaymentNo").prop("disabled", true);
-                document.getElementById("btnExtendPaymentYes").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
-
-                $.ajax({
-                    type: "PUT",
-                    url: '/api/collection/extend/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId + '/' + cboExtendNumberOfDays.selectedValue + '/' + extendDailyCollectibles,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    statusCode: {
-                        200: function () {
-                            toastr.success("Extended");
-                            NProgress.start();
-
-                            $("#extendPaymentModal").modal("hide");
-
-                            urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
-
-                            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                            collectionFlexGrid.itemsSource = collectionCollectionView;
-                            collectionFlexGrid.trackChanges = true;
-                        },
-                        404: function (message) {
-                            NProgress.done();
-                            $("#overduePaymentModal").modal("hide");
-                            toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                        },
-                        400: function (message) {
-                            NProgress.done();
-                            $("#overduePaymentModal").modal("hide");
-                            toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                        },
-                        500: function (message) {
-                            NProgress.done();
-                            $("#overduePaymentModal").modal("hide");
-                            toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
-                        }
-                    }
-                });
-            } else {
-                toastr.error("The Collectible amount you entered must not be greater than the default daily collectibles amount.");
-            }
-        }
-
-        // link overdue collection
-        function linkOverdueCollectionPaymentOnclick() {
-            document.getElementById("btnOverduePaymentYes").innerHTML = "Yes";
-            $("#btnOverduePaymentYes").prop("disabled", false);
-            $("#btnOverduePaymentNo").prop("disabled", false);
-
-            NProgress.start();
-            $.ajax({
-                url: '/api/collection/get/currentCollection/byApplicantId/byLoanId/' + getUrlParameter("applicantId") + "/" + urlParameterLoanId,
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (currentCollectionResults) {
-                    if (currentCollectionResults != null) {
-                        if (currentCollectionResults.IsLastDay) {
-                            $("#overduePaymentModal").modal({
-                                "show": true,
-                                "backdrop": "static"
-                            });
-
-                            currentCollectionId = currentCollectionResults.Id;
-                        } else {
-                            toastr.error("The Collection is not yet on the due date.");
-                        }
-                    } else {
-                        toastr.error("No Current Collection.");
-                    }
-
-                    NProgress.done();
-                }
-            });
-        }
-
-        // btn overdue confirm
-        function btnOverduePaymentYesOnclick() {
-            $("#btnOverduePaymentYes").prop("disabled", true);
-            $("#btnOverduePaymentNo").prop("disabled", true);
-            document.getElementById("btnOverduePaymentYes").innerHTML = "<i class='fa fa-spinner fa-fw fa-spin'></i> Processing";
-            $.ajax({
-                type: "PUT",
-                url: '/api/collection/overdue/update/byId/byLoanId/' + currentCollectionId + '/' + urlParameterLoanId,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Overdue");
-                        NProgress.start();
-
-                        $("#overduePaymentModal").modal("hide");
-
-                        urlParameterLoanId = cboLoanNumberLogHistory.selectedItem["Id"];
-
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
-                    },
-                    404: function (message) {
-                        NProgress.done();
-                        $("#overduePaymentModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
-                    },
-                    400: function (message) {
-                        NProgress.done();
-                        $("#overduePaymentModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
-                    },
-                    500: function (message) {
-                        NProgress.done();
-                        $("#overduePaymentModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
-                    }
-                }
-            });
+            window.open('/Software/LoanApplicationDetail?id=' + loanApplicationId, '_blank');
         }
 
         // applicant collection report
@@ -1980,38 +1515,535 @@
             window.open('/RepApplicantCollectionPaper/applicantCollectionPaper?applicantId=' + getUrlParameter("applicantId") + '&loanId=' + urlParameterLoanId, '_blank');
         }
 
+        // collection header tab
+        $('#collectionHeaderTabId').click(function () {
+            $("#collection").show();
+            $("#reconstruct").hide();
+
+            dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
+
+            dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+            dailyCollectionFlexGrid.trackChanges = true;
+        });
+
+        // reconstruct tab
+        $('#reconstructHeaderTabId').click(function () {
+            $("#collection").hide();
+            $("#reconstruct").show();
+
+            collectionReconstructCollectionView = new wijmo.collections.CollectionView(getCollectionReconstructByCollectionId());
+
+            collectionReconstructFlexgrid.itemsSource = collectionReconstructCollectionView;
+            collectionReconstructFlexgrid.trackChanges = true;
+        });
+
         // collection tab
         $('#collectionTab').click(function () {
-            $("#collectionsTabContent").show();
-            $("#moreDetailsTabContent").hide();
+            dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
 
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByApplicantIdByLoanId());
-
-            collectionFlexGrid.itemsSource = collectionCollectionView;
-            collectionFlexGrid.trackChanges = true;
+            dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+            dailyCollectionFlexGrid.trackChanges = true;
         });
 
-        // collection tab
-        $('#moreDetailsTab').click(function () {
-            $("#collectionsTabContent").hide();
-            $("#moreDetailsTabContent").show();
-        });
+        // get collection reconstruct by collection id
+        function getCollectionReconstructByCollectionId() {
+            NProgress.start();
+            var collectionReconstructArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/collectionReconstruct/list/ByCollectionId/' + getUrlParameter("collectionId"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectionReconstructResults) {
+                    if (collectionReconstructResults.length > 0) {
+                        var disabledButton = "disabled";
+                        var canPerformActions = "@ViewData["CanPerformActions"]";
+                        if (canPerformActions == 1) {
+                            disabledButton = "";
+                        }
+
+                        for (i = 0; i < collectionReconstructResults.length; i++) {
+                            var newReconstructStartDate = new Date(collectionReconstructResults[i]["StartDate"]);
+                            var collectionReconstructStartDateValue = ('0' + (newReconstructStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newReconstructStartDate.getDate()).slice(-2) + '-' + newReconstructStartDate.getFullYear();
+
+                            var newReconstructEndDate = new Date(collectionReconstructResults[i]["EndDate"]);
+                            var collectionReconstructEndDateValue = ('0' + (newReconstructEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newReconstructEndDate.getDate()).slice(-2) + '-' + newReconstructEndDate.getFullYear();
+
+                            collectionReconstructArray.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnCollectionReconstructEditButton()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block' onclick='btnCollectionReconstructDeleteButton()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: collectionReconstructResults[i]["Id"],
+                                CollectionId: collectionReconstructResults[i]["CollectionId"],
+                                ReconstructNumber: collectionReconstructResults[i]["ReconstructNumber"],
+                                StartDate: collectionReconstructStartDateValue,
+                                EndDate: collectionReconstructEndDateValue,
+                                TermId: collectionReconstructResults[i]["TermId"],
+                                Term: collectionReconstructResults[i]["Term"],
+                                TermNoOfDays: collectionReconstructResults[i]["TermNoOfDays"],
+                                TermNoOfAllowanceDays: collectionReconstructResults[i]["TermNoOfAllowanceDays"],
+                                InterestId: collectionReconstructResults[i]["InterestId"],
+                                InterestRate: collectionReconstructResults[i]["InterestRate"],
+                                InterestAmount: collectionReconstructResults[i]["InterestAmount"],
+                                PenaltyId: collectionReconstructResults[i]["PenaltyId"],
+                                Penalty: collectionReconstructResults[i]["Penalty"],
+                                CurrentBalanceAmount: collectionReconstructResults[i]["CurrentBalanceAmount"],
+                                BalanceAmount: collectionReconstructResults[i]["BalanceAmount"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return collectionReconstructArray;
+        }
+
+        // collection reconstruct flexgrid
+        function collectionReconstructFlexgrid() {
+            collectionReconstructCollectionView = new wijmo.collections.CollectionView(getCollectionReconstructByCollectionId());
+
+            collectionReconstructFlexgrid = new wijmo.grid.FlexGrid('#collectionReconstructFlexgrid');
+            collectionReconstructFlexgrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Reconstruct No.",
+                                "binding": "ReconstructNumber",
+                                "allowSorting": false,
+                                "width": "1*",
+                            },
+                            {
+                                "header": "Start Date",
+                                "binding": "StartDate",
+                                "allowSorting": false,
+                                "width": "1*",
+                            },
+                            {
+                                "header": "End Date",
+                                "binding": "EndDate",
+                                "allowSorting": false,
+                                "width": "1*",
+                            },
+                            {
+                                "header": "Current Balance Amount",
+                                "binding": "CurrentBalanceAmount",
+                                "allowSorting": false,
+                                "width": "1.5*",
+                            },
+                            {
+                                "header": "Balance Amount",
+                                "binding": "BalanceAmount",
+                                "allowSorting": false,
+                                "width": "1.5*",
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: collectionReconstructCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            collectionReconstructFlexgrid.trackChanges = true;
+        }
+
+        // btn collection recon add
+        function btnCollectionReconstructAddOnclick() {
+            $.ajax({
+                url: '/api/dailyCollection/get/lastCurrentCollection/byCollectionId/' + getUrlParameter("collectionId"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (dailyCollectionResults) {
+                    if (dailyCollectionResults != null) {
+                        $("#collectionReconstructDetailModal").modal({
+                            "show": true,
+                            "backdrop": "static"
+                        });
+
+                        collectionReconstructId = 0;
+
+                        document.getElementById("collectionReconstructNumber").value = "NA - Auto Generate When Save.";
+
+                        var newDate = new Date(dailyCollectionResults.DailyCollectionDate);
+                        cboCollectionReconstructStartDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+                        cboCollectionReconstructEndDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+                        createCollectionReconstructStartDate();
+                        createCollectionReconstructEndDate();
+
+                        document.getElementById("collectionReconstructCurrentBalanceAmount").value = dailyCollectionResults.CurrentBalanceAmount.toLocaleString();
+
+                        var interestRate = document.getElementById("collectionReconstructInterestRate").value;
+                        document.getElementById("collectionReconstructInterestAmount").value = ((dailyCollectionResults.CurrentBalanceAmount / 100) * interestRate).toLocaleString();
+
+                        document.getElementById("collectionReconstructBalanceAmount").value = (dailyCollectionResults.CurrentBalanceAmount + ((dailyCollectionResults.CurrentBalanceAmount / 100) * interestRate)).toLocaleString();
+                    } else {
+                        toastr.error("Last Collection not processed");
+                    }
+                }
+            });
+        }
+
+        // btn collection recon edit
+        function btnCollectionReconstructEditButton() {
+            $("#collectionReconstructDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            collectionReconstructCollectionView.editItem(collectionReconstructCollectionView.currentItem);
+            var collectionReconstructItem = collectionReconstructCollectionView.currentEditItem;
+
+            collectionReconstructId = collectionReconstructItem.Id;
+
+            document.getElementById("collectionReconstructNumber").value = collectionReconstructItem.ReconstructNumber;
+
+            var newStartDate = new Date(collectionReconstructItem.StartDate);
+            cboCollectionReconstructStartDateValue = [newStartDate.getMonth() + 1, newStartDate.getDate(), newStartDate.getFullYear()].join('-');
+            createCollectionReconstructStartDate();
+
+            var newEndDate = new Date(collectionReconstructItem.EndDate);
+            cboCollectionReconstructEndDateValue = [newEndDate.getMonth() + 1, newEndDate.getDate(), newEndDate.getFullYear()].join('-');
+            createCollectionReconstructEndDate();
+
+            cboCollectionReconstructTerm.selectedValue = collectionReconstructItem.Term;
+            document.getElementById("collectionReconstructNoOfDays").value = collectionReconstructItem.TermNoOfDays.toLocaleString();
+            document.getElementById("collectionReconstructNoOfAllowanceDays").value = collectionReconstructItem.TermNoOfAllowanceDays.toLocaleString();
+
+            cboCollectionReconstructPenalty.selectedValue = collectionReconstructItem.Penalty;
+
+            document.getElementById("collectionReconstructCurrentBalanceAmount").value = collectionReconstructItem.CurrentBalanceAmount.toLocaleString();
+            cboCollectionReconstructInterest.selectedValue = collectionReconstructItem.Interest;
+            document.getElementById("collectionReconstructInterestRate").value = collectionReconstructItem.InterestRate.toLocaleString();
+            document.getElementById("collectionReconstructInterestAmount").value = collectionReconstructItem.InterestAmount.toLocaleString();
+
+            document.getElementById("collectionReconstructBalanceAmount").value = collectionReconstructItem.BalanceAmount.toLocaleString();
+        }
+
+        // cllection reconstruct save
+        function btnCollectionReconstructSaveOnclick() {
+            document.getElementById("btnCollectionReconstructSave").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+            $("#btnCollectionReconstructSave").prop("disabled", true);
+            $("#btnCollectionReconstructClose").prop("disabled", true);
+
+            var collectionReconstructObject = new Object();
+            collectionReconstructObject.CollectionId = getUrlParameter("collectionId");
+            collectionReconstructObject.StartDate = cboCollectionReconstructStartDateValue;
+            collectionReconstructObject.EndDate = cboCollectionReconstructEndDateValue;
+            collectionReconstructObject.TermId = cboCollectionReconstructTerm.selectedItem["Id"];
+            collectionReconstructObject.TermNoOfDays = cboCollectionReconstructTerm.selectedItem["NoOfDays"];
+            collectionReconstructObject.TermNoOfAllowanceDays = cboCollectionReconstructTerm.selectedItem["NoOfAllowanceDays"];
+            collectionReconstructObject.InterestId = cboCollectionReconstructInterest.selectedItem["Id"]
+            collectionReconstructObject.InterestRate = cboCollectionReconstructInterest.selectedItem["Rate"]
+            collectionReconstructObject.InterestAmount = document.getElementById('collectionReconstructInterestAmount').value;
+            collectionReconstructObject.PenaltyId = cboCollectionReconstructPenalty.selectedItem["Id"];
+            collectionReconstructObject.CurrentBalanceAmount = document.getElementById('collectionReconstructCurrentBalanceAmount').value;
+            collectionReconstructObject.BalanceAmount = document.getElementById('collectionReconstructBalanceAmount').value;
+            var collectionReconstructData = JSON.stringify(collectionReconstructObject);
+
+            if (collectionReconstructId == 0) {
+                $.ajax({
+                    type: "POST",
+                    url: '/api/collectionReconstruct/add',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: collectionReconstructData,
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Save Successful");
+
+                            $("#collectionReconstructDetailModal").modal("hide");
+
+                            dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
+
+                            dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                            dailyCollectionFlexGrid.trackChanges = true;
+
+                            collectionReconstructCollectionView = new wijmo.collections.CollectionView(getCollectionReconstructByCollectionId());
+
+                            collectionReconstructFlexgrid.itemsSource = collectionReconstructCollectionView;
+                            collectionReconstructFlexgrid.trackChanges = true;
+                        },
+                        404: function (message) {
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+
+                            $("#collectionReconstructDetailModal").modal("hide");
+
+                            document.getElementById("btnCollectionReconstructSave").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                            $("#btnCollectionReconstructSave").prop("disabled", false);
+                            $("#btnCollectionReconstructClose").prop("disabled", false);
+                        },
+                        400: function (message) {
+                            toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+
+                            $("#collectionReconstructDetailModal").modal("hide");
+
+                            document.getElementById("btnCollectionReconstructSave").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                            $("#btnCollectionReconstructSave").prop("disabled", false);
+                            $("#btnCollectionReconstructClose").prop("disabled", false);
+                        }
+                    }
+                });
+            } else {
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/loanApplicationCollateral/update/' + collectionReconstructId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: loanApplicationCollateralData,
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Update Successful");
+
+                            $("#collectionReconstructDetailModal").modal("hide");
+
+                            dailyCollectionCollectionView = new wijmo.collections.CollectionView(getDaiyCollection());
+
+                            dailyCollectionFlexGrid.itemsSource = dailyCollectionCollectionView;
+                            dailyCollectionFlexGrid.trackChanges = true;
+
+                            collectionReconstructCollectionView = new wijmo.collections.CollectionView(getCollectionReconstructByCollectionId());
+
+                            collectionReconstructFlexgrid.itemsSource = collectionReconstructCollectionView;
+                            collectionReconstructFlexgrid.trackChanges = true;
+                        },
+                        404: function () {
+                            toastr.error("Record Not Found");
+
+                            $("#collectionReconstructDetailModal").modal("hide");
+
+                            document.getElementById("btnCollectionReconstructSave").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                            $("#btnCollectionReconstructSave").prop("disabled", false);
+                            $("#btnCollectionReconstructClose").prop("disabled", false);
+                        },
+                        400: function () {
+                            toastr.error("Bad Request");
+
+                            $("#collectionReconstructDetailModal").modal("hide");
+
+                            document.getElementById("btnCollectionReconstructSave").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                            $("#btnCollectionReconstructSave").prop("disabled", false);
+                            $("#btnCollectionReconstructClose").prop("disabled", false);
+                        }
+                    }
+                });
+            }
+        }
+
+        // btn collection reconstruct delete
+        function btnCollectionReconstructDeleteButton() {
+            $("#collectionReconstructDeleteConfirmationModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        // create reconstruct start date
+        function createCollectionReconstructStartDate() {
+            cboCollectionReconstructStartDate.dispose();
+            cboCollectionReconstructStartDate = new wijmo.input.InputDate('#cboCollectionReconstructStartDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboCollectionReconstructStartDateValue),
+                mask: '99-99-9999',
+                min: new Date(cboCollectionReconstructStartDateValue),
+                max: new Date(cboCollectionReconstructEndDateValue),
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboCollectionReconstructStartDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCollectionReconstructEndDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // create reconstruct end date
+        function createCollectionReconstructEndDate() {
+            cboCollectionReconstructEndDate.dispose();
+            cboCollectionReconstructEndDate = new wijmo.input.InputDate('#cboCollectionReconstructEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(cboCollectionReconstructEndDateValue),
+                mask: '99-99-9999',
+                min: new Date(cboCollectionReconstructStartDateValue),
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    cboCollectionReconstructEndDateValue = thisDateValue;
+
+                    setTimeout(function () {
+                        createCollectionReconstructStartDate();
+                    }, 50);
+                }
+            });
+        }
+
+        // Term
+        function getTermData() {
+            var termArray = new Array();
+            $.ajax({
+                url: '/api/term/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (termResults) {
+                    var disabled = true;
+                    if (termResults.length > 0) {
+                        for (i = 0; i < termResults.length; i++) {
+                            termArray.push({
+                                Id: termResults[i]["Id"],
+                                Term: termResults[i]["Term"],
+                                NoOfDays: termResults[i]["NoOfDays"],
+                                NoOfAllowanceDays: termResults[i]["NoOfAllowanceDays"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboCollectionReconstructPenalty = new wijmo.input.ComboBox('#cboCollectionReconstructPenalty');
+                    getPenaltyData();
+
+                    cboCollectionReconstructTerm.dispose();
+                    cboCollectionReconstructTerm = new wijmo.input.ComboBox('#cboCollectionReconstructTerm', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: termArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Term",
+                        selectedValuePath: "Term",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("collectionReconstructNoOfDays").value = this.selectedItem["NoOfDays"];
+                            document.getElementById("collectionReconstructNoOfAllowanceDays").value = this.selectedItem["NoOfAllowanceDays"];
+                        }
+                    });
+
+                    document.getElementById("collectionReconstructNoOfDays").value = cboCollectionReconstructTerm.selectedItem["NoOfDays"];
+                    document.getElementById("collectionReconstructNoOfAllowanceDays").value = cboCollectionReconstructTerm.selectedItem["NoOfAllowanceDays"];
+                }
+            });
+        }
+
+        // Penalty
+        function getPenaltyData() {
+            var penaltyArray = new Array();
+            $.ajax({
+                url: '/api/penalty/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (penaltyResults) {
+                    var disabled = true;
+                    if (penaltyResults.length > 0) {
+                        for (i = 0; i < penaltyResults.length; i++) {
+                            penaltyArray.push({
+                                Id: penaltyResults[i]["Id"],
+                                Penalty: penaltyResults[i]["Penalty"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboCollectionReconstructInterest = new wijmo.input.ComboBox('#cboCollectionReconstructInterest');
+                    getInterestData();
+
+                    cboCollectionReconstructPenalty.dispose();
+                    cboCollectionReconstructPenalty = new wijmo.input.ComboBox('#cboCollectionReconstructPenalty', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: penaltyArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Penalty",
+                        selectedValuePath: "Penalty"
+                    });
+                }
+            });
+        }
+
+        // Interest
+        function getInterestData() {
+            var interestArray = new Array();
+            $.ajax({
+                url: '/api/interest/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (interestResults) {
+                    var disabled = true;
+                    if (interestResults.length > 0) {
+                        for (i = 0; i < interestResults.length; i++) {
+                            interestArray.push({
+                                Id: interestResults[i]["Id"],
+                                Interest: interestResults[i]["Interest"],
+                                Rate: interestResults[i]["Rate"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboCollectionReconstructInterest.dispose();
+                    cboCollectionReconstructInterest = new wijmo.input.ComboBox('#cboCollectionReconstructInterest', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: interestArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Interest",
+                        selectedValuePath: "Interest",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("collectionReconstructInterestRate").value = this.selectedItem["Rate"];
+
+                            var currentBalanceAmount = document.getElementById("collectionReconstructCurrentBalanceAmount").value;
+                            document.getElementById("collectionReconstructInterestAmount").value = ((currentBalanceAmount / 100) * this.selectedItem["Rate"]).toLocaleString();
+
+                            document.getElementById("collectionReconstructBalanceAmount").value = (currentBalanceAmount + ((currentBalanceAmount / 100) * this.selectedItem["Rate"])).toLocaleString();
+                        }
+                    });
+
+                    document.getElementById("collectionReconstructInterestRate").value = cboCollectionReconstructInterest.selectedItem["Rate"];
+                }
+            });
+        }
+
 
         // on load page
         window.onload = function () {
             toastrModification();
             getCollectionById();
-            getLoanApplicationForSelectedValue();
-            createFlexgridForAdvancePaymentProcess();
             doubleModal();
+            collectionReconstructFlexgrid();
 
-            // number of days
-            cboExtendNumberOfDays = new wijmo.input.ComboBox('#cboExtendNumberOfDays', {
-                placeholder: "Select",
-                itemsSource: new Array(1, 2, 3, 4, 5),
-                isEditable: false,
-                required: true
-            });
+            cboCollectionReconstructStartDate = new wijmo.input.InputDate('#cboCollectionReconstructStartDate');
+            createCollectionReconstructStartDate();
+            cboCollectionReconstructEndDate = new wijmo.input.InputDate('#cboCollectionReconstructEndDate');
+            createCollectionReconstructEndDate();
+
+            cboCollectionReconstructTerm = new wijmo.input.ComboBox('#cboCollectionReconstructTerm');
+            getTermData();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {

@@ -14,7 +14,16 @@ namespace Lending.Models
         public String CollectionDate { get; set; }
         public Int32 LoanId { get; set; }
         public String LoanNumber { get; set; }
+        public String LoanDate { get; set; }
+
+        public String MaturityDate { get; set; }
+        public Decimal PrincipalAmount { get; set; }
+        public String Interest { get; set; }
+        public Decimal InterestRate { get;set;}
+        public Decimal InterestAmount { get;set;}
+        public Decimal TotalDeductionAmount { get; set; }
         public Decimal NetAmount { get; set; }
+
         public String Applicant { get; set; }
         public String Area { get; set; }
         public Int32 TermId { get; set; }

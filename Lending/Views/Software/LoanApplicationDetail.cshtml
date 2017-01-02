@@ -820,14 +820,14 @@
                 loanApplicationObject.PenaltyId = cboPenalty.selectedItem["Id"];
                 loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
                 loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
-                loanApplicationObject.ProcessingFeeAmount = document.getElementById('loanApplicationProcessingFee').value;
-                loanApplicationObject.PassbookAmount = document.getElementById('loanApplicationPassbook').value;
-                loanApplicationObject.BalanceAmount = document.getElementById('loanApplicationBalance').value;
-                loanApplicationObject.PenaltyAmount = document.getElementById('loanApplicationPenalty').value;
-                loanApplicationObject.LateIntAmount = document.getElementById('loanApplicationLateInt').value;
-                loanApplicationObject.AdvanceAmount = document.getElementById('loanApplicationAdvance').value;
-                loanApplicationObject.RequirementsAmount = document.getElementById('loanApplicationRequirements').value;
-                loanApplicationObject.InsuranceIPIorPPIAmount = document.getElementById('loanApplicationInsuranceIPIorPPI').value;
+                loanApplicationObject.ProcessingFeeAmountDeduction = document.getElementById('loanApplicationProcessingFee').value;
+                loanApplicationObject.PassbookAmountDeduction = document.getElementById('loanApplicationPassbook').value;
+                loanApplicationObject.BalanceAmountDeduction = document.getElementById('loanApplicationBalance').value;
+                loanApplicationObject.PenaltyAmountDeduction = document.getElementById('loanApplicationPenalty').value;
+                loanApplicationObject.LateIntAmountDeduction = document.getElementById('loanApplicationLateInt').value;
+                loanApplicationObject.AdvanceAmountDeduction = document.getElementById('loanApplicationAdvance').value;
+                loanApplicationObject.RequirementsAmountDeduction = document.getElementById('loanApplicationRequirements').value;
+                loanApplicationObject.InsuranceIPIorPPIAmountDeduction = document.getElementById('loanApplicationInsuranceIPIorPPI').value;
                 loanApplicationObject.NetAmount = document.getElementById('loanApplicationTotalNetAmount').value;
                 var loanApplicationData = JSON.stringify(loanApplicationObject);
 

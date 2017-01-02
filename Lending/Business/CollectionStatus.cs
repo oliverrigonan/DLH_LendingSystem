@@ -8,7 +8,7 @@ namespace Lending.Business
     public class CollectionStatus
     {
         // get status
-        public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsPartiallyPaid, Boolean IsPaidInAdvanced, Boolean IsFullyPaid, Boolean IsOverdue)
+        public String getStatus(Boolean IsCleared, Boolean IsAbsent, Boolean IsPartiallyPaid, Boolean IsPaidInAdvanced, Boolean IsFullyPaid, Boolean IsOverdue, Boolean IsReconstructed)
         {
             String status = "?";
             if (IsCleared)
@@ -25,7 +25,7 @@ namespace Lending.Business
                     }
                     else
                     {
-                        if (IsOverdue)
+                        if (IsReconstructed)
                         {
                             status = "Paid (Overdue)";
                         }
@@ -40,7 +40,7 @@ namespace Lending.Business
             {
                 if (IsAbsent)
                 {
-                    if (IsOverdue)
+                    if (IsReconstructed)
                     {
                         status = "Absent (Overdue)";
                     }
@@ -53,7 +53,7 @@ namespace Lending.Business
                 {
                     if (IsPartiallyPaid)
                     {
-                        if (IsOverdue)
+                        if (IsReconstructed)
                         {
                             status = "Partial (Overdue)";
                         }
