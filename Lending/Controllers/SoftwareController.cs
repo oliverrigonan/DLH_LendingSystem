@@ -223,6 +223,26 @@ namespace Lending.Controllers
         }
 
         [Authorize]
+        public ActionResult ReconstructDetail(Int32? reconstructId)
+        {
+            if (pageAccess("ReconstructDetail").Equals("ReconstructDetail"))
+            {
+                if (reconstructId == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
         public ActionResult ExpensesList()
         {
             if (pageAccess("ExpensesList").Equals("ExpensesList"))

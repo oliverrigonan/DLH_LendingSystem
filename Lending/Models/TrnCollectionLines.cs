@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class TrnDailyCollection
+    public class TrnCollectionLines
     {
         [Key]
         public Int32 Id { get; set; }

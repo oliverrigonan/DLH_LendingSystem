@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class TrnCollectionReconstruct
+    public class TrnReconstruct
     {
         [Key]
         public Int32 Id { get; set; }

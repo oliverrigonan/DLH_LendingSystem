@@ -63,7 +63,7 @@ namespace Lending.Reports
                 var dailyCollections = from d in db.trnDailyCollections
                                        where d.CollectionId == Convert.ToInt32(collectionId)
                                        && d.trnCollection.trnLoanApplication.ApplicantId == Convert.ToInt32(applicantId)
-                                       select new Models.TrnDailyCollection
+                                       select new Models.TrnCollectionLines
                                        {
                                            Id = d.Id,
                                            CollectionId = d.CollectionId,

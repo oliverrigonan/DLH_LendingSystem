@@ -8,7 +8,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiCollectionReconstructController : ApiController
+    public class ApiReconstructController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
@@ -17,11 +17,11 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/collectionReconstruct/list/ByCollectionId/{collectionId}")]
-        public List<Models.TrnCollectionReconstruct> listCollectionReconstructByCollectionId(String collectionId)
+        public List<Models.TrnReconstruct> listCollectionReconstructByCollectionId(String collectionId)
         {
             var collecionReconstruct = from d in db.trnCollectionReconstructs
                                        where d.CollectionId == Convert.ToInt32(collectionId)
-                                       select new Models.TrnCollectionReconstruct
+                                       select new Models.TrnReconstruct
                                        {
                                            Id = d.Id,
                                            CollectionId = d.CollectionId,
@@ -62,7 +62,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPost]
         [Route("api/collectionReconstruct/add")]
-        public HttpResponseMessage addCollectionReconstruct(Models.TrnCollectionReconstruct collectionReconstruct)
+        public HttpResponseMessage addCollectionReconstruct(Models.TrnReconstruct collectionReconstruct)
         {
             try
             {
@@ -334,7 +334,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/collectionReconstruct/update/{id}")]
-        public HttpResponseMessage updateCollectionReconstruct(String id, Models.TrnCollectionReconstruct collectionReconstruct)
+        public HttpResponseMessage updateCollectionReconstruct(String id, Models.TrnReconstruct collectionReconstruct)
         {
             try
             {
@@ -371,23 +371,233 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            var updateCollectionReconstruct = collectionReconstructs.FirstOrDefault();
-                            updateCollectionReconstruct.CollectionId = collectionReconstruct.CollectionId;
-                            updateCollectionReconstruct.ReconstructNumber = collectionReconstruct.ReconstructNumber;
-                            updateCollectionReconstruct.StartDate = Convert.ToDateTime(collectionReconstruct.StartDate);
-                            updateCollectionReconstruct.EndDate = Convert.ToDateTime(collectionReconstruct.EndDate);
-                            updateCollectionReconstruct.TermId = collectionReconstruct.TermId;
-                            updateCollectionReconstruct.TermNoOfDays = collectionReconstruct.TermNoOfDays;
-                            updateCollectionReconstruct.TermNoOfAllowanceDays = collectionReconstruct.TermNoOfAllowanceDays;
-                            updateCollectionReconstruct.InterestId = collectionReconstruct.InterestId;
-                            updateCollectionReconstruct.InterestRate = collectionReconstruct.InterestRate;
-                            updateCollectionReconstruct.InterestAmount = collectionReconstruct.InterestAmount;
-                            updateCollectionReconstruct.PenaltyId = collectionReconstruct.PenaltyId;
-                            updateCollectionReconstruct.CurrentBalanceAmount = collectionReconstruct.CurrentBalanceAmount;
-                            updateCollectionReconstruct.BalanceAmount = collectionReconstruct.BalanceAmount;
-                            db.SubmitChanges();
+                            var lastCollectionData = from d in db.trnDailyCollections.OrderByDescending(d => d.Id)
+                                                     where d.CollectionId == collectionReconstruct.CollectionId
+                                                     select d;
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (lastCollectionData.Any())
+                            {
+                                if (lastCollectionData.FirstOrDefault().IsLastDay)
+                                {
+                                    if (lastCollectionData.FirstOrDefault().IsProcessed)
+                                    {
+                                        var lastCollectionReconstruct = from d in db.trnCollectionReconstructs.OrderByDescending(d => d.Id)
+                                                                        where d.CollectionId == collectionReconstructs.FirstOrDefault().CollectionId
+                                                                        select d;
+
+                                        if (lastCollectionReconstruct.Any())
+                                        {
+                                            if (lastCollectionReconstruct.FirstOrDefault().Id == Convert.ToInt32(id))
+                                            {
+                                                db.trnCollectionReconstructs.DeleteOnSubmit(collectionReconstructs.First());
+                                                db.SubmitChanges();
+
+                                                var updateCollectionReconstruct = collectionReconstructs.FirstOrDefault();
+                                                updateCollectionReconstruct.StartDate = Convert.ToDateTime(collectionReconstruct.StartDate);
+                                                updateCollectionReconstruct.EndDate = Convert.ToDateTime(collectionReconstruct.EndDate);
+                                                updateCollectionReconstruct.TermId = collectionReconstruct.TermId;
+                                                updateCollectionReconstruct.TermNoOfDays = collectionReconstruct.TermNoOfDays;
+                                                updateCollectionReconstruct.TermNoOfAllowanceDays = collectionReconstruct.TermNoOfAllowanceDays;
+                                                updateCollectionReconstruct.InterestId = collectionReconstruct.InterestId;
+                                                updateCollectionReconstruct.InterestRate = collectionReconstruct.InterestRate;
+                                                updateCollectionReconstruct.InterestAmount = (lastCollectionData.FirstOrDefault().CurrentBalanceAmount / 100) * collectionReconstruct.InterestRate;
+                                                updateCollectionReconstruct.PenaltyId = collectionReconstruct.PenaltyId;
+                                                updateCollectionReconstruct.CurrentBalanceAmount = lastCollectionData.FirstOrDefault().CurrentBalanceAmount;
+                                                updateCollectionReconstruct.BalanceAmount = collectionReconstruct.InterestAmount + lastCollectionData.FirstOrDefault().CurrentBalanceAmount;
+                                                db.SubmitChanges();
+
+                                                var collection = from d in db.trnCollections where d.Id == collectionReconstruct.CollectionId select d;
+                                                if (collection.Any())
+                                                {
+                                                    var updateCollectionIsFullyPaid = collection.FirstOrDefault();
+                                                    updateCollectionIsFullyPaid.IsOverdue = true;
+                                                    db.SubmitChanges();
+                                                }
+
+                                                if (updateCollectionReconstruct.BalanceAmount > 0)
+                                                {
+                                                    var numberOfDays = (Convert.ToDateTime(updateCollectionReconstruct.EndDate) - Convert.ToDateTime(updateCollectionReconstruct.StartDate)).TotalDays;
+
+                                                    Decimal remainingBalanceAmount = 0;
+                                                    Decimal collectibleAmount = Math.Round(updateCollectionReconstruct.BalanceAmount / Convert.ToDecimal(numberOfDays), 1);
+                                                    Decimal collectibleAmountCeil = Math.Ceiling((collectibleAmount + 1) / 5) * 5;
+                                                    Decimal termNoOfAllowanceDay = updateCollectionReconstruct.TermNoOfAllowanceDays;
+
+                                                    Decimal dayNumber = lastCollectionData.FirstOrDefault().DayNumber;
+                                                    for (var i = 1; i <= numberOfDays + Convert.ToInt32(termNoOfAllowanceDay); i++)
+                                                    {
+                                                        Boolean isCurrentCollectionValue = false;
+                                                        Boolean canPerformAction = false;
+
+                                                        if (i == updateCollectionReconstruct.TermNoOfDays)
+                                                        {
+                                                            remainingBalanceAmount = updateCollectionReconstruct.BalanceAmount;
+                                                            isCurrentCollectionValue = true;
+                                                            canPerformAction = true;
+                                                        }
+                                                        else
+                                                        {
+                                                            remainingBalanceAmount = 0;
+                                                            canPerformAction = false;
+                                                        }
+
+                                                        if (i <= numberOfDays)
+                                                        {
+                                                            if (i % updateCollectionReconstruct.TermNoOfDays == 0)
+                                                            {
+                                                                Boolean isDueDateValue = false, isLastDay = false;
+
+                                                                if (i == numberOfDays)
+                                                                {
+                                                                    isDueDateValue = true;
+                                                                    if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
+                                                                    {
+                                                                        isLastDay = true;
+                                                                    }
+                                                                }
+
+                                                                dayNumber += 1;
+
+                                                                Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
+                                                                newDailyCollection.CollectionId = updateCollectionReconstruct.CollectionId;
+                                                                newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                                                newDailyCollection.DayNumber = dayNumber;
+                                                                newDailyCollection.DailyCollectionDate = Convert.ToDateTime(updateCollectionReconstruct.StartDate).Date.AddDays(i);
+                                                                newDailyCollection.NetAmount = updateCollectionReconstruct.BalanceAmount;
+                                                                newDailyCollection.CollectibleAmount = 0;
+                                                                newDailyCollection.PenaltyAmount = 0;
+                                                                newDailyCollection.PaidAmount = 0;
+                                                                newDailyCollection.PreviousBalanceAmount = remainingBalanceAmount;
+                                                                newDailyCollection.CurrentBalanceAmount = remainingBalanceAmount;
+                                                                newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
+                                                                newDailyCollection.IsCleared = false;
+                                                                newDailyCollection.IsAbsent = false;
+                                                                newDailyCollection.IsPartiallyPaid = false;
+                                                                newDailyCollection.IsPaidInAdvanced = false;
+                                                                newDailyCollection.IsFullyPaid = false;
+                                                                newDailyCollection.IsProcessed = false;
+                                                                newDailyCollection.CanPerformAction = canPerformAction;
+                                                                newDailyCollection.IsAllowanceDay = false;
+                                                                newDailyCollection.IsDueDate = isDueDateValue;
+                                                                newDailyCollection.IsLastDay = isLastDay;
+                                                                newDailyCollection.ReconstructId = updateCollectionReconstruct.Id;
+                                                                newDailyCollection.IsReconstructed = true;
+                                                                db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
+                                                                db.SubmitChanges();
+                                                            }
+                                                            else
+                                                            {
+                                                                if (i == numberOfDays)
+                                                                {
+                                                                    Boolean isDueDateValue = false, isLastDay = false;
+
+                                                                    if (i == numberOfDays)
+                                                                    {
+                                                                        isDueDateValue = true;
+                                                                        if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
+                                                                        {
+                                                                            isLastDay = true;
+                                                                        }
+                                                                    }
+
+                                                                    dayNumber += 1;
+
+                                                                    Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
+                                                                    newDailyCollection.CollectionId = updateCollectionReconstruct.CollectionId;
+                                                                    newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                                                    newDailyCollection.DayNumber = dayNumber;
+                                                                    newDailyCollection.DailyCollectionDate = Convert.ToDateTime(updateCollectionReconstruct.StartDate).Date.AddDays(i);
+                                                                    newDailyCollection.NetAmount = updateCollectionReconstruct.BalanceAmount;
+                                                                    newDailyCollection.CollectibleAmount = 0;
+                                                                    newDailyCollection.PenaltyAmount = 0;
+                                                                    newDailyCollection.PaidAmount = 0;
+                                                                    newDailyCollection.PreviousBalanceAmount = 0;
+                                                                    newDailyCollection.CurrentBalanceAmount = 0;
+                                                                    newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
+                                                                    newDailyCollection.IsCleared = false;
+                                                                    newDailyCollection.IsAbsent = false;
+                                                                    newDailyCollection.IsPartiallyPaid = false;
+                                                                    newDailyCollection.IsPaidInAdvanced = false;
+                                                                    newDailyCollection.IsFullyPaid = false;
+                                                                    newDailyCollection.IsProcessed = false;
+                                                                    newDailyCollection.CanPerformAction = false;
+                                                                    newDailyCollection.IsAllowanceDay = false;
+                                                                    newDailyCollection.IsDueDate = isDueDateValue;
+                                                                    newDailyCollection.IsLastDay = isLastDay;
+                                                                    newDailyCollection.ReconstructId = updateCollectionReconstruct.Id;
+                                                                    newDailyCollection.IsReconstructed = true;
+                                                                    db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
+                                                                    db.SubmitChanges();
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            Boolean isLastDay = false;
+
+                                                            if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
+                                                            {
+                                                                isLastDay = true;
+                                                            }
+
+                                                            dayNumber += 1;
+
+                                                            Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
+                                                            newDailyCollection.CollectionId = updateCollectionReconstruct.CollectionId;
+                                                            newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
+                                                            newDailyCollection.DayNumber = dayNumber;
+                                                            newDailyCollection.DailyCollectionDate = Convert.ToDateTime(updateCollectionReconstruct.StartDate).Date.AddDays(i);
+                                                            newDailyCollection.NetAmount = updateCollectionReconstruct.BalanceAmount;
+                                                            newDailyCollection.CollectibleAmount = 0;
+                                                            newDailyCollection.PenaltyAmount = 0;
+                                                            newDailyCollection.PaidAmount = 0;
+                                                            newDailyCollection.PreviousBalanceAmount = 0;
+                                                            newDailyCollection.CurrentBalanceAmount = 0;
+                                                            newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
+                                                            newDailyCollection.IsCleared = false;
+                                                            newDailyCollection.IsAbsent = false;
+                                                            newDailyCollection.IsPartiallyPaid = false;
+                                                            newDailyCollection.IsPaidInAdvanced = false;
+                                                            newDailyCollection.IsFullyPaid = false;
+                                                            newDailyCollection.IsProcessed = false;
+                                                            newDailyCollection.CanPerformAction = false;
+                                                            newDailyCollection.IsAllowanceDay = true;
+                                                            newDailyCollection.IsDueDate = false;
+                                                            newDailyCollection.IsLastDay = isLastDay;
+                                                            newDailyCollection.ReconstructId = updateCollectionReconstruct.Id;
+                                                            newDailyCollection.IsReconstructed = true;
+                                                            db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
+                                                            db.SubmitChanges();
+                                                        }
+                                                    }
+                                                }
+
+                                                return Request.CreateResponse(HttpStatusCode.OK);
+                                            }
+                                            else
+                                            {
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Not yet processed.");
+                                    }
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Not yet on last day.");
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "No Data found on the server.");
+                            }
                         }
                         else
                         {
@@ -451,10 +661,28 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            db.trnCollectionReconstructs.DeleteOnSubmit(collectionReconstructs.First());
-                            db.SubmitChanges();
+                            var lastCollectionReconstruct = from d in db.trnCollectionReconstructs.OrderByDescending(d => d.Id)
+                                                            where d.CollectionId == collectionReconstructs.FirstOrDefault().CollectionId
+                                                            select d;
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                            if (lastCollectionReconstruct.Any())
+                            {
+                                if (lastCollectionReconstruct.FirstOrDefault().Id == Convert.ToInt32(id))
+                                {
+                                    db.trnCollectionReconstructs.DeleteOnSubmit(collectionReconstructs.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiDailyCollectionController : ApiController
+    public class ApiCollectionLinesController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
@@ -20,12 +20,12 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/dailyCollection/list/advancePayment/byCollectionId/{collectionId}")]
-        public List<Models.TrnDailyCollection> listDailyCollectionForAdvancePaymentByCollectionId(String collectionId)
+        public List<Models.TrnCollectionLines> listDailyCollectionForAdvancePaymentByCollectionId(String collectionId)
         {
             var dailyCollections = from d in db.trnDailyCollections
                                    where d.CollectionId == Convert.ToInt32(collectionId)
                                    && d.IsProcessed == false
-                                   select new Models.TrnDailyCollection
+                                   select new Models.TrnCollectionLines
                                    {
                                        Id = d.Id,
                                        CollectionId = d.CollectionId,
@@ -62,12 +62,12 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/dailyCollection/get/currentCollection/byCollectionId/{collectionId}")]
-        public Models.TrnDailyCollection getDailyCollectionCurrentCollectionForPartialPaymentByCollectionId(String collectionId)
+        public Models.TrnCollectionLines getDailyCollectionCurrentCollectionForPartialPaymentByCollectionId(String collectionId)
         {
             var dailyCollections = from d in db.trnDailyCollections
                                    where d.CollectionId == Convert.ToInt32(collectionId)
                                    && d.IsCurrentCollection == true
-                                   select new Models.TrnDailyCollection
+                                   select new Models.TrnCollectionLines
                                    {
                                        Id = d.Id,
                                        CollectionId = d.CollectionId,
@@ -97,18 +97,18 @@ namespace Lending.ApiControllers
                                        Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartiallyPaid, d.IsPaidInAdvanced, d.IsFullyPaid, d.trnCollection.IsOverdue, d.IsReconstructed)
                                    };
 
-            return (Models.TrnDailyCollection)dailyCollections.FirstOrDefault();
+            return (Models.TrnCollectionLines)dailyCollections.FirstOrDefault();
         }
 
         // daily collection list by collectionId
         [Authorize]
         [HttpGet]
         [Route("api/dailyCollection/list/byCollectionId/{collectionId}")]
-        public List<Models.TrnDailyCollection> listDailyCollectionByCollectionId(String collectionId)
+        public List<Models.TrnCollectionLines> listDailyCollectionByCollectionId(String collectionId)
         {
             var dailyCollections = from d in db.trnDailyCollections
                                    where d.CollectionId == Convert.ToInt32(collectionId)
-                                   select new Models.TrnDailyCollection
+                                   select new Models.TrnCollectionLines
                                    {
                                        Id = d.Id,
                                        CollectionId = d.CollectionId,
@@ -145,12 +145,12 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/dailyCollection/list/byCollectionDate/byAreaId/{dailyCollectionDate}/{areaId}")]
-        public List<Models.TrnDailyCollection> listDailyCollectionByCollectionDateByAreaId(String dailyCollectionDate, String areaId)
+        public List<Models.TrnCollectionLines> listDailyCollectionByCollectionDateByAreaId(String dailyCollectionDate, String areaId)
         {
             var dailyCollections = from d in db.trnDailyCollections
                                    where d.DailyCollectionDate == Convert.ToDateTime(dailyCollectionDate)
                                    && d.trnCollection.trnLoanApplication.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                   select new Models.TrnDailyCollection
+                                   select new Models.TrnCollectionLines
                                    {
                                        Id = d.Id,
                                        CollectionId = d.CollectionId,
@@ -229,13 +229,13 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/dailyCollection/get/lastCurrentCollection/byCollectionId/{collectionId}")]
-        public Models.TrnDailyCollection getDailyCollectionLastCurrentCollectionByCollectionId(String collectionId)
+        public Models.TrnCollectionLines getDailyCollectionLastCurrentCollectionByCollectionId(String collectionId)
         {
             var dailyCollection = from d in db.trnDailyCollections.OrderByDescending(d => d.Id)
                                   where d.CollectionId == Convert.ToInt32(collectionId)
                                   && d.IsLastDay == true
                                   && d.IsProcessed == true
-                                  select new Models.TrnDailyCollection
+                                  select new Models.TrnCollectionLines
                                   {
                                       Id = d.Id,
                                       CollectionId = d.CollectionId,
@@ -265,7 +265,7 @@ namespace Lending.ApiControllers
                                       Status = collectionStatus.getStatus(d.IsCleared, d.IsAbsent, d.IsPartiallyPaid, d.IsPaidInAdvanced, d.IsFullyPaid, d.trnCollection.IsOverdue, d.IsReconstructed)
                                   };
 
-            return (Models.TrnDailyCollection)dailyCollection.FirstOrDefault();
+            return (Models.TrnCollectionLines)dailyCollection.FirstOrDefault();
         }
 
         // get daily collection isFullyPaid
@@ -818,7 +818,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpPut]
         [Route("api/dailyCollection/partialPayment/byId/{id}")]
-        public HttpResponseMessage partialPaymentDailyCollection(String id, Models.TrnDailyCollection dailyCollection)
+        public HttpResponseMessage partialPaymentDailyCollection(String id, Models.TrnCollectionLines dailyCollection)
         {
             try
             {
@@ -1060,7 +1060,7 @@ namespace Lending.ApiControllers
                                                                      where d.IsProcessed == false
                                                                      && d.CollectionId == dailyCollection.FirstOrDefault().CollectionId
                                                                      && d.DayNumber <= dailyCollection.FirstOrDefault().DayNumber
-                                                                     select new Models.TrnDailyCollection
+                                                                     select new Models.TrnCollectionLines
                                                                      {
                                                                          Id = d.Id,
                                                                          DayNumber = d.DayNumber,
@@ -1250,7 +1250,7 @@ namespace Lending.ApiControllers
                                                              where d.CollectionId == Convert.ToInt32(collectionId)
                                                              && d.IsProcessed == false
                                                              && d.CurrentBalanceAmount > 0
-                                                             select new Models.TrnDailyCollection
+                                                             select new Models.TrnCollectionLines
                                                              {
                                                                  Id = d.Id,
                                                                  DayNumber = d.DayNumber,

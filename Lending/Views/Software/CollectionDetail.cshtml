@@ -1805,10 +1805,10 @@
             } else {
                 $.ajax({
                     type: "PUT",
-                    url: '/api/loanApplicationCollateral/update/' + collectionReconstructId,
+                    url: '/api/collectionReconstruct/update/' + collectionReconstructId,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
-                    data: loanApplicationCollateralData,
+                    data: collectionReconstructData,
                     statusCode: {
                         200: function () {
                             toastr.success("Update Successful");

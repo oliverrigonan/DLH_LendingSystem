@@ -177,8 +177,8 @@
     <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
-    <Compile Include="ApiControllers\ApiCollectionReconstructController.cs" />
-    <Compile Include="ApiControllers\ApiDailyCollectionController.cs" />
+    <Compile Include="ApiControllers\ApiReconstructController.cs" />
+    <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
     <Compile Include="ApiControllers\ApiExpensesController.cs" />
     <Compile Include="ApiControllers\ApiExpenseTypeController.cs" />
@@ -188,6 +188,7 @@
     <Compile Include="ApiControllers\ApiLoanApplicationRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiLoanTypeController.cs" />
     <Compile Include="ApiControllers\ApiPenaltyController.cs" />
+    <Compile Include="ApiControllers\ApiReconstructLinesController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
@@ -250,12 +251,13 @@
     <Compile Include="Models\SysTransactionType.cs" />
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\TrnCollection.cs" />
-    <Compile Include="Models\TrnCollectionReconstruct.cs" />
-    <Compile Include="Models\TrnDailyCollection.cs" />
+    <Compile Include="Models\TrnReconstruct.cs" />
+    <Compile Include="Models\TrnCollectionLines.cs" />
     <Compile Include="Models\TrnExpenses.cs" />
     <Compile Include="Models\TrnLoanApplication.cs" />
     <Compile Include="Models\TrnLoanApplicationCollateral.cs" />
     <Compile Include="Models\TrnLoanApplicationRequirements.cs" />
+    <Compile Include="Models\TrnReconstructLines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\RepApplicantCollectionPaperController.cs" />
     <Compile Include="Reports\RepAreaCollectionPaperController.cs" />
@@ -420,6 +422,7 @@
     <Content Include="Views\Software\CollectionReport.cshtml" />
     <Content Include="Views\Software\ExpensesReport.cshtml" />
     <Content Include="Views\Shared\SoftwareHeader.cshtml" />
+    <Content Include="Views\Software\ReconstructDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
