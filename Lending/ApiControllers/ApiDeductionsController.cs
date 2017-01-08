@@ -8,39 +8,42 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiExpenseTypeController : ApiController
+    public class ApiDeductionsController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // expense Type list
+        // deductions list
         [Authorize]
         [HttpGet]
-        [Route("api/expenseType/list")]
-        public List<Models.MstExpenseType> listExpenseType()
+        [Route("api/deductions/list")]
+        public List<Models.MstDeductions> listDeductions()
         {
-            var expenseTypes = from d in db.mstExpenseTypes
-                               select new Models.MstExpenseType
-                               {
-                                   Id = d.Id,
-                                   ExpenseType = d.ExpenseType,
-                                   Description = d.Description,
-                                   CreatedByUserId = d.CreatedByUserId,
-                                   CreatedByUser = d.mstUser.FullName,
-                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                   UpdatedByUserId = d.UpdatedByUserId,
-                                   UpdatedByUser = d.mstUser1.FullName,
-                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                               };
+            var deductions = from d in db.mstDeductions
+                           select new Models.MstDeductions
+                           {
+                               Id = d.Id,
+                               Deduction = d.Deduction,
+                               Description = d.Description,
+                               IsPercentage = d.IsPercentage,
+                               PercentageRate = d.PercentageRate,
+                               DeductionAmount = d.DeductionAmount,
+                               CreatedByUserId = d.CreatedByUserId,
+                               CreatedByUser = d.mstUser.FullName,
+                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                               UpdatedByUserId = d.UpdatedByUserId,
+                               UpdatedByUser = d.mstUser1.FullName,
+                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                           };
 
-            return expenseTypes.ToList();
+            return deductions.ToList();
         }
 
-        // add expense Type
+        // add deductions 
         [Authorize]
         [HttpPost]
-        [Route("api/expenseType/add")]
-        public HttpResponseMessage addExpenseType(Models.MstExpenseType expenseType)
+        [Route("api/deductions/add")]
+        public HttpResponseMessage addDeductions(Models.MstDeductions deductions)
         {
             try
             {
@@ -74,15 +77,17 @@ namespace Lending.ApiControllers
 
                     if (canPerformActions)
                     {
-                        Data.mstExpenseType newExpenseType = new Data.mstExpenseType();
-                        newExpenseType.ExpenseType = expenseType.ExpenseType;
-                        newExpenseType.Description = expenseType.Description;
-                        newExpenseType.CreatedByUserId = userId;
-                        newExpenseType.CreatedDateTime = DateTime.Now;
-                        newExpenseType.UpdatedByUserId = userId;
-                        newExpenseType.UpdatedDateTime = DateTime.Now;
-
-                        db.mstExpenseTypes.InsertOnSubmit(newExpenseType);
+                        Data.mstDeduction newDeductions = new Data.mstDeduction();
+                        newDeductions.Deduction = deductions.Deduction;
+                        newDeductions.Description = deductions.Description;
+                        newDeductions.IsPercentage = deductions.IsPercentage;
+                        newDeductions.PercentageRate = deductions.PercentageRate;
+                        newDeductions.DeductionAmount = deductions.DeductionAmount;
+                        newDeductions.CreatedByUserId = userId;
+                        newDeductions.CreatedDateTime = DateTime.Now;
+                        newDeductions.UpdatedByUserId = userId;
+                        newDeductions.UpdatedDateTime = DateTime.Now;
+                        db.mstDeductions.InsertOnSubmit(newDeductions);
                         db.SubmitChanges();
 
                         return Request.CreateResponse(HttpStatusCode.OK);
@@ -103,16 +108,16 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update expense Type
+        // update deductions 
         [Authorize]
         [HttpPut]
-        [Route("api/expenseType/update/{id}")]
-        public HttpResponseMessage updateExpenseType(String id, Models.MstExpenseType expenseType)
+        [Route("api/deductions/update/{id}")]
+        public HttpResponseMessage updateDeductions(String id, Models.MstDeductions deduction)
         {
             try
             {
-                var expenseTypes = from d in db.mstExpenseTypes where d.Id == Convert.ToInt32(id) select d;
-                if (expenseTypes.Any())
+                var deductions = from d in db.mstDeductions where d.Id == Convert.ToInt32(id) select d;
+                if (deductions.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                     var mstUserForms = from d in db.mstUserForms
@@ -144,12 +149,14 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            var updateExpenseType = expenseTypes.FirstOrDefault();
-                            updateExpenseType.ExpenseType = expenseType.ExpenseType;
-                            updateExpenseType.Description = expenseType.Description;
-                            updateExpenseType.UpdatedByUserId = userId;
-                            updateExpenseType.UpdatedDateTime = DateTime.Now;
-
+                            var updateDeductions = deductions.FirstOrDefault();
+                            updateDeductions.Deduction = deduction.Deduction;
+                            updateDeductions.Description = deduction.Description;
+                            updateDeductions.IsPercentage = deduction.IsPercentage;
+                            updateDeductions.PercentageRate = deduction.PercentageRate;
+                            updateDeductions.DeductionAmount = deduction.DeductionAmount;
+                            updateDeductions.UpdatedByUserId = userId;
+                            updateDeductions.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();
 
                             return Request.CreateResponse(HttpStatusCode.OK);
@@ -175,16 +182,16 @@ namespace Lending.ApiControllers
             }
         }
 
-        // delete expense Type
+        // delete deductions
         [Authorize]
         [HttpDelete]
-        [Route("api/expenseType/delete/{id}")]
-        public HttpResponseMessage deleteExpenseType(String id)
+        [Route("api/deductions/delete/{id}")]
+        public HttpResponseMessage deleteDeductions(String id)
         {
             try
             {
-                var expenseTypes = from d in db.mstExpenseTypes where d.Id == Convert.ToInt32(id) select d;
-                if (expenseTypes.Any())
+                var deductions = from d in db.mstDeductions where d.Id == Convert.ToInt32(id) select d;
+                if (deductions.Any())
                 {
                     var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                     var mstUserForms = from d in db.mstUserForms
@@ -216,7 +223,7 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            db.mstExpenseTypes.DeleteOnSubmit(expenseTypes.First());
+                            db.mstDeductions.DeleteOnSubmit(deductions.First());
                             db.SubmitChanges();
 
                             return Request.CreateResponse(HttpStatusCode.OK);

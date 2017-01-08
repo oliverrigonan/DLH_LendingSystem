@@ -12,16 +12,11 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public String ExpenseNumber { get; set; }
         public String ExpenseDate { get; set; }
-        public Int32 AccountId { get; set; }
-        public String Account { get; set; }
-        public Int32 CollectorStaffId { get; set; }
-        public String CollectorStaff { get; set; }
-        public Int32 ExpenseTypeId { get; set; }
-        public String ExpenseType { get; set; }
-        public Int32 ExpenseTransactionTypeId { get; set; }
-        public String ExpenseTransactionType { get; set; }
+        public Int32 AssignedStaffId { get; set; }
+        public String AssignedStaff { get; set; }
         public String Particulars { get; set; }
         public Decimal ExpenseAmount { get; set; }
+        public Boolean IsCollectionExpense { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Boolean IsLocked { get; set; }

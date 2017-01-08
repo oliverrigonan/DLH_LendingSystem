@@ -8,40 +8,41 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiLoanApplicationRequirementsController : ApiController
+    public class ApiLoanCollateralController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // loan Requirements list
+        // loan collateral list
         [Authorize]
         [HttpGet]
-        [Route("api/loanApplicationRequirements/listByLoanId/{loanId}")]
-        public List<Models.TrnLoanApplicationRequirements> listLoanRequirementsByLoanId(String loanId)
+        [Route("api/loanCollateral/listByLoanId/{loanId}")]
+        public List<Models.TrnLoanCollateral> listLoanCollateralByLoanId(String loanId)
         {
-            var loanRequirements = from d in db.trnLoanApplicationRequirements
-                                   where d.LoanId == Convert.ToInt32(loanId)
-                                   select new Models.TrnLoanApplicationRequirements
-                                   {
-                                       Id = d.Id,
-                                       LoanId = d.LoanId,
-                                       RequirementId = d.RequirementId,
-                                       Requirement = d.mstRequirement.Requirement,
-                                       Note = d.Note,
-                                   };
+            var loanCollaterals = from d in db.trnLoanCollaterals
+                                             where d.LoanId == Convert.ToInt32(loanId)
+                                             select new Models.TrnLoanCollateral
+                                             {
+                                                 Id = d.Id,
+                                                 LoanId = d.LoanId,
+                                                 Type = d.Type,
+                                                 Brand = d.Brand,
+                                                 ModelNumber = d.ModelNumber,
+                                                 SerialNumber = d.SerialNumber
+                                             };
 
-            return loanRequirements.ToList();
+            return loanCollaterals.ToList();
         }
 
-        // add loan Requirements
+        // add loan collateral
         [Authorize]
         [HttpPost]
-        [Route("api/loanApplicationRequirements/add")]
-        public HttpResponseMessage addLoanRequirements(Models.TrnLoanApplicationRequirements loanRequirement)
+        [Route("api/loanCollateral/add")]
+        public HttpResponseMessage addLoanCollateral(Models.TrnLoanCollateral loanApplicationCollateral)
         {
             try
             {
-                var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirement.LoanId select d;
+                var loanApplications = from d in db.trnLoans where d.Id == loanApplicationCollateral.LoanId select d;
                 if (loanApplications.Any())
                 {
                     if (!loanApplications.FirstOrDefault().IsLocked)
@@ -76,11 +77,13 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                Data.trnLoanApplicationRequirement newLoanRequirement = new Data.trnLoanApplicationRequirement();
-                                newLoanRequirement.LoanId = loanRequirement.LoanId;
-                                newLoanRequirement.RequirementId = loanRequirement.RequirementId;
-                                newLoanRequirement.Note = loanRequirement.Note;
-                                db.trnLoanApplicationRequirements.InsertOnSubmit(newLoanRequirement);
+                                Data.trnLoanCollateral newLoanApplicationCollateral = new Data.trnLoanCollateral();
+                                newLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
+                                newLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
+                                newLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
+                                newLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
+                                newLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
+                                db.trnLoanCollaterals.InsertOnSubmit(newLoanApplicationCollateral);
                                 db.SubmitChanges();
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -111,21 +114,21 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update loan Requirements
+        // update loan collateral
         [Authorize]
         [HttpPut]
-        [Route("api/loanApplicationRequirements/update/{id}")]
-        public HttpResponseMessage updateLoanRequirements(String id, Models.TrnLoanApplicationRequirements loanRequirement)
+        [Route("api/loanCollateral/update/{id}")]
+        public HttpResponseMessage updateLoanCollateral(String id, Models.TrnLoanCollateral loanApplicationCollateral)
         {
             try
             {
-                var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirement.LoanId select d;
+                var loanApplications = from d in db.trnLoans where d.Id == loanApplicationCollateral.LoanId select d;
                 if (loanApplications.Any())
                 {
-                    if(!loanApplications.FirstOrDefault().IsLocked) 
+                    if (!loanApplications.FirstOrDefault().IsLocked)
                     {
-                        var loanRequirements = from d in db.trnLoanApplicationRequirements where d.Id == Convert.ToInt32(id) select d;
-                        if (loanRequirements.Any())
+                        var loanApplicationCollaterals = from d in db.trnLoanCollaterals where d.Id == Convert.ToInt32(id) select d;
+                        if (loanApplicationCollaterals.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
@@ -157,10 +160,12 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    var updateLoanRequirement = loanRequirements.FirstOrDefault();
-                                    updateLoanRequirement.LoanId = loanRequirement.LoanId;
-                                    updateLoanRequirement.RequirementId = loanRequirement.RequirementId;
-                                    updateLoanRequirement.Note = loanRequirement.Note;
+                                    var updateLoanApplicationCollateral = loanApplicationCollaterals.FirstOrDefault();
+                                    updateLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
+                                    updateLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
+                                    updateLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
+                                    updateLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
+                                    updateLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
                                     db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -196,21 +201,21 @@ namespace Lending.ApiControllers
             }
         }
 
-        // delete loan Requirements
+        // delete loan collateral
         [Authorize]
         [HttpDelete]
-        [Route("api/loanApplicationRequirements/delete/{id}")]
-        public HttpResponseMessage deleteLoanRequirements(String id)
+        [Route("api/loanCollateral/delete/{id}")]
+        public HttpResponseMessage deleteLoanCollateral(String id)
         {
             try
             {
-                var loanRequirements = from d in db.trnLoanApplicationRequirements where d.Id == Convert.ToInt32(id) select d;
-                if (loanRequirements.Any())
+                var loanApplicationCollaterals = from d in db.trnLoanCollaterals where d.Id == Convert.ToInt32(id) select d;
+                if (loanApplicationCollaterals.Any())
                 {
-                    var loanApplications = from d in db.trnLoanApplications where d.Id == loanRequirements.FirstOrDefault().LoanId select d;
+                    var loanApplications = from d in db.trnLoans where d.Id == loanApplicationCollaterals.FirstOrDefault().LoanId select d;
                     if (loanApplications.Any())
                     {
-                        if(!loanApplications.FirstOrDefault().IsLocked)
+                        if (!loanApplications.FirstOrDefault().IsLocked)
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
@@ -242,7 +247,7 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    db.trnLoanApplicationRequirements.DeleteOnSubmit(loanRequirements.First());
+                                    db.trnLoanCollaterals.DeleteOnSubmit(loanApplicationCollaterals.First());
                                     db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);

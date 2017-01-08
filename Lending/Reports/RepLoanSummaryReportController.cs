@@ -68,140 +68,140 @@ namespace Lending.Reports
                 document.Add(line);
                 document.Add(loanSummaryLabel);
 
-                // loan applications
-                var loanApplications = from d in db.trnLoanApplications
-                                       where d.LoanDate >= Convert.ToDateTime(startDate)
-                                       && d.LoanDate <= Convert.ToDateTime(endDate)
-                                       && d.IsLocked == true
-                                       select new Models.TrnLoanApplication
-                                       {
-                                           Id = d.Id,
-                                           LoanNumber = d.LoanNumber,
-                                           LoanDate = d.LoanDate.ToShortDateString(),
-                                           MaturityDate = d.MaturityDate.ToShortDateString(),
-                                           AccountId = d.AccountId,
-                                           Account = d.mstAccount.Account,
-                                           ApplicantId = d.ApplicantId,
-                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                           Area = d.mstApplicant.mstArea.Area,
-                                           Particulars = d.Particulars,
-                                           LoanTypeId = d.LoanTypeId,
-                                           LoanType = d.mstLoanType.LoanType,
-                                           PreparedByUserId = d.PreparedByUserId,
-                                           TermId = d.TermId,
-                                           Term = d.mstTerm.Term,
-                                           InterestId = d.InterestId,
-                                           Interest = d.mstInterest.Interest,
-                                           InterestRate = d.InterestRate,
-                                           PenaltyId = d.PenaltyId,
-                                           Penalty = d.mstPenalty.Penalty,
-                                           PreparedByUser = d.mstUser.FullName,
-                                           PrincipalAmount = d.PrincipalAmount,
-                                           ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
-                                           PassbookAmountDeduction = d.PassbookAmountDeduction,
-                                           BalanceAmountDeduction = d.BalanceAmountDeduction,
-                                           PenaltyAmountDeduction = d.PenaltyAmountDeduction,
-                                           LateIntAmountDeduction = d.LateIntAmountDeduction,
-                                           AdvanceAmountDeduction = d.AdvanceAmountDeduction,
-                                           RequirementsAmountDeduction = d.RequirementsAmountDeduction,
-                                           InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
-                                           NetAmount = d.NetAmount,
-                                           IsLocked = d.IsLocked,
-                                           CreatedByUserId = d.CreatedByUserId,
-                                           CreatedByUser = d.mstUser1.FullName,
-                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                           UpdatedByUserId = d.UpdatedByUserId,
-                                           UpdatedByUser = d.mstUser2.FullName,
-                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                                       };
+                //// loan applications
+                //var loanApplications = from d in db.trnLoanApplications
+                //                       where d.LoanDate >= Convert.ToDateTime(startDate)
+                //                       && d.LoanDate <= Convert.ToDateTime(endDate)
+                //                       && d.IsLocked == true
+                //                       select new Models.TrnLoan
+                //                       {
+                //                           Id = d.Id,
+                //                           LoanNumber = d.LoanNumber,
+                //                           LoanDate = d.LoanDate.ToShortDateString(),
+                //                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                //                           AccountId = d.AccountId,
+                //                           Account = d.mstAccount.Account,
+                //                           ApplicantId = d.ApplicantId,
+                //                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                //                           Area = d.mstApplicant.mstArea.Area,
+                //                           Particulars = d.Particulars,
+                //                           LoanTypeId = d.LoanTypeId,
+                //                           LoanType = d.mstLoanType.LoanType,
+                //                           PreparedByUserId = d.PreparedByUserId,
+                //                           TermId = d.TermId,
+                //                           Term = d.mstTerm.Term,
+                //                           InterestId = d.InterestId,
+                //                           Interest = d.mstInterest.Interest,
+                //                           InterestRate = d.InterestRate,
+                //                           PenaltyId = d.PenaltyId,
+                //                           Penalty = d.mstPenalty.Penalty,
+                //                           PreparedByUser = d.mstUser.FullName,
+                //                           PrincipalAmount = d.PrincipalAmount,
+                //                           ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                //                           PassbookAmountDeduction = d.PassbookAmountDeduction,
+                //                           BalanceAmountDeduction = d.BalanceAmountDeduction,
+                //                           PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                //                           LateIntAmountDeduction = d.LateIntAmountDeduction,
+                //                           AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                //                           RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                //                           InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
+                //                           NetAmount = d.NetAmount,
+                //                           IsLocked = d.IsLocked,
+                //                           CreatedByUserId = d.CreatedByUserId,
+                //                           CreatedByUser = d.mstUser1.FullName,
+                //                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                //                           UpdatedByUserId = d.UpdatedByUserId,
+                //                           UpdatedByUser = d.mstUser2.FullName,
+                //                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                //                       };
 
-                if (loanApplications.Any())
-                {
-                    PdfPTable spaceLabel = new PdfPTable(1);
-                    float[] spaceLabelWithCells = new float[] { 100f };
-                    spaceLabel.SetWidths(spaceLabelWithCells);
-                    spaceLabel.WidthPercentage = 100;
-                    spaceLabel.AddCell(new PdfPCell(new Phrase(" ")) { HorizontalAlignment = 0, Border = 0, PaddingTop = 5f, PaddingBottom = 5f });
-                    document.Add(spaceLabel);
+                //if (loanApplications.Any())
+                //{
+                //    PdfPTable spaceLabel = new PdfPTable(1);
+                //    float[] spaceLabelWithCells = new float[] { 100f };
+                //    spaceLabel.SetWidths(spaceLabelWithCells);
+                //    spaceLabel.WidthPercentage = 100;
+                //    spaceLabel.AddCell(new PdfPCell(new Phrase(" ")) { HorizontalAlignment = 0, Border = 0, PaddingTop = 5f, PaddingBottom = 5f });
+                //    document.Add(spaceLabel);
 
-                    PdfPTable loanApplicationActivities = new PdfPTable(14);
-                    float[] loanApplicationActivitiesWithCells = new float[] { 6f, 12f, 8f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f };
-                    loanApplicationActivities.SetWidths(loanApplicationActivitiesWithCells);
-                    loanApplicationActivities.WidthPercentage = 100;
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Loan No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Area", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Principal", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PF", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PB", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("BAL", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PEN", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("LATE INT", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("ADV", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("REQ", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PP/IPI", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("TD", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Net", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    PdfPTable loanApplicationActivities = new PdfPTable(14);
+                //    float[] loanApplicationActivitiesWithCells = new float[] { 6f, 12f, 8f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f, 6f };
+                //    loanApplicationActivities.SetWidths(loanApplicationActivitiesWithCells);
+                //    loanApplicationActivities.WidthPercentage = 100;
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Loan No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Area", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Principal", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PF", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PB", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("BAL", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PEN", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("LATE INT", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("ADV", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("REQ", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("PP/IPI", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("TD", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Net", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
-                    Decimal totalPricipal = 0;
-                    Decimal totalProcessingFee = 0;
-                    Decimal totalPassbook = 0;
-                    Decimal totalBalance = 0;
-                    Decimal totalPenalty = 0;
-                    Decimal totalLateInt = 0;
-                    Decimal totalAdvance = 0;
-                    Decimal totalRequirements = 0;
-                    Decimal totalPPIPI = 0;
-                    Decimal totalAllDeductions = 0;
-                    Decimal totalNetAmount = 0;
+                //    Decimal totalPricipal = 0;
+                //    Decimal totalProcessingFee = 0;
+                //    Decimal totalPassbook = 0;
+                //    Decimal totalBalance = 0;
+                //    Decimal totalPenalty = 0;
+                //    Decimal totalLateInt = 0;
+                //    Decimal totalAdvance = 0;
+                //    Decimal totalRequirements = 0;
+                //    Decimal totalPPIPI = 0;
+                //    Decimal totalAllDeductions = 0;
+                //    Decimal totalNetAmount = 0;
 
-                    foreach (var loanApplication in loanApplications)
-                    {
-                        Decimal totalDeductions = loanApplication.ProcessingFeeAmountDeduction + loanApplication.PassbookAmountDeduction + loanApplication.BalanceAmountDeduction + loanApplication.PenaltyAmountDeduction + loanApplication.LateIntAmountDeduction + loanApplication.AdvanceAmountDeduction + loanApplication.RequirementsAmountDeduction + loanApplication.InsuranceIPIorPPIAmountDeduction;
+                //    foreach (var loanApplication in loanApplications)
+                //    {
+                //        Decimal totalDeductions = loanApplication.ProcessingFeeAmountDeduction + loanApplication.PassbookAmountDeduction + loanApplication.BalanceAmountDeduction + loanApplication.PenaltyAmountDeduction + loanApplication.LateIntAmountDeduction + loanApplication.AdvanceAmountDeduction + loanApplication.RequirementsAmountDeduction + loanApplication.InsuranceIPIorPPIAmountDeduction;
 
-                        totalPricipal += loanApplication.PrincipalAmount;
-                        totalProcessingFee += loanApplication.ProcessingFeeAmountDeduction;
-                        totalPassbook += loanApplication.PassbookAmountDeduction;
-                        totalBalance += loanApplication.BalanceAmountDeduction;
-                        totalPenalty += loanApplication.PenaltyAmountDeduction;
-                        totalLateInt += loanApplication.LateIntAmountDeduction;
-                        totalAdvance += loanApplication.AdvanceAmountDeduction;
-                        totalRequirements += loanApplication.RequirementsAmountDeduction;
-                        totalPPIPI += loanApplication.InsuranceIPIorPPIAmountDeduction;
-                        totalAllDeductions += totalDeductions;
-                        totalNetAmount += loanApplication.NetAmount;
+                //        totalPricipal += loanApplication.PrincipalAmount;
+                //        totalProcessingFee += loanApplication.ProcessingFeeAmountDeduction;
+                //        totalPassbook += loanApplication.PassbookAmountDeduction;
+                //        totalBalance += loanApplication.BalanceAmountDeduction;
+                //        totalPenalty += loanApplication.PenaltyAmountDeduction;
+                //        totalLateInt += loanApplication.LateIntAmountDeduction;
+                //        totalAdvance += loanApplication.AdvanceAmountDeduction;
+                //        totalRequirements += loanApplication.RequirementsAmountDeduction;
+                //        totalPPIPI += loanApplication.InsuranceIPIorPPIAmountDeduction;
+                //        totalAllDeductions += totalDeductions;
+                //        totalNetAmount += loanApplication.NetAmount;
 
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LoanNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Area, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PrincipalAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.ProcessingFeeAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PassbookAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.BalanceAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PenaltyAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LateIntAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.AdvanceAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.RequirementsAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.InsuranceIPIorPPIAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalDeductions.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.NetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                    }
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LoanNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Area, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PrincipalAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.ProcessingFeeAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PassbookAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.BalanceAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.PenaltyAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LateIntAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.AdvanceAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.RequirementsAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.InsuranceIPIorPPIAmountDeduction.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalDeductions.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //        loanApplicationActivities.AddCell(new PdfPCell(new Phrase(loanApplication.NetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //    }
 
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Total", fontArial11Bold)) { Colspan = 3, HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPricipal.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalProcessingFee.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPassbook.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalBalance.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPenalty.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalLateInt.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalAdvance.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalRequirements.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPPIPI.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalAllDeductions.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase("Total", fontArial11Bold)) { Colspan = 3, HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPricipal.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalProcessingFee.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPassbook.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalBalance.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPenalty.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalLateInt.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalAdvance.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalRequirements.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalPPIPI.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalAllDeductions.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    loanApplicationActivities.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
-                    document.Add(loanApplicationActivities);
-                }
+                //    document.Add(loanApplicationActivities);
+                //}
 
                 // Document End
                 document.Close();

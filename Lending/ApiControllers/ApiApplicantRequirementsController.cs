@@ -8,44 +8,44 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiLoanApplicationCollateralController : ApiController
+    public class ApiApplicantRequirementsController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // loan application collateral list
+        // applicant requirements list
         [Authorize]
         [HttpGet]
-        [Route("api/loanApplicationCollateral/listByLoanId/{loanId}")]
-        public List<Models.TrnLoanApplicationCollateral> listLoanApplicationCollateralByLoanId(String loanId)
+        [Route("api/applicantRequirements/listByLoanId/{applicantId}")]
+        public List<Models.MstApplicantRequirements> listApplicantRequirementsByApplicantId(String applicantId)
         {
-            var loanApplicationCollaterals = from d in db.trnLoanApplicationCollaterals
-                                             where d.LoanId == Convert.ToInt32(loanId)
-                                             select new Models.TrnLoanApplicationCollateral
-                                             {
-                                                 Id = d.Id,
-                                                 LoanId = d.LoanId,
-                                                 Type = d.Type,
-                                                 Brand = d.Brand,
-                                                 ModelNumber = d.ModelNumber,
-                                                 SerialNumber = d.SerialNumber
-                                             };
+            var applicantRequirements = from d in db.mstApplicantRequirements
+                                   where d.ApplicantId == Convert.ToInt32(applicantId)
+                                   select new Models.MstApplicantRequirements
+                                   {
+                                       Id = d.Id,
+                                       ApplicantId = d.ApplicantId,
+                                       RequirementId = d.RequirementId,
+                                       Requirement = d.mstRequirement.Requirement,
+                                       Note = d.Note,
+                                       ValidDateUntil = d.ValidDateUntil.ToShortDateString()
+                                   };
 
-            return loanApplicationCollaterals.ToList();
+            return applicantRequirements.ToList();
         }
 
-        // add loan application collateral
+        // add applicant requirements
         [Authorize]
         [HttpPost]
-        [Route("api/loanApplicationCollateral/add")]
-        public HttpResponseMessage addLoanApplicationCollateral(Models.TrnLoanApplicationCollateral loanApplicationCollateral)
+        [Route("api/applicantRequirements/add")]
+        public HttpResponseMessage addApplicantRequirements(Models.MstApplicantRequirements applicantRequirement)
         {
             try
             {
-                var loanApplications = from d in db.trnLoanApplications where d.Id == loanApplicationCollateral.LoanId select d;
-                if (loanApplications.Any())
+                var applicant = from d in db.mstApplicants where d.Id == applicantRequirement.ApplicantId select d;
+                if (applicant.Any())
                 {
-                    if (!loanApplications.FirstOrDefault().IsLocked)
+                    if (!applicant.FirstOrDefault().IsLocked)
                     {
                         var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                         var mstUserForms = from d in db.mstUserForms
@@ -59,7 +59,7 @@ namespace Lending.ApiControllers
 
                         if (mstUserForms.Any())
                         {
-                            String matchPageString = "LoanApplicationDetail";
+                            String matchPageString = "ApplicantDetail";
                             Boolean canPerformActions = false;
 
                             foreach (var mstUserForm in mstUserForms)
@@ -77,13 +77,12 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                Data.trnLoanApplicationCollateral newLoanApplicationCollateral = new Data.trnLoanApplicationCollateral();
-                                newLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
-                                newLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
-                                newLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
-                                newLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
-                                newLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
-                                db.trnLoanApplicationCollaterals.InsertOnSubmit(newLoanApplicationCollateral);
+                                Data.mstApplicantRequirement newApplicantRequirement = new Data.mstApplicantRequirement();
+                                newApplicantRequirement.ApplicantId = applicantRequirement.ApplicantId;
+                                newApplicantRequirement.RequirementId = applicantRequirement.RequirementId;
+                                newApplicantRequirement.Note = applicantRequirement.Note;
+                                newApplicantRequirement.ValidDateUntil = Convert.ToDateTime(applicantRequirement.ValidDateUntil);
+                                db.mstApplicantRequirements.InsertOnSubmit(newApplicantRequirement);
                                 db.SubmitChanges();
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -114,21 +113,21 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update loan application collateral
+        // update applicant requirements
         [Authorize]
         [HttpPut]
-        [Route("api/loanApplicationCollateral/update/{id}")]
-        public HttpResponseMessage updateLoanApplicationCollateral(String id, Models.TrnLoanApplicationCollateral loanApplicationCollateral)
+        [Route("api/applicantRequirements/update/{id}")]
+        public HttpResponseMessage updateApplicantRequirements(String id, Models.MstApplicantRequirements applicantRequirement)
         {
             try
             {
-                var loanApplications = from d in db.trnLoanApplications where d.Id == loanApplicationCollateral.LoanId select d;
-                if (loanApplications.Any())
+                var applicant = from d in db.mstApplicants where d.Id == applicantRequirement.ApplicantId select d;
+                if (applicant.Any())
                 {
-                    if (!loanApplications.FirstOrDefault().IsLocked)
+                    if (!applicant.FirstOrDefault().IsLocked)
                     {
-                        var loanApplicationCollaterals = from d in db.trnLoanApplicationCollaterals where d.Id == Convert.ToInt32(id) select d;
-                        if (loanApplicationCollaterals.Any())
+                        var applicantRequirements = from d in db.mstApplicantRequirements where d.Id == Convert.ToInt32(id) select d;
+                        if (applicantRequirements.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
@@ -142,7 +141,7 @@ namespace Lending.ApiControllers
 
                             if (mstUserForms.Any())
                             {
-                                String matchPageString = "LoanApplicationDetail";
+                                String matchPageString = "ApplicantDetail";
                                 Boolean canPerformActions = false;
 
                                 foreach (var mstUserForm in mstUserForms)
@@ -160,12 +159,10 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    var updateLoanApplicationCollateral = loanApplicationCollaterals.FirstOrDefault();
-                                    updateLoanApplicationCollateral.LoanId = loanApplicationCollateral.LoanId;
-                                    updateLoanApplicationCollateral.Type = loanApplicationCollateral.Type;
-                                    updateLoanApplicationCollateral.Brand = loanApplicationCollateral.Brand;
-                                    updateLoanApplicationCollateral.ModelNumber = loanApplicationCollateral.ModelNumber;
-                                    updateLoanApplicationCollateral.SerialNumber = loanApplicationCollateral.SerialNumber;
+                                    var updateLoanRequirement = applicantRequirements.FirstOrDefault();
+                                    updateLoanRequirement.RequirementId = applicantRequirement.RequirementId;
+                                    updateLoanRequirement.Note = applicantRequirement.Note;
+                                    updateLoanRequirement.ValidDateUntil = Convert.ToDateTime(applicantRequirement.ValidDateUntil);
                                     db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -201,21 +198,21 @@ namespace Lending.ApiControllers
             }
         }
 
-        // delete loan application collateral
+        // delete applicant Requirements
         [Authorize]
         [HttpDelete]
-        [Route("api/loanApplicationCollateral/delete/{id}")]
-        public HttpResponseMessage deleteLoanApplicationCollateral(String id)
+        [Route("api/applicantRequirements/delete/{id}")]
+        public HttpResponseMessage deleteApplicantRequirements(String id)
         {
             try
             {
-                var loanApplicationCollaterals = from d in db.trnLoanApplicationCollaterals where d.Id == Convert.ToInt32(id) select d;
-                if (loanApplicationCollaterals.Any())
+                var applicantRequirements = from d in db.mstApplicantRequirements where d.Id == Convert.ToInt32(id) select d;
+                if (applicantRequirements.Any())
                 {
-                    var loanApplications = from d in db.trnLoanApplications where d.Id == loanApplicationCollaterals.FirstOrDefault().LoanId select d;
-                    if (loanApplications.Any())
+                    var applicant = from d in db.mstApplicants where d.Id == applicantRequirements.FirstOrDefault().ApplicantId select d;
+                    if (applicant.Any())
                     {
-                        if (!loanApplications.FirstOrDefault().IsLocked)
+                        if (!applicant.FirstOrDefault().IsLocked)
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
@@ -229,7 +226,7 @@ namespace Lending.ApiControllers
 
                             if (mstUserForms.Any())
                             {
-                                String matchPageString = "LoanApplicationDetail";
+                                String matchPageString = "ApplicantDetail";
                                 Boolean canPerformActions = false;
 
                                 foreach (var mstUserForm in mstUserForms)
@@ -247,7 +244,7 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    db.trnLoanApplicationCollaterals.DeleteOnSubmit(loanApplicationCollaterals.First());
+                                    db.mstApplicantRequirements.DeleteOnSubmit(applicantRequirements.First());
                                     db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);

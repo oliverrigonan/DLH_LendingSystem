@@ -14,23 +14,26 @@ namespace Lending.Models
         public String CollectionDate { get; set; }
         public Int32 LoanId { get; set; }
         public String LoanNumber { get; set; }
-        public String LoanDate { get; set; }
-
-        public String MaturityDate { get; set; }
-        public Decimal PrincipalAmount { get; set; }
-        public String Interest { get; set; }
-        public Decimal InterestRate { get;set;}
-        public Decimal InterestAmount { get;set;}
-        public Decimal TotalDeductionAmount { get; set; }
-        public Decimal NetAmount { get; set; }
-
-        public String Applicant { get; set; }
-        public String Area { get; set; }
-        public Int32 TermId { get; set; }
-        public String Term { get; set; }
-        public Decimal TermNoOfDays { get; set; }
-        public Decimal TermNoOfAllowanceDays { get; set; }
+        public String LoanDetail { get; set; }
+        public Decimal CollectibleAmount { get; set; }
+        public Boolean IsCleared { get; set; }
+        public Boolean IsAbsent { get; set; }
+        public Decimal PenaltyAmount { get; set; }
+        public Boolean IsPartiallyPaid { get; set; }
+        public Boolean IsPaidInAdvanced { get; set; }
+        public String AdvancePaidDate { get; set; }
         public Boolean IsFullyPaid { get; set; }
-        public Boolean IsOverdue { get; set; }
+        public Decimal PaidAmount { get; set; }
+        public Decimal BalanceAmount { get; set; }
+        public String Status { get; set; }
+        public Boolean IsAllowanceDay { get; set; }
+        public String Particulars { get; set; }
+        public Boolean IsLocked { get; set; }
+        public Int32 CreatedByUserId { get; set; }
+        public String CreatedByUser { get; set; }
+        public String CreatedDateTime { get; set; }
+        public Int32 UpdatedByUserId { get; set; }
+        public String UpdatedByUser { get; set; }
+        public String UpdatedDateTime { get; set; }
     }
 }

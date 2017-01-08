@@ -68,94 +68,94 @@ namespace Lending.Reports
                     document.Add(line);
                     document.Add(dailyReleaseMonitoringReportLabel);
 
-                    // loan applications
-                    var loanApplications = from d in db.trnLoanApplications
-                                           where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                           && d.LoanDate >= Convert.ToDateTime(startDate)
-                                           && d.LoanDate <= Convert.ToDateTime(endDate)
-                                           && d.IsLocked == true
-                                           select new Models.TrnLoanApplication
-                                           {
-                                               Id = d.Id,
-                                               LoanNumber = d.LoanNumber,
-                                               LoanDate = d.LoanDate.ToShortDateString(),
-                                               MaturityDate = d.MaturityDate.ToShortDateString(),
-                                               AccountId = d.AccountId,
-                                               Account = d.mstAccount.Account,
-                                               ApplicantId = d.ApplicantId,
-                                               Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                               Area = d.mstApplicant.mstArea.Area,
-                                               Particulars = d.Particulars,
-                                               LoanTypeId = d.LoanTypeId,
-                                               LoanType = d.mstLoanType.LoanType,
-                                               PreparedByUserId = d.PreparedByUserId,
-                                               TermId = d.TermId,
-                                               Term = d.mstTerm.Term,
-                                               InterestId = d.InterestId,
-                                               Interest = d.mstInterest.Interest,
-                                               InterestRate = d.InterestRate,
-                                               PenaltyId = d.PenaltyId,
-                                               Penalty = d.mstPenalty.Penalty,
-                                               PreparedByUser = d.mstUser.FullName,
-                                               PrincipalAmount = d.PrincipalAmount,
-                                               ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
-                                               PassbookAmountDeduction = d.PassbookAmountDeduction,
-                                               BalanceAmountDeduction = d.BalanceAmountDeduction,
-                                               PenaltyAmountDeduction = d.PenaltyAmountDeduction,
-                                               LateIntAmountDeduction = d.LateIntAmountDeduction,
-                                               AdvanceAmountDeduction = d.AdvanceAmountDeduction,
-                                               RequirementsAmountDeduction = d.RequirementsAmountDeduction,
-                                               InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
-                                               NetAmount = d.NetAmount,
-                                               IsLocked = d.IsLocked,
-                                               CreatedByUserId = d.CreatedByUserId,
-                                               CreatedByUser = d.mstUser1.FullName,
-                                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                               UpdatedByUserId = d.UpdatedByUserId,
-                                               UpdatedByUser = d.mstUser2.FullName,
-                                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                                           };
+                    //// loan applications
+                    //var loanApplications = from d in db.trnLoanApplications
+                    //                       where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                    //                       && d.LoanDate >= Convert.ToDateTime(startDate)
+                    //                       && d.LoanDate <= Convert.ToDateTime(endDate)
+                    //                       && d.IsLocked == true
+                    //                       select new Models.TrnLoan
+                    //                       {
+                    //                           Id = d.Id,
+                    //                           LoanNumber = d.LoanNumber,
+                    //                           LoanDate = d.LoanDate.ToShortDateString(),
+                    //                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                    //                           AccountId = d.AccountId,
+                    //                           Account = d.mstAccount.Account,
+                    //                           ApplicantId = d.ApplicantId,
+                    //                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                    //                           Area = d.mstApplicant.mstArea.Area,
+                    //                           Particulars = d.Particulars,
+                    //                           LoanTypeId = d.LoanTypeId,
+                    //                           LoanType = d.mstLoanType.LoanType,
+                    //                           PreparedByUserId = d.PreparedByUserId,
+                    //                           TermId = d.TermId,
+                    //                           Term = d.mstTerm.Term,
+                    //                           InterestId = d.InterestId,
+                    //                           Interest = d.mstInterest.Interest,
+                    //                           InterestRate = d.InterestRate,
+                    //                           PenaltyId = d.PenaltyId,
+                    //                           Penalty = d.mstPenalty.Penalty,
+                    //                           PreparedByUser = d.mstUser.FullName,
+                    //                           PrincipalAmount = d.PrincipalAmount,
+                    //                           ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                    //                           PassbookAmountDeduction = d.PassbookAmountDeduction,
+                    //                           BalanceAmountDeduction = d.BalanceAmountDeduction,
+                    //                           PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                    //                           LateIntAmountDeduction = d.LateIntAmountDeduction,
+                    //                           AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                    //                           RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                    //                           InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
+                    //                           NetAmount = d.NetAmount,
+                    //                           IsLocked = d.IsLocked,
+                    //                           CreatedByUserId = d.CreatedByUserId,
+                    //                           CreatedByUser = d.mstUser1.FullName,
+                    //                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                    //                           UpdatedByUserId = d.UpdatedByUserId,
+                    //                           UpdatedByUser = d.mstUser2.FullName,
+                    //                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                    //                       };
 
-                    if (loanApplications.Any())
-                    {
-                        var area = from d in db.mstAreas where d.Id == Convert.ToInt32(areaId) select d;
+                    //if (loanApplications.Any())
+                    //{
+                    //    var area = from d in db.mstAreas where d.Id == Convert.ToInt32(areaId) select d;
 
-                        PdfPTable areaLabel = new PdfPTable(1);
-                        float[] areaLabelWithCells = new float[] { 100f };
-                        areaLabel.SetWidths(areaLabelWithCells);
-                        areaLabel.WidthPercentage = 100;
-                        areaLabel.AddCell(new PdfPCell(new Phrase("AREA: " + area.FirstOrDefault().Area, fontArial12Bold)) { HorizontalAlignment = 0, Border = 0, PaddingTop = 20f, PaddingBottom = 10f });
-                        document.Add(areaLabel);
+                    //    PdfPTable areaLabel = new PdfPTable(1);
+                    //    float[] areaLabelWithCells = new float[] { 100f };
+                    //    areaLabel.SetWidths(areaLabelWithCells);
+                    //    areaLabel.WidthPercentage = 100;
+                    //    areaLabel.AddCell(new PdfPCell(new Phrase("AREA: " + area.FirstOrDefault().Area, fontArial12Bold)) { HorizontalAlignment = 0, Border = 0, PaddingTop = 20f, PaddingBottom = 10f });
+                    //    document.Add(areaLabel);
 
-                        PdfPTable dailReleaseMonitoringDetailReportActivities = new PdfPTable(6);
-                        float[] dailReleaseMonitoringDetailReportActivitiesWithCells = new float[] { 15f, 30f, 20f, 10f, 15f, 10f, };
-                        dailReleaseMonitoringDetailReportActivities.SetWidths(dailReleaseMonitoringDetailReportActivitiesWithCells);
-                        dailReleaseMonitoringDetailReportActivities.WidthPercentage = 100;
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Loan No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Area", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Signature", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    PdfPTable dailReleaseMonitoringDetailReportActivities = new PdfPTable(6);
+                    //    float[] dailReleaseMonitoringDetailReportActivitiesWithCells = new float[] { 15f, 30f, 20f, 10f, 15f, 10f, };
+                    //    dailReleaseMonitoringDetailReportActivities.SetWidths(dailReleaseMonitoringDetailReportActivitiesWithCells);
+                    //    dailReleaseMonitoringDetailReportActivities.WidthPercentage = 100;
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Loan No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Area", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Signature", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
-                        Decimal totalNetAmount = 0;
-                        foreach (var loanApplication in loanApplications)
-                        {
-                            totalNetAmount += loanApplication.NetAmount;
+                    //    Decimal totalNetAmount = 0;
+                    //    foreach (var loanApplication in loanApplications)
+                    //    {
+                    //        totalNetAmount += loanApplication.NetAmount;
 
-                            dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LoanNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                            dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                            dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Area, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                            dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LoanDate, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                            dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.NetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                            dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        }
+                    //        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LoanNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                    //        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                    //        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.Area, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                    //        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.LoanDate, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                    //        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(loanApplication.NetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                    //        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                    //    }
 
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Total", fontArial11Bold)) { Colspan = 4, HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        document.Add(dailReleaseMonitoringDetailReportActivities);
-                    }
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase("Total", fontArial11Bold)) { Colspan = 4, HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    dailReleaseMonitoringDetailReportActivities.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    //    document.Add(dailReleaseMonitoringDetailReportActivities);
+                    //}
 
                     // Document End
                     document.Close();

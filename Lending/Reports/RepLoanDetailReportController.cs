@@ -68,58 +68,58 @@ namespace Lending.Reports
                     document.Add(line);
                     document.Add(loanDetailLabel);
 
-                    // loan applications
-                    var loanApplications = from d in db.trnLoanApplications
-                                           where d.ApplicantId == Convert.ToInt32(applicantId)
-                                           && d.LoanDate >= Convert.ToDateTime(startDate)
-                                           && d.LoanDate <= Convert.ToDateTime(endDate)
-                                           && d.IsLocked == true
-                                           select new Models.TrnLoanApplication
-                                           {
-                                               Id = d.Id,
-                                               LoanNumber = d.LoanNumber,
-                                               LoanDate = d.LoanDate.ToShortDateString(),
-                                               MaturityDate = d.MaturityDate.ToShortDateString(),
-                                               AccountId = d.AccountId,
-                                               Account = d.mstAccount.Account,
-                                               ApplicantId = d.ApplicantId,
-                                               Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                               Area = d.mstApplicant.mstArea.Area,
-                                               Particulars = d.Particulars,
-                                               LoanTypeId = d.LoanTypeId,
-                                               LoanType = d.mstLoanType.LoanType,
-                                               PreparedByUserId = d.PreparedByUserId,
-                                               TermId = d.TermId,
-                                               Term = d.mstTerm.Term,
-                                               InterestId = d.InterestId,
-                                               Interest = d.mstInterest.Interest,
-                                               InterestRate = d.InterestRate,
-                                               PenaltyId = d.PenaltyId,
-                                               Penalty = d.mstPenalty.Penalty,
-                                               PreparedByUser = d.mstUser.FullName,
-                                               PrincipalAmount = d.PrincipalAmount,
-                                               ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
-                                               PassbookAmountDeduction = d.PassbookAmountDeduction,
-                                               BalanceAmountDeduction = d.BalanceAmountDeduction,
-                                               PenaltyAmountDeduction = d.PenaltyAmountDeduction,
-                                               LateIntAmountDeduction = d.LateIntAmountDeduction,
-                                               AdvanceAmountDeduction = d.AdvanceAmountDeduction,
-                                               RequirementsAmountDeduction = d.RequirementsAmountDeduction,
-                                               InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
-                                               NetAmount = d.NetAmount,
-                                               IsLocked = d.IsLocked,
-                                               CreatedByUserId = d.CreatedByUserId,
-                                               CreatedByUser = d.mstUser1.FullName,
-                                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                               UpdatedByUserId = d.UpdatedByUserId,
-                                               UpdatedByUser = d.mstUser2.FullName,
-                                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                                           };
+                    //// loan applications
+                    //var loanApplications = from d in db.trnLoanApplications
+                    //                       where d.ApplicantId == Convert.ToInt32(applicantId)
+                    //                       && d.LoanDate >= Convert.ToDateTime(startDate)
+                    //                       && d.LoanDate <= Convert.ToDateTime(endDate)
+                    //                       && d.IsLocked == true
+                    //                       select new Models.TrnLoan
+                    //                       {
+                    //                           Id = d.Id,
+                    //                           LoanNumber = d.LoanNumber,
+                    //                           LoanDate = d.LoanDate.ToShortDateString(),
+                    //                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                    //                           AccountId = d.AccountId,
+                    //                           Account = d.mstAccount.Account,
+                    //                           ApplicantId = d.ApplicantId,
+                    //                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                    //                           Area = d.mstApplicant.mstArea.Area,
+                    //                           Particulars = d.Particulars,
+                    //                           LoanTypeId = d.LoanTypeId,
+                    //                           LoanType = d.mstLoanType.LoanType,
+                    //                           PreparedByUserId = d.PreparedByUserId,
+                    //                           TermId = d.TermId,
+                    //                           Term = d.mstTerm.Term,
+                    //                           InterestId = d.InterestId,
+                    //                           Interest = d.mstInterest.Interest,
+                    //                           InterestRate = d.InterestRate,
+                    //                           PenaltyId = d.PenaltyId,
+                    //                           Penalty = d.mstPenalty.Penalty,
+                    //                           PreparedByUser = d.mstUser.FullName,
+                    //                           PrincipalAmount = d.PrincipalAmount,
+                    //                           ProcessingFeeAmountDeduction = d.ProcessingFeeAmountDeduction,
+                    //                           PassbookAmountDeduction = d.PassbookAmountDeduction,
+                    //                           BalanceAmountDeduction = d.BalanceAmountDeduction,
+                    //                           PenaltyAmountDeduction = d.PenaltyAmountDeduction,
+                    //                           LateIntAmountDeduction = d.LateIntAmountDeduction,
+                    //                           AdvanceAmountDeduction = d.AdvanceAmountDeduction,
+                    //                           RequirementsAmountDeduction = d.RequirementsAmountDeduction,
+                    //                           InsuranceIPIorPPIAmountDeduction = d.InsuranceIPIorPPIAmountDeduction,
+                    //                           NetAmount = d.NetAmount,
+                    //                           IsLocked = d.IsLocked,
+                    //                           CreatedByUserId = d.CreatedByUserId,
+                    //                           CreatedByUser = d.mstUser1.FullName,
+                    //                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                    //                           UpdatedByUserId = d.UpdatedByUserId,
+                    //                           UpdatedByUser = d.mstUser2.FullName,
+                    //                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                    //                       };
 
-                    if (loanApplications.Any())
-                    {
+                    //if (loanApplications.Any())
+                    //{
 
-                    }
+                    //}
 
                     // Document End
                     document.Close();

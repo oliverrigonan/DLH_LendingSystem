@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace Lending.ApiControllers
 {
-    public class ApiReconstructLinesController : ApiController
+    public class ApiLoanDeductionsController : ApiController
     {
     }
 }

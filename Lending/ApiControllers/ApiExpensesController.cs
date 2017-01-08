@@ -26,15 +26,10 @@ namespace Lending.ApiControllers
                                Id = d.Id,
                                ExpenseNumber = d.ExpenseNumber,
                                ExpenseDate = d.ExpenseDate.ToShortDateString(),
-                               AccountId = d.AccountId,
-                               Account = d.mstAccount.Account,
-                               CollectorStaffId = d.CollectorStaffId,
-                               CollectorStaff = d.mstStaff.Staff,
-                               ExpenseTypeId = d.ExpenseTypeId,
-                               ExpenseType = d.mstExpenseType.ExpenseType,
-                               ExpenseTransactionTypeId = d.ExpenseTransactionTypeId,
-                               ExpenseTransactionType = d.sysTransactionType.TransactionType,
+                               AssignedStaffId = d.AssignedStaffId,
+                               AssignedStaff = d.mstStaff.Staff,
                                Particulars = d.Particulars,
+                               IsCollectionExpense = d.IsCollectionExpense,
                                ExpenseAmount = d.ExpenseAmount,
                                PreparedByUserId = d.PreparedByUserId,
                                PreparedByUser = d.mstUser.FullName,
@@ -63,15 +58,10 @@ namespace Lending.ApiControllers
                               Id = d.Id,
                               ExpenseNumber = d.ExpenseNumber,
                               ExpenseDate = d.ExpenseDate.ToShortDateString(),
-                              AccountId = d.AccountId,
-                              Account = d.mstAccount.Account,
-                              CollectorStaffId = d.CollectorStaffId,
-                              CollectorStaff = d.mstStaff.Staff,
-                              ExpenseTypeId = d.ExpenseTypeId,
-                              ExpenseType = d.mstExpenseType.ExpenseType,
-                              ExpenseTransactionTypeId = d.ExpenseTransactionTypeId,
-                              ExpenseTransactionType = d.sysTransactionType.TransactionType,
+                              AssignedStaffId = d.AssignedStaffId,
+                              AssignedStaff = d.mstStaff.Staff,
                               Particulars = d.Particulars,
+                              IsCollectionExpense = d.IsCollectionExpense,
                               ExpenseAmount = d.ExpenseAmount,
                               PreparedByUserId = d.PreparedByUserId,
                               PreparedByUser = d.mstUser.FullName,
@@ -150,11 +140,9 @@ namespace Lending.ApiControllers
                         Data.trnExpense newExpense = new Data.trnExpense();
                         newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
                         newExpense.ExpenseDate = DateTime.Today;
-                        newExpense.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 3 select d.Id).FirstOrDefault();
-                        newExpense.CollectorStaffId = (from d in db.mstStaffs where d.Id == 2 select d.Id).FirstOrDefault();
-                        newExpense.ExpenseTypeId = (from d in db.mstExpenseTypes select d.Id).FirstOrDefault();
-                        newExpense.ExpenseTransactionTypeId = (from d in db.sysTransactionTypes select d.Id).FirstOrDefault();
+                        newExpense.AssignedStaffId = (from d in db.mstStaffs where d.Id == 2 select d.Id).FirstOrDefault();
                         newExpense.Particulars = "NA";
+                        newExpense.IsCollectionExpense = false;
                         newExpense.ExpenseAmount = 0;
                         newExpense.PreparedByUserId = userId;
                         newExpense.IsLocked = false;
@@ -229,11 +217,9 @@ namespace Lending.ApiControllers
                             {
                                 var lockExpense = expenses.FirstOrDefault();
                                 lockExpense.ExpenseDate = Convert.ToDateTime(expense.ExpenseDate);
-                                lockExpense.AccountId = expense.AccountId;
-                                lockExpense.CollectorStaffId = expense.CollectorStaffId;
-                                lockExpense.ExpenseTypeId = expense.ExpenseTypeId;
-                                lockExpense.ExpenseTransactionTypeId = expense.ExpenseTransactionTypeId;
+                                lockExpense.AssignedStaffId = expense.AssignedStaffId;
                                 lockExpense.Particulars = expense.Particulars;
+                                lockExpense.IsCollectionExpense = expense.IsCollectionExpense;
                                 lockExpense.ExpenseAmount = expense.ExpenseAmount;
                                 lockExpense.PreparedByUserId = expense.PreparedByUserId;
                                 lockExpense.IsLocked = true;

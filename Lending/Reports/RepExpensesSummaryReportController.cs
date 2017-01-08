@@ -66,74 +66,74 @@ namespace Lending.Reports
                 document.Add(line);
                 document.Add(expenseSummaryReportLabel);
 
-                // expenses
-                var expenses = from d in db.trnExpenses
-                               where d.ExpenseDate >= Convert.ToDateTime(startDate)
-                               && d.ExpenseDate <= Convert.ToDateTime(endDate)
-                               && d.IsLocked == true
-                               select new Models.TrnExpenses
-                               {
-                                   Id = d.Id,
-                                   ExpenseNumber = d.ExpenseNumber,
-                                   ExpenseDate = d.ExpenseDate.ToShortDateString(),
-                                   AccountId = d.AccountId,
-                                   Account = d.mstAccount.Account,
-                                   CollectorStaffId = d.CollectorStaffId,
-                                   CollectorStaff = d.mstStaff.Staff,
-                                   ExpenseTypeId = d.ExpenseTypeId,
-                                   ExpenseType = d.mstExpenseType.ExpenseType,
-                                   ExpenseTransactionTypeId = d.ExpenseTransactionTypeId,
-                                   ExpenseTransactionType = d.sysTransactionType.TransactionType,
-                                   Particulars = d.Particulars,
-                                   ExpenseAmount = d.ExpenseAmount,
-                                   PreparedByUserId = d.PreparedByUserId,
-                                   PreparedByUser = d.mstUser.FullName,
-                                   IsLocked = d.IsLocked,
-                                   CreatedByUserId = d.CreatedByUserId,
-                                   CreatedByUser = d.mstUser1.FullName,
-                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                   UpdatedByUserId = d.UpdatedByUserId,
-                                   UpdatedByUser = d.mstUser2.FullName,
-                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                               };
+                //// expenses
+                //var expenses = from d in db.trnExpenses
+                //               where d.ExpenseDate >= Convert.ToDateTime(startDate)
+                //               && d.ExpenseDate <= Convert.ToDateTime(endDate)
+                //               && d.IsLocked == true
+                //               select new Models.TrnExpenses
+                //               {
+                //                   Id = d.Id,
+                //                   ExpenseNumber = d.ExpenseNumber,
+                //                   ExpenseDate = d.ExpenseDate.ToShortDateString(),
+                //                   AccountId = d.AccountId,
+                //                   Account = d.mstAccount.Account,
+                //                   CollectorStaffId = d.CollectorStaffId,
+                //                   CollectorStaff = d.mstStaff.Staff,
+                //                   ExpenseTypeId = d.ExpenseTypeId,
+                //                   ExpenseType = d.mstExpenseType.ExpenseType,
+                //                   ExpenseTransactionTypeId = d.ExpenseTransactionTypeId,
+                //                   ExpenseTransactionType = d.sysTransactionType.TransactionType,
+                //                   Particulars = d.Particulars,
+                //                   ExpenseAmount = d.ExpenseAmount,
+                //                   PreparedByUserId = d.PreparedByUserId,
+                //                   PreparedByUser = d.mstUser.FullName,
+                //                   IsLocked = d.IsLocked,
+                //                   CreatedByUserId = d.CreatedByUserId,
+                //                   CreatedByUser = d.mstUser1.FullName,
+                //                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                //                   UpdatedByUserId = d.UpdatedByUserId,
+                //                   UpdatedByUser = d.mstUser2.FullName,
+                //                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                //               };
 
-                if (expenses.Any())
-                {
-                    PdfPTable spaceLabel = new PdfPTable(1);
-                    float[] spaceLabelWithCells = new float[] { 100f };
-                    spaceLabel.SetWidths(spaceLabelWithCells);
-                    spaceLabel.WidthPercentage = 100;
-                    spaceLabel.AddCell(new PdfPCell(new Phrase(" ")) { HorizontalAlignment = 0, Border = 0, PaddingTop = 5f, PaddingBottom = 5f });
-                    document.Add(spaceLabel);
+                //if (expenses.Any())
+                //{
+                //    PdfPTable spaceLabel = new PdfPTable(1);
+                //    float[] spaceLabelWithCells = new float[] { 100f };
+                //    spaceLabel.SetWidths(spaceLabelWithCells);
+                //    spaceLabel.WidthPercentage = 100;
+                //    spaceLabel.AddCell(new PdfPCell(new Phrase(" ")) { HorizontalAlignment = 0, Border = 0, PaddingTop = 5f, PaddingBottom = 5f });
+                //    document.Add(spaceLabel);
 
-                    PdfPTable expenseSummaryReportActivities = new PdfPTable(6);
-                    float[] expenseSummaryReportActivitiesWithCells = new float[] { 12f, 12f, 20f, 16f, 25f, 15f, };
-                    expenseSummaryReportActivities.SetWidths(expenseSummaryReportActivitiesWithCells);
-                    expenseSummaryReportActivities.WidthPercentage = 100;
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Expense No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Expense Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Staff / Collector", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Type", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    PdfPTable expenseSummaryReportActivities = new PdfPTable(6);
+                //    float[] expenseSummaryReportActivitiesWithCells = new float[] { 12f, 12f, 20f, 16f, 25f, 15f, };
+                //    expenseSummaryReportActivities.SetWidths(expenseSummaryReportActivitiesWithCells);
+                //    expenseSummaryReportActivities.WidthPercentage = 100;
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Expense No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Expense Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Staff / Collector", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Type", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
-                    Decimal totalExpenseAmount = 0;
-                    foreach (var expense in expenses)
-                    {
-                        totalExpenseAmount += expense.ExpenseAmount;
+                //    Decimal totalExpenseAmount = 0;
+                //    foreach (var expense in expenses)
+                //    {
+                //        totalExpenseAmount += expense.ExpenseAmount;
 
-                        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseDate, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.CollectorStaff, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseType, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.Particulars, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
-                        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
-                    }
+                //        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseNumber, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseDate, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.CollectorStaff, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseType, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.Particulars, fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 5f });
+                //        expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(expense.ExpenseAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f });
+                //    }
 
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Total", fontArial11Bold)) { Colspan = 5, HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(totalExpenseAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    document.Add(expenseSummaryReportActivities);
-                }
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase("Total", fontArial11Bold)) { Colspan = 5, HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    expenseSummaryReportActivities.AddCell(new PdfPCell(new Phrase(totalExpenseAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                //    document.Add(expenseSummaryReportActivities);
+                //}
 
                 // Document End
                 document.Close();

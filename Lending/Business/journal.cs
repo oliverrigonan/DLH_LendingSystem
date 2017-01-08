@@ -9,29 +9,26 @@ namespace Lending.Business
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
-        private Business.CollectionStatus collectionStatus = new Business.CollectionStatus();
 
         // loan journal
         public void postLoanJournal(Int32 loanId)
         {
-            var loanApplications = from d in db.trnLoanApplications
+            var loans = from d in db.trnLoans
                                    where d.Id == loanId
                                    select d;
 
-            if (loanApplications.Any())
+            if (loans.Any())
             {
-                if (loanApplications.FirstOrDefault().NetAmount > 0)
+                if (loans.FirstOrDefault().NetAmount > 0)
                 {
                     Data.sysJournal newLoanJournal = new Data.sysJournal();
-                    newLoanJournal.JournalDate = Convert.ToDateTime(loanApplications.FirstOrDefault().LoanDate);
-                    newLoanJournal.AccountId = loanApplications.FirstOrDefault().AccountId;
-                    newLoanJournal.Particulars = loanApplications.FirstOrDefault().Particulars;
-                    newLoanJournal.ReleasedAmount = loanApplications.FirstOrDefault().NetAmount;
-                    newLoanJournal.ReceivedAmount = 0;
-                    newLoanJournal.DocumentReference = "Loan - " + loanApplications.FirstOrDefault().LoanNumber;
+                    newLoanJournal.JournalDate = Convert.ToDateTime(loans.FirstOrDefault().LoanDate);
                     newLoanJournal.LoanId = loanId;
                     newLoanJournal.CollectionId = null;
                     newLoanJournal.ExpenseId = null;
+                    newLoanJournal.ReleasedAmount = loans.FirstOrDefault().NetAmount;
+                    newLoanJournal.ReceivedAmount = 0;
+                    newLoanJournal.DocumentReference = "Loan - " + loans.FirstOrDefault().LoanNumber;
 
                     db.sysJournals.InsertOnSubmit(newLoanJournal);
                     db.SubmitChanges();
@@ -53,24 +50,22 @@ namespace Lending.Business
         // collection journal
         public void postCollectionJournal(Int32 id)
         {
-            var dailyCollections = from d in db.trnDailyCollections
+            var collections = from d in db.trnCollections
                                    where d.Id == id
                                    select d;
 
-            if (dailyCollections.Any())
+            if (collections.Any())
             {
-                if (dailyCollections.FirstOrDefault().PaidAmount > 0)
+                if (collections.FirstOrDefault().PaidAmount > 0)
                 {
                     Data.sysJournal newCollectionJournal = new Data.sysJournal();
-                    newCollectionJournal.JournalDate = Convert.ToDateTime(dailyCollections.FirstOrDefault().DailyCollectionDate);
-                    newCollectionJournal.AccountId = dailyCollections.FirstOrDefault().AccountId;
-                    newCollectionJournal.Particulars = "Collection";
-                    newCollectionJournal.ReleasedAmount = 0;
-                    newCollectionJournal.ReceivedAmount = dailyCollections.FirstOrDefault().PaidAmount;
-                    newCollectionJournal.DocumentReference = "Collection - " + dailyCollections.FirstOrDefault().trnCollection.CollectionNumber;
+                    newCollectionJournal.JournalDate = Convert.ToDateTime(collections.FirstOrDefault().CollectionDate);
                     newCollectionJournal.LoanId = null;
-                    newCollectionJournal.CollectionId = dailyCollections.FirstOrDefault().CollectionId;
+                    newCollectionJournal.CollectionId = collections.FirstOrDefault().Id;
                     newCollectionJournal.ExpenseId = null;
+                    newCollectionJournal.ReleasedAmount = 0;
+                    newCollectionJournal.ReceivedAmount = collections.FirstOrDefault().PaidAmount;
+                    newCollectionJournal.DocumentReference = "Collection - " + collections.FirstOrDefault().CollectionNumber;
 
                     db.sysJournals.InsertOnSubmit(newCollectionJournal);
                     db.SubmitChanges();
@@ -102,14 +97,12 @@ namespace Lending.Business
                 {
                     Data.sysJournal newExpenseJournal = new Data.sysJournal();
                     newExpenseJournal.JournalDate = Convert.ToDateTime(expenses.FirstOrDefault().ExpenseDate);
-                    newExpenseJournal.AccountId = expenses.FirstOrDefault().AccountId;
-                    newExpenseJournal.Particulars = expenses.FirstOrDefault().Particulars;
-                    newExpenseJournal.ReleasedAmount = expenses.FirstOrDefault().ExpenseAmount;
-                    newExpenseJournal.ReceivedAmount = 0;
-                    newExpenseJournal.DocumentReference = "Expenses - " + expenses.FirstOrDefault().ExpenseNumber;
                     newExpenseJournal.LoanId = null;
                     newExpenseJournal.CollectionId = null;
                     newExpenseJournal.ExpenseId = expenseId;
+                    newExpenseJournal.ReleasedAmount = expenses.FirstOrDefault().ExpenseAmount;
+                    newExpenseJournal.ReceivedAmount = 0;
+                    newExpenseJournal.DocumentReference = "Expenses - " + expenses.FirstOrDefault().ExpenseNumber;
 
                     db.sysJournals.InsertOnSubmit(newExpenseJournal);
                     db.SubmitChanges();
