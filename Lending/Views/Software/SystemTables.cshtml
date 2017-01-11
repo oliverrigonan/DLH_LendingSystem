@@ -35,166 +35,172 @@
                     </div>
                 </div>
 
-                <div class="panel panel-default">
-                    <div class="panel-heading" align="right">
-                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
-                            <i class="fa fa-close fa-fw"></i> Close
-                        </button>
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#Deductions" data-toggle="tab" id="DeductionsTab">
+                            Deductions
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
+                            Requirements
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#Terms" data-toggle="tab" id="TermsTab">
+                            Terms
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
+                            Penalties
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#Interests" data-toggle="tab" id="InterestsTab">
+                            Interests
+                        </a>
+                    </li>
+                </ul>
+                <br />
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="Deductions">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                <input type="text" id="searchDeductions" class="form-control" placeholder="Search" />
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right">
+                                            <button class="btn btn-primary" id="btnAddDeductions" onclick="btnAddDeductionsOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                            </button>
+                                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                                <i class="fa fa-close fa-fw"></i> Close
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="DeductionsListFlexGrid" class="grid"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body">
-                        <ul id="myTab" class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#Deductions" data-toggle="tab" id="DeductionsTab">
-                                    Deductions
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#Requirements" data-toggle="tab" id="RequirementsTab">
-                                    Requirements
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#Terms" data-toggle="tab" id="TermsTab">
-                                    Terms
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
-                                    Penalties
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#Interests" data-toggle="tab" id="InterestsTab">
-                                    Interests
-                                </a>
-                            </li>
-                        </ul>
-                        <br />
-                        <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade in active" id="Deductions">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchDeductions" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddDeductions" onclick="btnAddDeductionsOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="DeductionsListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
+                    <div class="tab-pane fade" id="Requirements">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right">
+                                            <button class="btn btn-primary" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                            </button>
+                                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                                <i class="fa fa-close fa-fw"></i> Close
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="tab-pane fade" id="Requirements">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchRequirements" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddRequirements" onclick="btnAddRequirementsOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="RequirementsListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
+                            <div class="panel-body">
+                                <div id="RequirementsListFlexGrid" class="grid"></div>
                             </div>
-                            <div class="tab-pane fade" id="Terms">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchTerms" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddTerms" onclick="btnAddTermsOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="TermsListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Terms">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                <input type="text" id="searchTerms" class="form-control" placeholder="Search" />
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right">
+                                            <button class="btn btn-primary" id="btnAddTerms" onclick="btnAddTermsOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                            </button>
+                                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                                <i class="fa fa-close fa-fw"></i> Close
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="tab-pane fade" id="Penalties">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchPenalties" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddPenalties" onclick="btnAddPenaltiesOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="PenaltiesListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
+                            <div class="panel-body">
+                                <div id="TermsListFlexGrid" class="grid"></div>
                             </div>
-                            <div class="tab-pane fade" id="Interests">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchInterests" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddInterests" onclick="btnAddInterestsOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="InterestsListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Penalties">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                <input type="text" id="searchPenalties" class="form-control" placeholder="Search" />
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right">
+                                            <button class="btn btn-primary" id="btnAddPenalties" onclick="btnAddPenaltiesOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                            </button>
+                                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                                <i class="fa fa-close fa-fw"></i> Close
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="PenaltiesListFlexGrid" class="grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="Interests">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                <input type="text" id="searchInterests" class="form-control" placeholder="Search" />
+                                            </div>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;</td>
+                                        <td align="right">
+                                            <button class="btn btn-primary" id="btnAddInterests" onclick="btnAddInterestsOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                            </button>
+                                            <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                                                <i class="fa fa-close fa-fw"></i> Close
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="InterestsListFlexGrid" class="grid"></div>
                             </div>
                         </div>
                     </div>
@@ -237,7 +243,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Loan Type Detail</h4>
+                    <h4 class="modal-title"> Deduction Detail</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -1025,6 +1031,8 @@
             document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
             $("#btnSaveDeductions").prop("disabled", false);
             $("#btnCloseDeductions").prop("disabled", false);
+            document.getElementById("deductionPercentageRate").disabled = true;
+            document.getElementById("deductionAmount").disabled = false;
 
             deductionId = 0;
             document.getElementById("deductionName").value = "NA";
@@ -2749,6 +2757,18 @@
             cboNumberOfLimitAbsent = new wijmo.input.ComboBox('#cboNumberOfLimitAbsent');
             createCboNumberOfLimitAbsent();
         }
+
+        $('#deductionIsPercentage').change(function () {
+            if ($(this).is(":checked")) {
+                document.getElementById("deductionPercentageRate").disabled = false;
+                document.getElementById("deductionAmount").disabled = true;
+                document.getElementById("deductionAmount").value = 0;
+            } else {
+                document.getElementById("deductionPercentageRate").disabled = true;
+                document.getElementById("deductionAmount").disabled = false;
+                document.getElementById("deductionPercentageRate").value = 0;
+            }
+        });
     </script>
 </body>
 </html>

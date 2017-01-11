@@ -64,24 +64,16 @@
                                             <div id="expensesDate"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Account</label><br />
-                                            <div id="expensesAccount"></div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>Assign Staff / Collector</label><br />
                                             <div id="cboStaff"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Expense Type</label><br />
-                                            <div id="cboExpenseType"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Expense Trasaction Type</label><br />
-                                            <div id="cboExpenseTransactionType"></div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>Particulars</label><br />
                                             <textarea class="form-control requiredExpenses" rows="5" id="expensesParticulars" placeholder="Particulars"></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Is Collection Expense</label><br />
+                                            <input type="checkbox" id="isCollectionExpense" />
                                         </div>
                                         <div class="form-group">
                                             <label>Expense Amount</label><br />
@@ -142,50 +134,8 @@
                 mask: '99-99-9999'
             });
 
-            cboExpensesAccount = new wijmo.input.ComboBox('#expensesAccount');
-            getAccount();
-        }
-
-        // get account
-        function getAccount() {
-            var accountArray = new Array();
-            $.ajax({
-                url: '/api/account/listAccountTransactionTypeId/3',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (accountResults) {
-                    var disabled = true;
-                    if (accountResults.length > 0) {
-                        for (i = 0; i < accountResults.length; i++) {
-                            accountArray.push({
-                                Id: accountResults[i]["Id"],
-                                Account: accountResults[i]["Account"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboStaff = new wijmo.input.ComboBox('#cboStaff');
-                        getStaffByArea();
-                    } else {
-                        cboStaff = new wijmo.input.ComboBox('#cboStaff');
-                        getStaffByArea();
-                    }
-
-                    cboExpensesAccount.dispose();
-                    cboExpensesAccount = new wijmo.input.ComboBox('#expensesAccount', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: accountArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "Account",
-                        selectedValuePath: "Account"
-                    });
-                }
-            });
+            cboStaff = new wijmo.input.ComboBox('#cboStaff');
+            getStaffByArea();
         }
 
         // staff
@@ -209,11 +159,11 @@
 
                         disabled = false;
 
-                        cboExpenseType = new wijmo.input.ComboBox('#cboExpenseType');
-                        getExpenseType();
+                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
+                        getUser();
                     } else {
-                        cboExpenseType = new wijmo.input.ComboBox('#cboExpenseType');
-                        getExpenseType();
+                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
+                        getUser();
                     }
 
                     cboStaff.dispose();
@@ -225,90 +175,6 @@
                         required: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff"
-                    });
-                }
-            });
-        }
-
-        // expense Type
-        function getExpenseType() {
-            var expenseTypeArray = new Array();
-            $.ajax({
-                url: '/api/expenseType/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (expenseTypeResults) {
-                    var disabled = true;
-                    if (expenseTypeResults.length > 0) {
-                        for (i = 0; i < expenseTypeResults.length; i++) {
-                            expenseTypeArray.push({
-                                Id: expenseTypeResults[i]["Id"],
-                                ExpenseType: expenseTypeResults[i]["ExpenseType"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboExpenseTransactionType = new wijmo.input.ComboBox('#cboExpenseTransactionType');
-                        getExpenseTransactionType();
-                    } else {
-                        cboExpenseTransactionType = new wijmo.input.ComboBox('#cboExpenseTransactionType');
-                        getExpenseTransactionType();
-                    }
-
-                    cboExpenseType.dispose();
-                    cboExpenseType = new wijmo.input.ComboBox('#cboExpenseType', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: expenseTypeArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "ExpenseType",
-                        selectedValuePath: "ExpenseType"
-                    });
-                }
-            });
-        }
-
-        // expense Type
-        function getExpenseTransactionType() {
-            var expenseTransactionTypeArray = new Array();
-            $.ajax({
-                url: '/api/transactionType/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (expenseTransactionTypeResults) {
-                    var disabled = true;
-                    if (expenseTransactionTypeResults.length > 0) {
-                        for (i = 0; i < expenseTransactionTypeResults.length; i++) {
-                            expenseTransactionTypeArray.push({
-                                Id: expenseTransactionTypeResults[i]["Id"],
-                                TransactionType: expenseTransactionTypeResults[i]["TransactionType"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
-                        getUser();
-                    } else {
-                        cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy');
-                        getUser();
-                    }
-
-                    cboExpenseTransactionType.dispose();
-                    cboExpenseTransactionType = new wijmo.input.ComboBox('#cboExpenseTransactionType', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: expenseTransactionTypeArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "TransactionType",
-                        selectedValuePath: "TransactionType"
                     });
                 }
             });
@@ -365,11 +231,9 @@
                         document.getElementById("expensesNumber").disabled = true;
                         document.getElementById("expensesNumber").value = expensesResult.ExpenseNumber;
                         cboExpensesDate.value = new Date(expensesResult.ExpenseDate);
-                        cboExpensesAccount.selectedValue = expensesResult.Account;
-                        cboStaff.selectedValue = expensesResult.CollectorStaff;
-                        cboExpenseType.selectedValue = expensesResult.ExpenseType;
-                        cboExpenseTransactionType.selectedValue = expensesResult.ExpenseTransactionType;
+                        cboStaff.selectedValue = expensesResult.AssignedStaff;
                         document.getElementById("expensesParticulars").value = expensesResult.Particulars;
+                        document.getElementById("isCollectionExpense").checked = expensesResult.IsCollectionExpense;
                         document.getElementById("expensesAmount").value = expensesResult.ExpenseAmount.toLocaleString();
                         cboExpensesPreparedBy.selectedValue = expensesResult.PreparedByUser;
                         document.getElementById('stampCreatedBy').innerHTML = expensesResult.CreatedByUser;
@@ -380,13 +244,11 @@
                         if (expensesResult.IsLocked) {
                             $("#btnLock").prop("disabled", true);
                             cboExpensesDate.disabled = true;
-                            cboExpensesAccount.disabled = true;
                             cboStaff.disabled = true;
-                            cboExpenseType.disabled = true;
-                            cboExpenseTransactionType.disabled = true;
                             cboExpensesPreparedBy.disabled = true;
                             document.getElementById("expensesParticulars").disabled = true;
                             document.getElementById("expensesAmount").disabled = true;
+                            document.getElementById("isCollectionExpense").disabled = true;
 
                             isLocked = true;
                         } else {
@@ -431,12 +293,10 @@
 
                 var expensesObject = new Object();
                 expensesObject.ExpenseDate = cboExpensesDate.value;
-                expensesObject.AccountId = cboExpensesAccount.selectedItem["Id"];
-                expensesObject.CollectorStaffId = cboStaff.selectedItem["Id"];
-                expensesObject.ExpenseTypeId = cboExpenseType.selectedItem["Id"];
-                expensesObject.ExpenseTransactionTypeId = cboExpenseTransactionType.selectedItem["Id"];
+                expensesObject.AssignedStaffId = cboStaff.selectedItem["Id"];
                 expensesObject.Particulars = document.getElementById("expensesParticulars").value;
-                expensesObject.ExpenseAmount = document.getElementById("expensesAmount").value;
+                expensesObject.Particulars = document.getElementById("expensesParticulars").value;
+                expensesObject.IsCollectionExpense = document.getElementById("isCollectionExpense").checked;
                 expensesObject.PreparedByUserId = cboExpensesPreparedBy.selectedItem["Id"];
                 var expensesData = JSON.stringify(expensesObject);
 

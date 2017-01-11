@@ -16,20 +16,20 @@ namespace Lending.ApiControllers
         // applicant requirements list
         [Authorize]
         [HttpGet]
-        [Route("api/applicantRequirements/listByLoanId/{applicantId}")]
+        [Route("api/applicantRequirements/listByApplicantId/{applicantId}")]
         public List<Models.MstApplicantRequirements> listApplicantRequirementsByApplicantId(String applicantId)
         {
             var applicantRequirements = from d in db.mstApplicantRequirements
-                                   where d.ApplicantId == Convert.ToInt32(applicantId)
-                                   select new Models.MstApplicantRequirements
-                                   {
-                                       Id = d.Id,
-                                       ApplicantId = d.ApplicantId,
-                                       RequirementId = d.RequirementId,
-                                       Requirement = d.mstRequirement.Requirement,
-                                       Note = d.Note,
-                                       ValidDateUntil = d.ValidDateUntil.ToShortDateString()
-                                   };
+                                        where d.ApplicantId == Convert.ToInt32(applicantId)
+                                        select new Models.MstApplicantRequirements
+                                        {
+                                            Id = d.Id,
+                                            ApplicantId = d.ApplicantId,
+                                            RequirementId = d.RequirementId,
+                                            Requirement = d.mstRequirement.Requirement,
+                                            Note = d.Note,
+                                            ValidDateUntil = d.ValidDateUntil.ToShortDateString()
+                                        };
 
             return applicantRequirements.ToList();
         }
