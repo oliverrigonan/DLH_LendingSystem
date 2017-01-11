@@ -44,8 +44,8 @@
                     <div class="panel-body">
                         <ul id="myTab" class="nav nav-tabs">
                             <li class="active">
-                                <a href="#LoanTypes" data-toggle="tab" id="LoanTypesTab">
-                                    Loan Types
+                                <a href="#Deductions" data-toggle="tab" id="DeductionsTab">
+                                    Deductions
                                 </a>
                             </li>
                             <li>
@@ -68,20 +68,10 @@
                                     Interests
                                 </a>
                             </li>
-                            <li>
-                                <a href="#ExpenseTypes" data-toggle="tab" id="expenseTypesTab">
-                                    Expense Types
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#Accounts" data-toggle="tab" id="accountTab">
-                                    Accounts
-                                </a>
-                            </li>
                         </ul>
                         <br />
                         <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade in active" id="LoanTypes">
+                            <div class="tab-pane fade in active" id="Deductions">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <table style="width: 100%">
@@ -89,12 +79,12 @@
                                                 <td>
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchLoanTypes" class="form-control" placeholder="Search" />
+                                                        <input type="text" id="searchDeductions" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                                 <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddLoanTypes" onclick="btnAddLoanTypesOnclick()">
+                                                    <button class="btn btn-primary" id="btnAddDeductions" onclick="btnAddDeductionsOnclick()">
                                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                                     </button>
                                                 </td>
@@ -102,7 +92,7 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-                                        <div id="LoanTypesListFlexGrid" class="grid"></div>
+                                        <div id="DeductionsListFlexGrid" class="grid"></div>
                                     </div>
                                 </div>
                             </div>
@@ -181,7 +171,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="tab-pane fade" id="Interests">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -204,57 +193,6 @@
                                     </div>
                                     <div class="panel-body">
                                         <div id="InterestsListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="tab-pane fade" id="ExpenseTypes">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchExpenseTypes" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddExpenseTypes" onclick="btnAddExpenseTypesOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="ExpenseTypesListFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="Accounts">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="searchAccounts" class="form-control" placeholder="Search" />
-                                                    </div>
-                                                </td>
-                                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary" id="btnAddAccounts" onclick="btnAddAccountsOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="AccountsListFlexGrid" class="grid"></div>
                                     </div>
                                 </div>
                             </div>
@@ -292,8 +230,8 @@
         </div>
     </div>
 
-    <!-- LoanTypes Detail Modal -->
-    <div class="modal fade" id="LoanTypesEditDetailModal" role="dialog">
+    <!-- Deductions Detail Modal -->
+    <div class="modal fade" id="DeductionsEditDetailModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -303,24 +241,48 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>LoanType</label><br />
-                        <input type="text" class="form-control requiredLoanTypes" id="loanTypeName" placeholder="LoanType" />
+                        <label>Deduction</label><br />
+                        <input type="text" class="form-control requiredDeductions" id="deductionName" placeholder="Deduction" />
                     </div>
                     <div class="form-group">
                         <label>Description</label><br />
-                        <textarea class="form-control requiredLoanTypes" rows="5" id="loanTypeDescription" placeholder="Description"></textarea>
+                        <textarea class="form-control requiredDeductions" rows="5" id="deductionDescription" placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Is Percentage</label><br />
+                        <input type="checkbox" id="deductionIsPercentage" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Percentage Rate</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon"> % </span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="deductionPercentageRate" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Deduction Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="deductionAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSaveLoanTypes" onclick="saveLoanTypesOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
-                    <button class="btn btn-danger" id="btnCloseLoanTypes" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                    <button class="btn btn-primary" id="btnSaveDeductions" onclick="saveDeductionsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseDeductions" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- delete confirmation LoanTypes modal -->
-    <div class="modal fade" id="deleteConfirmationLoanTypesModal" role="dialog">
+    <!-- delete confirmation Deductions modal -->
+    <div class="modal fade" id="deleteConfirmationDeductionsModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
@@ -332,8 +294,8 @@
                     Are you sure that you want to delete this LoanType?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteLoanTypes" onclick="btnConfirmDeleteLoanTypesOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnCloseDeleteLoanTypesModal" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteDeductions" onclick="btnConfirmDeleteDeductionsOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteDeductionsModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -381,104 +343,6 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteRequirements" onclick="btnConfirmDeleteRequirementsOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteRequirementsModal" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Accounts Detail Modal -->
-    <div class="modal fade" id="AccountsEditDetailModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"> Account Detail</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Account</label><br />
-                        <input type="text" class="form-control requiredAccounts" id="accountName" placeholder="Requirement" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea class="form-control requiredAccounts" rows="5" id="accountDescription" placeholder="Description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Transaction Type</label><br />
-                        <div id="transactionType"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSaveAccounts" onclick="saveAccountsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
-                    <button class="btn btn-danger" id="btnCloseAccounts" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- delete confirmation  Accounts modal -->
-    <div class="modal fade" id="deleteConfirmationAccountsModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Accounts</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure that you want to delete this Account?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteAccounts" onclick="btnConfirmDeleteAccountsOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnCloseDeleteAccountsModal" data-dismiss="modal">No</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Expense Type Detail Modal -->
-    <div class="modal fade" id="expenseTypeEditDetailModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Expense Type Detail</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>ExpenseType</label><br />
-                        <input type="text" class="form-control requiredExpenseTypes" id="expenseTypeName" placeholder="Expense Type" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea type="text" rows="5" class="form-control requiredExpenseTypes" id="expenseTypeDescription" placeholder="Description"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSaveExpenseTypes" onclick="saveExpenseTypesOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
-                    <button class="btn btn-danger" id="btnCloseExpenseTypes" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- delete confirmation Expense Type modal -->
-    <div class="modal fade" id="deleteConfirmationExpenseTypesModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Expense Type</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure that you want to delete this Expense Type?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteExpenseTypes" onclick="btnConfirmDeleteExpenseTypesOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnCloseDeleteExpenseTypesModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -560,11 +424,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Every Absent Pen. Amount</label><br />
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
-                                </div>
+                                <label>No. of Absent Limit</label><br />
+                                <div id="cboNumberOfLimitAbsent"></div>
                             </div>
                             <div class="form-group">
                                 <label>Is Penalty Every Absent</label><br />
@@ -573,8 +434,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>No. of Absent Limit</label><br />
-                                <div id="cboNumberOfLimitAbsent"></div>
+                                <label>Every Absent Pen. Amount</label><br />
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Pen. Amount over No. of Absent Limit</label><br />
@@ -678,18 +542,13 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         // global variables
-        var loanTypesCollectionView;
-        var loanTypesFlexGrid;
-        var loanTypeId = 0;
+        var deductionsCollectionView;
+        var deductionsFlexGrid;
+        var deductionId = 0;
         var requirementsCollectionView;
         var requirementsFlexGrid;
         var requirementId = 0;
-        var accountsCollectionView;
-        var accountsFlexGrid;
-        var accountId = 0;
         var cboArea;
-        var expenseTypesCollectionView;
-        var expenseTypesFlexGrid;
         var termsCollectionView;
         var termsFlexGrid;
         var termId = 0;
@@ -699,872 +558,6 @@
         var interestsCollectionView;
         var interestsFlexGrid;
         var interestId = 0;
-
-        // get Accounts
-        function getAccountsList() {
-            var Accounts = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/account/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (AccountsListResult) {
-                    if (AccountsListResult.length > 0) {
-                        for (i = 0; i < AccountsListResult.length; i++) {
-
-                            var disabledButton = "disabled";
-                            var canPerformActions = "@ViewData["CanPerformActions"]";
-                            if (canPerformActions == 1) {
-                                disabledButton = "";
-                            }
-
-                            Accounts.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editAccountsOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteAccountsOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
-                                Id: AccountsListResult[i]["Id"],
-                                Account: AccountsListResult[i]["Account"],
-                                Description: AccountsListResult[i]["Description"],
-                                AccountTransactionTypeId: AccountsListResult[i]["AccountTransactionTypeId"],
-                                AccountTransactionType: AccountsListResult[i]["AccountTransactionType"],
-                                CreatedByUserId: AccountsListResult[i]["CreatedByUserId"],
-                                CreatedByUser: AccountsListResult[i]["CreatedByUser"],
-                                CreatedDateTime: AccountsListResult[i]["CreatedDateTime"],
-                                UpdatedByUserId: AccountsListResult[i]["UpdatedByUserId"],
-                                UpdatedByUser: AccountsListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: AccountsListResult[i]["UpdatedDateTime"]
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                }
-            });
-            return Accounts;
-        }
-
-        var cboTransactionType;
-
-        // get transaction
-        function getTransactionType() {
-            var transactionTypeArray = new Array();
-            $.ajax({
-                url: '/api/transactionType/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (transactionTypeResults) {
-                    var disabled = true;
-                    if (transactionTypeResults.length > 0) {
-                        for (i = 0; i < transactionTypeResults.length; i++) {
-                            transactionTypeArray.push({
-                                Id: transactionTypeResults[i]["Id"],
-                                TransactionType: transactionTypeResults[i]["TransactionType"],
-                            });
-                        }
-
-                        disabled = false;
-                    }
-
-                    cboTransactionType.dispose();
-                    cboTransactionType = new wijmo.input.ComboBox('#transactionType', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: transactionTypeArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "TransactionType",
-                        selectedValuePath: "TransactionType"
-                    });
-                }
-            });
-        }
-
-        // add new Accounts
-        function btnAddAccountsOnclick() {
-            $("#AccountsEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredAccounts').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            getTransactionType();
-
-            document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveAccounts").prop("disabled", false);
-            $("#btnCloseAccounts").prop("disabled", false);
-
-            accountId = 0;
-            document.getElementById("accountName").value = "NA";
-            document.getElementById("accountDescription").value = "NA";
-        }
-
-        // edit   Accounts
-        function editAccountsOnclick() {
-            $("#AccountsEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredAccounts').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveAccounts").prop("disabled", false);
-            $("#btnCloseAccounts").prop("disabled", false);
-
-            accountsCollectionView.editItem(accountsCollectionView.currentItem);
-            var accountCurrentEditItem = accountsCollectionView.currentEditItem;
-
-            accountId = accountCurrentEditItem.Id;
-            document.getElementById("accountName").value = accountCurrentEditItem.Account;
-            document.getElementById("accountDescription").value = accountCurrentEditItem.Description;
-            cboTransactionType.selectedValue = accountCurrentEditItem.AccountTransactionType;
-        }
-
-        // form input validation
-        function inputValidationForAccounts() {
-            var isValid = true;
-            $('.requiredAccounts').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
-                        "border": "1px solid red"
-                    });
-                } else {
-                    $(this).css({
-                        "border": "",
-                    });
-                }
-            });
-
-            return isValid;
-        }
-
-        // save Accounts
-        function saveAccountsOnclick() {
-            if (inputValidationForAccounts()) {
-                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                $("#btnSaveAccounts").prop("disabled", true);
-                $("#btnCloseAccounts").prop("disabled", true);
-
-                var AccountsObject = new Object();
-                AccountsObject.Account = document.getElementById('accountName').value;
-                AccountsObject.Description = document.getElementById('accountDescription').value;
-                AccountsObject.AccountTransactionTypeId = cboTransactionType.selectedItem["Id"];
-                var AccountsData = JSON.stringify(AccountsObject);
-
-                console.log(cboTransactionType.selectedItem["Id"]);
-
-                if (accountId == 0) {
-                    $.ajax({
-                        type: "POST",
-                        url: '/api/account/add',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: AccountsData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Save Successful");
-
-                                $("#AccountsEditDetailModal").modal("hide");
-
-                                accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
-                                accountsCollectionView.canFilter = true;
-
-                                var filterText = '';
-                                $('#searchAccounts').keyup(function () {
-                                    filterText = this.value.toLowerCase();
-                                    accountsCollectionView.refresh();
-                                });
-
-                                accountsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
-                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                }
-
-                                accountsCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateAccountsStampSecurity();
-                                });
-
-                                // Flex Grid
-                                accountsFlexGrid.itemsSource = accountsCollectionView;
-                                accountsFlexGrid.trackChanges = true;
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#AccountsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveAccounts").prop("disabled", false);
-                                $("#btnCloseAccounts").prop("disabled", false);
-                            }
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/account/update/' + accountId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: AccountsData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Update Successful");
-
-                                $("#AccountsEditDetailModal").modal("hide");
-
-                                accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
-                                accountsCollectionView.canFilter = true;
-
-                                var filterText = '';
-                                $('#searchAccounts').keyup(function () {
-                                    filterText = this.value.toLowerCase();
-                                    accountsCollectionView.refresh();
-                                });
-
-                                accountsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
-                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                }
-
-                                accountsCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateAccountsStampSecurity();
-                                });
-
-                                // Flex Grid
-                                accountsFlexGrid.itemsSource = accountsCollectionView;
-                                accountsFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Not Found");
-
-                                $("#AccountsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveAccounts").prop("disabled", false);
-                                $("#btnCloseAccounts").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#AccountsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveAccounts").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveAccounts").prop("disabled", false);
-                                $("#btnCloseAccounts").prop("disabled", false);
-                            }
-                        }
-                    });
-                }
-            } else {
-                toastr.error("Invalid Entry");
-            }
-        }
-
-        // delete   Accounts
-        function deleteAccountsOnclick() {
-            $("#deleteConfirmationAccountsModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            document.getElementById("btnConfirmDeleteAccounts").innerHTML = "Delete";
-            $("#btnConfirmDeleteAccounts").prop("disabled", false);
-            $("#btnCloseDeleteAccountsModal").prop("disabled", false);
-        }
-        function btnConfirmDeleteAccountsOnclick() {
-            document.getElementById("btnConfirmDeleteAccounts").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteAccounts").prop("disabled", true);
-            $("#btnCloseDeleteAccountsModal").prop("disabled", true);
-
-            accountsCollectionView.editItem(accountsCollectionView.currentItem);
-            var id = accountsCollectionView.currentEditItem.Id;
-            $.ajax({
-                url: '/api/account/delete/' + id,
-                type: "DELETE",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Delete Successful");
-
-                        $('#deleteConfirmationAccountsModal').modal('hide');
-
-                        accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
-                        accountsCollectionView.canFilter = true;
-
-                        var filterText = '';
-                        $('#searchAccounts').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            accountsCollectionView.refresh();
-                        });
-
-                        accountsCollectionView.filter = function (item) {
-                            return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        accountsCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateAccountsStampSecurity();
-                        });
-
-                        // Flex Grid
-                        accountsFlexGrid.itemsSource = accountsCollectionView;
-                        accountsFlexGrid.trackChanges = true;
-                    },
-                    404: function () {
-                        toastr.error("Not Found");
-                        $('#deleteConfirmationAccountsModal').modal('hide');
-                        $("#btnConfirmDeleteAccounts").prop("disabled", false);
-                        $("#btnCloseDeleteAccountsModal").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Bad Request");
-                        $('#deleteConfirmationAccountsModal').modal('hide');
-                        $("#btnConfirmDeleteAccounts").prop("disabled", false);
-                        $("#btnCloseDeleteAccountsModal").prop("disabled", false);
-                    }
-                }
-            });
-        }
-
-        // stamp security
-        function updateAccountsStampSecurity() {
-            var item = accountsCollectionView.currentItem;
-            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
-            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
-            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
-            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
-        }
-
-        //   Accounts flexgrid
-        function createAccountFlexGrid() {
-            NProgress.start();
-            toastrModification();
-
-            accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
-            accountsCollectionView.canFilter = true;
-
-            var filterText = '';
-            $('#searchAccounts').keyup(function () {
-                filterText = this.value.toLowerCase();
-                accountsCollectionView.refresh();
-            });
-
-            accountsCollectionView.filter = function (item) {
-                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
-            }
-
-            accountsCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateAccountsStampSecurity();
-            });
-
-            // Flex Grid
-            accountsFlexGrid = new wijmo.grid.FlexGrid('#AccountsListFlexGrid');
-            accountsFlexGrid.initialize({
-                columns: [
-                            {
-                                "header": "Edit",
-                                "binding": "EditButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Delete",
-                                "binding": "DeleteButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Account",
-                                "binding": "Account",
-                                "allowSorting": true,
-                                "width": "2.5*"
-                            },
-                            {
-                                "header": "Description",
-                                "binding": "Description",
-                                "allowSorting": true,
-                                "width": "3*"
-                            },
-                            {
-                                "header": "Transaction",
-                                "binding": "AccountTransactionType",
-                                "allowSorting": true,
-                                "width": "2*"
-                            },
-                ],
-                autoGenerateColumns: false,
-                itemsSource: accountsCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            accountsFlexGrid.trackChanges = true;
-        }
-
-        //   Accounts tab
-        $('#accountTab').click(function () {
-            NProgress.start();
-            $("#Requirements").hide();
-            $("#Accounts").show();
-            $("#ExpenseTypes").hide();
-            $("#LoanTypes").hide();
-            $("#Terms").hide();
-            $("#Penalties").hide();
-            $("#Interests").hide();
-
-            createAccountFlexGrid();
-            window.createAccountFlexGrid = function () {
-                return true;
-            }
-
-            accountsCollectionView = new wijmo.collections.CollectionView(getAccountsList());
-            accountsCollectionView.canFilter = true;
-
-            var filterText = '';
-            $('#searchAccounts').keyup(function () {
-                filterText = this.value.toLowerCase();
-                accountsCollectionView.refresh();
-            });
-
-            accountsCollectionView.filter = function (item) {
-                return !filterText || (item.Account.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
-            }
-
-            accountsCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateAccountsStampSecurity();
-            });
-
-            // Flex Grid
-            accountsFlexGrid.itemsSource = accountsCollectionView;
-            accountsFlexGrid.trackChanges = true;
-        });
-
-        // get Expense Types
-        function getExpenseTypesList() {
-            var expenseTypes = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/expenseType/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (expenseTypesListResult) {
-                    if (expenseTypesListResult.length > 0) {
-                        for (i = 0; i < expenseTypesListResult.length; i++) {
-
-                            var disabledButton = "disabled";
-                            var canPerformActions = "@ViewData["CanPerformActions"]";
-                            if (canPerformActions == 1) {
-                                disabledButton = "";
-                            }
-
-                            expenseTypes.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editExpenseTypesOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteExpenseTypesOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
-                                Id: expenseTypesListResult[i]["Id"],
-                                ExpenseType: expenseTypesListResult[i]["ExpenseType"],
-                                Description: expenseTypesListResult[i]["Description"],
-                                CreatedByUserId: expenseTypesListResult[i]["CreatedByUserId"],
-                                CreatedByUser: expenseTypesListResult[i]["CreatedByUser"],
-                                CreatedDateTime: expenseTypesListResult[i]["CreatedDateTime"],
-                                UpdatedByUserId: expenseTypesListResult[i]["UpdatedByUserId"],
-                                UpdatedByUser: expenseTypesListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: expenseTypesListResult[i]["UpdatedDateTime"]
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                }
-            });
-            return expenseTypes;
-        }
-
-        // add new Expense types
-        function btnAddExpenseTypesOnclick() {
-            $("#expenseTypeEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredExpenseTypes').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveExpenseTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveExpenseTypes").prop("disabled", false);
-            $("#btnCloseExpenseTypes").prop("disabled", false);
-
-            expenseTypeId = 0;
-            document.getElementById("expenseTypeName").value = "NA";
-            document.getElementById("expenseTypeDescription").value = "NA";
-        }
-
-        // edit Expense Types
-        function editExpenseTypesOnclick() {
-            $("#expenseTypeEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredExpenseTypes').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveExpenseTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveExpenseTypes").prop("disabled", false);
-            $("#btnCloseExpenseTypes").prop("disabled", false);
-
-            expenseTypesCollectionView.editItem(expenseTypesCollectionView.currentItem);
-            var expenseTypeCurrentEditItem = expenseTypesCollectionView.currentEditItem;
-
-            expenseTypeId = expenseTypeCurrentEditItem.Id;
-            document.getElementById("expenseTypeName").value = expenseTypeCurrentEditItem.ExpenseType;
-            document.getElementById("expenseTypeDescription").value = expenseTypeCurrentEditItem.Description;
-        }
-
-        // form input validation
-        function inputValidationForExpenseTypes() {
-            var isValid = true;
-            $('.requiredExpenseTypes').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
-                        "border": "1px solid red"
-                    });
-                } else {
-                    $(this).css({
-                        "border": "",
-                    });
-                }
-            });
-
-            return isValid;
-        }
-
-        // save Expense Types
-        function saveExpenseTypesOnclick() {
-            if (inputValidationForExpenseTypes()) {
-                document.getElementById("btnSaveExpenseTypes").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                $("#btnSaveExpenseTypes").prop("disabled", true);
-                $("#btnCloseExpenseTypes").prop("disabled", true);
-
-                var ExpenseTypesObject = new Object();
-                ExpenseTypesObject.ExpenseType = document.getElementById('expenseTypeName').value;
-                ExpenseTypesObject.Description = document.getElementById('expenseTypeDescription').value;
-                var ExpenseTypesData = JSON.stringify(ExpenseTypesObject);
-
-                if (expenseTypeId == 0) {
-                    $.ajax({
-                        type: "POST",
-                        url: '/api/expenseType/add',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: ExpenseTypesData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Save Successful");
-
-                                $("#expenseTypeEditDetailModal").modal("hide");
-
-                                expenseTypesCollectionView = new wijmo.collections.CollectionView(getExpenseTypesList());
-                                expenseTypesCollectionView.canFilter = true;
-
-                                var filterText = '';
-                                $('#searchExpenseTypes').keyup(function () {
-                                    filterText = this.value.toLowerCase();
-                                    expenseTypesCollectionView.refresh();
-                                });
-
-                                expenseTypesCollectionView.filter = function (item) {
-                                    return !filterText || (item.ExpenseType.toLowerCase().indexOf(filterText) > -1)
-                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                }
-
-                                expenseTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateExpenseTypesStampSecurity();
-                                });
-
-                                // Flex Grid
-                                expenseTypesFlexGrid.itemsSource = expenseTypesCollectionView;
-                                expenseTypesFlexGrid.trackChanges = true;
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#expenseTypeEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveExpenseTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveExpenseTypes").prop("disabled", false);
-                                $("#btnCloseExpenseTypes").prop("disabled", false);
-                            }
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/expenseType/update/' + expenseTypeId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: ExpenseTypesData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Update Successful");
-
-                                $("#expenseTypeEditDetailModal").modal("hide");
-
-                                expenseTypesCollectionView = new wijmo.collections.CollectionView(getExpenseTypesList());
-                                expenseTypesCollectionView.canFilter = true;
-
-                                var filterText = '';
-                                $('#searchExpenseTypes').keyup(function () {
-                                    filterText = this.value.toLowerCase();
-                                    expenseTypesCollectionView.refresh();
-                                });
-
-                                expenseTypesCollectionView.filter = function (item) {
-                                    return !filterText || (item.ExpenseType.toLowerCase().indexOf(filterText) > -1)
-                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                }
-
-                                expenseTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateExpenseTypesStampSecurity();
-                                });
-
-                                // Flex Grid
-                                expenseTypesFlexGrid.itemsSource = expenseTypesCollectionView;
-                                expenseTypesFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Not Found");
-
-                                $("#expenseTypeEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveExpenseTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveExpenseTypes").prop("disabled", false);
-                                $("#btnCloseExpenseTypes").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#expenseTypeEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveExpenseTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveExpenseTypes").prop("disabled", false);
-                                $("#btnCloseExpenseTypes").prop("disabled", false);
-                            }
-                        }
-                    });
-                }
-            } else {
-                toastr.error("Invalid Entry");
-            }
-        }
-
-        // delete Expense Types
-        function deleteExpenseTypesOnclick() {
-            $("#deleteConfirmationExpenseTypesModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            document.getElementById("btnConfirmDeleteExpenseTypes").innerHTML = "Delete";
-            $("#btnConfirmDeleteExpenseTypes").prop("disabled", false);
-            $("#btnCloseDeleteExpenseTypesModal").prop("disabled", false);
-        }
-        function btnConfirmDeleteExpenseTypesOnclick() {
-            document.getElementById("btnConfirmDeleteExpenseTypes").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteExpenseTypes").prop("disabled", true);
-            $("#btnCloseDeleteExpenseTypesModal").prop("disabled", true);
-
-            expenseTypesCollectionView.editItem(expenseTypesCollectionView.currentItem);
-            var id = expenseTypesCollectionView.currentEditItem.Id;
-            $.ajax({
-                url: '/api/expenseType/delete/' + id,
-                type: "DELETE",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Delete Successful");
-
-                        $('#deleteConfirmationExpenseTypesModal').modal('hide');
-
-                        expenseTypesCollectionView = new wijmo.collections.CollectionView(getExpenseTypesList());
-                        expenseTypesCollectionView.canFilter = true;
-
-                        var filterText = '';
-                        $('#searchExpenseTypes').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            expenseTypesCollectionView.refresh();
-                        });
-
-                        expenseTypesCollectionView.filter = function (item) {
-                            return !filterText || (item.ExpenseType.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        expenseTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateExpenseTypesStampSecurity();
-                        });
-
-                        // Flex Grid
-                        expenseTypesFlexGrid.itemsSource = expenseTypesCollectionView;
-                        expenseTypesFlexGrid.trackChanges = true;
-                    },
-                    404: function () {
-                        toastr.error("Not Found");
-                        $('#deleteConfirmationExpenseTypesModal').modal('hide');
-                        $("#btnConfirmDeleteExpenseTypes").prop("disabled", false);
-                        $("#btnCloseDeleteExpenseTypesModal").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Bad Request");
-                        $('#deleteConfirmationExpenseTypesModal').modal('hide');
-                        $("#btnConfirmDeleteExpenseTypes").prop("disabled", false);
-                        $("#btnCloseDeleteExpenseTypesModal").prop("disabled", false);
-                    }
-                }
-            });
-        }
-
-        // stamp security
-        function updateExpenseTypesStampSecurity() {
-            var item = expenseTypesCollectionView.currentItem;
-            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
-            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
-            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
-            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
-        }
-
-        // Expense Types flexgrid
-        function createExpenseTypeFlexGrid() {
-            NProgress.start();
-            toastrModification();
-
-            expenseTypesCollectionView = new wijmo.collections.CollectionView(getExpenseTypesList());
-            expenseTypesCollectionView.canFilter = true;
-
-            var filterText = '';
-            $('#searchExpenseTypes').keyup(function () {
-                filterText = this.value.toLowerCase();
-                expenseTypesCollectionView.refresh();
-            });
-
-            expenseTypesCollectionView.filter = function (item) {
-                return !filterText || (item.ExpenseType.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
-            }
-
-            expenseTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateExpenseTypesStampSecurity();
-            });
-
-            // Flex Grid
-            expenseTypesFlexGrid = new wijmo.grid.FlexGrid('#ExpenseTypesListFlexGrid');
-            expenseTypesFlexGrid.initialize({
-                columns: [
-                            {
-                                "header": "Edit",
-                                "binding": "EditButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Delete",
-                                "binding": "DeleteButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "ExpenseType",
-                                "binding": "ExpenseType",
-                                "allowSorting": true,
-                                "width": "2*"
-                            },
-                            {
-                                "header": "Description",
-                                "binding": "Description",
-                                "allowSorting": true,
-                                "width": "3*"
-                            }
-                ],
-                autoGenerateColumns: false,
-                itemsSource: expenseTypesCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            expenseTypesFlexGrid.trackChanges = true;
-        }
-
-        // Expense Types tab
-        $('#expenseTypesTab').click(function () {
-            NProgress.start();
-            $("#Requirements").hide();
-            $("#Accounts").hide();
-            $("#ExpenseTypes").show();
-            $("#LoanTypes").hide();
-            $("#Terms").hide();
-            $("#Penalties").hide();
-            $("#Interests").hide();
-
-            createExpenseTypeFlexGrid();
-            window.createExpenseTypeFlexGrid = function () {
-                return true;
-            }
-
-            expenseTypesCollectionView = new wijmo.collections.CollectionView(getExpenseTypesList());
-            expenseTypesCollectionView.canFilter = true;
-
-            var filterText = '';
-            $('#searchExpenseTypes').keyup(function () {
-                filterText = this.value.toLowerCase();
-                expenseTypesCollectionView.refresh();
-            });
-
-            expenseTypesCollectionView.filter = function (item) {
-                return !filterText || (item.ExpenseType.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Description.toLowerCase().indexOf(filterText) > -1);
-            }
-
-            expenseTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateExpenseTypesStampSecurity();
-            });
-
-            // Flex Grid
-            expenseTypesFlexGrid.itemsSource = expenseTypesCollectionView;
-            expenseTypesFlexGrid.trackChanges = true;
-        });
 
         // get Requirements
         function getRequirementsList() {
@@ -1940,7 +933,7 @@
             $("#Requirements").show();
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
-            $("#LoanTypes").hide();
+            $("#Deductions").hide();
             $("#Terms").hide();
             $("#Penalties").hide();
             $("#Interests").hide();
@@ -1973,17 +966,17 @@
             requirementsFlexGrid.trackChanges = true;
         });
 
-        // get Loan Types
-        function getLoanTypesList() {
-            var loanTypes = new wijmo.collections.ObservableArray;
+        // get deduction
+        function getDeductionsList() {
+            var deductions = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanTypes/list',
+                url: '/api/deductions/list',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
-                success: function (loanTypesListResult) {
-                    if (loanTypesListResult.length > 0) {
-                        for (i = 0; i < loanTypesListResult.length; i++) {
+                success: function (deductionListResult) {
+                    if (deductionListResult.length > 0) {
+                        for (i = 0; i < deductionListResult.length; i++) {
 
                             var disabledButton = "disabled";
                             var canPerformActions = "@ViewData["CanPerformActions"]";
@@ -1991,18 +984,21 @@
                                 disabledButton = "";
                             }
 
-                            loanTypes.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editLoanTypesOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteLoanTypesOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
-                                Id: loanTypesListResult[i]["Id"],
-                                LoanType: loanTypesListResult[i]["LoanType"],
-                                Description: loanTypesListResult[i]["Description"],
-                                CreatedByUserId: loanTypesListResult[i]["CreatedByUserId"],
-                                CreatedByUser: loanTypesListResult[i]["CreatedByUser"],
-                                CreatedDateTime: loanTypesListResult[i]["CreatedDateTime"],
-                                UpdatedByUserId: loanTypesListResult[i]["UpdatedByUserId"],
-                                UpdatedByUser: loanTypesListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: loanTypesListResult[i]["UpdatedDateTime"]
+                            deductions.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editDeductionsOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteDeductionsOnclick()'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: deductionListResult[i]["Id"],
+                                Deduction: deductionListResult[i]["Deduction"],
+                                Description: deductionListResult[i]["Description"],
+                                IsPercentage: deductionListResult[i]["IsPercentage"],
+                                PercentageRate: deductionListResult[i]["PercentageRate"],
+                                DeductionAmount: deductionListResult[i]["DeductionAmount"],
+                                CreatedByUserId: deductionListResult[i]["CreatedByUserId"],
+                                CreatedByUser: deductionListResult[i]["CreatedByUser"],
+                                CreatedDateTime: deductionListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: deductionListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: deductionListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: deductionListResult[i]["UpdatedDateTime"]
                             });
                         }
                     }
@@ -2010,60 +1006,66 @@
                     NProgress.done();
                 }
             });
-            return loanTypes;
+            return deductions;
         }
 
-        // add new Loan Types
-        function btnAddLoanTypesOnclick() {
-            $("#LoanTypesEditDetailModal").modal({
+        // add new deduction
+        function btnAddDeductionsOnclick() {
+            $("#DeductionsEditDetailModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
 
-            $('.requiredLoanTypes').each(function () {
+            $('.requiredDeductions').each(function () {
                 $(this).css({
                     "border": "",
                 });
             });
 
-            document.getElementById("btnSaveLoanTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveLoanTypes").prop("disabled", false);
-            $("#btnCloseLoanTypes").prop("disabled", false);
+            document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveDeductions").prop("disabled", false);
+            $("#btnCloseDeductions").prop("disabled", false);
 
-            loanTypeId = 0;
-            document.getElementById("loanTypeName").value = "NA";
-            document.getElementById("loanTypeDescription").value = "NA";
+            deductionId = 0;
+            document.getElementById("deductionName").value = "NA";
+            document.getElementById("deductionDescription").value = "NA";
+            document.getElementById("deductionIsPercentage").checked = false;
+            document.getElementById("deductionPercentageRate").value = 0;
+            document.getElementById("deductionAmount").value = 0;
         }
 
-        // edit Loan Types
-        function editLoanTypesOnclick() {
-            $("#LoanTypesEditDetailModal").modal({
+        // edit deduction
+        function editDeductionsOnclick() {
+            $("#DeductionsEditDetailModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
 
-            $('.requiredLoanTypes').each(function () {
+            $('.requiredDeductions').each(function () {
                 $(this).css({
                     "border": "",
                 });
             });
 
-            document.getElementById("btnSaveLoanTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveLoanTypes").prop("disabled", false);
-            $("#btnCloseLoanTypes").prop("disabled", false);
+            document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveDeductions").prop("disabled", false);
+            $("#btnCloseDeductions").prop("disabled", false);
 
-            loanTypesCollectionView.editItem(loanTypesCollectionView.currentItem);
-            var loanTypeCurrentEditItem = loanTypesCollectionView.currentEditItem;
+            deductionsCollectionView.editItem(deductionsCollectionView.currentItem);
+            var deductionTypeCurrentEditItem = deductionsCollectionView.currentEditItem;
 
-            loanTypeId = loanTypeCurrentEditItem.Id;
-            document.getElementById("loanTypeName").value = loanTypeCurrentEditItem.LoanType;
-            document.getElementById("loanTypeDescription").value = loanTypeCurrentEditItem.Description;
+            deductionId = deductionTypeCurrentEditItem.Id;
+            document.getElementById("deductionName").value = deductionTypeCurrentEditItem.Deduction;
+            document.getElementById("deductionDescription").value = deductionTypeCurrentEditItem.Description;
+            document.getElementById("deductionIsPercentage").checked = deductionTypeCurrentEditItem.IsPercentage;
+            document.getElementById("deductionPercentageRate").value = deductionTypeCurrentEditItem.PercentageRate.toLocaleString();
+            document.getElementById("deductionAmount").value = deductionTypeCurrentEditItem.DeductionAmount.toLocaleString();
         }
 
         // form input validation
-        function inputValidationForLoanTypes() {
+        function inputValidationForDeductions() {
             var isValid = true;
-            $('.requiredLoanTypes').each(function () {
+            $('.requiredDeductions').each(function () {
                 if ($.trim($(this).val()) == '') {
                     isValid = false;
                     $(this).css({
@@ -2080,115 +1082,118 @@
         }
 
         // save Loan Types
-        function saveLoanTypesOnclick() {
-            if (inputValidationForLoanTypes()) {
-                document.getElementById("btnSaveLoanTypes").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                $("#btnSaveLoanTypes").prop("disabled", true);
-                $("#btnCloseLoanTypes").prop("disabled", true);
+        function saveDeductionsOnclick() {
+            if (inputValidationForDeductions()) {
+                document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                $("#btnSaveDeductions").prop("disabled", true);
+                $("#btnCloseDeductions").prop("disabled", true);
 
-                var LoanTypesObject = new Object();
-                LoanTypesObject.LoanType = document.getElementById('loanTypeName').value;
-                LoanTypesObject.Description = document.getElementById('loanTypeDescription').value;
-                var LoanTypesData = JSON.stringify(LoanTypesObject);
+                var DeductionsObject = new Object();
+                DeductionsObject.Deduction = document.getElementById('deductionName').value;
+                DeductionsObject.Description = document.getElementById('deductionDescription').value;
+                DeductionsObject.IsPercentage = document.getElementById('deductionIsPercentage').checked;
+                DeductionsObject.PercentageRate = document.getElementById('deductionPercentageRate').value;
+                DeductionsObject.DeductionAmount = document.getElementById('deductionAmount').value;
+                var DeductionsData = JSON.stringify(DeductionsObject);
 
-                if (loanTypeId == 0) {
+                if (deductionId == 0) {
                     $.ajax({
                         type: "POST",
-                        url: '/api/LoanTypes/add',
+                        url: '/api/Deductions/add',
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
-                        data: LoanTypesData,
+                        data: DeductionsData,
                         statusCode: {
                             200: function () {
                                 toastr.success("Save Successful");
 
-                                $("#LoanTypesEditDetailModal").modal("hide");
+                                $("#DeductionsEditDetailModal").modal("hide");
 
-                                loanTypesCollectionView = new wijmo.collections.CollectionView(getLoanTypesList());
-                                loanTypesCollectionView.canFilter = true;
+                                deductionsCollectionView = new wijmo.collections.CollectionView(getDeductionsList());
+                                deductionsCollectionView.canFilter = true;
 
                                 var filterText = '';
-                                $('#searchLoanTypes').keyup(function () {
+                                $('#searchDeductions').keyup(function () {
                                     filterText = this.value.toLowerCase();
-                                    loanTypesCollectionView.refresh();
+                                    deductionsCollectionView.refresh();
                                 });
 
-                                loanTypesCollectionView.filter = function (item) {
-                                    return !filterText || (item.LoanType.toLowerCase().indexOf(filterText) > -1)
+                                deductionsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Deduction.toLowerCase().indexOf(filterText) > -1)
                                                        || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
 
-                                loanTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateLoanTypesStampSecurity();
+                                deductionsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateDeductionsStampSecurity();
                                 });
 
                                 // Flex Grid
-                                loanTypesFlexGrid.itemsSource = loanTypesCollectionView;
-                                loanTypesFlexGrid.trackChanges = true;
+                                deductionsFlexGrid.itemsSource = deductionsCollectionView;
+                                deductionsFlexGrid.trackChanges = true;
                             },
                             400: function () {
                                 toastr.error("Bad Request");
 
-                                $("#LoanTypesEditDetailModal").modal("hide");
+                                $("#DeductionsEditDetailModal").modal("hide");
 
-                                document.getElementById("btnSaveLoanTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanTypes").prop("disabled", false);
-                                $("#btnCloseLoanTypes").prop("disabled", false);
+                                document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveDeductions").prop("disabled", false);
+                                $("#btnCloseDeductions").prop("disabled", false);
                             }
                         }
                     });
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: '/api/LoanTypes/update/' + loanTypeId,
+                        url: '/api/Deductions/update/' + deductionId,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
-                        data: LoanTypesData,
+                        data: DeductionsData,
                         statusCode: {
                             200: function () {
                                 toastr.success("Update Successful");
 
-                                $("#LoanTypesEditDetailModal").modal("hide");
+                                $("#DeductionsEditDetailModal").modal("hide");
 
-                                loanTypesCollectionView = new wijmo.collections.CollectionView(getLoanTypesList());
-                                loanTypesCollectionView.canFilter = true;
+                                deductionsCollectionView = new wijmo.collections.CollectionView(getDeductionsList());
+                                deductionsCollectionView.canFilter = true;
 
                                 var filterText = '';
-                                $('#searchLoanTypes').keyup(function () {
+                                $('#searchDeductions').keyup(function () {
                                     filterText = this.value.toLowerCase();
-                                    loanTypesCollectionView.refresh();
+                                    deductionsCollectionView.refresh();
                                 });
 
-                                loanTypesCollectionView.filter = function (item) {
-                                    return !filterText || (item.LoanType.toLowerCase().indexOf(filterText) > -1)
+                                deductionsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Deduction.toLowerCase().indexOf(filterText) > -1)
                                                        || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
 
-                                loanTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateLoanTypesStampSecurity();
+                                deductionsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateDeductionsStampSecurity();
                                 });
 
                                 // Flex Grid
-                                loanTypesFlexGrid.itemsSource = loanTypesCollectionView;
-                                loanTypesFlexGrid.trackChanges = true;
+                                deductionsFlexGrid.itemsSource = deductionsCollectionView;
+                                deductionsFlexGrid.trackChanges = true;
                             },
                             404: function () {
                                 toastr.error("Not Found");
 
-                                $("#LoanTypesEditDetailModal").modal("hide");
+                                $("#DeductionsEditDetailModal").modal("hide");
 
-                                document.getElementById("btnSaveLoanTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanTypes").prop("disabled", false);
-                                $("#btnCloseLoanTypes").prop("disabled", false);
+                                document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveDeductions").prop("disabled", false);
+                                $("#btnCloseDeductions").prop("disabled", false);
                             },
                             400: function () {
                                 toastr.error("Bad Request");
 
-                                $("#LoanTypesEditDetailModal").modal("hide");
+                                $("#DeductionsEditDetailModal").modal("hide");
 
-                                document.getElementById("btnSaveLoanTypes").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanTypes").prop("disabled", false);
-                                $("#btnCloseLoanTypes").prop("disabled", false);
+                                document.getElementById("btnSaveDeductions").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveDeductions").prop("disabled", false);
+                                $("#btnCloseDeductions").prop("disabled", false);
                             }
                         }
                     });
@@ -2199,25 +1204,25 @@
         }
 
         // delete Loan Types
-        function deleteLoanTypesOnclick() {
-            $("#deleteConfirmationLoanTypesModal").modal({
+        function deleteDeductionsOnclick() {
+            $("#deleteConfirmationDeductionsModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
 
-            document.getElementById("btnConfirmDeleteLoanTypes").innerHTML = "Delete";
-            $("#btnConfirmDeleteLoanTypes").prop("disabled", false);
-            $("#btnCloseDeleteLoanTypesModal").prop("disabled", false);
+            document.getElementById("btnConfirmDeleteDeductions").innerHTML = "Delete";
+            $("#btnConfirmDeleteDeductions").prop("disabled", false);
+            $("#btnCloseDeleteDeductionsModal").prop("disabled", false);
         }
-        function btnConfirmDeleteLoanTypesOnclick() {
-            document.getElementById("btnConfirmDeleteLoanTypes").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteLoanTypes").prop("disabled", true);
-            $("#btnCloseDeleteLoanTypesModal").prop("disabled", true);
+        function btnConfirmDeleteDeductionsOnclick() {
+            document.getElementById("btnConfirmDeleteDeductions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteDeductions").prop("disabled", true);
+            $("#btnCloseDeleteDeductionsModal").prop("disabled", true);
 
-            loanTypesCollectionView.editItem(loanTypesCollectionView.currentItem);
-            var id = loanTypesCollectionView.currentEditItem.Id;
+            deductionsCollectionView.editItem(deductionsCollectionView.currentItem);
+            var id = deductionsCollectionView.currentEditItem.Id;
             $.ajax({
-                url: '/api/LoanTypes/delete/' + id,
+                url: '/api/Deductions/delete/' + id,
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -2225,49 +1230,49 @@
                     200: function () {
                         toastr.success("Delete Successful");
 
-                        $('#deleteConfirmationLoanTypesModal').modal('hide');
+                        $('#deleteConfirmationDeductionsModal').modal('hide');
 
-                        loanTypesCollectionView = new wijmo.collections.CollectionView(getLoanTypesList());
-                        loanTypesCollectionView.canFilter = true;
+                        deductionsCollectionView = new wijmo.collections.CollectionView(getDeductionsList());
+                        deductionsCollectionView.canFilter = true;
 
                         var filterText = '';
-                        $('#searchLoanTypes').keyup(function () {
+                        $('#searchDeductions').keyup(function () {
                             filterText = this.value.toLowerCase();
-                            loanTypesCollectionView.refresh();
+                            deductionsCollectionView.refresh();
                         });
 
-                        loanTypesCollectionView.filter = function (item) {
-                            return !filterText || (item.LoanType.toLowerCase().indexOf(filterText) > -1)
+                        deductionsCollectionView.filter = function (item) {
+                            return !filterText || (item.Deduction.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Description.toLowerCase().indexOf(filterText) > -1);
                         }
 
-                        loanTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateLoanTypesStampSecurity();
+                        deductionsCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateDeductionsStampSecurity();
                         });
 
                         // Flex Grid
-                        loanTypesFlexGrid.itemsSource = loanTypesCollectionView;
-                        loanTypesFlexGrid.trackChanges = true;
+                        deductionsFlexGrid.itemsSource = deductionsCollectionView;
+                        deductionsFlexGrid.trackChanges = true;
                     },
                     404: function () {
                         toastr.error("Not Found");
-                        $('#deleteConfirmationLoanTypesModal').modal('hide');
-                        $("#btnConfirmDeleteLoanTypes").prop("disabled", false);
-                        $("#btnCloseDeleteLoanTypesModal").prop("disabled", false);
+                        $('#deleteConfirmationDeductionsModal').modal('hide');
+                        $("#btnConfirmDeleteDeductions").prop("disabled", false);
+                        $("#btnCloseDeleteDeductionsModal").prop("disabled", false);
                     },
                     400: function () {
                         toastr.error("Bad Request");
-                        $('#deleteConfirmationLoanTypesModal').modal('hide');
-                        $("#btnConfirmDeleteLoanTypes").prop("disabled", false);
-                        $("#btnCloseDeleteLoanTypesModal").prop("disabled", false);
+                        $('#deleteConfirmationDeductionsModal').modal('hide');
+                        $("#btnConfirmDeleteDeductions").prop("disabled", false);
+                        $("#btnCloseDeleteDeductionsModal").prop("disabled", false);
                     }
                 }
             });
         }
 
         // stamp security
-        function updateLoanTypesStampSecurity() {
-            var item = loanTypesCollectionView.currentItem;
+        function updateDeductionsStampSecurity() {
+            var item = deductionsCollectionView.currentItem;
             document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
             document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
             document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
@@ -2279,27 +1284,27 @@
             NProgress.start();
             toastrModification();
 
-            loanTypesCollectionView = new wijmo.collections.CollectionView(getLoanTypesList());
-            loanTypesCollectionView.canFilter = true;
+            deductionsCollectionView = new wijmo.collections.CollectionView(getDeductionsList());
+            deductionsCollectionView.canFilter = true;
 
             var filterText = '';
-            $('#searchLoanTypes').keyup(function () {
+            $('#searchDeductions').keyup(function () {
                 filterText = this.value.toLowerCase();
-                loanTypesCollectionView.refresh();
+                deductionsCollectionView.refresh();
             });
 
-            loanTypesCollectionView.filter = function (item) {
-                return !filterText || (item.LoanType.toLowerCase().indexOf(filterText) > -1)
+            deductionsCollectionView.filter = function (item) {
+                return !filterText || (item.Deduction.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Description.toLowerCase().indexOf(filterText) > -1);
             }
 
-            loanTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateLoanTypesStampSecurity();
+            deductionsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateDeductionsStampSecurity();
             });
 
             // Flex Grid
-            loanTypesFlexGrid = new wijmo.grid.FlexGrid('#LoanTypesListFlexGrid');
-            loanTypesFlexGrid.initialize({
+            deductionsFlexGrid = new wijmo.grid.FlexGrid('#DeductionsListFlexGrid');
+            deductionsFlexGrid.initialize({
                 columns: [
                             {
                                 "header": "Edit",
@@ -2318,8 +1323,8 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "LoanType",
-                                "binding": "LoanType",
+                                "header": "Deduction",
+                                "binding": "Deduction",
                                 "allowSorting": true,
                                 "width": "2*"
                             },
@@ -2328,51 +1333,69 @@
                                 "binding": "Description",
                                 "allowSorting": true,
                                 "width": "3*"
+                            },
+                            {
+                                "header": "Is P",
+                                "binding": "IsPercentage",
+                                "allowSorting": true,
+                                "width": "1*"
+                            },
+                            {
+                                "header": "Percentage Rate",
+                                "binding": "PercentageRate",
+                                "allowSorting": true,
+                                "width": "2*"
+                            },
+                            {
+                                "header": "Deduction Amount",
+                                "binding": "DeductionAmount",
+                                "allowSorting": true,
+                                "width": "2*"
                             }
                 ],
                 autoGenerateColumns: false,
-                itemsSource: loanTypesCollectionView,
+                itemsSource: deductionsCollectionView,
                 isReadOnly: true,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
                 selectionMode: wijmo.grid.SelectionMode.Row
             });
 
-            loanTypesFlexGrid.trackChanges = true;
+            deductionsFlexGrid.trackChanges = true;
         }
 
         // Loan Types tab
-        $('#LoanTypesTab').click(function () {
+        $('#DeductionsTab').click(function () {
             NProgress.start();
             $("#Requirements").hide();
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
-            $("#LoanTypes").show();
+            $("#Deductions").show();
             $("#Terms").hide();
             $("#Penalties").hide();
             $("#Interests").hide();
 
-            loanTypesCollectionView = new wijmo.collections.CollectionView(getLoanTypesList());
-            loanTypesCollectionView.canFilter = true;
+            deductionsCollectionView = new wijmo.collections.CollectionView(getDeductionsList());
+            deductionsCollectionView.canFilter = true;
 
             var filterText = '';
-            $('#searchLoanTypes').keyup(function () {
+            $('#searchDeductions').keyup(function () {
                 filterText = this.value.toLowerCase();
-                loanTypesCollectionView.refresh();
+                deductionsCollectionView.refresh();
             });
 
-            loanTypesCollectionView.filter = function (item) {
+            deductionsCollectionView.filter = function (item) {
                 return !filterText || (item.LoanType.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Description.toLowerCase().indexOf(filterText) > -1);
             }
 
-            loanTypesCollectionView.currentChanged.addHandler(function (sender, args) {
-                updateLoanTypesStampSecurity();
+            deductionsCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateDeductionsStampSecurity();
             });
 
             // Flex Grid
-            loanTypesFlexGrid.itemsSource = loanTypesCollectionView;
-            loanTypesFlexGrid.trackChanges = true;
+            deductionsFlexGrid.itemsSource = deductionsCollectionView;
+            deductionsFlexGrid.trackChanges = true;
         });
 
         // get Terms
@@ -2790,7 +1813,7 @@
             $("#Requirements").hide();
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
-            $("#LoanTypes").hide();
+            $("#Deductions").hide();
             $("#Terms").show();
             $("#Penalties").hide();
             $("#Interests").hide();
@@ -3211,8 +2234,8 @@
                                 "width": "2.5*"
                             },
                             {
-                                "header": "Pen. Amount",
-                                "binding": "DefaultPenaltyAmount",
+                                "header": "Absent",
+                                "binding": "NoOfLimitAbsent",
                                 "allowSorting": true,
                                 "width": "1*"
                             },
@@ -3223,8 +2246,8 @@
                                 "width": "0.5*"
                             },
                             {
-                                "header": "Absent",
-                                "binding": "NoOfLimitAbsent",
+                                "header": "Pen. Amount",
+                                "binding": "DefaultPenaltyAmount",
                                 "allowSorting": true,
                                 "width": "1*"
                             },
@@ -3252,7 +2275,7 @@
             $("#Requirements").hide();
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
-            $("#LoanTypes").hide();
+            $("#Deductions").hide();
             $("#Terms").hide();
             $("#Penalties").show();
             $("#Interests").hide();
@@ -3670,7 +2693,7 @@
             $("#Requirements").hide();
             $("#Accounts").hide();
             $("#ExpenseTypes").hide();
-            $("#LoanTypes").hide();
+            $("#Deductions").hide();
             $("#Terms").hide();
             $("#Interests").show();
             $("#Penalties").hide();
@@ -3709,9 +2732,7 @@
             toastrModification();
             createLoanTypeFlexGrid();
 
-            cboTransactionType = new wijmo.input.ComboBox('#transactionType');
             cboNoOfDays = new wijmo.input.ComboBox('#cboNoOfDays');
-            getTransactionType();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {

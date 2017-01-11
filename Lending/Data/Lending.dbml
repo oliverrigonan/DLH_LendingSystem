@@ -425,6 +425,7 @@
       <Association Name="mstUser_mstUserForm" Member="mstUserForms" ThisKey="Id" OtherKey="UserId" Type="mstUserForm" />
       <Association Name="mstUser_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnCollection" />
       <Association Name="mstUser_trnCollection1" Member="trnCollections1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnCollection" />
+      <Association Name="mstUser_trnCollection2" Member="trnCollections2" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnCollection" />
       <Association Name="mstUser_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense1" Member="trnExpenses1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnExpense" />
       <Association Name="mstUser_trnExpense2" Member="trnExpenses2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnExpense" />
@@ -510,6 +511,7 @@
       <Column Name="Status" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="IsAllowanceDay" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -518,6 +520,7 @@
       <Association Name="trnCollection_sysJournal" Member="sysJournals" ThisKey="Id" OtherKey="CollectionId" Type="sysJournal" />
       <Association Name="mstUser_trnCollection" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnCollection1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnCollection2" Member="mstUser2" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="trnLoan_trnCollection" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
     </Type>
   </Table>

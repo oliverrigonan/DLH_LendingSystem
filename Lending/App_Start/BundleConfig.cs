@@ -21,10 +21,14 @@ namespace Lending
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.min.js",
-                      "~/wijmo/controls/wijmo.min.js",
-                      "~/wijmo/controls/wijmo.input.min.js",
-                      "~/wijmo/controls/wijmo.grid.min.js",
-                      "~/wijmo/controls/wijmo.chart.min.js",
+                      //"~/wijmo/controls/wijmo.min.js",
+                      //"~/wijmo/controls/wijmo.input.min.js",
+                      //"~/wijmo/controls/wijmo.grid.min.js",
+                      //"~/wijmo/controls/wijmo.chart.min.js",
+                      "~/Scripts/wijmo.min.js",
+                      "~/Scripts/wijmo.input.min.js",
+                      "~/Scripts/wijmo.grid.min.js",
+                      "~/Scripts/wijmo.chart.min.js",
                       "~/Scripts/nprogress.js",
                       "~/Scripts/toastr.min.js",
                       "~/Scripts/custom-scripts.js"));
@@ -34,7 +38,8 @@ namespace Lending
                       "~/Content/landing-page.css",
                       "~/Content/software.css",
                       "~/fonts/font-awesome-4.6.3/css/font-awesome.min.css",
-                      "~/wijmo/styles/wijmo.min.css",
+                      //"~/wijmo/styles/wijmo.min.css",
+                      "~/Content/wijmo.min.css",
                       "~/Content/nprogress.css",
                       "~/Content/toastr.min.css"));
         }

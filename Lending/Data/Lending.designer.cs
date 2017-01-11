@@ -9422,6 +9422,8 @@ namespace Lending.Data
 		
 		private EntitySet<trnCollection> _trnCollections1;
 		
+		private EntitySet<trnCollection> _trnCollections2;
+		
 		private EntitySet<trnExpense> _trnExpenses;
 		
 		private EntitySet<trnExpense> _trnExpenses1;
@@ -9490,6 +9492,7 @@ namespace Lending.Data
 			this._mstUserForms = new EntitySet<mstUserForm>(new Action<mstUserForm>(this.attach_mstUserForms), new Action<mstUserForm>(this.detach_mstUserForms));
 			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
 			this._trnCollections1 = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections1), new Action<trnCollection>(this.detach_trnCollections1));
+			this._trnCollections2 = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections2), new Action<trnCollection>(this.detach_trnCollections2));
 			this._trnExpenses = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses), new Action<trnExpense>(this.detach_trnExpenses));
 			this._trnExpenses1 = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses1), new Action<trnExpense>(this.detach_trnExpenses1));
 			this._trnExpenses2 = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses2), new Action<trnExpense>(this.detach_trnExpenses2));
@@ -10002,6 +10005,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnCollection2", Storage="_trnCollections2", ThisKey="Id", OtherKey="PreparedByUserId")]
+		public EntitySet<trnCollection> trnCollections2
+		{
+			get
+			{
+				return this._trnCollections2;
+			}
+			set
+			{
+				this._trnCollections2.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnExpense", Storage="_trnExpenses", ThisKey="Id", OtherKey="PreparedByUserId")]
 		public EntitySet<trnExpense> trnExpenses
 		{
@@ -10467,6 +10483,18 @@ namespace Lending.Data
 		{
 			this.SendPropertyChanging();
 			entity.mstUser1 = null;
+		}
+		
+		private void attach_trnCollections2(trnCollection entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstUser2 = this;
+		}
+		
+		private void detach_trnCollections2(trnCollection entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstUser2 = null;
 		}
 		
 		private void attach_trnExpenses(trnExpense entity)
@@ -11718,6 +11746,8 @@ namespace Lending.Data
 		
 		private string _Particulars;
 		
+		private int _PreparedByUserId;
+		
 		private bool _IsLocked;
 		
 		private int _CreatedByUserId;
@@ -11733,6 +11763,8 @@ namespace Lending.Data
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
+		
+		private EntityRef<mstUser> _mstUser2;
 		
 		private EntityRef<trnLoan> _trnLoan;
 		
@@ -11778,6 +11810,8 @@ namespace Lending.Data
     partial void OnIsAllowanceDayChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
+    partial void OnPreparedByUserIdChanging(int value);
+    partial void OnPreparedByUserIdChanged();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
@@ -11795,6 +11829,7 @@ namespace Lending.Data
 			this._sysJournals = new EntitySet<sysJournal>(new Action<sysJournal>(this.attach_sysJournals), new Action<sysJournal>(this.detach_sysJournals));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
+			this._mstUser2 = default(EntityRef<mstUser>);
 			this._trnLoan = default(EntityRef<trnLoan>);
 			OnCreated();
 		}
@@ -12183,6 +12218,30 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreparedByUserId", DbType="Int NOT NULL")]
+		public int PreparedByUserId
+		{
+			get
+			{
+				return this._PreparedByUserId;
+			}
+			set
+			{
+				if ((this._PreparedByUserId != value))
+				{
+					if (this._mstUser2.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPreparedByUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._PreparedByUserId = value;
+					this.SendPropertyChanged("PreparedByUserId");
+					this.OnPreparedByUserIdChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsLocked", DbType="Bit NOT NULL")]
 		public bool IsLocked
 		{
@@ -12368,6 +12427,40 @@ namespace Lending.Data
 						this._UpdatedByUserId = default(int);
 					}
 					this.SendPropertyChanged("mstUser1");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_trnCollection2", Storage="_mstUser2", ThisKey="PreparedByUserId", OtherKey="Id", IsForeignKey=true)]
+		public mstUser mstUser2
+		{
+			get
+			{
+				return this._mstUser2.Entity;
+			}
+			set
+			{
+				mstUser previousValue = this._mstUser2.Entity;
+				if (((previousValue != value) 
+							|| (this._mstUser2.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstUser2.Entity = null;
+						previousValue.trnCollections2.Remove(this);
+					}
+					this._mstUser2.Entity = value;
+					if ((value != null))
+					{
+						value.trnCollections2.Add(this);
+						this._PreparedByUserId = value.Id;
+					}
+					else
+					{
+						this._PreparedByUserId = default(int);
+					}
+					this.SendPropertyChanged("mstUser2");
 				}
 			}
 		}

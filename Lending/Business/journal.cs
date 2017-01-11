@@ -14,8 +14,9 @@ namespace Lending.Business
         public void postLoanJournal(Int32 loanId)
         {
             var loans = from d in db.trnLoans
-                                   where d.Id == loanId
-                                   select d;
+                        where d.Id == loanId
+                        && d.IsLocked == true
+                        select d;
 
             if (loans.Any())
             {
@@ -48,11 +49,12 @@ namespace Lending.Business
         }
 
         // collection journal
-        public void postCollectionJournal(Int32 id)
+        public void postCollectionJournal(Int32 collectionId)
         {
             var collections = from d in db.trnCollections
-                                   where d.Id == id
-                                   select d;
+                              where d.Id == collectionId
+                              && d.IsLocked == true
+                              select d;
 
             if (collections.Any())
             {
@@ -89,6 +91,7 @@ namespace Lending.Business
         {
             var expenses = from d in db.trnExpenses
                            where d.Id == expenseId
+                           && d.IsLocked == true
                            select d;
 
             if (expenses.Any())

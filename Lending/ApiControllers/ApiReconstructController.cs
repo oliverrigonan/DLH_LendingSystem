@@ -13,696 +13,484 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        //// collection reconstruct list
-        //[Authorize]
-        //[HttpGet]
-        //[Route("api/collectionReconstruct/list/ByCollectionId/{collectionId}")]
-        //public List<Models.TrnReconstruct> listCollectionReconstructByCollectionId(String collectionId)
-        //{
-        //    var collecionReconstruct = from d in db.trnCollectionReconstructs
-        //                               where d.CollectionId == Convert.ToInt32(collectionId)
-        //                               select new Models.TrnReconstruct
-        //                               {
-        //                                   Id = d.Id,
-        //                                   CollectionId = d.CollectionId,
-        //                                   ReconstructNumber = d.ReconstructNumber,
-        //                                   StartDate = d.StartDate.ToShortDateString(),
-        //                                   EndDate = d.EndDate.ToShortDateString(),
-        //                                   TermId = d.TermId,
-        //                                   Term = d.mstTerm.Term,
-        //                                   TermNoOfDays = d.TermNoOfDays,
-        //                                   TermNoOfAllowanceDays = d.TermNoOfAllowanceDays,
-        //                                   InterestId = d.InterestId,
-        //                                   InterestRate = d.InterestRate,
-        //                                   InterestAmount = d.InterestAmount,
-        //                                   PenaltyId = d.PenaltyId,
-        //                                   Penalty = d.mstPenalty.Penalty,
-        //                                   CurrentBalanceAmount = d.CurrentBalanceAmount,
-        //                                   BalanceAmount = d.BalanceAmount
-        //                               };
+        // reconstruct list by reconstruct date
+        [Authorize]
+        [HttpGet]
+        [Route("api/reconstruct/list/byReconstructDate/{reconstructDate}")]
+        public List<Models.TrnReconstruct> listReconstructByReconstructDate(String reconstructDate)
+        {
+            var reconstructs = from d in db.trnReconstructs
+                               where d.ReconstructDate == Convert.ToDateTime(reconstructDate)
+                               select new Models.TrnReconstruct
+                               {
+                                   Id = d.Id,
+                                   ReconstructNumber = d.ReconstructNumber,
+                                   ReconstructDate = d.ReconstructDate.ToShortDateString(),
+                                   MaturityDate = d.MaturityDate.ToShortDateString(),
+                                   Particulars = d.Particulars,
+                                   LoanId = d.LoanId,
+                                   LoanDetail = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " ") + " - " + d.trnLoan.LoanNumber + " (from " + d.trnLoan.LoanDate + " to " + d.trnLoan.MaturityDate + ")",
+                                   LoanBalanceAmount = d.LoanBalanceAmount,
+                                   PreviousLoanEndDate = d.PreviousLoanEndDate.ToShortDateString(),
+                                   InterestId = d.InterestId,
+                                   InterestRate = d.InterestRate,
+                                   InterestAmount = d.InterestAmount,
+                                   ReconstructAmount = d.ReconstructAmount,
+                                   PreparedByUserId = d.PreparedByUserId,
+                                   PreparedByUser = d.mstUser.FullName,
+                                   IsLocked = d.IsLocked,
+                                   CreatedByUserId = d.CreatedByUserId,
+                                   CreatedByUser = d.mstUser1.FullName,
+                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                   UpdatedByUserId = d.UpdatedByUserId,
+                                   UpdatedByUser = d.mstUser2.FullName,
+                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                               };
 
-        //    return collecionReconstruct.ToList();
-        //}
+            return reconstructs.ToList();
+        }
 
-        //// zero fill
-        //public String zeroFill(Int32 number, Int32 length)
-        //{
-        //    var result = number.ToString();
-        //    var pad = length - result.Length;
-        //    while (pad > 0)
-        //    {
-        //        result = "0" + result;
-        //        pad--;
-        //    }
+        // reconstruct list by id
+        [Authorize]
+        [HttpGet]
+        [Route("api/reconstruct/get/byId/{id}")]
+        public Models.TrnReconstruct getReconstructById(String id)
+        {
+            var reconstruct = from d in db.trnReconstructs
+                              where d.Id == Convert.ToInt32(id)
+                              select new Models.TrnReconstruct
+                              {
+                                  Id = d.Id,
+                                  ReconstructNumber = d.ReconstructNumber,
+                                  ReconstructDate = d.ReconstructDate.ToShortDateString(),
+                                  MaturityDate = d.MaturityDate.ToShortDateString(),
+                                  Particulars = d.Particulars,
+                                  LoanId = d.LoanId,
+                                  LoanDetail = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " ") + " - " + d.trnLoan.LoanNumber + " (from " + d.trnLoan.LoanDate + " to " + d.trnLoan.MaturityDate + ")",
+                                  LoanBalanceAmount = d.LoanBalanceAmount,
+                                  PreviousLoanEndDate = d.PreviousLoanEndDate.ToShortDateString(),
+                                  InterestId = d.InterestId,
+                                  InterestRate = d.InterestRate,
+                                  InterestAmount = d.InterestAmount,
+                                  ReconstructAmount = d.ReconstructAmount,
+                                  PreparedByUserId = d.PreparedByUserId,
+                                  PreparedByUser = d.mstUser.FullName,
+                                  IsLocked = d.IsLocked,
+                                  CreatedByUserId = d.CreatedByUserId,
+                                  CreatedByUser = d.mstUser1.FullName,
+                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                  UpdatedByUserId = d.UpdatedByUserId,
+                                  UpdatedByUser = d.mstUser2.FullName,
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                              };
 
-        //    return result;
-        //}
+            return (Models.TrnReconstruct)reconstruct.FirstOrDefault();
+        }
 
-        //// add collection reconstruct
-        //[Authorize]
-        //[HttpPost]
-        //[Route("api/collectionReconstruct/add")]
-        //public HttpResponseMessage addCollectionReconstruct(Models.TrnReconstruct collectionReconstruct)
-        //{
-        //    try
-        //    {
-        //        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-        //        var mstUserForms = from d in db.mstUserForms
-        //                           where d.UserId == userId
-        //                           select new Models.MstUserForm
-        //                           {
-        //                               Id = d.Id,
-        //                               Form = d.sysForm.Form,
-        //                               CanPerformActions = d.CanPerformActions
-        //                           };
+        // zero fill
+        public String zeroFill(Int32 number, Int32 length)
+        {
+            var result = number.ToString();
+            var pad = length - result.Length;
+            while (pad > 0)
+            {
+                result = "0" + result;
+                pad--;
+            }
 
-        //        if (mstUserForms.Any())
-        //        {
-        //            String matchPageString = "CollectionDetail";
-        //            Boolean canPerformActions = false;
+            return result;
+        }
 
-        //            foreach (var mstUserForm in mstUserForms)
-        //            {
-        //                if (mstUserForm.Form.Equals(matchPageString))
-        //                {
-        //                    if (mstUserForm.CanPerformActions)
-        //                    {
-        //                        canPerformActions = true;
-        //                    }
+        // add reconstruct
+        [Authorize]
+        [HttpPost]
+        [Route("api/reconstruct/add")]
+        public Int32 addReconstruct()
+        {
+            try
+            {
+                var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
 
-        //                    break;
-        //                }
-        //            }
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "LoanApplicationList";
+                    Boolean canPerformActions = false;
 
-        //            if (canPerformActions)
-        //            {
-        //                var lastCollectionData = from d in db.trnDailyCollections.OrderByDescending(d => d.Id)
-        //                                         where d.CollectionId == collectionReconstruct.CollectionId
-        //                                         select d;
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
 
-        //                if (lastCollectionData.Any())
-        //                {
-        //                    if (lastCollectionData.FirstOrDefault().IsLastDay)
-        //                    {
-        //                        if (lastCollectionData.FirstOrDefault().IsProcessed)
-        //                        {
-        //                            String reconstructNumber = "0000000001";
-        //                            var lastCollectionReconstruct = from d in db.trnCollectionReconstructs.OrderByDescending(d => d.Id) select d;
-        //                            if (lastCollectionReconstruct.Any())
-        //                            {
-        //                                var newReconstructNumber = Convert.ToInt32(lastCollectionReconstruct.FirstOrDefault().ReconstructNumber) + 0000000001;
-        //                                reconstructNumber = newReconstructNumber.ToString();
-        //                            }
+                            break;
+                        }
+                    }
 
-        //                            Data.trnCollectionReconstruct newCollectionReconstruct = new Data.trnCollectionReconstruct();
-        //                            newCollectionReconstruct.CollectionId = collectionReconstruct.CollectionId;
-        //                            newCollectionReconstruct.ReconstructNumber = zeroFill(Convert.ToInt32(reconstructNumber), 10);
-        //                            newCollectionReconstruct.StartDate = Convert.ToDateTime(collectionReconstruct.StartDate);
-        //                            newCollectionReconstruct.EndDate = Convert.ToDateTime(collectionReconstruct.EndDate);
-        //                            newCollectionReconstruct.TermId = collectionReconstruct.TermId;
-        //                            newCollectionReconstruct.TermNoOfDays = collectionReconstruct.TermNoOfDays;
-        //                            newCollectionReconstruct.TermNoOfAllowanceDays = collectionReconstruct.TermNoOfAllowanceDays;
-        //                            newCollectionReconstruct.InterestId = collectionReconstruct.InterestId;
-        //                            newCollectionReconstruct.InterestRate = collectionReconstruct.InterestRate;
-        //                            newCollectionReconstruct.InterestAmount = (lastCollectionData.FirstOrDefault().CurrentBalanceAmount / 100) * collectionReconstruct.InterestRate;
-        //                            newCollectionReconstruct.PenaltyId = collectionReconstruct.PenaltyId;
-        //                            newCollectionReconstruct.CurrentBalanceAmount = lastCollectionData.FirstOrDefault().CurrentBalanceAmount;
-        //                            newCollectionReconstruct.BalanceAmount = collectionReconstruct.InterestAmount + lastCollectionData.FirstOrDefault().CurrentBalanceAmount;
-        //                            db.trnCollectionReconstructs.InsertOnSubmit(newCollectionReconstruct);
-        //                            db.SubmitChanges();
+                    if (canPerformActions)
+                    {
+                        String reconstructNumber = "0000000001";
+                        var reconstruct = from d in db.trnReconstructs.OrderByDescending(d => d.Id) select d;
+                        if (reconstruct.Any())
+                        {
+                            var newReconstructNumber = Convert.ToInt32(reconstruct.FirstOrDefault().ReconstructNumber) + 0000000001;
+                            reconstructNumber = newReconstructNumber.ToString();
+                        }
 
-        //                            var collection = from d in db.trnCollections where d.Id == collectionReconstruct.CollectionId select d;
-        //                            if (collection.Any())
-        //                            {
-        //                                var updateCollectionIsFullyPaid = collection.FirstOrDefault();
-        //                                updateCollectionIsFullyPaid.IsOverdue = true;
-        //                                db.SubmitChanges();
-        //                            }
+                        var loan = from d in db.trnLoans where d.IsLocked == true select d;
+                        if (loan.Any())
+                        {
+                            var collection = from d in db.trnCollections where d.LoanId == loan.FirstOrDefault().Id select d;
+                            if (collection.Any())
+                            {
+                                var interest = from d in db.mstInterests select d;
 
-        //                            if (newCollectionReconstruct.BalanceAmount > 0)
-        //                            {
-        //                                var numberOfDays = (Convert.ToDateTime(newCollectionReconstruct.EndDate) - Convert.ToDateTime(newCollectionReconstruct.StartDate)).TotalDays;
+                                Decimal interestAmount = (loan.FirstOrDefault().BalanceAmount / 100) * interest.FirstOrDefault().Rate;
+                                Decimal reconstructAmount = loan.FirstOrDefault().BalanceAmount + interestAmount;
 
-        //                                Decimal remainingBalanceAmount = 0;
-        //                                Decimal collectibleAmount = Math.Round(newCollectionReconstruct.BalanceAmount / Convert.ToDecimal(numberOfDays), 1);
-        //                                Decimal collectibleAmountCeil = Math.Ceiling((collectibleAmount + 1) / 5) * 5;
-        //                                Decimal termNoOfAllowanceDay = newCollectionReconstruct.TermNoOfAllowanceDays;
+                                Data.trnReconstruct newReconsruct = new Data.trnReconstruct();
+                                newReconsruct.ReconstructNumber = zeroFill(Convert.ToInt32(reconstructNumber), 10);
+                                newReconsruct.ReconstructDate = DateTime.Today;
+                                newReconsruct.MaturityDate = DateTime.Today.AddDays(60);
+                                newReconsruct.Particulars = "NA";
+                                newReconsruct.LoanId = loan.FirstOrDefault().Id;
+                                newReconsruct.LoanBalanceAmount = loan.FirstOrDefault().BalanceAmount;
+                                newReconsruct.PreviousLoanEndDate = loan.FirstOrDefault().LoanEndDate;
+                                newReconsruct.InterestId = interest.FirstOrDefault().Id;
+                                newReconsruct.InterestRate = interest.FirstOrDefault().Rate;
+                                newReconsruct.InterestAmount = interestAmount;
+                                newReconsruct.ReconstructAmount = reconstructAmount;
+                                newReconsruct.PreparedByUserId = userId;
+                                newReconsruct.IsLocked = false;
+                                newReconsruct.CreatedByUserId = userId;
+                                newReconsruct.CreatedDateTime = DateTime.Now;
+                                newReconsruct.UpdatedByUserId = userId;
+                                newReconsruct.UpdatedDateTime = DateTime.Now;
+                                db.trnReconstructs.InsertOnSubmit(newReconsruct);
+                                db.SubmitChanges();
 
-        //                                Decimal dayNumber = lastCollectionData.FirstOrDefault().DayNumber;
-        //                                for (var i = 1; i <= numberOfDays + Convert.ToInt32(termNoOfAllowanceDay); i++)
-        //                                {
-        //                                    Boolean isCurrentCollectionValue = false;
-        //                                    Boolean canPerformAction = false;
+                                return newReconsruct.Id;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
 
-        //                                    if (i == newCollectionReconstruct.TermNoOfDays)
-        //                                    {
-        //                                        remainingBalanceAmount = newCollectionReconstruct.BalanceAmount;
-        //                                        isCurrentCollectionValue = true;
-        //                                        canPerformAction = true;
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        remainingBalanceAmount = 0;
-        //                                        canPerformAction = false;
-        //                                    }
+        // lock reconstruct
+        [Authorize]
+        [HttpPut]
+        [Route("api/reconstruct/lock/{id}")]
+        public HttpResponseMessage lockReconstruct(String id, Models.TrnReconstruct reconstruct)
+        {
+            try
+            {
+                var reconstructs = from d in db.trnReconstructs where d.Id == Convert.ToInt32(id) select d;
+                if (reconstructs.Any())
+                {
+                    if (!reconstructs.FirstOrDefault().IsLocked)
+                    {
+                        var collection = from d in db.trnCollections
+                                         where d.LoanId == reconstructs.FirstOrDefault().LoanId
+                                         select d;
 
-        //                                    if (i <= numberOfDays)
-        //                                    {
-        //                                        if (i % newCollectionReconstruct.TermNoOfDays == 0)
-        //                                        {
-        //                                            Boolean isDueDateValue = false, isLastDay = false;
+                        if (!collection.Any())
+                        {
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-        //                                            if (i == numberOfDays)
-        //                                            {
-        //                                                isDueDateValue = true;
-        //                                                if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
-        //                                                {
-        //                                                    isLastDay = true;
-        //                                                }
-        //                                            }
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "LoanApplicationDetail";
+                                Boolean canPerformActions = false;
 
-        //                                            dayNumber += 1;
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
 
-        //                                            Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
-        //                                            newDailyCollection.CollectionId = newCollectionReconstruct.CollectionId;
-        //                                            newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-        //                                            newDailyCollection.DayNumber = dayNumber;
-        //                                            newDailyCollection.DailyCollectionDate = Convert.ToDateTime(newCollectionReconstruct.StartDate).Date.AddDays(i);
-        //                                            newDailyCollection.NetAmount = newCollectionReconstruct.BalanceAmount;
-        //                                            newDailyCollection.CollectibleAmount = 0;
-        //                                            newDailyCollection.PenaltyAmount = 0;
-        //                                            newDailyCollection.PaidAmount = 0;
-        //                                            newDailyCollection.PreviousBalanceAmount = remainingBalanceAmount;
-        //                                            newDailyCollection.CurrentBalanceAmount = remainingBalanceAmount;
-        //                                            newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
-        //                                            newDailyCollection.IsCleared = false;
-        //                                            newDailyCollection.IsAbsent = false;
-        //                                            newDailyCollection.IsPartiallyPaid = false;
-        //                                            newDailyCollection.IsPaidInAdvanced = false;
-        //                                            newDailyCollection.IsFullyPaid = false;
-        //                                            newDailyCollection.IsProcessed = false;
-        //                                            newDailyCollection.CanPerformAction = canPerformAction;
-        //                                            newDailyCollection.IsAllowanceDay = false;
-        //                                            newDailyCollection.IsDueDate = isDueDateValue;
-        //                                            newDailyCollection.IsLastDay = isLastDay;
-        //                                            newDailyCollection.ReconstructId = newCollectionReconstruct.Id;
-        //                                            newDailyCollection.IsReconstructed = true;
-        //                                            db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
-        //                                            db.SubmitChanges();
-        //                                        }
-        //                                        else
-        //                                        {
-        //                                            if (i == numberOfDays)
-        //                                            {
-        //                                                Boolean isDueDateValue = false, isLastDay = false;
+                                        break;
+                                    }
+                                }
 
-        //                                                if (i == numberOfDays)
-        //                                                {
-        //                                                    isDueDateValue = true;
-        //                                                    if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
-        //                                                    {
-        //                                                        isLastDay = true;
-        //                                                    }
-        //                                                }
+                                if (canPerformActions)
+                                {
+                                    if (Convert.ToDateTime(reconstruct.ReconstructDate) > Convert.ToDateTime(reconstruct.MaturityDate))
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    }
+                                    else
+                                    {
+                                        var loan = from d in db.trnLoans where d.Id == reconstruct.LoanId select d;
+                                        var interest = from d in db.mstInterests select d;
 
-        //                                                dayNumber += 1;
+                                        Decimal interestAmount = (loan.FirstOrDefault().BalanceAmount / 100) * interest.FirstOrDefault().Rate;
+                                        Decimal reconstructAmount = loan.FirstOrDefault().BalanceAmount + interestAmount;
 
-        //                                                Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
-        //                                                newDailyCollection.CollectionId = newCollectionReconstruct.CollectionId;
-        //                                                newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-        //                                                newDailyCollection.DayNumber = dayNumber;
-        //                                                newDailyCollection.DailyCollectionDate = Convert.ToDateTime(newCollectionReconstruct.StartDate).Date.AddDays(i);
-        //                                                newDailyCollection.NetAmount = newCollectionReconstruct.BalanceAmount;
-        //                                                newDailyCollection.CollectibleAmount = 0;
-        //                                                newDailyCollection.PenaltyAmount = 0;
-        //                                                newDailyCollection.PaidAmount = 0;
-        //                                                newDailyCollection.PreviousBalanceAmount = 0;
-        //                                                newDailyCollection.CurrentBalanceAmount = 0;
-        //                                                newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
-        //                                                newDailyCollection.IsCleared = false;
-        //                                                newDailyCollection.IsAbsent = false;
-        //                                                newDailyCollection.IsPartiallyPaid = false;
-        //                                                newDailyCollection.IsPaidInAdvanced = false;
-        //                                                newDailyCollection.IsFullyPaid = false;
-        //                                                newDailyCollection.IsProcessed = false;
-        //                                                newDailyCollection.CanPerformAction = false;
-        //                                                newDailyCollection.IsAllowanceDay = false;
-        //                                                newDailyCollection.IsDueDate = isDueDateValue;
-        //                                                newDailyCollection.IsLastDay = isLastDay;
-        //                                                newDailyCollection.ReconstructId = newCollectionReconstruct.Id;
-        //                                                newDailyCollection.IsReconstructed = true;
-        //                                                db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
-        //                                                db.SubmitChanges();
-        //                                            }
-        //                                        }
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        Boolean isLastDay = false;
+                                        var lockReconstruct = reconstructs.FirstOrDefault();
+                                        lockReconstruct.ReconstructDate = Convert.ToDateTime(reconstruct.ReconstructDate);
+                                        lockReconstruct.MaturityDate = Convert.ToDateTime(reconstruct.MaturityDate);
+                                        lockReconstruct.Particulars = reconstruct.Particulars;
+                                        lockReconstruct.LoanId = loan.FirstOrDefault().Id;
+                                        lockReconstruct.LoanBalanceAmount = loan.FirstOrDefault().BalanceAmount;
+                                        lockReconstruct.PreviousLoanEndDate = loan.FirstOrDefault().LoanEndDate;
+                                        lockReconstruct.InterestId = interest.FirstOrDefault().Id;
+                                        lockReconstruct.InterestRate = interest.FirstOrDefault().Rate;
+                                        lockReconstruct.InterestAmount = interestAmount;
+                                        lockReconstruct.ReconstructAmount = reconstructAmount;
+                                        lockReconstruct.PreparedByUserId = userId;
+                                        lockReconstruct.IsLocked = true;
+                                        lockReconstruct.UpdatedByUserId = userId;
+                                        lockReconstruct.UpdatedDateTime = DateTime.Now;
+                                        db.SubmitChanges();
 
-        //                                        if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
-        //                                        {
-        //                                            isLastDay = true;
-        //                                        }
+                                        Business.UpdateLoan updateLoan = new Business.UpdateLoan();
+                                        updateLoan.updateLoan(loan.FirstOrDefault().Id);
 
-        //                                        dayNumber += 1;
+                                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    }
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
 
-        //                                        Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
-        //                                        newDailyCollection.CollectionId = newCollectionReconstruct.CollectionId;
-        //                                        newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-        //                                        newDailyCollection.DayNumber = dayNumber;
-        //                                        newDailyCollection.DailyCollectionDate = Convert.ToDateTime(newCollectionReconstruct.StartDate).Date.AddDays(i);
-        //                                        newDailyCollection.NetAmount = newCollectionReconstruct.BalanceAmount;
-        //                                        newDailyCollection.CollectibleAmount = 0;
-        //                                        newDailyCollection.PenaltyAmount = 0;
-        //                                        newDailyCollection.PaidAmount = 0;
-        //                                        newDailyCollection.PreviousBalanceAmount = 0;
-        //                                        newDailyCollection.CurrentBalanceAmount = 0;
-        //                                        newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
-        //                                        newDailyCollection.IsCleared = false;
-        //                                        newDailyCollection.IsAbsent = false;
-        //                                        newDailyCollection.IsPartiallyPaid = false;
-        //                                        newDailyCollection.IsPaidInAdvanced = false;
-        //                                        newDailyCollection.IsFullyPaid = false;
-        //                                        newDailyCollection.IsProcessed = false;
-        //                                        newDailyCollection.CanPerformAction = false;
-        //                                        newDailyCollection.IsAllowanceDay = true;
-        //                                        newDailyCollection.IsDueDate = false;
-        //                                        newDailyCollection.IsLastDay = isLastDay;
-        //                                        newDailyCollection.ReconstructId = newCollectionReconstruct.Id;
-        //                                        newDailyCollection.IsReconstructed = true;
-        //                                        db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
-        //                                        db.SubmitChanges();
-        //                                    }
-        //                                }
-        //                            }
+        // unlock reconstruct
+        [Authorize]
+        [HttpPut]
+        [Route("api/reconstruct/unlock/{id}")]
+        public HttpResponseMessage unlockReconstruct(String id)
+        {
+            try
+            {
+                var reconstructs = from d in db.trnReconstructs where d.Id == Convert.ToInt32(id) select d;
+                if (reconstructs.Any())
+                {
+                    if (reconstructs.FirstOrDefault().IsLocked)
+                    {
+                        var collection = from d in db.trnCollections
+                                         where d.LoanId == reconstructs.FirstOrDefault().LoanId
+                                         select d;
 
-        //                            return Request.CreateResponse(HttpStatusCode.OK);
-        //                        }
-        //                        else
-        //                        {
-        //                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Not yet processed.");
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Not yet on last day.");
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    return Request.CreateResponse(HttpStatusCode.BadRequest, "No Data found on the server.");
-        //                }
-        //            }
-        //            else
-        //            {
-        //                return Request.CreateResponse(HttpStatusCode.BadRequest, "No Rights");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //    }
-        //}
+                        if (!collection.Any())
+                        {
+                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                            var mstUserForms = from d in db.mstUserForms
+                                               where d.UserId == userId
+                                               select new Models.MstUserForm
+                                               {
+                                                   Id = d.Id,
+                                                   Form = d.sysForm.Form,
+                                                   CanPerformActions = d.CanPerformActions
+                                               };
 
-        //// update collection reconstruct
-        //[Authorize]
-        //[HttpPut]
-        //[Route("api/collectionReconstruct/update/{id}")]
-        //public HttpResponseMessage updateCollectionReconstruct(String id, Models.TrnReconstruct collectionReconstruct)
-        //{
-        //    try
-        //    {
-        //        var collectionReconstructs = from d in db.trnCollectionReconstructs where d.Id == Convert.ToInt32(id) select d;
-        //        if (collectionReconstructs.Any())
-        //        {
-        //            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-        //            var mstUserForms = from d in db.mstUserForms
-        //                               where d.UserId == userId
-        //                               select new Models.MstUserForm
-        //                               {
-        //                                   Id = d.Id,
-        //                                   Form = d.sysForm.Form,
-        //                                   CanPerformActions = d.CanPerformActions
-        //                               };
+                            if (mstUserForms.Any())
+                            {
+                                String matchPageString = "LoanApplicationDetail";
+                                Boolean canPerformActions = false;
 
-        //            if (mstUserForms.Any())
-        //            {
-        //                String matchPageString = "CollectionDetail";
-        //                Boolean canPerformActions = false;
+                                foreach (var mstUserForm in mstUserForms)
+                                {
+                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    {
+                                        if (mstUserForm.CanPerformActions)
+                                        {
+                                            canPerformActions = true;
+                                        }
 
-        //                foreach (var mstUserForm in mstUserForms)
-        //                {
-        //                    if (mstUserForm.Form.Equals(matchPageString))
-        //                    {
-        //                        if (mstUserForm.CanPerformActions)
-        //                        {
-        //                            canPerformActions = true;
-        //                        }
+                                        break;
+                                    }
+                                }
 
-        //                        break;
-        //                    }
-        //                }
+                                if (canPerformActions)
+                                {
+                                    var unlockReconstruct = reconstructs.FirstOrDefault();
+                                    unlockReconstruct.IsLocked = false;
+                                    unlockReconstruct.UpdatedByUserId = userId;
+                                    unlockReconstruct.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
 
-        //                if (canPerformActions)
-        //                {
-        //                    var lastCollectionData = from d in db.trnDailyCollections.OrderByDescending(d => d.Id)
-        //                                             where d.CollectionId == collectionReconstruct.CollectionId
-        //                                             select d;
+                                    Business.UpdateLoan updateLoan = new Business.UpdateLoan();
+                                    updateLoan.updateLoan(reconstructs.FirstOrDefault().LoanId);
 
-        //                    if (lastCollectionData.Any())
-        //                    {
-        //                        if (lastCollectionData.FirstOrDefault().IsLastDay)
-        //                        {
-        //                            if (lastCollectionData.FirstOrDefault().IsProcessed)
-        //                            {
-        //                                var lastCollectionReconstruct = from d in db.trnCollectionReconstructs.OrderByDescending(d => d.Id)
-        //                                                                where d.CollectionId == collectionReconstructs.FirstOrDefault().CollectionId
-        //                                                                select d;
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
 
-        //                                if (lastCollectionReconstruct.Any())
-        //                                {
-        //                                    if (lastCollectionReconstruct.FirstOrDefault().Id == Convert.ToInt32(id))
-        //                                    {
-        //                                        db.trnCollectionReconstructs.DeleteOnSubmit(collectionReconstructs.First());
-        //                                        db.SubmitChanges();
+        // delete reconstruct
+        [Authorize]
+        [HttpDelete]
+        [Route("api/reconstruct/delete/{id}")]
+        public HttpResponseMessage deleteReconstruct(String id)
+        {
+            try
+            {
+                var reconstructs = from d in db.trnReconstructs where d.Id == Convert.ToInt32(id) select d;
+                if (reconstructs.Any())
+                {
+                    if (!reconstructs.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-        //                                        var updateCollectionReconstruct = collectionReconstructs.FirstOrDefault();
-        //                                        updateCollectionReconstruct.StartDate = Convert.ToDateTime(collectionReconstruct.StartDate);
-        //                                        updateCollectionReconstruct.EndDate = Convert.ToDateTime(collectionReconstruct.EndDate);
-        //                                        updateCollectionReconstruct.TermId = collectionReconstruct.TermId;
-        //                                        updateCollectionReconstruct.TermNoOfDays = collectionReconstruct.TermNoOfDays;
-        //                                        updateCollectionReconstruct.TermNoOfAllowanceDays = collectionReconstruct.TermNoOfAllowanceDays;
-        //                                        updateCollectionReconstruct.InterestId = collectionReconstruct.InterestId;
-        //                                        updateCollectionReconstruct.InterestRate = collectionReconstruct.InterestRate;
-        //                                        updateCollectionReconstruct.InterestAmount = (lastCollectionData.FirstOrDefault().CurrentBalanceAmount / 100) * collectionReconstruct.InterestRate;
-        //                                        updateCollectionReconstruct.PenaltyId = collectionReconstruct.PenaltyId;
-        //                                        updateCollectionReconstruct.CurrentBalanceAmount = lastCollectionData.FirstOrDefault().CurrentBalanceAmount;
-        //                                        updateCollectionReconstruct.BalanceAmount = collectionReconstruct.InterestAmount + lastCollectionData.FirstOrDefault().CurrentBalanceAmount;
-        //                                        db.SubmitChanges();
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "LoanApplicationDetail";
+                            Boolean canPerformActions = false;
 
-        //                                        var collection = from d in db.trnCollections where d.Id == collectionReconstruct.CollectionId select d;
-        //                                        if (collection.Any())
-        //                                        {
-        //                                            var updateCollectionIsFullyPaid = collection.FirstOrDefault();
-        //                                            updateCollectionIsFullyPaid.IsOverdue = true;
-        //                                            db.SubmitChanges();
-        //                                        }
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
 
-        //                                        if (updateCollectionReconstruct.BalanceAmount > 0)
-        //                                        {
-        //                                            var numberOfDays = (Convert.ToDateTime(updateCollectionReconstruct.EndDate) - Convert.ToDateTime(updateCollectionReconstruct.StartDate)).TotalDays;
+                                    break;
+                                }
+                            }
 
-        //                                            Decimal remainingBalanceAmount = 0;
-        //                                            Decimal collectibleAmount = Math.Round(updateCollectionReconstruct.BalanceAmount / Convert.ToDecimal(numberOfDays), 1);
-        //                                            Decimal collectibleAmountCeil = Math.Ceiling((collectibleAmount + 1) / 5) * 5;
-        //                                            Decimal termNoOfAllowanceDay = updateCollectionReconstruct.TermNoOfAllowanceDays;
+                            if (canPerformActions)
+                            {
+                                Int32 loanId = reconstructs.FirstOrDefault().LoanId;
 
-        //                                            Decimal dayNumber = lastCollectionData.FirstOrDefault().DayNumber;
-        //                                            for (var i = 1; i <= numberOfDays + Convert.ToInt32(termNoOfAllowanceDay); i++)
-        //                                            {
-        //                                                Boolean isCurrentCollectionValue = false;
-        //                                                Boolean canPerformAction = false;
+                                db.trnReconstructs.DeleteOnSubmit(reconstructs.First());
+                                db.SubmitChanges();
 
-        //                                                if (i == updateCollectionReconstruct.TermNoOfDays)
-        //                                                {
-        //                                                    remainingBalanceAmount = updateCollectionReconstruct.BalanceAmount;
-        //                                                    isCurrentCollectionValue = true;
-        //                                                    canPerformAction = true;
-        //                                                }
-        //                                                else
-        //                                                {
-        //                                                    remainingBalanceAmount = 0;
-        //                                                    canPerformAction = false;
-        //                                                }
+                                Business.UpdateLoan updateLoan = new Business.UpdateLoan();
+                                updateLoan.updateLoan(loanId);
 
-        //                                                if (i <= numberOfDays)
-        //                                                {
-        //                                                    if (i % updateCollectionReconstruct.TermNoOfDays == 0)
-        //                                                    {
-        //                                                        Boolean isDueDateValue = false, isLastDay = false;
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
 
-        //                                                        if (i == numberOfDays)
-        //                                                        {
-        //                                                            isDueDateValue = true;
-        //                                                            if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
-        //                                                            {
-        //                                                                isLastDay = true;
-        //                                                            }
-        //                                                        }
-
-        //                                                        dayNumber += 1;
-
-        //                                                        Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
-        //                                                        newDailyCollection.CollectionId = updateCollectionReconstruct.CollectionId;
-        //                                                        newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-        //                                                        newDailyCollection.DayNumber = dayNumber;
-        //                                                        newDailyCollection.DailyCollectionDate = Convert.ToDateTime(updateCollectionReconstruct.StartDate).Date.AddDays(i);
-        //                                                        newDailyCollection.NetAmount = updateCollectionReconstruct.BalanceAmount;
-        //                                                        newDailyCollection.CollectibleAmount = 0;
-        //                                                        newDailyCollection.PenaltyAmount = 0;
-        //                                                        newDailyCollection.PaidAmount = 0;
-        //                                                        newDailyCollection.PreviousBalanceAmount = remainingBalanceAmount;
-        //                                                        newDailyCollection.CurrentBalanceAmount = remainingBalanceAmount;
-        //                                                        newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
-        //                                                        newDailyCollection.IsCleared = false;
-        //                                                        newDailyCollection.IsAbsent = false;
-        //                                                        newDailyCollection.IsPartiallyPaid = false;
-        //                                                        newDailyCollection.IsPaidInAdvanced = false;
-        //                                                        newDailyCollection.IsFullyPaid = false;
-        //                                                        newDailyCollection.IsProcessed = false;
-        //                                                        newDailyCollection.CanPerformAction = canPerformAction;
-        //                                                        newDailyCollection.IsAllowanceDay = false;
-        //                                                        newDailyCollection.IsDueDate = isDueDateValue;
-        //                                                        newDailyCollection.IsLastDay = isLastDay;
-        //                                                        newDailyCollection.ReconstructId = updateCollectionReconstruct.Id;
-        //                                                        newDailyCollection.IsReconstructed = true;
-        //                                                        db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
-        //                                                        db.SubmitChanges();
-        //                                                    }
-        //                                                    else
-        //                                                    {
-        //                                                        if (i == numberOfDays)
-        //                                                        {
-        //                                                            Boolean isDueDateValue = false, isLastDay = false;
-
-        //                                                            if (i == numberOfDays)
-        //                                                            {
-        //                                                                isDueDateValue = true;
-        //                                                                if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
-        //                                                                {
-        //                                                                    isLastDay = true;
-        //                                                                }
-        //                                                            }
-
-        //                                                            dayNumber += 1;
-
-        //                                                            Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
-        //                                                            newDailyCollection.CollectionId = updateCollectionReconstruct.CollectionId;
-        //                                                            newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-        //                                                            newDailyCollection.DayNumber = dayNumber;
-        //                                                            newDailyCollection.DailyCollectionDate = Convert.ToDateTime(updateCollectionReconstruct.StartDate).Date.AddDays(i);
-        //                                                            newDailyCollection.NetAmount = updateCollectionReconstruct.BalanceAmount;
-        //                                                            newDailyCollection.CollectibleAmount = 0;
-        //                                                            newDailyCollection.PenaltyAmount = 0;
-        //                                                            newDailyCollection.PaidAmount = 0;
-        //                                                            newDailyCollection.PreviousBalanceAmount = 0;
-        //                                                            newDailyCollection.CurrentBalanceAmount = 0;
-        //                                                            newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
-        //                                                            newDailyCollection.IsCleared = false;
-        //                                                            newDailyCollection.IsAbsent = false;
-        //                                                            newDailyCollection.IsPartiallyPaid = false;
-        //                                                            newDailyCollection.IsPaidInAdvanced = false;
-        //                                                            newDailyCollection.IsFullyPaid = false;
-        //                                                            newDailyCollection.IsProcessed = false;
-        //                                                            newDailyCollection.CanPerformAction = false;
-        //                                                            newDailyCollection.IsAllowanceDay = false;
-        //                                                            newDailyCollection.IsDueDate = isDueDateValue;
-        //                                                            newDailyCollection.IsLastDay = isLastDay;
-        //                                                            newDailyCollection.ReconstructId = updateCollectionReconstruct.Id;
-        //                                                            newDailyCollection.IsReconstructed = true;
-        //                                                            db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
-        //                                                            db.SubmitChanges();
-        //                                                        }
-        //                                                    }
-        //                                                }
-        //                                                else
-        //                                                {
-        //                                                    Boolean isLastDay = false;
-
-        //                                                    if (numberOfDays + Convert.ToInt32(termNoOfAllowanceDay) == i)
-        //                                                    {
-        //                                                        isLastDay = true;
-        //                                                    }
-
-        //                                                    dayNumber += 1;
-
-        //                                                    Data.trnDailyCollection newDailyCollection = new Data.trnDailyCollection();
-        //                                                    newDailyCollection.CollectionId = updateCollectionReconstruct.CollectionId;
-        //                                                    newDailyCollection.AccountId = (from d in db.mstAccounts where d.AccountTransactionTypeId == 2 select d.Id).FirstOrDefault();
-        //                                                    newDailyCollection.DayNumber = dayNumber;
-        //                                                    newDailyCollection.DailyCollectionDate = Convert.ToDateTime(updateCollectionReconstruct.StartDate).Date.AddDays(i);
-        //                                                    newDailyCollection.NetAmount = updateCollectionReconstruct.BalanceAmount;
-        //                                                    newDailyCollection.CollectibleAmount = 0;
-        //                                                    newDailyCollection.PenaltyAmount = 0;
-        //                                                    newDailyCollection.PaidAmount = 0;
-        //                                                    newDailyCollection.PreviousBalanceAmount = 0;
-        //                                                    newDailyCollection.CurrentBalanceAmount = 0;
-        //                                                    newDailyCollection.IsCurrentCollection = isCurrentCollectionValue;
-        //                                                    newDailyCollection.IsCleared = false;
-        //                                                    newDailyCollection.IsAbsent = false;
-        //                                                    newDailyCollection.IsPartiallyPaid = false;
-        //                                                    newDailyCollection.IsPaidInAdvanced = false;
-        //                                                    newDailyCollection.IsFullyPaid = false;
-        //                                                    newDailyCollection.IsProcessed = false;
-        //                                                    newDailyCollection.CanPerformAction = false;
-        //                                                    newDailyCollection.IsAllowanceDay = true;
-        //                                                    newDailyCollection.IsDueDate = false;
-        //                                                    newDailyCollection.IsLastDay = isLastDay;
-        //                                                    newDailyCollection.ReconstructId = updateCollectionReconstruct.Id;
-        //                                                    newDailyCollection.IsReconstructed = true;
-        //                                                    db.trnDailyCollections.InsertOnSubmit(newDailyCollection);
-        //                                                    db.SubmitChanges();
-        //                                                }
-        //                                            }
-        //                                        }
-
-        //                                        return Request.CreateResponse(HttpStatusCode.OK);
-        //                                    }
-        //                                    else
-        //                                    {
-        //                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //                                    }
-        //                                }
-        //                                else
-        //                                {
-        //                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //                                }
-        //                            }
-        //                            else
-        //                            {
-        //                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Not yet processed.");
-        //                            }
-        //                        }
-        //                        else
-        //                        {
-        //                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Not yet on last day.");
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        return Request.CreateResponse(HttpStatusCode.BadRequest, "No Data found on the server.");
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return Request.CreateResponse(HttpStatusCode.NotFound);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //    }
-        //}
-
-        //// delete collection reconstruct
-        //[Authorize]
-        //[HttpDelete]
-        //[Route("api/collectionReconstruct/delete/{id}")]
-        //public HttpResponseMessage deleteCollectionReconstruct(String id)
-        //{
-        //    try
-        //    {
-        //        var collectionReconstructs = from d in db.trnCollectionReconstructs where d.Id == Convert.ToInt32(id) select d;
-        //        if (collectionReconstructs.Any())
-        //        {
-        //            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-        //            var mstUserForms = from d in db.mstUserForms
-        //                               where d.UserId == userId
-        //                               select new Models.MstUserForm
-        //                               {
-        //                                   Id = d.Id,
-        //                                   Form = d.sysForm.Form,
-        //                                   CanPerformActions = d.CanPerformActions
-        //                               };
-
-        //            if (mstUserForms.Any())
-        //            {
-        //                String matchPageString = "CollectionDetail";
-        //                Boolean canPerformActions = false;
-
-        //                foreach (var mstUserForm in mstUserForms)
-        //                {
-        //                    if (mstUserForm.Form.Equals(matchPageString))
-        //                    {
-        //                        if (mstUserForm.CanPerformActions)
-        //                        {
-        //                            canPerformActions = true;
-        //                        }
-
-        //                        break;
-        //                    }
-        //                }
-
-        //                if (canPerformActions)
-        //                {
-        //                    var lastCollectionReconstruct = from d in db.trnCollectionReconstructs.OrderByDescending(d => d.Id)
-        //                                                    where d.CollectionId == collectionReconstructs.FirstOrDefault().CollectionId
-        //                                                    select d;
-
-        //                    if (lastCollectionReconstruct.Any())
-        //                    {
-        //                        if (lastCollectionReconstruct.FirstOrDefault().Id == Convert.ToInt32(id))
-        //                        {
-        //                            db.trnCollectionReconstructs.DeleteOnSubmit(collectionReconstructs.First());
-        //                            db.SubmitChanges();
-
-        //                            return Request.CreateResponse(HttpStatusCode.OK);
-        //                        }
-        //                        else
-        //                        {
-        //                            return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //                        }
-        //                    }
-        //                    else
-        //                    {
-        //                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //                }
-        //            }
-        //            else
-        //            {
-        //                return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            return Request.CreateResponse(HttpStatusCode.NotFound);
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return Request.CreateResponse(HttpStatusCode.BadRequest);
-        //    }
-        //}
     }
 }

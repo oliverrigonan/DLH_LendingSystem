@@ -15,12 +15,13 @@ namespace Lending.Models
         public String MaturityDate { get; set; }
         public String Particulars { get; set; }
         public Int32 LoanId { get; set; }
+        public String LoanDetail { get; set; }
         public Decimal LoanBalanceAmount { get; set; }
         public String PreviousLoanEndDate { get; set; }
         public Int32 InterestId { get; set; }
         public Decimal InterestRate { get; set; }
         public Decimal InterestAmount { get; set; }
-        public String ReconstructAmount { get; set; }
+        public Decimal ReconstructAmount { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Boolean IsLocked { get; set; }

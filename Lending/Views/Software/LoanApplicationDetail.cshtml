@@ -70,10 +70,6 @@
                                             <div id="loanApplicationMaturityDate"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Account</label><br />
-                                            <div id="cboLoanApplicationAccount"></div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>Applicant</label><br />
                                             <div id="loanApplicationApplicant"></div>
                                         </div>
@@ -84,10 +80,6 @@
                                         <div class="form-group">
                                             <label>Particulars</label><br />
                                             <textarea class="form-control requiredLoanApplication" rows="5" id="loanApplicationParticulars" placeholder="Particulars"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Loan Type</label><br />
-                                            <div id="cboLoanType"></div>
                                         </div>
                                         <div class="form-group">
                                             <label>Prepared by</label><br />
@@ -178,65 +170,12 @@
                                      </div>
                                 </div>
                                 <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Deductions
-                                    </div>
                                     <div class="panel-body">
-                                        
                                         <div class="form-group">
-                                            <label>3% Processing Fee</label><br />
+                                            <label>Deduction Amount</label><br />
                                             <div class="input-group numberField">
                                                 <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationProcessingFee" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Passbook</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationPassbook" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Balance</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationBalance" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Penalty</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationPenalty" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Late Int.</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationLateInt" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Advance</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationAdvance" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Requirements</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationRequirements" placeholder="0.00" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Insurance IPI / PPI</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationInsuranceIPIorPPI" placeholder="0.00" />
+                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationDeductionAmount" placeholder="0.00" />
                                             </div>
                                         </div>
                                     </div>
@@ -259,11 +198,6 @@
                             <li class="active">
                                 <a href="#loanApplicationCollateral" data-toggle="tab" id="loanApplicationCollateralTab">
                                     Collateral
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#applicantRequirements" data-toggle="tab" id="applicantRequirementTab">
-                                    Applicant Requirements
                                 </a>
                             </li>
                         </ul>
@@ -290,76 +224,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade in" id="applicantRequirements">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    Applicant Requirements
-                                                </td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary btn-sm" id="btnAddLoanRequirements" onclick="btnAddLoanRequirementsOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i> Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanRequirementsFlexGrid" class="grid"></div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- loan requirement Detail Modal -->
-    <div class="modal fade" id="loanRequirementsEditDetailModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Loan Applicant's Requirement Detail</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Requirement</label><br />
-                        <div id="loanRequiremenstName"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Note</label><br />
-                        <textarea class="form-control requiredLoanRequirements" rows="5" id="loanRequirementsNote"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSaveLoanRequirement" onclick="saveLoanRequirementOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
-                    <button class="btn btn-danger" id="btnCloseLoanRequirement" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- delete confirmation Loan Requirement modal -->
-    <div class="modal fade" id="deleteConfirmationLoanRequirementModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Loan Requirement</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure that you want to delete this Applicant's Requirement?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteLoanRequirement" onclick="btnConfirmDeleteLoanRequirementOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnCloseDeleteLoanRequirementModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -446,7 +312,6 @@
         // Global Variables
         var loanApplicationLoanDate;
         var loanApplicationMaturityDate;
-        var cboLoanApplicationAccount;
         var cboloanApplicationApplicant;
         var cboloanApplicationCollector;
         var cboloanApplicationPreparedBy;
@@ -521,8 +386,8 @@
             loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate');
             createloanApplicationMaturityDate();
 
-            cboLoanApplicationAccount = new wijmo.input.ComboBox('#cboLoanApplicationAccount');
-            getAccount();
+            cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant');
+            getApplicant();
         }
 
         // get applicant
@@ -548,11 +413,11 @@
 
                         disabled = false;
 
-                        cboLoanType = new wijmo.input.ComboBox('#cboLoanType');
-                        getLoanType();
+                        cboTerm = new wijmo.input.ComboBox('#cboTerm');
+                        getTerm();
                     } else {
-                        cboLoanType = new wijmo.input.ComboBox('#cboLoanType');
-                        getLoanType();
+                        cboTerm = new wijmo.input.ComboBox('#cboTerm');
+                        getTerm();
                     }
 
                     cboloanApplicationApplicant.dispose();
@@ -567,89 +432,6 @@
                         onSelectedIndexChanged: function () {
                             document.getElementById("loanApplicationApplicantArea").value = this.selectedItem["Area"];
                         }
-                    });
-                }
-            });
-        }
-
-        // get account
-        function getAccount() {
-            var accountArray = new Array();
-            $.ajax({
-                url: '/api/account/listAccountTransactionTypeId/1',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (accountResults) {
-                    var disabled = true;
-                    if (accountResults.length > 0) {
-                        for (i = 0; i < accountResults.length; i++) {
-                            accountArray.push({
-                                Id: accountResults[i]["Id"],
-                                Account: accountResults[i]["Account"],
-                            });
-                        }
-                        disabled = false;
-
-                        cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant');
-                        getApplicant();
-                    } else {
-                        cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant');
-                        getApplicant();
-                    }
-
-                    cboLoanApplicationAccount.dispose();
-                    cboLoanApplicationAccount = new wijmo.input.ComboBox('#cboLoanApplicationAccount', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: accountArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "Account",
-                        selectedValuePath: "Account"
-                    });
-                }
-            });
-        }
-
-        // loan type
-        function getLoanType() {
-            var loanTypeArray = new Array();
-            $.ajax({
-                url: '/api/loanTypes/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (loanTypeResults) {
-                    var disabled = true;
-                    if (loanTypeResults.length > 0) {
-                        for (i = 0; i < loanTypeResults.length; i++) {
-                            loanTypeArray.push({
-                                Id: loanTypeResults[i]["Id"],
-                                LoanType: loanTypeResults[i]["LoanType"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboTerm = new wijmo.input.ComboBox('#cboTerm');
-                        getTerm();
-                    } else {
-                        cboTerm = new wijmo.input.ComboBox('#cboTerm');
-                        getTerm();
-                    }
-
-                    cboLoanType.dispose();
-                    cboLoanType = new wijmo.input.ComboBox('#cboLoanType', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: loanTypeArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "LoanType",
-                        selectedValuePath: "LoanType"
                     });
                 }
             });
@@ -696,7 +478,7 @@
         // get loan application by id
         function getLoanApplicationById() {
             $.ajax({
-                url: '/api/loanApplication/getById/' + getUrlParameter("id"),
+                url: '/api/loan/getById/' + getUrlParameter("id"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -704,33 +486,25 @@
                 success: function (loanApplicationResult) {
                     if (loanApplicationResult != null) {
                         document.getElementById("loanApplicationNumber").disabled = true;
-                        document.getElementById('loanApplicationProcessingFee').disabled = true;
+                        document.getElementById('loanApplicationDeductionAmount').disabled = true;
+                        document.getElementById('loanApplicationTotalNetAmount').disabled = true;
                         document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
 
                         loanApplicationMaturityDate.min = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
 
-                        cboLoanApplicationAccount.selectedValue = loanApplicationResult.Account;
                         cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
                         document.getElementById("loanApplicationApplicantArea").value = loanApplicationResult.Area;
                         document.getElementById("loanApplicationParticulars").value = loanApplicationResult.Particulars;
-                        cboLoanType.selectedValue = loanApplicationResult.LoanType;
                         cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
-                        document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
-                        document.getElementById('loanApplicationProcessingFee').value = loanApplicationResult.ProcessingFeeAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationPassbook').value = loanApplicationResult.PassbookAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationBalance').value = loanApplicationResult.BalanceAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationPenalty').value = loanApplicationResult.PenaltyAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationLateInt').value = loanApplicationResult.LateIntAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationAdvance').value = loanApplicationResult.AdvanceAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationRequirements').value = loanApplicationResult.RequirementsAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationInsuranceIPIorPPI').value = loanApplicationResult.InsuranceIPIorPPIAmountDeduction.toLocaleString();
-                        document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
                         cboTerm.selectedValue = loanApplicationResult.Term;
+                        document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
                         cboInterest.selectedValue = loanApplicationResult.Interest;
-                        document.getElementById('interestRate').value = loanApplicationResult.InterestRate;
-                        document.getElementById('interestAmount').value = loanApplicationResult.InterestAmount;
+                        document.getElementById('interestRate').value = loanApplicationResult.InterestRate.toLocaleString();
+                        document.getElementById('interestAmount').value = loanApplicationResult.InterestAmount.toLocaleString();
+                        document.getElementById('loanApplicationDeductionAmount').value = loanApplicationResult.DeductionAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
                         cboPenalty.selectedValue = loanApplicationResult.Penalty;
                         document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
@@ -745,25 +519,13 @@
                                 loanApplicationMaturityDate.disabled = true;
                             }, 100);
 
-                            cboLoanApplicationAccount.disabled = true;
                             cboloanApplicationApplicant.disabled = true;
                             cboloanApplicationPreparedBy.disabled = true;
-                            cboLoanType.disabled = true;
                             cboTerm.disabled = true;
-                            cboInterest.disabled = true;
                             cboPenalty.disabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
-                            document.getElementById('loanApplicationProcessingFee').disabled = true;
-                            document.getElementById('loanApplicationPassbook').disabled = true;
-                            document.getElementById('loanApplicationBalance').disabled = true;
-                            document.getElementById('loanApplicationPenalty').disabled = true;
-                            document.getElementById('loanApplicationLateInt').disabled = true;
-                            document.getElementById('loanApplicationAdvance').disabled = true;
-                            document.getElementById('loanApplicationRequirements').disabled = true;
-                            document.getElementById('loanApplicationInsuranceIPIorPPI').disabled = true;
-                            document.getElementById('loanApplicationTotalNetAmount').disabled = true;
-                            $("#btnAddLoanRequirements").prop("disabled", true);
+                            cboInterest.disabled = true;
                             $("#btnAddLoanApplicationCollateral").prop("disabled", true);
                             isLocked = true;
                         } else {
@@ -809,28 +571,18 @@
                 var loanApplicationObject = new Object();
                 loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
                 loanApplicationObject.MaturityDate = loanApplicationMaturityDate.value;
-                loanApplicationObject.AccountId = cboLoanApplicationAccount.selectedItem["Id"];
                 loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                 loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
-                loanApplicationObject.LoanTypeId = cboLoanType.selectedItem["Id"];
+                loanApplicationObject.PenaltyId = cboPenalty.selectedItem["Id"];
+                loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
                 loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
+                loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                 loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
                 loanApplicationObject.InterestRate = document.getElementById("interestRate").value;
                 loanApplicationObject.InterestAmount = document.getElementById("interestAmount").value;
-                loanApplicationObject.PenaltyId = cboPenalty.selectedItem["Id"];
-                loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
-                loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
-                loanApplicationObject.ProcessingFeeAmountDeduction = document.getElementById('loanApplicationProcessingFee').value;
-                loanApplicationObject.PassbookAmountDeduction = document.getElementById('loanApplicationPassbook').value;
-                loanApplicationObject.BalanceAmountDeduction = document.getElementById('loanApplicationBalance').value;
-                loanApplicationObject.PenaltyAmountDeduction = document.getElementById('loanApplicationPenalty').value;
-                loanApplicationObject.LateIntAmountDeduction = document.getElementById('loanApplicationLateInt').value;
-                loanApplicationObject.AdvanceAmountDeduction = document.getElementById('loanApplicationAdvance').value;
-                loanApplicationObject.RequirementsAmountDeduction = document.getElementById('loanApplicationRequirements').value;
-                loanApplicationObject.InsuranceIPIorPPIAmountDeduction = document.getElementById('loanApplicationInsuranceIPIorPPI').value;
                 loanApplicationObject.NetAmount = document.getElementById('loanApplicationTotalNetAmount').value;
-                var loanApplicationData = JSON.stringify(loanApplicationObject);
 
+                var loanApplicationData = JSON.stringify(loanApplicationObject);
                 $("#processingModal").modal({
                     "show": true,
                     "backdrop": "static"
@@ -838,7 +590,7 @@
 
                 $.ajax({
                     type: "PUT",
-                    url: '/api/loanApplication/lock/' + getUrlParameter("id"),
+                    url: '/api/loan/lock/' + getUrlParameter("id"),
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     data: loanApplicationData,
@@ -883,7 +635,7 @@
 
             $.ajax({
                 type: "PUT",
-                url: '/api/loanApplication/unlock/' + getUrlParameter("id"),
+                url: '/api/loan/unlock/' + getUrlParameter("id"),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
@@ -922,353 +674,6 @@
             });
         }
 
-        // get loan requirements by loan id
-        function getLoanRequirementsByLoanId() {
-            var loanRequirementArray = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/loanApplicationRequirements/listByLoanId/' + getUrlParameter("id"),
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (loanRequirementsResult) {
-                    if (loanRequirementsResult.length > 0) {
-                        for (i = 0; i < loanRequirementsResult.length; i++) {
-                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanRequirementsOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanRequirementsOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
-
-                            var canPerformActions = "@ViewData["CanPerformActions"]";
-                            if (canPerformActions == 1) {
-                                if (isLocked) {
-                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanRequirementsOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanRequirementsOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                                } else {
-                                    var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanRequirementsOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                                    var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanRequirementsOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                                }
-                            } else {
-                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanRequirementsOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanRequirementsOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                            }
-
-                            loanRequirementArray.push({
-                                EditButton: btnEditButton,
-                                DeleteButton: btnDeleteButton,
-                                Id: loanRequirementsResult[i]["Id"],
-                                LoanId: loanRequirementsResult[i]["LoanId"],
-                                RequirementId: loanRequirementsResult[i]["RequirementId"],
-                                Requirement: loanRequirementsResult[i]["Requirement"],
-                                Note: loanRequirementsResult[i]["Note"]
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                }
-            });
-
-            return loanRequirementArray;
-        }
-
-        // get requirements
-        function getRequirements(requirementSelectedValue) {
-            var requirementArray = new Array();
-            $.ajax({
-                url: '/api/requirements/list',
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (requirementResults) {
-                    var disabled = true;
-                    if (requirementResults.length > 0) {
-                        for (i = 0; i < requirementResults.length; i++) {
-                            requirementArray.push({
-                                Id: requirementResults[i]["Id"],
-                                Requirement: requirementResults[i]["Requirement"],
-                            });
-                        }
-
-                        disabled = false;
-                    }
-
-                    cboRequirementName.dispose();
-                    cboRequirementName = new wijmo.input.ComboBox('#loanRequiremenstName', {
-                        disabled: disabled,
-                        placeholder: "Select",
-                        itemsSource: requirementArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "Requirement",
-                        selectedValuePath: "Requirement",
-                        selectedValue: requirementSelectedValue.toString()
-                    });
-                }
-            });
-        }
-
-        // add loan requirement
-        function btnAddLoanRequirementsOnclick() {
-            $("#loanRequirementsEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredLoanRequirements').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveLoanRequirement").prop("disabled", false);
-            $("#btnCloseLoanRequirement").prop("disabled", false);
-
-            loanRequirementId = 0;
-            getRequirements("");
-            document.getElementById("loanRequirementsNote").value = "NA";
-        }
-
-        // edit loan requirement
-        function btnEditLoanRequirementsOnclick() {
-            $("#loanRequirementsEditDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredLoanRequirements').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveLoanRequirement").prop("disabled", false);
-            $("#btnCloseLoanRequirement").prop("disabled", false);
-
-            loanRequirementCollectionView.editItem(loanRequirementCollectionView.currentItem);
-            var currentItem = loanRequirementCollectionView.currentEditItem;
-
-            loanRequirementId = currentItem.Id;
-            getRequirements(currentItem.Requirement);
-            document.getElementById("loanRequirementsNote").value = currentItem.Note;
-        }
-
-        // form input validation
-        function inputValidationForLoanRequirements() {
-            var isValid = true;
-            $('.requiredLoanRequirements').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
-                        "border": "1px solid red"
-                    });
-                } else {
-                    $(this).css({
-                        "border": "",
-                    });
-                }
-            });
-
-            return isValid;
-        }
-
-        // save loan requirements
-        function saveLoanRequirementOnclick() {
-            if (inputValidationForLoanRequirements()) {
-                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                $("#btnSaveLoanRequirement").prop("disabled", true);
-                $("#btnCloseLoanRequirement").prop("disabled", true);
-
-                var loanRequirementObject = new Object();
-                loanRequirementObject.LoanId = getUrlParameter("id");
-                loanRequirementObject.RequirementId = cboRequirementName.selectedItem["Id"];
-                loanRequirementObject.Note = document.getElementById('loanRequirementsNote').value;
-                var loanRequirementData = JSON.stringify(loanRequirementObject);
-
-                if (loanRequirementId == 0) {
-                    $.ajax({
-                        type: "POST",
-                        url: '/api/loanApplicationRequirements/add',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: loanRequirementData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Save Successful");
-
-                                $("#loanRequirementsEditDetailModal").modal("hide");
-
-                                loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
-                                loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
-                                loanRequirementFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Record Not Found");
-
-                                $("#loanRequirementsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanRequirement").prop("disabled", false);
-                                $("#btnCloseLoanRequirement").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#loanRequirementsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanRequirement").prop("disabled", false);
-                                $("#btnCloseLoanRequirement").prop("disabled", false);
-                            }
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/loanApplicationRequirements/update/' + loanRequirementId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: loanRequirementData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Update Successful");
-
-                                $("#loanRequirementsEditDetailModal").modal("hide");
-
-                                loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
-                                loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
-                                loanRequirementFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Record Not Found");
-
-                                $("#loanRequirementsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanRequirement").prop("disabled", false);
-                                $("#btnCloseLoanRequirement").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#loanRequirementsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveLoanRequirement").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveLoanRequirement").prop("disabled", false);
-                                $("#btnCloseLoanRequirement").prop("disabled", false);
-                            }
-                        }
-                    });
-                }
-            } else {
-                toastr.error("Invalid Entry");
-            }
-        }
-
-        // delete loan requirements
-        function btnDeleteLoanRequirementsOnclick() {
-            $("#deleteConfirmationLoanRequirementModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Delete";
-            $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
-            $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
-        }
-        function btnConfirmDeleteLoanRequirementOnclick() {
-            document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteLoanRequirement").prop("disabled", true);
-            $("#btnCloseDeleteLoanRequirementModal").prop("disabled", true);
-
-            loanRequirementCollectionView.editItem(loanRequirementCollectionView.currentItem);
-            var currentItem = loanRequirementCollectionView.currentEditItem;
-
-            $.ajax({
-                type: "DELETE",
-                url: '/api/loanApplicationRequirements/delete/' + currentItem.Id,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Delete Successful");
-
-                        $("#deleteConfirmationLoanRequirementModal").modal("hide");
-
-                        loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
-                        loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
-                        loanRequirementFlexGrid.trackChanges = true;
-                    },
-                    404: function () {
-                        toastr.error("Record Not Found");
-
-                        $("#deleteConfirmationLoanRequirementModal").modal("hide");
-
-                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Delete";
-                        $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
-                        $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Bad Request");
-
-                        $("#deleteConfirmationLoanRequirementModal").modal("hide");
-
-                        document.getElementById("btnConfirmDeleteLoanRequirement").innerHTML = "Delete";
-                        $("#btnConfirmDeleteLoanRequirement").prop("disabled", false);
-                        $("#btnCloseDeleteLoanRequirementModal").prop("disabled", false);
-                    }
-                }
-            });
-        }
-
-        // create loan requirements flexgrid
-        function createloanRequirementsFlexGrid() {
-            cboRequirementName = new wijmo.input.ComboBox('#loanRequiremenstName');
-            loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
-
-            loanRequirementFlexGrid = new wijmo.grid.FlexGrid('#loanRequirementsFlexGrid');
-            loanRequirementFlexGrid.initialize({
-                columns: [
-                            {
-                                "header": "Edit",
-                                "binding": "EditButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Delete",
-                                "binding": "DeleteButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Requirement",
-                                "binding": "Requirement",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Note",
-                                "binding": "Note",
-                                "allowSorting": true,
-                                "width": "3*",
-                            }
-                ],
-                autoGenerateColumns: false,
-                itemsSource: loanRequirementCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            loanRequirementFlexGrid.trackChanges = true;
-        }
-
         // pdf
         function btnPrintOnClick() {
             window.open("/RepLoanApplicationCashVoucher/loanApplicationCashVoucher?loanId=" + getUrlParameter("id"), "_blank");
@@ -1278,34 +683,17 @@
         $('#loanApplicationCollateralTab').click(function () {
             NProgress.start();
             $("#loanApplicationCollateral").show();
-            $("#applicantRequirements").hide();
 
             loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
             loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
             loanApplicationCollateralFlexGrid.trackChanges = true;
         });
 
-        // applicant requirement tab
-        $('#applicantRequirementTab').click(function () {
-            NProgress.start();
-            $("#loanApplicationCollateral").hide();
-            $("#applicantRequirements").show();
-
-            createloanRequirementsFlexGrid();
-            window.createloanRequirementsFlexGrid = function () {
-                return true;
-            }
-
-            loanRequirementCollectionView = new wijmo.collections.CollectionView(getLoanRequirementsByLoanId());
-            loanRequirementFlexGrid.itemsSource = loanRequirementCollectionView;
-            loanRequirementFlexGrid.trackChanges = true;
-        });
-
         // get loan application collateral by loan id
         function getLoanApplicationCollateralByLoanId() {
             var loanApplicationCollateralArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanApplicationCollateral/listByLoanId/' + getUrlParameter("id"),
+                url: '/api/loanCollateral/listByLoanId/' + getUrlParameter("id"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -1419,7 +807,7 @@
             return isValid;
         }
 
-        // save loan requirements
+        // save loan collateral
         function btnSaveLoanApplicationCollateralOnclick() {
             if (inputValidationForLoanApplicationCollateral()) {
                 document.getElementById("btnSaveLoanApplicationCollateral").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
@@ -1437,7 +825,7 @@
                 if (loanApplicationCollateralId == 0) {
                     $.ajax({
                         type: "POST",
-                        url: '/api/loanApplicationCollateral/add',
+                        url: '/api/loanCollateral/add',
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: loanApplicationCollateralData,
@@ -1454,7 +842,7 @@
                             404: function () {
                                 toastr.error("Record Not Found");
 
-                                $("#loanRequirementsEditDetailModal").modal("hide");
+                                $("#loanApplicationCollateralEditDetailModal").modal("hide");
 
                                 document.getElementById("btnSaveLoanApplicationCollateral").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
                                 $("#btnSaveLoanApplicationCollateral").prop("disabled", false);
@@ -1463,7 +851,7 @@
                             400: function () {
                                 toastr.error("Bad Request");
 
-                                $("#loanRequirementsEditDetailModal").modal("hide");
+                                $("#loanApplicationCollateralEditDetailModal").modal("hide");
 
                                 document.getElementById("btnSaveLoanApplicationCollateral").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
                                 $("#btnSaveLoanApplicationCollateral").prop("disabled", false);
@@ -1474,7 +862,7 @@
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: '/api/loanApplicationCollateral/update/' + loanApplicationCollateralId,
+                        url: '/api/loanCollateral/update/' + loanApplicationCollateralId,
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         data: loanApplicationCollateralData,
@@ -1491,7 +879,7 @@
                             404: function () {
                                 toastr.error("Record Not Found");
 
-                                $("#loanRequirementsEditDetailModal").modal("hide");
+                                $("#loanApplicationCollateralEditDetailModal").modal("hide");
 
                                 document.getElementById("btnSaveLoanApplicationCollateral").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
                                 $("#btnSaveLoanApplicationCollateral").prop("disabled", false);
@@ -1500,7 +888,7 @@
                             400: function () {
                                 toastr.error("Bad Request");
 
-                                $("#loanRequirementsEditDetailModal").modal("hide");
+                                $("#loanApplicationCollateralEditDetailModal").modal("hide");
 
                                 document.getElementById("btnSaveLoanApplicationCollateral").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
                                 $("#btnSaveLoanApplicationCollateral").prop("disabled", false);
@@ -1535,7 +923,7 @@
 
             $.ajax({
                 type: "DELETE",
-                url: '/api/loanApplicationCollateral/delete/' + currentItem.Id,
+                url: '/api/loanCollateral/delete/' + currentItem.Id,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
@@ -1803,55 +1191,17 @@
         // compute deductions to net amount
         function computeDeductions() {
             var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
-            var passbookValue = document.getElementById('loanApplicationPassbook').value.replace(/\,/g, '');
-            var balanceValue = document.getElementById('loanApplicationBalance').value.replace(/\,/g, '');
-            var penaltyValue = document.getElementById('loanApplicationPenalty').value.replace(/\,/g, '');
-            var lateIntValue = document.getElementById('loanApplicationLateInt').value.replace(/\,/g, '');
-            var advanceValue = document.getElementById('loanApplicationAdvance').value.replace(/\,/g, '');
-            var requirementsValue = document.getElementById('loanApplicationRequirements').value.replace(/\,/g, '');
-            var insuranceIPIorPPIValue = document.getElementById('loanApplicationInsuranceIPIorPPI').value.replace(/\,/g, '');
-
-            document.getElementById('loanApplicationProcessingFee').value = (principalAmountValue * 0.03).toLocaleString();
-
             var interestRate = document.getElementById('interestRate').value.replace(/\,/g, '');
             var interestAmount = (principalAmountValue / 100) * interestRate;
-
-            document.getElementById('interestAmount').value = interestAmount;
-
-            setTimeout(function () {
-                var totalLoanAmountDeductions = interestAmount + (principalAmountValue - (principalAmountValue * 0.03) - passbookValue - balanceValue - penaltyValue - lateIntValue - advanceValue - requirementsValue - insuranceIPIorPPIValue);
-                document.getElementById('loanApplicationTotalNetAmount').value = totalLoanAmountDeductions.toLocaleString();
-            }, 500);
+            document.getElementById('interestAmount').value = interestAmount.toLocaleString();
+            var interestAmountValue = document.getElementById('interestAmount').value.replace(/\,/g, '');
+            var deductionAmountValue = document.getElementById('loanApplicationDeductionAmount').value.replace(/\,/g, '');
+            var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(deductionAmountValue);
+            document.getElementById('loanApplicationTotalNetAmount').value = netAmount.toLocaleString();
         }
 
         // jqueries codes
         $('#loanApplicationPrincipalAmount').keyup(function () {
-            computeDeductions();
-        });
-
-        $('#loanApplicationPassbook').keyup(function () {
-            computeDeductions();
-        });
-
-        $('#loanApplicationBalance').keyup(function () {
-            computeDeductions();
-        });
-
-        $('#loanApplicationPenalty').keyup(function () {
-            computeDeductions();
-        });
-
-        $('#loanApplicationLateInt').keyup(function () {
-            computeDeductions();
-        });
-        $('#loanApplicationAdvance').keyup(function () {
-            computeDeductions();
-        });
-
-        $('#loanApplicationRequirements').keyup(function () {
-            computeDeductions();
-        });
-        $('#loanApplicationInsuranceIPIorPPI').keyup(function () {
             computeDeductions();
         });
     </script>

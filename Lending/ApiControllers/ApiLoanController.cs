@@ -46,6 +46,7 @@ namespace Lending.ApiControllers
                                        InterestId = d.InterestId,
                                        Interest = d.mstInterest.Interest,
                                        InterestRate = d.InterestRate,
+                                       InterestAmount = d.InterestAmount,
                                        DeductionAmount = d.DeductionAmount,
                                        NetAmount = d.NetAmount,
                                        DailyCollectibleAmount = d.DailyCollectibleAmount,
@@ -101,6 +102,7 @@ namespace Lending.ApiControllers
                            InterestId = d.InterestId,
                            Interest = d.mstInterest.Interest,
                            InterestRate = d.InterestRate,
+                           InterestAmount = d.InterestAmount,
                            DeductionAmount = d.DeductionAmount,
                            NetAmount = d.NetAmount,
                            DailyCollectibleAmount = d.DailyCollectibleAmount,
@@ -293,6 +295,17 @@ namespace Lending.ApiControllers
                                     var term = from d in db.mstTerms where d.Id == loan.TermId select d;
                                     var interest = from d in db.mstInterests where d.Id == loan.InterestId select d;
                                     var loanNoOfDays = (Convert.ToDateTime(loan.MaturityDate) - Convert.ToDateTime(loan.LoanDate)).TotalDays;
+                                    
+                                    var loanDeduction = from d in db.trnLoanDeductions where d.LoanId == Convert.ToInt32(id) select d;
+                                    Decimal deductionAmount = 0;
+                                    if (loanDeduction.Any())
+                                    {
+                                        deductionAmount = loanDeduction.Sum(d => d.DeductionAmount);
+                                    }
+
+                                    Decimal principalAmount = loan.NetAmount;
+                                    Decimal dailyCollectibleAmount = principalAmount / Convert.ToDecimal(loanNoOfDays);
+
 
                                     var lockLoan = loans.FirstOrDefault();
                                     lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
@@ -307,12 +320,12 @@ namespace Lending.ApiControllers
                                     lockLoan.PreparedByUserId = userId;
                                     lockLoan.PrincipalAmount = loan.PrincipalAmount;
                                     lockLoan.InterestId = interest.FirstOrDefault().Id;
-                                    lockLoan.InterestRate = interest.FirstOrDefault().Rate;
+                                    lockLoan.InterestRate = loan.InterestRate;
                                     lockLoan.InterestAmount = loan.InterestAmount;
-                                    lockLoan.DeductionAmount = loan.DeductionAmount;
+                                    lockLoan.DeductionAmount = deductionAmount;
                                     lockLoan.NetAmount = loan.NetAmount;
-                                    lockLoan.DailyCollectibleAmount = loan.DailyCollectibleAmount;
-                                    lockLoan.CurrentCollectibeAmount = loan.CurrentCollectibeAmount;
+                                    lockLoan.DailyCollectibleAmount = Math.Ceiling(dailyCollectibleAmount / 5) * 5;
+                                    lockLoan.CurrentCollectibeAmount = Math.Ceiling(dailyCollectibleAmount / 5) * 5;
                                     lockLoan.NextPaidDate = Convert.ToDateTime(loan.LoanDate).AddDays(Convert.ToDouble(term.FirstOrDefault().NoOfDays));
                                     lockLoan.BalanceAmount = loan.NetAmount;
                                     lockLoan.IsLocked = true;

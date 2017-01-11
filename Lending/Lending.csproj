@@ -204,6 +204,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business\Journal.cs" />
+    <Compile Include="Business\UpdateLoan.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -270,6 +271,8 @@
     <Content Include="Content\software.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="Content\wijmo.css" />
+    <Content Include="Content\wijmo.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.css" />
     <Content Include="fonts\font-awesome-4.6.3\css\font-awesome.min.css" />
@@ -335,6 +338,14 @@
       <LastGenOutput>Lending.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Scripts\wijmo.chart.js" />
+    <Content Include="Scripts\wijmo.chart.min.js" />
+    <Content Include="Scripts\wijmo.grid.js" />
+    <Content Include="Scripts\wijmo.grid.min.js" />
+    <Content Include="Scripts\wijmo.input.js" />
+    <Content Include="Scripts\wijmo.input.min.js" />
+    <Content Include="Scripts\wijmo.js" />
+    <Content Include="Scripts\wijmo.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

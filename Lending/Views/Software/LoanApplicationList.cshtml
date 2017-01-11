@@ -174,7 +174,7 @@
         function getLoanApplicationList() {
             var loanApplicationListArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanApplication/listByLoanDate/' + [cboLoanDate.value.getMonth() + 1, cboLoanDate.value.getDate(), cboLoanDate.value.getFullYear()].join('-'),
+                url: '/api/loan/listByLoanDate/' + [cboLoanDate.value.getMonth() + 1, cboLoanDate.value.getDate(), cboLoanDate.value.getFullYear()].join('-'),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -202,9 +202,8 @@
                                 LoanNumber: loanApplicationListResult[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
-                                Area: loanApplicationListResult[i]["Area"],
-                                LoanType: loanApplicationListResult[i]["LoanType"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
@@ -231,7 +230,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '/api/loanApplication/add',
+                url: '/api/loan/add',
                 contentType: "application/json; charset=utf-8",
                 success: function (id) {
                     if (id > 0) {
@@ -273,7 +272,7 @@
             loanApplicationCollectionView.editItem(loanApplicationCollectionView.currentItem);
             var id = loanApplicationCollectionView.currentEditItem.Id;
             $.ajax({
-                url: '/api/loanApplication/delete/' + id,
+                url: '/api/loan/delete/' + id,
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -378,54 +377,55 @@
                                 "header": "Date",
                                 "binding": "LoanDate",
                                 "allowSorting": true,
-                                "width": "1.5*",
+                                "width": 100,
                             },
                             {
-                                "header": "Loan No.",
+                                "header": "Loan Number",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
-                                "width": "1.5*",
+                                "width": 120,
                             },
                             {
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
-                                "width": "3*",
+                                "width": 195,
                             },
                             {
-                                "header": "Area",
-                                "binding": "Area",
+                                "header": "Principal Amount",
+                                "binding": "PrincipalAmount",
                                 "allowSorting": true,
-                                "width": "2.5*",
+                                "width": 150,
                             },
                             {
-                                "header": "Loan Type",
-                                "binding": "LoanType",
+                                "header": "Deduction Amount",
+                                "binding": "DeductionAmount",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 150,
                             },
                             {
                                 "header": "Net Amount",
                                 "binding": "NetAmount",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 150,
                             },
                             {
                                 "header": "F",
                                 "binding": "IsFullyPaid",
                                 "allowSorting": true,
-                                "width": 30,
+                                "width": 50,
                             },
                             {
                                 "header": "L",
                                 "binding": "IsLocked",
                                 "allowSorting": true,
-                                "width": 30,
+                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanApplicationCollectionView,
                 isReadOnly: true,
+                frozenColumns: 2,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
                 selectionMode: wijmo.grid.SelectionMode.Row
