@@ -203,6 +203,7 @@
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                InterestAmount: loanApplicationListResult[i]["InterestAmount"],
                                 DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
@@ -394,6 +395,12 @@
                             {
                                 "header": "Principal Amount",
                                 "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Interest Amount",
+                                "binding": "InterestAmount",
                                 "allowSorting": true,
                                 "width": 150,
                             },

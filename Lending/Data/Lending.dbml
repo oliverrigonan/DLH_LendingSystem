@@ -169,7 +169,7 @@
       <Column Name="RequirementId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Note" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ValidDateUntil" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="mstApplicant_mstApplicantRequirement" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
+      <Association Name="mstApplicant_mstApplicantRequirement" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="mstRequirement_mstApplicantRequirement" Member="mstRequirement" ThisKey="RequirementId" OtherKey="Id" Type="mstRequirement" IsForeignKey="true" />
     </Type>
   </Table>
@@ -604,7 +604,7 @@
       <Column Name="Brand" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ModelNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="SerialNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="trnLoan_trnLoanCollateral" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanCollateral" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnLoanDeductions" Member="trnLoanDeductions">
@@ -614,7 +614,7 @@
       <Column Name="DeductionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="DeductionAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="mstDeduction_trnLoanDeduction" Member="mstDeduction" ThisKey="DeductionId" OtherKey="Id" Type="mstDeduction" IsForeignKey="true" />
-      <Association Name="trnLoan_trnLoanDeduction" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanDeduction" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

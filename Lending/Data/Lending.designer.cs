@@ -4268,7 +4268,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstApplicantRequirement", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_mstApplicantRequirement", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstApplicant mstApplicant
 		{
 			get
@@ -14536,7 +14536,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanCollateral", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanCollateral", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get
@@ -14752,7 +14752,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanDeduction", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanDeduction", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get

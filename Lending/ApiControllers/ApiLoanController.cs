@@ -306,7 +306,6 @@ namespace Lending.ApiControllers
                                     Decimal principalAmount = loan.NetAmount;
                                     Decimal dailyCollectibleAmount = principalAmount / Convert.ToDecimal(loanNoOfDays);
 
-
                                     var lockLoan = loans.FirstOrDefault();
                                     lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
                                     lockLoan.MaturityDate = Convert.ToDateTime(loan.MaturityDate);

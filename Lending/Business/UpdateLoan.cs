@@ -16,7 +16,15 @@ namespace Lending.Business
             var loans = from d in db.trnLoans where d.Id == loanId select d;
             if (loans.Any())
             {
-                Decimal loanNetAmount = loans.FirstOrDefault().NetAmount;
+                Decimal principalAmount = loans.FirstOrDefault().PrincipalAmount;
+                Decimal deductionAmount = 0;
+                var deductions = from d in db.trnLoanDeductions where d.LoanId == loanId select d;
+                if( deductions.Any()) 
+                {
+                    deductionAmount = deductions.Sum(d => d.DeductionAmount);
+                }
+
+                Decimal loanNetAmount = principalAmount - deductionAmount;
 
                 // get collection
                 var collections = from d in db.trnCollections
@@ -95,6 +103,9 @@ namespace Lending.Business
 
                 // update loan
                 var updateLoan = loans.FirstOrDefault();
+                updateLoan.PrincipalAmount = principalAmount;
+                updateLoan.DeductionAmount = deductionAmount;
+                updateLoan.NetAmount = loanNetAmount;
                 updateLoan.LoanEndDate = loanEndDate;
                 updateLoan.NoOfAbsent = numberOfAbsent;
                 updateLoan.PaidAmount = loanPaidAmount;

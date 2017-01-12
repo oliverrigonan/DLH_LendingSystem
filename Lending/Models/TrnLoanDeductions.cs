@@ -12,6 +12,9 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public Int32 LoanId { get; set; }
         public Int32 DeductionId { get; set; }
+        public String Deduction { get; set; }
+        public Boolean IsPercentage { get; set; }
+        public Decimal PercentageRate { get; set; }
         public Decimal DeductionAmount { get; set; }
     }
 }
