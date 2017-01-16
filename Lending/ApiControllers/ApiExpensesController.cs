@@ -228,9 +228,6 @@ namespace Lending.ApiControllers
 
                                 db.SubmitChanges();
 
-                                Business.Journal journal = new Business.Journal();
-                                journal.postExpensesJournal(Convert.ToInt32(id));
-
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }
                             else
@@ -308,9 +305,6 @@ namespace Lending.ApiControllers
                                 unlockExpense.UpdatedDateTime = DateTime.Now;
                                 db.SubmitChanges();
 
-                                Business.Journal journal = new Business.Journal();
-                                journal.deleteExpensesJournal(Convert.ToInt32(id));
-
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }
                             else
@@ -384,9 +378,6 @@ namespace Lending.ApiControllers
                             {
                                 db.trnExpenses.DeleteOnSubmit(expenses.First());
                                 db.SubmitChanges();
-
-                                Business.Journal journal = new Business.Journal();
-                                journal.deleteExpensesJournal(Convert.ToInt32(id));
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }

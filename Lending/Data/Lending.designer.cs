@@ -3991,6 +3991,8 @@ namespace Lending.Data
 		
 		private EntitySet<mstApplicant> _mstApplicants;
 		
+		private EntitySet<mstAreaStaff> _mstAreaStaffs;
+		
 		private EntityRef<mstStaff> _mstStaff;
 		
 		private EntityRef<mstUser> _mstUser;
@@ -4026,6 +4028,7 @@ namespace Lending.Data
 		public mstArea()
 		{
 			this._mstApplicants = new EntitySet<mstApplicant>(new Action<mstApplicant>(this.attach_mstApplicants), new Action<mstApplicant>(this.detach_mstApplicants));
+			this._mstAreaStaffs = new EntitySet<mstAreaStaff>(new Action<mstAreaStaff>(this.attach_mstAreaStaffs), new Action<mstAreaStaff>(this.detach_mstAreaStaffs));
 			this._mstStaff = default(EntityRef<mstStaff>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
@@ -4257,6 +4260,19 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstArea_mstAreaStaff", Storage="_mstAreaStaffs", ThisKey="Id", OtherKey="AreaId")]
+		public EntitySet<mstAreaStaff> mstAreaStaffs
+		{
+			get
+			{
+				return this._mstAreaStaffs;
+			}
+			set
+			{
+				this._mstAreaStaffs.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_mstArea", Storage="_mstStaff", ThisKey="SupervisorStaffId", OtherKey="Id", IsForeignKey=true)]
 		public mstStaff mstStaff
 		{
@@ -4390,6 +4406,18 @@ namespace Lending.Data
 			this.SendPropertyChanging();
 			entity.mstArea = null;
 		}
+		
+		private void attach_mstAreaStaffs(mstAreaStaff entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstArea = this;
+		}
+		
+		private void detach_mstAreaStaffs(mstAreaStaff entity)
+		{
+			this.SendPropertyChanging();
+			entity.mstArea = null;
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstAreaStaff")]
@@ -4400,7 +4428,11 @@ namespace Lending.Data
 		
 		private int _Id;
 		
+		private int _AreaId;
+		
 		private int _StaffId;
+		
+		private EntityRef<mstArea> _mstArea;
 		
 		private EntityRef<mstStaff> _mstStaff;
 		
@@ -4410,12 +4442,15 @@ namespace Lending.Data
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
+    partial void OnAreaIdChanging(int value);
+    partial void OnAreaIdChanged();
     partial void OnStaffIdChanging(int value);
     partial void OnStaffIdChanged();
     #endregion
 		
 		public mstAreaStaff()
 		{
+			this._mstArea = default(EntityRef<mstArea>);
 			this._mstStaff = default(EntityRef<mstStaff>);
 			OnCreated();
 		}
@@ -4440,6 +4475,30 @@ namespace Lending.Data
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AreaId", DbType="Int NOT NULL")]
+		public int AreaId
+		{
+			get
+			{
+				return this._AreaId;
+			}
+			set
+			{
+				if ((this._AreaId != value))
+				{
+					if (this._mstArea.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnAreaIdChanging(value);
+					this.SendPropertyChanging();
+					this._AreaId = value;
+					this.SendPropertyChanged("AreaId");
+					this.OnAreaIdChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StaffId", DbType="Int NOT NULL")]
 		public int StaffId
 		{
@@ -4460,6 +4519,40 @@ namespace Lending.Data
 					this._StaffId = value;
 					this.SendPropertyChanged("StaffId");
 					this.OnStaffIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstArea_mstAreaStaff", Storage="_mstArea", ThisKey="AreaId", OtherKey="Id", IsForeignKey=true)]
+		public mstArea mstArea
+		{
+			get
+			{
+				return this._mstArea.Entity;
+			}
+			set
+			{
+				mstArea previousValue = this._mstArea.Entity;
+				if (((previousValue != value) 
+							|| (this._mstArea.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._mstArea.Entity = null;
+						previousValue.mstAreaStaffs.Remove(this);
+					}
+					this._mstArea.Entity = value;
+					if ((value != null))
+					{
+						value.mstAreaStaffs.Add(this);
+						this._AreaId = value.Id;
+					}
+					else
+					{
+						this._AreaId = default(int);
+					}
+					this.SendPropertyChanged("mstArea");
 				}
 			}
 		}

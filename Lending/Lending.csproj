@@ -173,6 +173,7 @@
     <Compile Include="ApiControllers\ApiApplicantApplianceOwnedController.cs" />
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
+    <Compile Include="ApiControllers\ApiAreaStaffController.cs" />
     <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
@@ -187,6 +188,7 @@
     <Compile Include="ApiControllers\ApiApplicantRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiLoanLinesController.cs" />
     <Compile Include="ApiControllers\ApiPenaltyController.cs" />
+    <Compile Include="ApiControllers\ApiReconstructController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
@@ -226,6 +228,7 @@
     <Compile Include="Models\MstApplicant.cs" />
     <Compile Include="Models\MstApplicantApplianceOwned.cs" />
     <Compile Include="Models\MstApplicantRequirements.cs" />
+    <Compile Include="Models\MstAreaStaff.cs" />
     <Compile Include="Models\MstDeductions.cs" />
     <Compile Include="Models\MstInterest.cs" />
     <Compile Include="Models\MstPenalty.cs" />

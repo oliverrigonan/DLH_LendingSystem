@@ -170,6 +170,7 @@
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Association Name="mstArea_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="AreaId" Type="mstApplicant" />
+      <Association Name="mstArea_mstAreaStaff" Member="mstAreaStaffs" ThisKey="Id" OtherKey="AreaId" Type="mstAreaStaff" />
       <Association Name="mstStaff_mstArea" Member="mstStaff" ThisKey="SupervisorStaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
       <Association Name="mstUser_mstArea" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstArea1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -178,7 +179,9 @@
   <Table Name="dbo.mstAreaStaff" Member="mstAreaStaffs">
     <Type Name="mstAreaStaff">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AreaId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="mstArea_mstAreaStaff" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" />
       <Association Name="mstStaff_mstAreaStaff" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
     </Type>
   </Table>

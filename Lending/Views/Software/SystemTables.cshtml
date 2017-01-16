@@ -1431,7 +1431,7 @@
                                 Term: termsListResult[i]["Term"],
                                 Description: termsListResult[i]["Description"],
                                 NoOfDays: termsListResult[i]["NoOfDays"],
-                                NoOfAllowanceDays: termsListResult[i]["NoOfAllowanceDays"],
+                                PaymentNoOfDays: termsListResult[i]["PaymentNoOfDays"],
                                 CreatedByUserId: termsListResult[i]["CreatedByUserId"],
                                 CreatedByUser: termsListResult[i]["CreatedByUser"],
                                 CreatedDateTime: termsListResult[i]["CreatedDateTime"],
@@ -1455,7 +1455,7 @@
         function createCboPaymentNoOfDays() {
             var days = new Array();
 
-            for (var i = 0; i <= 50; i++) {
+            for (var i = 0; i <= 365; i++) {
                 days[i] = i;
             }
 
@@ -1518,7 +1518,7 @@
             document.getElementById("termName").value = termCurrentEditItem.Term;
             document.getElementById("termDescription").value = termCurrentEditItem.Description;
             cboNoOfDays.selectedValue = termCurrentEditItem.NoOfDays;
-            cboPaymentNoOfDays.selectedValue = termCurrentEditItem.NoOfAllowanceDays;
+            cboPaymentNoOfDays.selectedValue = termCurrentEditItem.PaymentNoOfDays;
         }
 
         // form input validation
@@ -1798,8 +1798,8 @@
                                 "width": "1*"
                             },
                             {
-                                "header": "Allowance Days",
-                                "binding": "NoOfAllowanceDays",
+                                "header": "Payment No. of Days",
+                                "binding": "PaymentNoOfDays",
                                 "allowSorting": true,
                                 "width": "1*"
                             }

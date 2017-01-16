@@ -28,8 +28,6 @@ namespace Lending.ApiControllers
                             Description = d.Description,
                             SupervisorStaffId = d.SupervisorStaffId,
                             SupervisorStaff = d.mstStaff.Staff,
-                            CollectorStaffId = d.CollectorStaffId,
-                            CollectorStaff = d.mstStaff1.Staff,
                             IsLocked = d.IsLocked,
                             CreatedByUserId = d.CreatedByUserId,
                             CreatedByUser = d.mstUser.FullName,
@@ -58,8 +56,6 @@ namespace Lending.ApiControllers
                             Description = d.Description,
                             SupervisorStaffId = d.SupervisorStaffId,
                             SupervisorStaff = d.mstStaff.Staff,
-                            CollectorStaffId = d.CollectorStaffId,
-                            CollectorStaff = d.mstStaff1.Staff,
                             IsLocked = d.IsLocked,
                             CreatedByUserId = d.CreatedByUserId,
                             CreatedByUser = d.mstUser.FullName,
@@ -137,7 +133,6 @@ namespace Lending.ApiControllers
                         newArea.Area = "NA";
                         newArea.Description = "NA";
                         newArea.SupervisorStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
-                        newArea.CollectorStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
                         newArea.IsLocked = false;
                         newArea.CreatedByUserId = userId;
                         newArea.CreatedDateTime = DateTime.Now;
@@ -212,7 +207,6 @@ namespace Lending.ApiControllers
                                 lockArea.Area = area.Area;
                                 lockArea.Description = area.Description;
                                 lockArea.SupervisorStaffId = area.SupervisorStaffId;
-                                lockArea.CollectorStaffId = area.CollectorStaffId;
                                 lockArea.IsLocked = true;
                                 lockArea.UpdatedByUserId = userId;
                                 lockArea.UpdatedDateTime = DateTime.Now;

@@ -148,7 +148,6 @@
                                 Area: areaListResult[i]["Area"],
                                 Description: areaListResult[i]["Description"],
                                 SupervisorStaff: areaListResult[i]["SupervisorStaff"],
-                                CollectorStaff: areaListResult[i]["CollectorStaff"],
                                 IsLocked: areaListResult[i]["IsLocked"],
                                 CreatedByUserId: areaListResult[i]["CreatedByUserId"],
                                 CreatedByUser: areaListResult[i]["CreatedByUser"],
@@ -220,8 +219,7 @@
                             return !filterText || (item.AreaNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Area.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Discription.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.CollectorStaff.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         // Flex Grid
@@ -290,8 +288,7 @@
                 return !filterText || (item.AreaNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Area.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Discription.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectorStaff.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1);
             }
 
             areaCollectionView.currentChanged.addHandler(function (sender, args) {
@@ -339,12 +336,6 @@
                             {
                                 "header": "Supervisor Staff",
                                 "binding": "SupervisorStaff",
-                                "allowSorting": true,
-                                "width": "2*"
-                            },
-                            {
-                                "header": "Collector Staff",
-                                "binding": "CollectorStaff",
                                 "allowSorting": true,
                                 "width": "2*"
                             },
