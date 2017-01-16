@@ -27,36 +27,30 @@ namespace Lending.ApiControllers
                                        Id = d.Id,
                                        LoanNumber = d.LoanNumber,
                                        LoanDate = d.LoanDate.ToShortDateString(),
-                                       MaturityDate = d.MaturityDate.ToShortDateString(),
                                        ApplicantId = d.ApplicantId,
                                        Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                       Area = d.mstApplicant.mstArea.Area,
                                        Particulars = d.Particulars,
+                                       PreparedByUserId = d.PreparedByUserId,
+                                       PreparedByUser = d.mstUser.FullName,
                                        TermId = d.TermId,
                                        Term = d.mstTerm.Term,
                                        TermNoOfDays = d.TermNoOfDays,
-                                       TermNoOfAllowanceDays = d.TermNoOfAllowanceDays,
-                                       LoanEndDate = d.LoanEndDate.ToShortDateString(),
-                                       PenaltyId = d.PenaltyId,
-                                       Penalty = d.mstPenalty.Penalty,
-                                       NoOfAbsent = d.NoOfAbsent,
-                                       PreparedByUserId = d.PreparedByUserId,
-                                       PreparedByUser = d.mstUser.FullName,
+                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
                                        PrincipalAmount = d.PrincipalAmount,
+                                       IsAdvanceInterest = d.IsAdvanceInterest,
                                        InterestId = d.InterestId,
                                        Interest = d.mstInterest.Interest,
                                        InterestRate = d.InterestRate,
                                        InterestAmount = d.InterestAmount,
                                        DeductionAmount = d.DeductionAmount,
                                        NetAmount = d.NetAmount,
-                                       DailyCollectibleAmount = d.DailyCollectibleAmount,
-                                       CurrentCollectibeAmount = d.CurrentCollectibeAmount,
-                                       PaidAmount = d.PaidAmount,
-                                       NextPaidDate = d.NextPaidDate.ToShortDateString(),
-                                       PenaltyAmount = d.PenaltyAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       NoOfAbsent = d.NoOfAbsent,
+                                       IsCollectionClose = d.IsCollectionClose,
                                        IsReconstruct = d.IsReconstruct,
-                                       ReconstructInterestAmount = d.ReconstructInterestAmount,
-                                       BalanceAmount = d.BalanceAmount,
                                        IsFullyPaid = d.IsFullyPaid,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
@@ -83,36 +77,30 @@ namespace Lending.ApiControllers
                            Id = d.Id,
                            LoanNumber = d.LoanNumber,
                            LoanDate = d.LoanDate.ToShortDateString(),
-                           MaturityDate = d.MaturityDate.ToShortDateString(),
                            ApplicantId = d.ApplicantId,
                            Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                           Area = d.mstApplicant.mstArea.Area,
                            Particulars = d.Particulars,
+                           PreparedByUserId = d.PreparedByUserId,
+                           PreparedByUser = d.mstUser.FullName,
                            TermId = d.TermId,
                            Term = d.mstTerm.Term,
                            TermNoOfDays = d.TermNoOfDays,
-                           TermNoOfAllowanceDays = d.TermNoOfAllowanceDays,
-                           LoanEndDate = d.LoanEndDate.ToShortDateString(),
-                           PenaltyId = d.PenaltyId,
-                           Penalty = d.mstPenalty.Penalty,
-                           NoOfAbsent = d.NoOfAbsent,
-                           PreparedByUserId = d.PreparedByUserId,
-                           PreparedByUser = d.mstUser.FullName,
+                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                           MaturityDate = d.MaturityDate.ToShortDateString(),
                            PrincipalAmount = d.PrincipalAmount,
+                           IsAdvanceInterest = d.IsAdvanceInterest,
                            InterestId = d.InterestId,
                            Interest = d.mstInterest.Interest,
                            InterestRate = d.InterestRate,
                            InterestAmount = d.InterestAmount,
                            DeductionAmount = d.DeductionAmount,
                            NetAmount = d.NetAmount,
-                           DailyCollectibleAmount = d.DailyCollectibleAmount,
-                           CurrentCollectibeAmount = d.CurrentCollectibeAmount,
-                           PaidAmount = d.PaidAmount,
-                           NextPaidDate = d.NextPaidDate.ToShortDateString(),
-                           PenaltyAmount = d.PenaltyAmount,
+                           TotalPaidAmount = d.TotalPaidAmount,
+                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                           TotalBalanceAmount = d.TotalBalanceAmount,
+                           NoOfAbsent = d.NoOfAbsent,
+                           IsCollectionClose = d.IsCollectionClose,
                            IsReconstruct = d.IsReconstruct,
-                           ReconstructInterestAmount = d.ReconstructInterestAmount,
-                           BalanceAmount = d.BalanceAmount,
                            IsFullyPaid = d.IsFullyPaid,
                            IsLocked = d.IsLocked,
                            CreatedByUserId = d.CreatedByUserId,
@@ -192,30 +180,27 @@ namespace Lending.ApiControllers
                         Data.trnLoan newLoan = new Data.trnLoan();
                         newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                         newLoan.LoanDate = DateTime.Today;
-                        newLoan.MaturityDate = DateTime.Today.AddDays(60);
                         newLoan.ApplicantId = (from d in db.mstApplicants select d.Id).FirstOrDefault();
                         newLoan.Particulars = "NA";
+                        newLoan.PreparedByUserId = userId;
                         newLoan.TermId = term.FirstOrDefault().Id;
                         newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
-                        newLoan.TermNoOfAllowanceDays = term.FirstOrDefault().NoOfAllowanceDays;
-                        newLoan.LoanEndDate = DateTime.Today.AddDays(60 + Convert.ToDouble(term.FirstOrDefault().NoOfAllowanceDays));
-                        newLoan.PenaltyId = (from d in db.mstPenalties select d.Id).FirstOrDefault();
-                        newLoan.NoOfAbsent = 0;
-                        newLoan.PreparedByUserId = userId;
+                        newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+                        newLoan.MaturityDate = DateTime.Today;
                         newLoan.PrincipalAmount = 0;
+                        newLoan.IsAdvanceInterest = true;
                         newLoan.InterestId = interest.FirstOrDefault().Id;
                         newLoan.InterestRate = interest.FirstOrDefault().Rate;
                         newLoan.InterestAmount = 0;
                         newLoan.DeductionAmount = 0;
                         newLoan.NetAmount = 0;
-                        newLoan.DailyCollectibleAmount = 0;
-                        newLoan.CurrentCollectibeAmount = 0;
-                        newLoan.PaidAmount = 0;
-                        newLoan.NextPaidDate = DateTime.Today.AddDays(Convert.ToDouble(term.FirstOrDefault().NoOfDays));
-                        newLoan.PenaltyAmount = 0;
+                        newLoan.TotalPaidAmount = 0;
+                        newLoan.TotalPenaltyAmount = 0;
+                        newLoan.TotalBalanceAmount = 0;
                         newLoan.IsReconstruct = false;
-                        newLoan.ReconstructInterestAmount = 0;
-                        newLoan.BalanceAmount = 0;
+                        newLoan.NoOfAbsent = 0;
+                        newLoan.IsCollectionClose = false;
+                        newLoan.IsReconstruct = false;
                         newLoan.IsFullyPaid = false;
                         newLoan.IsLocked = false;
                         newLoan.CreatedByUserId = userId;
@@ -294,46 +279,45 @@ namespace Lending.ApiControllers
                                 {
                                     var term = from d in db.mstTerms where d.Id == loan.TermId select d;
                                     var interest = from d in db.mstInterests where d.Id == loan.InterestId select d;
-                                    var loanNoOfDays = (Convert.ToDateTime(loan.MaturityDate) - Convert.ToDateTime(loan.LoanDate)).TotalDays;
                                     
-                                    var loanDeduction = from d in db.trnLoanDeductions where d.LoanId == Convert.ToInt32(id) select d;
+                                    var loanDeduction = from d in db.trnLoanDeductions 
+                                                        where d.LoanId == Convert.ToInt32(id) 
+                                                        select d;
+
                                     Decimal deductionAmount = 0;
                                     if (loanDeduction.Any())
                                     {
                                         deductionAmount = loanDeduction.Sum(d => d.DeductionAmount);
                                     }
 
-                                    Decimal principalAmount = loan.NetAmount;
-                                    Decimal dailyCollectibleAmount = principalAmount / Convert.ToDecimal(loanNoOfDays);
-
                                     var lockLoan = loans.FirstOrDefault();
                                     lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
-                                    lockLoan.MaturityDate = Convert.ToDateTime(loan.MaturityDate);
                                     lockLoan.ApplicantId = loan.ApplicantId;
                                     lockLoan.Particulars = loan.Particulars;
+                                    lockLoan.PreparedByUserId = loan.PreparedByUserId;
                                     lockLoan.TermId = term.FirstOrDefault().Id;
-                                    lockLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
-                                    lockLoan.TermNoOfAllowanceDays = term.FirstOrDefault().NoOfAllowanceDays;
-                                    lockLoan.LoanEndDate = DateTime.Today.AddDays(loanNoOfDays + Convert.ToDouble(term.FirstOrDefault().NoOfAllowanceDays));
-                                    lockLoan.PenaltyId = loan.PenaltyId;
-                                    lockLoan.PreparedByUserId = userId;
+                                    lockLoan.TermNoOfDays = loan.TermNoOfDays;
+                                    lockLoan.TermPaymentNoOfDays = loan.TermPaymentNoOfDays;
+                                    lockLoan.MaturityDate = DateTime.Today;
                                     lockLoan.PrincipalAmount = loan.PrincipalAmount;
+                                    lockLoan.IsAdvanceInterest = true;
                                     lockLoan.InterestId = interest.FirstOrDefault().Id;
                                     lockLoan.InterestRate = loan.InterestRate;
                                     lockLoan.InterestAmount = loan.InterestAmount;
                                     lockLoan.DeductionAmount = deductionAmount;
-                                    lockLoan.NetAmount = loan.NetAmount;
-                                    lockLoan.DailyCollectibleAmount = Math.Ceiling(dailyCollectibleAmount / 5) * 5;
-                                    lockLoan.CurrentCollectibeAmount = Math.Ceiling(dailyCollectibleAmount / 5) * 5;
-                                    lockLoan.NextPaidDate = Convert.ToDateTime(loan.LoanDate).AddDays(Convert.ToDouble(term.FirstOrDefault().NoOfDays));
-                                    lockLoan.BalanceAmount = loan.NetAmount;
-                                    lockLoan.IsLocked = true;
+                                    lockLoan.NetAmount = 0;
+                                    lockLoan.TotalPaidAmount = 0;
+                                    lockLoan.TotalPenaltyAmount = 0;
+                                    lockLoan.TotalBalanceAmount = 0;
+                                    lockLoan.IsReconstruct = false;
+                                    lockLoan.NoOfAbsent = 0;
+                                    lockLoan.IsCollectionClose = false;
+                                    lockLoan.IsReconstruct = false;
+                                    lockLoan.IsFullyPaid = false;
+                                    lockLoan.IsLocked = false;
                                     lockLoan.UpdatedByUserId = userId;
                                     lockLoan.UpdatedDateTime = DateTime.Now;
                                     db.SubmitChanges();
-
-                                    Business.Journal journal = new Business.Journal();
-                                    journal.postLoanJournal(Convert.ToInt32(id));
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
@@ -418,9 +402,6 @@ namespace Lending.ApiControllers
                                     unlockLoan.UpdatedByUserId = userId;
                                     unlockLoan.UpdatedDateTime = DateTime.Now;
                                     db.SubmitChanges();
-
-                                    Business.Journal journal = new Business.Journal();
-                                    journal.deleteLoanJournal(Convert.ToInt32(id));
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }

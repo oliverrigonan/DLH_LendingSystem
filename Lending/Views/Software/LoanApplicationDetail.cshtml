@@ -45,9 +45,6 @@
                         <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
                             <i class="fa fa-unlock fa-fw"></i> Unlock
                         </button>
-                        <button class="btn btn-primary" id="btnPrint" onclick="btnPrintOnClick()">
-                            <i class="fa fa-file-pdf-o fa-fw"></i> Cash Voucher
-                        </button>
                         <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/LoanApplicationList'">
                             <i class="fa fa-close fa-fw"></i> Close
                         </button>
@@ -764,11 +761,6 @@
                     }
                 }
             });
-        }
-
-        // pdf
-        function btnPrintOnClick() {
-            window.open("/RepLoanApplicationCashVoucher/loanApplicationCashVoucher?loanId=" + getUrlParameter("id"), "_blank");
         }
 
         // get loan application collateral by loan id

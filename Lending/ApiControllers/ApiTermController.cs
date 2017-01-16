@@ -26,7 +26,7 @@ namespace Lending.ApiControllers
                                 Term = d.Term,
                                 Description = d.Description,
                                 NoOfDays = d.NoOfDays,
-                                NoOfAllowanceDays = d.NoOfAllowanceDays,
+                                PaymentNoOfDays = d.PaymentNoOfDays,
                                 CreatedByUserId = d.CreatedByUserId,
                                 CreatedByUser = d.mstUser.FullName,
                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -81,7 +81,7 @@ namespace Lending.ApiControllers
                         newTerm.Term = loanType.Term;
                         newTerm.Description = loanType.Description;
                         newTerm.NoOfDays = loanType.NoOfDays;
-                        newTerm.NoOfAllowanceDays = loanType.NoOfAllowanceDays;
+                        newTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
                         newTerm.CreatedByUserId = userId;
                         newTerm.CreatedDateTime = DateTime.Now;
                         newTerm.UpdatedByUserId = userId;
@@ -154,7 +154,7 @@ namespace Lending.ApiControllers
                             updateTerm.Term = loanType.Term;
                             updateTerm.Description = loanType.Description;
                             updateTerm.NoOfDays = loanType.NoOfDays;
-                            updateTerm.NoOfAllowanceDays = loanType.NoOfAllowanceDays;
+                            updateTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
                             updateTerm.UpdatedByUserId = userId;
                             updateTerm.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();

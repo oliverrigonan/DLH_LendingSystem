@@ -13,7 +13,7 @@ namespace Lending.Models
         public String Term { get; set; }
         public String Description { get; set; }
         public Decimal NoOfDays { get; set; }
-        public Decimal NoOfAllowanceDays { get; set; }
+        public Decimal PaymentNoOfDays { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
         public String CreatedDateTime { get; set; }

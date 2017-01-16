@@ -13,109 +13,97 @@ namespace Lending.Business
         // update loan
         public void updateLoan(Int32 loanId)
         {
-            var loans = from d in db.trnLoans where d.Id == loanId select d;
-            if (loans.Any())
+            var loan = from d in db.trnLoans where d.Id == loanId select d;
+            if (loan.Any())
             {
-                Decimal principalAmount = loans.FirstOrDefault().PrincipalAmount;
-                Decimal deductionAmount = 0;
-                var deductions = from d in db.trnLoanDeductions where d.LoanId == loanId select d;
-                if( deductions.Any()) 
+                Decimal principalAmount = loan.FirstOrDefault().PrincipalAmount;
+                Decimal interestAmount = loan.FirstOrDefault().InterestAmount;
+                Decimal deductionAmount = loan.FirstOrDefault().DeductionAmount;
+                Decimal netAmount = loan.FirstOrDefault().NetAmount;
+
+                var collectionLines = from d in db.trnCollectionLines
+                                      where d.trnCollection.LoanId == loanId
+                                      && d.trnCollection.IsLocked == true
+                                      select d;
+
+                Decimal totalPaidAmount = 0;
+                Decimal totalPenaltyAmount = 0;
+
+                if (collectionLines.Any())
                 {
-                    deductionAmount = deductions.Sum(d => d.DeductionAmount);
+                    totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
+                    totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
                 }
 
-                Decimal loanNetAmount = principalAmount - deductionAmount;
-
-                // get collection
-                var collections = from d in db.trnCollections
-                                  where d.LoanId == loanId
-                                  && d.IsLocked == true
-                                  select d;
-
-                Decimal loanPaidAmount = 0;
-                Decimal loanPenaltyAmount = 0;
-                if (collections.Any())
+                Decimal totalBalanceAmount = (((principalAmount + interestAmount) - deductionAmount) + totalPenaltyAmount) - totalPaidAmount;
+                if (loan.FirstOrDefault().IsAdvanceInterest)
                 {
-                    loanPaidAmount = collections.Sum(d => d.PaidAmount);
-                    loanPenaltyAmount = collections.Sum(d => d.PenaltyAmount);
+                    totalBalanceAmount = ((principalAmount - interestAmount - deductionAmount) + totalPenaltyAmount) - totalPaidAmount;
                 }
 
-                // get reconstruct
-                var reconstruct = from d in db.trnReconstructs
-                                  where d.LoanId == loanId
-                                  && d.IsLocked == true
-                                  select d;
+                Decimal noOfAbsent = 0;
+                var collectionLinesNoOfAbsent = from d in db.trnCollectionLines
+                                                where d.trnCollection.LoanId == loanId
+                                                && d.PaidAmount == 0
+                                                && d.trnCollection.IsLocked == true
+                                                select d;
 
-                Decimal loanReconstructInterestAmount = 0;
-                Boolean isReconstruct = false;
-                if (reconstruct.Any())
+                if (collectionLinesNoOfAbsent.Any())
                 {
-                    loanReconstructInterestAmount = reconstruct.Sum(d => d.ReconstructAmount);
-                    isReconstruct = true;
+                    noOfAbsent = collectionLinesNoOfAbsent.Count();
                 }
 
-                // total all for loan balance amount
-                Decimal loanBalanceAmount = (loanNetAmount + loanReconstructInterestAmount + loanPenaltyAmount) - loanPaidAmount;
-
-                Boolean isFullyPaid = false;
-                if (loanBalanceAmount == 0)
-                {
-                    isFullyPaid = true;
-                }
-
-                // get collection number of absent
-                var collectionNumberOfAbsent = from d in db.trnCollections
-                                               where d.LoanId == loanId
-                                               && d.IsAbsent == false
-                                               && d.IsLocked == true
-                                               select d;
-
-                Decimal numberOfAbsent = 0;
-                if (collectionNumberOfAbsent.Any())
-                {
-                    numberOfAbsent = collectionNumberOfAbsent.Count();
-                }
-
-                // get collection for next paid date
-                var collectionNextPaidDate = from d in db.trnCollections.OrderByDescending(d => d.Id)
-                                             where d.LoanId == loanId
-                                             && d.IsLocked == true
-                                             select d;
-
-                var teamNoOfDays = loans.FirstOrDefault().TermNoOfDays;
-                DateTime nextPaidDate = loans.FirstOrDefault().LoanDate.AddDays(Convert.ToDouble(teamNoOfDays));
-                if (collectionNextPaidDate.Any())
-                {
-                    nextPaidDate = collectionNextPaidDate.FirstOrDefault().CollectionDate.AddDays(Convert.ToDouble(teamNoOfDays));
-                }
-
-                // get reconstruct last maturity date
-                var reconstructLastMaturityDate = from d in db.trnReconstructs.OrderByDescending(d => d.Id)
-                                                  where d.LoanId == loanId
-                                                  && d.IsLocked == true
-                                                  select d;
-
-                DateTime loanEndDate = loans.FirstOrDefault().LoanEndDate;
-                if (reconstructLastMaturityDate.Any())
-                {
-                    loanEndDate = reconstructLastMaturityDate.FirstOrDefault().MaturityDate;
-                }
-
-                // update loan
-                var updateLoan = loans.FirstOrDefault();
-                updateLoan.PrincipalAmount = principalAmount;
-                updateLoan.DeductionAmount = deductionAmount;
-                updateLoan.NetAmount = loanNetAmount;
-                updateLoan.LoanEndDate = loanEndDate;
-                updateLoan.NoOfAbsent = numberOfAbsent;
-                updateLoan.PaidAmount = loanPaidAmount;
-                updateLoan.NextPaidDate = nextPaidDate;
-                updateLoan.PenaltyAmount = loanPenaltyAmount;
-                updateLoan.IsReconstruct = isReconstruct;
-                updateLoan.ReconstructInterestAmount = loanReconstructInterestAmount;
-                updateLoan.BalanceAmount = loanBalanceAmount;
-                updateLoan.IsFullyPaid = isFullyPaid;
+                var updateLoan = loan.FirstOrDefault();
+                updateLoan.TotalPaidAmount = totalPaidAmount;
+                updateLoan.TotalPenaltyAmount = totalPenaltyAmount;
+                updateLoan.TotalBalanceAmount = totalBalanceAmount;
+                updateLoan.NoOfAbsent = noOfAbsent;
                 db.SubmitChanges();
+            }
+        }
+
+        // update loan lines
+        public void updateLoanLines(Int32 loanId)
+        {
+            var collectionLines = from d in db.trnCollectionLines
+                                  where d.trnCollection.LoanId == loanId
+                                  && d.trnCollection.IsLocked == true
+                                  select new Models.TrnCollectionLines
+                                  {
+                                      Id = d.Id,
+                                      LoanLinesId = d.LoanLinesId,
+                                      PaidAmount = d.PaidAmount,
+                                      PenaltyAmount = d.PenaltyAmount,
+                                      BalanceAmount = d.BalanceAmount
+                                  };
+
+            if (collectionLines.Any())
+            {
+                foreach (var collectionLine in collectionLines)
+                {
+                    var loanLine = from d in db.trnLoanLines
+                                   where d.Id == collectionLine.LoanLinesId
+                                   select d;
+
+                    if (loanLine.Any())
+                    {
+                        var updateLoanLines = loanLine.FirstOrDefault();
+                        updateLoanLines.PaidAmount = collectionLine.PaidAmount;
+                        updateLoanLines.PenaltyAmount = collectionLine.PenaltyAmount;
+                        updateLoanLines.BalanceAmount = collectionLine.BalanceAmount;
+
+                        Boolean isCleared = false;
+                        if (collectionLine.BalanceAmount == 0)
+                        {
+                            isCleared = true;
+                        }
+
+                        updateLoanLines.IsCleared = isCleared;
+                        db.SubmitChanges();
+                    }
+                }
+
+                this.updateLoan(loanId);
             }
         }
     }

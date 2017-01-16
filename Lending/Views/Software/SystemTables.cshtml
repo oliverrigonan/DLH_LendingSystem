@@ -377,8 +377,8 @@
                         <div id="cboNoOfDays"></div>
                     </div>
                     <div class="form-group">
-                        <label>Number of Allowance Days</label><br />
-                        <div id="cboNoOfAllowanceDays"></div>
+                        <label>Payment No of Days</label><br />
+                        <div id="cboPaymentNoOfDays"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1449,18 +1449,18 @@
         }
 
         var cboNoOfDays;
-        var cboNoOfAllowanceDays;
+        var cboPaymentNoOfDays;
 
         // allowance days
-        function createCboNoOfAllowanceDays() {
+        function createCboPaymentNoOfDays() {
             var days = new Array();
 
             for (var i = 0; i <= 50; i++) {
                 days[i] = i;
             }
 
-            cboNoOfAllowanceDays.dispose();
-            cboNoOfAllowanceDays = new wijmo.input.ComboBox('#cboNoOfAllowanceDays', {
+            cboPaymentNoOfDays.dispose();
+            cboPaymentNoOfDays = new wijmo.input.ComboBox('#cboPaymentNoOfDays', {
                 itemsSource: days
             });
 
@@ -1491,7 +1491,7 @@
             document.getElementById("termName").value = "NA";
             document.getElementById("termDescription").value = "NA";
             cboNoOfDays.selectedValue = "0";
-            cboNoOfAllowanceDays.selectedValue = "0";
+            cboPaymentNoOfDays.selectedValue = "0";
         }
 
         // edit Terms
@@ -1518,7 +1518,7 @@
             document.getElementById("termName").value = termCurrentEditItem.Term;
             document.getElementById("termDescription").value = termCurrentEditItem.Description;
             cboNoOfDays.selectedValue = termCurrentEditItem.NoOfDays;
-            cboNoOfAllowanceDays.selectedValue = termCurrentEditItem.NoOfAllowanceDays;
+            cboPaymentNoOfDays.selectedValue = termCurrentEditItem.NoOfAllowanceDays;
         }
 
         // form input validation
@@ -1551,7 +1551,7 @@
                 termsObject.Term = document.getElementById('termName').value;
                 termsObject.Description = document.getElementById('termDescription').value;
                 termsObject.NoOfDays = cboNoOfDays.selectedValue;
-                termsObject.NoOfAllowanceDays = cboNoOfAllowanceDays.selectedValue;
+                termsObject.PaymentNoOfDays = cboPaymentNoOfDays.selectedValue;
                 var termData = JSON.stringify(termsObject);
                 if (termId == 0) {
                     $.ajax({
@@ -2751,8 +2751,8 @@
                 getUserRightsMessageError();
             }
 
-            cboNoOfAllowanceDays = new wijmo.input.ComboBox('#cboNoOfAllowanceDays');
-            createCboNoOfAllowanceDays();
+            cboPaymentNoOfDays = new wijmo.input.ComboBox('#cboPaymentNoOfDays');
+            createCboPaymentNoOfDays();
 
             cboNumberOfLimitAbsent = new wijmo.input.ComboBox('#cboNumberOfLimitAbsent');
             createCboNumberOfLimitAbsent();

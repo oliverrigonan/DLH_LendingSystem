@@ -26,22 +26,16 @@ namespace Lending.ApiControllers
                                   Id = d.Id,
                                   CollectionNumber = d.CollectionNumber,
                                   CollectionDate = d.CollectionDate.ToShortDateString(),
+                                  ApplicantId = d.ApplicantId,
+                                  Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                   LoanId = d.LoanId,
                                   LoanNumber = d.trnLoan.LoanNumber,
-                                  LoanDetail = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " ") + " - " + d.trnLoan.LoanNumber + " (from " + d.trnLoan.LoanDate + " to " + d.trnLoan.MaturityDate + ")",
-                                  CollectibleAmount = d.CollectibleAmount,
-                                  IsCleared = d.IsCleared,
-                                  IsAbsent = d.IsAbsent,
-                                  PenaltyAmount = d.PenaltyAmount,
-                                  IsPartiallyPaid = d.IsPartiallyPaid,
-                                  IsPaidInAdvanced = d.IsPaidInAdvanced,
-                                  AdvancePaidDate = (d.AdvancePaidDate != null ? Convert.ToDateTime(d.AdvancePaidDate).ToShortDateString() : " "),
-                                  IsFullyPaid = d.IsFullyPaid,
-                                  PaidAmount = d.PaidAmount,
-                                  BalanceAmount = d.BalanceAmount,
-                                  Status = d.Status,
-                                  IsAllowanceDay = d.IsAllowanceDay,
+                                  StatusId = d.StatusId,
+                                  Status = d.sysCollectionStatus.Status,
                                   Particulars = d.Particulars,
+                                  TotalPaidAmount = d.TotalPaidAmount,
+                                  PreparedByUserId = d.PreparedByUserId,
+                                  PreparedByUser = d.mstUser.FullName,
                                   IsLocked = d.IsLocked,
                                   CreatedByUserId = d.CreatedByUserId,
                                   CreatedByUser = d.mstUser.FullName,
@@ -67,22 +61,16 @@ namespace Lending.ApiControllers
                                  Id = d.Id,
                                  CollectionNumber = d.CollectionNumber,
                                  CollectionDate = d.CollectionDate.ToShortDateString(),
+                                 ApplicantId = d.ApplicantId,
+                                 Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                  LoanId = d.LoanId,
                                  LoanNumber = d.trnLoan.LoanNumber,
-                                 LoanDetail = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " ") + " - " + d.trnLoan.LoanNumber + " (from " + d.trnLoan.LoanDate + " to " + d.trnLoan.MaturityDate + ")",
-                                 CollectibleAmount = d.CollectibleAmount,
-                                 IsCleared = d.IsCleared,
-                                 IsAbsent = d.IsAbsent,
-                                 PenaltyAmount = d.PenaltyAmount,
-                                 IsPartiallyPaid = d.IsPartiallyPaid,
-                                 IsPaidInAdvanced = d.IsPaidInAdvanced,
-                                 AdvancePaidDate = (d.AdvancePaidDate != null ? Convert.ToDateTime(d.AdvancePaidDate).ToShortDateString() : " "),
-                                 IsFullyPaid = d.IsFullyPaid,
-                                 PaidAmount = d.PaidAmount,
-                                 BalanceAmount = d.BalanceAmount,
-                                 Status = d.Status,
-                                 IsAllowanceDay = d.IsAllowanceDay,
+                                 StatusId = d.StatusId,
+                                 Status = d.sysCollectionStatus.Status,
                                  Particulars = d.Particulars,
+                                 TotalPaidAmount = d.TotalPaidAmount,
+                                 PreparedByUserId = d.PreparedByUserId,
+                                 PreparedByUser = d.mstUser.FullName,
                                  IsLocked = d.IsLocked,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
@@ -155,35 +143,38 @@ namespace Lending.ApiControllers
                             collectionNumber = newCollectionNumber.ToString();
                         }
 
-                        var loan = from d in db.trnLoans where d.IsLocked == true select d;
-                        if (loan.Any())
+                        var applicant = from d in db.mstApplicants select d;
+                        if (applicant.Any())
                         {
-                            Data.trnCollection newCollection = new Data.trnCollection();
-                            newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
-                            newCollection.CollectionDate = DateTime.Today;
-                            newCollection.LoanId = loan.FirstOrDefault().Id;
-                            newCollection.CollectibleAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                            newCollection.IsCleared = false;
-                            newCollection.IsAbsent = false;
-                            newCollection.PenaltyAmount = 0;
-                            newCollection.IsPartiallyPaid = false;
-                            newCollection.IsPaidInAdvanced = false;
-                            newCollection.AdvancePaidDate = null;
-                            newCollection.IsFullyPaid = false;
-                            newCollection.PaidAmount = 0;
-                            newCollection.BalanceAmount = 0;
-                            newCollection.Status = "?";
-                            newCollection.IsAllowanceDay = false;
-                            newCollection.Particulars = "NA";
-                            newCollection.IsLocked = false;
-                            newCollection.CreatedByUserId = userId;
-                            newCollection.CreatedDateTime = DateTime.Now;
-                            newCollection.UpdatedByUserId = userId;
-                            newCollection.UpdatedDateTime = DateTime.Now;
-                            db.trnCollections.InsertOnSubmit(newCollection);
-                            db.SubmitChanges();
+                            var loan = from d in db.trnLoans
+                                       where d.ApplicantId == applicant.FirstOrDefault().Id
+                                       && d.IsLocked == true
+                                       select d;
 
-                            return newCollection.Id;
+                            if (loan.Any())
+                            {
+                                Data.trnCollection newCollection = new Data.trnCollection();
+                                newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
+                                newCollection.CollectionDate = DateTime.Today;
+                                newCollection.ApplicantId = applicant.FirstOrDefault().Id;
+                                newCollection.LoanId = loan.FirstOrDefault().Id;
+                                newCollection.StatusId = (from d in db.sysCollectionStatus select d.Id).FirstOrDefault();
+                                newCollection.Particulars = "NA";
+                                newCollection.TotalPaidAmount = 0;
+                                newCollection.IsLocked = false;
+                                newCollection.CreatedByUserId = userId;
+                                newCollection.CreatedDateTime = DateTime.Now;
+                                newCollection.UpdatedByUserId = userId;
+                                newCollection.UpdatedDateTime = DateTime.Now;
+                                db.trnCollections.InsertOnSubmit(newCollection);
+                                db.SubmitChanges();
+
+                                return newCollection.Id;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
                         }
                         else
                         {
@@ -249,189 +240,35 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var loan = from d in db.trnLoans where d.Id == collection.LoanId where d.IsLocked == true select d;
+                                var loan = from d in db.trnLoans 
+                                           where d.Id == collection.LoanId 
+                                           && d.IsLocked == true select d;
+
                                 if (loan.Any())
                                 {
+                                    var collectionLines = from d in db.trnCollectionLines
+                                                          where d.CollectionId == Convert.ToInt32(id)
+                                                          select d;
+
+                                    Decimal totalPaidAmount = 0;
+                                    if (collectionLines.Any())
+                                    {
+                                        totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
+                                    }
+
                                     var lockCollection = collections.FirstOrDefault();
+                                    lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                                    lockCollection.ApplicantId = collection.ApplicantId;
+                                    lockCollection.LoanId = collection.LoanId;
+                                    lockCollection.StatusId = collection.StatusId;
+                                    lockCollection.Particulars = collection.Particulars;
+                                    lockCollection.TotalPaidAmount = totalPaidAmount;
+                                    lockCollection.IsLocked = true;
+                                    lockCollection.UpdatedByUserId = userId;
+                                    lockCollection.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
 
-                                    var isAllowanceDay = false;
-                                    DateTime loanEndDate = loan.FirstOrDefault().LoanEndDate;
-                                    if (Convert.ToDateTime(collection.CollectionDate) > loan.FirstOrDefault().MaturityDate)
-                                    {
-                                        isAllowanceDay = true;
-                                    }
-
-                                    if (collection.IsCleared)
-                                    {
-                                        lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                        lockCollection.LoanId = loan.FirstOrDefault().Id;
-                                        lockCollection.CollectibleAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                                        lockCollection.IsCleared = true;
-                                        lockCollection.IsAbsent = false;
-                                        lockCollection.PenaltyAmount = 0;
-                                        lockCollection.IsPartiallyPaid = false;
-                                        lockCollection.IsPaidInAdvanced = false;
-                                        lockCollection.AdvancePaidDate = null;
-                                        lockCollection.IsFullyPaid = false;
-                                        lockCollection.PaidAmount = collection.PaidAmount;
-                                        lockCollection.BalanceAmount = loan.FirstOrDefault().CurrentCollectibeAmount - collection.PaidAmount;
-                                        lockCollection.Status = "Paid";
-                                        lockCollection.IsAllowanceDay = isAllowanceDay;
-                                        lockCollection.Particulars = collection.Particulars;
-                                        lockCollection.IsLocked = true;
-                                        lockCollection.UpdatedByUserId = userId;
-                                        lockCollection.UpdatedDateTime = DateTime.Now;
-
-                                        Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                        updateLoan.updateLoan(loan.FirstOrDefault().Id);
-
-                                        Business.Journal journal = new Business.Journal();
-                                        journal.postLoanJournal(Convert.ToInt32(id));
-
-                                        return Request.CreateResponse(HttpStatusCode.OK);
-                                    }
-                                    else
-                                    {
-                                        if (collection.IsAbsent)
-                                        {
-                                            var numberOfAbsent = loan.FirstOrDefault().NoOfAbsent;
-                                            var penaltyAmount = loan.FirstOrDefault().mstPenalty.DefaultPenaltyAmount;
-                                            if (loan.FirstOrDefault().mstPenalty.NoOfLimitAbsent % numberOfAbsent == 0)
-                                            {
-                                                penaltyAmount = loan.FirstOrDefault().mstPenalty.PenaltyAmountOverNoOfLimitAbsent;
-                                            }
-
-                                            lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                            lockCollection.LoanId = loan.FirstOrDefault().Id;
-                                            lockCollection.CollectibleAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                                            lockCollection.IsCleared = false;
-                                            lockCollection.IsAbsent = true;
-                                            lockCollection.IsPartiallyPaid = false;
-                                            lockCollection.IsPaidInAdvanced = false;
-                                            lockCollection.AdvancePaidDate = null;
-                                            lockCollection.IsFullyPaid = false;
-                                            lockCollection.PaidAmount = 0;
-                                            lockCollection.BalanceAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                                            lockCollection.Status = "Absent";
-                                            lockCollection.IsAllowanceDay = isAllowanceDay;
-                                            lockCollection.Particulars = collection.Particulars;
-                                            lockCollection.IsLocked = true;
-                                            lockCollection.UpdatedByUserId = userId;
-                                            lockCollection.UpdatedDateTime = DateTime.Now;
-
-                                            Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                            updateLoan.updateLoan(loan.FirstOrDefault().Id);
-
-                                            return Request.CreateResponse(HttpStatusCode.OK);
-                                        }
-                                        else
-                                        {
-                                            if (collection.IsPartiallyPaid)
-                                            {
-                                                if (collection.PaidAmount < loan.FirstOrDefault().CurrentCollectibeAmount)
-                                                {
-                                                    lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                                    lockCollection.LoanId = loan.FirstOrDefault().Id;
-                                                    lockCollection.CollectibleAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                                                    lockCollection.IsCleared = false;
-                                                    lockCollection.IsAbsent = false;
-                                                    lockCollection.PenaltyAmount = collection.PenaltyAmount;
-                                                    lockCollection.IsPartiallyPaid = true;
-                                                    lockCollection.IsPaidInAdvanced = false;
-                                                    lockCollection.AdvancePaidDate = null;
-                                                    lockCollection.IsFullyPaid = false;
-                                                    lockCollection.PaidAmount = collection.PaidAmount;
-                                                    lockCollection.BalanceAmount = loan.FirstOrDefault().CurrentCollectibeAmount - collection.PaidAmount;
-                                                    lockCollection.Status = "Paid";
-                                                    lockCollection.IsAllowanceDay = false;
-                                                    lockCollection.Particulars = collection.Particulars;
-                                                    lockCollection.IsLocked = true;
-                                                    lockCollection.UpdatedByUserId = userId;
-                                                    lockCollection.UpdatedDateTime = DateTime.Now;
-
-                                                    Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                                    updateLoan.updateLoan(loan.FirstOrDefault().Id);
-
-                                                    Business.Journal journal = new Business.Journal();
-                                                    journal.postLoanJournal(Convert.ToInt32(id));
-
-                                                    return Request.CreateResponse(HttpStatusCode.OK);
-                                                }
-                                                else
-                                                {
-                                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (collection.IsPaidInAdvanced)
-                                                {
-                                                    lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                                    lockCollection.LoanId = loan.FirstOrDefault().Id;
-                                                    lockCollection.CollectibleAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                                                    lockCollection.IsCleared = false;
-                                                    lockCollection.IsAbsent = false;
-                                                    lockCollection.PenaltyAmount = 0;
-                                                    lockCollection.IsPartiallyPaid = false;
-                                                    lockCollection.IsPaidInAdvanced = true;
-                                                    lockCollection.AdvancePaidDate = Convert.ToDateTime(collection.AdvancePaidDate);
-                                                    lockCollection.IsFullyPaid = false;
-                                                    lockCollection.PaidAmount = collection.PaidAmount;
-                                                    lockCollection.BalanceAmount = loan.FirstOrDefault().CurrentCollectibeAmount - collection.PaidAmount;
-                                                    lockCollection.Status = "Advance";
-                                                    lockCollection.IsAllowanceDay = isAllowanceDay;
-                                                    lockCollection.Particulars = collection.Particulars;
-                                                    lockCollection.IsLocked = true;
-                                                    lockCollection.UpdatedByUserId = userId;
-                                                    lockCollection.UpdatedDateTime = DateTime.Now;
-
-                                                    Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                                    updateLoan.updateLoan(loan.FirstOrDefault().Id);
-
-                                                    Business.Journal journal = new Business.Journal();
-                                                    journal.postLoanJournal(Convert.ToInt32(id));
-
-                                                    return Request.CreateResponse(HttpStatusCode.OK);
-                                                }
-                                                else
-                                                {
-                                                    if (collection.IsFullyPaid)
-                                                    {
-                                                        lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                                        lockCollection.LoanId = loan.FirstOrDefault().Id;
-                                                        lockCollection.CollectibleAmount = loan.FirstOrDefault().CurrentCollectibeAmount;
-                                                        lockCollection.IsCleared = false;
-                                                        lockCollection.IsAbsent = false;
-                                                        lockCollection.PenaltyAmount = 0;
-                                                        lockCollection.IsPartiallyPaid = false;
-                                                        lockCollection.IsPaidInAdvanced = false;
-                                                        lockCollection.AdvancePaidDate = null;
-                                                        lockCollection.IsFullyPaid = true;
-                                                        lockCollection.PaidAmount = loan.FirstOrDefault().BalanceAmount;
-                                                        lockCollection.BalanceAmount = 0;
-                                                        lockCollection.Status = "Full";
-                                                        lockCollection.IsAllowanceDay = isAllowanceDay;
-                                                        lockCollection.Particulars = collection.Particulars;
-                                                        lockCollection.IsLocked = true;
-                                                        lockCollection.UpdatedByUserId = userId;
-                                                        lockCollection.UpdatedDateTime = DateTime.Now;
-
-                                                        Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                                        updateLoan.updateLoan(loan.FirstOrDefault().Id);
-
-                                                        Business.Journal journal = new Business.Journal();
-                                                        journal.postLoanJournal(Convert.ToInt32(id));
-
-                                                        return Request.CreateResponse(HttpStatusCode.OK);
-                                                    }
-                                                    else
-                                                    {
-                                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else
                                 {
@@ -455,7 +292,7 @@ namespace Lending.ApiControllers
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
             }
             catch
@@ -515,19 +352,11 @@ namespace Lending.ApiControllers
                                 {
                                     if (lastCollection.FirstOrDefault().Id == Convert.ToInt32(id))
                                     {
-                                        Int32 loanId = collections.FirstOrDefault().LoanId;
-
                                         var unlockCollection = collections.FirstOrDefault();
                                         unlockCollection.IsLocked = false;
                                         unlockCollection.UpdatedByUserId = userId;
                                         unlockCollection.UpdatedDateTime = DateTime.Now;
                                         db.SubmitChanges();
-
-                                        Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                        updateLoan.updateLoan(loanId);
-
-                                        Business.Journal journal = new Business.Journal();
-                                        journal.deleteLoanJournal(Convert.ToInt32(id));
 
                                         return Request.CreateResponse(HttpStatusCode.OK);
                                     }
@@ -553,17 +382,17 @@ namespace Lending.ApiControllers
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot unlock the loan application because it is not yet locked.");
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry, but there are no data found in the server to unlock this loan application.");
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Oops! Something went wrong from the server. Please contact the administrator.");
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
 
@@ -621,9 +450,6 @@ namespace Lending.ApiControllers
                                         db.trnCollections.DeleteOnSubmit(collections.First());
                                         db.SubmitChanges();
 
-                                        Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                        updateLoan.updateLoan(collections.FirstOrDefault().LoanId);
-
                                         return Request.CreateResponse(HttpStatusCode.OK);
                                     }
                                     else
@@ -653,7 +479,7 @@ namespace Lending.ApiControllers
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
             }
             catch
