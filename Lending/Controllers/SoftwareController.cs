@@ -203,11 +203,11 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult CollectionDetail(Int32? collectionId)
+        public ActionResult CollectionDetail(Int32? id)
         {
             if (pageAccess("CollectionDetail").Equals("CollectionDetail"))
             {
-                if (collectionId == null)
+                if (id == null)
                 {
                     return RedirectToAction("NotFound", "Software");
                 }
@@ -223,11 +223,11 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult ReconstructDetail(Int32? reconstructId)
+        public ActionResult ReconstructDetail(Int32? id)
         {
             if (pageAccess("ReconstructDetail").Equals("ReconstructDetail"))
             {
-                if (reconstructId == null)
+                if (id == null)
                 {
                     return RedirectToAction("NotFound", "Software");
                 }

@@ -14,6 +14,58 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
+        // loan list by applicantId
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/listByApplicantId/{applicantId}")]
+        public List<Models.TrnLoan> listLoanByApplicantId(String applicantId)
+        {
+            var loanApplications = from d in db.trnLoans
+                                   where d.ApplicantId == Convert.ToInt32(applicantId)
+                                   && d.IsLocked == true
+                                   select new Models.TrnLoan
+                                   {
+                                       Id = d.Id,
+                                       LoanNumber = d.IsReconstruct == false ? d.LoanNumber + " (Active)" : d.LoanNumber + " (Reconstruct)",
+                                       LoanDate = d.LoanDate.ToShortDateString(),
+                                       ApplicantId = d.ApplicantId,
+                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                       Area = d.mstApplicant.mstArea.Area,
+                                       Particulars = d.Particulars,
+                                       PreparedByUserId = d.PreparedByUserId,
+                                       PreparedByUser = d.mstUser.FullName,
+                                       TermId = d.TermId,
+                                       Term = d.mstTerm.Term,
+                                       TermNoOfDays = d.TermNoOfDays,
+                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       IsAdvanceInterest = d.IsAdvanceInterest,
+                                       InterestId = d.InterestId,
+                                       Interest = d.mstInterest.Interest,
+                                       InterestRate = d.InterestRate,
+                                       InterestAmount = d.InterestAmount,
+                                       DeductionAmount = d.DeductionAmount,
+                                       NetAmount = d.NetAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       NoOfAbsent = d.NoOfAbsent,
+                                       IsCollectionClose = d.IsCollectionClose,
+                                       IsReconstruct = d.IsReconstruct,
+                                       IsFullyPaid = d.IsFullyPaid,
+                                       IsLocked = d.IsLocked,
+                                       CreatedByUserId = d.CreatedByUserId,
+                                       CreatedByUser = d.mstUser1.FullName,
+                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                       UpdatedByUserId = d.UpdatedByUserId,
+                                       UpdatedByUser = d.mstUser2.FullName,
+                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                   };
+
+            return loanApplications.ToList();
+        }
+
         // loan list by loan date
         [Authorize]
         [HttpGet]

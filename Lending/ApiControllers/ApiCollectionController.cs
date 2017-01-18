@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace Lending.ApiControllers
 {
@@ -26,10 +27,11 @@ namespace Lending.ApiControllers
                                   Id = d.Id,
                                   CollectionNumber = d.CollectionNumber,
                                   CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  ApplicantId = d.ApplicantId,
-                                  Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                  ApplicantId = d.trnLoan.ApplicantId,
+                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                   LoanId = d.LoanId,
-                                  LoanNumber = d.trnLoan.LoanNumber,
+                                  LoanNumber = d.trnLoan.IsReconstruct == false ? d.trnLoan.LoanNumber + " (Active)" : d.trnLoan.LoanNumber + " (Reconstruct)",
+                                  IsReconstruct = d.trnLoan.IsReconstruct,
                                   StatusId = d.StatusId,
                                   Status = d.sysCollectionStatus.Status,
                                   Particulars = d.Particulars,
@@ -61,10 +63,11 @@ namespace Lending.ApiControllers
                                  Id = d.Id,
                                  CollectionNumber = d.CollectionNumber,
                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                 ApplicantId = d.ApplicantId,
-                                 Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                 ApplicantId = d.trnLoan.ApplicantId,
+                                 Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                  LoanId = d.LoanId,
-                                 LoanNumber = d.trnLoan.LoanNumber,
+                                 LoanNumber = d.trnLoan.IsReconstruct == false ? d.trnLoan.LoanNumber + " (Active)" : d.trnLoan.LoanNumber + " (Reconstruct)",
+                                 IsReconstruct = d.trnLoan.IsReconstruct,
                                  StatusId = d.StatusId,
                                  Status = d.sysCollectionStatus.Status,
                                  Particulars = d.Particulars,
@@ -143,23 +146,22 @@ namespace Lending.ApiControllers
                             collectionNumber = newCollectionNumber.ToString();
                         }
 
-                        var applicant = from d in db.mstApplicants select d;
-                        if (applicant.Any())
-                        {
-                            var loan = from d in db.trnLoans
-                                       where d.ApplicantId == applicant.FirstOrDefault().Id
-                                       && d.IsLocked == true
-                                       select d;
+                        var loan = from d in db.trnLoans
+                                   where d.IsLocked == true
+                                   select d;
 
-                            if (loan.Any())
+                        if (loan.Any())
+                        {
+                            var status = from d in db.sysCollectionStatus select d;
+                            if (status.Any())
                             {
                                 Data.trnCollection newCollection = new Data.trnCollection();
                                 newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
                                 newCollection.CollectionDate = DateTime.Today;
-                                newCollection.ApplicantId = applicant.FirstOrDefault().Id;
                                 newCollection.LoanId = loan.FirstOrDefault().Id;
-                                newCollection.StatusId = (from d in db.sysCollectionStatus select d.Id).FirstOrDefault();
+                                newCollection.StatusId = status.FirstOrDefault().Id;
                                 newCollection.Particulars = "NA";
+                                newCollection.PreparedByUserId = userId;
                                 newCollection.TotalPaidAmount = 0;
                                 newCollection.IsLocked = false;
                                 newCollection.CreatedByUserId = userId;
@@ -240,9 +242,10 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var loan = from d in db.trnLoans 
-                                           where d.Id == collection.LoanId 
-                                           && d.IsLocked == true select d;
+                                var loan = from d in db.trnLoans
+                                           where d.Id == collection.LoanId
+                                           && d.IsLocked == true
+                                           select d;
 
                                 if (loan.Any())
                                 {
@@ -258,10 +261,10 @@ namespace Lending.ApiControllers
 
                                     var lockCollection = collections.FirstOrDefault();
                                     lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                    lockCollection.ApplicantId = collection.ApplicantId;
                                     lockCollection.LoanId = collection.LoanId;
                                     lockCollection.StatusId = collection.StatusId;
                                     lockCollection.Particulars = collection.Particulars;
+                                    lockCollection.PreparedByUserId = collection.PreparedByUserId;
                                     lockCollection.TotalPaidAmount = totalPaidAmount;
                                     lockCollection.IsLocked = true;
                                     lockCollection.UpdatedByUserId = userId;
@@ -345,8 +348,8 @@ namespace Lending.ApiControllers
                             if (canPerformActions)
                             {
                                 var lastCollection = from d in db.trnCollections.OrderByDescending(d => d.Id)
-                                                             where d.LoanId == collections.FirstOrDefault().LoanId
-                                                             select d;
+                                                     where d.LoanId == collections.FirstOrDefault().LoanId
+                                                     select d;
 
                                 if (lastCollection.Any())
                                 {
@@ -440,8 +443,8 @@ namespace Lending.ApiControllers
                             if (canPerformActions)
                             {
                                 var lastCollection = from d in db.trnCollections.OrderByDescending(d => d.Id)
-                                                             where d.LoanId == collections.FirstOrDefault().LoanId
-                                                             select d;
+                                                     where d.LoanId == collections.FirstOrDefault().LoanId
+                                                     select d;
 
                                 if (lastCollection.Any())
                                 {

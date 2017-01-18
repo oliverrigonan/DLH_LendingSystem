@@ -1853,8 +1853,6 @@ namespace Lending.Data
 		
 		private EntitySet<mstCoMakerStatement> _mstCoMakerStatements;
 		
-		private EntitySet<trnCollection> _trnCollections;
-		
 		private EntitySet<trnLoan> _trnLoans;
 		
 		private EntityRef<mstArea> _mstArea;
@@ -1975,7 +1973,6 @@ namespace Lending.Data
 			this._mstApplicantRealPropertiesOwneds = new EntitySet<mstApplicantRealPropertiesOwned>(new Action<mstApplicantRealPropertiesOwned>(this.attach_mstApplicantRealPropertiesOwneds), new Action<mstApplicantRealPropertiesOwned>(this.detach_mstApplicantRealPropertiesOwneds));
 			this._mstApplicantRequirements = new EntitySet<mstApplicantRequirement>(new Action<mstApplicantRequirement>(this.attach_mstApplicantRequirements), new Action<mstApplicantRequirement>(this.detach_mstApplicantRequirements));
 			this._mstCoMakerStatements = new EntitySet<mstCoMakerStatement>(new Action<mstCoMakerStatement>(this.attach_mstCoMakerStatements), new Action<mstCoMakerStatement>(this.detach_mstCoMakerStatements));
-			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
 			this._trnLoans = new EntitySet<trnLoan>(new Action<trnLoan>(this.attach_trnLoans), new Action<trnLoan>(this.detach_trnLoans));
 			this._mstArea = default(EntityRef<mstArea>);
 			this._mstUser = default(EntityRef<mstUser>);
@@ -3002,19 +2999,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_trnCollection", Storage="_trnCollections", ThisKey="Id", OtherKey="ApplicantId")]
-		public EntitySet<trnCollection> trnCollections
-		{
-			get
-			{
-				return this._trnCollections;
-			}
-			set
-			{
-				this._trnCollections.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_trnLoan", Storage="_trnLoans", ThisKey="Id", OtherKey="ApplicantId")]
 		public EntitySet<trnLoan> trnLoans
 		{
@@ -3295,18 +3279,6 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstCoMakerStatements(mstCoMakerStatement entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicant = null;
-		}
-		
-		private void attach_trnCollections(trnCollection entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstApplicant = this;
-		}
-		
-		private void detach_trnCollections(trnCollection entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstApplicant = null;
@@ -11096,8 +11068,6 @@ namespace Lending.Data
 		
 		private System.DateTime _CollectionDate;
 		
-		private int _ApplicantId;
-		
 		private int _LoanId;
 		
 		private int _StatusId;
@@ -11120,8 +11090,6 @@ namespace Lending.Data
 		
 		private EntitySet<trnCollectionLine> _trnCollectionLines;
 		
-		private EntityRef<mstApplicant> _mstApplicant;
-		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -11142,8 +11110,6 @@ namespace Lending.Data
     partial void OnCollectionNumberChanged();
     partial void OnCollectionDateChanging(System.DateTime value);
     partial void OnCollectionDateChanged();
-    partial void OnApplicantIdChanging(int value);
-    partial void OnApplicantIdChanged();
     partial void OnLoanIdChanging(int value);
     partial void OnLoanIdChanged();
     partial void OnStatusIdChanging(int value);
@@ -11169,7 +11135,6 @@ namespace Lending.Data
 		public trnCollection()
 		{
 			this._trnCollectionLines = new EntitySet<trnCollectionLine>(new Action<trnCollectionLine>(this.attach_trnCollectionLines), new Action<trnCollectionLine>(this.detach_trnCollectionLines));
-			this._mstApplicant = default(EntityRef<mstApplicant>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			this._mstUser2 = default(EntityRef<mstUser>);
@@ -11234,30 +11199,6 @@ namespace Lending.Data
 					this._CollectionDate = value;
 					this.SendPropertyChanged("CollectionDate");
 					this.OnCollectionDateChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ApplicantId", DbType="Int NOT NULL")]
-		public int ApplicantId
-		{
-			get
-			{
-				return this._ApplicantId;
-			}
-			set
-			{
-				if ((this._ApplicantId != value))
-				{
-					if (this._mstApplicant.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnApplicantIdChanging(value);
-					this.SendPropertyChanging();
-					this._ApplicantId = value;
-					this.SendPropertyChanged("ApplicantId");
-					this.OnApplicantIdChanged();
 				}
 			}
 		}
@@ -11492,40 +11433,6 @@ namespace Lending.Data
 			set
 			{
 				this._trnCollectionLines.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstApplicant_trnCollection", Storage="_mstApplicant", ThisKey="ApplicantId", OtherKey="Id", IsForeignKey=true)]
-		public mstApplicant mstApplicant
-		{
-			get
-			{
-				return this._mstApplicant.Entity;
-			}
-			set
-			{
-				mstApplicant previousValue = this._mstApplicant.Entity;
-				if (((previousValue != value) 
-							|| (this._mstApplicant.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstApplicant.Entity = null;
-						previousValue.trnCollections.Remove(this);
-					}
-					this._mstApplicant.Entity = value;
-					if ((value != null))
-					{
-						value.trnCollections.Add(this);
-						this._ApplicantId = value.Id;
-					}
-					else
-					{
-						this._ApplicantId = default(int);
-					}
-					this.SendPropertyChanged("mstApplicant");
-				}
 			}
 		}
 		

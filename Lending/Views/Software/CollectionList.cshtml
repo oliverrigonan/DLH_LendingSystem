@@ -96,6 +96,26 @@
         </div>
     </div>
 
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationCollectionModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Collection</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Collection?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteCollection" onclick="btnConfirmDeleteCollectionOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteCollectionModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -122,7 +142,7 @@
                 onValueChanged: function () {
                     if (isCollectionDateClicked == true) {
                         NProgress.start();
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateAndAreaIdList());
+                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
                         collectionCollectionView.canFilter = true;
 
                         var filterText = '';
@@ -133,7 +153,8 @@
 
                         collectionCollectionView.filter = function (item) {
                             return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Status.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         collectionCollectionView.currentChanged.addHandler(function (sender, args) {
@@ -151,7 +172,7 @@
         }
 
         // get colllection list by collection date and area id
-        function getCollectionByCollectionDateAndAreaIdList() {
+        function getCollectionByCollectionDateList() {
             var collectionListArray = new wijmo.collections.ObservableArray;
             $.ajax({
                 url: '/api/collections/list/ByCollectionDate/' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-'),
@@ -176,24 +197,21 @@
                             var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
                             
                             collectionListArray.push({
-                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
-                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: collectionListResult[i]["Id"],
                                 CollectionNumber: collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
-                                LoanId: collectionListResult[i]["LoanId"],
+                                ApplicantId: collectionListResult[i]["ApplicantId"],
                                 Applicant: collectionListResult[i]["Applicant"],
+                                LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
-                                LoanDetail: collectionListResult[i]["LoanDetail"],
-                                IsCleared: collectionListResult[i]["IsCleared"],
-                                IsAbsent: collectionListResult[i]["IsAbsent"],
-                                PenaltyAmount: collectionListResult[i]["PenaltyAmount"],
-                                IsPartiallyPaid: collectionListResult[i]["IsPartiallyPaid"],
-                                IsPaidInAdvanced: collectionListResult[i]["IsPaidInAdvanced"],
-                                IsFullyPaid: collectionListResult[i]["IsFullyPaid"],
-                                PaidAmount: collectionListResult[i]["PaidAmount"],
+                                StatusId: collectionListResult[i]["StatusId"],
                                 Status: collectionListResult[i]["Status"],
                                 Particulars: collectionListResult[i]["Particulars"],
+                                TotalPaidAmount: collectionListResult[i]["TotalPaidAmount"],
+                                PreparedByUserId: collectionListResult[i]["PreparedByUserId"],
+                                PreparedByUser: collectionListResult[i]["PreparedByUser"],
                                 IsLocked: collectionListResult[i]["IsLocked"],
                                 CreatedByUserId: collectionListResult[i]["CreatedByUserId"],
                                 CreatedByUser: collectionListResult[i]["CreatedByUser"],
@@ -211,6 +229,106 @@
             return collectionListArray;
         }
 
+        // add new collection
+        function btnAddCollectionOnclick() {
+            document.getElementById("btnAddCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding New Loan Application";
+            $("#btnAddCollection").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/collection/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/CollectionDetail?id=' + id;
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // edit loan application
+        function btnEditCollectionOnclick() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var id = collectionCollectionView.currentEditItem.Id;
+            window.location = '/Software/CollectionDetail?id=' + id;
+        }
+
+        // delete loan application
+        function btnDeleteCollectionOnclick(isLocked) {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationCollectionModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
+                $("#btnConfirmDeleteCollection").prop("disabled", false);
+                $("#btnCloseDeleteCollectionModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteCollectionOnclick() {
+            document.getElementById("btnConfirmDeleteCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteCollection").prop("disabled", true);
+            $("#btnCloseDeleteCollectionModal").prop("disabled", true);
+
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var id = collectionCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/collection/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationCollectionModal').modal('hide');
+
+                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
+                        collectionCollectionView.canFilter = true;
+
+                        var filterText = '';
+                        $('#searchCollection').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            collectionCollectionView.refresh();
+                        });
+
+                        collectionCollectionView.filter = function (item) {
+                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        collectionFlexGrid.itemsSource = collectionCollectionView;
+                        collectionFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Not Found");
+                        $('#deleteConfirmationCollectionModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
+                        $("#btnConfirmDeleteCollection").prop("disabled", false);
+                        $("#btnCloseDeleteCollectionModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationCollectionModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
+                        $("#btnConfirmDeleteCollection").prop("disabled", false);
+                        $("#btnCloseDeleteCollectionModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
         // stamp security
         function updateStampSecurity() {
             var item = collectionCollectionView.currentItem;
@@ -222,7 +340,7 @@
 
         // create collection flexgrid
         function createCollectionFlexGrid() {
-            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateAndAreaIdList());
+            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
             collectionCollectionView.canFilter = true;
 
             var filterText = '';
@@ -233,7 +351,8 @@
             
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.currentChanged.addHandler(function (sender, args) {
@@ -276,11 +395,17 @@
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
-                                "width": 200,
+                                "width": 280,
+                            },
+                            {
+                                "header": "Loan No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 195,
                             },
                             {
                                 "header": "Paid Amount",
-                                "binding": "PaidAmount",
+                                "binding": "TotalPaidAmount",
                                 "allowSorting": true,
                                 "width": 150
                             },
@@ -288,7 +413,7 @@
                                 "header": "Status",
                                 "binding": "Status",
                                 "allowSorting": true,
-                                "width": 300
+                                "width": 200
                             },
                             {
                                 "header": "L",

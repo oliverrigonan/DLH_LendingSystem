@@ -16,6 +16,7 @@ namespace Lending.Models
         public String Applicant { get; set; }
         public Int32 LoanId { get; set; }
         public String LoanNumber { get; set; }
+        public Boolean IsReconstruct { get; set; }
         public Int32 StatusId { get; set; }
         public String Status { get; set; }
         public String Particulars { get; set; }

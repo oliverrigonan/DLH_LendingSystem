@@ -178,6 +178,7 @@
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
     <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
+    <Compile Include="ApiControllers\ApiCollectionStatusController.cs" />
     <Compile Include="ApiControllers\ApiDeductionsController.cs" />
     <Compile Include="ApiControllers\ApiLoanDeductionsController.cs" />
     <Compile Include="ApiControllers\ApiCompanyController.cs" />
