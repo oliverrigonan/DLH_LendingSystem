@@ -229,8 +229,8 @@ namespace Lending.ApiControllers
         // delete loan deductions
         [Authorize]
         [HttpDelete]
-        [Route("api/loanDeductions/delete/{id}")]
-        public HttpResponseMessage deleteLoanDeductions(String id)
+        [Route("api/loanDeductions/delete/{id}/{loanId}")]
+        public HttpResponseMessage deleteLoanDeductions(String id, String loanId)
         {
             try
             {
@@ -272,13 +272,11 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    var loanId = Convert.ToInt32(id);
-
                                     db.trnLoanDeductions.DeleteOnSubmit(loanApplicationDeductionss.First());
                                     db.SubmitChanges();
 
                                     var loanDeductions = from d in db.trnLoanDeductions
-                                                         where d.LoanId == loanId
+                                                         where d.LoanId == Convert.ToInt32(loanId)
                                                          select d;
 
                                     Decimal deductionAmount = 0;
@@ -287,6 +285,7 @@ namespace Lending.ApiControllers
                                         deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
                                     }
 
+                                    var updateDeleteLoan = from d in db.trnLoans where d.Id == loanApplicationDeductionss.FirstOrDefault().LoanId select d;
                                     var updateLoan = loan.FirstOrDefault();
                                     updateLoan.DeductionAmount = deductionAmount;
                                     db.SubmitChanges();

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 
 namespace Lending.ApiControllers
@@ -83,14 +84,15 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var collectionLine = from d in db.trnCollectionLines 
-                                                     where d.LoanLinesId == Convert.ToInt32(collectionLines.LoanLinesId) 
+                                var collectionLine = from d in db.trnCollectionLines
+                                                     where d.CollectionId == collection.FirstOrDefault().Id
+                                                     && d.LoanLinesId == Convert.ToInt32(collectionLines.LoanLinesId)
                                                      select d;
 
                                 if (!collectionLine.Any())
                                 {
                                     var loanLines = from d in db.trnLoanLines
-                                                    where d.Id == Convert.ToInt32(collectionLines.LoanLinesId) 
+                                                    where d.Id == Convert.ToInt32(collectionLines.LoanLinesId)
                                                     select d;
 
                                     if (loanLines.Any())
@@ -99,7 +101,7 @@ namespace Lending.ApiControllers
                                         {
                                             if (loanLines.FirstOrDefault().BalanceAmount > 0)
                                             {
-                                                if (collectionLines.PaidAmount < loanLines.FirstOrDefault().BalanceAmount)
+                                                if (collectionLines.PaidAmount <= loanLines.FirstOrDefault().BalanceAmount)
                                                 {
                                                     Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
                                                     newCollectionLine.CollectionId = collectionLines.CollectionId;
@@ -109,6 +111,20 @@ namespace Lending.ApiControllers
                                                     newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
                                                     newCollectionLine.PaidAmount = collectionLines.PaidAmount;
                                                     db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
+                                                    db.SubmitChanges();
+
+                                                    var collectionLineAmount = from d in db.trnCollectionLines
+                                                                               where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
+                                                                               select d;
+
+                                                    Decimal totalPaidAmount = 0;
+                                                    if (collectionLineAmount.Any())
+                                                    {
+                                                        totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                                    }
+
+                                                    var updateCollection = collection.FirstOrDefault();
+                                                    updateCollection.TotalPaidAmount = totalPaidAmount;
                                                     db.SubmitChanges();
 
                                                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -135,7 +151,7 @@ namespace Lending.ApiControllers
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Processed Already");
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
                                 }
                             }
                             else
@@ -210,16 +226,37 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    var updateCollectionLines = collectionLine.FirstOrDefault();
-                                    updateCollectionLines.CollectionId = collectionLines.CollectionId;
-                                    updateCollectionLines.LoanId = collectionLines.LoanId;
-                                    updateCollectionLines.LoanLinesId = collectionLines.LoanLinesId;
-                                    updateCollectionLines.PenaltyId = collectionLines.PenaltyId;
-                                    updateCollectionLines.PenaltyAmount = collectionLines.PenaltyAmount;
-                                    updateCollectionLines.PaidAmount = collectionLines.PaidAmount;
-                                    db.SubmitChanges();
+                                    if (collectionLines.PaidAmount <= collectionLine.FirstOrDefault().trnLoanLine.BalanceAmount)
+                                    {
+                                        var updateCollectionLines = collectionLine.FirstOrDefault();
+                                        updateCollectionLines.CollectionId = collectionLines.CollectionId;
+                                        updateCollectionLines.LoanId = collectionLines.LoanId;
+                                        updateCollectionLines.LoanLinesId = collectionLines.LoanLinesId;
+                                        updateCollectionLines.PenaltyId = collectionLines.PenaltyId;
+                                        updateCollectionLines.PenaltyAmount = collectionLines.PenaltyAmount;
+                                        updateCollectionLines.PaidAmount = collectionLines.PaidAmount;
+                                        db.SubmitChanges();
 
-                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                        var collectionLineAmount = from d in db.trnCollectionLines
+                                                                   where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
+                                                                   select d;
+
+                                        Decimal totalPaidAmount = 0;
+                                        if (collectionLineAmount.Any())
+                                        {
+                                            totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                        }
+
+                                        var updateCollection = collection.FirstOrDefault();
+                                        updateCollection.TotalPaidAmount = totalPaidAmount;
+                                        db.SubmitChanges();
+
+                                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    }
                                 }
                                 else
                                 {
@@ -255,8 +292,8 @@ namespace Lending.ApiControllers
         // delete collection lines
         [Authorize]
         [HttpDelete]
-        [Route("api/collectionLines/delete/{id}")]
-        public HttpResponseMessage deleteCollectionLine(String id)
+        [Route("api/collectionLines/delete/{id}/{collectionId}")]
+        public HttpResponseMessage deleteCollectionLine(String id, String collectionId)
         {
             try
             {
@@ -301,6 +338,21 @@ namespace Lending.ApiControllers
                                     db.trnCollectionLines.DeleteOnSubmit(collectionLines.First());
                                     db.SubmitChanges();
 
+                                    var collectionLineAmount = from d in db.trnCollectionLines
+                                                               where d.CollectionId == Convert.ToInt32(collectionId)
+                                                               select d;
+
+                                    Decimal totalPaidAmount = 0;
+                                    if (collectionLineAmount.Any())
+                                    {
+                                        totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                    }
+
+                                    var updateDeleteCollection = from d in db.trnCollections where d.Id == Convert.ToInt32(collectionId) select d;
+                                    var updateCollection = updateDeleteCollection.FirstOrDefault();
+                                    updateCollection.TotalPaidAmount = totalPaidAmount;
+                                    db.SubmitChanges();
+
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else
@@ -328,8 +380,9 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }

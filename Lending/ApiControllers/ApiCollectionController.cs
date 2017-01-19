@@ -193,32 +193,93 @@ namespace Lending.ApiControllers
         // update loan lines
         public void updateLoan(Int32 collectionId)
         {
-            var collection = from d in db.trnCollections
-                             where d.Id == collectionId
-                             select d;
+            var lockedCollectionLines = from d in db.trnCollectionLines
+                                        where d.CollectionId == collectionId
+                                        && d.trnCollection.IsLocked == true
+                                        select new Models.TrnCollectionLines
+                                        {
+                                            Id = d.Id,
+                                            CollectionId = d.CollectionId,
+                                            LoanId = d.LoanId,
+                                            LoanNumber = d.trnLoan.LoanNumber,
+                                            LoanLinesId = d.LoanLinesId,
+                                            LoanLinesDayReference = d.trnLoanLine.DayReference,
+                                            LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
+                                            PenaltyId = d.PenaltyId,
+                                            Penalty = d.mstPenalty.Penalty,
+                                            PenaltyAmount = d.PenaltyAmount,
+                                            PaidAmount = d.PaidAmount,
+                                        };
 
-            if (collection.Any())
+            if (lockedCollectionLines.Any())
             {
-                var collectionLines = from d in db.trnCollectionLines
-                                      where d.CollectionId == collection.FirstOrDefault().Id
-                                      select new Models.TrnCollectionLines
-                                      {
-                                          Id = d.Id,
-                                          CollectionId = d.CollectionId,
-                                          LoanId = d.LoanId,
-                                          LoanNumber = d.trnLoan.LoanNumber,
-                                          LoanLinesId = d.LoanLinesId,
-                                          LoanLinesDayReference = d.trnLoanLine.DayReference,
-                                          LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
-                                          PenaltyId = d.PenaltyId,
-                                          Penalty = d.mstPenalty.Penalty,
-                                          PenaltyAmount = d.PenaltyAmount,
-                                          PaidAmount = d.PaidAmount,
-                                      };
-
-                if (collectionLines.Any())
+                foreach (var collectionLine in lockedCollectionLines)
                 {
-                    foreach (var collectionLine in collectionLines)
+                    var loanLines = from d in db.trnLoanLines
+                                    where d.Id == collectionLine.LoanLinesId
+                                    select d;
+
+                    if (loanLines.Any())
+                    {
+                        var collectionPaidAmount = loanLines.FirstOrDefault().PaidAmount + collectionLine.PaidAmount;
+                        var collectionPenaltyAmount = loanLines.FirstOrDefault().PenaltyAmount + collectionLine.PenaltyAmount;
+                        var collectionBalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount + collectionPenaltyAmount) - collectionPaidAmount;
+
+                        var isCleared = false;
+                        if (collectionBalanceAmount == 0)
+                        {
+                            isCleared = true;
+                        }
+
+                        var updateLoanLines = loanLines.FirstOrDefault();
+                        updateLoanLines.PaidAmount = collectionPaidAmount;
+                        updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
+                        updateLoanLines.BalanceAmount = collectionBalanceAmount;
+                        updateLoanLines.IsCleared = isCleared;
+                        db.SubmitChanges();
+
+                        var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
+                        if (loan.Any())
+                        {
+                            var allLoanLines = from d in db.trnLoanLines
+                                                where d.LoanId == loanLines.FirstOrDefault().LoanId
+                                                select d;
+
+                            if (allLoanLines.Any())
+                            {
+                                var updateLoan = loan.FirstOrDefault();
+                                updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
+                                updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
+                                updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.BalanceAmount);
+                                db.SubmitChanges();
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var unlockedCollectionLines = from d in db.trnCollectionLines
+                                              where d.CollectionId == collectionId
+                                              && d.trnCollection.IsLocked == false
+                                              select new Models.TrnCollectionLines
+                                              {
+                                                  Id = d.Id,
+                                                  CollectionId = d.CollectionId,
+                                                  LoanId = d.LoanId,
+                                                  LoanNumber = d.trnLoan.LoanNumber,
+                                                  LoanLinesId = d.LoanLinesId,
+                                                  LoanLinesDayReference = d.trnLoanLine.DayReference,
+                                                  LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
+                                                  PenaltyId = d.PenaltyId,
+                                                  Penalty = d.mstPenalty.Penalty,
+                                                  PenaltyAmount = d.PenaltyAmount,
+                                                  PaidAmount = d.PaidAmount,
+                                              };
+
+                if (unlockedCollectionLines.Any())
+                {
+                    foreach (var collectionLine in unlockedCollectionLines)
                     {
                         var loanLines = from d in db.trnLoanLines
                                         where d.Id == collectionLine.LoanLinesId
@@ -232,8 +293,8 @@ namespace Lending.ApiControllers
 
                             if (collectionLinesAmount.Any())
                             {
-                                var collectionPaidAmount = collectionLinesAmount.Sum(d => d.PaidAmount);
-                                var collectionPenaltyAmount = collectionLinesAmount.Sum(d => d.PenaltyAmount);
+                                var collectionPaidAmount = loanLines.FirstOrDefault().PaidAmount - collectionLine.PaidAmount;
+                                var collectionPenaltyAmount = loanLines.FirstOrDefault().PenaltyAmount - collectionLine.PenaltyAmount;
                                 var collectionBalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount + collectionPenaltyAmount) - collectionPaidAmount;
 
                                 var isCleared = false;
@@ -259,9 +320,9 @@ namespace Lending.ApiControllers
                                     if (allLoanLines.Any())
                                     {
                                         var updateLoan = loan.FirstOrDefault();
-                                        updateLoan.TotalPaidAmount = loanLines.Sum(d => d.PaidAmount);
-                                        updateLoan.TotalPenaltyAmount = loanLines.Sum(d => d.PenaltyAmount);
-                                        updateLoan.TotalBalanceAmount = loanLines.Sum(d => d.BalanceAmount);
+                                        updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
+                                        updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
+                                        updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.BalanceAmount);
                                         db.SubmitChanges();
                                     }
                                 }
@@ -392,7 +453,7 @@ namespace Lending.ApiControllers
 
                         if (mstUserForms.Any())
                         {
-                            String matchPageString = "LoanApplicationDetail";
+                            String matchPageString = "CollectionDetail";
                             Boolean canPerformActions = false;
 
                             foreach (var mstUserForm in mstUserForms)
@@ -471,7 +532,7 @@ namespace Lending.ApiControllers
 
                         if (mstUserForms.Any())
                         {
-                            String matchPageString = "LoanApplicationDetail";
+                            String matchPageString = "CollectionDetail";
                             Boolean canPerformActions = false;
 
                             foreach (var mstUserForm in mstUserForms)

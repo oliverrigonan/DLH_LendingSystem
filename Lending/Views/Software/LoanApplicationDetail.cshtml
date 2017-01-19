@@ -1442,7 +1442,7 @@
 
             $.ajax({
                 type: "DELETE",
-                url: '/api/loanDeductions/delete/' + currentItem.Id,
+                url: '/api/loanDeductions/delete/' + currentItem.Id + '/' + getUrlParameter("id"),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 statusCode: {
