@@ -85,8 +85,19 @@ namespace Lending.ApiControllers
                                 db.trnLoanDeductions.InsertOnSubmit(newLoanApplicationDeductions);
                                 db.SubmitChanges();
 
-                                Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                updateLoan.updateLoan(loanApplicationDeductions.LoanId);
+                                var loanDeductions = from d in db.trnLoanDeductions
+                                                     where d.LoanId == loanApplicationDeductions.LoanId
+                                                     select d;
+
+                                Decimal deductionAmount = 0;
+                                if (loanDeductions.Any())
+                                {
+                                    deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
+                                }
+
+                                var updateLoan = loan.FirstOrDefault();
+                                updateLoan.DeductionAmount = deductionAmount;
+                                db.SubmitChanges();
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }
@@ -168,8 +179,19 @@ namespace Lending.ApiControllers
                                     updateLoanApplicationDeductions.DeductionAmount = loanApplicationDeductions.DeductionAmount;
                                     db.SubmitChanges();
 
-                                    Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                    updateLoan.updateLoan(loanApplicationDeductions.LoanId);
+                                    var loanDeductions = from d in db.trnLoanDeductions
+                                                         where d.LoanId == loanApplicationDeductions.LoanId
+                                                         select d;
+
+                                    Decimal deductionAmount = 0;
+                                    if (loanDeductions.Any())
+                                    {
+                                        deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
+                                    }
+
+                                    var updateLoan = loan.FirstOrDefault();
+                                    updateLoan.DeductionAmount = deductionAmount;
+                                    db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
@@ -255,8 +277,19 @@ namespace Lending.ApiControllers
                                     db.trnLoanDeductions.DeleteOnSubmit(loanApplicationDeductionss.First());
                                     db.SubmitChanges();
 
-                                    Business.UpdateLoan updateLoan = new Business.UpdateLoan();
-                                    updateLoan.updateLoan(loanId);
+                                    var loanDeductions = from d in db.trnLoanDeductions
+                                                         where d.LoanId == loanId
+                                                         select d;
+
+                                    Decimal deductionAmount = 0;
+                                    if (loanDeductions.Any())
+                                    {
+                                        deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
+                                    }
+
+                                    var updateLoan = loan.FirstOrDefault();
+                                    updateLoan.DeductionAmount = deductionAmount;
+                                    db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }

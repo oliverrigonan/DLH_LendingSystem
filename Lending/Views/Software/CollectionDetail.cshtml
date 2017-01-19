@@ -66,10 +66,6 @@
                                             <div id="cboCollectionApplicant"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Loan Number</label><br />
-                                            <div id="cboCollectionLoanNumber" class="requiredCollectionLoanNumber"></div>
-                                        </div>
-                                        <div class="form-group">
                                             <label>Status</label><br />
                                             <div id="cboCollectionStatus"></div>
                                         </div>
@@ -140,6 +136,71 @@
         </div>
     </div>
 
+    <!-- collection lines Detail Modal -->
+    <div class="modal fade" id="collectionLineDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Collection Line Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Loan Number</label><br />
+                        <div id="cboCollectionLoanNumber" class="requiredCollectionLoanNumber"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Reference Day</label><br />
+                        <div id="cboLoanLinesDayReference" style="width: 100%;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Paid Amount</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField requiredCollectionLines" id="collectionLinesPaidAmount" placeholder="0.00" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Penalty</label><br />
+                        <div id="cboPenalty"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Penalty Amount</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField requiredCollectionLines" id="collectionLinesPenaltyAmount" placeholder="0.00" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveCollectionLine" onclick="btnSaveCollectionLineOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
+                    <button class="btn btn-danger" id="btnCloseCollectionLine" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation collection line modal -->
+    <div class="modal fade" id="deleteConfirmationCollectionLineModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Collection Line</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Collection Line?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteCollectionLine" onclick="btnConfirmDeleteCollectionLineOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteCollectionLineModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -152,6 +213,10 @@
         var cboCollectionStatus;
         var cboCollectionPreparedBy;
         var isLocked = false;
+        var collectionLinesCollectionView;
+        var collectionLinesFlexgrid;
+        var cboLoanLinesDayReference;
+        var cboPenalty;
 
         // create collection Date
         function createCollectionDate() {
@@ -201,93 +266,12 @@
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName",
                         onSelectedIndexChanged: function () {
-
-                            var loanNumberArray = new Array();
-                            $.ajax({
-                                url: '/api/loan/listByApplicantId/' + this.selectedItem["Id"],
-                                cache: false,
-                                type: 'GET',
-                                contentType: 'application/json; charset=utf-8',
-                                data: {},
-                                success: function (loanNumberResults) {
-                                    var disabled = true;
-                                    if (loanNumberResults.length > 0) {
-                                        for (i = 0; i < loanNumberResults.length; i++) {
-                                            loanNumberArray.push({
-                                                Id: loanNumberResults[i]["Id"],
-                                                LoanNumber: loanNumberResults[i]["LoanNumber"],
-                                            });
-                                        }
-
-                                        disabled = false;
-                                        if (isLocked) {
-                                            disabled = true;
-                                        }
-                                    }
-
-                                    cboCollectionLoanNumber.dispose();
-                                    cboCollectionLoanNumber = new wijmo.input.ComboBox('#cboCollectionLoanNumber', {
-                                        disabled: disabled,
-                                        itemsSource: loanNumberArray,
-                                        isEditable: false,
-                                        required: true,
-                                        displayMemberPath: "LoanNumber",
-                                        selectedValuePath: "LoanNumber",
-                                        onSelectedIndexChanged: function () {
-
-                                        }
-                                    });
-                                }
-                            });
+                            getLoanNumber();
                         }
                     });
 
-                    cboCollectionLoanNumber = new wijmo.input.ComboBox('#cboCollectionLoanNumber');
-                    getLoanNumber();
-                }
-            });
-        }
-
-        // get loan number
-        function getLoanNumber() {
-            var loanNumberArray = new Array();
-            $.ajax({
-                url: '/api/loan/listByApplicantId/' + cboCollectionApplicant.selectedItem["Id"],
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                data: {},
-                success: function (loanNumberResults) {
-                    var disabled = true;
-                    if (loanNumberResults.length > 0) {
-                        for (i = 0; i < loanNumberResults.length; i++) {
-                            loanNumberArray.push({
-                                Id: loanNumberResults[i]["Id"],
-                                LoanNumber: loanNumberResults[i]["LoanNumber"],
-                            });
-                        }
-
-                        disabled = false;
-
-                        cboCollectionStatus = new wijmo.input.ComboBox('#cboCollectionStatus');
-                        getCollectionStatus();
-                    } else {
-                        cboCollectionStatus = new wijmo.input.ComboBox('#cboCollectionStatus');
-                        getCollectionStatus();
-                    }
-
-                    cboCollectionLoanNumber.dispose();
-                    cboCollectionLoanNumber = new wijmo.input.ComboBox('#cboCollectionLoanNumber', {
-                        disabled: disabled,
-                        itemsSource: loanNumberArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "LoanNumber",
-                        selectedValuePath: "LoanNumber",
-                        onSelectedIndexChanged: function () {
-
-                        }
-                    });
+                    cboCollectionStatus = new wijmo.input.ComboBox('#cboCollectionStatus');
+                    getCollectionStatus();
                 }
             });
         }
@@ -388,7 +372,6 @@
                         document.getElementById("collectionNumber").value = collectionResult.CollectionNumber;
                         cboCollectionDate.value = new Date(collectionResult.CollectionDate);
                         cboCollectionApplicant.selectedValue = collectionResult.Applicant;
-                        cboCollectionLoanNumber.selectedValue = collectionResult.LoanNumber;
                         cboCollectionStatus.selectedValue = collectionResult.Status;
                         document.getElementById("collectionParticulars").value = collectionResult.Particulars;
                         cboCollectionPreparedBy.selectedValue = collectionResult.PreparedByUser;
@@ -403,7 +386,6 @@
 
                             cboCollectionDate.disabled = true;
                             cboCollectionApplicant.disabled = true;
-                            cboCollectionLoanNumber.disabled = true;
                             cboCollectionStatus.disabled = true;
                             document.getElementById("collectionParticulars").disabled = true;
                             cboCollectionPreparedBy.disabled = true;
@@ -420,7 +402,7 @@
                     }
 
                     NProgress.done();
-                    //createFlexGridForLoanApplicationDeduction();
+                    createCollectionLineFlexgrid();
                 }
             });
         }
@@ -444,7 +426,7 @@
             return isValid;
         }
 
-        // lock loan
+        // lock collection
         function btnLockOnClick() {
             if (inputValidationForCollection()) {
                 $("#btnLock").prop("disabled", true);
@@ -465,7 +447,7 @@
                 } else {
                     var collectionObject = new Object();
                     collectionObject.CollectionDate = cboCollectionDate.value;
-                    collectionObject.LoanId = cboCollectionLoanNumber.selectedItem["Id"];
+                    collectionObject.ApplicantId = cboCollectionApplicant.selectedItem["Id"];
                     collectionObject.StatusId = cboCollectionStatus.selectedItem["Id"];
                     collectionObject.Particulars = document.getElementById("collectionParticulars").value;
                     collectionObject.PreparedByUserId = cboCollectionPreparedBy.selectedItem["Id"];
@@ -504,7 +486,7 @@
             }
         }
 
-        // unlock loan
+        // unlock collection
         function btnUnlockOnClick() {
             $("#btnUnlock").prop("disabled", true);
             $("#btnPrint").prop("disabled", true);
@@ -548,11 +530,519 @@
             });
         }
 
+        // collection lines
+        function getCollectionLinesByCollectionId() {
+            var collectionLinesArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/collectionLines/listByCollectionId/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectionLinesResults) {
+                    if (collectionLinesResults.length > 0) {
+                        var deductionAmount = 0;
+                        for (i = 0; i < collectionLinesResults.length; i++) {
+                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionLineOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteCollectionLineOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                if (isLocked) {
+                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionLineOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteCollectionLineOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                                } else {
+                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionLineOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteCollectionLineOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                                }
+                            } else {
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionLineOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteCollectionLineOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                            }
+
+                            var thisDate = new Date(collectionLinesResults[i]["LoanLinesCollectibleDate"]);
+                            var thisDateValue = [thisDate.getMonth() + 1, thisDate.getDate(), thisDate.getFullYear()].join('-');
+
+                            collectionLinesArray.push({
+                                EditButton: btnEditButton,
+                                DeleteButton: btnDeleteButton,
+                                Id: collectionLinesResults[i]["Id"],
+                                CollectionId: collectionLinesResults[i]["CollectionId"],
+                                LoanId: collectionLinesResults[i]["LoanId"],
+                                LoanNumber: collectionLinesResults[i]["LoanNumber"],
+                                LoanLinesId: collectionLinesResults[i]["LoanLinesId"],
+                                LoanLinesDayReference: collectionLinesResults[i]["LoanLinesDayReference"],
+                                LoanLinesCollectibleDate: thisDateValue,
+                                LoanLinesBalanceAmount: collectionLinesResults[i]["LoanLinesBalanceAmount"],
+                                PenaltyId: collectionLinesResults[i]["PenaltyId"],
+                                Penalty: collectionLinesResults[i]["Penalty"],
+                                PenaltyAmount: collectionLinesResults[i]["PenaltyAmount"],
+                                PaidAmount: collectionLinesResults[i]["PaidAmount"],
+                                BalanceAmount: collectionLinesResults[i]["BalanceAmount"]
+                            });
+
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return collectionLinesArray;
+        }
+
+        // create collection line flexgrid
+        function createCollectionLineFlexgrid() {
+            collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+
+            collectionLinesFlexgrid = new wijmo.grid.FlexGrid('#collectionLinesFlexgrid');
+            collectionLinesFlexgrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Loan Day Ref.",
+                                "binding": "LoanLinesDayReference",
+                                "allowSorting": true,
+                                "width": "3*",
+                            },
+                            {
+                                "header": "Collectible Date",
+                                "binding": "LoanLinesCollectibleDate",
+                                "allowSorting": true,
+                                "width": "2.3*",
+                            },
+                            {
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Paid",
+                                "binding": "PaidAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "BalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: collectionLinesCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            collectionLinesFlexgrid.trackChanges = true;
+        }
+
+        // get loan number
+        function getLoanNumber() {
+            var loanNumberArray = new Array();
+            $.ajax({
+                url: '/api/loan/listByApplicantId/' + cboCollectionApplicant.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (loanNumberResults) {
+                    var disabled = true;
+                    if (loanNumberResults.length > 0) {
+                        for (i = 0; i < loanNumberResults.length; i++) {
+                            loanNumberArray.push({
+                                Id: loanNumberResults[i]["Id"],
+                                LoanNumber: loanNumberResults[i]["LoanNumber"]
+                            });
+                        }
+
+                        disabled = false;
+                        if (isLocked) {
+                            disabled = true;
+                        }
+                    }
+
+                    cboCollectionLoanNumber.dispose();
+                    cboCollectionLoanNumber = new wijmo.input.ComboBox('#cboCollectionLoanNumber', {
+                        disabled: disabled,
+                        itemsSource: loanNumberArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "LoanNumber",
+                        selectedValuePath: "LoanNumber",
+                        onSelectedIndexChanged: function () {
+                            createCboLoanLine();
+                        }
+                    });
+
+                    createCboLoanLine();
+                }
+            });
+        }
+
+        // cbo loan line
+        function createCboLoanLine() {
+            var loanLineArray = new Array();
+            var loanId = 0;
+            if (cboCollectionLoanNumber.itemsSource != null) {
+                loanId = cboCollectionLoanNumber.selectedItem["Id"];
+            }
+
+            $.ajax({
+                url: '/api/loanLines/listByLoanId/' + loanId,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (loanLineResults) {
+                    var disabled = true;
+                    if (loanLineResults.length > 0) {
+                        for (i = 0; i < loanLineResults.length; i++) {
+                            loanLineArray.push({
+                                Id: loanLineResults[i]["Id"],
+                                BalanceAmount: loanLineResults[i]["BalanceAmount"],
+                                DayReference: loanLineResults[i]["DayReference"]
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboLoanLinesDayReference.dispose();
+                    cboLoanLinesDayReference = new wijmo.input.ComboBox('#cboLoanLinesDayReference', {
+                        disabled: disabled,
+                        itemsSource: loanLineArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "DayReference",
+                        selectedValuePath: "DayReference",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("collectionLinesPaidAmount").value = this.selectedItem["BalanceAmount"];
+                        }
+                    });
+
+                    if (cboCollectionLoanNumber != null) {
+                        document.getElementById("collectionLinesPaidAmount").value = cboLoanLinesDayReference.selectedItem["BalanceAmount"];
+                    } else {
+                        document.getElementById("collectionLinesPaidAmount").value = 0;
+                        document.getElementById("collectionLinesPaidAmount").disabled = true;
+                    }
+
+                    createCboPenalty();
+                }
+            });
+        }
+
+        // cbo penalty
+        function createCboPenalty() {
+            var penaltyArray = new Array();
+            $.ajax({
+                url: '/api/penalty/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (penaltyResults) {
+                    var disabled = true;
+                    if (penaltyResults.length > 0) {
+                        for (i = 0; i < penaltyResults.length; i++) {
+                            penaltyArray.push({
+                                Id: penaltyResults[i]["Id"],
+                                Penalty: penaltyResults[i]["Penalty"],
+                                PenaltyAmount: penaltyResults[i]["PenaltyAmount"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboPenalty.dispose();
+                    cboPenalty = new wijmo.input.ComboBox('#cboPenalty', {
+                        disabled: disabled,
+                        itemsSource: penaltyArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Penalty",
+                        selectedValuePath: "Penalty",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("collectionLinesPenaltyAmount").value = this.selectedItem["PenaltyAmount"];
+                            computeBalanceAmount();
+                        }
+                    });
+
+                    document.getElementById("collectionLinesPenaltyAmount").value = cboPenalty.selectedItem["PenaltyAmount"];
+                }
+            });
+        }
+
+        var collectionLineId = 0;
+
+        // edit collection line
+        function btnEditCollectionLineOnclick() {
+            $("#collectionLineDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredCollectionLines').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollectionLine").prop("disabled", false);
+            $("#btnCloseCollectionLine").prop("disabled", false);
+
+            collectionLinesCollectionView.editItem(collectionLinesCollectionView.currentItem);
+            var currentItem = collectionLinesCollectionView.currentEditItem;
+
+            collectionLineId = currentItem.Id;
+            cboLoanLinesDayReference.selectedValue = currentItem.LoanLinesDayReference;
+            document.getElementById('collectionLinesCollectibleDate').value = currentItem.LoanLinesCollectibleDate;
+            cboPenalty.selectedValue = currentItem.Penalty;
+            document.getElementById('collectionLinesCollectibleAmount').value = currentItem.LoanLinesBalanceAmount.toLocaleString();
+            document.getElementById('collectionLinesPenaltyAmount').value = currentItem.PenaltyAmount.toLocaleString();
+            document.getElementById('collectionLinesPaidAmount').value = currentItem.PaidAmount.toLocaleString();
+            document.getElementById('collectionLinesBalanceAmount').value = currentItem.BalanceAmount.toLocaleString();
+        }
+
+        // add collection line
+        function btnAddCollectionLinesOnclick() {
+            $("#collectionLineDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredCollectionLines').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollectionLine").prop("disabled", false);
+            $("#btnCloseCollectionLine").prop("disabled", false);
+
+            collectionLineId = 0;
+            getLoanNumber();
+        }
+
+        // form input validation
+        function inputValidationForCollectionLine() {
+            var isValid = true;
+            $('.requiredCollectionLines').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        // save collection line
+        function btnSaveCollectionLineOnclick() {
+            if (inputValidationForCollectionLine()) {
+                var collectibleAmount = parseFloat(document.getElementById('collectionLinesCollectibleAmount').value.replace(/\,/g, ''));
+                var paidAmount = parseFloat(document.getElementById('collectionLinesPaidAmount').value.replace(/\,/g, ''));
+
+                if (paidAmount <= collectibleAmount) {
+                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                    $("#btnSaveCollectionLine").prop("disabled", true);
+                    $("#btnCloseCollectionLine").prop("disabled", true);
+
+                    var loanApplicationDeductionObject = new Object();
+                    loanApplicationDeductionObject.CollectionId = getUrlParameter("id");
+                    loanApplicationDeductionObject.LoanLinesId = cboLoanLinesDayReference.selectedItem["Id"];
+                    loanApplicationDeductionObject.LoanLinesBalanceAmount = document.getElementById('collectionLinesCollectibleAmount').value;
+                    loanApplicationDeductionObject.PenaltyId = cboPenalty.selectedItem["Id"];
+                    loanApplicationDeductionObject.PenaltyAmount = document.getElementById('collectionLinesPenaltyAmount').value;
+                    loanApplicationDeductionObject.PaidAmount = document.getElementById('collectionLinesPaidAmount').value;
+                    loanApplicationDeductionObject.BalanceAmount = document.getElementById('collectionLinesBalanceAmount').value;
+                    var loanApplicationDeductionData = JSON.stringify(loanApplicationDeductionObject);
+
+                    if (collectionLineId == 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/api/collectionLines/add',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: loanApplicationDeductionData,
+                            statusCode: {
+                                200: function () {
+                                    toastr.success("Save Successful");
+
+                                    $("#collectionLineDetailModal").modal("hide");
+
+                                    collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                                    collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
+                                    collectionLinesFlexgrid.trackChanges = true;
+                                },
+                                404: function () {
+                                    toastr.error("Record Not Found");
+
+                                    $("#collectionLineDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveCollectionLine").prop("disabled", false);
+                                    $("#btnCloseCollectionLine").prop("disabled", false);
+                                },
+                                400: function () {
+                                    toastr.error("Bad Request");
+
+                                    $("#collectionLineDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveCollectionLine").prop("disabled", false);
+                                    $("#btnCloseCollectionLine").prop("disabled", false);
+                                }
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: "PUT",
+                            url: '/api/collectionLines/update/' + collectionLineId,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: loanApplicationDeductionData,
+                            statusCode: {
+                                200: function () {
+                                    toastr.success("Update Successful");
+
+                                    $("#collectionLineDetailModal").modal("hide");
+
+                                    collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                                    collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
+                                    collectionLinesFlexgrid.trackChanges = true;
+                                },
+                                404: function () {
+                                    toastr.error("Record Not Found");
+
+                                    $("#collectionLineDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveCollectionLine").prop("disabled", false);
+                                    $("#btnCloseCollectionLine").prop("disabled", false);
+                                },
+                                400: function () {
+                                    toastr.error("Bad Request");
+
+                                    $("#collectionLineDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveCollectionLine").prop("disabled", false);
+                                    $("#btnCloseCollectionLine").prop("disabled", false);
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    toastr.error("Paid Amount must not be greater than Collectible Amount");
+                }
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        // delete loan application deduction
+        function btnDeleteCollectionLineOnclick() {
+            $("#deleteConfirmationCollectionLineModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmDeleteCollectionLine").innerHTML = "Delete";
+            $("#btnConfirmDeleteCollectionLine").prop("disabled", false);
+            $("#btnCloseDeleteCollectionLineModal").prop("disabled", false);
+        }
+        function btnConfirmDeleteCollectionLineOnclick() {
+            document.getElementById("btnConfirmDeleteCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteCollectionLine").prop("disabled", true);
+            $("#btnCloseDeleteCollectionLineModal").prop("disabled", true);
+
+            collectionLinesCollectionView.editItem(collectionLinesCollectionView.currentItem);
+            var currentItem = collectionLinesCollectionView.currentEditItem;
+
+            $.ajax({
+                type: "DELETE",
+                url: '/api/collectionLines/delete/' + currentItem.Id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $("#deleteConfirmationCollectionLineModal").modal("hide");
+
+                        collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                        collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
+                        collectionLinesFlexgrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Record Not Found");
+
+                        $("#deleteConfirmationCollectionLineModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteCollectionLine").innerHTML = "Delete";
+                        $("#btnConfirmDeleteCollectionLine").prop("disabled", false);
+                        $("#btnCloseDeleteCollectionLineModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+
+                        $("#deleteConfirmationCollectionLineModal").modal("hide");
+
+                        document.getElementById("btnConfirmDeleteCollectionLine").innerHTML = "Delete";
+                        $("#btnConfirmDeleteCollectionLine").prop("disabled", false);
+                        $("#btnCloseDeleteCollectionLineModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // jqueries codes
+        $('#collectionLinesPenaltyAmount').keyup(function () {
+            computeBalanceAmount();
+        });
+
+        // jqueries codes
+        $('#collectionLinesPaidAmount').keyup(function () {
+            computeBalanceAmount();
+        });
 
         // on load page
         window.onload = function () {
             NProgress.start();
             toastrModification();
+
+            cboCollectionLoanNumber = new wijmo.input.ComboBox('#cboCollectionLoanNumber');
+            cboLoanLinesDayReference = new wijmo.input.ComboBox('#cboLoanLinesDayReference');
+            cboPenalty = new wijmo.input.ComboBox('#cboPenalty');
 
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate');
             createCollectionDate();

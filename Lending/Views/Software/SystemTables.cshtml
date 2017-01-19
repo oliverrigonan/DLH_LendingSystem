@@ -264,7 +264,7 @@
                                 <label>Percentage Rate</label><br />
                                 <div class="input-group numberField">
                                     <span class="input-group-addon"> % </span>
-                                    <input type="text" class="form-control numberField requiredPenalties" id="deductionPercentageRate" placeholder="0.00" />
+                                    <input type="text" class="form-control numberField requiredDeductions" id="deductionPercentageRate" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
@@ -273,7 +273,7 @@
                                 <label>Deduction Amount</label><br />
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredPenalties" id="deductionAmount" placeholder="0.00" />
+                                    <input type="text" class="form-control numberField requiredDeductions" id="deductionAmount" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
@@ -427,32 +427,11 @@
                         <label>Description</label><br />
                         <textarea class="form-control requiredPenalties" rows="5" id="penaltyDescription" placeholder="Description"></textarea>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>No. of Absent Limit</label><br />
-                                <div id="cboNumberOfLimitAbsent"></div>
-                            </div>
-                            <div class="form-group">
-                                <label>Is Penalty Every Absent</label><br />
-                                <input type="checkbox" id="penaltyEveryAbsent">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Every Absent Pen. Amount</label><br />
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Pen. Amount over No. of Absent Limit</label><br />
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmontOverNoOfAbsentLimit" placeholder="0.00" />
-                                </div>
-                            </div>
+                    <div class="form-group">
+                        <label>Penalty Amount</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
                         </div>
                     </div>
                 </div>
@@ -1878,10 +1857,7 @@
                                 Id: penaltiesListResult[i]["Id"],
                                 Penalty: penaltiesListResult[i]["Penalty"],
                                 Description: penaltiesListResult[i]["Description"],
-                                DefaultPenaltyAmount: penaltiesListResult[i]["DefaultPenaltyAmount"],
-                                IsPenaltyEveryAbsent: penaltiesListResult[i]["IsPenaltyEveryAbsent"],
-                                NoOfLimitAbsent: penaltiesListResult[i]["NoOfLimitAbsent"],
-                                PenaltyAmountOverNoOfLimitAbsent: penaltiesListResult[i]["PenaltyAmountOverNoOfLimitAbsent"],
+                                PenaltyAmount: penaltiesListResult[i]["PenaltyAmount"],
                                 CreatedByUserId: penaltiesListResult[i]["CreatedByUserId"],
                                 CreatedByUser: penaltiesListResult[i]["CreatedByUser"],
                                 CreatedDateTime: penaltiesListResult[i]["CreatedDateTime"],
@@ -1896,22 +1872,6 @@
                 }
             });
             return penalties;
-        }
-
-        var cboNumberOfLimitAbsent;
-
-        // limit absent
-        function createCboNumberOfLimitAbsent() {
-            var days = new Array();
-
-            for (var i = 0; i <= 50; i++) {
-                days[i] = i;
-            }
-
-            cboNumberOfLimitAbsent.dispose();
-            cboNumberOfLimitAbsent = new wijmo.input.ComboBox('#cboNumberOfLimitAbsent', {
-                itemsSource: days
-            });
         }
 
         // add new Penalties
@@ -1935,9 +1895,6 @@
             document.getElementById("penaltyName").value = "NA";
             document.getElementById("penaltyDescription").value = "NA";
             document.getElementById("penaltyAmount").value = 0;
-            document.getElementById('penaltyEveryAbsent').checked = false;
-            cboNumberOfLimitAbsent.selectedValue = 0;
-            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = 0;
         }
 
         // edit Penalties
@@ -1963,10 +1920,7 @@
             penaltyId = penaltyCurrentEditItem.Id;
             document.getElementById("penaltyName").value = penaltyCurrentEditItem.Penalty;
             document.getElementById("penaltyDescription").value = penaltyCurrentEditItem.Description;
-            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.DefaultPenaltyAmount.toLocaleString();
-            document.getElementById('penaltyEveryAbsent').checked = penaltyCurrentEditItem.IsPenaltyEveryAbsent;
-            cboNumberOfLimitAbsent.selectedValue = penaltyCurrentEditItem.NoOfLimitAbsent;
-            document.getElementById("penaltyAmontOverNoOfAbsentLimit").value = penaltyCurrentEditItem.PenaltyAmountOverNoOfLimitAbsent.toLocaleString();
+            document.getElementById("penaltyAmount").value = penaltyCurrentEditItem.PenaltyAmount.toLocaleString();
         }
 
         // form input validation
@@ -1998,10 +1952,7 @@
                 var penaltiesObject = new Object();
                 penaltiesObject.Penalty = document.getElementById('penaltyName').value;
                 penaltiesObject.Description = document.getElementById('penaltyDescription').value;
-                penaltiesObject.DefaultPenaltyAmount = document.getElementById('penaltyAmount').value;
-                penaltiesObject.IsPenaltyEveryAbsent = document.getElementById('penaltyEveryAbsent').checked;
-                penaltiesObject.NoOfLimitAbsent = cboNumberOfLimitAbsent.selectedValue;
-                penaltiesObject.PenaltyAmountOverNoOfLimitAbsent = document.getElementById('penaltyAmontOverNoOfAbsentLimit').value;
+                penaltiesObject.PenaltyAmount = document.getElementById('penaltyAmount').value;
                 var penaltyData = JSON.stringify(penaltiesObject);
                 if (penaltyId == 0) {
                     $.ajax({
@@ -2242,26 +2193,8 @@
                                 "width": "2.5*"
                             },
                             {
-                                "header": "Absent",
-                                "binding": "NoOfLimitAbsent",
-                                "allowSorting": true,
-                                "width": "1*"
-                            },
-                            {
-                                "header": "Is P",
-                                "binding": "IsPenaltyEveryAbsent",
-                                "allowSorting": true,
-                                "width": "0.5*"
-                            },
-                            {
                                 "header": "Pen. Amount",
-                                "binding": "DefaultPenaltyAmount",
-                                "allowSorting": true,
-                                "width": "1*"
-                            },
-                            {
-                                "header": "Pen. Over AL",
-                                "binding": "PenaltyAmountOverNoOfLimitAbsent",
+                                "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "1*"
                             }
@@ -2753,9 +2686,6 @@
 
             cboPaymentNoOfDays = new wijmo.input.ComboBox('#cboPaymentNoOfDays');
             createCboPaymentNoOfDays();
-
-            cboNumberOfLimitAbsent = new wijmo.input.ComboBox('#cboNumberOfLimitAbsent');
-            createCboNumberOfLimitAbsent();
         }
 
         $('#deductionIsPercentage').change(function () {

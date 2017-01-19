@@ -12,9 +12,11 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public Int32 CollectionId { get; set; }
         public String Collection { get; set; }
+        public Int32 LoanId { get; set; }
+        public String LoanNumber { get; set; }
         public Int32 LoanLinesId { get; set; }
         public String LoanLinesDayReference { get; set; }
-        public Decimal LoanLinesCollectibleAmount { get; set; }
+        public String LoanLinesCollectibleDate { get; set; }
         public Int32 PenaltyId { get; set; }
         public String Penalty { get; set; }
         public Decimal PenaltyAmount { get; set; }

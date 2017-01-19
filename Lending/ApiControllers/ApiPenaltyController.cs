@@ -25,10 +25,7 @@ namespace Lending.ApiControllers
                               Id = d.Id,
                               Penalty = d.Penalty,
                               Description = d.Description,
-                              DefaultPenaltyAmount = d.DefaultPenaltyAmount,
-                              IsPenaltyEveryAbsent = d.IsPenaltyEveryAbsent,
-                              NoOfLimitAbsent = d.NoOfLimitAbsent,
-                              PenaltyAmountOverNoOfLimitAbsent = d.PenaltyAmountOverNoOfLimitAbsent,
+                              PenaltyAmount = d.PenaltyAmount,
                               CreatedByUserId = d.CreatedByUserId,
                               CreatedByUser = d.mstUser.FullName,
                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -81,10 +78,7 @@ namespace Lending.ApiControllers
                         Data.mstPenalty newPenalty = new Data.mstPenalty();
                         newPenalty.Penalty = penalty.Penalty;
                         newPenalty.Description = penalty.Description;
-                        newPenalty.DefaultPenaltyAmount = penalty.DefaultPenaltyAmount;
-                        newPenalty.IsPenaltyEveryAbsent = penalty.IsPenaltyEveryAbsent;
-                        newPenalty.NoOfLimitAbsent = penalty.NoOfLimitAbsent;
-                        newPenalty.PenaltyAmountOverNoOfLimitAbsent = penalty.PenaltyAmountOverNoOfLimitAbsent;
+                        newPenalty.PenaltyAmount = penalty.PenaltyAmount;
                         newPenalty.CreatedByUserId = userId;
                         newPenalty.CreatedDateTime = DateTime.Now;
                         newPenalty.UpdatedByUserId = userId;
@@ -156,10 +150,7 @@ namespace Lending.ApiControllers
 
                             updatePenalty.Penalty = penalty.Penalty;
                             updatePenalty.Description = penalty.Description;
-                            updatePenalty.DefaultPenaltyAmount = penalty.DefaultPenaltyAmount;
-                            updatePenalty.IsPenaltyEveryAbsent = penalty.IsPenaltyEveryAbsent;
-                            updatePenalty.NoOfLimitAbsent = penalty.NoOfLimitAbsent;
-                            updatePenalty.PenaltyAmountOverNoOfLimitAbsent = penalty.PenaltyAmountOverNoOfLimitAbsent;
+                            updatePenalty.PenaltyAmount = penalty.PenaltyAmount;
                             updatePenalty.UpdatedByUserId = userId;
                             updatePenalty.UpdatedDateTime = DateTime.Now;
                             db.SubmitChanges();

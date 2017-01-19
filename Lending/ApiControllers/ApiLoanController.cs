@@ -50,7 +50,6 @@ namespace Lending.ApiControllers
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       NoOfAbsent = d.NoOfAbsent,
                                        IsCollectionClose = d.IsCollectionClose,
                                        IsReconstruct = d.IsReconstruct,
                                        IsFullyPaid = d.IsFullyPaid,
@@ -101,7 +100,6 @@ namespace Lending.ApiControllers
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       NoOfAbsent = d.NoOfAbsent,
                                        IsCollectionClose = d.IsCollectionClose,
                                        IsReconstruct = d.IsReconstruct,
                                        IsFullyPaid = d.IsFullyPaid,
@@ -152,7 +150,6 @@ namespace Lending.ApiControllers
                            TotalPaidAmount = d.TotalPaidAmount,
                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                            TotalBalanceAmount = d.TotalBalanceAmount,
-                           NoOfAbsent = d.NoOfAbsent,
                            IsCollectionClose = d.IsCollectionClose,
                            IsReconstruct = d.IsReconstruct,
                            IsFullyPaid = d.IsFullyPaid,
@@ -258,7 +255,6 @@ namespace Lending.ApiControllers
                                     newLoan.TotalPenaltyAmount = 0;
                                     newLoan.TotalBalanceAmount = 0;
                                     newLoan.IsReconstruct = false;
-                                    newLoan.NoOfAbsent = 0;
                                     newLoan.IsCollectionClose = false;
                                     newLoan.IsReconstruct = false;
                                     newLoan.IsFullyPaid = false;
@@ -376,7 +372,6 @@ namespace Lending.ApiControllers
                                     lockLoan.NetAmount = loan.NetAmount;
                                     lockLoan.TotalBalanceAmount = loan.NetAmount;
                                     lockLoan.IsReconstruct = false;
-                                    lockLoan.NoOfAbsent = 0;
                                     lockLoan.IsCollectionClose = false;
                                     lockLoan.IsReconstruct = false;
                                     lockLoan.IsFullyPaid = false;
@@ -407,12 +402,12 @@ namespace Lending.ApiControllers
                                             {
                                                 Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
                                                 newLoanLine.LoanId = Convert.ToInt32(id);
-                                                newLoanLine.DayReference = "Day " + this.zeroFill(dayCount, 2) + " - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek;
+                                                newLoanLine.DayReference = loans.FirstOrDefault().LoanNumber + " - Day " + this.zeroFill(dayCount, 2) + " - (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MM/dd/yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek;
                                                 newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate).AddDays(i);
                                                 newLoanLine.CollectibleAmount = finalCollectibleAmount;
                                                 newLoanLine.PaidAmount = 0;
                                                 newLoanLine.PenaltyAmount = 0;
-                                                newLoanLine.BalanceAmount = 0;
+                                                newLoanLine.BalanceAmount = finalCollectibleAmount;
                                                 newLoanLine.IsCleared = false;
                                                 db.trnLoanLines.InsertOnSubmit(newLoanLine);
                                                 db.SubmitChanges();
@@ -481,11 +476,11 @@ namespace Lending.ApiControllers
                 {
                     if (loans.FirstOrDefault().IsLocked)
                     {
-                        var collection = from d in db.trnCollections
-                                         where d.LoanId == Convert.ToInt32(id)
-                                         select d;
+                        var collectionLines = from d in db.trnCollectionLines
+                                              where d.LoanId == Convert.ToInt32(id)
+                                              select d;
 
-                        if (!collection.Any())
+                        if (!collectionLines.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
@@ -579,11 +574,11 @@ namespace Lending.ApiControllers
                 {
                     if (!loans.FirstOrDefault().IsLocked)
                     {
-                        var collection = from d in db.trnCollections
-                                         where d.LoanId == Convert.ToInt32(id)
-                                         select d;
+                        var collectionLines = from d in db.trnCollectionLines
+                                              where d.LoanId == Convert.ToInt32(id)
+                                              select d;
 
-                        if (!collection.Any())
+                        if (!collectionLines.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
