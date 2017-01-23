@@ -188,6 +188,7 @@
     <Compile Include="ApiControllers\ApiLoanCollateralController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiLoanLinesController.cs" />
+    <Compile Include="ApiControllers\ApiLoanReconstructController.cs" />
     <Compile Include="ApiControllers\ApiPenaltyController.cs" />
     <Compile Include="ApiControllers\ApiReconstructController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
@@ -426,15 +427,12 @@
     <Content Include="Views\Software\AreaDetail.cshtml" />
     <Content Include="Views\Software\StaffList.cshtml" />
     <Content Include="Views\Software\StaffDetail.cshtml" />
-    <Content Include="Views\Software\LoanReport.cshtml" />
-    <Content Include="Views\Software\CollectionReport.cshtml" />
-    <Content Include="Views\Software\ExpensesReport.cshtml" />
     <Content Include="Views\Shared\SoftwareHeader.cshtml" />
     <Content Include="Views\Software\ReconstructDetail.cshtml" />
+    <Content Include="Views\Software\Reports.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Business\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

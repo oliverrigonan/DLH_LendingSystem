@@ -297,6 +297,7 @@
                 expensesObject.Particulars = document.getElementById("expensesParticulars").value;
                 expensesObject.Particulars = document.getElementById("expensesParticulars").value;
                 expensesObject.IsCollectionExpense = document.getElementById("isCollectionExpense").checked;
+                expensesObject.ExpenseAmount = document.getElementById("expensesAmount").value;
                 expensesObject.PreparedByUserId = cboExpensesPreparedBy.selectedItem["Id"];
                 var expensesData = JSON.stringify(expensesObject);
 

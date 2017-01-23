@@ -54,6 +54,13 @@
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                
+                                            </div>
+                                            <div class="col-md-6">
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <label>Loan Number</label><br />
                                             <input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" />
@@ -68,7 +75,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Applicant</label><br />
-                                            <div id="loanApplicationApplicant"></div>
+                                            <div id="loanApplicationApplicant" style="width: 100%;"></div>
                                         </div>
                                         <div class="form-group">
                                             <label>Area</label><br />
@@ -136,31 +143,31 @@
                                         </div>
                                     </div>
                                 </div>
-                                 <div class="panel panel-default">
-                                     <div class="panel-body">
-                                         <div class="form-group">
-                                             <label>Interest</label><br />
-                                             <div id="cboInterest"></div>
-                                         </div>
-                                         <div class="form-group">
-                                             <label>Is Advance Interest</label><br />
-                                             <input type="checkbox" id="IsAdvanceInterest" />
-                                         </div>
-                                         <div class="form-group">
-                                             <label>Rate</label><br />
-                                             <div class="input-group numberField">
-                                                 <span class="input-group-addon">%</span>
-                                                 <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
-                                             </div>
-                                         </div>
-                                         <div class="form-group">
-                                             <label>Interest Amount</label><br />
-                                             <div class="input-group numberField">
-                                                 <span class="input-group-addon">&#8369;</span>
-                                                 <input type="text" class="form-control numberField" id="interestAmount" placeholder="0.00" disabled />
-                                             </div>
-                                         </div>
-                                     </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <label>Interest</label><br />
+                                            <div id="cboInterest"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Is Advance Interest</label><br />
+                                            <input type="checkbox" id="IsAdvanceInterest" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Rate</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">%</span>
+                                                <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Interest Amount</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField" id="interestAmount" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
@@ -201,6 +208,11 @@
                             <li>
                                 <a href="#loanLines" data-toggle="tab" id="loanLinesTab">
                                     Loan Lines - Collection (Auto Generate When Locked)
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
+                                    Loan Reconstruct
                                 </a>
                             </li>
                         </ul>
@@ -251,21 +263,20 @@
                             <div class="tab-pane fade in" id="loanLines">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    Loan Lines
-                                                </td>
-                                                <td align="right">
-                                                    <a href="#" class="btn btn-info btn-sm">
-                                                        <i class="fa fa-money fa-fw"></i> Go to Collection
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        Loan Lines
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanLinesFlexgrid" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="loanReconstruct">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Loan Reconstruct
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="loanReconstructFlexgrid" class="grid"></div>
                                     </div>
                                 </div>
                             </div>
@@ -406,6 +417,25 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteLoanApplicationDeduction" onclick="btnConfirmDeleteLoanApplicationDeductionOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseDeleteLoanApplicationDeductionModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- note modal -->
+    <div class="modal fade" id="noteModalForReconstruct" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Note</h4>
+                </div>
+                <div class="modal-body">
+                    This current loan application was reconstructed and cannot make any changes in this form. This is no longer used in the collection process.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="" data-dismiss="modal"> Ok</button>
                 </div>
             </div>
         </div>
@@ -589,6 +619,29 @@
                         document.getElementById("loanApplicationNumber").disabled = true;
                         document.getElementById('loanApplicationDeductionAmount').disabled = true;
                         document.getElementById('loanApplicationTotalNetAmount').disabled = true;
+
+                        $.ajax({
+                            url: '/api/loanReconstruct/list/ByLoanId/' + getUrlParameter("id"),
+                            cache: false,
+                            type: 'GET',
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (loanReconstructsResults) {
+                                if (loanReconstructsResults.length > 0) {
+                                    document.getElementById('loanApplicationPrincipalAmount').disabled = true;
+                                    document.getElementById('IsAdvanceInterest').disabled = true;
+                                    cboloanApplicationApplicant.disabled = true;
+                                    toastr.info("This is a reconstructed Collection.", "Note:");
+                                }
+                            }
+                        });
+
+                        if (loanApplicationResult.IsReconstruct) {
+                            $("#noteModalForReconstruct").modal({
+                                "show": true,
+                                "backdrop": "static"
+                            });
+                        }
+
                         document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
@@ -666,7 +719,7 @@
         function btnLockOnClick() {
             if (inputValidationForLoanApplication()) {
                 var netAmount = parseFloat(document.getElementById('loanApplicationTotalNetAmount').value);
-                
+
                 if (netAmount != 0) {
 
                     $("#btnLock").prop("disabled", true);
@@ -1150,7 +1203,7 @@
                         required: true,
                         displayMemberPath: "Term",
                         selectedValuePath: "Term",
-                        onSelectedIndexChanged: function () { 
+                        onSelectedIndexChanged: function () {
                             document.getElementById("termNoOfDays").value = this.selectedItem["NoOfDays"];
                             document.getElementById("termPaymentNoOfDays").value = this.selectedItem["PaymentNoOfDays"];
                         }
@@ -1215,8 +1268,8 @@
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (loanApplicationDeductionResults) {
+                    var deductionAmount = 0;
                     if (loanApplicationDeductionResults.length > 0) {
-                        var deductionAmount = 0;
                         for (i = 0; i < loanApplicationDeductionResults.length; i++) {
                             var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationDeductionOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
                             var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteLoanApplicationDeductionOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
@@ -1249,10 +1302,10 @@
 
                             deductionAmount += loanApplicationDeductionResults[i]["DeductionAmount"];
                         }
-
-                        document.getElementById("loanApplicationDeductionAmount").value = deductionAmount;
-                        computeDeductions();
                     }
+
+                    document.getElementById("loanApplicationDeductionAmount").value = deductionAmount;
+                    computeDeductions();
 
                     NProgress.done();
                 }
@@ -1559,7 +1612,7 @@
                         }
 
                         disabled = false;
-                    } 
+                    }
 
                     cboDeduction.dispose();
                     cboDeduction = new wijmo.input.ComboBox('#cboDeduction', {
@@ -1574,7 +1627,7 @@
                             document.getElementById("loanApplicationDeductionIsPercentage").checked = this.selectedItem["IsPercentage"];
                             document.getElementById("loanApplicationDeductionPercentageRate").value = this.selectedItem["PercentageRate"];
 
-                            if(this.selectedItem["IsPercentage"]) {
+                            if (this.selectedItem["IsPercentage"]) {
                                 var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
                                 var deductionAmount = (principalAmountValue / 100) * this.selectedItem["PercentageRate"];
 
@@ -1606,6 +1659,7 @@
             $("#loanApplicationCollateral").show();
             $("#loanDeductions").hide();
             $("#loanLines").hide();
+            $("#loanReconstruct").hide();
 
             createFlexGridForLoanApplicationCollateral();
             window.createFlexGridForLoanApplicationCollateral = function () {
@@ -1623,6 +1677,7 @@
             $("#loanApplicationCollateral").hide();
             $("#loanDeductions").show();
             $("#loanLines").hide();
+            $("#loanReconstruct").hide();
 
             loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
             loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
@@ -1678,13 +1733,13 @@
                                 "header": "Day Reference",
                                 "binding": "DayReference",
                                 "allowSorting": true,
-                                "width": "6.5*",
+                                "width": "4.5*",
                             },
                             {
                                 "header": "Collectible Date",
                                 "binding": "CollectibleDate",
                                 "allowSorting": true,
-                                "width": "2.5*",
+                                "width": "2.3*",
                             },
                             {
                                 "header": "Collectible",
@@ -1693,14 +1748,14 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "Paid",
-                                "binding": "PaidAmount",
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
                             {
-                                "header": "Penalty",
-                                "binding": "PenaltyAmount",
+                                "header": "Paid",
+                                "binding": "PaidAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
@@ -1734,6 +1789,7 @@
             $("#loanApplicationCollateral").hide();
             $("#loanDeductions").hide();
             $("#loanLines").show();
+            $("#loanReconstruct").hide();
 
             createFlexGridForLoanLines();
             window.createFlexGridForLoanLines = function () {
@@ -1743,6 +1799,104 @@
             loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesListByLoanId());
             loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
             loanLinesFlexgrid.trackChanges = true;
+        });
+
+        var loanReconstructCollectionView;
+        var loanReconstructFlexgrid;
+
+        // loan lines
+        function getLoanReconstruct() {
+            var loanReconstructs = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loanReconstruct/list/ByLoanId/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanReconstructsResults) {
+                    if (loanReconstructsResults.length > 0) {
+                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
+
+                        for (i = 0; i < loanReconstructsResults.length; i++) {
+                            loanReconstructs.push({
+                                Id: loanReconstructsResults[i]["Id"],
+                                BtnLoanNumber: btnLoanNumber,
+                                LoanId: loanReconstructsResults[i]["DayReference"],
+                                ReconstructLoanId: loanReconstructsResults[i]["ReconstructLoanId"],
+                                ReconstructLoanNumber: loanReconstructsResults[i]["ReconstructLoanNumber"],
+                                ReconstuctLoanTotalBalanceAmount: loanReconstructsResults[i]["ReconstuctLoanTotalBalanceAmount"],
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return loanReconstructs;
+        }
+
+        // create flexgrid for loan application reconstrcut
+        function createFlexGridForLoanReconstruct() {
+            loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
+
+            loanReconstructFlexgrid = new wijmo.grid.FlexGrid('#loanReconstructFlexgrid');
+            loanReconstructFlexgrid.initialize({
+                columns: [
+                            {
+                                "header": "Loan App",
+                                "binding": "BtnLoanNumber",
+                                "width": "0.5*",
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Reconstruct Loan Number",
+                                "binding": "ReconstructLoanNumber",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Reconstruct Amount",
+                                "binding": "ReconstuctLoanTotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanReconstructCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            loanReconstructFlexgrid.trackChanges = true;
+        }
+
+        // loan app
+        function btnLoanNumberOnclick() {
+            loanReconstructCollectionView.editItem(loanReconstructCollectionView.currentItem);
+            var currentItem = loanReconstructCollectionView.currentEditItem;
+            window.location = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+        }
+
+        // tab
+        $('#loanReconstructTab').click(function () {
+            NProgress.start();
+            $("#loanApplicationCollateral").hide();
+            $("#loanDeductions").hide();
+            $("#loanLines").hide();
+            $("#loanReconstruct").show();
+
+            createFlexGridForLoanReconstruct();
+            window.createFlexGridForLoanReconstruct = function () {
+                return true;
+            }
+
+            loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
+            loanReconstructFlexgrid.itemsSource = loanReconstructCollectionView;
+            loanReconstructFlexgrid.trackChanges = true;
         });
 
         // on load page

@@ -12,8 +12,6 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public Int32 CollectionId { get; set; }
         public String Collection { get; set; }
-        public Int32 LoanId { get; set; }
-        public String LoanNumber { get; set; }
         public Int32 LoanLinesId { get; set; }
         public String LoanLinesDayReference { get; set; }
         public String LoanLinesCollectibleDate { get; set; }
@@ -22,5 +20,7 @@ namespace Lending.Models
         public Decimal PenaltyAmount { get; set; }
         public Decimal PaidAmount { get; set; }
         public Decimal BalanceAmount { get; set; }
+        public Boolean IsReconstructed { get; set; }
+        public String CollectedDate { get; set; }
     }
 }

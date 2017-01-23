@@ -199,11 +199,13 @@
                             collectionListArray.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                LoanDetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='btnLoanDetailOnclick()'" + disabledButton + "><i class='fa fa-file-text-o fa-fw'></i> Loan Detail</button>",
                                 Id: collectionListResult[i]["Id"],
                                 CollectionNumber: collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
-                                ApplicantId: collectionListResult[i]["ApplicantId"],
                                 Applicant: collectionListResult[i]["Applicant"],
+                                LoanId: collectionListResult[i]["LoanId"],
+                                LoanNumberDetail: collectionListResult[i]["LoanNumberDetail"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
                                 StatusId: collectionListResult[i]["StatusId"],
@@ -231,7 +233,7 @@
 
         // add new collection
         function btnAddCollectionOnclick() {
-            document.getElementById("btnAddCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding New Loan Application";
+            document.getElementById("btnAddCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
             $("#btnAddCollection").prop("disabled", true);
 
             $.ajax({
@@ -253,6 +255,13 @@
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var id = collectionCollectionView.currentEditItem.Id;
             window.location = '/Software/CollectionDetail?id=' + id;
+        }
+
+        // loan detail page
+        function btnLoanDetailOnclick() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var loanId = collectionCollectionView.currentEditItem.LoanId;
+            window.location = '/Software/LoanApplicationDetail?id=' + loanId;
         }
 
         // delete loan application
@@ -386,28 +395,42 @@
                                 "width": 100,
                             },
                             {
-                                "header": "Collection Number",
+                                "header": "Collection No.",
                                 "binding": "CollectionNumber",
                                 "allowSorting": true,
-                                "width": 140,
+                                "width": 120,
                             },
                             {
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
-                                "width": 250,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Applicant Loan No.",
+                                "binding": "LoanNumberDetail",
+                                "allowSorting": true,
+                                "width": 165,
                             },
                             {
                                 "header": "Paid Amount",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
-                                "width": 150
+                                "width": 130
                             },
                             {
                                 "header": "Status",
                                 "binding": "Status",
                                 "allowSorting": true,
-                                "width": 190
+                                "width": 130
+                            },
+                            {
+                                "header": "Loan Detail",
+                                "binding": "LoanDetailButton",
+                                "width": 120,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
                             },
                             {
                                 "header": "L",

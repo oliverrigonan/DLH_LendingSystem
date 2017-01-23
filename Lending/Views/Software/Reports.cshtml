@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>Report</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-print fa-fw"></i>  Reports <small>Generate and Print Reports</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                Reports
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software'">
+                            <i class="fa fa-close fa-fw"></i> Close
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li class="active"><a data-toggle="pill" href="#cashVoucher">Cash Voucher</a></li>
+                                    <li><a data-toggle="pill" href="#loanSummaryReport">Loan / Reconstruct Summary Report</a></li>
+                                    <li><a data-toggle="pill" href="#loanDetailReport">Loan / Reconstruct Detail Report</a></li>
+                                    <li><a data-toggle="pill" href="#dailyReleaseMonitoringSummary">Daily Release Monitoring Summary Report</a></li>
+                                    <li><a data-toggle="pill" href="#dailyReleaseMonitoringDetail">Daily Release Monitoring Detail Report</a></li>
+                                    <li><a data-toggle="pill" href="#areaDailyCollection">Area Daily Collection</a></li>
+                                    <li><a data-toggle="pill" href="#applicantDailyCollection">Applicant Daily Collection</a></li>
+                                    <li><a data-toggle="pill" href="#collectionSummaryReport">Collection Summary Report</a></li>
+                                    <li><a data-toggle="pill" href="#collectionDetailReport">Collection Detail Report</a></li>
+                                    <li><a data-toggle="pill" href="#dailyCollectionAndRemittance">Daily Collection and Remittance</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="tab-content">
+                                    <div id="cashVoucher" class="tab-pane fade in active">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Cash Voucher
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Applicant</label><br />
+                                                    <div id="cboCashVoucherApplicant"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Loan Number</label><br />
+                                                    <div id="cboCashVoucherLoanNumber"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary" onclick="btnCashVoucherViewOnclick()"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnCashVoucherPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="loanSummaryReport" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Loan Summary Report
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Start Date</label><br />
+                                                    <div id="cboLoanSummaryReportStartDate"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label><br />
+                                                    <div id="cboLoanSummaryReportEndDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary" onclick="btnLoanSummaryReportViewOnclick()"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnLoanSummaryReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="loanDetailReport" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Loan Detail Report
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Applicant</label><br />
+                                                    <div id="cboLoanDetailReportApplicant"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Start Date</label><br />
+                                                    <div id="cboLoanDetailReportStartDate"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label><br />
+                                                    <div id="cboLoanDetailReportEndDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnLoanDetailReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dailyReleaseMonitoringSummary" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Daily Release Monitoring Summary Report
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Start Date</label><br />
+                                                    <div id="cboDailyReleaseMonitoringSummaryReportStartDate"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label><br />
+                                                    <div id="cboDailyReleaseMonitoringSummaryReportEndDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnDailyReleaseMonitoringSummaryReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dailyReleaseMonitoringDetail" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Daily Release Monitoring Detail Report
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Area</label><br />
+                                                    <div id="cboDailyReleaseMonitoringDetailReportArea"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Start Date</label><br />
+                                                    <div id="cboDailyReleaseMonitoringDetailReportStartDate"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label><br />
+                                                    <div id="cboDailyReleaseMonitoringDetailReportEndDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnDailyReleaseMonitoringDetailReportPrintOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="areaDailyCollection" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Applicant Daily Collection
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Applicant</label><br />
+                                                    <div id="cboApplicantDailyCollectionReportApplicant"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Loan Number</label><br />
+                                                    <div id="cboApplicantDailyCollectionReportLoanNumber" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnApplicantDailyCollectionOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="applicantDailyCollection" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Area Daily Collection
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Area</label><br />
+                                                    <div id="cboAreaDailyCollectionReportArea"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Collection Date</label><br />
+                                                    <div id="cboAreaDailyCollectionReportCollectionDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnAreaDailyCollectionOnclick()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collectionSummaryReport" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Collection Summary Report
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Start Date</label><br />
+                                                    <div id="cboCollectionSummaryReportStartDate"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label><br />
+                                                    <div id="cboCollectionSummaryReportEndDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnPrintCollectionSummaryReport()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="collectionDetailReport" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Collection Detail Report
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <label>Start Date</label><br />
+                                                    <div id="cboCollectionDetailReportStartDate"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>End Date</label><br />
+                                                    <div id="cboCollectionDetailReportEndDate"></div>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary" onclick="btnPrintCollectionDetailReport()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dailyCollectionAndRemittance" class="tab-pane fade">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                Daily Collection and Remittance
+                                            </div>
+                                            <div class="panel-body">
+
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button class="btn btn-primary"><i class="fa fa-eye fa-fw"></i> View</button>
+                                                <button class="btn btn-primary"><i class="fa fa-print fa-fw"></i> Print</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</body>
+</html>

@@ -15,6 +15,33 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
+        // collection lines list by loan id
+        [Authorize]
+        [HttpGet]
+        [Route("api/collectionLines/listByLoanId/{loanId}")]
+        public List<Models.TrnCollectionLines> listCollectionLinesByLoanId(String loanId)
+        {
+            var collectionLines = from d in db.trnCollectionLines
+                                  where d.trnLoanLine.LoanId == Convert.ToInt32(loanId)
+                                  && d.trnCollection.IsLocked == true
+                                  select new Models.TrnCollectionLines
+                                  {
+                                      Id = d.Id,
+                                      CollectionId = d.CollectionId,
+                                      Collection = d.trnCollection.CollectionNumber,
+                                      LoanLinesId = d.LoanLinesId,
+                                      LoanLinesDayReference = d.trnLoanLine.DayReference,
+                                      LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
+                                      PenaltyId = d.PenaltyId,
+                                      Penalty = d.mstPenalty.Penalty,
+                                      PenaltyAmount = d.PenaltyAmount,
+                                      PaidAmount = d.PaidAmount,
+                                      CollectedDate = d.trnCollection.CollectionDate.ToShortDateString()
+                                  };
+
+            return collectionLines.ToList();
+        }
+
         // collection lines list by collection id
         [Authorize]
         [HttpGet]
@@ -27,8 +54,6 @@ namespace Lending.ApiControllers
                                   {
                                       Id = d.Id,
                                       CollectionId = d.CollectionId,
-                                      LoanId = d.LoanId,
-                                      LoanNumber = d.trnLoan.LoanNumber,
                                       LoanLinesId = d.LoanLinesId,
                                       LoanLinesDayReference = d.trnLoanLine.DayReference,
                                       LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
@@ -105,7 +130,6 @@ namespace Lending.ApiControllers
                                                 {
                                                     Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
                                                     newCollectionLine.CollectionId = collectionLines.CollectionId;
-                                                    newCollectionLine.LoanId = collectionLines.LoanId;
                                                     newCollectionLine.LoanLinesId = collectionLines.LoanLinesId;
                                                     newCollectionLine.PenaltyId = collectionLines.PenaltyId;
                                                     newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
@@ -230,7 +254,6 @@ namespace Lending.ApiControllers
                                     {
                                         var updateCollectionLines = collectionLine.FirstOrDefault();
                                         updateCollectionLines.CollectionId = collectionLines.CollectionId;
-                                        updateCollectionLines.LoanId = collectionLines.LoanId;
                                         updateCollectionLines.LoanLinesId = collectionLines.LoanLinesId;
                                         updateCollectionLines.PenaltyId = collectionLines.PenaltyId;
                                         updateCollectionLines.PenaltyAmount = collectionLines.PenaltyAmount;

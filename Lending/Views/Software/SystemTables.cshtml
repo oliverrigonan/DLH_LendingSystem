@@ -1041,6 +1041,14 @@
             deductionsCollectionView.editItem(deductionsCollectionView.currentItem);
             var deductionTypeCurrentEditItem = deductionsCollectionView.currentEditItem;
 
+            if (deductionTypeCurrentEditItem.IsPercentage) {
+                document.getElementById("deductionPercentageRate").disabled = false;
+                document.getElementById("deductionAmount").disabled = true;
+            } else {
+                document.getElementById("deductionPercentageRate").disabled = true;
+                document.getElementById("deductionAmount").disabled = false;
+            }
+
             deductionId = deductionTypeCurrentEditItem.Id;
             document.getElementById("deductionName").value = deductionTypeCurrentEditItem.Deduction;
             document.getElementById("deductionDescription").value = deductionTypeCurrentEditItem.Description;

@@ -27,8 +27,10 @@ namespace Lending.ApiControllers
                                   Id = d.Id,
                                   CollectionNumber = d.CollectionNumber,
                                   CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  ApplicantId = d.ApplicantId,
-                                  Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                  ApplicantId = d.trnLoan.ApplicantId,
+                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                  LoanId = d.LoanId,
+                                  LoanNumberDetail = d.trnLoan.LoanNumber,
                                   StatusId = d.StatusId,
                                   Status = d.sysCollectionStatus.Status,
                                   Particulars = d.Particulars,
@@ -60,8 +62,10 @@ namespace Lending.ApiControllers
                                  Id = d.Id,
                                  CollectionNumber = d.CollectionNumber,
                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                 ApplicantId = d.ApplicantId,
-                                 Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                 ApplicantId = d.trnLoan.ApplicantId,
+                                 Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                 LoanId = d.LoanId,
+                                 LoanNumberDetail = d.trnLoan.LoanNumber,
                                  StatusId = d.StatusId,
                                  Status = d.sysCollectionStatus.Status,
                                  Particulars = d.Particulars,
@@ -140,8 +144,11 @@ namespace Lending.ApiControllers
                             collectionNumber = newCollectionNumber.ToString();
                         }
 
-                        var applicant = from d in db.mstApplicants select d;
-                        if (applicant.Any())
+                        var loan = from d in db.trnLoans
+                                   where d.IsLocked == true
+                                   select d;
+
+                        if (loan.Any())
                         {
                             var status = from d in db.sysCollectionStatus select d;
                             if (status.Any())
@@ -149,7 +156,7 @@ namespace Lending.ApiControllers
                                 Data.trnCollection newCollection = new Data.trnCollection();
                                 newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
                                 newCollection.CollectionDate = DateTime.Today;
-                                newCollection.ApplicantId = applicant.FirstOrDefault().Id;
+                                newCollection.LoanId = loan.FirstOrDefault().Id;
                                 newCollection.StatusId = status.FirstOrDefault().Id;
                                 newCollection.Particulars = "NA";
                                 newCollection.PreparedByUserId = userId;
@@ -200,8 +207,6 @@ namespace Lending.ApiControllers
                                         {
                                             Id = d.Id,
                                             CollectionId = d.CollectionId,
-                                            LoanId = d.LoanId,
-                                            LoanNumber = d.trnLoan.LoanNumber,
                                             LoanLinesId = d.LoanLinesId,
                                             LoanLinesDayReference = d.trnLoanLine.DayReference,
                                             LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
@@ -242,8 +247,8 @@ namespace Lending.ApiControllers
                         if (loan.Any())
                         {
                             var allLoanLines = from d in db.trnLoanLines
-                                                where d.LoanId == loanLines.FirstOrDefault().LoanId
-                                                select d;
+                                               where d.LoanId == loanLines.FirstOrDefault().LoanId
+                                               select d;
 
                             if (allLoanLines.Any())
                             {
@@ -266,8 +271,6 @@ namespace Lending.ApiControllers
                                               {
                                                   Id = d.Id,
                                                   CollectionId = d.CollectionId,
-                                                  LoanId = d.LoanId,
-                                                  LoanNumber = d.trnLoan.LoanNumber,
                                                   LoanLinesId = d.LoanLinesId,
                                                   LoanLinesDayReference = d.trnLoanLine.DayReference,
                                                   LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
@@ -388,7 +391,7 @@ namespace Lending.ApiControllers
 
                                 var lockCollection = collections.FirstOrDefault();
                                 lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                lockCollection.ApplicantId = collection.ApplicantId;
+                                lockCollection.LoanId = collection.LoanId;
                                 lockCollection.StatusId = collection.StatusId;
                                 lockCollection.Particulars = collection.Particulars;
                                 lockCollection.PreparedByUserId = collection.PreparedByUserId;
@@ -471,15 +474,63 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var unlockCollection = collections.FirstOrDefault();
-                                unlockCollection.IsLocked = false;
-                                unlockCollection.UpdatedByUserId = userId;
-                                unlockCollection.UpdatedDateTime = DateTime.Now;
-                                db.SubmitChanges();
+                                var collectionLines = from d in db.trnCollectionLines
+                                                      where d.CollectionId == Convert.ToInt32(id)
+                                                      select new Models.TrnCollectionLines
+                                                      {
+                                                          Id = d.Id,
+                                                          CollectionId = d.CollectionId,
+                                                          LoanLinesId = d.LoanLinesId,
+                                                          LoanLinesDayReference = d.trnLoanLine.DayReference,
+                                                          LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
+                                                          PenaltyId = d.PenaltyId,
+                                                          Penalty = d.mstPenalty.Penalty,
+                                                          PenaltyAmount = d.PenaltyAmount,
+                                                          PaidAmount = d.PaidAmount,
+                                                          IsReconstructed = d.trnLoanLine.trnLoan.IsReconstruct
+                                                      };
 
-                                this.updateLoan(Convert.ToInt32(id));
+                                if (collectionLines.Any())
+                                {
+                                    var isReconstructed = false;
+                                    foreach (var collectionLine in collectionLines)
+                                    {
+                                        if (collectionLine.IsReconstructed)
+                                        {
+                                            isReconstructed = true;
+                                            break;
+                                        }
+                                    }
 
-                                return Request.CreateResponse(HttpStatusCode.OK);
+                                    if (!isReconstructed)
+                                    {
+                                        var unlockCollection = collections.FirstOrDefault();
+                                        unlockCollection.IsLocked = false;
+                                        unlockCollection.UpdatedByUserId = userId;
+                                        unlockCollection.UpdatedDateTime = DateTime.Now;
+                                        db.SubmitChanges();
+
+                                        this.updateLoan(Convert.ToInt32(id));
+
+                                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    }
+                                }
+                                else
+                                {
+                                    var unlockCollection = collections.FirstOrDefault();
+                                    unlockCollection.IsLocked = false;
+                                    unlockCollection.UpdatedByUserId = userId;
+                                    unlockCollection.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
+
+                                    this.updateLoan(Convert.ToInt32(id));
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
                             }
                             else
                             {

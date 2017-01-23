@@ -285,8 +285,8 @@ namespace Lending.ApiControllers
                                         deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
                                     }
 
-                                    var updateDeleteLoan = from d in db.trnLoans where d.Id == loanApplicationDeductionss.FirstOrDefault().LoanId select d;
-                                    var updateLoan = loan.FirstOrDefault();
+                                    var updateDeleteLoan = from d in db.trnLoans where d.Id == Convert.ToInt32(loanId) select d;
+                                    var updateLoan = updateDeleteLoan.FirstOrDefault();
                                     updateLoan.DeductionAmount = deductionAmount;
                                     db.SubmitChanges();
 

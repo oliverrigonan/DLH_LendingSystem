@@ -375,35 +375,9 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult LoanReport()
+        public ActionResult Reports()
         {
-            if (pageAccess("LoanReport").Equals("LoanReport"))
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Forbidden", "Software");
-            }
-        }
-
-        [Authorize]
-        public ActionResult CollectionReport()
-        {
-            if (pageAccess("CollectionReport").Equals("CollectionReport"))
-            {
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Forbidden", "Software");
-            }
-        }
-
-        [Authorize]
-        public ActionResult ExpensesReport()
-        {
-            if (pageAccess("ExpensesReport").Equals("ExpensesReport"))
+            if (pageAccess("Reports").Equals("Reports"))
             {
                 return View();
             }
