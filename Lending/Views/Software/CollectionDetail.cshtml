@@ -123,6 +123,9 @@
                                             Collection Lines
                                         </td>
                                         <td align="right">
+                                            <button class="btn btn-primary btn-sm" id="btnFullPayment" onclick="btnFullPaymentOnclick()">
+                                                <i class="fa fa-money fa-fw"></i> Full Payment
+                                            </button>
                                             <button class="btn btn-primary btn-sm" id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
                                                 <i class="fa fa-plus fa-fw"></i> Add
                                             </button>
@@ -242,6 +245,32 @@
         </div>
     </div>
 
+    <!-- full payment confirmation collection line modal -->
+    <div class="modal fade" id="fullPaymentConfirmationCollectionLineModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Full Payment</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Total Balance Amount</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField" id="loanTotalBalanceAmount" placeholder="0.00" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnConfirmFullPaymentCollectionLine" onclick="btnConfirmFullPaymentCollectionLineOnclick()"><i class="fa fa-save fa-fw"></i> Update</button>
+                    <button class="btn btn-default" id="btnCloseFullPaymentCollectionLineModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -260,6 +289,55 @@
         var cboPenalty;
         var recentCollectionLinesCollectionView;
         var recentCollectionLinesFlexgrid;
+
+        // full payment
+        function btnFullPaymentOnclick() {
+            $("#fullPaymentConfirmationCollectionLineModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+            document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+        }
+
+        // confirm full payment
+        function btnConfirmFullPaymentCollectionLineOnclick() {
+            $("#btnConfirmFullPaymentCollectionLine").prop("disabled", true);
+            document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating"
+
+            var collectionLinesObject = new Object();
+            collectionLinesObject.CollectionId = getUrlParameter("id");
+            collectionLinesObject.LoanId = cboCollectionApplicantLoanNumber.selectedItem["Id"];
+            var collectionLinesData = JSON.stringify(collectionLinesObject);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/collectionLines/fullPayment',
+                contentType: "application/json; charset=utf-8",
+                data: collectionLinesData,
+                statusCode: {
+                    200: function () {
+                        toastr.success("Successfully Paid", "Successfully Paid");
+                        $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+
+                        $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
+
+                        collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                        collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
+                        collectionLinesFlexgrid.trackChanges = true;
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+
+                        $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
+                    }
+                }
+            });
+        }
 
         // create collection Date
         function createCollectionDate() {
@@ -338,6 +416,7 @@
                             applicantLoanNumberArray.push({
                                 Id: applicantLoanNumberResults[i]["Id"],
                                 LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
+                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"]
                             });
                         }
 
@@ -363,9 +442,12 @@
                             recentCollectionLinesCollectionView = new wijmo.collections.CollectionView(getRecentCollectionLinesByLoanId());
                             recentCollectionLinesFlexgrid.itemsSource = recentCollectionLinesCollectionView;
                             recentCollectionLinesFlexgrid.trackChanges = true;
+
+                            document.getElementById("loanTotalBalanceAmount").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
                         }
                     });
 
+                    document.getElementById("loanTotalBalanceAmount").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
                     createRecentCollectionFlexgrid();
                     window.createRecentCollectionFlexgrid = function () {
                         return true;
@@ -482,7 +564,7 @@
 
                         if (collectionResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
-
+                            
                             cboCollectionDate.disabled = true;
                             cboCollectionApplicant.disabled = true;
                             cboCollectionApplicantLoanNumber.disabled = true;
@@ -490,6 +572,7 @@
                             document.getElementById("collectionParticulars").disabled = true;
                             cboCollectionPreparedBy.disabled = true;
 
+                            $("#btnFullPayment").prop("disabled", true);
                             $("#btnAddCollectionLines").prop("disabled", true);
                             isLocked = true;
                         } else {
