@@ -36,7 +36,8 @@ namespace Lending.ApiControllers
                                       Penalty = d.mstPenalty.Penalty,
                                       PenaltyAmount = d.PenaltyAmount,
                                       PaidAmount = d.PaidAmount,
-                                      CollectedDate = d.trnCollection.CollectionDate.ToShortDateString()
+                                      CollectedDate = d.trnCollection.CollectionDate.ToShortDateString(),
+                                      CollectionStatus = d.trnCollection.sysCollectionStatus.Status
                                   };
 
             return collectionLines.ToList();
@@ -60,7 +61,8 @@ namespace Lending.ApiControllers
                                       PenaltyId = d.PenaltyId,
                                       Penalty = d.mstPenalty.Penalty,
                                       PenaltyAmount = d.PenaltyAmount,
-                                      PaidAmount = d.PaidAmount
+                                      PaidAmount = d.PaidAmount,
+                                      CollectionStatus = d.trnCollection.sysCollectionStatus.Status
                                   };
 
             return collectionLines.ToList();

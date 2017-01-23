@@ -23,5 +23,6 @@ namespace Lending.Models
         public Decimal BalanceAmount { get; set; }
         public Boolean IsReconstructed { get; set; }
         public String CollectedDate { get; set; }
+        public String CollectionStatus { get; set; }
     }
 }
