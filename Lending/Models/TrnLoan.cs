@@ -30,14 +30,20 @@ namespace Lending.Models
         public String Interest { get; set; }
         public Decimal InterestRate { get; set; }
         public Decimal InterestAmount { get; set; }
+        public Decimal PreviousBalanceAmount { get; set; }
+        public Decimal PreviousPenaltyAmount { get; set; }
         public Decimal DeductionAmount { get; set; }
         public Decimal NetAmount { get; set; }
+        public Decimal NetCollectionAmount { get; set; }
         public Decimal TotalPaidAmount { get; set; }
         public Decimal TotalPenaltyAmount { get; set; }
         public Decimal TotalBalanceAmount { get; set; }
         public Decimal NoOfAbsent { get; set; }
-        public Boolean IsCollectionClose { get; set; }
         public Boolean IsReconstruct { get; set; }
+        public Boolean IsRenew { get; set; }
+        public Boolean IsLoanApplication { get; set; }
+        public Boolean IsLoanReconstruct { get; set; }
+        public Boolean IsLoanRenew { get; set; }
         public Boolean IsFullyPaid { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }

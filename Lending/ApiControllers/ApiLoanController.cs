@@ -66,6 +66,7 @@ namespace Lending.ApiControllers
         {
             var loanApplications = from d in db.trnLoans
                                    where d.LoanDate == Convert.ToDateTime(loanDate)
+                                   && d.IsLoanApplication == true
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
@@ -88,13 +89,19 @@ namespace Lending.ApiControllers
                                        Interest = d.mstInterest.Interest,
                                        InterestRate = d.InterestRate,
                                        InterestAmount = d.InterestAmount,
+                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                       PreviousPenaltyAmount = d.PreviousPenaltyAmount,
                                        DeductionAmount = d.DeductionAmount,
                                        NetAmount = d.NetAmount,
+                                       NetCollectionAmount = d.NetCollectionAmount,
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       IsCollectionClose = d.IsCollectionClose,
                                        IsReconstruct = d.IsReconstruct,
+                                       IsRenew = d.IsRenew,
+                                       IsLoanApplication = d.IsLoanApplication,
+                                       IsLoanReconstruct = d.IsLoanReconstruct,
+                                       IsLoanRenew = d.IsLoanRenew,
                                        IsFullyPaid = d.IsFullyPaid,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
@@ -138,13 +145,19 @@ namespace Lending.ApiControllers
                            Interest = d.mstInterest.Interest,
                            InterestRate = d.InterestRate,
                            InterestAmount = d.InterestAmount,
+                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                           PreviousPenaltyAmount = d.PreviousPenaltyAmount,
                            DeductionAmount = d.DeductionAmount,
                            NetAmount = d.NetAmount,
+                           NetCollectionAmount = d.NetCollectionAmount,
                            TotalPaidAmount = d.TotalPaidAmount,
                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                            TotalBalanceAmount = d.TotalBalanceAmount,
-                           IsCollectionClose = d.IsCollectionClose,
                            IsReconstruct = d.IsReconstruct,
+                           IsRenew = d.IsRenew,
+                           IsLoanApplication = d.IsLoanApplication,
+                           IsLoanReconstruct = d.IsLoanReconstruct,
+                           IsLoanRenew = d.IsLoanRenew,
                            IsFullyPaid = d.IsFullyPaid,
                            IsLocked = d.IsLocked,
                            CreatedByUserId = d.CreatedByUserId,
@@ -238,17 +251,23 @@ namespace Lending.ApiControllers
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = 0;
-                                    newLoan.IsAdvanceInterest = true;
+                                    newLoan.IsAdvanceInterest = false;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;
                                     newLoan.InterestRate = interest.FirstOrDefault().Rate;
                                     newLoan.InterestAmount = 0;
+                                    newLoan.PreviousBalanceAmount = 0;
+                                    newLoan.PreviousPenaltyAmount = 0;
                                     newLoan.DeductionAmount = 0;
                                     newLoan.NetAmount = 0;
+                                    newLoan.NetCollectionAmount = 0;
                                     newLoan.TotalPaidAmount = 0;
                                     newLoan.TotalPenaltyAmount = 0;
                                     newLoan.TotalBalanceAmount = 0;
                                     newLoan.IsReconstruct = false;
-                                    newLoan.IsCollectionClose = false;
+                                    newLoan.IsRenew = false;
+                                    newLoan.IsLoanApplication = true;
+                                    newLoan.IsLoanReconstruct = false;
+                                    newLoan.IsLoanRenew = false;
                                     newLoan.IsFullyPaid = false;
                                     newLoan.IsLocked = false;
                                     newLoan.CreatedByUserId = userId;
@@ -360,19 +379,21 @@ namespace Lending.ApiControllers
                                     lockLoan.InterestId = loan.InterestId;
                                     lockLoan.InterestRate = loan.InterestRate;
                                     lockLoan.InterestAmount = loan.InterestAmount;
+                                    lockLoan.PreviousBalanceAmount = loan.PreviousBalanceAmount;
+                                    lockLoan.PreviousPenaltyAmount = loan.PreviousPenaltyAmount;
                                     lockLoan.DeductionAmount = deductionAmount;
                                     lockLoan.NetAmount = loan.NetAmount;
-                                    lockLoan.TotalBalanceAmount = loan.NetAmount;
-                                    lockLoan.IsCollectionClose = false;
+                                    lockLoan.NetCollectionAmount = loan.NetCollectionAmount;
+                                    lockLoan.TotalBalanceAmount = loan.NetCollectionAmount;
                                     lockLoan.IsFullyPaid = false;
                                     lockLoan.IsLocked = true;
                                     lockLoan.UpdatedByUserId = userId;
                                     lockLoan.UpdatedDateTime = DateTime.Now;
                                     db.SubmitChanges();
 
-                                    Decimal collectibleAmount = loan.NetAmount / loan.TermNoOfDays;
+                                    Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
                                     Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
-                                    Decimal loanNetAmount = loan.NetAmount;
+                                    Decimal loanNetCollectionAmount = loan.NetCollectionAmount;
 
                                     var dayCount = 0;
                                     for (var i = 1; i <= loan.TermNoOfDays; i++)
@@ -383,9 +404,9 @@ namespace Lending.ApiControllers
 
                                             dayCount += 1;
 
-                                            if (loanNetAmount < finalCollectibleAmount)
+                                            if (loanNetCollectionAmount < finalCollectibleAmount)
                                             {
-                                                finalCollectibleAmount = loanNetAmount;
+                                                finalCollectibleAmount = loanNetCollectionAmount;
                                             }
 
                                             if (finalCollectibleAmount != 0)
@@ -402,7 +423,7 @@ namespace Lending.ApiControllers
                                                 db.trnLoanLines.InsertOnSubmit(newLoanLine);
                                                 db.SubmitChanges();
 
-                                                loanNetAmount -= finalCollectibleAmount;
+                                                loanNetCollectionAmount -= finalCollectibleAmount;
                                             }
                                         }
 

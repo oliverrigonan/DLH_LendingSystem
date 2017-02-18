@@ -172,7 +172,21 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div class="form-group">
-                                            <label>Deduction Amount</label><br />
+                                            <label>Previous Balance Amount</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField" id="previousBalanceAmount" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Previous Penalty Amount</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField" id="previousPenaltyAmount" placeholder="0.00" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Total From Other Deductions</label><br />
                                             <div class="input-group numberField">
                                                 <span class="input-group-addon">&#8369;</span>
                                                 <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationDeductionAmount" placeholder="0.00" />
@@ -183,10 +197,17 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div class="form-group">
-                                            <label>Total / Net Amount</label><br />
+                                            <label>Net Amount (Release Amount)</label><br />
                                             <div class="input-group numberField">
                                                 <span class="input-group-addon">&#8369;</span>
                                                 <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetAmount" placeholder="0.00" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Total Collection Amount (Collection)</label><br />
+                                            <div class="input-group numberField">
+                                                <span class="input-group-addon">&#8369;</span>
+                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetCollectionAmount" placeholder="0.00" />
                                             </div>
                                         </div>
                                     </div>
@@ -619,7 +640,8 @@
                         document.getElementById("loanApplicationNumber").disabled = true;
                         document.getElementById('loanApplicationDeductionAmount').disabled = true;
                         document.getElementById('loanApplicationTotalNetAmount').disabled = true;
-
+                        document.getElementById('loanApplicationTotalNetCollectionAmount').disabled = true;
+                        
                         $.ajax({
                             url: '/api/loanReconstruct/list/ByLoanId/' + getUrlParameter("id"),
                             cache: false,
@@ -657,8 +679,11 @@
                         document.getElementById("IsAdvanceInterest").checked = loanApplicationResult.IsAdvanceInterest;
                         document.getElementById('interestRate').value = loanApplicationResult.InterestRate.toLocaleString();
                         document.getElementById('interestAmount').value = loanApplicationResult.InterestAmount.toLocaleString();
+                        document.getElementById('previousBalanceAmount').value = loanApplicationResult.PreviousBalanceAmount.toLocaleString();
+                        document.getElementById('previousPenaltyAmount').value = loanApplicationResult.PreviousPenaltyAmount.toLocaleString();
                         document.getElementById('loanApplicationDeductionAmount').value = loanApplicationResult.DeductionAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalNetCollectionAmount').value = loanApplicationResult.NetCollectionAmount.toLocaleString();
                         document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
@@ -739,7 +764,10 @@
                     loanApplicationObject.IsAdvanceInterest = document.getElementById("IsAdvanceInterest").checked;
                     loanApplicationObject.InterestRate = document.getElementById("interestRate").value;
                     loanApplicationObject.InterestAmount = document.getElementById("interestAmount").value;
+                    loanApplicationObject.PreviousBalanceAmount = document.getElementById("previousBalanceAmount").value;
+                    loanApplicationObject.PreviousPenaltyAmount = document.getElementById("previousPenaltyAmount").value;
                     loanApplicationObject.NetAmount = document.getElementById('loanApplicationTotalNetAmount').value;
+                    loanApplicationObject.NetCollectionAmount = document.getElementById('loanApplicationTotalNetCollectionAmount').value;
 
                     var loanApplicationData = JSON.stringify(loanApplicationObject);
                     $("#processingModal").modal({
@@ -1941,15 +1969,23 @@
             var interestAmount = (principalAmountValue / 100) * interestRate;
             document.getElementById('interestAmount').value = interestAmount.toLocaleString();
             var interestAmountValue = document.getElementById('interestAmount').value.replace(/\,/g, '');
+
+            // deductions
             var deductionAmountValue = document.getElementById('loanApplicationDeductionAmount').value.replace(/\,/g, '');
+            var previousBalanceAmount = document.getElementById('previousBalanceAmount').value.replace(/\,/g, '');
+            var previousPenaltyAmount = document.getElementById('previousPenaltyAmount').value.replace(/\,/g, '');
+            var totalDeductions = parseFloat(previousBalanceAmount) + parseFloat(previousPenaltyAmount) + parseFloat(deductionAmountValue);
 
             var isAdvanceInterest = document.getElementById("IsAdvanceInterest").checked;
-            var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(deductionAmountValue);
+            var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
+            var netCollectionAmount = parseFloat(principalAmountValue) + parseFloat(interestAmountValue);
             if (isAdvanceInterest) {
-                netAmount = (parseFloat(principalAmountValue) - parseFloat(interestAmountValue)) - parseFloat(deductionAmountValue);
+                netAmount = (parseFloat(principalAmountValue) - parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
+                netCollectionAmount = (parseFloat(principalAmountValue) - parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
             }
 
             document.getElementById('loanApplicationTotalNetAmount').value = netAmount.toLocaleString();
+            document.getElementById('loanApplicationTotalNetCollectionAmount').value = netCollectionAmount.toLocaleString();
         }
 
         // jqueries codes

@@ -223,26 +223,6 @@ namespace Lending.Controllers
         }
 
         [Authorize]
-        public ActionResult ReconstructDetail(Int32? id)
-        {
-            if (pageAccess("ReconstructDetail").Equals("ReconstructDetail"))
-            {
-                if (id == null)
-                {
-                    return RedirectToAction("NotFound", "Software");
-                }
-                else
-                {
-                    return View();
-                }
-            }
-            else
-            {
-                return RedirectToAction("Forbidden", "Software");
-            }
-        }
-
-        [Authorize]
         public ActionResult ExpensesList()
         {
             if (pageAccess("ExpensesList").Equals("ExpensesList"))
@@ -386,5 +366,72 @@ namespace Lending.Controllers
                 return RedirectToAction("Forbidden", "Software");
             }
         }
+
+        [Authorize]
+        public ActionResult ReconstructList()
+        {
+            if (pageAccess("ReconstructList").Equals("ReconstructList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult ReconstructDetail(Int32? id)
+        {
+            if (pageAccess("ReconstructDetail").Equals("ReconstructDetail"))
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult RenewList()
+        {
+            if (pageAccess("RenewList").Equals("RenewList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult RenewDetail(Int32? id)
+        {
+            if (pageAccess("RenewDetail").Equals("RenewDetail"))
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
     }
 }

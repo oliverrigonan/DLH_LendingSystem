@@ -139,8 +139,11 @@ namespace Lending.ApiControllers
                                         newLoan.TotalPenaltyAmount = 0;
                                         newLoan.TotalBalanceAmount = loanReconstruct.ReconstuctLoanTotalBalanceAmount + interestAmount;
                                         newLoan.IsReconstruct = false;
-                                        newLoan.IsCollectionClose = false;
+                                        newLoan.IsRenew = false;
                                         newLoan.IsFullyPaid = false;
+                                        newLoan.IsLoanApplication = false;
+                                        newLoan.IsLoanReconstruct = true;
+                                        newLoan.IsLoanRenew = false;
                                         newLoan.IsLocked = false;
                                         newLoan.CreatedByUserId = userId;
                                         newLoan.CreatedDateTime = DateTime.Now;
