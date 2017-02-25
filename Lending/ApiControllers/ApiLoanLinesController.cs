@@ -32,5 +32,28 @@ namespace Lending.ApiControllers
 
             return loanLines.ToList();
         }
+
+        // loan list by loan date
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLines/listByLoanId/byNotRenew/byNotReconstruct/{loanId}")]
+        public List<Models.TrnLoanLines> listLoanLinesByLoanIdByNotRenewByNotReconstruct(String loanId)
+        {
+            var loanLines = from d in db.trnLoanLines
+                            where d.LoanId == Convert.ToInt32(loanId)
+                            && d.trnLoan.IsReconstruct == false
+                            && d.trnLoan.IsRenew == false
+                            select new Models.TrnLoanLines
+                            {
+                                Id = d.Id,
+                                DayReference = d.DayReference,
+                                CollectibleDate = d.CollectibleDate.ToShortDateString(),
+                                CollectibleAmount = d.CollectibleAmount,
+                                PaidAmount = d.PaidAmount,
+                                PenaltyAmount = d.PenaltyAmount
+                            };
+
+            return loanLines.ToList();
+        }
     }
 }

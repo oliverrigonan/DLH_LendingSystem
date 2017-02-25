@@ -811,7 +811,7 @@
         function getLoanLinesByLoanId() {
             var loanLineArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanLines/listByLoanId/' + cboCollectionApplicantLoanNumber.selectedItem["Id"],
+                url: '/api/loanLines/listByLoanId/byNotRenew/byNotReconstruct/' + cboCollectionApplicantLoanNumber.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -831,7 +831,7 @@
                                 if (isLocked) {
                                     pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
                                 } else {
-                                    if (loanLineResults[i]["PaidAmount"] > 0) {
+                                    if ((loanLineResults[i]["PaidAmount"] > 0) || (loanLineResults[i]["PenaltyAmount"] > 0)) {
                                         pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
                                     } else {
                                         pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
