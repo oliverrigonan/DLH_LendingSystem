@@ -1,7 +1,641 @@
-﻿
-@{
-    ViewBag.Title = "RenewList";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<h2>RenewList</h2>
+    <!-- Title -->
+    <title>Renew List</title>
 
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-file-text-o fa-fw"></i> Renew <small>List of Renewd Loans</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                Renew
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                        <input type="text" id="searchLoanApplication" class="form-control" placeholder="Search">
+                                    </div>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td align="right">
+                                    <button class="btn btn-warning" id="btnAddReconstruct" onclick="btnAddReconstructOnclick()">
+                                        <i class="fa fa-refresh fa-fw"></i>&nbsp; Reconstruct
+                                    </button>
+                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddLoanApplicationOnclick()">
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-heading">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Date</span>
+                            <div id="cboLoanDate"></div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div id="loanApplicationFlexGrid" class="grid"></div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        User security stamp
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Created by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-md-6">
+                                <p>Updated by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation loan application modal -->
+    <div class="modal fade" id="deleteConfirmationLoanApplicationModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Loan Application</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Loan Application?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteLoanApplication" onclick="btnConfirmDeleteLoanApplicationOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteLoanApplicationModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- loan applciation recontruct Detail Modal -->
+    <div class="modal fade" id="reconstructDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Reconstruct</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Applicant</label><br />
+                        <div id="cboApplicant"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Loan Number</label><br />
+                        <div id="cboLoanNumber"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount to be Reconstructed</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField" id="amountToBeReconstruct" placeholder="0.00" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" id="btnReconstruct" onclick="btnReconstructOnclick()"><i class="fa fa-refresh fa-fw"></i> Reconstruct</button>
+                    <button class="btn btn-danger" id="btnCloseReconstruct" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var cboLoanDate;
+        var loanApplicationCollectionView;
+        var loanApplicationFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
+        var isLoanDateClicked = false;
+        var cboApplicant;
+        var cboLoanNumber;
+
+        // reconstuct
+        function btnAddReconstructOnclick() {
+            $("#reconstructDetailModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            getApplicant();
+        }
+
+        // get applicant
+        function getApplicant() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/loan/list/loanApplicants',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                ApplicantId: applicantResults[i]["ApplicantId"],
+                                Applicant: applicantResults[i]["Applicant"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboApplicant.dispose();
+                    cboApplicant = new wijmo.input.ComboBox('#cboApplicant', {
+                        disabled: disabled,
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Applicant",
+                        selectedValuePath: "Applicant",
+                        onSelectedIndexChanged: function () {
+                            getApplicantLoanNumber();
+                        }
+                    });
+
+                    getApplicantLoanNumber();
+                }
+            });
+        }
+
+        // get applicant
+        function getApplicantLoanNumber() {
+            var applicantLoanNumberArray = new Array();
+            $.ajax({
+                url: '/api/loan/list/byApplicantId/' + cboApplicant.selectedItem["ApplicantId"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantLoanNumberResults) {
+                    var disabled = true;
+                    if (applicantLoanNumberResults.length > 0) {
+                        for (i = 0; i < applicantLoanNumberResults.length; i++) {
+                            applicantLoanNumberArray.push({
+                                Id: applicantLoanNumberResults[i]["Id"],
+                                LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
+                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboLoanNumber.dispose();
+                    cboLoanNumber = new wijmo.input.ComboBox('#cboLoanNumber', {
+                        disabled: disabled,
+                        itemsSource: applicantLoanNumberArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "LoanNumberDetail",
+                        selectedValuePath: "LoanNumberDetail",
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("amountToBeReconstruct").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
+                        }
+                    });
+
+                    document.getElementById("amountToBeReconstruct").value = cboLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
+                }
+            });
+        }
+
+        // create cbo date for loan date
+        function createCboLoanDate() {
+            cboLoanDate.dispose();
+            cboLoanDate = new wijmo.input.InputDate('#cboLoanDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (isLoanDateClicked == true) {
+                        NProgress.start();
+                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                        loanApplicationCollectionView.canFilter = true;
+
+                        var filterText = '';
+                        $('#searchLoanApplication').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            loanApplicationCollectionView.refresh();
+                        });
+
+                        loanApplicationCollectionView.filter = function (item) {
+                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                        loanApplicationFlexGrid.trackChanges = true;
+                    } else {
+                        isLoanDateClicked = true;
+                    }
+                }
+            });
+        }
+
+        // get loan application list
+        function getLoanApplicationList() {
+            var loanApplicationListArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loan/listByLoanDate/' + [cboLoanDate.value.getMonth() + 1, cboLoanDate.value.getDate(), cboLoanDate.value.getFullYear()].join('-'),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanApplicationListResult) {
+                    if (loanApplicationListResult.length > 0) {
+                        for (i = 0; i < loanApplicationListResult.length; i++) {
+                            var isLocked = false;
+                            if (loanApplicationListResult[i]["IsLocked"]) {
+                                isLocked = true;
+                            }
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
+                            var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
+                            var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            var loanStatus = "Activated";
+                            if (!loanApplicationListResult[i]["IsLocked"]) {
+                                if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                    loanStatus = "Reconstructed";
+                                } else {
+                                    loanStatus = "Not Activated";
+                                }
+                            } else {
+                                if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                    loanStatus = "Reconstructed";
+                                }
+                            }
+
+                            loanApplicationListArray.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: loanApplicationListResult[i]["Id"],
+                                LoanNumber: loanApplicationListResult[i]["LoanNumber"],
+                                LoanDate: loanDateValue,
+                                Applicant: loanApplicationListResult[i]["Applicant"],
+                                PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                InterestAmount: loanApplicationListResult[i]["InterestAmount"],
+                                DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
+                                NetAmount: loanApplicationListResult[i]["NetAmount"],
+                                IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
+                                LoanStatus: loanStatus,
+                                IsLocked: loanApplicationListResult[i]["IsLocked"],
+                                CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
+                                CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
+                                CreatedDateTime: loanApplicationListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return loanApplicationListArray;
+        }
+
+        // add new reconstruct
+        function btnReconstructOnclick() {
+            document.getElementById("btnReconstruct").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Reconstructing";
+            $("#btnReconstruct").prop("disabled", true);
+            $("#btnCloseReconstruct").prop("disabled", true);
+
+            var loanReconstuctObject = new Object();
+            loanReconstuctObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
+            loanReconstuctObject.ReconstructLoanId = cboLoanNumber.selectedItem["Id"];
+            loanReconstuctObject.ReconstuctLoanTotalBalanceAmount = document.getElementById("amountToBeReconstruct").value;
+            var loanReconstuctData = JSON.stringify(loanReconstuctObject);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/loanReconstruct/add',
+                contentType: "application/json; charset=utf-8",
+                data: loanReconstuctData,
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/LoanApplicationDetail?id=' + id;
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+
+        // add new loan application
+        function btnAddLoanApplicationOnclick() {
+            document.getElementById("btnAddLoanApplication").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnAddLoanApplication").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/loan/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/LoanApplicationDetail?id=' + id;
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // edit loan application
+        function btnEditLoanApplicationOnclick() {
+            loanApplicationCollectionView.editItem(loanApplicationCollectionView.currentItem);
+            var id = loanApplicationCollectionView.currentEditItem.Id;
+            window.location = '/Software/LoanApplicationDetail?id=' + id;
+        }
+
+        // delete loan application
+        function btnDeleteLoanApplicationOnclick(isLocked) {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationLoanApplicationModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
+                $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
+                $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteLoanApplicationOnclick() {
+            document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteLoanApplication").prop("disabled", true);
+            $("#btnCloseDeleteLoanApplicationModal").prop("disabled", true);
+
+            loanApplicationCollectionView.editItem(loanApplicationCollectionView.currentItem);
+            var id = loanApplicationCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/loan/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationLoanApplicationModal').modal('hide');
+
+                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                        loanApplicationCollectionView.canFilter = true;
+
+                        var filterText = '';
+                        $('#searchLoanApplication').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            loanApplicationCollectionView.refresh();
+                        });
+
+                        loanApplicationCollectionView.filter = function (item) {
+                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                        loanApplicationFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error("Not Found");
+                        $('#deleteConfirmationLoanApplicationModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
+                        $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
+                        $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationLoanApplicationModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
+                        $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
+                        $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // stamp security
+        function updateStampSecurity() {
+            var item = loanApplicationCollectionView.currentItem;
+            document.getElementById('stampCreatedBy').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDate').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedBy').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
+        }
+
+        // create loan application flexgrid
+        function createLoanApplicationFlexGrid() {
+            loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+            loanApplicationCollectionView.canFilter = true;
+
+            var filterText = '';
+            $('#searchLoanApplication').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanApplicationCollectionView.refresh();
+            });
+
+            loanApplicationCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateStampSecurity();
+            });
+
+            // Flex Grid
+            loanApplicationFlexGrid = new wijmo.grid.FlexGrid('#loanApplicationFlexGrid');
+            loanApplicationFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Loan Number",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Principal",
+                                "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 130,
+                            },
+                            {
+                                "header": "Interest",
+                                "binding": "InterestAmount",
+                                "allowSorting": true,
+                                "width": 130,
+                            },
+                            {
+                                "header": "Deduction",
+                                "binding": "DeductionAmount",
+                                "allowSorting": true,
+                                "width": 130,
+                            },
+                            {
+                                "header": "Net Amount",
+                                "binding": "NetAmount",
+                                "allowSorting": true,
+                                "width": 130,
+                            },
+                            {
+                                "header": "F",
+                                "binding": "IsFullyPaid",
+                                "allowSorting": true,
+                                "width": 50,
+                            },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": 50,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanApplicationCollectionView,
+                isReadOnly: true,
+                frozenColumns: 2,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            loanApplicationFlexGrid.trackChanges = true;
+        }
+
+        // on load page
+        window.onload = function () {
+            NProgress.start();
+            toastrModification();
+            cboLoanDate = new wijmo.input.InputDate('#cboLoanDate');
+            createCboLoanDate();
+            createLoanApplicationFlexGrid();
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+                getUserRightsMessageError();
+            }
+
+            cboApplicant = new wijmo.input.ComboBox('#cboApplicant')
+            cboLoanNumber = new wijmo.input.ComboBox('#cboLoanNumber')
+        }
+    </script>
+</body>
+</html>

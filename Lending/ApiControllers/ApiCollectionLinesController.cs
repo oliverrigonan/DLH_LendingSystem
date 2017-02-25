@@ -124,46 +124,32 @@ namespace Lending.ApiControllers
 
                                     if (loanLines.Any())
                                     {
-                                        if (!loanLines.FirstOrDefault().IsCleared)
+                                        if (collectionLines.PaidAmount <= loanLines.FirstOrDefault().CollectibleAmount)
                                         {
-                                            if (loanLines.FirstOrDefault().BalanceAmount > 0)
+                                            Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
+                                            newCollectionLine.CollectionId = collectionLines.CollectionId;
+                                            newCollectionLine.LoanLinesId = collectionLines.LoanLinesId;
+                                            newCollectionLine.PenaltyId = collectionLines.PenaltyId;
+                                            newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
+                                            newCollectionLine.PaidAmount = collectionLines.PaidAmount;
+                                            db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
+                                            db.SubmitChanges();
+
+                                            var collectionLineAmount = from d in db.trnCollectionLines
+                                                                       where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
+                                                                       select d;
+
+                                            Decimal totalPaidAmount = 0;
+                                            if (collectionLineAmount.Any())
                                             {
-                                                if (collectionLines.PaidAmount <= loanLines.FirstOrDefault().BalanceAmount)
-                                                {
-                                                    Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
-                                                    newCollectionLine.CollectionId = collectionLines.CollectionId;
-                                                    newCollectionLine.LoanLinesId = collectionLines.LoanLinesId;
-                                                    newCollectionLine.PenaltyId = collectionLines.PenaltyId;
-                                                    newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
-                                                    newCollectionLine.PaidAmount = collectionLines.PaidAmount;
-                                                    db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
-                                                    db.SubmitChanges();
-
-                                                    var collectionLineAmount = from d in db.trnCollectionLines
-                                                                               where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
-                                                                               select d;
-
-                                                    Decimal totalPaidAmount = 0;
-                                                    if (collectionLineAmount.Any())
-                                                    {
-                                                        totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
-                                                    }
-
-                                                    var updateCollection = collection.FirstOrDefault();
-                                                    updateCollection.TotalPaidAmount = totalPaidAmount;
-                                                    db.SubmitChanges();
-
-                                                    return Request.CreateResponse(HttpStatusCode.OK);
-                                                }
-                                                else
-                                                {
-                                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                                }
+                                                totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
                                             }
-                                            else
-                                            {
-                                                return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                            }
+
+                                            var updateCollection = collection.FirstOrDefault();
+                                            updateCollection.TotalPaidAmount = totalPaidAmount;
+                                            db.SubmitChanges();
+
+                                            return Request.CreateResponse(HttpStatusCode.OK);
                                         }
                                         else
                                         {
@@ -252,7 +238,7 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    if (collectionLines.PaidAmount <= collectionLine.FirstOrDefault().trnLoanLine.BalanceAmount)
+                                    if (collectionLines.PaidAmount <= collectionLine.FirstOrDefault().trnLoanLine.CollectibleAmount)
                                     {
                                         var updateCollectionLines = collectionLine.FirstOrDefault();
                                         updateCollectionLines.CollectionId = collectionLines.CollectionId;
@@ -467,8 +453,7 @@ namespace Lending.ApiControllers
                                 var loanLines = from d in db.trnLoanLines
                                                 where d.LoanId == collectionLines.LoanId
                                                 && d.trnLoan.IsLocked == true
-                                                && d.IsCleared == false
-                                                && d.BalanceAmount > 0
+                                                && d.PaidAmount == 0
                                                 select new Models.TrnLoanLines
                                                 {
                                                     Id = d.Id,
@@ -476,9 +461,7 @@ namespace Lending.ApiControllers
                                                     CollectibleDate = d.CollectibleDate.ToShortDateString(),
                                                     CollectibleAmount = d.CollectibleAmount,
                                                     PaidAmount = d.PaidAmount,
-                                                    PenaltyAmount = d.PenaltyAmount,
-                                                    BalanceAmount = d.BalanceAmount,
-                                                    IsCleared = d.IsCleared
+                                                    PenaltyAmount = d.PenaltyAmount
                                                 };
 
                                 if (loanLines.Any())
@@ -495,7 +478,7 @@ namespace Lending.ApiControllers
                                             newCollectionLine.LoanLinesId = loanLine.Id;
                                             newCollectionLine.PenaltyId = penalty.FirstOrDefault().Id;
                                             newCollectionLine.PenaltyAmount = 0;
-                                            newCollectionLine.PaidAmount = loanLine.BalanceAmount;
+                                            newCollectionLine.PaidAmount = loanLine.CollectibleAmount;
                                             db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
                                             db.SubmitChanges();
                                         }

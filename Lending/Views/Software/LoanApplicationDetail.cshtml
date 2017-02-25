@@ -45,9 +45,6 @@
                         <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
                             <i class="fa fa-unlock fa-fw"></i> Unlock
                         </button>
-                        <button class="btn btn-danger" id="btnClose" onclick="window.location = '/Software/LoanApplicationList'">
-                            <i class="fa fa-close fa-fw"></i> Close
-                        </button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -150,10 +147,6 @@
                                             <div id="cboInterest"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label>Is Advance Interest</label><br />
-                                            <input type="checkbox" id="IsAdvanceInterest" />
-                                        </div>
-                                        <div class="form-group">
                                             <label>Rate</label><br />
                                             <div class="input-group numberField">
                                                 <span class="input-group-addon">%</span>
@@ -171,20 +164,6 @@
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Previous Balance Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="previousBalanceAmount" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Previous Penalty Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="previousPenaltyAmount" placeholder="0.00" disabled />
-                                            </div>
-                                        </div>
                                         <div class="form-group">
                                             <label>Total From Other Deductions</label><br />
                                             <div class="input-group numberField">
@@ -234,6 +213,11 @@
                             <li>
                                 <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
                                     Loan Reconstruct
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#loanRenew" data-toggle="tab" id="loanRenewTab">
+                                    Loan Renew
                                 </a>
                             </li>
                         </ul>
@@ -298,6 +282,16 @@
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanReconstructFlexgrid" class="grid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="loanRenew">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Loan Renew
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="loanRenewFlexgrid" class="grid"></div>
                                     </div>
                                 </div>
                             </div>
@@ -650,7 +644,6 @@
                             success: function (loanReconstructsResults) {
                                 if (loanReconstructsResults.length > 0) {
                                     document.getElementById('loanApplicationPrincipalAmount').disabled = true;
-                                    document.getElementById('IsAdvanceInterest').disabled = true;
                                     cboloanApplicationApplicant.disabled = true;
                                     toastr.info("This is a reconstructed Collection.", "Note:");
                                 }
@@ -676,11 +669,8 @@
                         document.getElementById("termPaymentNoOfDays").value = loanApplicationResult.TermPaymentNoOfDays;
                         document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
                         cboInterest.selectedValue = loanApplicationResult.Interest;
-                        document.getElementById("IsAdvanceInterest").checked = loanApplicationResult.IsAdvanceInterest;
                         document.getElementById('interestRate').value = loanApplicationResult.InterestRate.toLocaleString();
                         document.getElementById('interestAmount').value = loanApplicationResult.InterestAmount.toLocaleString();
-                        document.getElementById('previousBalanceAmount').value = loanApplicationResult.PreviousBalanceAmount.toLocaleString();
-                        document.getElementById('previousPenaltyAmount').value = loanApplicationResult.PreviousPenaltyAmount.toLocaleString();
                         document.getElementById('loanApplicationDeductionAmount').value = loanApplicationResult.DeductionAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetCollectionAmount').value = loanApplicationResult.NetCollectionAmount.toLocaleString();
@@ -703,7 +693,6 @@
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
                             cboInterest.disabled = true;
-                            document.getElementById("IsAdvanceInterest").disabled = true;
                             $("#btnAddLoanApplicationCollateral").prop("disabled", true);
                             $("#btnAddLoanApplicationDeduction").prop("disabled", true);
                             isLocked = true;
@@ -761,11 +750,10 @@
                     loanApplicationObject.TermPaymentNoOfDays = document.getElementById("termPaymentNoOfDays").value;
                     loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                     loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
-                    loanApplicationObject.IsAdvanceInterest = document.getElementById("IsAdvanceInterest").checked;
                     loanApplicationObject.InterestRate = document.getElementById("interestRate").value;
                     loanApplicationObject.InterestAmount = document.getElementById("interestAmount").value;
-                    loanApplicationObject.PreviousBalanceAmount = document.getElementById("previousBalanceAmount").value;
-                    loanApplicationObject.PreviousPenaltyAmount = document.getElementById("previousPenaltyAmount").value;
+                    loanApplicationObject.PreviousBalanceAmount = 0;
+                    loanApplicationObject.PreviousPenaltyAmount = 0;
                     loanApplicationObject.NetAmount = document.getElementById('loanApplicationTotalNetAmount').value;
                     loanApplicationObject.NetCollectionAmount = document.getElementById('loanApplicationTotalNetCollectionAmount').value;
 
@@ -1733,9 +1721,7 @@
                                 CollectibleDate: collectibleDate,
                                 CollectibleAmount: loanLinesResults[i]["CollectibleAmount"],
                                 PaidAmount: loanLinesResults[i]["PaidAmount"],
-                                PenaltyAmount: loanLinesResults[i]["PenaltyAmount"],
-                                BalanceAmount: loanLinesResults[i]["BalanceAmount"],
-                                IsCleared: loanLinesResults[i]["IsCleared"]
+                                PenaltyAmount: loanLinesResults[i]["PenaltyAmount"]
                             });
                         }
                     }
@@ -1786,19 +1772,7 @@
                                 "binding": "PaidAmount",
                                 "allowSorting": true,
                                 "width": "2*",
-                            },
-                            {
-                                "header": "Balance",
-                                "binding": "BalanceAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "C",
-                                "binding": "IsCleared",
-                                "allowSorting": true,
-                                "width": "1*",
-                            },
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanLinesCollectionView,
@@ -1852,6 +1826,7 @@
                                 ReconstructLoanId: loanReconstructsResults[i]["ReconstructLoanId"],
                                 ReconstructLoanNumber: loanReconstructsResults[i]["ReconstructLoanNumber"],
                                 ReconstuctLoanTotalBalanceAmount: loanReconstructsResults[i]["ReconstuctLoanTotalBalanceAmount"],
+                                ReconstructLoanTotalPenaltyAmount: loanReconstructsResults[i]["ReconstructLoanTotalPenaltyAmount"]
                             });
                         }
                     }
@@ -1885,8 +1860,14 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "Reconstruct Amount",
+                                "header": "Balance Amount",
                                 "binding": "ReconstuctLoanTotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Penalty Amount",
+                                "binding": "ReconstructLoanTotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
@@ -1915,6 +1896,7 @@
             $("#loanApplicationCollateral").hide();
             $("#loanDeductions").hide();
             $("#loanLines").hide();
+            $("#loanRenew").hide();
             $("#loanReconstruct").show();
 
             createFlexGridForLoanReconstruct();
@@ -1925,6 +1907,105 @@
             loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
             loanReconstructFlexgrid.itemsSource = loanReconstructCollectionView;
             loanReconstructFlexgrid.trackChanges = true;
+        });
+
+        var loanRenewCollectionView;
+        var loanRenewFlexgrid;
+
+        // loan lines
+        function getLoanRenew() {
+            var loanRenews = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loanRenew/list/ByLoanId/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanRenewsResults) {
+                    if (loanRenewsResults.length > 0) {
+                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
+
+                        for (i = 0; i < loanRenewsResults.length; i++) {
+                            loanRenews.push({
+                                Id: loanRenewsResults[i]["Id"],
+                                BtnLoanNumber: btnLoanNumber,
+                                LoanId: loanRenewsResults[i]["DayReference"],
+                                RenewLoanId: loanRenewsResults[i]["RenewLoanId"],
+                                RenewLoanNumber: loanRenewsResults[i]["RenewLoanNumber"],
+                                RenewLoanTotalBalanceAmount: loanRenewsResults[i]["RenewLoanTotalBalanceAmount"],
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return loanRenews;
+        }
+
+        // create flexgrid for loan application reconstrcut
+        function createFlexGridForLoanRenew() {
+            loanRenewCollectionView = new wijmo.collections.CollectionView(getLoanRenew());
+
+            loanRenewFlexgrid = new wijmo.grid.FlexGrid('#loanRenewFlexgrid');
+            loanRenewFlexgrid.initialize({
+                columns: [
+                            {
+                                "header": "Loan App",
+                                "binding": "BtnLoanNumber",
+                                "width": "0.5*",
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Renew Loan Number",
+                                "binding": "RenewLoanNumber",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Renew Amount",
+                                "binding": "ReconstuctLoanTotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanRenewCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            loanRenewFlexgrid.trackChanges = true;
+        }
+
+        // loan app
+        function btnLoanNumberOnclick() {
+            loanRenewCollectionView.editItem(loanRenewCollectionView.currentItem);
+            var currentItem = loanRenewCollectionView.currentEditItem;
+            window.location = '/Software/LoanApplicationDetail?id=' + currentItem.RenewLoanId;
+        }
+
+        // tab
+        $('#loanRenewTab').click(function () {
+            NProgress.start();
+            $("#loanApplicationCollateral").hide();
+            $("#loanDeductions").hide();
+            $("#loanLines").hide();
+            $("#loanReconstruct").hide();
+            $("#loanRenew").show();
+
+            createFlexGridForLoanRenew();
+            window.createFlexGridForLoanRenew = function () {
+                return true;
+            }
+
+            loanRenewCollectionView = new wijmo.collections.CollectionView(getLoanRenew());
+            loanRenewFlexgrid.itemsSource = loanRenewCollectionView;
+            loanRenewFlexgrid.trackChanges = true;
         });
 
         // on load page
@@ -1958,10 +2039,6 @@
             getDeduction();
         }
 
-        $('#IsAdvanceInterest').change(function () {
-            computeDeductions();
-        });
-
         // compute deductions to net amount
         function computeDeductions() {
             var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
@@ -1972,17 +2049,9 @@
 
             // deductions
             var deductionAmountValue = document.getElementById('loanApplicationDeductionAmount').value.replace(/\,/g, '');
-            var previousBalanceAmount = document.getElementById('previousBalanceAmount').value.replace(/\,/g, '');
-            var previousPenaltyAmount = document.getElementById('previousPenaltyAmount').value.replace(/\,/g, '');
-            var totalDeductions = parseFloat(previousBalanceAmount) + parseFloat(previousPenaltyAmount) + parseFloat(deductionAmountValue);
-
-            var isAdvanceInterest = document.getElementById("IsAdvanceInterest").checked;
+            var totalDeductions = parseFloat(deductionAmountValue);
             var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
             var netCollectionAmount = parseFloat(principalAmountValue) + parseFloat(interestAmountValue);
-            if (isAdvanceInterest) {
-                netAmount = (parseFloat(principalAmountValue) - parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
-                netCollectionAmount = (parseFloat(principalAmountValue) - parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
-            }
 
             document.getElementById('loanApplicationTotalNetAmount').value = netAmount.toLocaleString();
             document.getElementById('loanApplicationTotalNetCollectionAmount').value = netCollectionAmount.toLocaleString();

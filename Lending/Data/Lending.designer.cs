@@ -598,6 +598,8 @@ namespace Lending.Data
 		
 		private decimal _RenewLoanTotalBalanceAmount;
 		
+		private decimal _RenewLoanTotalPenaltyAmount;
+		
 		private EntityRef<trnLoan> _trnLoan;
 		
 		private EntityRef<trnLoan> _trnLoan1;
@@ -614,6 +616,8 @@ namespace Lending.Data
     partial void OnRenewLoanIdChanged();
     partial void OnRenewLoanTotalBalanceAmountChanging(decimal value);
     partial void OnRenewLoanTotalBalanceAmountChanged();
+    partial void OnRenewLoanTotalPenaltyAmountChanging(decimal value);
+    partial void OnRenewLoanTotalPenaltyAmountChanged();
     #endregion
 		
 		public trnLoanRenew()
@@ -707,6 +711,26 @@ namespace Lending.Data
 					this._RenewLoanTotalBalanceAmount = value;
 					this.SendPropertyChanged("RenewLoanTotalBalanceAmount");
 					this.OnRenewLoanTotalBalanceAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanTotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal RenewLoanTotalPenaltyAmount
+		{
+			get
+			{
+				return this._RenewLoanTotalPenaltyAmount;
+			}
+			set
+			{
+				if ((this._RenewLoanTotalPenaltyAmount != value))
+				{
+					this.OnRenewLoanTotalPenaltyAmountChanging(value);
+					this.SendPropertyChanging();
+					this._RenewLoanTotalPenaltyAmount = value;
+					this.SendPropertyChanged("RenewLoanTotalPenaltyAmount");
+					this.OnRenewLoanTotalPenaltyAmountChanged();
 				}
 			}
 		}
@@ -12425,8 +12449,6 @@ namespace Lending.Data
 		
 		private decimal _PrincipalAmount;
 		
-		private bool _IsAdvanceInterest;
-		
 		private int _InterestId;
 		
 		private decimal _InterestRate;
@@ -12525,8 +12547,6 @@ namespace Lending.Data
     partial void OnMaturityDateChanged();
     partial void OnPrincipalAmountChanging(decimal value);
     partial void OnPrincipalAmountChanged();
-    partial void OnIsAdvanceInterestChanging(bool value);
-    partial void OnIsAdvanceInterestChanged();
     partial void OnInterestIdChanging(int value);
     partial void OnInterestIdChanged();
     partial void OnInterestRateChanging(decimal value);
@@ -12820,26 +12840,6 @@ namespace Lending.Data
 					this._PrincipalAmount = value;
 					this.SendPropertyChanged("PrincipalAmount");
 					this.OnPrincipalAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsAdvanceInterest", DbType="Bit NOT NULL")]
-		public bool IsAdvanceInterest
-		{
-			get
-			{
-				return this._IsAdvanceInterest;
-			}
-			set
-			{
-				if ((this._IsAdvanceInterest != value))
-				{
-					this.OnIsAdvanceInterestChanging(value);
-					this.SendPropertyChanging();
-					this._IsAdvanceInterest = value;
-					this.SendPropertyChanged("IsAdvanceInterest");
-					this.OnIsAdvanceInterestChanged();
 				}
 			}
 		}
@@ -14180,10 +14180,6 @@ namespace Lending.Data
 		
 		private decimal _PenaltyAmount;
 		
-		private decimal _BalanceAmount;
-		
-		private bool _IsCleared;
-		
 		private EntitySet<trnCollectionLine> _trnCollectionLines;
 		
 		private EntityRef<trnLoan> _trnLoan;
@@ -14206,10 +14202,6 @@ namespace Lending.Data
     partial void OnPaidAmountChanged();
     partial void OnPenaltyAmountChanging(decimal value);
     partial void OnPenaltyAmountChanged();
-    partial void OnBalanceAmountChanging(decimal value);
-    partial void OnBalanceAmountChanged();
-    partial void OnIsClearedChanging(bool value);
-    partial void OnIsClearedChanged();
     #endregion
 		
 		public trnLoanLine()
@@ -14363,46 +14355,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal BalanceAmount
-		{
-			get
-			{
-				return this._BalanceAmount;
-			}
-			set
-			{
-				if ((this._BalanceAmount != value))
-				{
-					this.OnBalanceAmountChanging(value);
-					this.SendPropertyChanging();
-					this._BalanceAmount = value;
-					this.SendPropertyChanged("BalanceAmount");
-					this.OnBalanceAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCleared", DbType="Bit NOT NULL")]
-		public bool IsCleared
-		{
-			get
-			{
-				return this._IsCleared;
-			}
-			set
-			{
-				if ((this._IsCleared != value))
-				{
-					this.OnIsClearedChanging(value);
-					this.SendPropertyChanging();
-					this._IsCleared = value;
-					this.SendPropertyChanged("IsCleared");
-					this.OnIsClearedChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoanLine_trnCollectionLine", Storage="_trnCollectionLines", ThisKey="Id", OtherKey="LoanLinesId")]
 		public EntitySet<trnCollectionLine> trnCollectionLines
 		{
@@ -14495,7 +14447,9 @@ namespace Lending.Data
 		
 		private int _ReconstructLoanId;
 		
-		private decimal _ReconstuctLoanTotalBalanceAmount;
+		private decimal _ReconstructLoanTotalBalanceAmount;
+		
+		private decimal _ReconstructLoanTotalPenaltyAmount;
 		
 		private EntityRef<trnLoan> _trnLoan;
 		
@@ -14511,8 +14465,10 @@ namespace Lending.Data
     partial void OnLoanIdChanged();
     partial void OnReconstructLoanIdChanging(int value);
     partial void OnReconstructLoanIdChanged();
-    partial void OnReconstuctLoanTotalBalanceAmountChanging(decimal value);
-    partial void OnReconstuctLoanTotalBalanceAmountChanged();
+    partial void OnReconstructLoanTotalBalanceAmountChanging(decimal value);
+    partial void OnReconstructLoanTotalBalanceAmountChanged();
+    partial void OnReconstructLoanTotalPenaltyAmountChanging(decimal value);
+    partial void OnReconstructLoanTotalPenaltyAmountChanged();
     #endregion
 		
 		public trnLoanReconstruct()
@@ -14590,22 +14546,42 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstuctLoanTotalBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal ReconstuctLoanTotalBalanceAmount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanTotalBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal ReconstructLoanTotalBalanceAmount
 		{
 			get
 			{
-				return this._ReconstuctLoanTotalBalanceAmount;
+				return this._ReconstructLoanTotalBalanceAmount;
 			}
 			set
 			{
-				if ((this._ReconstuctLoanTotalBalanceAmount != value))
+				if ((this._ReconstructLoanTotalBalanceAmount != value))
 				{
-					this.OnReconstuctLoanTotalBalanceAmountChanging(value);
+					this.OnReconstructLoanTotalBalanceAmountChanging(value);
 					this.SendPropertyChanging();
-					this._ReconstuctLoanTotalBalanceAmount = value;
-					this.SendPropertyChanged("ReconstuctLoanTotalBalanceAmount");
-					this.OnReconstuctLoanTotalBalanceAmountChanged();
+					this._ReconstructLoanTotalBalanceAmount = value;
+					this.SendPropertyChanged("ReconstructLoanTotalBalanceAmount");
+					this.OnReconstructLoanTotalBalanceAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanTotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal ReconstructLoanTotalPenaltyAmount
+		{
+			get
+			{
+				return this._ReconstructLoanTotalPenaltyAmount;
+			}
+			set
+			{
+				if ((this._ReconstructLoanTotalPenaltyAmount != value))
+				{
+					this.OnReconstructLoanTotalPenaltyAmountChanging(value);
+					this.SendPropertyChanging();
+					this._ReconstructLoanTotalPenaltyAmount = value;
+					this.SendPropertyChanged("ReconstructLoanTotalPenaltyAmount");
+					this.OnReconstructLoanTotalPenaltyAmountChanged();
 				}
 			}
 		}

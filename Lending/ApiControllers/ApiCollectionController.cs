@@ -228,19 +228,10 @@ namespace Lending.ApiControllers
                     {
                         var collectionPaidAmount = loanLines.FirstOrDefault().PaidAmount + collectionLine.PaidAmount;
                         var collectionPenaltyAmount = loanLines.FirstOrDefault().PenaltyAmount + collectionLine.PenaltyAmount;
-                        var collectionBalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount + collectionPenaltyAmount) - collectionPaidAmount;
-
-                        var isCleared = false;
-                        if (collectionBalanceAmount == 0)
-                        {
-                            isCleared = true;
-                        }
 
                         var updateLoanLines = loanLines.FirstOrDefault();
                         updateLoanLines.PaidAmount = collectionPaidAmount;
                         updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
-                        updateLoanLines.BalanceAmount = collectionBalanceAmount;
-                        updateLoanLines.IsCleared = isCleared;
                         db.SubmitChanges();
 
                         var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
@@ -255,7 +246,7 @@ namespace Lending.ApiControllers
                                 var updateLoan = loan.FirstOrDefault();
                                 updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
                                 updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
-                                updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.BalanceAmount);
+                                updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount);
                                 db.SubmitChanges();
                             }
                         }
@@ -298,19 +289,10 @@ namespace Lending.ApiControllers
                             {
                                 var collectionPaidAmount = loanLines.FirstOrDefault().PaidAmount - collectionLine.PaidAmount;
                                 var collectionPenaltyAmount = loanLines.FirstOrDefault().PenaltyAmount - collectionLine.PenaltyAmount;
-                                var collectionBalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount + collectionPenaltyAmount) - collectionPaidAmount;
-
-                                var isCleared = false;
-                                if (collectionBalanceAmount == 0)
-                                {
-                                    isCleared = true;
-                                }
 
                                 var updateLoanLines = loanLines.FirstOrDefault();
                                 updateLoanLines.PaidAmount = collectionPaidAmount;
                                 updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
-                                updateLoanLines.BalanceAmount = collectionBalanceAmount;
-                                updateLoanLines.IsCleared = isCleared;
                                 db.SubmitChanges();
 
                                 var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
@@ -325,7 +307,7 @@ namespace Lending.ApiControllers
                                         var updateLoan = loan.FirstOrDefault();
                                         updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
                                         updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
-                                        updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.BalanceAmount);
+                                        updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount);
                                         db.SubmitChanges();
                                     }
                                 }

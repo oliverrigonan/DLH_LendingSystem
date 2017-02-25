@@ -27,9 +27,7 @@ namespace Lending.ApiControllers
                                 CollectibleDate = d.CollectibleDate.ToShortDateString(),
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
-                                PenaltyAmount = d.PenaltyAmount,
-                                BalanceAmount = d.BalanceAmount,
-                                IsCleared = d.IsCleared
+                                PenaltyAmount = d.PenaltyAmount
                             };
 
             return loanLines.ToList();
