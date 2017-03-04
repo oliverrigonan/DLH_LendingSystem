@@ -35,6 +35,7 @@ namespace Lending.ApiControllers
                                   Status = d.sysCollectionStatus.Status,
                                   Particulars = d.Particulars,
                                   TotalPaidAmount = d.TotalPaidAmount,
+                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser.FullName,
                                   IsLocked = d.IsLocked,
@@ -70,6 +71,7 @@ namespace Lending.ApiControllers
                                  Status = d.sysCollectionStatus.Status,
                                  Particulars = d.Particulars,
                                  TotalPaidAmount = d.TotalPaidAmount,
+                                 TotalPenaltyAmount = d.TotalPenaltyAmount,
                                  PreparedByUserId = d.PreparedByUserId,
                                  PreparedByUser = d.mstUser.FullName,
                                  IsLocked = d.IsLocked,
@@ -161,6 +163,7 @@ namespace Lending.ApiControllers
                                 newCollection.Particulars = "NA";
                                 newCollection.PreparedByUserId = userId;
                                 newCollection.TotalPaidAmount = 0;
+                                newCollection.TotalPenaltyAmount = 0;
                                 newCollection.IsLocked = false;
                                 newCollection.CreatedByUserId = userId;
                                 newCollection.CreatedDateTime = DateTime.Now;
@@ -366,9 +369,11 @@ namespace Lending.ApiControllers
                                                       select d;
 
                                 Decimal totalPaidAmount = 0;
+                                Decimal totalPenaltyAmount = 0;
                                 if (collectionLines.Any())
                                 {
                                     totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
+                                    totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
                                 }
 
                                 var lockCollection = collections.FirstOrDefault();
@@ -378,6 +383,7 @@ namespace Lending.ApiControllers
                                 lockCollection.Particulars = collection.Particulars;
                                 lockCollection.PreparedByUserId = collection.PreparedByUserId;
                                 lockCollection.TotalPaidAmount = totalPaidAmount;
+                                lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
                                 lockCollection.IsLocked = true;
                                 lockCollection.UpdatedByUserId = userId;
                                 lockCollection.UpdatedDateTime = DateTime.Now;

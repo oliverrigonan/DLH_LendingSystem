@@ -20,6 +20,7 @@ namespace Lending.Models
         public String Status { get; set; }
         public String Particulars { get; set; }
         public Decimal TotalPaidAmount { get; set; }
+        public Decimal TotalPenaltyAmount { get; set; }
         public Int32 PreparedByUserId { get; set; }
         public String PreparedByUser { get; set; }
         public Boolean IsLocked { get; set; }

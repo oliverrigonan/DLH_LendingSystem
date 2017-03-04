@@ -115,7 +115,7 @@
 
     <!-- loan applciation recontruct Detail Modal -->
     <div class="modal fade" id="reconstructDetailModal" role="dialog">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -125,24 +125,24 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Applicant</label><br />
-                        <div id="cboApplicant"></div>
+                        <div id="cboApplicant" style="width: 100%;"></div>
                     </div>
                     <div class="form-group">
                         <label>Loan Number</label><br />
-                        <div id="cboLoanNumber"></div>
+                        <div id="cboLoanNumber" style="width: 100%;"></div>
                     </div>
                     <div class="form-group">
                         <label>Amount to be Reconstructed</label><br />
                         <div class="input-group numberField">
                             <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField" id="amountToBeReconstruct" placeholder="0.00" />
+                            <input type="text" class="form-control numberField" id="amountToBeReconstruct" placeholder="0.00" disabled />
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Total Penalty</label><br />
                         <div class="input-group numberField">
                             <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField" id="penaltyToBeReconstruct" placeholder="0.00" />
+                            <input type="text" class="form-control numberField" id="penaltyToBeReconstruct" placeholder="0.00" disabled />
                         </div>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/loan/list/loanApplicants',
+                url: '/api/loan/list/loanApplicants/InReconstruct/InRenewal',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -225,7 +225,7 @@
         function getApplicantLoanNumber() {
             var applicantLoanNumberArray = new Array();
             $.ajax({
-                url: '/api/loan/list/byApplicantId/' + cboApplicant.selectedItem["ApplicantId"],
+                url: '/api/loan/list/byApplicantId/InReconstruct/InRenewal/' + cboApplicant.selectedItem["ApplicantId"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -329,6 +329,15 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
+                            var loanStatus = "Active";
+                            if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                loanStatus = "Overdue - Reconstructed";
+                            } else {
+                                if (loanApplicationListResult[i]["IsRenew"]) {
+                                    loanStatus = "Renewd";
+                                }
+                            }
+
                             loanApplicationListArray.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
@@ -346,6 +355,7 @@
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
                                 IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
+                                LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
                                 CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
@@ -561,28 +571,16 @@
                                 "width": 220,
                             },
                             {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 170,
+                            },
+                            {
                                 "header": "Reconstruct Amount",
                                 "binding": "PrincipalAmount",
                                 "allowSorting": true,
                                 "width": 160,
-                            },
-                            {
-                                "header": "Interest",
-                                "binding": "InterestAmount",
-                                "allowSorting": true,
-                                "width": 130,
-                            },
-                            {
-                                "header": "Penalty",
-                                "binding": "PreviousPenaltyAmount",
-                                "allowSorting": true,
-                                "width": 130,
-                            },
-                            {
-                                "header": "Deduction",
-                                "binding": "DeductionAmount",
-                                "allowSorting": true,
-                                "width": 130,
                             },
                             {
                                 "header": "Collection Amount",
@@ -591,19 +589,19 @@
                                 "width": 160,
                             },
                             {
-                                "header": "Paid Amount",
+                                "header": "Total Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
                             {
-                                "header": "Balance Amount",
+                                "header": "Total Balance",
                                 "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
                             {
-                                "header": "Penalty Amount",
+                                "header": "Total Penalty",
                                 "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": 160,

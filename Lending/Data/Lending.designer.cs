@@ -11039,6 +11039,8 @@ namespace Lending.Data
 		
 		private decimal _TotalPaidAmount;
 		
+		private decimal _TotalPenaltyAmount;
+		
 		private int _PreparedByUserId;
 		
 		private bool _IsLocked;
@@ -11081,6 +11083,8 @@ namespace Lending.Data
     partial void OnParticularsChanged();
     partial void OnTotalPaidAmountChanging(decimal value);
     partial void OnTotalPaidAmountChanged();
+    partial void OnTotalPenaltyAmountChanging(decimal value);
+    partial void OnTotalPenaltyAmountChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
     partial void OnIsLockedChanging(bool value);
@@ -11250,6 +11254,26 @@ namespace Lending.Data
 					this._TotalPaidAmount = value;
 					this.SendPropertyChanged("TotalPaidAmount");
 					this.OnTotalPaidAmountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal TotalPenaltyAmount
+		{
+			get
+			{
+				return this._TotalPenaltyAmount;
+			}
+			set
+			{
+				if ((this._TotalPenaltyAmount != value))
+				{
+					this.OnTotalPenaltyAmountChanging(value);
+					this.SendPropertyChanging();
+					this._TotalPenaltyAmount = value;
+					this.SendPropertyChanged("TotalPenaltyAmount");
+					this.OnTotalPenaltyAmountChanged();
 				}
 			}
 		}

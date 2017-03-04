@@ -58,6 +58,54 @@ namespace Lending.ApiControllers
             return loanApplications.ToList();
         }
 
+        // loan applicants
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/list/loanApplicants/InReconstruct/InRenewal")]
+        public List<Models.TrnLoan> listLoanApplicantsInReconstructInRenewal()
+        {
+            var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                 where d.IsLocked == true
+                                 && d.IsReconstruct == false
+                                 && d.IsRenew == false
+                                 && d.TotalBalanceAmount > 0
+                                 group d by new
+                                 {
+                                     ApplicantId = d.ApplicantId,
+                                     Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " ")
+                                 } into g
+                                 select new Models.TrnLoan
+                                 {
+                                     ApplicantId = g.Key.ApplicantId,
+                                     Applicant = g.Key.Applicant
+                                 };
+
+            return loanApplicants.ToList();
+        }
+
+        // loan list by applicantId
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/list/byApplicantId/InReconstruct/InRenewal/{applicantId}")]
+        public List<Models.TrnLoan> listLoanByApplicantIdInReconstructInRenewal(String applicantId)
+        {
+            var loanApplications = from d in db.trnLoans
+                                   where d.ApplicantId == Convert.ToInt32(applicantId)
+                                   && d.IsLocked == true
+                                   && d.IsReconstruct == false
+                                   && d.IsRenew == false
+                                   && d.TotalBalanceAmount > 0
+                                   select new Models.TrnLoan
+                                   {
+                                       Id = d.Id,
+                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)" : "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " - Renewd" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)" : "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " - Renewd" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)" : "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " - Renewd" : d.LoanNumber,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount
+                                   };
+
+            return loanApplications.ToList();
+        }
+
         // loan list by loan date
         [Authorize]
         [HttpGet]

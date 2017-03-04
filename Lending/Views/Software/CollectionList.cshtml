@@ -209,6 +209,7 @@
                                 Status: collectionListResult[i]["Status"],
                                 Particulars: collectionListResult[i]["Particulars"],
                                 TotalPaidAmount: collectionListResult[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: collectionListResult[i]["TotalPenaltyAmount"],
                                 PreparedByUserId: collectionListResult[i]["PreparedByUserId"],
                                 PreparedByUser: collectionListResult[i]["PreparedByUser"],
                                 IsLocked: collectionListResult[i]["IsLocked"],
@@ -410,8 +411,14 @@
                                 "width": 165,
                             },
                             {
-                                "header": "Paid Amount",
+                                "header": "Total Paid",
                                 "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": 130
                             },

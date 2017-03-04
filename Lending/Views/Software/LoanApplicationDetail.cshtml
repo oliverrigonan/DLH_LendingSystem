@@ -210,16 +210,6 @@
                                     Loan Lines - Collection (Auto Generate When Locked)
                                 </a>
                             </li>
-                            <li>
-                                <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
-                                    Loan Reconstruct
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#loanRenew" data-toggle="tab" id="loanRenewTab">
-                                    Loan Renew
-                                </a>
-                            </li>
                         </ul>
                         <br />
                         <div id="myTabContent" class="tab-content">
@@ -272,26 +262,6 @@
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanLinesFlexgrid" class="grid"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade in" id="loanReconstruct">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Loan Reconstruct
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanReconstructFlexgrid" class="grid"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane fade in" id="loanRenew">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Loan Renew
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanRenewFlexgrid" class="grid"></div>
                                     </div>
                                 </div>
                             </div>
@@ -485,7 +455,6 @@
         var cboLoanType;
         var cboTerm;
         var cboInterest;
-
         var loanApplicationDeductionCollectionView;
         var loanApplicationDeductionFlexGrid;
         var cboDeduction;
@@ -1675,7 +1644,6 @@
             $("#loanApplicationCollateral").show();
             $("#loanDeductions").hide();
             $("#loanLines").hide();
-            $("#loanReconstruct").hide();
 
             createFlexGridForLoanApplicationCollateral();
             window.createFlexGridForLoanApplicationCollateral = function () {
@@ -1693,7 +1661,6 @@
             $("#loanApplicationCollateral").hide();
             $("#loanDeductions").show();
             $("#loanLines").hide();
-            $("#loanReconstruct").hide();
 
             loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
             loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
@@ -1762,14 +1729,14 @@
                                 "width": "2*",
                             },
                             {
-                                "header": "Penalty",
-                                "binding": "PenaltyAmount",
+                                "header": "Paid",
+                                "binding": "PaidAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
                             {
-                                "header": "Paid",
-                                "binding": "PaidAmount",
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             }
@@ -1791,7 +1758,6 @@
             $("#loanApplicationCollateral").hide();
             $("#loanDeductions").hide();
             $("#loanLines").show();
-            $("#loanReconstruct").hide();
 
             createFlexGridForLoanLines();
             window.createFlexGridForLoanLines = function () {
@@ -1801,211 +1767,6 @@
             loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesListByLoanId());
             loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
             loanLinesFlexgrid.trackChanges = true;
-        });
-
-        var loanReconstructCollectionView;
-        var loanReconstructFlexgrid;
-
-        // loan lines
-        function getLoanReconstruct() {
-            var loanReconstructs = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/loanReconstruct/list/ByLoanId/' + getUrlParameter("id"),
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (loanReconstructsResults) {
-                    if (loanReconstructsResults.length > 0) {
-                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
-
-                        for (i = 0; i < loanReconstructsResults.length; i++) {
-                            loanReconstructs.push({
-                                Id: loanReconstructsResults[i]["Id"],
-                                BtnLoanNumber: btnLoanNumber,
-                                LoanId: loanReconstructsResults[i]["DayReference"],
-                                ReconstructLoanId: loanReconstructsResults[i]["ReconstructLoanId"],
-                                ReconstructLoanNumber: loanReconstructsResults[i]["ReconstructLoanNumber"],
-                                ReconstuctLoanTotalBalanceAmount: loanReconstructsResults[i]["ReconstuctLoanTotalBalanceAmount"],
-                                ReconstructLoanTotalPenaltyAmount: loanReconstructsResults[i]["ReconstructLoanTotalPenaltyAmount"]
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                }
-            });
-
-            return loanReconstructs;
-        }
-
-        // create flexgrid for loan application reconstrcut
-        function createFlexGridForLoanReconstruct() {
-            loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
-
-            loanReconstructFlexgrid = new wijmo.grid.FlexGrid('#loanReconstructFlexgrid');
-            loanReconstructFlexgrid.initialize({
-                columns: [
-                            {
-                                "header": "Loan App",
-                                "binding": "BtnLoanNumber",
-                                "width": "0.5*",
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Reconstruct Loan Number",
-                                "binding": "ReconstructLoanNumber",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Balance Amount",
-                                "binding": "ReconstuctLoanTotalBalanceAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Penalty Amount",
-                                "binding": "ReconstructLoanTotalPenaltyAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                ],
-                autoGenerateColumns: false,
-                itemsSource: loanReconstructCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            loanReconstructFlexgrid.trackChanges = true;
-        }
-
-        // loan app
-        function btnLoanNumberOnclick() {
-            loanReconstructCollectionView.editItem(loanReconstructCollectionView.currentItem);
-            var currentItem = loanReconstructCollectionView.currentEditItem;
-            window.location = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
-        }
-
-        // tab
-        $('#loanReconstructTab').click(function () {
-            NProgress.start();
-            $("#loanApplicationCollateral").hide();
-            $("#loanDeductions").hide();
-            $("#loanLines").hide();
-            $("#loanRenew").hide();
-            $("#loanReconstruct").show();
-
-            createFlexGridForLoanReconstruct();
-            window.createFlexGridForLoanReconstruct = function () {
-                return true;
-            }
-
-            loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
-            loanReconstructFlexgrid.itemsSource = loanReconstructCollectionView;
-            loanReconstructFlexgrid.trackChanges = true;
-        });
-
-        var loanRenewCollectionView;
-        var loanRenewFlexgrid;
-
-        // loan lines
-        function getLoanRenew() {
-            var loanRenews = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/loanRenew/list/ByLoanId/' + getUrlParameter("id"),
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (loanRenewsResults) {
-                    if (loanRenewsResults.length > 0) {
-                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
-
-                        for (i = 0; i < loanRenewsResults.length; i++) {
-                            loanRenews.push({
-                                Id: loanRenewsResults[i]["Id"],
-                                BtnLoanNumber: btnLoanNumber,
-                                LoanId: loanRenewsResults[i]["DayReference"],
-                                RenewLoanId: loanRenewsResults[i]["RenewLoanId"],
-                                RenewLoanNumber: loanRenewsResults[i]["RenewLoanNumber"],
-                                RenewLoanTotalBalanceAmount: loanRenewsResults[i]["RenewLoanTotalBalanceAmount"],
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                }
-            });
-
-            return loanRenews;
-        }
-
-        // create flexgrid for loan application reconstrcut
-        function createFlexGridForLoanRenew() {
-            loanRenewCollectionView = new wijmo.collections.CollectionView(getLoanRenew());
-
-            loanRenewFlexgrid = new wijmo.grid.FlexGrid('#loanRenewFlexgrid');
-            loanRenewFlexgrid.initialize({
-                columns: [
-                            {
-                                "header": "Loan App",
-                                "binding": "BtnLoanNumber",
-                                "width": "0.5*",
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Renew Loan Number",
-                                "binding": "RenewLoanNumber",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Renew Amount",
-                                "binding": "ReconstuctLoanTotalBalanceAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                ],
-                autoGenerateColumns: false,
-                itemsSource: loanRenewCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            loanRenewFlexgrid.trackChanges = true;
-        }
-
-        // loan app
-        function btnLoanNumberOnclick() {
-            loanRenewCollectionView.editItem(loanRenewCollectionView.currentItem);
-            var currentItem = loanRenewCollectionView.currentEditItem;
-            window.location = '/Software/LoanApplicationDetail?id=' + currentItem.RenewLoanId;
-        }
-
-        // tab
-        $('#loanRenewTab').click(function () {
-            NProgress.start();
-            $("#loanApplicationCollateral").hide();
-            $("#loanDeductions").hide();
-            $("#loanLines").hide();
-            $("#loanReconstruct").hide();
-            $("#loanRenew").show();
-
-            createFlexGridForLoanRenew();
-            window.createFlexGridForLoanRenew = function () {
-                return true;
-            }
-
-            loanRenewCollectionView = new wijmo.collections.CollectionView(getLoanRenew());
-            loanRenewFlexgrid.itemsSource = loanRenewCollectionView;
-            loanRenewFlexgrid.trackChanges = true;
         });
 
         // on load page

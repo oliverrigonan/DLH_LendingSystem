@@ -192,16 +192,12 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Activated";
-                            if (!loanApplicationListResult[i]["IsLocked"]) {
-                                if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                    loanStatus = "Reconstructed";
-                                } else {
-                                    loanStatus = "Not Activated";
-                                }
+                            var loanStatus = "Active";
+                            if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                loanStatus = "Overdue - Reconstructed";
                             } else {
-                                if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                    loanStatus = "Reconstructed";
+                                if (loanApplicationListResult[i]["IsRenew"]) {
+                                    loanStatus = "Renewd";
                                 }
                             }
 
@@ -411,25 +407,7 @@
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
-                                "width": 150,
-                            },
-                            {
-                                "header": "Principal",
-                                "binding": "PrincipalAmount",
-                                "allowSorting": true,
-                                "width": 130,
-                            },
-                            {
-                                "header": "Interest",
-                                "binding": "InterestAmount",
-                                "allowSorting": true,
-                                "width": 130,
-                            },
-                            {
-                                "header": "Deduction",
-                                "binding": "DeductionAmount",
-                                "allowSorting": true,
-                                "width": 130,
+                                "width": 170,
                             },
                             {
                                 "header": "Net Amount",
@@ -444,19 +422,19 @@
                                 "width": 160,
                             },
                             {
-                                "header": "Paid Amount",
+                                "header": "Total Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
                             {
-                                "header": "Balance Amount",
+                                "header": "Total Balance",
                                 "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
                             {
-                                "header": "Penalty Amount",
+                                "header": "Total Penalty",
                                 "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": 160,
