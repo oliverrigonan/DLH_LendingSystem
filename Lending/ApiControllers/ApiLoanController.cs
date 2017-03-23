@@ -50,7 +50,7 @@ namespace Lending.ApiControllers
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
-                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)": "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " - Renewd" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)": "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " - Renewd" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)": "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " - Renewd" : d.LoanNumber, 
+                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)": "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)": "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)": "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " (Renewed)" : d.LoanNumber, 
                                        TotalBalanceAmount = d.TotalBalanceAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount
                                    };
@@ -98,7 +98,7 @@ namespace Lending.ApiControllers
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
-                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)" : "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " - Renewd" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)" : "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " - Renewd" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)" : "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " - Renewd" : d.LoanNumber,
+                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)" : "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)" : "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)" : "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " (Renewed)" : d.LoanNumber,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount
                                    };
@@ -529,7 +529,7 @@ namespace Lending.ApiControllers
                                                     }
                                                     else
                                                     {
-                                                        if (loans.FirstOrDefault().IsRenew)
+                                                        if (loans.FirstOrDefault().IsLoanRenew)
                                                         {
                                                             newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ")";
                                                         }

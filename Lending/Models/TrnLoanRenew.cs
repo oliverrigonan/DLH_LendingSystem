@@ -15,8 +15,8 @@ namespace Lending.Models
         public Int32 ApplicantId { get; set; }
         public Int32 RenewLoanId { get; set; }
         public String RenewLoanNumber { get; set; }
+        public Decimal RenewPrincipalAmount { get; set; }
         public Decimal RenewLoanTotalBalanceAmount { get; set; }
         public Decimal RenewLoanTotalPenaltyAmount { get; set; }
-        public Decimal RenewPrincipalAmount { get; set; }
     }
 }

@@ -21,7 +21,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h3 class="">
-                            <i class="fa fa-file-text-o fa-fw"></i> Renew <small>List of Renewd Loans</small>
+                            <i class="fa fa-retweet fa-fw"></i> Renew <small>List of Renew Loans</small>
                         </h3>
                         <ol class="breadcrumb">
                             <li>
@@ -45,10 +45,7 @@
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
-                                    <button class="btn btn-warning" id="btnAddReconstruct" onclick="btnAddReconstructOnclick()">
-                                        <i class="fa fa-refresh fa-fw"></i>&nbsp; Reconstruct
-                                    </button>
-                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddLoanApplicationOnclick()">
+                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddRenewOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                     </button>
                                 </td>
@@ -57,12 +54,12 @@
                     </div>
                     <div class="panel-heading">
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Loan Date</span>
-                            <div id="cboLoanDate"></div>
+                            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Renew Date Date</span>
+                            <div id="cboRenewDate"></div>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <div id="loanApplicationFlexGrid" class="grid"></div>
+                        <div id="renewFlexGrid" class="grid"></div>
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -97,54 +94,68 @@
     </div>
 
     <!-- delete confirmation loan application modal -->
-    <div class="modal fade" id="deleteConfirmationLoanApplicationModal" role="dialog">
+    <div class="modal fade" id="deleteConfirmationRenewModal" role="dialog">
         <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Loan Application</h4>
+                    <h4 class="modal-title">Delete Renew</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Loan Application?
+                    Are you sure that you want to delete this Renewed Loan?
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteLoanApplication" onclick="btnConfirmDeleteLoanApplicationOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnCloseDeleteLoanApplicationModal" data-dismiss="modal">No</button>
+                    <button class="btn btn-danger" id="btnConfirmDeleteRenew" onclick="btnConfirmDeleteRenewOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteRenewModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- loan applciation recontruct Detail Modal -->
-    <div class="modal fade" id="reconstructDetailModal" role="dialog">
-        <div class="modal-dialog">
+    <div class="modal fade" id="renewDetailModal" role="dialog">
+        <div class="modal-dialog modal-sm">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Reconstruct</h4>
+                    <h4 class="modal-title">Renew</h4>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Applicant</label><br />
-                        <div id="cboApplicant"></div>
+                        <div id="cboApplicant" style="width: 100%;"></div>
                     </div>
                     <div class="form-group">
                         <label>Loan Number</label><br />
-                        <div id="cboLoanNumber"></div>
+                        <div id="cboLoanNumber" style="width: 100%;"></div>
                     </div>
                     <div class="form-group">
-                        <label>Amount to be Reconstructed</label><br />
+                        <label>Principal Amount</label><br />
                         <div class="input-group numberField">
                             <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField" id="amountToBeReconstruct" placeholder="0.00" />
+                            <input type="text" class="form-control numberField" id="principalAmount" placeholder="0.00" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Previous Balance</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField" id="amountToBeRenew" placeholder="0.00" disabled />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Previous Penalty</label><br />
+                        <div class="input-group numberField">
+                            <span class="input-group-addon">&#8369;</span>
+                            <input type="text" class="form-control numberField" id="penaltyToBeRenew" placeholder="0.00" disabled />
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-warning" id="btnReconstruct" onclick="btnReconstructOnclick()"><i class="fa fa-refresh fa-fw"></i> Reconstruct</button>
-                    <button class="btn btn-danger" id="btnCloseReconstruct" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                    <button class="btn btn-primary" id="btnRenew" onclick="btnRenewOnclick()"><i class="fa fa-refresh fa-fw"></i> Renew</button>
+                    <button class="btn btn-danger" id="btnCloseRenew" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
         </div>
@@ -155,9 +166,9 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         // global variables
-        var cboLoanDate;
+        var cboRenewDate;
         var loanApplicationCollectionView;
-        var loanApplicationFlexGrid;
+        var renewFlexGrid;
         var btnFirstPageGrid;
         var btnPreviousPageGrid;
         var btnNextPageGrid;
@@ -168,12 +179,13 @@
         var cboLoanNumber;
 
         // reconstuct
-        function btnAddReconstructOnclick() {
-            $("#reconstructDetailModal").modal({
+        function btnAddRenewOnclick() {
+            $("#renewDetailModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
 
+            document.getElementById("principalAmount").value = "0";
             getApplicant();
         }
 
@@ -181,7 +193,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/loan/list/loanApplicants',
+                url: '/api/loan/list/loanApplicants/InReconstruct/InRenewal',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -221,7 +233,7 @@
         function getApplicantLoanNumber() {
             var applicantLoanNumberArray = new Array();
             $.ajax({
-                url: '/api/loan/list/byApplicantId/' + cboApplicant.selectedItem["ApplicantId"],
+                url: '/api/loan/list/byApplicantId/InReconstruct/InRenewal/' + cboApplicant.selectedItem["ApplicantId"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -234,6 +246,7 @@
                                 Id: applicantLoanNumberResults[i]["Id"],
                                 LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
                                 TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
+                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"]
                             });
                         }
 
@@ -249,19 +262,21 @@
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
                         onSelectedIndexChanged: function () {
-                            document.getElementById("amountToBeReconstruct").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
+                            document.getElementById("amountToBeRenew").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
+                            document.getElementById("penaltyToBeRenew").value = this.selectedItem["TotalPenaltyAmount"].toLocaleString();
                         }
                     });
 
-                    document.getElementById("amountToBeReconstruct").value = cboLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
+                    document.getElementById("amountToBeRenew").value = cboLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
+                    document.getElementById("penaltyToBeRenew").value = cboLoanNumber.selectedItem["TotalPenaltyAmount"].toLocaleString();
                 }
             });
         }
 
         // create cbo date for loan date
         function createCboLoanDate() {
-            cboLoanDate.dispose();
-            cboLoanDate = new wijmo.input.InputDate('#cboLoanDate', {
+            cboRenewDate.dispose();
+            cboRenewDate = new wijmo.input.InputDate('#cboRenewDate', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
                 mask: '99-99-9999',
@@ -288,8 +303,8 @@
                         });
 
                         // Flex Grid
-                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
-                        loanApplicationFlexGrid.trackChanges = true;
+                        renewFlexGrid.itemsSource = loanApplicationCollectionView;
+                        renewFlexGrid.trackChanges = true;
                     } else {
                         isLoanDateClicked = true;
                     }
@@ -301,7 +316,7 @@
         function getLoanApplicationList() {
             var loanApplicationListArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loan/listByLoanDate/' + [cboLoanDate.value.getMonth() + 1, cboLoanDate.value.getDate(), cboLoanDate.value.getFullYear()].join('-'),
+                url: '/api/renew/listByLoanDate/' + [cboRenewDate.value.getMonth() + 1, cboRenewDate.value.getDate(), cboRenewDate.value.getFullYear()].join('-'),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -322,16 +337,12 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Activated";
-                            if (!loanApplicationListResult[i]["IsLocked"]) {
-                                if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                    loanStatus = "Reconstructed";
-                                } else {
-                                    loanStatus = "Not Activated";
-                                }
+                            var loanStatus = "Active";
+                            if (loanApplicationListResult[i]["IsRenew"]) {
+                                loanStatus = "Overdue - Renewed";
                             } else {
-                                if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                    loanStatus = "Reconstructed";
+                                if (loanApplicationListResult[i]["IsRenew"]) {
+                                    loanStatus = "Renewd";
                                 }
                             }
 
@@ -343,9 +354,14 @@
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                PreviousPenaltyAmount: loanApplicationListResult[i]["PreviousPenaltyAmount"],
                                 InterestAmount: loanApplicationListResult[i]["InterestAmount"],
                                 DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
+                                NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
+                                TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
                                 IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
                                 LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
@@ -365,26 +381,28 @@
             return loanApplicationListArray;
         }
 
-        // add new reconstruct
-        function btnReconstructOnclick() {
-            document.getElementById("btnReconstruct").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Reconstructing";
-            $("#btnReconstruct").prop("disabled", true);
-            $("#btnCloseReconstruct").prop("disabled", true);
+        // add new renew
+        function btnRenewOnclick() {
+            document.getElementById("btnRenew").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Renewing";
+            $("#btnRenew").prop("disabled", true);
+            $("#btnCloseRenew").prop("disabled", true);
 
-            var loanReconstuctObject = new Object();
-            loanReconstuctObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
-            loanReconstuctObject.ReconstructLoanId = cboLoanNumber.selectedItem["Id"];
-            loanReconstuctObject.ReconstuctLoanTotalBalanceAmount = document.getElementById("amountToBeReconstruct").value;
-            var loanReconstuctData = JSON.stringify(loanReconstuctObject);
+            var loanRenewObject = new Object();
+            loanRenewObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
+            loanRenewObject.RenewLoanId = cboLoanNumber.selectedItem["Id"];
+            loanRenewObject.RenewPrincipalAmount = document.getElementById("principalAmount").value;
+            loanRenewObject.RenewLoanTotalBalanceAmount = document.getElementById("amountToBeRenew").value;
+            loanRenewObject.RenewLoanTotalPenaltyAmount = document.getElementById("penaltyToBeRenew").value;
+            var loanRenewData = JSON.stringify(loanRenewObject);
 
             $.ajax({
                 type: "POST",
-                url: '/api/loanReconstruct/add',
+                url: '/api/loanRenew/add',
                 contentType: "application/json; charset=utf-8",
-                data: loanReconstuctData,
+                data: loanRenewData,
                 success: function (id) {
                     if (id > 0) {
-                        window.location = '/Software/LoanApplicationDetail?id=' + id;
+                        window.location = '/Software/RenewDetail?id=' + id;
                     } else {
                         toastr.error("Bad Request");
                     }
@@ -416,7 +434,7 @@
         function btnEditLoanApplicationOnclick() {
             loanApplicationCollectionView.editItem(loanApplicationCollectionView.currentItem);
             var id = loanApplicationCollectionView.currentEditItem.Id;
-            window.location = '/Software/LoanApplicationDetail?id=' + id;
+            window.location = '/Software/RenewDetail?id=' + id;
         }
 
         // delete loan application
@@ -424,20 +442,20 @@
             if (isLocked) {
                 toastr.info("Record Locked");
             } else {
-                $("#deleteConfirmationLoanApplicationModal").modal({
+                $("#deleteConfirmationRenewModal").modal({
                     "show": true,
                     "backdrop": "static"
                 });
 
-                document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
-                $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
-                $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
+                document.getElementById("btnConfirmDeleteRenew").innerHTML = "Delete";
+                $("#btnConfirmDeleteRenew").prop("disabled", false);
+                $("#btnCloseDeleteRenewModal").prop("disabled", false);
             }
         }
-        function btnConfirmDeleteLoanApplicationOnclick() {
-            document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteLoanApplication").prop("disabled", true);
-            $("#btnCloseDeleteLoanApplicationModal").prop("disabled", true);
+        function btnConfirmDeleteRenewOnclick() {
+            document.getElementById("btnConfirmDeleteRenew").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteRenew").prop("disabled", true);
+            $("#btnCloseDeleteRenewModal").prop("disabled", true);
 
             loanApplicationCollectionView.editItem(loanApplicationCollectionView.currentItem);
             var id = loanApplicationCollectionView.currentEditItem.Id;
@@ -450,7 +468,7 @@
                     200: function () {
                         toastr.success("Delete Successful");
 
-                        $('#deleteConfirmationLoanApplicationModal').modal('hide');
+                        $('#deleteConfirmationRenewModal').modal('hide');
 
                         loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
                         loanApplicationCollectionView.canFilter = true;
@@ -472,22 +490,22 @@
                         });
 
                         // Flex Grid
-                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
-                        loanApplicationFlexGrid.trackChanges = true;
+                        renewFlexGrid.itemsSource = loanApplicationCollectionView;
+                        renewFlexGrid.trackChanges = true;
                     },
                     404: function () {
                         toastr.error("Not Found");
-                        $('#deleteConfirmationLoanApplicationModal').modal('hide');
-                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
-                        $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
-                        $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
+                        $('#deleteConfirmationRenewModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteRenew").innerHTML = "Delete";
+                        $("#btnConfirmDeleteRenew").prop("disabled", false);
+                        $("#btnCloseDeleteRenewModal").prop("disabled", false);
                     },
                     400: function () {
                         toastr.error("Bad Request");
-                        $('#deleteConfirmationLoanApplicationModal').modal('hide');
-                        document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
-                        $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
-                        $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
+                        $('#deleteConfirmationRenewModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteRenew").innerHTML = "Delete";
+                        $("#btnConfirmDeleteRenew").prop("disabled", false);
+                        $("#btnCloseDeleteRenewModal").prop("disabled", false);
                     }
                 }
             });
@@ -524,8 +542,8 @@
             });
 
             // Flex Grid
-            loanApplicationFlexGrid = new wijmo.grid.FlexGrid('#loanApplicationFlexGrid');
-            loanApplicationFlexGrid.initialize({
+            renewFlexGrid = new wijmo.grid.FlexGrid('#renewFlexGrid');
+            renewFlexGrid.initialize({
                 columns: [
                             {
                                 "header": "Edit",
@@ -550,10 +568,10 @@
                                 "width": 100,
                             },
                             {
-                                "header": "Loan Number",
+                                "header": "Renew Number",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
-                                "width": 120,
+                                "width": 160,
                             },
                             {
                                 "header": "Applicant",
@@ -565,31 +583,37 @@
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
-                                "width": 150,
+                                "width": 170,
                             },
                             {
-                                "header": "Principal",
+                                "header": "Renew Amount",
                                 "binding": "PrincipalAmount",
                                 "allowSorting": true,
-                                "width": 130,
+                                "width": 160,
                             },
                             {
-                                "header": "Interest",
-                                "binding": "InterestAmount",
+                                "header": "Collection Amount",
+                                "binding": "NetCollectionAmount",
                                 "allowSorting": true,
-                                "width": 130,
+                                "width": 160,
                             },
                             {
-                                "header": "Deduction",
-                                "binding": "DeductionAmount",
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
                                 "allowSorting": true,
-                                "width": 130,
+                                "width": 160,
                             },
                             {
-                                "header": "Net Amount",
-                                "binding": "NetAmount",
+                                "header": "Total Balance",
+                                "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
-                                "width": 130,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 160,
                             },
                             {
                                 "header": "F",
@@ -613,14 +637,14 @@
                 selectionMode: wijmo.grid.SelectionMode.Row
             });
 
-            loanApplicationFlexGrid.trackChanges = true;
+            renewFlexGrid.trackChanges = true;
         }
 
         // on load page
         window.onload = function () {
             NProgress.start();
             toastrModification();
-            cboLoanDate = new wijmo.input.InputDate('#cboLoanDate');
+            cboRenewDate = new wijmo.input.InputDate('#cboRenewDate');
             createCboLoanDate();
             createLoanApplicationFlexGrid();
 

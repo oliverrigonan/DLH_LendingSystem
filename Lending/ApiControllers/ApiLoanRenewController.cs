@@ -27,6 +27,7 @@ namespace Lending.ApiControllers
                              LoanId = d.LoanId,
                              RenewLoanId = d.RenewLoanId,
                              RenewLoanNumber = d.trnLoan1.LoanNumber,
+                             RenewPrincipalAmount = d.trnLoan.PrincipalAmount,
                              RenewLoanTotalBalanceAmount = d.RenewLoanTotalBalanceAmount,
                              RenewLoanTotalPenaltyAmount = d.RenewLoanTotalPenaltyAmount
                          };
