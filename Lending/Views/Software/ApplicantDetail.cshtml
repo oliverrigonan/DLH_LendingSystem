@@ -51,28 +51,7 @@
                             </div>
                             <div class="panel-body">
                                 <div class="row">
-                                    <div class="col-md-3">
-                                        <div id="photoDiv" style="width: 100%" align="center"></div>
-                                        <hr />
-                                        <button class="btn btn-default btn-sm btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
-                                        <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()">
-                                            <i class="fa fa-trash fa-fw"></i> Rmove and Set to <br /> Default Photo
-                                        </button>
-                                        <br />
-                                        <div class="panel panel-default">
-                                            <div class="panel-body">
-                                                <div class="form-group">
-                                                    <label>Applicant Number</label><br />
-                                                    <input type="text" class="form-control" id="applicantNumber" placeholder="Last Name" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Area</label><br />
-                                                    <div id="applicantArea"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-9">
+                                    <div class="col-md-12">
                                         <ul id="myTab" class="nav nav-tabs">
                                             <li class="active">
                                                 <a href="#applicantDetail" id="applicantDetailTab" data-toggle="tab">Applicant Detail </a>
@@ -91,67 +70,131 @@
                                                     <div class="col-md-6">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
+                                                                Photo
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <div id="photoDiv" style="width: 100%" align="center"></div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <button class="btn btn-default btn-sm btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                                                                        <button class="btn btn-danger btn-sm btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()">
+                                                                            <i class="fa fa-trash fa-fw"></i> Rmove and Set to <br /> Default Photo
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-body">
+                                                                <form class="form-horizontal">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Applicant Number</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control" id="applicantNumber" placeholder="Last Name" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Area</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div id="applicantArea" style="width: 100%;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
                                                                 Applicants Personal Detail
                                                             </div>
                                                             <div class="panel-body">
-                                                                <div class="form-group">
-                                                                    <label>Last Name</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantLastName" placeholder="Last Name" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>First Name</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantFirstName" placeholder="First Name" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Middle Name / Middle Initial</label><br />
-                                                                    <input type="text" class="form-control" id="applicantMiddleName" placeholder=" " />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Birth Date</label><br />
-                                                                    <div id="applicantBirthDate"></div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Civil Status</label><br />
-                                                                    <div id="applicantCivilStatus"></div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>City Address</label><br />
-                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantCityAddress" placeholder="City Address"></textarea>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Province Address</label><br />
-                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantProvinceAddress" placeholder="City Address"></textarea>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Contact Number</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantContactNumber" placeholder="Contact Number" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Residence Type</label><br />
-                                                                    <div id="applicantResidenceType"></div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Monthly Rent</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantResidenceMonthyRent" placeholder="0.00" />
+                                                                <form class="form-horizontal">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Last Name</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantLastName" placeholder="Last Name" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Land Residence Type</label><br />
-                                                                    <div id="applicantLandResidenceType"></div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Monthly Rent</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLandResidenceMonthyRent" placeholder="0.00" />
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">First Name</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantFirstName" placeholder="First Name" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Length of Stay</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantLengthOfStay" placeholder="How many months, years or days?" />
-                                                                </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Middle Name / Initial</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control" id="applicantMiddleName" placeholder=" " />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Birth Date</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div id="applicantBirthDate" style="width: 100%;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Civil Status</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div id="applicantCivilStatus" style="width: 100%;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">City Address</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantCityAddress" placeholder="City Address"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Province Address</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantProvinceAddress" placeholder="City Address"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Contact Number</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantContactNumber" placeholder="Contact Number" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Residence Type</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div id="applicantResidenceType" style="width: 100%;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Monthly Rent</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group numberField">
+                                                                                <span class="input-group-addon">&#8369;</span>
+                                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantResidenceMonthyRent" placeholder="0.00" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Land Residence</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div id="applicantLandResidenceType" style="width: 100%;"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Monthly Rent</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group numberField">
+                                                                                <span class="input-group-addon">&#8369;</span>
+                                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLandResidenceMonthyRent" placeholder="0.00" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Length of Stay</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantLengthOfStay" placeholder="How many months, years or days?" />
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                         <div class="panel panel-default">
@@ -159,55 +202,77 @@
                                                                 Business Detail
                                                             </div>
                                                             <div class="panel-body">
-                                                                <div class="form-group">
-                                                                    <label>Business Address</label><br />
-                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantBusinessAddress" placeholder="Business Address"></textarea>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Karatula Name</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessKaratulaName" placeholder="Karatula Name" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Telephone Number</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessTelephoneNumber" placeholder="Telephone Number" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Business Years</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessYears" placeholder="How long on said business" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Merchandise</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantBBusinessMerchandise" placeholder="Business Merchandise" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Value of Stocks</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantValuesOfStocks" placeholder="0" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Beginning Capital</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantBusinessBeginningCapital" placeholder="0.00" />
+                                                                <form class="form-horizontal">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Business Address</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantBusinessAddress" placeholder="Business Address"></textarea>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Sales are low during</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSalesLowPeriod" placeholder="Sales are low during" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Lowest daily sales</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLowestDailySales" placeholder="0" />
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Karatula Name</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessKaratulaName" placeholder="Karatula Name" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Average daily sales</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantAverageDailySales" placeholder="0" />
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Telephone Number</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessTelephoneNumber" placeholder="Telephone Number" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Business Years</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantBusinessYears" placeholder="How long on said business" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Merchandise</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantBBusinessMerchandise" placeholder="Business Merchandise" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Value of Stocks</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantValuesOfStocks" placeholder="0" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Beginning Capital</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group numberField">
+                                                                                <span class="input-group-addon">&#8369;</span>
+                                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantBusinessBeginningCapital" placeholder="0.00" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Sales are low during</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSalesLowPeriod" placeholder="Sales are low during" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Lowest daily sales</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group numberField">
+                                                                                <span class="input-group-addon">&#8369;</span>
+                                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantLowestDailySales" placeholder="0" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Average daily sales</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group numberField">
+                                                                                <span class="input-group-addon">&#8369;</span>
+                                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantAverageDailySales" placeholder="0" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -217,26 +282,38 @@
                                                                 If Employed
                                                             </div>
                                                             <div class="panel-body">
-                                                                <div class="form-group">
-                                                                    <label>Name of Company</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedCompanyName" placeholder="Name of Company" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Company Address</label><br />
-                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantEmployedCompanyAddress" placeholder="Company Address"></textarea>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Position Occupied</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedPositionOccupied" placeholder="Position Occupied" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Length of Service</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedLengthOfService" placeholder="Length of Service" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Telephone Number</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedTelephoneNumber" placeholder="Telephone Number" />
-                                                                </div>
+                                                                <form class="form-horizontal">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Name of Company</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedCompanyName" placeholder="Name of Company" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Company Address</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantEmployedCompanyAddress" placeholder="Company Address"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Position Occupied</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedPositionOccupied" placeholder="Position Occupied" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Length of Service</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedLengthOfService" placeholder="Length of Service" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Telephone Number</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantEmployedTelephoneNumber" placeholder="Telephone Number" />
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                         <div class="panel panel-default">
@@ -244,65 +321,92 @@
                                                                 Spouse's Information and Income Detail
                                                             </div>
                                                             <div class="panel-body">
-                                                                <div class="form-group">
-                                                                    <label>Name of Spouse</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseName" placeholder="Name of Spouse" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Employer or Business</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseEmployerOrBusiness" placeholder="Employer or Business of Spouse" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Business Address</label><br />
-                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseBusinessAddress" placeholder="Employer or Business Address"></textarea>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Telephone Number</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseTelephoneNumber" placeholder="Telephone Number" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Position Occupied</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpousePositionOccupied" placeholder="Position Occupied" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Monthly Salary</label><br />
-                                                                    <div class="input-group numberField">
-                                                                        <span class="input-group-addon">&#8369;</span>
-                                                                        <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantSpouseMonthlySalary" placeholder="0.00" />
+                                                                <form class="form-horizontal">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Name of Spouse</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseName" placeholder="Name of Spouse" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Length of Service</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseLengthOfService" placeholder="Length of Service" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Number of Children</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfChildren" placeholder="How many children?" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Number of Studying</label><br />
-                                                                    <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfStudying" placeholder="How many are studying?" />
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <label>Schools</label><br />
-                                                                    <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseChildrenSchools" placeholder="What Schools?"></textarea>
-                                                                </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Employer / Business</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseEmployerOrBusiness" placeholder="Employer or Business of Spouse" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Business Address</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseBusinessAddress" placeholder="Employer or Business Address"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Telephone Number</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseTelephoneNumber" placeholder="Telephone Number" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Position Occupied</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpousePositionOccupied" placeholder="Position Occupied" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Monthly Salary</label>
+                                                                        <div class="col-sm-8">
+                                                                            <div class="input-group numberField">
+                                                                                <span class="input-group-addon">&#8369;</span>
+                                                                                <input type="text" class="form-control requiredApplicantDetail numberField" id="applicantSpouseMonthlySalary" placeholder="0.00" />
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Length of Service</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseLengthOfService" placeholder="Length of Service" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">No. of Children</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfChildren" placeholder="How many children?" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">No. of Studying</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="text" class="form-control requiredApplicantDetail" id="applicantSpouseNumberOfStudying" placeholder="How many are studying?" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-sm-4">Schools</label>
+                                                                        <div class="col-sm-8">
+                                                                            <textarea class="form-control requiredApplicantDetail" rows="5" id="applicantSpouseChildrenSchools" placeholder="What Schools?"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                         <div class="panel panel-default">
                                                             <div class="panel-body">
-                                                                <p>Created by:</p>
-                                                                <div style="padding-left: 10px;">
-                                                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                                                    <br />
-                                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                                                </div>
-                                                                <br />
-                                                                <p>Updated by:</p>
-                                                                <div style="padding-left: 10px;">
-                                                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                                                    <br />
-                                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <p>Created by:</p>
+                                                                        <div style="padding-left: 10px;">
+                                                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                                            <br />
+                                                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>Updated by:</p>
+                                                                        <div style="padding-left: 10px;">
+                                                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                                            <br />
+                                                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -477,22 +581,32 @@
                     <h4 class="modal-title">Real Properties Owned Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Real</label><br />
-                        <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedReal" placeholder="Real" />
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label><br />
-                        <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedLocation" placeholder="Location" />
-                    </div>
-                    <div class="form-group">
-                        <label>Present Value</label><br />
-                        <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedPresentValue" placeholder="Present Value" />
-                    </div>
-                    <div class="form-group">
-                        <label>Ecumbered To</label><br />
-                        <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedEcumberedTo" placeholder="Ecumbered To" />
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Real</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedReal" placeholder="Real" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Location</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedLocation" placeholder="Location" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Present Value</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedPresentValue" placeholder="Present Value" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Ecumbered To</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireApplicantRealPropertiesOwned" id="applicantDetailRealPropertiesOwnedEcumberedTo" placeholder="Ecumbered To" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveApplicantDetailRealPropertiesOwned" onclick="btnSaveApplicantDetailRealPropertiesOwnedOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -532,14 +646,20 @@
                     <h4 class="modal-title">Appliance Owned Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Appliance Brand</label><br />
-                        <input type="text" class="form-control requireApplicantApplianceOwned" id="applicantDetailApplianceOwnedBrand" placeholder="Real" />
-                    </div>
-                    <div class="form-group">
-                        <label>Present Value</label><br />
-                        <input type="text" class="form-control requireApplicantApplianceOwned" id="applicantDetailApplianceOwnedPresentValue" placeholder="Present Value" />
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Appliance Brand</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireApplicantApplianceOwned" id="applicantDetailApplianceOwnedBrand" placeholder="Real" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Present Value</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireApplicantApplianceOwned" id="applicantDetailApplianceOwnedPresentValue" placeholder="Present Value" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveApplicantDetailApplianceOwned" onclick="btnSaveApplicantDetailApplianceOwnedOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -898,22 +1018,32 @@
                     <h4 class="modal-title">Co-Maker's Real Properties Owned Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Real</label><br />
-                        <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedReal" placeholder="Real" />
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label><br />
-                        <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedLocation" placeholder="Location" />
-                    </div>
-                    <div class="form-group">
-                        <label>Present Value</label><br />
-                        <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedPresentValue" placeholder="Present Value" />
-                    </div>
-                    <div class="form-group">
-                        <label>Ecumbered To</label><br />
-                        <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedEcumberedTo" placeholder="Ecumbered To" />
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Real</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedReal" placeholder="Real" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Location</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedLocation" placeholder="Location" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Present Value</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedPresentValue" placeholder="Present Value" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Ecumbered To</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireCoMakerRealPropertiesOwned" id="applicantDetailCoMakerRealPropertiesOwnedEcumberedTo" placeholder="Ecumbered To" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveApplicantDetailCoMakerRealPropertiesOwned" onclick="btnSaveApplicantDetailCoMakerRealPropertiesOwnedOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -953,14 +1083,20 @@
                     <h4 class="modal-title">Co-Maker's Appliance Owned Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Appliance Brand</label><br />
-                        <input type="text" class="form-control requireCoMakerApplianceOwned" id="applicantDetailCoMakerApplianceOwnedBrand" placeholder="Real" />
-                    </div>
-                    <div class="form-group">
-                        <label>Present Value</label><br />
-                        <input type="text" class="form-control requireCoMakerApplianceOwned" id="applicantDetailCoMakerApplianceOwnedPresentValue" placeholder="Present Value" />
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Appliance Brand</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireCoMakerApplianceOwned" id="applicantDetailCoMakerApplianceOwnedBrand" placeholder="Real" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Present Value</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requireCoMakerApplianceOwned" id="applicantDetailCoMakerApplianceOwnedPresentValue" placeholder="Present Value" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveApplicantDetailCoMakerApplianceOwned" onclick="btnSaveApplicantDetailCoMakerApplianceOwnedOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -1486,12 +1622,12 @@
 
                         var canPerformActions = "@ViewData["CanPerformActions"]";
                         if (canPerformActions == 1) {
-                           if (isLocked) {
+                            if (isLocked) {
                                 btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
                                 btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantRealPropertiesOwnedOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
                             } else {
-                               btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                               btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
+                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
+                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='deleteApplicantRealPropertiesOwnedOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
                             }
                         } else {
                             btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantRealPropertiesOwnedOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
@@ -3639,7 +3775,7 @@
         var cboRequirement;
         var cboValidDate;
         var applicantRequirementId;
-        
+
         // get Interests
         function getApplicantRequirements() {
             var applicantRequirements = new wijmo.collections.ObservableArray;
@@ -3657,7 +3793,7 @@
                             if (canPerformActions == 1) {
                                 disabledButton = "";
                             }
-                            
+
                             var canPerformActions = "@ViewData["CanPerformActions"]";
                             if (canPerformActions == 1) {
                                 if (isLocked) {

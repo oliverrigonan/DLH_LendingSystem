@@ -50,40 +50,55 @@
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Area Number</label><br />
-                                            <input type="text" class="form-control requiredArea" id="areaNumber" placeholder="Area Number" disabled />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Area</label><br />
-                                            <input type="text" class="form-control requiredArea" id="areaName" placeholder="Area" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Description</label><br />
-                                            <textarea class="form-control requiredArea" rows="5" id="areaDescription" placeholder="Description"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Supervisor</label><br />
-                                            <div id="cboAreaSuperVisor"></div>
-                                        </div>
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Area Number</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control requiredArea" id="areaNumber" placeholder="Area Number" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Area</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control requiredArea" id="areaName" placeholder="Area" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Description</label>
+                                                <div class="col-sm-8">
+                                                    <textarea class="form-control requiredArea" rows="5" id="areaDescription" placeholder="Description"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Supervisor</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboAreaSuperVisor" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <p>Created by:</p>
-                                        <div style="padding-left: 10px;">
-                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                            <br />
-                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                        </div>
-                                        <br />
-                                        <p>Updated by:</p>
-                                        <div style="padding-left: 10px;">
-                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                            <br />
-                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p>Created by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>Updated by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -107,6 +122,25 @@
                             <div class="panel-body">
                                 <div id="areaStaffFlexgrid" class="grid"></div>
                             </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,10 +158,14 @@
                     <h4 class="modal-title">Area Staff Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Staff</label><br />
-                        <div id="cboStaff" style="width: 100%;"></div>
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Staff</label>
+                            <div class="col-sm-8">
+                                <div id="cboStaff" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveAreaStaff" onclick="btnSaveAreaStaffOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -168,6 +206,11 @@
         var branchId = 0;
         var isLocked = false;
         var cboAreaSuperVisor;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
 
         // get area data
         function getAreaDetailData() {
@@ -409,9 +452,24 @@
         var areaStaffCollectionView;
         var areaStaffFlexgrid;
 
+        // Navigation Buttons for area
+        function updateNavigateButtonsStaffs() {
+            if (areaStaffCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (areaStaffCollectionView.pageIndex + 1) + ' / ' + areaStaffCollectionView.pageCount;
+        }
+
         // create flexgrid for area staff
         function createFlexGridForAreaStaffs() {
             areaStaffCollectionView = new wijmo.collections.CollectionView(getAreaStaff());
+            areaStaffCollectionView.pageSize = 15;
+
+            areaStaffCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsStaffs();
+            });
 
             areaStaffFlexgrid = new wijmo.grid.FlexGrid('#areaStaffFlexgrid');
             areaStaffFlexgrid.initialize({
@@ -448,6 +506,32 @@
             });
 
             areaStaffFlexgrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtonsStaffs();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                areaStaffCollectionView.moveToFirstPage();
+                updateNavigateButtonsStaffs();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                areaStaffCollectionView.moveToPreviousPage();
+                updateNavigateButtonsStaffs();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                areaStaffCollectionView.moveToNextPage();
+                updateNavigateButtonsStaffs();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                areaStaffCollectionView.moveToLastPage();
+                updateNavigateButtonsStaffs();
+            });
         }
 
         // create cbo staff
@@ -546,6 +630,12 @@
                             $("#areaStaffDetailModal").modal("hide");
 
                             areaStaffCollectionView = new wijmo.collections.CollectionView(getAreaStaff());
+                            areaStaffCollectionView.pageSize = 15;
+
+                            areaStaffCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtonsStaffs();
+                            });
+
                             areaStaffFlexgrid.itemsSource = areaStaffCollectionView;
                             areaStaffFlexgrid.trackChanges = true;
                         },
@@ -583,6 +673,12 @@
                             $("#areaStaffDetailModal").modal("hide");
 
                             areaStaffCollectionView = new wijmo.collections.CollectionView(getAreaStaff());
+                            areaStaffCollectionView.pageSize = 15;
+
+                            areaStaffCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtonsStaffs();
+                            });
+
                             areaStaffFlexgrid.itemsSource = areaStaffCollectionView;
                             areaStaffFlexgrid.trackChanges = true;
                         },
@@ -640,6 +736,12 @@
                         $("#areaStaffDeleteModal").modal("hide");
 
                         areaStaffCollectionView = new wijmo.collections.CollectionView(getAreaStaff());
+                        areaStaffCollectionView.pageSize = 15;
+
+                        areaStaffCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsStaffs();
+                        });
+
                         areaStaffFlexgrid.itemsSource = areaStaffCollectionView;
                         areaStaffFlexgrid.trackChanges = true;
                     },

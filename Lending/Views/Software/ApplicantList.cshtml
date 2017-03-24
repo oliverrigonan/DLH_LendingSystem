@@ -134,6 +134,11 @@
         // glebal variable
         var applicantCollectionView;
         var applicantFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
 
         // get applicants
         function getApplicantList() {
@@ -226,7 +231,7 @@
 
                         applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
                         applicantCollectionView.canFilter = true;
-                        applicantCollectionView.pageSize = 10;
+                        applicantCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchApplicant').keyup(function () {
@@ -309,7 +314,7 @@
 
             applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
             applicantCollectionView.canFilter = true;
-            applicantCollectionView.pageSize = 10;
+            applicantCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchApplicant').keyup(function () {

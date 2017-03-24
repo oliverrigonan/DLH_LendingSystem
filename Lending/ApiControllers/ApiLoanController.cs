@@ -50,7 +50,7 @@ namespace Lending.ApiControllers
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
-                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)": "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)": "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)": "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " (Renewed)" : d.LoanNumber, 
+                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN - " + d.LoanNumber + " (Reconstructed)" : "LN - " + d.LoanNumber : d.IsRenew == true ? "LN - " + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC - " + d.LoanNumber + " (Reconstructed)" : "RC - " + d.LoanNumber : d.IsRenew == true ? "RC - " + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN - " + d.LoanNumber + " (Reconstructed)" : "RN - " + d.LoanNumber : d.IsRenew == true ? "RN - " + d.LoanNumber + " (Renewed)" : d.LoanNumber,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount
                                    };
@@ -109,11 +109,12 @@ namespace Lending.ApiControllers
         // loan list by loan date
         [Authorize]
         [HttpGet]
-        [Route("api/loan/listByLoanDate/{loanDate}")]
-        public List<Models.TrnLoan> listLoanByLoanDate(String loanDate)
+        [Route("api/loan/listByLoanDate/{startLoanDate}/{endLoanDate}")]
+        public List<Models.TrnLoan> listLoanByLoanDate(String startLoanDate, String endLoanDate)
         {
             var loanApplications = from d in db.trnLoans
-                                   where d.LoanDate == Convert.ToDateTime(loanDate)
+                                   where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                                   && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                    && d.IsLoanApplication == true
                                    select new Models.TrnLoan
                                    {
@@ -823,6 +824,7 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
+                                    // loan reconstructs 
                                     var existLoanReconstruct = from d in db.trnLoanReconstructs
                                                                where d.ReconstructLoanId == Convert.ToInt32(id)
                                                                select d;
@@ -849,16 +851,41 @@ namespace Lending.ApiControllers
                                                 db.SubmitChanges();
                                             }
                                         }
-
-                                        db.trnLoans.DeleteOnSubmit(loans.First());
-                                        db.SubmitChanges();
-
-                                        return Request.CreateResponse(HttpStatusCode.OK);
                                     }
-                                    else
+
+                                    // loan renews
+                                    var existLoanRenew = from d in db.trnLoanRenews
+                                                         where d.RenewLoanId == Convert.ToInt32(id)
+                                                         select d;
+
+                                    if (!existLoanRenew.Any())
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        var loanRenew = from d in db.trnLoanRenews
+                                                        where d.LoanId == Convert.ToInt32(id)
+                                                        select d;
+
+                                        if (loanRenew.Any())
+                                        {
+                                            var existLoan = from d in db.trnLoans
+                                                            where d.Id == loanRenew.FirstOrDefault().RenewLoanId
+                                                            select d;
+
+                                            if (existLoan.Any())
+                                            {
+                                                var updateLoan = existLoan.FirstOrDefault();
+                                                updateLoan.IsRenew = false;
+                                                db.SubmitChanges();
+
+                                                db.trnLoanRenews.DeleteAllOnSubmit(loanRenew);
+                                                db.SubmitChanges();
+                                            }
+                                        }
                                     }
+
+                                    db.trnLoans.DeleteOnSubmit(loans.First());
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else
                                 {

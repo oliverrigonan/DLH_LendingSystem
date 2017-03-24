@@ -55,6 +55,25 @@
                     <div class="panel-body">
                         <div id="staffListFlexGrid" class="grid"></div>
                     </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -114,6 +133,11 @@
         // glebal variable
         var staffCollectionView;
         var staffFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
 
         // get staffs
         function getStaffList() {
@@ -205,11 +229,16 @@
 
                         staffCollectionView = new wijmo.collections.CollectionView(getStaffList());
                         staffCollectionView.canFilter = true;
+                        staffCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchStaff').keyup(function () {
                             filterText = this.value.toLowerCase();
                             staffCollectionView.refresh();
+                        });
+
+                        staffCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsStaff();
                         });
 
                         staffCollectionView.filter = function (item) {
@@ -268,6 +297,16 @@
             document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
         }
 
+        // Navigation Buttons for applicant
+        function updateNavigateButtonsStaff() {
+            if (staffCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (staffCollectionView.pageIndex + 1) + ' / ' + staffCollectionView.pageCount;
+        }
+
         // ready function
         window.onload = function () {
             NProgress.start();
@@ -275,6 +314,7 @@
 
             staffCollectionView = new wijmo.collections.CollectionView(getStaffList());
             staffCollectionView.canFilter = true;
+            staffCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchStaff').keyup(function () {
@@ -287,6 +327,10 @@
                                    || (item.Staff.toLowerCase().indexOf(filterText) > -1)
                                    || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
             }
+
+            staffCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsStaff();
+            });
 
             staffCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -346,6 +390,33 @@
             });
 
             staffFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtonsStaff();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                staffCollectionView.moveToFirstPage();
+                updateNavigateButtonsStaff();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                staffCollectionView.moveToPreviousPage();
+                updateNavigateButtonsStaff();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                staffCollectionView.moveToNextPage();
+                updateNavigateButtonsStaff();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                staffCollectionView.moveToLastPage();
+                updateNavigateButtonsStaff();
+            });
+
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {
