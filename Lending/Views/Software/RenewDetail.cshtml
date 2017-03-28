@@ -51,72 +51,95 @@
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Renew Number</label><br />
-                                            <input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Renew Date</label><br />
-                                            <div id="loanApplicationLoanDate"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Maturity Date</label><br />
-                                            <div id="loanApplicationMaturityDate"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Applicant</label><br />
-                                            <div id="loanApplicationApplicant" style="width: 100%;"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Area</label><br />
-                                            <input type="text" class="form-control" id="loanApplicationApplicantArea" disabled />
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Particulars</label><br />
-                                            <textarea class="form-control requiredLoanApplication" rows="5" id="loanApplicationParticulars" placeholder="Particulars"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Prepared by</label><br />
-                                            <div id="loanApplicationPreparedBy"></div>
-                                        </div>
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Renew Number</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Renew Date</label>
+                                                <div class="col-sm-8">
+                                                    <div id="loanApplicationLoanDate" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Maturity Date</label>
+                                                <div class="col-sm-8">
+                                                    <div id="loanApplicationMaturityDate" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Applicant</label>
+                                                <div class="col-sm-8">
+                                                    <div id="loanApplicationApplicant" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Area</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="loanApplicationApplicantArea" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Particulars</label>
+                                                <div class="col-sm-8">
+                                                    <textarea class="form-control requiredLoanApplication" rows="5" id="loanApplicationParticulars" placeholder="Particulars"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Prepared by</label>
+                                                <div class="col-sm-8">
+                                                    <div id="loanApplicationPreparedBy" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Terms (Payment)</label><br />
-                                            <div id="cboTerm"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Term Number of Days</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="termNoOfDays" placeholder="0.00" disabled />
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Terms (Payment)</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboTerm" style="width: 100%;"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Term Every Payment Number of Days</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="termPaymentNoOfDays" placeholder="0.00" disabled />
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">No. of Days</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control numberField" id="termNoOfDays" placeholder="0.00" disabled />
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">No. of Days Per Pay</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control numberField" id="termPaymentNoOfDays" placeholder="0.00" disabled />
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <p>Created by:</p>
-                                        <div style="padding-left: 10px;">
-                                            <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
-                                            <br />
-                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
-                                        </div>
-                                        <br />
-                                        <p>Updated by:</p>
-                                        <div style="padding-left: 10px;">
-                                            <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
-                                            <br />
-                                            <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p>Created by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>Updated by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -124,78 +147,104 @@
                             <div class="col-md-6">
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Renewed Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationPrincipalAmount" placeholder="0.00" />
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Renew Amount</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationPrincipalAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Interest</label><br />
-                                            <div id="cboInterest"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Rate</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">%</span>
-                                                <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Interest</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboInterest" style="width: 100%;"></div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Interest Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="interestAmount" placeholder="0.00" disabled />
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Rate</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">%</span>
+                                                        <input type="text" class="form-control numberField" id="interestRate" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Interest Amount</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="interestAmount" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Previous Balance Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="previousBalanceAmount" placeholder="0.00" disabled />
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Prev. Balance</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="previousBalanceAmount" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Previous Penalty Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField" id="previousPenaltyAmount" placeholder="0.00" disabled />
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Prev. Penalty</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="previousPenaltyAmount" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Total From Other Deductions</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationDeductionAmount" placeholder="0.00" />
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Deductions</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationDeductionAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
-                                        <div class="form-group">
-                                            <label>Net Amount</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetAmount" placeholder="0.00" />
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Net Amount</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Total Collection Amount (Collection)</label><br />
-                                            <div class="input-group numberField">
-                                                <span class="input-group-addon">&#8369;</span>
-                                                <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetCollectionAmount" placeholder="0.00" />
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Collection Amount</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetCollectionAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -304,22 +353,32 @@
                     <h4 class="modal-title">Loan Applicant's Collateral Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Type</label><br />
-                        <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralType" placeholder="Type" />
-                    </div>
-                    <div class="form-group">
-                        <label>Brand</label><br />
-                        <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralBrand" placeholder="Brand" />
-                    </div>
-                    <div class="form-group">
-                        <label>Model Number</label><br />
-                        <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralModelNumber" placeholder="Model Number" />
-                    </div>
-                    <div class="form-group">
-                        <label>Serial Number</label><br />
-                        <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralSerialNumber" placeholder="Serial Number" />
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Type</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralType" placeholder="Type" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Brand</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralBrand" placeholder="Brand" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Model Number</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralModelNumber" placeholder="Model Number" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Serial Number</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredLoanApplicationCollateral" id="loanApplicationCollateralSerialNumber" placeholder="Serial Number" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveLoanApplicationCollateral" onclick="btnSaveLoanApplicationCollateralOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -378,28 +437,38 @@
                     <h4 class="modal-title">Loan Deduction Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Deduction</label><br />
-                        <div id="cboDeduction"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Is Percentage</label><br />
-                        <input type="checkbox" id="loanApplicationDeductionIsPercentage" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label>Rate</label><br />
-                        <div class="input-group numberField">
-                            <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField requiredPenalties" id="loanApplicationDeductionPercentageRate" placeholder="0.00" disabled />
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Deduction</label>
+                            <div class="col-sm-8">
+                                <div id="cboDeduction" style="width: 100%;"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount</label><br />
-                        <div class="input-group numberField">
-                            <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField requiredPenalties" id="loanApplicationDeductionDeductionAmount" placeholder="0.00" />
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Is Percentage</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="loanApplicationDeductionIsPercentage" disabled />
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Rate</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="loanApplicationDeductionPercentageRate" placeholder="0.00" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Amount</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="loanApplicationDeductionDeductionAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveLoanApplicationDeduction" onclick="btnSaveLoanApplicationDeductionOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>

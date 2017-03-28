@@ -226,10 +226,6 @@ namespace Lending.ApiControllers
 
                                     if (existLoan.Any())
                                     {
-                                        var updateLoan = existLoan.FirstOrDefault();
-                                        updateLoan.IsRenew = true;
-                                        db.SubmitChanges();
-
                                         Data.trnLoan newLoan = new Data.trnLoan();
                                         newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                                         newLoan.LoanDate = DateTime.Today;

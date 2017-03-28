@@ -496,7 +496,7 @@
       <Column Name="CollectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LoanLinesId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="PenaltyId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PenaltyId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="mstPenalty_trnCollectionLine" Member="mstPenalty" ThisKey="PenaltyId" OtherKey="Id" Type="mstPenalty" IsForeignKey="true" />
       <Association Name="trnCollection_trnCollectionLine" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" />

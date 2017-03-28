@@ -231,38 +231,44 @@
                     <h4 class="modal-title"> Deduction Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Deduction</label><br />
-                        <input type="text" class="form-control requiredDeductions" id="deductionName" placeholder="Deduction" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea class="form-control requiredDeductions" rows="5" id="deductionDescription" placeholder="Description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Is Percentage</label><br />
-                        <input type="checkbox" id="deductionIsPercentage" />
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Percentage Rate</label><br />
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Deduction</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredDeductions" id="deductionName" placeholder="Deduction" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredDeductions" rows="5" id="deductionDescription" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Is Percentage</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" id="deductionIsPercentage" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Rate</label>
+                            <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon"> % </span>
                                     <input type="text" class="form-control numberField requiredDeductions" id="deductionPercentageRate" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Deduction Amount</label><br />
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Amount</label>
+                            <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredDeductions" id="deductionAmount" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveDeductions" onclick="saveDeductionsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -302,14 +308,20 @@
                     <h4 class="modal-title"> Requirement Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Requirement</label><br />
-                        <input type="text" class="form-control requiredRequirements" id="requirementName" placeholder="Requirement" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea class="form-control requiredRequirements" rows="5" id="requirementDescription" placeholder="Description"></textarea>
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Requirement</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredRequirements" id="requirementName" placeholder="Requirement" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredRequirements" rows="5" id="requirementDescription" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveRequirements" onclick="saveRequirementsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -349,22 +361,32 @@
                     <h4 class="modal-title"> Term Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Term</label><br />
-                        <input type="text" class="form-control requiredTerms" id="termName" placeholder="LoanType" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea class="form-control requiredTerms" rows="5" id="termDescription" placeholder="Description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Number of Days</label><br />
-                        <div id="cboNoOfDays"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Payment No of Days</label><br />
-                        <div id="cboPaymentNoOfDays"></div>
-                    </div>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Term</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredTerms" id="termName" placeholder="LoanType" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredTerms" rows="5" id="termDescription" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">No. of Days</label>
+                            <div class="col-sm-8">
+                                <div id="cboNoOfDays"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">No. of Days Per Pay</label>
+                            <div class="col-sm-8">
+                                <div id="cboPaymentNoOfDays"></div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveTerms" onclick="saveTermsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -404,21 +426,29 @@
                     <h4 class="modal-title"> Penalty Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Penalty Name</label><br />
-                        <input type="text" class="form-control requiredPenalties" id="penaltyName" placeholder="LoanType" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea class="form-control requiredPenalties" rows="5" id="penaltyDescription" placeholder="Description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Penalty Amount</label><br />
-                        <div class="input-group numberField">
-                            <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Penalty Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredPenalties" id="penaltyName" placeholder="LoanType" />
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredPenalties" rows="5" id="penaltyDescription" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Amount</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredPenalties" id="penaltyAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSavePenalties" onclick="savePenaltiesOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -458,26 +488,29 @@
                     <h4 class="modal-title"> Interest Detail</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Interest Name</label><br />
-                        <input type="text" class="form-control requiredInterests" id="interestName" placeholder="LoanType" />
-                    </div>
-                    <div class="form-group">
-                        <label>Description</label><br />
-                        <textarea class="form-control requiredInterests" rows="5" id="interestDescription" placeholder="Description"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Rate</label><br />
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Interest Name</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredInterests" id="interestName" placeholder="LoanType" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Description</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredInterests" rows="5" id="interestDescription" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Rate</label>
+                            <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">%</span>
                                     <input type="text" class="form-control numberField requiredInterests" id="interestRate" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6"></div>
-                    </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnSaveInterests" onclick="saveInterestsOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
@@ -1770,10 +1803,10 @@
                                 "width": "1*"
                             },
                             {
-                                "header": "Payment No. of Days",
+                                "header": "No. of Days Per Pay",
                                 "binding": "PaymentNoOfDays",
                                 "allowSorting": true,
-                                "width": "1*"
+                                "width": "1.5*"
                             }
                 ],
                 autoGenerateColumns: false,

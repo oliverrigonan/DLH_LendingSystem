@@ -16,7 +16,7 @@ namespace Lending.Models
         public Int32 LoanLinesId { get; set; }
         public String LoanLinesDayReference { get; set; }
         public String LoanLinesCollectibleDate { get; set; }
-        public Int32 PenaltyId { get; set; }
+        public Int32? PenaltyId { get; set; }
         public String Penalty { get; set; }
         public Decimal PenaltyAmount { get; set; }
         public Decimal PaidAmount { get; set; }

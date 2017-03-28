@@ -66,9 +66,9 @@ namespace Lending.ApiControllers
         {
             var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                  where d.IsLocked == true
+                                 && d.TotalBalanceAmount > 0
                                  && d.IsReconstruct == false
                                  && d.IsRenew == false
-                                 && d.TotalBalanceAmount > 0
                                  group d by new
                                  {
                                      ApplicantId = d.ApplicantId,
@@ -92,9 +92,9 @@ namespace Lending.ApiControllers
             var loanApplications = from d in db.trnLoans
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
+                                   && d.TotalBalanceAmount > 0
                                    && d.IsReconstruct == false
                                    && d.IsRenew == false
-                                   && d.TotalBalanceAmount > 0
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,

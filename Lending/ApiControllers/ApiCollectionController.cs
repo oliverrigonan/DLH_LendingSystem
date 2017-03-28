@@ -66,7 +66,7 @@ namespace Lending.ApiControllers
                                  ApplicantId = d.trnLoan.ApplicantId,
                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                  LoanId = d.LoanId,
-                                 LoanNumberDetail = d.trnLoan.LoanNumber,
+                                 LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? d.trnLoan.IsReconstruct == true ? "LN - " + d.trnLoan.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan.LoanNumber : d.trnLoan.IsRenew == true ? "LN - " + d.trnLoan.LoanNumber + " (Renewed)" : d.trnLoan.IsLoanReconstruct == true ? d.trnLoan.IsReconstruct == true ? "RC - " + d.trnLoan.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan.LoanNumber : d.trnLoan.IsRenew == true ? "RC - " + d.trnLoan.LoanNumber + " (Renewed)" : d.trnLoan.IsLoanRenew == true ? d.trnLoan.IsReconstruct == true ? "RN - " + d.trnLoan.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan.LoanNumber : d.trnLoan.IsRenew == true ? "RN - " + d.trnLoan.LoanNumber + " (Renewed)" : d.trnLoan.LoanNumber,
                                  StatusId = d.StatusId,
                                  Status = d.sysCollectionStatus.Status,
                                  Particulars = d.Particulars,

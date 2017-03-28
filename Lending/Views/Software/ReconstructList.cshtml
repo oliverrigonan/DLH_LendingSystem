@@ -115,7 +115,7 @@
 
     <!-- loan applciation recontruct Detail Modal -->
     <div class="modal fade" id="reconstructDetailModal" role="dialog">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -123,28 +123,38 @@
                     <h4 class="modal-title">Reconstruct</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Applicant</label><br />
-                        <div id="cboApplicant" style="width: 100%;"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Loan Number</label><br />
-                        <div id="cboLoanNumber" style="width: 100%;"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>Amount to be Reconstructed</label><br />
-                        <div class="input-group numberField">
-                            <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField" id="amountToBeReconstruct" placeholder="0.00" disabled />
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Applicant</label>
+                            <div class="col-sm-8">
+                                <div id="cboApplicant" style="width: 100%;"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Total Penalty</label><br />
-                        <div class="input-group numberField">
-                            <span class="input-group-addon">&#8369;</span>
-                            <input type="text" class="form-control numberField" id="penaltyToBeReconstruct" placeholder="0.00" disabled />
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Loan Number</label>
+                            <div class="col-sm-8">
+                                <div id="cboLoanNumber" style="width: 100%;"></div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Balance</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField" id="amountToBeReconstruct" placeholder="0.00" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Penalty</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField" id="penaltyToBeReconstruct" placeholder="0.00" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" id="btnReconstruct" onclick="btnReconstructOnclick()"><i class="fa fa-refresh fa-fw"></i> Reconstruct</button>

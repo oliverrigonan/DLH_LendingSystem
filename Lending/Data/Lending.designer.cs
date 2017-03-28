@@ -11640,7 +11640,7 @@ namespace Lending.Data
 		
 		private decimal _PaidAmount;
 		
-		private int _PenaltyId;
+		private System.Nullable<int> _PenaltyId;
 		
 		private decimal _PenaltyAmount;
 		
@@ -11662,7 +11662,7 @@ namespace Lending.Data
     partial void OnLoanLinesIdChanged();
     partial void OnPaidAmountChanging(decimal value);
     partial void OnPaidAmountChanged();
-    partial void OnPenaltyIdChanging(int value);
+    partial void OnPenaltyIdChanging(System.Nullable<int> value);
     partial void OnPenaltyIdChanged();
     partial void OnPenaltyAmountChanging(decimal value);
     partial void OnPenaltyAmountChanged();
@@ -11764,8 +11764,8 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PenaltyId", DbType="Int NOT NULL")]
-		public int PenaltyId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PenaltyId", DbType="Int")]
+		public System.Nullable<int> PenaltyId
 		{
 			get
 			{
@@ -11835,7 +11835,7 @@ namespace Lending.Data
 					}
 					else
 					{
-						this._PenaltyId = default(int);
+						this._PenaltyId = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("mstPenalty");
 				}
