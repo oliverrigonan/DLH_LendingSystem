@@ -53,6 +53,25 @@
                     <div class="panel-body">
                         <div id="userListFlexGrid" class="grid"></div>
                     </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -148,6 +167,16 @@
             document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtons() {
+            if (userCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (userCollectionView.pageIndex + 1) + ' / ' + userCollectionView.pageCount;
+        }
+
         // ready function
         window.onload = function () {
             NProgress.start();
@@ -155,6 +184,7 @@
 
             userCollectionView = new wijmo.collections.CollectionView(getUserList());
             userCollectionView.canFilter = true;
+            userCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchUser').keyup(function () {
@@ -166,6 +196,10 @@
                 return !filterText || (item.Username.toLowerCase().indexOf(filterText) > -1)
                                    || (item.FullName.toLowerCase().indexOf(filterText) > -1);
             }
+
+            userCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
 
             userCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -218,6 +252,32 @@
             });
 
             userFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtons();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                userCollectionView.moveToFirstPage();
+                updateNavigateButtons();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                userCollectionView.moveToPreviousPage();
+                updateNavigateButtons();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                userCollectionView.moveToNextPage();
+                updateNavigateButtons();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                userCollectionView.moveToLastPage();
+                updateNavigateButtons();
+            });
 
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {

@@ -55,11 +55,12 @@ namespace Lending.ApiControllers
         // reconstruct list by loan date
         [Authorize]
         [HttpGet]
-        [Route("api/reconstruct/listByLoanDate/{loanDate}")]
-        public List<Models.TrnLoan> listReconstructByLoanDate(String loanDate)
+        [Route("api/reconstruct/listByLoanDate/{startLoanDate}/{endLoanDate}")]
+        public List<Models.TrnLoan> listReconstructByLoanDate(String startLoanDate, String endLoanDate)
         {
             var reconstructs = from d in db.trnLoans
-                               where d.LoanDate == Convert.ToDateTime(loanDate)
+                               where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                               && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                && d.IsLoanReconstruct == true
                                select new Models.TrnLoan
                                {

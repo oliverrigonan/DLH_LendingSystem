@@ -52,11 +52,12 @@ namespace Lending.ApiControllers
         // renew list by loan date
         [Authorize]
         [HttpGet]
-        [Route("api/renew/listByLoanDate/{loanDate}")]
-        public List<Models.TrnLoan> listRenewByLoanDate(String loanDate)
+        [Route("api/renew/listByLoanDate/{startLoanDate}/{endLoanDate}")]
+        public List<Models.TrnLoan> listRenewByLoanDate(String startLoanDate, String endLoanDate)
         {
             var renews = from d in db.trnLoans
-                         where d.LoanDate == Convert.ToDateTime(loanDate)
+                         where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                         && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                          && d.IsLoanRenew == true
                          select new Models.TrnLoan
                          {

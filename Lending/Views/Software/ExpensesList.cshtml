@@ -54,13 +54,47 @@
                         </table>
                     </div>
                     <div class="panel-heading">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Expenses Date</span>
-                            <div id="cboExpensesDate"></div>
-                        </div>
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Start Expense Date</span>
+                                        <div id="cboExpensesDate"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> End Expense Date</span>
+                                        <div id="cboExpensesEndDate"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="panel-body">
                         <div id="expensesListFlexGrid" class="grid"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -123,6 +157,8 @@
         var expensesCollectionView;
         var expensesFlexGrid;
         var isExpensesDateClicked = false;
+        var cboExpensesEndDate;
+        var isExpensesEndDateClicked = false;
 
         // create cbo date for expenses date
         function createCboExpensesDate() {
@@ -136,6 +172,7 @@
                         NProgress.start();
                         expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
                         expensesCollectionView.canFilter = true;
+                        expensesCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchExpenses').keyup(function () {
@@ -147,6 +184,10 @@
                             return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Payee.toLowerCase().indexOf(filterText) > -1);
                         }
+
+                        expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
 
                         expensesCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
@@ -162,11 +203,55 @@
             });
         }
 
+        function createCboExpensesEndDate() {
+            cboExpensesEndDate.dispose();
+            cboExpensesEndDate = new wijmo.input.InputDate('#cboExpensesEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (isExpensesEndDateClicked == true) {
+                        NProgress.start();
+                        expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
+                        expensesCollectionView.canFilter = true;
+                        expensesCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchExpenses').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            expensesCollectionView.refresh();
+                        });
+
+                        expensesCollectionView.filter = function (item) {
+                            return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Payee.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        expensesCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        expensesFlexGrid.itemsSource = expensesCollectionView;
+                        expensesFlexGrid.trackChanges = true;
+                    } else {
+                        isExpensesEndDateClicked = true;
+                    }
+                }
+            });
+        }
+
         // get expenses list
         function getExpensesList() {
             var expensesListArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboExpensesDate.value.getMonth() + 1, cboExpensesDate.value.getDate(), cboExpensesDate.value.getFullYear()].join('-');
+            var endDate = [cboExpensesEndDate.value.getMonth() + 1, cboExpensesEndDate.value.getDate(), cboExpensesEndDate.value.getFullYear()].join('-');
             $.ajax({
-                url: '/api/expenses/listByExpensesDate/' + [cboExpensesDate.value.getMonth() + 1, cboExpensesDate.value.getDate(), cboExpensesDate.value.getFullYear()].join('-'),
+                url: '/api/expenses/listByExpensesDate/' + startDate + '/' + endDate,
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -275,6 +360,7 @@
 
                         expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
                         expensesCollectionView.canFilter = true;
+                        expensesCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchExpenses').keyup(function () {
@@ -286,6 +372,10 @@
                             return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Payee.toLowerCase().indexOf(filterText) > -1);
                         }
+
+                        expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
 
                         expensesCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
@@ -322,10 +412,21 @@
             document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtons() {
+            if (expensesCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (expensesCollectionView.pageIndex + 1) + ' / ' + expensesCollectionView.pageCount;
+        }
+
         // create expenses flexgrid
         function createExpensesFlexGrid() {
             expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
             expensesCollectionView.canFilter = true;
+            expensesCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchExpenses').keyup(function () {
@@ -337,6 +438,10 @@
                 return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Payee.toLowerCase().indexOf(filterText) > -1);
             }
+
+            expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
 
             expensesCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -415,6 +520,32 @@
             });
 
             expensesFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtons();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                expensesCollectionView.moveToFirstPage();
+                updateNavigateButtons();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                expensesCollectionView.moveToPreviousPage();
+                updateNavigateButtons();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                expensesCollectionView.moveToNextPage();
+                updateNavigateButtons();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                expensesCollectionView.moveToLastPage();
+                updateNavigateButtons();
+            });
         }
 
         // on load page
@@ -423,6 +554,8 @@
             toastrModification();
             cboExpensesDate = new wijmo.input.InputDate('#cboExpensesDate');
             createCboExpensesDate();
+            cboExpensesEndDate = new wijmo.input.InputDate('#cboExpensesEndDate');
+            createCboExpensesEndDate();
             createExpensesFlexGrid();
 
             var canPerformActions = "@ViewData["CanPerformActions"]";

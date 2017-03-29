@@ -17,11 +17,12 @@ namespace Lending.ApiControllers
         // collection list by collectionDate
         [Authorize]
         [HttpGet]
-        [Route("api/collections/list/ByCollectionDate/{collectionDate}")]
-        public List<Models.TrnCollection> listCollectionByCollectionDate(String collectionDate)
+        [Route("api/collections/list/ByCollectionDate/{startCollectionDate}/{endCollectionDate}")]
+        public List<Models.TrnCollection> listCollectionByCollectionDate(String startCollectionDate, String endCollectionDate)
         {
             var collections = from d in db.trnCollections
-                              where d.CollectionDate == Convert.ToDateTime(collectionDate)
+                              where d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                              && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
                               select new Models.TrnCollection
                               {
                                   Id = d.Id,

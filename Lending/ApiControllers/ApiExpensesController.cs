@@ -16,11 +16,12 @@ namespace Lending.ApiControllers
         // expenses list
         [Authorize]
         [HttpGet]
-        [Route("api/expenses/listByExpensesDate/{expenseDate}")]
-        public List<Models.TrnExpenses> listExpenseByExpensesDate(String expenseDate)
+        [Route("api/expenses/listByExpensesDate/{startExpenseDate}/{endExpensesData}")]
+        public List<Models.TrnExpenses> listExpenseByExpensesDate(String startExpenseDate, String endExpensesData)
         {
             var expenses = from d in db.trnExpenses
-                           where d.ExpenseDate == Convert.ToDateTime(expenseDate)
+                           where d.ExpenseDate >= Convert.ToDateTime(startExpenseDate)
+                           && d.ExpenseDate <= Convert.ToDateTime(endExpensesData)
                            select new Models.TrnExpenses
                            {
                                Id = d.Id,

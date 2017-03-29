@@ -53,13 +53,47 @@
                         </table>
                     </div>
                     <div class="panel-heading">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Collection Date</span>
-                            <div id="cboCollectionDate"></div>
-                        </div>
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Start Collection Date</span>
+                                        <div id="cboCollectionDate"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> End Collection Date</span>
+                                        <div id="cboCollectionEndDate"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="panel-body">
                         <div id="collectionListFlexGrid" class=""></div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
@@ -119,6 +153,7 @@
     <script type="text/javascript">
         // global variables
         var cboCollectionDate;
+        var cboCollectionEndDate;
         var collectionCollectionView;
         var collectionFlexGrid;
         var btnFirstPageGrid;
@@ -127,6 +162,7 @@
         var btnLastPageGrid;
         var btnCurrentPageGrid;
         var isCollectionDateClicked = false;
+        var isCollectionEndDateClicked = false;
         var cboCollectionChangeCollector;
 
         // create cbo date for collection date
@@ -141,6 +177,7 @@
                         NProgress.start();
                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
                         collectionCollectionView.canFilter = true;
+                        collectionCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchCollection').keyup(function () {
@@ -153,6 +190,10 @@
                                                || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Status.toLowerCase().indexOf(filterText) > -1);
                         }
+
+                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
 
                         collectionCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
@@ -168,11 +209,57 @@
             });
         }
 
+        // create cbo date for collection date
+        function createCboCollectionEndDate() {
+            cboCollectionEndDate.dispose();
+            cboCollectionEndDate = new wijmo.input.InputDate('#cboCollectionEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (isCollectionEndDateClicked == true) {
+                        NProgress.start();
+                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
+                        collectionCollectionView.canFilter = true;
+                        collectionCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchCollection').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            collectionCollectionView.refresh();
+                        });
+
+                        collectionCollectionView.filter = function (item) {
+                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        collectionFlexGrid.itemsSource = collectionCollectionView;
+                        collectionFlexGrid.trackChanges = true;
+                    } else {
+                        isCollectionEndDateClicked = true;
+                    }
+                }
+            });
+        }
+
         // get colllection list by collection date and area id
         function getCollectionByCollectionDateList() {
             var collectionListArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-');
+            var endDate = [cboCollectionEndDate.value.getMonth() + 1, cboCollectionEndDate.value.getDate(), cboCollectionEndDate.value.getFullYear()].join('-');
             $.ajax({
-                url: '/api/collections/list/ByCollectionDate/' + [cboCollectionDate.value.getMonth() + 1, cboCollectionDate.value.getDate(), cboCollectionDate.value.getFullYear()].join('-'),
+                url: '/api/collections/list/ByCollectionDate/' + startDate + '/' + endDate,
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -192,7 +279,7 @@
 
                             var newDate = new Date(collectionListResult[i]["CollectionDate"]);
                             var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
-                            
+
                             collectionListArray.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
@@ -294,9 +381,9 @@
                         toastr.success("Delete Successful");
 
                         $('#deleteConfirmationCollectionModal').modal('hide');
-
                         collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
                         collectionCollectionView.canFilter = true;
+                        collectionCollectionView.pageSize = 15;
 
                         var filterText = '';
                         $('#searchCollection').keyup(function () {
@@ -309,6 +396,10 @@
                                                || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Status.toLowerCase().indexOf(filterText) > -1);
                         }
+
+                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
 
                         collectionCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
@@ -345,22 +436,37 @@
             document.getElementById('stampUpdatedDate').innerHTML = item.UpdatedDateTime;
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtons() {
+            if (collectionCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
+        }
+
         // create collection flexgrid
         function createCollectionFlexGrid() {
             collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
             collectionCollectionView.canFilter = true;
+            collectionCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#searchCollection').keyup(function () {
                 filterText = this.value.toLowerCase();
                 collectionCollectionView.refresh();
             });
-            
+
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
                                    || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Status.toLowerCase().indexOf(filterText) > -1);
             }
+
+            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
 
             collectionCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
@@ -456,6 +562,33 @@
             });
 
             collectionFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtons();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                collectionCollectionView.moveToFirstPage();
+                updateNavigateButtons();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                collectionCollectionView.moveToPreviousPage();
+                updateNavigateButtons();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                collectionCollectionView.moveToNextPage();
+                updateNavigateButtons();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                collectionCollectionView.moveToLastPage();
+                updateNavigateButtons();
+            });
+
         }
 
         // on load page
@@ -464,6 +597,8 @@
             toastrModification();
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate');
             createCboCollectionDate();
+            cboCollectionEndDate = new wijmo.input.InputDate('#cboCollectionEndDate');
+            createCboCollectionEndDate();
             createCollectionFlexGrid();
 
             doubleModal();
