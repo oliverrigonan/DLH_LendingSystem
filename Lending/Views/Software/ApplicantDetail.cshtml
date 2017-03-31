@@ -4361,7 +4361,7 @@
                                     }
                                 }
                             }
-
+                             
                             applicantLoans.push({
                                 HoverButton: "<button class='btn btn-primary btn-xs btn-block' onclick='" + onClickFunctionName + "'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 Id: applicantLoanResults[i]["Id"],
@@ -5288,6 +5288,30 @@
                 refreshApplicantCollectionsGrid();
             }, 200);
         });
+
+        function detailApplicantLoansOnclick() {
+            applicantLoansCollectionView.editItem(applicantLoansCollectionView.currentItem);
+            var currentItem = applicantLoansCollectionView.currentEditItem;
+            window.open("/Software/LoanApplicationDetail?id=" + currentItem.Id, "_blank");
+        }
+
+        function detailApplicantReconstructedLoansOnclick() {
+            applicantReconstructedLoansCollectionView.editItem(applicantReconstructedLoansCollectionView.currentItem);
+            var currentItem = applicantReconstructedLoansCollectionView.currentEditItem;
+            window.open("/Software/ReconstructDetail?id=" + currentItem.Id, "_blank");
+        }
+
+        function detailApplicantRenewLoansOnclick() {
+            applicantRenewLoansCollectionView.editItem(applicantRenewLoansCollectionView.currentItem);
+            var currentItem = applicantRenewLoansCollectionView.currentEditItem;
+            window.open("/Software/RenewDetail?id=" + currentItem.Id, "_blank");
+        }
+
+        function onClickCollectionDetail() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var currentItem = collectionCollectionView.currentEditItem;
+            window.open("/Software/CollectionDetail?id=" + currentItem.Id, "_blank");
+        }
     </script>
 </body>
 </html>
