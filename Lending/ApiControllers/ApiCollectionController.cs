@@ -624,5 +624,44 @@ namespace Lending.ApiControllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        // collection list
+        [Authorize]
+        [HttpGet]
+        [Route("api/collections/list/ByApplicantId/{applicantId}/{loanId}")]
+        public List<Models.TrnCollection> listCollectionByApplicantId(String applicantId, String loanId)
+        {
+            var collections = from d in db.trnCollections.OrderByDescending(d => d.Id)
+                              where d.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
+                              && d.LoanId == Convert.ToInt32(loanId)
+                              && d.IsLocked == true
+                              select new Models.TrnCollection
+                              {
+                                  Id = d.Id,
+                                  CollectionNumber = d.CollectionNumber,
+                                  CollectionDate = d.CollectionDate.ToShortDateString(),
+                                  ApplicantId = d.trnLoan.ApplicantId,
+                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                  LoanId = d.LoanId,
+                                  LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? d.trnLoan.IsReconstruct == true ? "LN - " + d.trnLoan.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan.LoanNumber : d.trnLoan.IsRenew == true ? "LN - " + d.trnLoan.LoanNumber + " - Renewd" : d.trnLoan.IsLoanReconstruct == true ? d.trnLoan.IsReconstruct == true ? "RC - " + d.trnLoan.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan.LoanNumber : d.trnLoan.IsRenew == true ? "RC - " + d.trnLoan.LoanNumber + " - Renewd" : d.trnLoan.IsLoanRenew == true ? d.trnLoan.IsReconstruct == true ? "RN - " + d.trnLoan.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan.LoanNumber : d.trnLoan.IsRenew == true ? "RN - " + d.trnLoan.LoanNumber + " - Renewd" : d.trnLoan.LoanNumber,
+                                  StatusId = d.StatusId,
+                                  Status = d.sysCollectionStatus.Status,
+                                  Particulars = d.Particulars,
+                                  TotalPaidAmount = d.TotalPaidAmount,
+                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                  PreparedByUserId = d.PreparedByUserId,
+                                  PreparedByUser = d.mstUser.FullName,
+                                  IsLocked = d.IsLocked,
+                                  CreatedByUserId = d.CreatedByUserId,
+                                  CreatedByUser = d.mstUser.FullName,
+                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                  UpdatedByUserId = d.UpdatedByUserId,
+                                  UpdatedByUser = d.mstUser1.FullName,
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                              };
+
+            return collections.ToList();
+        }
+
     }
 }
