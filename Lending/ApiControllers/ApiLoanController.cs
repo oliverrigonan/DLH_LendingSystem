@@ -539,19 +539,19 @@ namespace Lending.ApiControllers
 
                                                 if (loans.FirstOrDefault().IsLoanApplication)
                                                 {
-                                                    newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ")";
+                                                    newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
                                                 }
                                                 else
                                                 {
                                                     if (loans.FirstOrDefault().IsLoanReconstruct)
                                                     {
-                                                        newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ")";
+                                                        newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
                                                     }
                                                     else
                                                     {
                                                         if (loans.FirstOrDefault().IsLoanRenew)
                                                         {
-                                                            newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ")";
+                                                            newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
                                                         }
                                                     }
                                                 }
@@ -945,7 +945,7 @@ namespace Lending.ApiControllers
         {
             if (transactionType.Equals("Loans"))
             {
-                var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                var loanApplications = from d in db.trnLoans
                                        where d.IsLoanApplication == true
                                        && d.ApplicantId == Convert.ToInt32(applicantId)
                                        && d.IsLocked == true
@@ -999,7 +999,7 @@ namespace Lending.ApiControllers
             {
                 if (transactionType.Equals("ReconstructedLoans"))
                 {
-                    var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                    var loanApplications = from d in db.trnLoans
                                            where d.IsLoanReconstruct == true
                                            && d.ApplicantId == Convert.ToInt32(applicantId)
                                            && d.IsLocked == true
@@ -1053,7 +1053,7 @@ namespace Lending.ApiControllers
                 {
                     if (transactionType.Equals("Renews"))
                     {
-                        var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                        var loanApplications = from d in db.trnLoans
                                                where d.IsLoanRenew == true
                                                && d.ApplicantId == Convert.ToInt32(applicantId)
                                                && d.IsLocked == true

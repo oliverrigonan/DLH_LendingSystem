@@ -928,11 +928,12 @@
                                 BtnPick: pickButton,
                                 BtnPenalty: penaltyButton,
                                 Id: loanLineResults[i]["Id"],
-                                DayReference: loanLineResults[i]["DayReference"] + " - " + isClearedLabel,
+                                DayReference: loanLineResults[i]["DayReference"],
                                 CollectibleDate: loanLineResults[i]["CollectibleDate"],
                                 CollectibleAmount: loanLineResults[i]["CollectibleAmount"],
                                 PaidAmount: loanLineResults[i]["PaidAmount"],
                                 PenaltyAmount: loanLineResults[i]["PenaltyAmount"],
+                                CollectedStatus: isClearedLabel
                             });
 
                             NProgress.done();
@@ -1352,12 +1353,6 @@
             recentCollectionLinesFlexgrid.initialize({
                 columns: [
                             {
-                                "header": "Collected Date",
-                                "binding": "CollectedDate",
-                                "allowSorting": true,
-                                "width": "2.3*",
-                            },
-                            {
                                 "header": "Collection No.",
                                 "binding": "RecentCollectionButton",
                                 "width": "2.5*",
@@ -1369,7 +1364,7 @@
                                 "header": "Day Ref.",
                                 "binding": "LoanLinesDayReference",
                                 "allowSorting": true,
-                                "width": "5*",
+                                "width": "7*",
                             },
                             {
                                 "header": "Paid",

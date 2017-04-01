@@ -45,6 +45,12 @@
                         <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
                             <i class="fa fa-unlock fa-fw"></i> Unlock
                         </button>
+                        <button class="btn btn-primary" id="btnCashVoucher" onclick="btnCashVoucherOnClick()">
+                            <i class="fa fa-print fa-fw"></i> Cash Voucher
+                        </button>
+                        <button class="btn btn-primary" id="btnApplicantCollectibles" onclick="btnCollectiblesOnClick()">
+                            <i class="fa fa-print fa-fw"></i> Collectibles
+                        </button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -1880,6 +1886,24 @@
         $('#loanApplicationPrincipalAmount').keyup(function () {
             computeDeductions();
         });
+
+        // print cash voucher
+        function btnCashVoucherOnClick() {
+            if (isLocked) {
+                window.open("/RepCashVoucherPDF/CashVoucherPDF?loanId=" + getUrlParameter("id"), "_blank");
+            } else {
+                toastr.error("Not Locked");
+            }
+        }
+
+        // print collectibles
+        function btnCollectiblesOnClick() {
+            if (isLocked) {
+                window.open("/RepCollectiblesPDF/Collectibles?loanId=" + getUrlParameter("id"), "_blank");
+            } else {
+                toastr.error("Not Locked");
+            }
+        }
     </script>
 </body>
 </html>

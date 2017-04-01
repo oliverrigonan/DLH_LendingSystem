@@ -261,10 +261,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\RepApplicantCollectionPaperController.cs" />
     <Compile Include="Reports\RepAreaCollectionPaperController.cs" />
+    <Compile Include="Reports\RepCashVoucherPDFController.cs" />
+    <Compile Include="Reports\RepCollectiblesPDFController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringDetailReportController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringSummaryReportController.cs" />
     <Compile Include="Reports\RepExpensesSummaryReportController.cs" />
-    <Compile Include="Reports\RepLoanApplicationCashVoucherController.cs" />
     <Compile Include="Reports\RepLoanDetailReportController.cs" />
     <Compile Include="Reports\RepLoanSummaryReportController.cs" />
     <Compile Include="Startup.cs" />
@@ -293,6 +294,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\buildingPlaceHolder.png" />
+    <Content Include="Images\dlhicon.jpg" />
     <Content Include="Images\landing-page\me.jpg" />
     <Content Include="Images\landing-page\banner-bg.jpg" />
     <Content Include="Images\landing-page\dog.png" />

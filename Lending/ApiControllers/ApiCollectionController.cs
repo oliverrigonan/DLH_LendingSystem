@@ -631,7 +631,7 @@ namespace Lending.ApiControllers
         [Route("api/collections/list/ByApplicantId/{applicantId}/{loanId}")]
         public List<Models.TrnCollection> listCollectionByApplicantId(String applicantId, String loanId)
         {
-            var collections = from d in db.trnCollections.OrderByDescending(d => d.Id)
+            var collections = from d in db.trnCollections
                               where d.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
                               && d.LoanId == Convert.ToInt32(loanId)
                               && d.IsLocked == true
