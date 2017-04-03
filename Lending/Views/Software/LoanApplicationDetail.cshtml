@@ -1875,7 +1875,7 @@
             // deductions
             var deductionAmountValue = document.getElementById('loanApplicationDeductionAmount').value.replace(/\,/g, '');
             var totalDeductions = parseFloat(deductionAmountValue);
-            var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
+            var netAmount = parseFloat(principalAmountValue) - parseFloat(totalDeductions);
             var netCollectionAmount = parseFloat(principalAmountValue) + parseFloat(interestAmountValue);
 
             document.getElementById('loanApplicationTotalNetAmount').value = netAmount.toLocaleString();

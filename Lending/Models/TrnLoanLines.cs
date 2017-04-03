@@ -18,5 +18,11 @@ namespace Lending.Models
         public Decimal PenaltyAmount { get; set; }
         public Decimal BalanceAmount { get; set; }
         public Boolean IsCleared { get; set; }
+        public String Applicant { get; set; }
+        public Boolean IsReconstruct { get; set; }
+        public Boolean IsRenew { get; set; }
+        public Boolean IsLoanApplication { get; set; }
+        public Boolean IsLoanReconstruct { get; set; }
+        public Boolean IsLoanRenew { get; set; }
     }
 }

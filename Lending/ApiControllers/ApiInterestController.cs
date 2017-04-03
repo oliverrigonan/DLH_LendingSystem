@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/interest/list")]
         public List<Models.MstInterest> listInterest()
         {
-            var interest = from d in db.mstInterests
+            var interest = from d in db.mstInterests.OrderByDescending(d => d.Id)
                            select new Models.MstInterest
                             {
                                 Id = d.Id,

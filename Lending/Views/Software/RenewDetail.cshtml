@@ -2025,7 +2025,7 @@
 
             var totalDeductions = parseFloat(previousBalanceAmount) + parseFloat(previousPenaltyAmount) + parseFloat(deductionAmountValue);
 
-            var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
+            var netAmount = parseFloat(principalAmountValue) - parseFloat(totalDeductions);
             var netCollectionAmount = parseFloat(principalAmountValue) + parseFloat(interestAmountValue);
 
             document.getElementById('loanApplicationTotalNetAmount').value = netAmount.toLocaleString();

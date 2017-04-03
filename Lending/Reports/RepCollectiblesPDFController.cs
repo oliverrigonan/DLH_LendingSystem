@@ -110,7 +110,7 @@ namespace Lending.Reports
                         }
                     }
 
-                    var staffs = from d in db.mstAreaStaffs
+                    var staffs = from d in db.mstAreaStaffs.OrderByDescending(d => d.Id)
                                  where d.AreaId == loan.FirstOrDefault().mstApplicant.AreaId
                                  select d;
 

@@ -43,7 +43,7 @@ namespace Lending.ApiControllers
         [Route("api/loan/list/byApplicantId/{applicantId}")]
         public List<Models.TrnLoan> listLoanByApplicantId(String applicantId)
         {
-            var loanApplications = from d in db.trnLoans
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
                                    && d.TotalBalanceAmount > 0
@@ -89,7 +89,7 @@ namespace Lending.ApiControllers
         [Route("api/loan/list/byApplicantId/InReconstruct/InRenewal/{applicantId}")]
         public List<Models.TrnLoan> listLoanByApplicantIdInReconstructInRenewal(String applicantId)
         {
-            var loanApplications = from d in db.trnLoans
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
                                    && d.TotalBalanceAmount > 0
@@ -112,7 +112,7 @@ namespace Lending.ApiControllers
         [Route("api/loan/list/byApplicantId/forViewCollection/{applicantId}")]
         public List<Models.TrnLoan> listLoanByApplicantIdForViewCollection(String applicantId)
         {
-            var loanApplications = from d in db.trnLoans
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
                                    select new Models.TrnLoan
@@ -131,7 +131,7 @@ namespace Lending.ApiControllers
         [Route("api/loan/listByLoanDate/{startLoanDate}/{endLoanDate}")]
         public List<Models.TrnLoan> listLoanByLoanDate(String startLoanDate, String endLoanDate)
         {
-            var loanApplications = from d in db.trnLoans
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                                    && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                    && d.IsLoanApplication == true
@@ -945,7 +945,7 @@ namespace Lending.ApiControllers
         {
             if (transactionType.Equals("Loans"))
             {
-                var loanApplications = from d in db.trnLoans
+                var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                        where d.IsLoanApplication == true
                                        && d.ApplicantId == Convert.ToInt32(applicantId)
                                        && d.IsLocked == true
@@ -999,7 +999,7 @@ namespace Lending.ApiControllers
             {
                 if (transactionType.Equals("ReconstructedLoans"))
                 {
-                    var loanApplications = from d in db.trnLoans
+                    var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                            where d.IsLoanReconstruct == true
                                            && d.ApplicantId == Convert.ToInt32(applicantId)
                                            && d.IsLocked == true
@@ -1053,7 +1053,7 @@ namespace Lending.ApiControllers
                 {
                     if (transactionType.Equals("Renews"))
                     {
-                        var loanApplications = from d in db.trnLoans
+                        var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                                where d.IsLoanRenew == true
                                                && d.ApplicantId == Convert.ToInt32(applicantId)
                                                && d.IsLocked == true

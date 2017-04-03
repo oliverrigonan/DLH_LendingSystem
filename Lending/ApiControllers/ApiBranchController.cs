@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/branch/list")]
         public List<Models.MstBranch> listBranch()
         {
-            var branches = from d in db.mstBranches
+            var branches = from d in db.mstBranches.OrderByDescending(d => d.Id)
                            select new Models.MstBranch
                            {
                                Id = d.Id,
@@ -39,7 +39,7 @@ namespace Lending.ApiControllers
         [Route("api/branch/listByCompanyId/{companyId}")]
         public List<Models.MstBranch> listBranchByCompanyId(String companyId)
         {
-            var branches = from d in db.mstBranches
+            var branches = from d in db.mstBranches.OrderByDescending(d => d.Id)
                            where d.CompanyId == Convert.ToInt32(companyId)
                            select new Models.MstBranch
                            {

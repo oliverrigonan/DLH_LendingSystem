@@ -21,7 +21,7 @@ namespace Lending.ApiControllers
         [Route("api/collectionLines/listByLoanId/{loanId}")]
         public List<Models.TrnCollectionLines> listCollectionLinesByLoanId(String loanId)
         {
-            var collectionLines = from d in db.trnCollectionLines
+            var collectionLines = from d in db.trnCollectionLines.OrderByDescending(d => d.Id)
                                   where d.trnLoanLine.LoanId == Convert.ToInt32(loanId)
                                   && d.trnCollection.IsLocked == true
                                   select new Models.TrnCollectionLines
@@ -49,7 +49,7 @@ namespace Lending.ApiControllers
         [Route("api/collectionLines/listByCollectionId/{collectionId}")]
         public List<Models.TrnCollectionLines> listCollectionLinesByCollectionId(String collectionId)
         {
-            var collectionLines = from d in db.trnCollectionLines
+            var collectionLines = from d in db.trnCollectionLines.OrderByDescending(d => d.Id)
                                   where d.CollectionId == Convert.ToInt32(collectionId)
                                   select new Models.TrnCollectionLines
                                   {

@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/penalty/list")]
         public List<Models.MstPenalty> listPenalty()
         {
-            var penalty = from d in db.mstPenalties
+            var penalty = from d in db.mstPenalties.OrderByDescending(d => d.Id)
                           select new Models.MstPenalty
                           {
                               Id = d.Id,

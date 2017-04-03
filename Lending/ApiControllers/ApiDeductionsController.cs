@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/deductions/list")]
         public List<Models.MstDeductions> listDeductions()
         {
-            var deductions = from d in db.mstDeductions
+            var deductions = from d in db.mstDeductions.OrderByDescending(d => d.Id)
                            select new Models.MstDeductions
                            {
                                Id = d.Id,

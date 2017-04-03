@@ -55,5 +55,39 @@ namespace Lending.ApiControllers
 
             return loanLines.ToList();
         }
+
+        // loan list by loan date
+        [Authorize]
+        [HttpGet]
+        [Route("api/loanLines/listByCollectibleDateDate/byAreaId/{collectibleDate}/{areaId}")]
+        public List<Models.TrnLoanLines> listLoanLinesByLoanIdByNotRenewByNotReconstruct(String collectibleDate, String areaId)
+        {
+            var loanLines = from d in db.trnLoanLines.OrderBy(d => d.trnLoan.mstApplicant.ApplicantLastName)
+                            where d.CollectibleDate == Convert.ToDateTime(collectibleDate)
+                            && d.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                            && d.trnLoan.IsReconstruct == false
+                            && d.trnLoan.IsRenew == false
+                            && d.trnLoan.IsLocked == true
+                            && d.PaidAmount == 0
+                            && d.PenaltyAmount == 0
+                            select new Models.TrnLoanLines
+                            {
+                                Id = d.Id,
+                                LoanId = d.LoanId,
+                                DayReference = d.DayReference,
+                                CollectibleDate = d.CollectibleDate.ToShortDateString(),
+                                CollectibleAmount = d.CollectibleAmount,
+                                PaidAmount = d.PaidAmount,
+                                PenaltyAmount = d.PenaltyAmount,
+                                Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                IsReconstruct = d.trnLoan.IsReconstruct,
+                                IsRenew = d.trnLoan.IsRenew,
+                                IsLoanApplication = d.trnLoan.IsLoanApplication,
+                                IsLoanReconstruct = d.trnLoan.IsLoanReconstruct,
+                                IsLoanRenew = d.trnLoan.IsLoanRenew
+                            };
+
+            return loanLines.ToList();
+        }
     }
 }

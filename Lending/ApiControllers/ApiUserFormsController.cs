@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/userForm/listByUserId/{userId}")]
         public List<Models.MstUserForm> listUserFormByUserId(String userId)
         {
-            var userForms = from d in db.mstUserForms
+            var userForms = from d in db.mstUserForms.OrderByDescending(d => d.Id)
                             where d.UserId == Convert.ToInt32(userId)
                             select new Models.MstUserForm
                             {

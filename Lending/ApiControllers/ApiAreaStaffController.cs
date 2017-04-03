@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/areaStaff/listByAreaId/{areaId}")]
         public List<Models.MstAreaStaff> listAreaStaffByAreaId(String areaId)
         {
-            var areaStaffs = from d in db.mstAreaStaffs
+            var areaStaffs = from d in db.mstAreaStaffs.OrderByDescending(d => d.Id)
                              where d.AreaId == Convert.ToInt32(areaId)
                              select new Models.MstAreaStaff
                              {

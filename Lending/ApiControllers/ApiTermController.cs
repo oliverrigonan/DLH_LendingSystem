@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/term/list")]
         public List<Models.MstTerm> listTerm()
         {
-            var term = from d in db.mstTerms
+            var term = from d in db.mstTerms.OrderByDescending(d => d.Id)
                             select new Models.MstTerm
                             {
                                 Id = d.Id,

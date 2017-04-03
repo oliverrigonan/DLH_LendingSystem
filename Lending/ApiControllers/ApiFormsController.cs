@@ -18,7 +18,7 @@ namespace Lending.ApiControllers
         [Route("api/forms/list")]
         public List<Models.SysForms> listForms()
         {
-            var forms = from d in db.sysForms
+            var forms = from d in db.sysForms.OrderByDescending(d => d.Form)
                         select new Models.SysForms
                         {
                             Id = d.Id,

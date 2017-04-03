@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/loanCollateral/listByLoanId/{loanId}")]
         public List<Models.TrnLoanCollateral> listLoanCollateralByLoanId(String loanId)
         {
-            var loanCollaterals = from d in db.trnLoanCollaterals
+            var loanCollaterals = from d in db.trnLoanCollaterals.OrderByDescending(d => d.Id)
                                              where d.LoanId == Convert.ToInt32(loanId)
                                              select new Models.TrnLoanCollateral
                                              {

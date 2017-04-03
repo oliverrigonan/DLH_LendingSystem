@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/loanRenew/list/ByLoanId/{loanId}")]
         public List<Models.TrnLoanRenew> listRenew(String loanId)
         {
-            var renews = from d in db.trnLoanRenews
+            var renews = from d in db.trnLoanRenews.OrderByDescending(d => d.Id)
                          where d.LoanId == Convert.ToInt32(loanId)
                          select new Models.TrnLoanRenew
                          {

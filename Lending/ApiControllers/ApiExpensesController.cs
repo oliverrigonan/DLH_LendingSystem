@@ -19,7 +19,7 @@ namespace Lending.ApiControllers
         [Route("api/expenses/listByExpensesDate/{startExpenseDate}/{endExpensesData}")]
         public List<Models.TrnExpenses> listExpenseByExpensesDate(String startExpenseDate, String endExpensesData)
         {
-            var expenses = from d in db.trnExpenses
+            var expenses = from d in db.trnExpenses.OrderByDescending(d => d.Id)
                            where d.ExpenseDate >= Convert.ToDateTime(startExpenseDate)
                            && d.ExpenseDate <= Convert.ToDateTime(endExpensesData)
                            select new Models.TrnExpenses

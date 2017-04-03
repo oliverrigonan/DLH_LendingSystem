@@ -24,7 +24,7 @@ namespace Lending.ApiControllers
         [Route("api/applicant/list")]
         public List<Models.MstApplicant> listApplicant()
         {
-            var applicants = from d in db.mstApplicants
+            var applicants = from d in db.mstApplicants.OrderByDescending(d  => d.Id)
                              select new Models.MstApplicant
                              {
                                  Id = d.Id,

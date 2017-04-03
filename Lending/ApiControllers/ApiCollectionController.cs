@@ -20,7 +20,7 @@ namespace Lending.ApiControllers
         [Route("api/collections/list/ByCollectionDate/{startCollectionDate}/{endCollectionDate}")]
         public List<Models.TrnCollection> listCollectionByCollectionDate(String startCollectionDate, String endCollectionDate)
         {
-            var collections = from d in db.trnCollections
+            var collections = from d in db.trnCollections.OrderByDescending(d => d.Id)
                               where d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
                               && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
                               select new Models.TrnCollection

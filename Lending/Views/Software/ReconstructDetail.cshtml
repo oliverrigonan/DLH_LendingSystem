@@ -1990,7 +1990,7 @@
             var previousPenaltyAmount = document.getElementById('previousPenaltyAmount').value.replace(/\,/g, '');
             var totalDeductions = parseFloat(previousPenaltyAmount) + parseFloat(deductionAmountValue);
 
-            var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
+            //var netAmount = (parseFloat(principalAmountValue) + parseFloat(interestAmountValue)) - parseFloat(totalDeductions);
             var netCollectionAmount = parseFloat(principalAmountValue) + parseFloat(interestAmountValue) + parseFloat(totalDeductions);
 
             document.getElementById('loanApplicationTotalNetCollectionAmount').value = netCollectionAmount.toLocaleString();

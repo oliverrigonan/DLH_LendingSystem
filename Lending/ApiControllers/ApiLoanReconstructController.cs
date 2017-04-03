@@ -20,7 +20,7 @@ namespace Lending.ApiControllers
         [Route("api/loanReconstruct/list/ByLoanId/{loanId}")]
         public List<Models.TrnLoanReconstruct> listReconstruct(String loanId)
         {
-            var reconstructs = from d in db.trnLoanReconstructs
+            var reconstructs = from d in db.trnLoanReconstructs.OrderByDescending(d => d.Id)
                                where d.LoanId == Convert.ToInt32(loanId)
                                select new Models.TrnLoanReconstruct
                                {
