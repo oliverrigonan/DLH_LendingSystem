@@ -649,6 +649,7 @@
             for (i = 0; i < loanLinesCollectionView.items.length; i++) {
                 dailyCollectionReport.push({
                     Applicant: loanLinesCollectionView.items[i].Applicant,
+                    CollectibleDate: loanLinesCollectionView.items[i].CollectibleDate,
                     DayReference: loanLinesCollectionView.items[i].DayReference,
                     LoanStatus: loanLinesCollectionView.items[i].LoanStatus,
                     CollectibleAmount: loanLinesCollectionView.items[i].CollectibleAmount,
@@ -661,6 +662,7 @@
             var Headers = [];
             Headers.push({
                 Applicant: "Applicant",
+                CollectibleDate: "Date",
                 DayReference: "Day Ref.",
                 LoanStatus: "Status",
                 CollectibleAmount: "Collectible",
@@ -674,7 +676,8 @@
                 header += '"' + Headers[0][b] + '",';
             }
 
-            CSV = header + '\r\n\n';
+            CSV = areaName + " Daily Collection" + '\r\n\n';
+            CSV += header + '\r\n\n';
             for (var i = 0; i < dailyCollectionReport.length; i++) {
                 var row = '';
                 for (var a in dailyCollectionReport[i]) {
@@ -716,9 +719,7 @@
                     CSV += '\r\n' + totalActiveArray + '\r\n';
                     CSV += totalOverdueArray + '\r\n';
                     CSV += totalActiveAndTotalOverduerArray + '\r\n';
-
                     CSV += '\r\n' + totalCollectiblesArray + '\r\n';
-
                     CSV += '\r\n' + totalCollectionsArray + '\r\n';
                     CSV += totalGasExpensesArray + '\r\n';
                     CSV += netCollectionArray + '\r\n';
@@ -727,12 +728,17 @@
                     var collector = document.getElementById("areaCollector").value;
 
                     var superVisorArray = ["Supervisor Collection", supervisor];
-                    var collectorArray = ["Collector", collector];
-
                     superVisorArray.slice(0, superVisorArray.length - 1);
+
+                    var collectorArray = ["Collector", collector];
+                    collectorArray.slice(0, collectorArray.length - 1);
+
+                    var checkedByArray = ["Checked By", " "];
+                    checkedByArray.slice(0, checkedByArray.length - 1);
 
                     CSV += '\r\n' + superVisorArray + '\r\n';
                     CSV += collectorArray + '\r\n';
+                    CSV += checkedByArray + '\r\n';
                 }
             }
 
