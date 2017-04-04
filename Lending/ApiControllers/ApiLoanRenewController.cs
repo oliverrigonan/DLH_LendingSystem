@@ -227,7 +227,6 @@ namespace Lending.ApiControllers
                                     newLoan.LoanDate = DateTime.Today;
                                     newLoan.ApplicantId = loanRenew.ApplicantId;
                                     newLoan.Particulars = "NA";
-                                    newLoan.ReleasedByStaffId = null;
                                     newLoan.PreparedByUserId = userId;
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;

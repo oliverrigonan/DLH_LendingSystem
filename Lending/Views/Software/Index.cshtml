@@ -488,6 +488,7 @@
                                 Applicant: loanLinesResults[i]["Applicant"],
                                 LoanStatus: loanStatus,
                                 LoanId: loanLinesResults[i]["LoanId"],
+                                DueDate: loanLinesResults[i]["DueDate"]
                             });
                         }
                     }
@@ -649,7 +650,7 @@
             for (i = 0; i < loanLinesCollectionView.items.length; i++) {
                 dailyCollectionReport.push({
                     Applicant: loanLinesCollectionView.items[i].Applicant,
-                    CollectibleDate: loanLinesCollectionView.items[i].CollectibleDate,
+                    DueDate: loanLinesCollectionView.items[i].DueDate,
                     DayReference: loanLinesCollectionView.items[i].DayReference,
                     LoanStatus: loanLinesCollectionView.items[i].LoanStatus,
                     CollectibleAmount: loanLinesCollectionView.items[i].CollectibleAmount,
@@ -662,7 +663,7 @@
             var Headers = [];
             Headers.push({
                 Applicant: "Applicant",
-                CollectibleDate: "Date",
+                DueDate: "Due Date",
                 DayReference: "Day Ref.",
                 LoanStatus: "Status",
                 CollectibleAmount: "Collectible",

@@ -82,7 +82,8 @@ namespace Lending.ApiControllers
                                 IsRenew = d.trnLoan.IsRenew,
                                 IsLoanApplication = d.trnLoan.IsLoanApplication,
                                 IsLoanReconstruct = d.trnLoan.IsLoanReconstruct,
-                                IsLoanRenew = d.trnLoan.IsLoanRenew
+                                IsLoanRenew = d.trnLoan.IsLoanRenew,
+                                DueDate = d.trnLoan.MaturityDate.ToShortDateString()
                             };
 
             return loanLines.ToList();

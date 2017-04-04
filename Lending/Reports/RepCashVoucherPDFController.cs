@@ -202,12 +202,6 @@ namespace Lending.Reports
 
                     document.Add(spaceTable);
 
-                    String releaseByStaff = "";
-                    if (loan.FirstOrDefault().ReleasedByStaffId != null)
-                    {
-                        releaseByStaff = loan.FirstOrDefault().mstStaff.Staff;
-                    }
-
                     // users
                     PdfPTable loanDetailUser = new PdfPTable(3);
                     float[] loanDetailUserWithCells = new float[] { 30f, 30f, 30f };
@@ -217,7 +211,7 @@ namespace Lending.Reports
                     loanDetailUser.AddCell(new PdfPCell(new Phrase("Released By:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 7f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetailUser.AddCell(new PdfPCell(new Phrase("Received By:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 5f, PaddingBottom = 7f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetailUser.AddCell(new PdfPCell(new Phrase(loan.FirstOrDefault().mstUser.FullName)) { HorizontalAlignment = 1, PaddingTop = 40f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
-                    loanDetailUser.AddCell(new PdfPCell(new Phrase(releaseByStaff, fontArial11)) { HorizontalAlignment = 1, PaddingTop = 40f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanDetailUser.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 1, PaddingTop = 40f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetailUser.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 40f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetailUser.AddCell(new PdfPCell(new Phrase("Signature over printed name", fontArial11)) { HorizontalAlignment = 1, PaddingTop = 2f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetailUser.AddCell(new PdfPCell(new Phrase("Signature over printed name", fontArial11)) { HorizontalAlignment = 1, PaddingTop = 2f, PaddingBottom = 5f, PaddingLeft = 5f, PaddingRight = 5f });

@@ -24,5 +24,6 @@ namespace Lending.Models
         public Boolean IsLoanApplication { get; set; }
         public Boolean IsLoanReconstruct { get; set; }
         public Boolean IsLoanRenew { get; set; }
+        public String DueDate { get; set; }
     }
 }

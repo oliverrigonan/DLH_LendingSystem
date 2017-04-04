@@ -33,9 +33,9 @@ namespace Lending.Data
     partial void InsertAspNetRole(AspNetRole instance);
     partial void UpdateAspNetRole(AspNetRole instance);
     partial void DeleteAspNetRole(AspNetRole instance);
-    partial void InserttrnLoanReconstruct(trnLoanReconstruct instance);
-    partial void UpdatetrnLoanReconstruct(trnLoanReconstruct instance);
-    partial void DeletetrnLoanReconstruct(trnLoanReconstruct instance);
+    partial void InserttrnLoanRenew(trnLoanRenew instance);
+    partial void UpdatetrnLoanRenew(trnLoanRenew instance);
+    partial void DeletetrnLoanRenew(trnLoanRenew instance);
     partial void InsertAspNetUserClaim(AspNetUserClaim instance);
     partial void UpdateAspNetUserClaim(AspNetUserClaim instance);
     partial void DeleteAspNetUserClaim(AspNetUserClaim instance);
@@ -138,9 +138,9 @@ namespace Lending.Data
     partial void InserttrnLoanLine(trnLoanLine instance);
     partial void UpdatetrnLoanLine(trnLoanLine instance);
     partial void DeletetrnLoanLine(trnLoanLine instance);
-    partial void InserttrnLoanRenew(trnLoanRenew instance);
-    partial void UpdatetrnLoanRenew(trnLoanRenew instance);
-    partial void DeletetrnLoanRenew(trnLoanRenew instance);
+    partial void InserttrnLoanReconstruct(trnLoanReconstruct instance);
+    partial void UpdatetrnLoanReconstruct(trnLoanReconstruct instance);
+    partial void DeletetrnLoanReconstruct(trnLoanReconstruct instance);
     #endregion
 		
 		public LendingDataContext() : 
@@ -181,11 +181,11 @@ namespace Lending.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<trnLoanReconstruct> trnLoanReconstructs
+		public System.Data.Linq.Table<trnLoanRenew> trnLoanRenews
 		{
 			get
 			{
-				return this.GetTable<trnLoanReconstruct>();
+				return this.GetTable<trnLoanRenew>();
 			}
 		}
 		
@@ -461,11 +461,11 @@ namespace Lending.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<trnLoanRenew> trnLoanRenews
+		public System.Data.Linq.Table<trnLoanReconstruct> trnLoanReconstructs
 		{
 			get
 			{
-				return this.GetTable<trnLoanRenew>();
+				return this.GetTable<trnLoanReconstruct>();
 			}
 		}
 	}
@@ -584,8 +584,8 @@ namespace Lending.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanReconstruct")]
-	public partial class trnLoanReconstruct : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanRenew")]
+	public partial class trnLoanRenew : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -594,11 +594,11 @@ namespace Lending.Data
 		
 		private int _LoanId;
 		
-		private int _ReconstructLoanId;
+		private int _RenewLoanId;
 		
-		private decimal _ReconstructLoanTotalBalanceAmount;
+		private decimal _RenewLoanTotalBalanceAmount;
 		
-		private decimal _ReconstructLoanTotalPenaltyAmount;
+		private decimal _RenewLoanTotalPenaltyAmount;
 		
 		private EntityRef<trnLoan> _trnLoan;
 		
@@ -612,15 +612,15 @@ namespace Lending.Data
     partial void OnIdChanged();
     partial void OnLoanIdChanging(int value);
     partial void OnLoanIdChanged();
-    partial void OnReconstructLoanIdChanging(int value);
-    partial void OnReconstructLoanIdChanged();
-    partial void OnReconstructLoanTotalBalanceAmountChanging(decimal value);
-    partial void OnReconstructLoanTotalBalanceAmountChanged();
-    partial void OnReconstructLoanTotalPenaltyAmountChanging(decimal value);
-    partial void OnReconstructLoanTotalPenaltyAmountChanged();
+    partial void OnRenewLoanIdChanging(int value);
+    partial void OnRenewLoanIdChanged();
+    partial void OnRenewLoanTotalBalanceAmountChanging(decimal value);
+    partial void OnRenewLoanTotalBalanceAmountChanged();
+    partial void OnRenewLoanTotalPenaltyAmountChanging(decimal value);
+    partial void OnRenewLoanTotalPenaltyAmountChanged();
     #endregion
 		
-		public trnLoanReconstruct()
+		public trnLoanRenew()
 		{
 			this._trnLoan = default(EntityRef<trnLoan>);
 			this._trnLoan1 = default(EntityRef<trnLoan>);
@@ -671,71 +671,71 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanId", DbType="Int NOT NULL")]
-		public int ReconstructLoanId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanId", DbType="Int NOT NULL")]
+		public int RenewLoanId
 		{
 			get
 			{
-				return this._ReconstructLoanId;
+				return this._RenewLoanId;
 			}
 			set
 			{
-				if ((this._ReconstructLoanId != value))
+				if ((this._RenewLoanId != value))
 				{
 					if (this._trnLoan1.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnReconstructLoanIdChanging(value);
+					this.OnRenewLoanIdChanging(value);
 					this.SendPropertyChanging();
-					this._ReconstructLoanId = value;
-					this.SendPropertyChanged("ReconstructLoanId");
-					this.OnReconstructLoanIdChanged();
+					this._RenewLoanId = value;
+					this.SendPropertyChanged("RenewLoanId");
+					this.OnRenewLoanIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanTotalBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal ReconstructLoanTotalBalanceAmount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanTotalBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal RenewLoanTotalBalanceAmount
 		{
 			get
 			{
-				return this._ReconstructLoanTotalBalanceAmount;
+				return this._RenewLoanTotalBalanceAmount;
 			}
 			set
 			{
-				if ((this._ReconstructLoanTotalBalanceAmount != value))
+				if ((this._RenewLoanTotalBalanceAmount != value))
 				{
-					this.OnReconstructLoanTotalBalanceAmountChanging(value);
+					this.OnRenewLoanTotalBalanceAmountChanging(value);
 					this.SendPropertyChanging();
-					this._ReconstructLoanTotalBalanceAmount = value;
-					this.SendPropertyChanged("ReconstructLoanTotalBalanceAmount");
-					this.OnReconstructLoanTotalBalanceAmountChanged();
+					this._RenewLoanTotalBalanceAmount = value;
+					this.SendPropertyChanged("RenewLoanTotalBalanceAmount");
+					this.OnRenewLoanTotalBalanceAmountChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanTotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal ReconstructLoanTotalPenaltyAmount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanTotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal RenewLoanTotalPenaltyAmount
 		{
 			get
 			{
-				return this._ReconstructLoanTotalPenaltyAmount;
+				return this._RenewLoanTotalPenaltyAmount;
 			}
 			set
 			{
-				if ((this._ReconstructLoanTotalPenaltyAmount != value))
+				if ((this._RenewLoanTotalPenaltyAmount != value))
 				{
-					this.OnReconstructLoanTotalPenaltyAmountChanging(value);
+					this.OnRenewLoanTotalPenaltyAmountChanging(value);
 					this.SendPropertyChanging();
-					this._ReconstructLoanTotalPenaltyAmount = value;
-					this.SendPropertyChanged("ReconstructLoanTotalPenaltyAmount");
-					this.OnReconstructLoanTotalPenaltyAmountChanged();
+					this._RenewLoanTotalPenaltyAmount = value;
+					this.SendPropertyChanged("RenewLoanTotalPenaltyAmount");
+					this.OnRenewLoanTotalPenaltyAmountChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
 		public trnLoan trnLoan
 		{
 			get
@@ -752,12 +752,12 @@ namespace Lending.Data
 					if ((previousValue != null))
 					{
 						this._trnLoan.Entity = null;
-						previousValue.trnLoanReconstructs.Remove(this);
+						previousValue.trnLoanRenews.Remove(this);
 					}
 					this._trnLoan.Entity = value;
 					if ((value != null))
 					{
-						value.trnLoanReconstructs.Add(this);
+						value.trnLoanRenews.Add(this);
 						this._LoanId = value.Id;
 					}
 					else
@@ -769,7 +769,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct1", Storage="_trnLoan1", ThisKey="ReconstructLoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew1", Storage="_trnLoan1", ThisKey="RenewLoanId", OtherKey="Id", IsForeignKey=true)]
 		public trnLoan trnLoan1
 		{
 			get
@@ -786,17 +786,17 @@ namespace Lending.Data
 					if ((previousValue != null))
 					{
 						this._trnLoan1.Entity = null;
-						previousValue.trnLoanReconstructs1.Remove(this);
+						previousValue.trnLoanRenews1.Remove(this);
 					}
 					this._trnLoan1.Entity = value;
 					if ((value != null))
 					{
-						value.trnLoanReconstructs1.Add(this);
-						this._ReconstructLoanId = value.Id;
+						value.trnLoanRenews1.Add(this);
+						this._RenewLoanId = value.Id;
 					}
 					else
 					{
-						this._ReconstructLoanId = default(int);
+						this._RenewLoanId = default(int);
 					}
 					this.SendPropertyChanged("trnLoan1");
 				}
@@ -8244,8 +8244,6 @@ namespace Lending.Data
 		
 		private EntitySet<trnExpense> _trnExpenses;
 		
-		private EntitySet<trnLoan> _trnLoans;
-		
 		private EntityRef<mstUser> _mstUser;
 		
 		private EntityRef<mstUser> _mstUser1;
@@ -8282,7 +8280,6 @@ namespace Lending.Data
 			this._mstAreaStaffs = new EntitySet<mstAreaStaff>(new Action<mstAreaStaff>(this.attach_mstAreaStaffs), new Action<mstAreaStaff>(this.detach_mstAreaStaffs));
 			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
 			this._trnExpenses = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses), new Action<trnExpense>(this.detach_trnExpenses));
-			this._trnLoans = new EntitySet<trnLoan>(new Action<trnLoan>(this.attach_trnLoans), new Action<trnLoan>(this.detach_trnLoans));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			OnCreated();
@@ -8548,19 +8545,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_trnLoan", Storage="_trnLoans", ThisKey="Id", OtherKey="ReleasedByStaffId")]
-		public EntitySet<trnLoan> trnLoans
-		{
-			get
-			{
-				return this._trnLoans;
-			}
-			set
-			{
-				this._trnLoans.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstUser_mstStaff", Storage="_mstUser", ThisKey="CreatedByUserId", OtherKey="Id", IsForeignKey=true)]
 		public mstUser mstUser
 		{
@@ -8692,18 +8676,6 @@ namespace Lending.Data
 		}
 		
 		private void detach_trnExpenses(trnExpense entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstStaff = null;
-		}
-		
-		private void attach_trnLoans(trnLoan entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstStaff = this;
-		}
-		
-		private void detach_trnLoans(trnLoan entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstStaff = null;
@@ -12582,8 +12554,6 @@ namespace Lending.Data
 		
 		private string _Particulars;
 		
-		private System.Nullable<int> _ReleasedByStaffId;
-		
 		private int _PreparedByUserId;
 		
 		private int _TermId;
@@ -12640,9 +12610,9 @@ namespace Lending.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
-		private EntitySet<trnLoanReconstruct> _trnLoanReconstructs;
+		private EntitySet<trnLoanRenew> _trnLoanRenews;
 		
-		private EntitySet<trnLoanReconstruct> _trnLoanReconstructs1;
+		private EntitySet<trnLoanRenew> _trnLoanRenews1;
 		
 		private EntitySet<trnCollection> _trnCollections;
 		
@@ -12652,15 +12622,13 @@ namespace Lending.Data
 		
 		private EntitySet<trnLoanLine> _trnLoanLines;
 		
-		private EntitySet<trnLoanRenew> _trnLoanRenews;
+		private EntitySet<trnLoanReconstruct> _trnLoanReconstructs;
 		
-		private EntitySet<trnLoanRenew> _trnLoanRenews1;
+		private EntitySet<trnLoanReconstruct> _trnLoanReconstructs1;
 		
 		private EntityRef<mstApplicant> _mstApplicant;
 		
 		private EntityRef<mstInterest> _mstInterest;
-		
-		private EntityRef<mstStaff> _mstStaff;
 		
 		private EntityRef<mstTerm> _mstTerm;
 		
@@ -12684,8 +12652,6 @@ namespace Lending.Data
     partial void OnApplicantIdChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
-    partial void OnReleasedByStaffIdChanging(System.Nullable<int> value);
-    partial void OnReleasedByStaffIdChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
     partial void OnTermIdChanging(int value);
@@ -12746,17 +12712,16 @@ namespace Lending.Data
 		
 		public trnLoan()
 		{
-			this._trnLoanReconstructs = new EntitySet<trnLoanReconstruct>(new Action<trnLoanReconstruct>(this.attach_trnLoanReconstructs), new Action<trnLoanReconstruct>(this.detach_trnLoanReconstructs));
-			this._trnLoanReconstructs1 = new EntitySet<trnLoanReconstruct>(new Action<trnLoanReconstruct>(this.attach_trnLoanReconstructs1), new Action<trnLoanReconstruct>(this.detach_trnLoanReconstructs1));
+			this._trnLoanRenews = new EntitySet<trnLoanRenew>(new Action<trnLoanRenew>(this.attach_trnLoanRenews), new Action<trnLoanRenew>(this.detach_trnLoanRenews));
+			this._trnLoanRenews1 = new EntitySet<trnLoanRenew>(new Action<trnLoanRenew>(this.attach_trnLoanRenews1), new Action<trnLoanRenew>(this.detach_trnLoanRenews1));
 			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
 			this._trnLoanCollaterals = new EntitySet<trnLoanCollateral>(new Action<trnLoanCollateral>(this.attach_trnLoanCollaterals), new Action<trnLoanCollateral>(this.detach_trnLoanCollaterals));
 			this._trnLoanDeductions = new EntitySet<trnLoanDeduction>(new Action<trnLoanDeduction>(this.attach_trnLoanDeductions), new Action<trnLoanDeduction>(this.detach_trnLoanDeductions));
 			this._trnLoanLines = new EntitySet<trnLoanLine>(new Action<trnLoanLine>(this.attach_trnLoanLines), new Action<trnLoanLine>(this.detach_trnLoanLines));
-			this._trnLoanRenews = new EntitySet<trnLoanRenew>(new Action<trnLoanRenew>(this.attach_trnLoanRenews), new Action<trnLoanRenew>(this.detach_trnLoanRenews));
-			this._trnLoanRenews1 = new EntitySet<trnLoanRenew>(new Action<trnLoanRenew>(this.attach_trnLoanRenews1), new Action<trnLoanRenew>(this.detach_trnLoanRenews1));
+			this._trnLoanReconstructs = new EntitySet<trnLoanReconstruct>(new Action<trnLoanReconstruct>(this.attach_trnLoanReconstructs), new Action<trnLoanReconstruct>(this.detach_trnLoanReconstructs));
+			this._trnLoanReconstructs1 = new EntitySet<trnLoanReconstruct>(new Action<trnLoanReconstruct>(this.attach_trnLoanReconstructs1), new Action<trnLoanReconstruct>(this.detach_trnLoanReconstructs1));
 			this._mstApplicant = default(EntityRef<mstApplicant>);
 			this._mstInterest = default(EntityRef<mstInterest>);
-			this._mstStaff = default(EntityRef<mstStaff>);
 			this._mstTerm = default(EntityRef<mstTerm>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
@@ -12864,30 +12829,6 @@ namespace Lending.Data
 					this._Particulars = value;
 					this.SendPropertyChanged("Particulars");
 					this.OnParticularsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReleasedByStaffId", DbType="Int")]
-		public System.Nullable<int> ReleasedByStaffId
-		{
-			get
-			{
-				return this._ReleasedByStaffId;
-			}
-			set
-			{
-				if ((this._ReleasedByStaffId != value))
-				{
-					if (this._mstStaff.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnReleasedByStaffIdChanging(value);
-					this.SendPropertyChanging();
-					this._ReleasedByStaffId = value;
-					this.SendPropertyChanged("ReleasedByStaffId");
-					this.OnReleasedByStaffIdChanged();
 				}
 			}
 		}
@@ -13472,29 +13413,29 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct", Storage="_trnLoanReconstructs", ThisKey="Id", OtherKey="LoanId")]
-		public EntitySet<trnLoanReconstruct> trnLoanReconstructs
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew", Storage="_trnLoanRenews", ThisKey="Id", OtherKey="LoanId")]
+		public EntitySet<trnLoanRenew> trnLoanRenews
 		{
 			get
 			{
-				return this._trnLoanReconstructs;
+				return this._trnLoanRenews;
 			}
 			set
 			{
-				this._trnLoanReconstructs.Assign(value);
+				this._trnLoanRenews.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct1", Storage="_trnLoanReconstructs1", ThisKey="Id", OtherKey="ReconstructLoanId")]
-		public EntitySet<trnLoanReconstruct> trnLoanReconstructs1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew1", Storage="_trnLoanRenews1", ThisKey="Id", OtherKey="RenewLoanId")]
+		public EntitySet<trnLoanRenew> trnLoanRenews1
 		{
 			get
 			{
-				return this._trnLoanReconstructs1;
+				return this._trnLoanRenews1;
 			}
 			set
 			{
-				this._trnLoanReconstructs1.Assign(value);
+				this._trnLoanRenews1.Assign(value);
 			}
 		}
 		
@@ -13550,29 +13491,29 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew", Storage="_trnLoanRenews", ThisKey="Id", OtherKey="LoanId")]
-		public EntitySet<trnLoanRenew> trnLoanRenews
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct", Storage="_trnLoanReconstructs", ThisKey="Id", OtherKey="LoanId")]
+		public EntitySet<trnLoanReconstruct> trnLoanReconstructs
 		{
 			get
 			{
-				return this._trnLoanRenews;
+				return this._trnLoanReconstructs;
 			}
 			set
 			{
-				this._trnLoanRenews.Assign(value);
+				this._trnLoanReconstructs.Assign(value);
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew1", Storage="_trnLoanRenews1", ThisKey="Id", OtherKey="RenewLoanId")]
-		public EntitySet<trnLoanRenew> trnLoanRenews1
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct1", Storage="_trnLoanReconstructs1", ThisKey="Id", OtherKey="ReconstructLoanId")]
+		public EntitySet<trnLoanReconstruct> trnLoanReconstructs1
 		{
 			get
 			{
-				return this._trnLoanRenews1;
+				return this._trnLoanReconstructs1;
 			}
 			set
 			{
-				this._trnLoanRenews1.Assign(value);
+				this._trnLoanReconstructs1.Assign(value);
 			}
 		}
 		
@@ -13640,40 +13581,6 @@ namespace Lending.Data
 						this._InterestId = default(int);
 					}
 					this.SendPropertyChanged("mstInterest");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_trnLoan", Storage="_mstStaff", ThisKey="ReleasedByStaffId", OtherKey="Id", IsForeignKey=true)]
-		public mstStaff mstStaff
-		{
-			get
-			{
-				return this._mstStaff.Entity;
-			}
-			set
-			{
-				mstStaff previousValue = this._mstStaff.Entity;
-				if (((previousValue != value) 
-							|| (this._mstStaff.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstStaff.Entity = null;
-						previousValue.trnLoans.Remove(this);
-					}
-					this._mstStaff.Entity = value;
-					if ((value != null))
-					{
-						value.trnLoans.Add(this);
-						this._ReleasedByStaffId = value.Id;
-					}
-					else
-					{
-						this._ReleasedByStaffId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("mstStaff");
 				}
 			}
 		}
@@ -13834,25 +13741,25 @@ namespace Lending.Data
 			}
 		}
 		
-		private void attach_trnLoanReconstructs(trnLoanReconstruct entity)
+		private void attach_trnLoanRenews(trnLoanRenew entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan = this;
 		}
 		
-		private void detach_trnLoanReconstructs(trnLoanReconstruct entity)
+		private void detach_trnLoanRenews(trnLoanRenew entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan = null;
 		}
 		
-		private void attach_trnLoanReconstructs1(trnLoanReconstruct entity)
+		private void attach_trnLoanRenews1(trnLoanRenew entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan1 = this;
 		}
 		
-		private void detach_trnLoanReconstructs1(trnLoanReconstruct entity)
+		private void detach_trnLoanRenews1(trnLoanRenew entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan1 = null;
@@ -13906,25 +13813,25 @@ namespace Lending.Data
 			entity.trnLoan = null;
 		}
 		
-		private void attach_trnLoanRenews(trnLoanRenew entity)
+		private void attach_trnLoanReconstructs(trnLoanReconstruct entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan = this;
 		}
 		
-		private void detach_trnLoanRenews(trnLoanRenew entity)
+		private void detach_trnLoanReconstructs(trnLoanReconstruct entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan = null;
 		}
 		
-		private void attach_trnLoanRenews1(trnLoanRenew entity)
+		private void attach_trnLoanReconstructs1(trnLoanReconstruct entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan1 = this;
 		}
 		
-		private void detach_trnLoanRenews1(trnLoanRenew entity)
+		private void detach_trnLoanReconstructs1(trnLoanReconstruct entity)
 		{
 			this.SendPropertyChanging();
 			entity.trnLoan1 = null;
@@ -14645,8 +14552,8 @@ namespace Lending.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanRenew")]
-	public partial class trnLoanRenew : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.trnLoanReconstruct")]
+	public partial class trnLoanReconstruct : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -14655,11 +14562,11 @@ namespace Lending.Data
 		
 		private int _LoanId;
 		
-		private int _RenewLoanId;
+		private int _ReconstructLoanId;
 		
-		private decimal _RenewLoanTotalBalanceAmount;
+		private decimal _ReconstructLoanTotalBalanceAmount;
 		
-		private decimal _RenewLoanTotalPenaltyAmount;
+		private decimal _ReconstructLoanTotalPenaltyAmount;
 		
 		private EntityRef<trnLoan> _trnLoan;
 		
@@ -14673,15 +14580,15 @@ namespace Lending.Data
     partial void OnIdChanged();
     partial void OnLoanIdChanging(int value);
     partial void OnLoanIdChanged();
-    partial void OnRenewLoanIdChanging(int value);
-    partial void OnRenewLoanIdChanged();
-    partial void OnRenewLoanTotalBalanceAmountChanging(decimal value);
-    partial void OnRenewLoanTotalBalanceAmountChanged();
-    partial void OnRenewLoanTotalPenaltyAmountChanging(decimal value);
-    partial void OnRenewLoanTotalPenaltyAmountChanged();
+    partial void OnReconstructLoanIdChanging(int value);
+    partial void OnReconstructLoanIdChanged();
+    partial void OnReconstructLoanTotalBalanceAmountChanging(decimal value);
+    partial void OnReconstructLoanTotalBalanceAmountChanged();
+    partial void OnReconstructLoanTotalPenaltyAmountChanging(decimal value);
+    partial void OnReconstructLoanTotalPenaltyAmountChanged();
     #endregion
 		
-		public trnLoanRenew()
+		public trnLoanReconstruct()
 		{
 			this._trnLoan = default(EntityRef<trnLoan>);
 			this._trnLoan1 = default(EntityRef<trnLoan>);
@@ -14732,71 +14639,71 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanId", DbType="Int NOT NULL")]
-		public int RenewLoanId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanId", DbType="Int NOT NULL")]
+		public int ReconstructLoanId
 		{
 			get
 			{
-				return this._RenewLoanId;
+				return this._ReconstructLoanId;
 			}
 			set
 			{
-				if ((this._RenewLoanId != value))
+				if ((this._ReconstructLoanId != value))
 				{
 					if (this._trnLoan1.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.OnRenewLoanIdChanging(value);
+					this.OnReconstructLoanIdChanging(value);
 					this.SendPropertyChanging();
-					this._RenewLoanId = value;
-					this.SendPropertyChanged("RenewLoanId");
-					this.OnRenewLoanIdChanged();
+					this._ReconstructLoanId = value;
+					this.SendPropertyChanged("ReconstructLoanId");
+					this.OnReconstructLoanIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanTotalBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal RenewLoanTotalBalanceAmount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanTotalBalanceAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal ReconstructLoanTotalBalanceAmount
 		{
 			get
 			{
-				return this._RenewLoanTotalBalanceAmount;
+				return this._ReconstructLoanTotalBalanceAmount;
 			}
 			set
 			{
-				if ((this._RenewLoanTotalBalanceAmount != value))
+				if ((this._ReconstructLoanTotalBalanceAmount != value))
 				{
-					this.OnRenewLoanTotalBalanceAmountChanging(value);
+					this.OnReconstructLoanTotalBalanceAmountChanging(value);
 					this.SendPropertyChanging();
-					this._RenewLoanTotalBalanceAmount = value;
-					this.SendPropertyChanged("RenewLoanTotalBalanceAmount");
-					this.OnRenewLoanTotalBalanceAmountChanged();
+					this._ReconstructLoanTotalBalanceAmount = value;
+					this.SendPropertyChanged("ReconstructLoanTotalBalanceAmount");
+					this.OnReconstructLoanTotalBalanceAmountChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RenewLoanTotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal RenewLoanTotalPenaltyAmount
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReconstructLoanTotalPenaltyAmount", DbType="Decimal(18,5) NOT NULL")]
+		public decimal ReconstructLoanTotalPenaltyAmount
 		{
 			get
 			{
-				return this._RenewLoanTotalPenaltyAmount;
+				return this._ReconstructLoanTotalPenaltyAmount;
 			}
 			set
 			{
-				if ((this._RenewLoanTotalPenaltyAmount != value))
+				if ((this._ReconstructLoanTotalPenaltyAmount != value))
 				{
-					this.OnRenewLoanTotalPenaltyAmountChanging(value);
+					this.OnReconstructLoanTotalPenaltyAmountChanging(value);
 					this.SendPropertyChanging();
-					this._RenewLoanTotalPenaltyAmount = value;
-					this.SendPropertyChanged("RenewLoanTotalPenaltyAmount");
-					this.OnRenewLoanTotalPenaltyAmountChanged();
+					this._ReconstructLoanTotalPenaltyAmount = value;
+					this.SendPropertyChanged("ReconstructLoanTotalPenaltyAmount");
+					this.OnReconstructLoanTotalPenaltyAmountChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
 		public trnLoan trnLoan
 		{
 			get
@@ -14813,12 +14720,12 @@ namespace Lending.Data
 					if ((previousValue != null))
 					{
 						this._trnLoan.Entity = null;
-						previousValue.trnLoanRenews.Remove(this);
+						previousValue.trnLoanReconstructs.Remove(this);
 					}
 					this._trnLoan.Entity = value;
 					if ((value != null))
 					{
-						value.trnLoanRenews.Add(this);
+						value.trnLoanReconstructs.Add(this);
 						this._LoanId = value.Id;
 					}
 					else
@@ -14830,7 +14737,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew1", Storage="_trnLoan1", ThisKey="RenewLoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct1", Storage="_trnLoan1", ThisKey="ReconstructLoanId", OtherKey="Id", IsForeignKey=true)]
 		public trnLoan trnLoan1
 		{
 			get
@@ -14847,17 +14754,17 @@ namespace Lending.Data
 					if ((previousValue != null))
 					{
 						this._trnLoan1.Entity = null;
-						previousValue.trnLoanRenews1.Remove(this);
+						previousValue.trnLoanReconstructs1.Remove(this);
 					}
 					this._trnLoan1.Entity = value;
 					if ((value != null))
 					{
-						value.trnLoanRenews1.Add(this);
-						this._RenewLoanId = value.Id;
+						value.trnLoanReconstructs1.Add(this);
+						this._ReconstructLoanId = value.Id;
 					}
 					else
 					{
-						this._RenewLoanId = default(int);
+						this._ReconstructLoanId = default(int);
 					}
 					this.SendPropertyChanged("trnLoan1");
 				}
