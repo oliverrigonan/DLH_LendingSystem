@@ -263,6 +263,7 @@
     <Compile Include="Reports\RepAreaCollectionPaperController.cs" />
     <Compile Include="Reports\RepCashVoucherPDFController.cs" />
     <Compile Include="Reports\RepCollectiblesPDFController.cs" />
+    <Compile Include="Reports\RepDailyAreaCollectionsPDFController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringDetailReportController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringSummaryReportController.cs" />
     <Compile Include="Reports\RepExpensesSummaryReportController.cs" />

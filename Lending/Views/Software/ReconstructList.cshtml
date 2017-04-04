@@ -674,6 +674,12 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": 50,
+                            },
+                            {
                                 "header": "Date",
                                 "binding": "LoanDate",
                                 "allowSorting": true,
@@ -732,18 +738,11 @@
                                 "binding": "IsFullyPaid",
                                 "allowSorting": true,
                                 "width": 50,
-                            },
-                            {
-                                "header": "L",
-                                "binding": "IsLocked",
-                                "allowSorting": true,
-                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanApplicationCollectionView,
                 isReadOnly: true,
-                frozenColumns: 2,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
                 selectionMode: wijmo.grid.SelectionMode.Row

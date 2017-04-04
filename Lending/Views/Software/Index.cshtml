@@ -62,8 +62,9 @@
                                                 <div id="cboArea" style="width: 100%;"></div>
                                             </div>
                                         </td>
-                                        <td style="width: 10%;" align="right">
-                                            <button class="btn btn-primary"><i class="fa fa-print fa-fw"></i> Print</button>
+                                        <td style="width: 1%;"></td>
+                                        <td style="width: 9%;" align="right">
+                                            <button class="btn btn-success btn-block" onclick="btnCSV()"><i class="fa fa-file-excel-o fa-fw"></i> CSV</button>
                                         </td>
                                     </tr>
                                 </table>
@@ -97,12 +98,6 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Collectibles</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="totalColletibles" placeholder="0" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="control-label col-sm-4">Total Actives</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control requiredApplicantDetail numberField" id="totalActives" placeholder="0" disabled />
@@ -114,11 +109,84 @@
                                                     <input type="text" class="form-control requiredApplicantDetail numberField" id="totalOverdues" placeholder="0" disabled />
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">=</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="totalActiveAndOverdues" placeholder="0" disabled />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Supervisor</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="areaSupervisor" placeholder="Supervisor" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Collector</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" id="areaCollector" placeholder="Collector" disabled />
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Collectibles</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="totalColletibles" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Collection</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="totalCollection" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Gas Expense</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="totalExpense" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Net Collection </label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField" id="netCollection" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div id="menus" class="tab-pane fade">
@@ -258,6 +326,7 @@
 
                         loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
                         loanLinesFlexgrid.trackChanges = true;
+                        getTotalCollection();
                     } else {
                         isCboDateSelected = true;
                     }
@@ -283,6 +352,7 @@
                             areaArray.push({
                                 Id: areaResults[i]["Id"],
                                 Area: areaResults[i]["Area"],
+                                SupervisorStaff: areaResults[i]["SupervisorStaff"]
                             });
                         }
 
@@ -321,10 +391,50 @@
 
                             loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
                             loanLinesFlexgrid.trackChanges = true;
+
+                            document.getElementById("areaSupervisor").value = this.selectedItem["SupervisorStaff"];
+                            getTotalCollection();
                         }
                     });
 
+                    document.getElementById("areaSupervisor").value = cboArea.selectedItem["SupervisorStaff"];
                     createFlexGrid();
+
+                    getTotalCollection();
+                }
+            });
+        }
+
+        function getTotalCollection() {
+            var collectibleDate = [cboDate.value.getMonth() + 1, cboDate.value.getDate(), cboDate.value.getFullYear()].join('-');
+            $.ajax({
+                url: '/api/areaStaff/defaultStaff/' + cboArea.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectorResults) {
+                    if (collectorResults != null) {
+                        document.getElementById("areaCollector").value = collectorResults.Staff;
+
+                        $.ajax({
+                            url: '/api/expenses/totalExpenses/' + collectibleDate + '/' + collectorResults.StaffId,
+                            cache: false,
+                            type: 'GET',
+                            contentType: 'application/json; charset=utf-8',
+                            success: function (totalExpense) {
+                                document.getElementById("totalExpense").value = totalExpense.toLocaleString();
+
+                                var totalCollection = document.getElementById("totalCollection").value;
+                                var totalExpense = totalExpense.toLocaleString();
+
+                                document.getElementById("netCollection").value = (totalCollection - totalExpense).toLocaleString();
+                            }
+                        });
+                    } else {
+                        document.getElementById("totalExpense").value = 0;
+                        var totalCollection = document.getElementById("totalCollection").value;
+                        document.getElementById("netCollection").value = totalCollection;
+                    }
                 }
             });
         }
@@ -339,16 +449,17 @@
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (loanLinesResults) {
-
                     var totalCollectibles = 0;
                     var totalActives = 0;
                     var totalOverdues = 0;
+                    var totalActivesAndOverdues = 0;
+                    var totalCollections = 0;
 
                     if (loanLinesResults.length > 0) {
-                        totalCollectibles = loanLinesResults.length;
-
                         for (i = 0; i < loanLinesResults.length; i++) {
+                            totalCollectibles += loanLinesResults[i]["CollectibleAmount"];
                             totalActives += 1;
+                            totalCollections += loanLinesResults[i]["PaidAmount"];
                             var loanStatus = "Active";
                             var transactionType = "btnDetailLoan()";
                             if (loanLinesResults[i]["IsLoanReconstruct"]) {
@@ -381,9 +492,12 @@
                         }
                     }
 
-                    document.getElementById("totalColletibles").value = totalCollectibles;
-                    document.getElementById("totalActives").value = totalActives;
-                    document.getElementById("totalOverdues").value = totalOverdues;
+                    totalActivesAndOverdues = totalActives + totalOverdues;
+                    document.getElementById("totalActives").value = totalActives.toLocaleString();
+                    document.getElementById("totalOverdues").value = totalOverdues.toLocaleString();
+                    document.getElementById("totalActiveAndOverdues").value = totalActivesAndOverdues.toLocaleString();
+                    document.getElementById("totalColletibles").value = totalCollectibles.toLocaleString();
+                    document.getElementById("totalCollection").value = totalCollections.toLocaleString();
 
                     NProgress.done();
                 }
@@ -428,7 +542,7 @@
                             {
                                 "header": "Detail",
                                 "binding": "BtnDetail",
-                                "width": 100,
+                                "width": 80,
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
@@ -437,7 +551,7 @@
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
-                                "width": "4*",
+                                "width": "3.5*",
                             },
                             {
                                 "header": "Day Reference",
@@ -454,6 +568,18 @@
                             {
                                 "header": "Collectible",
                                 "binding": "CollectibleAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Collected",
+                                "binding": "PaidAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             }
@@ -514,12 +640,138 @@
             window.open("/Software/RenewDetail?id=" + currentItem.LoanId, "_blank");
         }
 
+        function btnCSV() {
+            var CSV = '';
+            var dailyCollectionReport = [];
+            var areaName = cboArea.selectedItem["Area"];
+            var fileName = areaName + 'DailyCollection.CSV';
+
+            for (i = 0; i < loanLinesCollectionView.items.length; i++) {
+                dailyCollectionReport.push({
+                    Applicant: loanLinesCollectionView.items[i].Applicant,
+                    DayReference: loanLinesCollectionView.items[i].DayReference,
+                    LoanStatus: loanLinesCollectionView.items[i].LoanStatus,
+                    CollectibleAmount: loanLinesCollectionView.items[i].CollectibleAmount,
+                    PaidAmount: loanLinesCollectionView.items[i].PaidAmount,
+                    PenaltyAmount: loanLinesCollectionView.items[i].PenaltyAmount
+                });
+            }
+
+            // Rows
+            var Headers = [];
+            Headers.push({
+                Applicant: "Applicant",
+                DayReference: "Day Ref.",
+                LoanStatus: "Status",
+                CollectibleAmount: "Collectible",
+                PaidAmount: "Collected",
+                PenaltyAmount: "Penalty"
+            });
+
+            var header = '';
+            // Rows
+            for (var b in Headers[0]) {
+                header += '"' + Headers[0][b] + '",';
+            }
+
+            CSV = header + '\r\n\n';
+            for (var i = 0; i < dailyCollectionReport.length; i++) {
+                var row = '';
+                for (var a in dailyCollectionReport[i]) {
+                    row += '"' + dailyCollectionReport[i][a] + '",';
+                }
+                row.slice(0, row.length - 1);
+                CSV += row + '\r\n';
+
+                if (i == dailyCollectionReport.length - 1) {
+                    var totalActive = document.getElementById("totalActives").value;
+                    var totalOverdue = document.getElementById("totalOverdues").value;
+                    var totalActiveAndTotalOverdue = document.getElementById("totalActiveAndOverdues").value;
+                    var totalCollectibles = document.getElementById("totalColletibles").value;
+                    var totalCollections = document.getElementById("totalCollection").value;
+                    var totalGasExpenses = document.getElementById("totalExpense").value;
+                    var netCollection = document.getElementById("netCollection").value;
+
+                    var totalActiveArray = ["Total Actives", totalActive];
+                    totalActiveArray.slice(0, totalActiveArray.length - 1);
+
+                    var totalOverdueArray = ["Total Overdues", totalOverdue];
+                    totalOverdueArray.slice(0, totalOverdueArray.length - 1);
+
+                    var totalActiveAndTotalOverduerArray = ["=", totalActiveAndTotalOverdue];
+                    totalActiveAndTotalOverduerArray.slice(0, totalActiveAndTotalOverduerArray.length - 1);
+
+                    var totalCollectiblesArray = ["Total Collectibles", totalCollectibles];
+                    totalCollectiblesArray.slice(0, totalCollectiblesArray.length - 1);
+
+                    var totalCollectionsArray = ["Total Collections", totalCollections];
+                    totalCollectionsArray.slice(0, totalCollectionsArray.length - 1);
+
+                    var totalGasExpensesArray = ["Gas Expense", totalGasExpenses];
+                    totalGasExpensesArray.slice(0, totalGasExpensesArray.length - 1);
+
+                    var netCollectionArray = ["Net Collection", netCollection];
+                    netCollectionArray.slice(0, netCollectionArray.length - 1);
+
+                    CSV += '\r\n' + totalActiveArray + '\r\n';
+                    CSV += totalOverdueArray + '\r\n';
+                    CSV += totalActiveAndTotalOverduerArray + '\r\n';
+
+                    CSV += '\r\n' + totalCollectiblesArray + '\r\n';
+
+                    CSV += '\r\n' + totalCollectionsArray + '\r\n';
+                    CSV += totalGasExpensesArray + '\r\n';
+                    CSV += netCollectionArray + '\r\n';
+
+                    var supervisor = document.getElementById("areaSupervisor").value;
+                    var collector = document.getElementById("areaCollector").value;
+
+                    var superVisorArray = ["Supervisor Collection", supervisor];
+                    var collectorArray = ["Collector", collector];
+
+                    superVisorArray.slice(0, superVisorArray.length - 1);
+
+                    CSV += '\r\n' + superVisorArray + '\r\n';
+                    CSV += collectorArray + '\r\n';
+                }
+            }
+
+            if (CSV == '') {
+                toastr.error("No data.");
+            } else {
+                var link = document.createElement("a");
+
+                if (link.download !== undefined) {
+                    var blob = new Blob([CSV], { type: 'text/csv;charset=utf-8;' });
+                    var url = URL.createObjectURL(blob);
+                    link.setAttribute("href", url);
+                    link.setAttribute("download", fileName);
+                    link.style = "visibility:hidden";
+                }
+
+                if (navigator.msSaveBlob) {
+                    link.addEventListener("click", function (event) {
+                        var blob = new Blob([CSV], {
+                            "type": "text/csv;charset=utf-8;"
+                        });
+                        navigator.msSaveBlob(blob, fileName);
+                    }, false);
+                }
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                toastr.success("Dowload successful.");
+            }
+        }
+
         // on load page
         window.onload = function () {
             NProgress.start();
             var canPerformActions = "@ViewData["CanPerformActions"]";
             if (canPerformActions == 1) {
-                $(':button').prop('disabled', false);
+                //$(':button').prop('disabled', false);
                 NProgress.done();
             } else {
                 $(':button').prop('disabled', true);

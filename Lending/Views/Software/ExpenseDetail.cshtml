@@ -248,6 +248,7 @@
                     if (expensesResult != null) {
                         document.getElementById("expensesNumber").disabled = true;
                         document.getElementById("expensesNumber").value = expensesResult.ExpenseNumber;
+                        cboExpensesPreparedBy.disabled = true;
                         cboExpensesDate.value = new Date(expensesResult.ExpenseDate);
                         cboStaff.selectedValue = expensesResult.AssignedStaff;
                         document.getElementById("expensesParticulars").value = expensesResult.Particulars;
@@ -263,7 +264,6 @@
                             $("#btnLock").prop("disabled", true);
                             cboExpensesDate.disabled = true;
                             cboStaff.disabled = true;
-                            cboExpensesPreparedBy.disabled = true;
                             document.getElementById("expensesParticulars").disabled = true;
                             document.getElementById("expensesAmount").disabled = true;
                             document.getElementById("isCollectionExpense").disabled = true;

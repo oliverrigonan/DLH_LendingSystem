@@ -27,7 +27,7 @@ namespace Lending.ApiControllers
                                    Id = d.Id,
                                    LoanId = d.LoanId,
                                    ReconstructLoanId = d.ReconstructLoanId,
-                                   ReconstructLoanNumber = d.trnLoan1.LoanNumber,
+                                   ReconstructLoanNumber = d.trnLoan1.IsLoanApplication == true ? d.trnLoan1.IsReconstruct == true ? "LN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "LN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanReconstruct == true ? d.trnLoan1.IsReconstruct == true ? "RC - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RC - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanRenew == true ? d.trnLoan1.IsReconstruct == true ? "RN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.LoanNumber,
                                    ReconstructLoanTotalBalanceAmount = d.ReconstructLoanTotalBalanceAmount,
                                    ReconstructLoanTotalPenaltyAmount = d.ReconstructLoanTotalPenaltyAmount,
                                    IsLoanApplication = d.trnLoan1.IsLoanApplication,
@@ -71,6 +71,8 @@ namespace Lending.ApiControllers
                                    Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                    Area = d.mstApplicant.mstArea.Area,
                                    Particulars = d.Particulars,
+                                   ReleaseByStaffId = d.ReleasedByStaffId,
+                                   ReleaseByStaff = d.mstStaff.Staff,
                                    PreparedByUserId = d.PreparedByUserId,
                                    PreparedByUser = d.mstUser.FullName,
                                    TermId = d.TermId,
@@ -127,6 +129,8 @@ namespace Lending.ApiControllers
                                   Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                   Area = d.mstApplicant.mstArea.Area,
                                   Particulars = d.Particulars,
+                                  ReleaseByStaffId = d.ReleasedByStaffId,
+                                  ReleaseByStaff = d.mstStaff.Staff,
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser.FullName,
                                   TermId = d.TermId,
@@ -229,6 +233,7 @@ namespace Lending.ApiControllers
                                     newLoan.LoanDate = DateTime.Today;
                                     newLoan.ApplicantId = loanReconstruct.ApplicantId;
                                     newLoan.Particulars = "NA";
+                                    newLoan.ReleasedByStaffId = null;
                                     newLoan.PreparedByUserId = userId;
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;

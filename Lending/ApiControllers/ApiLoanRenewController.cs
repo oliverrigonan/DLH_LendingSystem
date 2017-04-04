@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace Lending.ApiControllers
 {
@@ -26,7 +27,7 @@ namespace Lending.ApiControllers
                              Id = d.Id,
                              LoanId = d.LoanId,
                              RenewLoanId = d.RenewLoanId,
-                             RenewLoanNumber = d.trnLoan1.LoanNumber,
+                             RenewLoanNumber = d.trnLoan1.IsLoanApplication == true ? d.trnLoan1.IsReconstruct == true ? "LN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "LN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanReconstruct == true ? d.trnLoan1.IsReconstruct == true ? "RC - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RC - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanRenew == true ? d.trnLoan1.IsReconstruct == true ? "RN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.LoanNumber,
                              RenewPrincipalAmount = d.trnLoan.PrincipalAmount,
                              RenewLoanTotalBalanceAmount = d.RenewLoanTotalBalanceAmount,
                              RenewLoanTotalPenaltyAmount = d.RenewLoanTotalPenaltyAmount
@@ -214,71 +215,60 @@ namespace Lending.ApiControllers
                             var interest = from d in db.mstInterests select d;
                             if (interest.Any())
                             {
-                                var loanApplicationRenew = from d in db.trnLoanRenews
-                                                           where d.RenewLoanId == loanRenew.RenewLoanId
-                                                           select d;
+                                var existLoan = from d in db.trnLoans
+                                                where d.Id == loanRenew.RenewLoanId
+                                                where d.IsLocked == true
+                                                select d;
 
-                                if (!loanApplicationRenew.Any())
+                                if (existLoan.Any())
                                 {
-                                    var existLoan = from d in db.trnLoans
-                                                    where d.Id == loanRenew.RenewLoanId
-                                                    where d.IsLocked == true
-                                                    select d;
+                                    Data.trnLoan newLoan = new Data.trnLoan();
+                                    newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
+                                    newLoan.LoanDate = DateTime.Today;
+                                    newLoan.ApplicantId = loanRenew.ApplicantId;
+                                    newLoan.Particulars = "NA";
+                                    newLoan.ReleasedByStaffId = null;
+                                    newLoan.PreparedByUserId = userId;
+                                    newLoan.TermId = term.FirstOrDefault().Id;
+                                    newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
+                                    newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+                                    newLoan.MaturityDate = DateTime.Today;
+                                    newLoan.PrincipalAmount = loanRenew.RenewPrincipalAmount;
+                                    newLoan.InterestId = interest.FirstOrDefault().Id;
+                                    newLoan.InterestRate = interest.FirstOrDefault().Rate;
+                                    Decimal interestAmount = (loanRenew.RenewPrincipalAmount / 100) * interest.FirstOrDefault().Rate;
+                                    newLoan.InterestAmount = interestAmount;
+                                    newLoan.PreviousBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
+                                    newLoan.PreviousPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
+                                    newLoan.DeductionAmount = 0;
+                                    newLoan.NetAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.NetCollectionAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.TotalPaidAmount = 0;
+                                    newLoan.TotalPenaltyAmount = 0;
+                                    newLoan.TotalBalanceAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.IsReconstruct = false;
+                                    newLoan.IsRenew = false;
+                                    newLoan.IsLoanApplication = false;
+                                    newLoan.IsLoanReconstruct = false;
+                                    newLoan.IsLoanRenew = true;
+                                    newLoan.IsFullyPaid = false;
+                                    newLoan.IsLocked = false;
+                                    newLoan.CreatedByUserId = userId;
+                                    newLoan.CreatedDateTime = DateTime.Now;
+                                    newLoan.UpdatedByUserId = userId;
+                                    newLoan.UpdatedDateTime = DateTime.Now;
+                                    db.trnLoans.InsertOnSubmit(newLoan);
+                                    db.SubmitChanges();
 
-                                    if (existLoan.Any())
-                                    {
-                                        Data.trnLoan newLoan = new Data.trnLoan();
-                                        newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
-                                        newLoan.LoanDate = DateTime.Today;
-                                        newLoan.ApplicantId = loanRenew.ApplicantId;
-                                        newLoan.Particulars = "NA";
-                                        newLoan.PreparedByUserId = userId;
-                                        newLoan.TermId = term.FirstOrDefault().Id;
-                                        newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
-                                        newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-                                        newLoan.MaturityDate = DateTime.Today;
-                                        newLoan.PrincipalAmount = loanRenew.RenewPrincipalAmount;
-                                        newLoan.InterestId = interest.FirstOrDefault().Id;
-                                        newLoan.InterestRate = interest.FirstOrDefault().Rate;
-                                        Decimal interestAmount = (loanRenew.RenewPrincipalAmount / 100) * interest.FirstOrDefault().Rate;
-                                        newLoan.InterestAmount = interestAmount;
-                                        newLoan.PreviousBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
-                                        newLoan.PreviousPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
-                                        newLoan.DeductionAmount = 0;
-                                        newLoan.NetAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
-                                        newLoan.NetCollectionAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
-                                        newLoan.TotalPaidAmount = 0;
-                                        newLoan.TotalPenaltyAmount = 0;
-                                        newLoan.TotalBalanceAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
-                                        newLoan.IsReconstruct = false;
-                                        newLoan.IsRenew = false;
-                                        newLoan.IsLoanApplication = false;
-                                        newLoan.IsLoanReconstruct = false;
-                                        newLoan.IsLoanRenew = true;
-                                        newLoan.IsFullyPaid = false;
-                                        newLoan.IsLocked = false;
-                                        newLoan.CreatedByUserId = userId;
-                                        newLoan.CreatedDateTime = DateTime.Now;
-                                        newLoan.UpdatedByUserId = userId;
-                                        newLoan.UpdatedDateTime = DateTime.Now;
-                                        db.trnLoans.InsertOnSubmit(newLoan);
-                                        db.SubmitChanges();
+                                    Data.trnLoanRenew newLoanRenew = new Data.trnLoanRenew();
+                                    newLoanRenew.LoanId = newLoan.Id;
+                                    newLoanRenew.RenewLoanId = loanRenew.RenewLoanId;
+                                    newLoanRenew.RenewLoanTotalBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
+                                    newLoanRenew.RenewLoanTotalPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
+                                    db.trnLoanRenews.InsertOnSubmit(newLoanRenew);
+                                    db.SubmitChanges();
 
-                                        Data.trnLoanRenew newLoanRenew = new Data.trnLoanRenew();
-                                        newLoanRenew.LoanId = newLoan.Id;
-                                        newLoanRenew.RenewLoanId = loanRenew.RenewLoanId;
-                                        newLoanRenew.RenewLoanTotalBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
-                                        newLoanRenew.RenewLoanTotalPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
-                                        db.trnLoanRenews.InsertOnSubmit(newLoanRenew);
-                                        db.SubmitChanges();
-
-                                        return newLoan.Id;
-                                    }
-                                    else
-                                    {
-                                        return 0;
-                                    }
-
+                                    return newLoan.Id;
                                 }
                                 else
                                 {

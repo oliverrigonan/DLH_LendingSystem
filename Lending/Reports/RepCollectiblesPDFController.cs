@@ -87,7 +87,7 @@ namespace Lending.Reports
                     float[] titleHeaderWithCells = new float[] { 100f };
                     titleHeader.SetWidths(titleHeaderWithCells);
                     titleHeader.WidthPercentage = 100;
-                    titleHeader.AddCell(new PdfPCell(new Phrase("DAILY COLLECTIBLES", fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
+                    titleHeader.AddCell(new PdfPCell(new Phrase("INDEX CARD (Applincants' Daily Collection)", fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
                     document.Add(titleHeader);
 
                     String docNumber = "";

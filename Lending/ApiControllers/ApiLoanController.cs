@@ -144,6 +144,8 @@ namespace Lending.ApiControllers
                                        Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                        Area = d.mstApplicant.mstArea.Area,
                                        Particulars = d.Particulars,
+                                       ReleaseByStaffId = d.ReleasedByStaffId,
+                                       ReleaseByStaff = d.mstStaff.Staff,
                                        PreparedByUserId = d.PreparedByUserId,
                                        PreparedByUser = d.mstUser.FullName,
                                        TermId = d.TermId,
@@ -200,6 +202,8 @@ namespace Lending.ApiControllers
                            Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                            Area = d.mstApplicant.mstArea.Area,
                            Particulars = d.Particulars,
+                           ReleaseByStaffId = d.ReleasedByStaffId,
+                           ReleaseByStaff = d.mstStaff.Staff,
                            PreparedByUserId = d.PreparedByUserId,
                            PreparedByUser = d.mstUser.FullName,
                            TermId = d.TermId,
@@ -312,6 +316,7 @@ namespace Lending.ApiControllers
                                     newLoan.LoanDate = DateTime.Today;
                                     newLoan.ApplicantId = applicant.FirstOrDefault().Id;
                                     newLoan.Particulars = "NA";
+                                    newLoan.ReleasedByStaffId = null;
                                     newLoan.PreparedByUserId = userId;
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
@@ -435,6 +440,7 @@ namespace Lending.ApiControllers
                                     lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
                                     lockLoan.ApplicantId = loan.ApplicantId;
                                     lockLoan.Particulars = loan.Particulars;
+                                    lockLoan.ReleasedByStaffId = loan.ReleaseByStaffId;
                                     lockLoan.PreparedByUserId = loan.PreparedByUserId;
                                     lockLoan.TermId = loan.TermId;
                                     lockLoan.TermNoOfDays = loan.TermNoOfDays;
@@ -958,6 +964,8 @@ namespace Lending.ApiControllers
                                            Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                            Area = d.mstApplicant.mstArea.Area,
                                            Particulars = d.Particulars,
+                                           ReleaseByStaffId = d.ReleasedByStaffId,
+                                           ReleaseByStaff = d.mstStaff.Staff,
                                            PreparedByUserId = d.PreparedByUserId,
                                            PreparedByUser = d.mstUser.FullName,
                                            TermId = d.TermId,
@@ -1012,6 +1020,8 @@ namespace Lending.ApiControllers
                                                Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                                Area = d.mstApplicant.mstArea.Area,
                                                Particulars = d.Particulars,
+                                               ReleaseByStaffId = d.ReleasedByStaffId,
+                                               ReleaseByStaff = d.mstStaff.Staff,
                                                PreparedByUserId = d.PreparedByUserId,
                                                PreparedByUser = d.mstUser.FullName,
                                                TermId = d.TermId,
@@ -1066,6 +1076,8 @@ namespace Lending.ApiControllers
                                                    Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                                    Area = d.mstApplicant.mstArea.Area,
                                                    Particulars = d.Particulars,
+                                                   ReleaseByStaffId = d.ReleasedByStaffId,
+                                                   ReleaseByStaff = d.mstStaff.Staff,
                                                    PreparedByUserId = d.PreparedByUserId,
                                                    PreparedByUser = d.mstUser.FullName,
                                                    TermId = d.TermId,

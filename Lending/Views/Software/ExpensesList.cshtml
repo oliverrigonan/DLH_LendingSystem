@@ -468,6 +468,12 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": 50,
+                            },
+                            {
                                 "header": "Date",
                                 "binding": "ExpenseDate",
                                 "allowSorting": true,
@@ -502,18 +508,11 @@
                                 "binding": "IsCollectionExpense",
                                 "allowSorting": true,
                                 "width": 50,
-                            },
-                            {
-                                "header": "L",
-                                "binding": "IsLocked",
-                                "allowSorting": true,
-                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: expensesCollectionView,
                 isReadOnly: true,
-                frozenColumns: 2,
                 autoSizeMode: wijmo.grid.AutoSizeMode.Both,
                 allowDragging: wijmo.grid.AllowDragging.None,
                 selectionMode: wijmo.grid.SelectionMode.Row

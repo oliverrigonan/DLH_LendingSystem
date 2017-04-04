@@ -407,5 +407,27 @@ namespace Lending.ApiControllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        // total collection
+        [Authorize]
+        [HttpGet]
+        [Route("api/expenses/totalExpenses/{date}/{staffId}")]
+        public Decimal totalExpense(String date, String staffId)
+        {
+            var expense = from d in db.trnExpenses
+                              where d.ExpenseDate == Convert.ToDateTime(date)
+                              && d.AssignedStaffId == Convert.ToInt32(staffId)
+                              && d.IsCollectionExpense == true
+                              && d.IsLocked == true
+                              select d;
+
+            Decimal totalExpenseAmount = 0;
+            if (expense.Any())
+            {
+                totalExpenseAmount = expense.Sum(d => d.ExpenseAmount);
+            }
+
+            return totalExpenseAmount;
+        }
     }
 }

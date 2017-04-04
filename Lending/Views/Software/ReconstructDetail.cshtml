@@ -659,6 +659,7 @@
                         document.getElementById('loanApplicationDeductionAmount').disabled = true;
                         document.getElementById('loanApplicationTotalNetCollectionAmount').disabled = true;
                         document.getElementById('loanApplicationPrincipalAmount').disabled = true;
+                        cboloanApplicationPreparedBy.disabled = true;
                         document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
@@ -690,7 +691,6 @@
                             }, 100);
 
                             cboloanApplicationApplicant.disabled = true;
-                            cboloanApplicationPreparedBy.disabled = true;
                             cboTerm.disabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
@@ -746,6 +746,7 @@
                     loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
                     loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                     loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
+                    loanApplicationObject.ReleasedByStaffId = null;
                     loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
                     loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
                     loanApplicationObject.TermNoOfDays = document.getElementById("termNoOfDays").value;

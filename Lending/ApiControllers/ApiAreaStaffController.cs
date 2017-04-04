@@ -272,5 +272,23 @@ namespace Lending.ApiControllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
+        // area staff
+        [Authorize]
+        [HttpGet]
+        [Route("api/areaStaff/defaultStaff/{areaId}")]
+        public Models.MstAreaStaff defaultStaff(String areaId)
+        {
+            var areaStaffs = from d in db.mstAreaStaffs.OrderByDescending(d => d.Id)
+                             where d.AreaId == Convert.ToInt32(areaId)
+                             select new Models.MstAreaStaff
+                             {
+                                 Id = d.Id,
+                                 StaffId = d.StaffId,
+                                 Staff = d.mstStaff.Staff
+                             };
+
+            return (Models.MstAreaStaff)areaStaffs.FirstOrDefault();
+        }
     }
 }
