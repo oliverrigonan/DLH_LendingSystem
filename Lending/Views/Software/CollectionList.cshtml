@@ -299,6 +299,11 @@
                                 TotalPenaltyAmount: collectionListResult[i]["TotalPenaltyAmount"],
                                 PreparedByUserId: collectionListResult[i]["PreparedByUserId"],
                                 PreparedByUser: collectionListResult[i]["PreparedByUser"],
+                                IsReconstruct: collectionListResult[i]["IsReconstruct"],
+                                IsRenew: collectionListResult[i]["IsRenew"],
+                                IsLoanApplication: collectionListResult[i]["IsLoanApplication"],
+                                IsLoanReconstruct: collectionListResult[i]["IsLoanReconstruct"],
+                                IsLoanRenew: collectionListResult[i]["IsLoanRenew"],
                                 IsLocked: collectionListResult[i]["IsLocked"],
                                 CreatedByUserId: collectionListResult[i]["CreatedByUserId"],
                                 CreatedByUser: collectionListResult[i]["CreatedByUser"],
@@ -346,7 +351,20 @@
         function btnLoanDetailOnclick() {
             collectionCollectionView.editItem(collectionCollectionView.currentItem);
             var loanId = collectionCollectionView.currentEditItem.LoanId;
-            window.location = '/Software/LoanApplicationDetail?id=' + loanId;
+
+            if (collectionCollectionView.currentEditItem.IsLoanApplication) {
+                window.location = '/Software/LoanApplicationDetail?id=' + loanId;
+            } else {
+                if (collectionCollectionView.currentEditItem.IsLoanReconstruct) {
+                    window.location = '/Software/ReconstructDetail?id=' + loanId;
+                } else {
+                    if (collectionCollectionView.currentEditItem.IsLoanRenew) {
+                        window.location = '/Software/RenewDetail?id=' + loanId;
+                    } else {
+                        toastr.error("No Loan Reference");
+                    }
+                }
+            }
         }
 
         // delete loan application

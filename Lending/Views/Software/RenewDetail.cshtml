@@ -299,6 +299,25 @@
                                     <div class="panel-body">
                                         <div id="loanApplicationDeductionFlexGrid" class="grid"></div>
                                     </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridDeduction">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridDeduction">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridDeduction">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridDeduction"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridDeduction">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridDeduction">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade in" id="loanApplicationCollateral">
@@ -320,6 +339,25 @@
                                     <div class="panel-body">
                                         <div id="loanApplicationCollateralFlexGrid" class="grid"></div>
                                     </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridCollateral">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollateral">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollateral">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollateral"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollateral">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollateral">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="tab-pane fade in" id="loanLines">
@@ -329,6 +367,25 @@
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanLinesFlexgrid" class="grid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridLoanLines">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridLoanLines">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridLoanLines">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridLoanLines"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridLoanLines">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanLines">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -822,6 +879,7 @@
                     loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
                     loanApplicationObject.TermNoOfDays = document.getElementById("termNoOfDays").value;
                     loanApplicationObject.TermPaymentNoOfDays = document.getElementById("termPaymentNoOfDays").value;
+                    loanApplicationObject.ForOverdue = null;
                     loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                     loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
                     loanApplicationObject.InterestRate = document.getElementById("interestRate").value;
@@ -1072,9 +1130,7 @@
 
                                 $("#loanApplicationCollateralEditDetailModal").modal("hide");
 
-                                loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
-                                loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
-                                loanApplicationCollateralFlexGrid.trackChanges = true;
+                                refreshCollateralFlexGrid();
                             },
                             404: function () {
                                 toastr.error("Record Not Found");
@@ -1109,9 +1165,7 @@
 
                                 $("#loanApplicationCollateralEditDetailModal").modal("hide");
 
-                                loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
-                                loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
-                                loanApplicationCollateralFlexGrid.trackChanges = true;
+                                refreshCollateralFlexGrid();
                             },
                             404: function () {
                                 toastr.error("Record Not Found");
@@ -1169,9 +1223,7 @@
 
                         $("#deleteConfirmationLoanApplicationCollateralModal").modal("hide");
 
-                        loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
-                        loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
-                        loanApplicationCollateralFlexGrid.trackChanges = true;
+                        refreshCollateralFlexGrid();
                     },
                     404: function () {
                         toastr.error("Record Not Found");
@@ -1195,9 +1247,36 @@
             });
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsCollateral() {
+            if (loanApplicationCollateralCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridCollateral').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridCollateral').style.display = 'block';
+            btnCurrentPageGridCollateral.innerHTML = (loanApplicationCollateralCollectionView.pageIndex + 1) + ' / ' + loanApplicationCollateralCollectionView.pageCount;
+        }
+
+        function refreshCollateralFlexGrid() {
+            loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
+            loanApplicationCollateralCollectionView.pageSize = 15;
+
+            loanApplicationCollateralCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollateral();
+            });
+
+            loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
+            loanApplicationCollateralFlexGrid.trackChanges = true;
+        }
+
         // create flexgrid for loan application collateral
         function createFlexGridForLoanApplicationCollateral() {
             loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
+            loanApplicationCollateralCollectionView.pageSize = 15;
+
+            loanApplicationCollateralCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollateral();
+            });
 
             loanApplicationCollateralFlexGrid = new wijmo.grid.FlexGrid('#loanApplicationCollateralFlexGrid');
             loanApplicationCollateralFlexGrid.initialize({
@@ -1252,6 +1331,32 @@
             });
 
             loanApplicationCollateralFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollateral = document.getElementById('btnMoveToFirstPageGridCollateral');
+            btnPreviousPageGridCollateral = document.getElementById('btnMoveToPreviousPageGridCollateral');
+            btnNextPageGridCollateral = document.getElementById('btnMoveToNextPageGridCollateral');
+            btnLastPageGridCollateral = document.getElementById('btnMoveToLastPageGridCollateral');
+            btnCurrentPageGridCollateral = document.getElementById('btnCurrentPageGridCollateral');
+
+            updateNavigateButtonsCollateral();
+
+            btnFirstPageGridCollateral.addEventListener('click', function () {
+                loanApplicationCollateralCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollateral();
+            });
+            btnPreviousPageGridCollateral.addEventListener('click', function () {
+                loanApplicationCollateralCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollateral();
+            });
+            btnNextPageGridCollateral.addEventListener('click', function () {
+                loanApplicationCollateralCollectionView.moveToNextPage();
+                updateNavigateButtonsCollateral();
+            });
+            btnLastPageGridCollateral.addEventListener('click', function () {
+                loanApplicationCollateralCollectionView.moveToLastPage();
+                updateNavigateButtonsCollateral();
+            });
         }
 
         // Term
@@ -1494,9 +1599,7 @@
 
                                 $("#loanApplicationDeductionEditDetailModal").modal("hide");
 
-                                loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
-                                loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
-                                loanApplicationDeductionFlexGrid.trackChanges = true;
+                                refreshDeductionFlexGrid();
                             },
                             404: function () {
                                 toastr.error("Record Not Found");
@@ -1531,9 +1634,7 @@
 
                                 $("#loanApplicationDeductionEditDetailModal").modal("hide");
 
-                                loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
-                                loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
-                                loanApplicationDeductionFlexGrid.trackChanges = true;
+                                refreshDeductionFlexGrid();
                             },
                             404: function () {
                                 toastr.error("Record Not Found");
@@ -1591,9 +1692,7 @@
 
                         $("#deleteConfirmationLoanApplicationDeductionModal").modal("hide");
 
-                        loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
-                        loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
-                        loanApplicationDeductionFlexGrid.trackChanges = true;
+                        refreshDeductionFlexGrid();
                     },
                     404: function () {
                         toastr.error("Record Not Found");
@@ -1617,9 +1716,36 @@
             });
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsDeduction() {
+            if (loanApplicationDeductionCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridDeduction').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridDeduction').style.display = 'block';
+            btnCurrentPageGridDeduction.innerHTML = (loanApplicationDeductionCollectionView.pageIndex + 1) + ' / ' + loanApplicationDeductionCollectionView.pageCount;
+        }
+
+        function refreshDeductionFlexGrid() {
+            loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
+            loanApplicationDeductionCollectionView.pageSize = 15;
+
+            loanApplicationDeductionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsDeduction();
+            });
+
+            loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
+            loanApplicationDeductionFlexGrid.trackChanges = true;
+        }
+
         // create flexgrid for loan application deduction
         function createFlexGridForLoanApplicationDeduction() {
             loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
+            loanApplicationDeductionCollectionView.pageSize = 15;
+
+            loanApplicationDeductionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsDeduction();
+            });
 
             loanApplicationDeductionFlexGrid = new wijmo.grid.FlexGrid('#loanApplicationDeductionFlexGrid');
             loanApplicationDeductionFlexGrid.initialize({
@@ -1674,6 +1800,32 @@
             });
 
             loanApplicationDeductionFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridDeduction = document.getElementById('btnMoveToFirstPageGridDeduction');
+            btnPreviousPageGridDeduction = document.getElementById('btnMoveToPreviousPageGridDeduction');
+            btnNextPageGridDeduction = document.getElementById('btnMoveToNextPageGridDeduction');
+            btnLastPageGridDeduction = document.getElementById('btnMoveToLastPageGridDeduction');
+            btnCurrentPageGridDeduction = document.getElementById('btnCurrentPageGridDeduction');
+
+            updateNavigateButtonsDeduction();
+
+            btnFirstPageGridDeduction.addEventListener('click', function () {
+                loanApplicationDeductionCollectionView.moveToFirstPage();
+                updateNavigateButtonsDeduction();
+            });
+            btnPreviousPageGridDeduction.addEventListener('click', function () {
+                loanApplicationDeductionCollectionView.moveToPreviousPage();
+                updateNavigateButtonsDeduction();
+            });
+            btnNextPageGridDeduction.addEventListener('click', function () {
+                loanApplicationDeductionCollectionView.moveToNextPage();
+                updateNavigateButtonsDeduction();
+            });
+            btnLastPageGridDeduction.addEventListener('click', function () {
+                loanApplicationDeductionCollectionView.moveToLastPage();
+                updateNavigateButtonsDeduction();
+            });
         }
 
         // penalty
@@ -1753,9 +1905,7 @@
                 return true;
             }
 
-            loanApplicationCollateralCollectionView = new wijmo.collections.CollectionView(getLoanApplicationCollateralByLoanId());
-            loanApplicationCollateralFlexGrid.itemsSource = loanApplicationCollateralCollectionView;
-            loanApplicationCollateralFlexGrid.trackChanges = true;
+            refreshCollateralFlexGrid();
         });
 
         // tab
@@ -1766,9 +1916,7 @@
             $("#loanLines").hide();
             $("#loanRenew").hide();
 
-            loanApplicationDeductionCollectionView = new wijmo.collections.CollectionView(getLoanApplicationDeductionByLoanId());
-            loanApplicationDeductionFlexGrid.itemsSource = loanApplicationDeductionCollectionView;
-            loanApplicationDeductionFlexGrid.trackChanges = true;
+            refreshDeductionFlexGrid();
         });
 
         // loan lines
@@ -1808,9 +1956,36 @@
         var loanLinesCollectionView;
         var loanLinesFlexgrid;
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsLoneLines() {
+            if (loanLinesCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridLoanLines').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridLoanLines').style.display = 'block';
+            btnCurrentPageGridLoanLines.innerHTML = (loanLinesCollectionView.pageIndex + 1) + ' / ' + loanLinesCollectionView.pageCount;
+        }
+
+        function refreshLoanLinesFlexGrid() {
+            loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesListByLoanId());
+            loanLinesCollectionView.pageSize = 15;
+
+            loanLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoneLines();
+            });
+
+            loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
+            loanLinesFlexgrid.trackChanges = true;
+        }
+
         // create flexgrid for loan application lines
         function createFlexGridForLoanLines() {
             loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesListByLoanId());
+            loanLinesCollectionView.pageSize = 15;
+
+            loanLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoneLines();
+            });
 
             loanLinesFlexgrid = new wijmo.grid.FlexGrid('#loanLinesFlexgrid');
             loanLinesFlexgrid.initialize({
@@ -1844,13 +2019,7 @@
                                 "binding": "PaidAmount",
                                 "allowSorting": true,
                                 "width": "2*",
-                            },
-                            {
-                                "header": "C",
-                                "binding": "IsCleared",
-                                "allowSorting": true,
-                                "width": "1*",
-                            },
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanLinesCollectionView,
@@ -1861,6 +2030,32 @@
             });
 
             loanLinesFlexgrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridLoanLines = document.getElementById('btnMoveToFirstPageGridLoanLines');
+            btnPreviousPageGridLoanLines = document.getElementById('btnMoveToPreviousPageGridLoanLines');
+            btnNextPageGridLoanLines = document.getElementById('btnMoveToNextPageGridLoanLines');
+            btnLastPageGridLoanLines = document.getElementById('btnMoveToLastPageGridLoanLines');
+            btnCurrentPageGridLoanLines = document.getElementById('btnCurrentPageGridLoanLines');
+
+            updateNavigateButtonsLoneLines();
+
+            btnFirstPageGridLoanLines.addEventListener('click', function () {
+                loanLinesCollectionView.moveToFirstPage();
+                updateNavigateButtonsLoneLines();
+            });
+            btnPreviousPageGridLoanLines.addEventListener('click', function () {
+                loanLinesCollectionView.moveToPreviousPage();
+                updateNavigateButtonsLoneLines();
+            });
+            btnNextPageGridLoanLines.addEventListener('click', function () {
+                loanLinesCollectionView.moveToNextPage();
+                updateNavigateButtonsLoneLines();
+            });
+            btnLastPageGridLoanLines.addEventListener('click', function () {
+                loanLinesCollectionView.moveToLastPage();
+                updateNavigateButtonsLoneLines();
+            });
         }
 
         // tab
@@ -1876,9 +2071,7 @@
                 return true;
             }
 
-            loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesListByLoanId());
-            loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
-            loanLinesFlexgrid.trackChanges = true;
+            refreshLoanLinesFlexGrid();
         });
 
         var loanRenewCollectionView;

@@ -46,7 +46,6 @@ namespace Lending.ApiControllers
             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
-                                   && d.TotalBalanceAmount > 0
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
@@ -150,6 +149,7 @@ namespace Lending.ApiControllers
                                        Term = d.mstTerm.Term,
                                        TermNoOfDays = d.TermNoOfDays,
                                        TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                       ForOverdue = d.ForOverdue,
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                        PrincipalAmount = d.PrincipalAmount,
                                        InterestId = d.InterestId,
@@ -206,6 +206,7 @@ namespace Lending.ApiControllers
                            Term = d.mstTerm.Term,
                            TermNoOfDays = d.TermNoOfDays,
                            TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                           ForOverdue = d.ForOverdue,
                            MaturityDate = d.MaturityDate.ToShortDateString(),
                            PrincipalAmount = d.PrincipalAmount,
                            InterestId = d.InterestId,
@@ -316,6 +317,7 @@ namespace Lending.ApiControllers
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+                                    newLoan.ForOverdue = null;
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = 0;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;
@@ -439,6 +441,14 @@ namespace Lending.ApiControllers
                                     lockLoan.TermId = loan.TermId;
                                     lockLoan.TermNoOfDays = loan.TermNoOfDays;
                                     lockLoan.TermPaymentNoOfDays = loan.TermPaymentNoOfDays;
+                                    if (loan.ForOverdue == true)
+                                    {
+                                        lockLoan.ForOverdue = true;
+                                    }
+                                    else
+                                    {
+                                        lockLoan.ForOverdue = null;
+                                    }
                                     lockLoan.MaturityDate = DateTime.Today;
                                     lockLoan.PrincipalAmount = loan.PrincipalAmount;
                                     lockLoan.InterestId = loan.InterestId;
@@ -539,24 +549,54 @@ namespace Lending.ApiControllers
 
                                                 if (loans.FirstOrDefault().IsLoanApplication)
                                                 {
-                                                    newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
+                                                    if (loan.ForOverdue == true)
+                                                    {
+                                                        newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
+                                                    }
+                                                    else
+                                                    {
+                                                        newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
+                                                    }
                                                 }
                                                 else
                                                 {
                                                     if (loans.FirstOrDefault().IsLoanReconstruct)
                                                     {
-                                                        newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
+                                                        if (loan.ForOverdue == true)
+                                                        {
+                                                            newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
+                                                        }
+                                                        else
+                                                        {
+                                                            newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
+                                                        }
                                                     }
                                                     else
                                                     {
                                                         if (loans.FirstOrDefault().IsLoanRenew)
                                                         {
-                                                            newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
+
+                                                            if (loan.ForOverdue == true)
+                                                            {
+                                                                newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
+                                                            }
+                                                            else
+                                                            {
+                                                                newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
+                                                            }
                                                         }
                                                     }
                                                 }
 
-                                                newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate).AddDays(i);
+                                                if (loan.ForOverdue == true)
+                                                {
+                                                    newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate);
+                                                }
+                                                else
+                                                {
+                                                    newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate).AddDays(i);
+                                                }
+
                                                 newLoanLine.CollectibleAmount = finalCollectibleAmount;
                                                 newLoanLine.PaidAmount = 0;
                                                 newLoanLine.PenaltyAmount = 0;
@@ -1109,6 +1149,67 @@ namespace Lending.ApiControllers
                     }
                 }
             }
+        }
+
+        // loan list by areaid - overdue
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/overdue/{areaId}")]
+        public List<Models.TrnLoan> listOverdue(String areaId)
+        {
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.LoanDate)
+                                   where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                   && d.IsReconstruct == false
+                                   && d.IsRenew == false
+                                   && d.IsLocked == true
+                                   && d.IsLoanReconstruct == true
+                                   && d.TotalBalanceAmount > 0
+                                   select new Models.TrnLoan
+                                   {
+                                       Id = d.Id,
+                                       LoanNumber = d.LoanNumber,
+                                       LoanDate = d.LoanDate.ToShortDateString(),
+                                       ApplicantId = d.ApplicantId,
+                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                       Area = d.mstApplicant.mstArea.Area,
+                                       Particulars = d.Particulars,
+                                       PreparedByUserId = d.PreparedByUserId,
+                                       PreparedByUser = d.mstUser.FullName,
+                                       TermId = d.TermId,
+                                       Term = d.mstTerm.Term,
+                                       TermNoOfDays = d.TermNoOfDays,
+                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                       ForOverdue = d.ForOverdue,
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       InterestId = d.InterestId,
+                                       Interest = d.mstInterest.Interest,
+                                       InterestRate = d.InterestRate,
+                                       InterestAmount = d.InterestAmount,
+                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                       PreviousPenaltyAmount = d.PreviousPenaltyAmount,
+                                       DeductionAmount = d.DeductionAmount,
+                                       NetAmount = d.NetAmount,
+                                       NetCollectionAmount = d.NetCollectionAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       IsReconstruct = d.IsReconstruct,
+                                       IsRenew = d.IsRenew,
+                                       IsLoanApplication = d.IsLoanApplication,
+                                       IsLoanReconstruct = d.IsLoanReconstruct,
+                                       IsLoanRenew = d.IsLoanRenew,
+                                       IsFullyPaid = d.IsFullyPaid,
+                                       IsLocked = d.IsLocked,
+                                       CreatedByUserId = d.CreatedByUserId,
+                                       CreatedByUser = d.mstUser1.FullName,
+                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                       UpdatedByUserId = d.UpdatedByUserId,
+                                       UpdatedByUser = d.mstUser2.FullName,
+                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                   };
+
+            return loanApplications.ToList();
         }
     }
 }

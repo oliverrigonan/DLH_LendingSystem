@@ -56,7 +56,7 @@ namespace Lending.ApiControllers
         [Route("api/renew/listByLoanDate/{startLoanDate}/{endLoanDate}")]
         public List<Models.TrnLoan> listRenewByLoanDate(String startLoanDate, String endLoanDate)
         {
-            var renews = from d in db.trnLoans
+            var renews = from d in db.trnLoans.OrderByDescending(d => d.Id)
                          where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                          && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                          && d.IsLoanRenew == true
@@ -231,6 +231,7 @@ namespace Lending.ApiControllers
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+                                    newLoan.ForOverdue = null;
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = loanRenew.RenewPrincipalAmount;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;

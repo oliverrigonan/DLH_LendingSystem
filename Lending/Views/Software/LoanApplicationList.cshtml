@@ -252,7 +252,6 @@
             });
         }
 
-
         // get loan application list
         function getLoanApplicationList() {
             var loanApplicationListArray = new wijmo.collections.ObservableArray;
@@ -282,11 +281,15 @@
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             var loanStatus = "Active";
-                            if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                loanStatus = "Overdue - Reconstructed";
+                            if (loanApplicationListResult[i]["ForOverdue"]) {
+                                loanStatus = "Old Loan Overdues";
                             } else {
-                                if (loanApplicationListResult[i]["IsRenew"]) {
-                                    loanStatus = "Renewed";
+                                if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                    loanStatus = "Reconstructed (Overdue)";
+                                } else {
+                                    if (loanApplicationListResult[i]["IsRenew"]) {
+                                        loanStatus = "Renewed";
+                                    }
                                 }
                             }
 

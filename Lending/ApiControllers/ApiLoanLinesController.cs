@@ -50,7 +50,9 @@ namespace Lending.ApiControllers
                                 CollectibleDate = d.CollectibleDate.ToShortDateString(),
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
-                                PenaltyAmount = d.PenaltyAmount
+                                PenaltyAmount = d.PenaltyAmount,
+                                ForOverdue = d.trnLoan.ForOverdue,
+                                BalanceAmount = d.trnLoan.TotalBalanceAmount
                             };
 
             return loanLines.ToList();
@@ -68,6 +70,8 @@ namespace Lending.ApiControllers
                             && d.trnLoan.IsReconstruct == false
                             && d.trnLoan.IsRenew == false
                             && d.trnLoan.IsLocked == true
+                            && d.trnLoan.IsLoanReconstruct == false
+                            && d.trnLoan.TotalBalanceAmount > 0
                             select new Models.TrnLoanLines
                             {
                                 Id = d.Id,

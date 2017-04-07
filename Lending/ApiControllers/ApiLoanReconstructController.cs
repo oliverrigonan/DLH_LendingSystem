@@ -58,7 +58,7 @@ namespace Lending.ApiControllers
         [Route("api/reconstruct/listByLoanDate/{startLoanDate}/{endLoanDate}")]
         public List<Models.TrnLoan> listReconstructByLoanDate(String startLoanDate, String endLoanDate)
         {
-            var reconstructs = from d in db.trnLoans
+            var reconstructs = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                                && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                && d.IsLoanReconstruct == true
@@ -77,6 +77,7 @@ namespace Lending.ApiControllers
                                    Term = d.mstTerm.Term,
                                    TermNoOfDays = d.TermNoOfDays,
                                    TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                   ForOverdue = d.ForOverdue,
                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                    PrincipalAmount = d.PrincipalAmount,
                                    InterestId = d.InterestId,
@@ -133,6 +134,7 @@ namespace Lending.ApiControllers
                                   Term = d.mstTerm.Term,
                                   TermNoOfDays = d.TermNoOfDays,
                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                  ForOverdue = d.ForOverdue,
                                   MaturityDate = d.MaturityDate.ToShortDateString(),
                                   PrincipalAmount = d.PrincipalAmount,
                                   InterestId = d.InterestId,
@@ -233,6 +235,23 @@ namespace Lending.ApiControllers
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+
+                                    if (existLoan.FirstOrDefault().ForOverdue != null)
+                                    {
+                                        if (existLoan.FirstOrDefault().ForOverdue == true)
+                                        {
+                                            newLoan.ForOverdue = true;
+                                        }
+                                        else
+                                        {
+                                            newLoan.ForOverdue = null;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        newLoan.ForOverdue = null;
+                                    }
+
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;

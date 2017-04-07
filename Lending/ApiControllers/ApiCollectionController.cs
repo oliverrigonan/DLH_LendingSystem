@@ -41,6 +41,11 @@ namespace Lending.ApiControllers
                                   CollectorStaff = d.mstStaff.Staff,
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser.FullName,
+                                  IsReconstruct = d.trnLoan.IsReconstruct,
+                                  IsRenew = d.trnLoan.IsRenew,
+                                  IsLoanApplication = d.trnLoan.IsLoanApplication,
+                                  IsLoanReconstruct = d.trnLoan.IsLoanReconstruct,
+                                  IsLoanRenew = d.trnLoan.IsLoanRenew,
                                   IsLocked = d.IsLocked,
                                   CreatedByUserId = d.CreatedByUserId,
                                   CreatedByUser = d.mstUser.FullName,
@@ -261,6 +266,16 @@ namespace Lending.ApiControllers
                             if (allLoanLines.Any())
                             {
                                 var updateLoan = loan.FirstOrDefault();
+
+                                if (allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount) == 0)
+                                {
+                                    updateLoan.IsFullyPaid = true;
+                                }
+                                else
+                                {
+                                    updateLoan.IsFullyPaid = false;
+                                }
+
                                 updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
                                 updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
                                 updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount);
@@ -322,6 +337,16 @@ namespace Lending.ApiControllers
                                     if (allLoanLines.Any())
                                     {
                                         var updateLoan = loan.FirstOrDefault();
+
+                                        if (allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount) == 0)
+                                        {
+                                            updateLoan.IsFullyPaid = true;
+                                        }
+                                        else
+                                        {
+                                            updateLoan.IsFullyPaid = false;
+                                        }
+
                                         updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
                                         updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
                                         updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount);

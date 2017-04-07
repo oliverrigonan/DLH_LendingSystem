@@ -32,5 +32,10 @@ namespace Lending.Models
         public Int32 UpdatedByUserId { get; set; }
         public String UpdatedByUser { get; set; }
         public String UpdatedDateTime { get; set; }
+        public Boolean IsReconstruct { get; set; }
+        public Boolean IsRenew { get; set; }
+        public Boolean IsLoanApplication { get; set; }
+        public Boolean IsLoanReconstruct { get; set; }
+        public Boolean IsLoanRenew { get; set; }
     }
 }

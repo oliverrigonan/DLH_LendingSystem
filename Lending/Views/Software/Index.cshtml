@@ -32,7 +32,8 @@
                 </div>
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#dailyCollectibles">Daily Collectibles</a></li>
+                    <li class="active"><a data-toggle="tab" href="#dailyCollectibles" onclick="refreshLoanLines()">Active</a></li>
+                    <li><a data-toggle="tab" href="#dailyCollectiblesOverdue" onclick="refreshoverduetable()">Overdue</a></li>
                     <li><a data-toggle="tab" href="#menus">Menu</a></li>
                 </ul>
                 <br />
@@ -92,98 +93,51 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Actives</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="totalActives" placeholder="0" disabled />
-                                                </div>
+                    </div>
+                    <div id="dailyCollectiblesOverdue" class="tab-pane fade">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table border="0" style="width: 100%;">
+                                    <tr>
+                                        <td style="width: 59%;">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                <input type="text" id="applicantCollectionsSearchInputOverdue" class="form-control" placeholder="Search" />
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Overdues</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="totalOverdues" placeholder="0" disabled />
-                                                </div>
+                                        </td>
+                                        <td style="width: 1%;"></td>
+                                        <td style="width: 30%;">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"> Area</span>
+                                                <div id="cboAreaOverdue" style="width: 100%;"></div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">=</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control requiredApplicantDetail numberField" id="totalActiveAndOverdues" placeholder="0" disabled />
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Supervisor</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="areaSupervisor" placeholder="Supervisor" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Collector</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="areaCollector" placeholder="Collector" disabled />
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
+                                        </td>
+                                        <td style="width: 1%;"></td>
+                                        <td style="width: 9%;" align="right">
+                                            <button class="btn btn-success btn-block" onclick="btnCSVOverdue()"><i class="fa fa-file-excel-o fa-fw"></i> CSV</button>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Collectibles</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="totalColletibles" placeholder="0.00" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Collection</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="totalCollection" placeholder="0.00" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Gas Expense</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="totalExpense" placeholder="0.00" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Net Collection </label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="netCollection" placeholder="0.00" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
+                            <div class="panel-body">
+                                <div id="loanApplicationFlexGrid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridOverdue">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridOverdue">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridOverdue">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridOverdue"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridOverdue">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridOverdue">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -296,6 +250,8 @@
         var loanLinesCollectionView;
         var loanLinesFlexgrid;
 
+        var cboAreaOverdue;
+
         function createCboDate() {
             cboDate.dispose();
             cboDate = new wijmo.input.InputDate('#cboDate', {
@@ -326,7 +282,7 @@
 
                         loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
                         loanLinesFlexgrid.trackChanges = true;
-                        getTotalCollection();
+                        //getTotalCollection();
                     } else {
                         isCboDateSelected = true;
                     }
@@ -335,6 +291,33 @@
 
             cboArea = new wijmo.input.ComboBox('#cboArea');
             createCboArea();
+        }
+
+        function refreshLoanLines() {
+            NProgress.start();
+            setTimeout(function () {
+                loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesData());
+                loanLinesCollectionView.canFilter = true;
+                loanLinesCollectionView.pageSize = 15;
+
+                var filterText = '';
+                $('#applicantCollectionsSearchInput').keyup(function () {
+                    filterText = this.value.toLowerCase();
+                    loanLinesCollectionView.refresh();
+                });
+
+                loanLinesCollectionView.filter = function (item) {
+                    return !filterText || (item.DayReference.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
+                }
+
+                loanLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                    updateNavigateButtons();
+                });
+
+                loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
+                loanLinesFlexgrid.trackChanges = true;
+            }, 300);
         }
 
         function createCboArea() {
@@ -392,52 +375,95 @@
                             loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
                             loanLinesFlexgrid.trackChanges = true;
 
-                            document.getElementById("areaSupervisor").value = this.selectedItem["SupervisorStaff"];
-                            getTotalCollection();
+                            //document.getElementById("areaSupervisor").value = this.selectedItem["SupervisorStaff"];
+                            //getTotalCollection();
                         }
                     });
 
-                    document.getElementById("areaSupervisor").value = cboArea.selectedItem["SupervisorStaff"];
+                    //document.getElementById("areaSupervisor").value = cboArea.selectedItem["SupervisorStaff"];
                     createFlexGrid();
 
-                    getTotalCollection();
-                }
-            });
-        }
+                    //getTotalCollection();
 
-        function getTotalCollection() {
-            var collectibleDate = [cboDate.value.getMonth() + 1, cboDate.value.getDate(), cboDate.value.getFullYear()].join('-');
-            $.ajax({
-                url: '/api/areaStaff/defaultStaff/' + cboArea.selectedItem["Id"],
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (collectorResults) {
-                    if (collectorResults != null) {
-                        document.getElementById("areaCollector").value = collectorResults.Staff;
+                    cboAreaOverdue.dispose();
+                    cboAreaOverdue = new wijmo.input.ComboBox('#cboAreaOverdue', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            loanApplicationCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());
+                            loanApplicationCollectionView.canFilter = true;
+                            loanApplicationCollectionView.pageSize = 15;
 
-                        $.ajax({
-                            url: '/api/expenses/totalExpenses/' + collectibleDate + '/' + collectorResults.StaffId,
-                            cache: false,
-                            type: 'GET',
-                            contentType: 'application/json; charset=utf-8',
-                            success: function (totalExpense) {
-                                document.getElementById("totalExpense").value = totalExpense.toLocaleString();
+                            var filterText = '';
+                            $('#searchLoanApplication').keyup(function () {
+                                filterText = this.value.toLowerCase();
+                                loanApplicationCollectionView.refresh();
+                            });
 
-                                var totalCollection = document.getElementById("totalCollection").value;
-                                var totalExpense = totalExpense.toLocaleString();
-
-                                document.getElementById("netCollection").value = (totalCollection - totalExpense).toLocaleString();
+                            loanApplicationCollectionView.filter = function (item) {
+                                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
                             }
-                        });
-                    } else {
-                        document.getElementById("totalExpense").value = 0;
-                        var totalCollection = document.getElementById("totalCollection").value;
-                        document.getElementById("netCollection").value = totalCollection;
-                    }
+
+                            loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtonsLoanApplications();
+                            });
+
+                            loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                                updateStampSecurity();
+                            });
+
+                            // Flex Grid
+                            loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                            loanApplicationFlexGrid.trackChanges = true;
+                        }
+                    });
+
+                    createOverdueFlexGrid();
                 }
             });
         }
+
+        //function getTotalCollection() {
+        //    var collectibleDate = [cboDate.value.getMonth() + 1, cboDate.value.getDate(), cboDate.value.getFullYear()].join('-');
+        //    $.ajax({
+        //        url: '/api/areaStaff/defaultStaff/' + cboArea.selectedItem["Id"],
+        //        cache: false,
+        //        type: 'GET',
+        //        contentType: 'application/json; charset=utf-8',
+        //        success: function (collectorResults) {
+        //            if (collectorResults != null) {
+        //                document.getElementById("areaCollector").value = collectorResults.Staff;
+
+        //                $.ajax({
+        //                    url: '/api/expenses/totalExpenses/' + collectibleDate + '/' + collectorResults.StaffId,
+        //                    cache: false,
+        //                    type: 'GET',
+        //                    contentType: 'application/json; charset=utf-8',
+        //                    success: function (totalExpense) {
+        //                        document.getElementById("totalExpense").value = totalExpense.toLocaleString();
+
+        //                        var totalCollection = document.getElementById("totalCollection").value;
+        //                        var totalExpense = totalExpense.toLocaleString();
+
+        //                        document.getElementById("netCollection").value = (totalCollection - totalExpense).toLocaleString();
+        //                    }
+        //                });
+        //            } else {
+        //                document.getElementById("totalExpense").value = 0;
+        //                var totalCollection = document.getElementById("totalCollection").value;
+        //                document.getElementById("netCollection").value = totalCollection;
+        //            }
+        //        }
+        //    });
+        //}
 
         function getLoanLinesData() {
             var loanLinesArray = new wijmo.collections.ObservableArray;
@@ -449,23 +475,13 @@
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (loanLinesResults) {
-                    var totalCollectibles = 0;
-                    var totalActives = 0;
-                    var totalOverdues = 0;
-                    var totalActivesAndOverdues = 0;
-                    var totalCollections = 0;
-
                     if (loanLinesResults.length > 0) {
                         for (i = 0; i < loanLinesResults.length; i++) {
-                            totalCollectibles += loanLinesResults[i]["CollectibleAmount"];
-                            totalActives += 1;
-                            totalCollections += loanLinesResults[i]["PaidAmount"];
+
                             var loanStatus = "Active";
                             var transactionType = "btnDetailLoan()";
                             if (loanLinesResults[i]["IsLoanReconstruct"]) {
                                 loanStatus = "Overdue";
-                                totalActives -= 1;
-                                totalOverdues += 1;
                                 transactionType = "btnDetailReconstruct()"
                             } else {
                                 if (loanLinesResults[i]["IsLoanRenew"]) {
@@ -492,13 +508,6 @@
                             });
                         }
                     }
-
-                    totalActivesAndOverdues = totalActives + totalOverdues;
-                    document.getElementById("totalActives").value = totalActives.toLocaleString();
-                    document.getElementById("totalOverdues").value = totalOverdues.toLocaleString();
-                    document.getElementById("totalActiveAndOverdues").value = totalActivesAndOverdues.toLocaleString();
-                    document.getElementById("totalColletibles").value = totalCollectibles.toLocaleString();
-                    document.getElementById("totalCollection").value = totalCollections.toLocaleString();
 
                     NProgress.done();
                 }
@@ -641,136 +650,355 @@
             window.open("/Software/RenewDetail?id=" + currentItem.LoanId, "_blank");
         }
 
-        function btnCSV() {
-            var CSV = '';
-            var dailyCollectionReport = [];
-            var areaName = cboArea.selectedItem["Area"];
-            var fileName = areaName + 'DailyCollection.CSV';
+        //function btnCSV() {
+        //    var CSV = '';
+        //    var dailyCollectionReport = [];
+        //    var areaName = cboArea.selectedItem["Area"];
+        //    var fileName = areaName + 'DailyCollection.CSV';
 
-            for (i = 0; i < loanLinesCollectionView.items.length; i++) {
-                dailyCollectionReport.push({
-                    Applicant: loanLinesCollectionView.items[i].Applicant,
-                    DueDate: loanLinesCollectionView.items[i].DueDate,
-                    DayReference: loanLinesCollectionView.items[i].DayReference,
-                    LoanStatus: loanLinesCollectionView.items[i].LoanStatus,
-                    CollectibleAmount: loanLinesCollectionView.items[i].CollectibleAmount,
-                    PaidAmount: loanLinesCollectionView.items[i].PaidAmount,
-                    PenaltyAmount: loanLinesCollectionView.items[i].PenaltyAmount
-                });
-            }
+        //    for (i = 0; i < loanLinesCollectionView.items.length; i++) {
+        //        dailyCollectionReport.push({
+        //            Applicant: loanLinesCollectionView.items[i].Applicant,
+        //            DueDate: loanLinesCollectionView.items[i].DueDate,
+        //            DayReference: loanLinesCollectionView.items[i].DayReference,
+        //            LoanStatus: loanLinesCollectionView.items[i].LoanStatus,
+        //            CollectibleAmount: loanLinesCollectionView.items[i].CollectibleAmount,
+        //            PaidAmount: loanLinesCollectionView.items[i].PaidAmount,
+        //            PenaltyAmount: loanLinesCollectionView.items[i].PenaltyAmount
+        //        });
+        //    }
 
-            // Rows
-            var Headers = [];
-            Headers.push({
-                Applicant: "Applicant",
-                DueDate: "Due Date",
-                DayReference: "Day Ref.",
-                LoanStatus: "Status",
-                CollectibleAmount: "Collectible",
-                PaidAmount: "Collected",
-                PenaltyAmount: "Penalty"
+        //    // Rows
+        //    var Headers = [];
+        //    Headers.push({
+        //        Applicant: "Applicant",
+        //        DueDate: "Due Date",
+        //        DayReference: "Day Ref.",
+        //        LoanStatus: "Status",
+        //        CollectibleAmount: "Collectible",
+        //        PaidAmount: "Collected",
+        //        PenaltyAmount: "Penalty"
+        //    });
+
+        //    var header = '';
+        //    // Rows
+        //    for (var b in Headers[0]) {
+        //        header += '"' + Headers[0][b] + '",';
+        //    }
+
+        //    CSV = areaName + " Daily Collection" + '\r\n\n';
+        //    CSV += header + '\r\n\n';
+        //    for (var i = 0; i < dailyCollectionReport.length; i++) {
+        //        var row = '';
+        //        for (var a in dailyCollectionReport[i]) {
+        //            row += '"' + dailyCollectionReport[i][a] + '",';
+        //        }
+        //        row.slice(0, row.length - 1);
+        //        CSV += row + '\r\n';
+
+        //        if (i == dailyCollectionReport.length - 1) {
+        //            var totalActive = document.getElementById("totalActives").value;
+        //            var totalOverdue = document.getElementById("totalOverdues").value;
+        //            var totalActiveAndTotalOverdue = document.getElementById("totalActiveAndOverdues").value;
+        //            var totalCollectibles = document.getElementById("totalColletibles").value;
+        //            var totalCollections = document.getElementById("totalCollection").value;
+        //            var totalGasExpenses = document.getElementById("totalExpense").value;
+        //            var netCollection = document.getElementById("netCollection").value;
+
+        //            var totalActiveArray = ["Total Actives", totalActive];
+        //            totalActiveArray.slice(0, totalActiveArray.length - 1);
+
+        //            var totalOverdueArray = ["Total Overdues", totalOverdue];
+        //            totalOverdueArray.slice(0, totalOverdueArray.length - 1);
+
+        //            var totalActiveAndTotalOverduerArray = ["=", totalActiveAndTotalOverdue];
+        //            totalActiveAndTotalOverduerArray.slice(0, totalActiveAndTotalOverduerArray.length - 1);
+
+        //            var totalCollectiblesArray = ["Total Collectibles", totalCollectibles];
+        //            totalCollectiblesArray.slice(0, totalCollectiblesArray.length - 1);
+
+        //            var totalCollectionsArray = ["Total Collections", totalCollections];
+        //            totalCollectionsArray.slice(0, totalCollectionsArray.length - 1);
+
+        //            var totalGasExpensesArray = ["Gas Expense", totalGasExpenses];
+        //            totalGasExpensesArray.slice(0, totalGasExpensesArray.length - 1);
+
+        //            var netCollectionArray = ["Net Collection", netCollection];
+        //            netCollectionArray.slice(0, netCollectionArray.length - 1);
+
+        //            CSV += '\r\n' + totalActiveArray + '\r\n';
+        //            CSV += totalOverdueArray + '\r\n';
+        //            CSV += totalActiveAndTotalOverduerArray + '\r\n';
+        //            CSV += '\r\n' + totalCollectiblesArray + '\r\n';
+        //            CSV += '\r\n' + totalCollectionsArray + '\r\n';
+        //            CSV += totalGasExpensesArray + '\r\n';
+        //            CSV += netCollectionArray + '\r\n';
+
+        //            var supervisor = document.getElementById("areaSupervisor").value;
+        //            var collector = document.getElementById("areaCollector").value;
+
+        //            var superVisorArray = ["Supervisor Collection", supervisor];
+        //            superVisorArray.slice(0, superVisorArray.length - 1);
+
+        //            var collectorArray = ["Collector", collector];
+        //            collectorArray.slice(0, collectorArray.length - 1);
+
+        //            var checkedByArray = ["Checked By", " "];
+        //            checkedByArray.slice(0, checkedByArray.length - 1);
+
+        //            CSV += '\r\n' + superVisorArray + '\r\n';
+        //            CSV += collectorArray + '\r\n';
+        //            CSV += checkedByArray + '\r\n';
+        //        }
+        //    }
+
+        //    if (CSV == '') {
+        //        toastr.error("No data.");
+        //    } else {
+        //        var link = document.createElement("a");
+
+        //        if (link.download !== undefined) {
+        //            var blob = new Blob([CSV], { type: 'text/csv;charset=utf-8;' });
+        //            var url = URL.createObjectURL(blob);
+        //            link.setAttribute("href", url);
+        //            link.setAttribute("download", fileName);
+        //            link.style = "visibility:hidden";
+        //        }
+
+        //        if (navigator.msSaveBlob) {
+        //            link.addEventListener("click", function (event) {
+        //                var blob = new Blob([CSV], {
+        //                    "type": "text/csv;charset=utf-8;"
+        //                });
+        //                navigator.msSaveBlob(blob, fileName);
+        //            }, false);
+        //        }
+
+        //        document.body.appendChild(link);
+        //        link.click();
+        //        document.body.removeChild(link);
+
+        //        toastr.success("Dowload successful.");
+        //    }
+        //}
+
+        var loanApplicationCollectionView;
+        var loanApplicationFlexGrid;
+
+        // get loan application list
+        function getOverdueLoans() {
+            var loanApplicationListArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loan/overdue/' + cboAreaOverdue.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanApplicationListResult) {
+                    if (loanApplicationListResult.length > 0) {
+                        for (i = 0; i < loanApplicationListResult.length; i++) {
+                            var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
+                            var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            var loanStatus = "Overdue";
+                            if (loanApplicationListResult[i]["ForOverdue"]) {
+                                loanStatus = "Old Loan Overdues";
+                            }
+
+                            //else {
+                            //    if (loanApplicationListResult[i]["IsLoanReconstruct"]) {
+                            //        loanStatus = "Reconstructed (Overdue)";
+                            //    } else {
+                            //        if (loanApplicationListResult[i]["IsRenew"]) {
+                            //            loanStatus = "Renewed";
+                            //        }
+                            //    }
+                            //}
+
+                            loanApplicationListArray.push({
+                                DetailButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnReconstructDetailOnclick()'><i class='fa fa-edit fa-fw'></i> Detail </button>",
+                                Id: loanApplicationListResult[i]["Id"],
+                                LoanNumber: "RC-" + loanApplicationListResult[i]["LoanNumber"],
+                                LoanDate: loanDateValue,
+                                Applicant: loanApplicationListResult[i]["Applicant"],
+                                PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                InterestAmount: loanApplicationListResult[i]["InterestAmount"],
+                                DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
+                                NetAmount: loanApplicationListResult[i]["NetAmount"],
+                                NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
+                                TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
+                                IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
+                                LoanStatus: loanStatus,
+                                IsLocked: loanApplicationListResult[i]["IsLocked"],
+                                CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
+                                CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
+                                CreatedDateTime: loanApplicationListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
             });
 
-            var header = '';
-            // Rows
-            for (var b in Headers[0]) {
-                header += '"' + Headers[0][b] + '",';
+            return loanApplicationListArray;
+        }
+
+        function btnReconstructDetailOnclick() {
+            loanApplicationCollectionView.editItem(loanApplicationCollectionView.currentItem);
+            var id = loanApplicationCollectionView.currentEditItem.Id;
+            window.location = '/Software/ReconstructDetail?id=' + id;
+        }
+
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsLoanApplications() {
+            if (loanApplicationCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridOverdue').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridOverdue').style.display = 'block';
+            btnCurrentPageGridOverdue.innerHTML = (loanApplicationCollectionView.pageIndex + 1) + ' / ' + loanApplicationCollectionView.pageCount;
+        }
+
+        function refreshoverduetable() {
+            NProgress.start();
+            setTimeout(function () {
+                loanApplicationCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());
+                loanApplicationCollectionView.canFilter = true;
+                loanApplicationCollectionView.pageSize = 15;
+
+                var filterText = '';
+                $('#searchLoanApplication').keyup(function () {
+                    filterText = this.value.toLowerCase();
+                    loanApplicationCollectionView.refresh();
+                });
+
+                loanApplicationCollectionView.filter = function (item) {
+                    return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                }
+
+                loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                    updateNavigateButtonsLoanApplications();
+                });
+
+                // Flex Grid
+                loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                loanApplicationFlexGrid.trackChanges = true;
+            }, 300);
+        }
+
+        // create loan application flexgrid
+        function createOverdueFlexGrid() {
+            loanApplicationCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());
+            loanApplicationCollectionView.canFilter = true;
+            loanApplicationCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#applicantCollectionsSearchInputOverdue').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanApplicationCollectionView.refresh();
+            });
+
+            loanApplicationCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
             }
 
-            CSV = areaName + " Daily Collection" + '\r\n\n';
-            CSV += header + '\r\n\n';
-            for (var i = 0; i < dailyCollectionReport.length; i++) {
-                var row = '';
-                for (var a in dailyCollectionReport[i]) {
-                    row += '"' + dailyCollectionReport[i][a] + '",';
-                }
-                row.slice(0, row.length - 1);
-                CSV += row + '\r\n';
+            loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanApplications();
+            });
 
-                if (i == dailyCollectionReport.length - 1) {
-                    var totalActive = document.getElementById("totalActives").value;
-                    var totalOverdue = document.getElementById("totalOverdues").value;
-                    var totalActiveAndTotalOverdue = document.getElementById("totalActiveAndOverdues").value;
-                    var totalCollectibles = document.getElementById("totalColletibles").value;
-                    var totalCollections = document.getElementById("totalCollection").value;
-                    var totalGasExpenses = document.getElementById("totalExpense").value;
-                    var netCollection = document.getElementById("netCollection").value;
+            // Flex Grid
+            loanApplicationFlexGrid = new wijmo.grid.FlexGrid('#loanApplicationFlexGrid');
+            loanApplicationFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Doc Number",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 140,
+                            },
+                            {
+                                "header": "Collected",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 140,
+                            },
+                            {
+                                "header": "Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 140,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanApplicationCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
 
-                    var totalActiveArray = ["Total Actives", totalActive];
-                    totalActiveArray.slice(0, totalActiveArray.length - 1);
+            loanApplicationFlexGrid.trackChanges = true;
 
-                    var totalOverdueArray = ["Total Overdues", totalOverdue];
-                    totalOverdueArray.slice(0, totalOverdueArray.length - 1);
+            //Navigation button
+            btnFirstPageGridOverdue = document.getElementById('btnMoveToFirstPageGridOverdue');
+            btnPreviousPageGridOverdue = document.getElementById('btnMoveToPreviousPageGridOverdue');
+            btnNextPageGridOverdue = document.getElementById('btnMoveToNextPageGridOverdue');
+            btnLastPageGridOverdue = document.getElementById('btnMoveToLastPageGridOverdue');
+            btnCurrentPageGridOverdue = document.getElementById('btnCurrentPageGridOverdue');
 
-                    var totalActiveAndTotalOverduerArray = ["=", totalActiveAndTotalOverdue];
-                    totalActiveAndTotalOverduerArray.slice(0, totalActiveAndTotalOverduerArray.length - 1);
+            updateNavigateButtonsLoanApplications();
 
-                    var totalCollectiblesArray = ["Total Collectibles", totalCollectibles];
-                    totalCollectiblesArray.slice(0, totalCollectiblesArray.length - 1);
-
-                    var totalCollectionsArray = ["Total Collections", totalCollections];
-                    totalCollectionsArray.slice(0, totalCollectionsArray.length - 1);
-
-                    var totalGasExpensesArray = ["Gas Expense", totalGasExpenses];
-                    totalGasExpensesArray.slice(0, totalGasExpensesArray.length - 1);
-
-                    var netCollectionArray = ["Net Collection", netCollection];
-                    netCollectionArray.slice(0, netCollectionArray.length - 1);
-
-                    CSV += '\r\n' + totalActiveArray + '\r\n';
-                    CSV += totalOverdueArray + '\r\n';
-                    CSV += totalActiveAndTotalOverduerArray + '\r\n';
-                    CSV += '\r\n' + totalCollectiblesArray + '\r\n';
-                    CSV += '\r\n' + totalCollectionsArray + '\r\n';
-                    CSV += totalGasExpensesArray + '\r\n';
-                    CSV += netCollectionArray + '\r\n';
-
-                    var supervisor = document.getElementById("areaSupervisor").value;
-                    var collector = document.getElementById("areaCollector").value;
-
-                    var superVisorArray = ["Supervisor Collection", supervisor];
-                    superVisorArray.slice(0, superVisorArray.length - 1);
-
-                    var collectorArray = ["Collector", collector];
-                    collectorArray.slice(0, collectorArray.length - 1);
-
-                    var checkedByArray = ["Checked By", " "];
-                    checkedByArray.slice(0, checkedByArray.length - 1);
-
-                    CSV += '\r\n' + superVisorArray + '\r\n';
-                    CSV += collectorArray + '\r\n';
-                    CSV += checkedByArray + '\r\n';
-                }
-            }
-
-            if (CSV == '') {
-                toastr.error("No data.");
-            } else {
-                var link = document.createElement("a");
-
-                if (link.download !== undefined) {
-                    var blob = new Blob([CSV], { type: 'text/csv;charset=utf-8;' });
-                    var url = URL.createObjectURL(blob);
-                    link.setAttribute("href", url);
-                    link.setAttribute("download", fileName);
-                    link.style = "visibility:hidden";
-                }
-
-                if (navigator.msSaveBlob) {
-                    link.addEventListener("click", function (event) {
-                        var blob = new Blob([CSV], {
-                            "type": "text/csv;charset=utf-8;"
-                        });
-                        navigator.msSaveBlob(blob, fileName);
-                    }, false);
-                }
-
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                toastr.success("Dowload successful.");
-            }
+            btnFirstPageGridOverdue.addEventListener('click', function () {
+                loanApplicationCollectionView.moveToFirstPage();
+                updateNavigateButtonsLoanApplications();
+            });
+            btnPreviousPageGridOverdue.addEventListener('click', function () {
+                loanApplicationCollectionView.moveToPreviousPage();
+                updateNavigateButtonsLoanApplications();
+            });
+            btnNextPageGridOverdue.addEventListener('click', function () {
+                loanApplicationCollectionView.moveToNextPage();
+                updateNavigateButtonsLoanApplications();
+            });
+            btnLastPageGridOverdue.addEventListener('click', function () {
+                loanApplicationCollectionView.moveToLastPage();
+                updateNavigateButtonsLoanApplications();
+            });
         }
 
         // on load page
@@ -787,6 +1015,7 @@
             }
 
             cboDate = new wijmo.input.InputDate('#cboDate');
+            cboAreaOverdue = new wijmo.input.ComboBox('#cboAreaOverdue');
             createCboDate();
         }
     </script>
