@@ -972,7 +972,7 @@
                                         pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
                                         penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
                                     } else {
-                                        if (loanLineResults[i]["ForOverdue"]) {
+                                        if (loanLineResults[i]["TermNoOfDays"] == 0) {
                                             pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
                                             penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
                                         } else {
@@ -1084,14 +1084,26 @@
                                 "header": "Loan Day Ref.",
                                 "binding": "DayReference",
                                 "allowSorting": true,
-                                "width": "7*",
+                                "width": "6*",
                             },
                             {
                                 "header": "Collectible",
                                 "binding": "CollectibleAmount",
                                 "allowSorting": true,
-                                "width": "2.3*",
-                            }
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Paid",
+                                "binding": "PaidAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
                 ],
                 autoGenerateColumns: false,
                 itemsSource: currentCollectionsCollectionView,

@@ -818,7 +818,7 @@
                                 DetailButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnReconstructDetailOnclick()'><i class='fa fa-edit fa-fw'></i> Detail </button>",
                                 Id: loanApplicationListResult[i]["Id"],
                                 LoanNumber: "RC-" + loanApplicationListResult[i]["LoanNumber"],
-                                LoanDate: loanDateValue,
+                                LoanDate: newDate.getFullYear().toString(),
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
                                 InterestAmount: loanApplicationListResult[i]["InterestAmount"],
@@ -938,6 +938,12 @@
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
                                 "width": 150,
+                            },
+                            {
+                                "header": "Year",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 70,
                             },
                             {
                                 "header": "Status",

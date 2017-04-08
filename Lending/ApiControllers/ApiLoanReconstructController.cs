@@ -77,7 +77,6 @@ namespace Lending.ApiControllers
                                    Term = d.mstTerm.Term,
                                    TermNoOfDays = d.TermNoOfDays,
                                    TermPaymentNoOfDays = d.TermPaymentNoOfDays,
-                                   ForOverdue = d.ForOverdue,
                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                    PrincipalAmount = d.PrincipalAmount,
                                    InterestId = d.InterestId,
@@ -134,7 +133,6 @@ namespace Lending.ApiControllers
                                   Term = d.mstTerm.Term,
                                   TermNoOfDays = d.TermNoOfDays,
                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
-                                  ForOverdue = d.ForOverdue,
                                   MaturityDate = d.MaturityDate.ToShortDateString(),
                                   PrincipalAmount = d.PrincipalAmount,
                                   InterestId = d.InterestId,
@@ -235,23 +233,6 @@ namespace Lending.ApiControllers
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-
-                                    if (existLoan.FirstOrDefault().ForOverdue != null)
-                                    {
-                                        if (existLoan.FirstOrDefault().ForOverdue == true)
-                                        {
-                                            newLoan.ForOverdue = true;
-                                        }
-                                        else
-                                        {
-                                            newLoan.ForOverdue = null;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        newLoan.ForOverdue = null;
-                                    }
-
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;
@@ -286,6 +267,131 @@ namespace Lending.ApiControllers
                                     newLoanReconstruct.ReconstructLoanTotalBalanceAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
                                     newLoanReconstruct.ReconstructLoanTotalPenaltyAmount = loanReconstruct.ReconstructLoanTotalPenaltyAmount;
                                     db.trnLoanReconstructs.InsertOnSubmit(newLoanReconstruct);
+                                    db.SubmitChanges();
+
+                                    return newLoan.Id;
+                                }
+                                else
+                                {
+                                    return 0;
+                                }
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        // add loan reconstruct overdue
+        [Authorize]
+        [HttpPost]
+        [Route("api/loanReconstruct/overdue/add")]
+        public Int32 addLoanReconstructOverdue(Models.TrnLoanReconstruct loanReconstruct)
+        {
+            try
+            {
+                var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                var mstUserForms = from d in db.mstUserForms
+                                   where d.UserId == userId
+                                   select new Models.MstUserForm
+                                   {
+                                       Id = d.Id,
+                                       Form = d.sysForm.Form,
+                                       CanPerformActions = d.CanPerformActions
+                                   };
+
+                if (mstUserForms.Any())
+                {
+                    String matchPageString = "LoanApplicationList";
+                    Boolean canPerformActions = false;
+
+                    foreach (var mstUserForm in mstUserForms)
+                    {
+                        if (mstUserForm.Form.Equals(matchPageString))
+                        {
+                            if (mstUserForm.CanPerformActions)
+                            {
+                                canPerformActions = true;
+                            }
+
+                            break;
+                        }
+                    }
+
+                    if (canPerformActions)
+                    {
+                        String loanNumber = "0000000001";
+                        var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanReconstruct == true select d;
+                        if (loan.Any())
+                        {
+                            var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
+                            loanNumber = newLoanNumber.ToString();
+                        }
+
+                        var term = from d in db.mstTerms select d;
+                        if (term.Any())
+                        {
+                            var interest = from d in db.mstInterests select d;
+                            if (interest.Any())
+                            {
+                                var applicant = from d in db.mstApplicants select d;
+                                if (applicant.Any())
+                                {
+                                    Data.trnLoan newLoan = new Data.trnLoan();
+                                    newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
+                                    newLoan.LoanDate = DateTime.Today;
+                                    newLoan.ApplicantId = applicant.FirstOrDefault().Id;
+                                    newLoan.Particulars = "NA";
+                                    newLoan.PreparedByUserId = userId;
+                                    newLoan.TermId = term.FirstOrDefault().Id;
+                                    newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
+                                    newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+                                    newLoan.MaturityDate = DateTime.Today;
+                                    newLoan.PrincipalAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
+                                    newLoan.InterestId = interest.FirstOrDefault().Id;
+                                    newLoan.InterestRate = interest.FirstOrDefault().Rate;
+                                    Decimal interestAmount = (loanReconstruct.ReconstructLoanTotalBalanceAmount / 100) * interest.FirstOrDefault().Rate;
+                                    newLoan.InterestAmount = interestAmount;
+                                    newLoan.PreviousBalanceAmount = 0;
+                                    newLoan.PreviousPenaltyAmount = loanReconstruct.ReconstructLoanTotalPenaltyAmount;
+                                    newLoan.DeductionAmount = 0;
+                                    newLoan.NetAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.TotalPaidAmount = 0;
+                                    newLoan.TotalPenaltyAmount = 0;
+                                    newLoan.TotalBalanceAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.IsReconstruct = false;
+                                    newLoan.IsRenew = false;
+                                    newLoan.IsLoanApplication = false;
+                                    newLoan.IsLoanReconstruct = true;
+                                    newLoan.IsLoanRenew = false;
+                                    newLoan.IsFullyPaid = false;
+                                    newLoan.IsLocked = false;
+                                    newLoan.CreatedByUserId = userId;
+                                    newLoan.CreatedDateTime = DateTime.Now;
+                                    newLoan.UpdatedByUserId = userId;
+                                    newLoan.UpdatedDateTime = DateTime.Now;
+                                    db.trnLoans.InsertOnSubmit(newLoan);
                                     db.SubmitChanges();
 
                                     return newLoan.Id;

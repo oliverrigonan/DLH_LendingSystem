@@ -149,7 +149,6 @@ namespace Lending.ApiControllers
                                        Term = d.mstTerm.Term,
                                        TermNoOfDays = d.TermNoOfDays,
                                        TermPaymentNoOfDays = d.TermPaymentNoOfDays,
-                                       ForOverdue = d.ForOverdue,
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                        PrincipalAmount = d.PrincipalAmount,
                                        InterestId = d.InterestId,
@@ -206,7 +205,6 @@ namespace Lending.ApiControllers
                            Term = d.mstTerm.Term,
                            TermNoOfDays = d.TermNoOfDays,
                            TermPaymentNoOfDays = d.TermPaymentNoOfDays,
-                           ForOverdue = d.ForOverdue,
                            MaturityDate = d.MaturityDate.ToShortDateString(),
                            PrincipalAmount = d.PrincipalAmount,
                            InterestId = d.InterestId,
@@ -317,7 +315,6 @@ namespace Lending.ApiControllers
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-                                    newLoan.ForOverdue = null;
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = 0;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;
@@ -441,14 +438,6 @@ namespace Lending.ApiControllers
                                     lockLoan.TermId = loan.TermId;
                                     lockLoan.TermNoOfDays = loan.TermNoOfDays;
                                     lockLoan.TermPaymentNoOfDays = loan.TermPaymentNoOfDays;
-                                    if (loan.ForOverdue == true)
-                                    {
-                                        lockLoan.ForOverdue = true;
-                                    }
-                                    else
-                                    {
-                                        lockLoan.ForOverdue = null;
-                                    }
                                     lockLoan.MaturityDate = DateTime.Today;
                                     lockLoan.PrincipalAmount = loan.PrincipalAmount;
                                     lockLoan.InterestId = loan.InterestId;
@@ -524,100 +513,96 @@ namespace Lending.ApiControllers
                                         }
                                     }
 
-                                    Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
-                                    Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
-                                    Decimal loanNetCollectionAmount = loan.NetCollectionAmount;
-
-                                    var dayCount = 0;
-                                    for (var i = 1; i <= loan.TermNoOfDays; i++)
+                                    if (loan.TermNoOfDays > 0 && loan.TermPaymentNoOfDays > 0)
                                     {
-                                        if (i % loan.TermPaymentNoOfDays == 0)
+                                        Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
+                                        Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
+                                        Decimal loanNetCollectionAmount = loan.NetCollectionAmount;
+
+                                        var dayCount = 0;
+                                        for (var i = 1; i <= loan.TermNoOfDays; i++)
                                         {
-                                            Decimal finalCollectibleAmount = ceilCollectibleAmount * loan.TermPaymentNoOfDays;
-
-                                            dayCount += 1;
-
-                                            if (loanNetCollectionAmount < finalCollectibleAmount)
+                                            if (i % loan.TermPaymentNoOfDays == 0)
                                             {
-                                                finalCollectibleAmount = loanNetCollectionAmount;
-                                            }
+                                                Decimal finalCollectibleAmount = ceilCollectibleAmount * loan.TermPaymentNoOfDays;
 
-                                            if (finalCollectibleAmount != 0)
-                                            {
-                                                Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
-                                                newLoanLine.LoanId = Convert.ToInt32(id);
+                                                dayCount += 1;
 
-                                                if (loans.FirstOrDefault().IsLoanApplication)
+                                                if (loanNetCollectionAmount < finalCollectibleAmount)
                                                 {
-                                                    if (loan.ForOverdue == true)
-                                                    {
-                                                        newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
-                                                    }
-                                                    else
+                                                    finalCollectibleAmount = loanNetCollectionAmount;
+                                                }
+
+                                                if (finalCollectibleAmount != 0)
+                                                {
+                                                    Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
+                                                    newLoanLine.LoanId = Convert.ToInt32(id);
+
+                                                    if (loans.FirstOrDefault().IsLoanApplication)
                                                     {
                                                         newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    if (loans.FirstOrDefault().IsLoanReconstruct)
+                                                    else
                                                     {
-                                                        if (loan.ForOverdue == true)
-                                                        {
-                                                            newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
-                                                        }
-                                                        else
+                                                        if (loans.FirstOrDefault().IsLoanReconstruct)
                                                         {
                                                             newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
                                                         }
-                                                    }
-                                                    else
-                                                    {
-                                                        if (loans.FirstOrDefault().IsLoanRenew)
+                                                        else
                                                         {
-
-                                                            if (loan.ForOverdue == true)
-                                                            {
-                                                                newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
-                                                            }
-                                                            else
+                                                            if (loans.FirstOrDefault().IsLoanRenew)
                                                             {
                                                                 newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + " (" + Convert.ToDateTime(loan.LoanDate).AddDays(i).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
                                                             }
                                                         }
                                                     }
-                                                }
 
-                                                if (loan.ForOverdue == true)
-                                                {
-                                                    newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate);
-                                                }
-                                                else
-                                                {
                                                     newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate).AddDays(i);
+                                                    newLoanLine.CollectibleAmount = finalCollectibleAmount;
+                                                    newLoanLine.PaidAmount = 0;
+                                                    newLoanLine.PenaltyAmount = 0;
+                                                    db.trnLoanLines.InsertOnSubmit(newLoanLine);
+                                                    db.SubmitChanges();
+
+                                                    loanNetCollectionAmount -= finalCollectibleAmount;
                                                 }
+                                            }
 
-                                                newLoanLine.CollectibleAmount = finalCollectibleAmount;
-                                                newLoanLine.PaidAmount = 0;
-                                                newLoanLine.PenaltyAmount = 0;
-                                                db.trnLoanLines.InsertOnSubmit(newLoanLine);
-                                                db.SubmitChanges();
+                                            if (i == loan.TermNoOfDays)
+                                            {
+                                                var loanLines = from d in db.trnLoanLines.OrderByDescending(d => d.Id)
+                                                                where d.LoanId == Convert.ToInt32(id)
+                                                                select d;
 
-                                                loanNetCollectionAmount -= finalCollectibleAmount;
+                                                if (loanLines.Any())
+                                                {
+                                                    lockLoan.MaturityDate = loanLines.FirstOrDefault().CollectibleDate;
+                                                    db.SubmitChanges();
+                                                }
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        Decimal collectibleAmount = loan.NetCollectionAmount;
+                                        Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
+                                        newLoanLine.LoanId = Convert.ToInt32(id);
+                                        newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "- 001" + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
+                                        newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate);
+                                        newLoanLine.CollectibleAmount = collectibleAmount;
+                                        newLoanLine.PaidAmount = 0;
+                                        newLoanLine.PenaltyAmount = 0;
+                                        db.trnLoanLines.InsertOnSubmit(newLoanLine);
+                                        db.SubmitChanges();
 
-                                        if (i == loan.TermNoOfDays)
+                                        var loanLines = from d in db.trnLoanLines.OrderByDescending(d => d.Id)
+                                                        where d.LoanId == Convert.ToInt32(id)
+                                                        select d;
+
+                                        if (loanLines.Any())
                                         {
-                                            var loanLines = from d in db.trnLoanLines.OrderByDescending(d => d.Id)
-                                                            where d.LoanId == Convert.ToInt32(id)
-                                                            select d;
-
-                                            if (loanLines.Any())
-                                            {
-                                                lockLoan.MaturityDate = loanLines.FirstOrDefault().CollectibleDate;
-                                                db.SubmitChanges();
-                                            }
+                                            lockLoan.MaturityDate = loanLines.FirstOrDefault().CollectibleDate;
+                                            db.SubmitChanges();
                                         }
                                     }
 
@@ -1179,7 +1164,6 @@ namespace Lending.ApiControllers
                                        Term = d.mstTerm.Term,
                                        TermNoOfDays = d.TermNoOfDays,
                                        TermPaymentNoOfDays = d.TermPaymentNoOfDays,
-                                       ForOverdue = d.ForOverdue,
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                        PrincipalAmount = d.PrincipalAmount,
                                        InterestId = d.InterestId,

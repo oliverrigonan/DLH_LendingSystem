@@ -594,7 +594,6 @@
         var loanApplicationDeductionFlexGrid;
         var cboDeduction;
         var loanDeductionId = 0;
-        //var loanApplicationReleasedBy;
 
         // create loan Application Loan Date
         function createloanApplicationLoanDate() {
@@ -688,44 +687,6 @@
             });
         }
 
-        //// get users
-        //function getStaff() {
-        //    var staffArray = new Array();
-        //    $.ajax({
-        //        url: '/api/staff/list',
-        //        cache: false,
-        //        type: 'GET',
-        //        contentType: 'application/json; charset=utf-8',
-        //        data: {},
-        //        success: function (staffResults) {
-        //            var disabled = true;
-        //            if (staffResults.length > 0) {
-        //                for (i = 0; i < staffResults.length; i++) {
-        //                    staffArray.push({
-        //                        Id: staffResults[i]["Id"],
-        //                        Staff: staffResults[i]["Staff"],
-        //                    });
-        //                }
-
-        //                disabled = false;
-        //            }
-
-        //            cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy');
-        //            getUser();
-
-        //            loanApplicationReleasedBy.dispose();
-        //            loanApplicationReleasedBy = new wijmo.input.ComboBox('#loanApplicationReleasedBy', {
-        //                disabled: disabled,
-        //                itemsSource: staffArray,
-        //                isEditable: false,
-        //                required: true,
-        //                displayMemberPath: "Staff",
-        //                selectedValuePath: "Staff"
-        //            });
-        //        }
-        //    });
-        //}
-
         // get users
         function getUser() {
             var userArray = new Array();
@@ -779,18 +740,12 @@
                         document.getElementById('loanApplicationTotalNetCollectionAmount').disabled = true;
                         document.getElementById('loanApplicationTotalNetAmount').disabled = true;
                         cboloanApplicationPreparedBy.disabled = true;
-
                         document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
                         cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
                         document.getElementById("loanApplicationApplicantArea").value = loanApplicationResult.Area;
                         document.getElementById("loanApplicationParticulars").value = loanApplicationResult.Particulars;
-
-                        //if (loanApplicationResult.ReleaseByStaffId != null) {
-                        //    loanApplicationReleasedBy.selectedValue = loanApplicationResult.ReleaseByStaff;
-                        //}
-
                         cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
                         cboTerm.selectedValue = loanApplicationResult.Term;
                         document.getElementById("termNoOfDays").value = loanApplicationResult.TermNoOfDays;
@@ -818,7 +773,6 @@
                             }, 100);
 
                             cboloanApplicationApplicant.disabled = true;
-                            //loanApplicationReleasedBy.disabled = true;
                             cboTerm.disabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
@@ -874,12 +828,10 @@
                     loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
                     loanApplicationObject.ApplicantId = cboloanApplicationApplicant.selectedItem["Id"];
                     loanApplicationObject.Particulars = document.getElementById("loanApplicationParticulars").value;
-                    //loanApplicationObject.ReleaseByStaffId = loanApplicationReleasedBy.selectedItem["Id"];
                     loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
                     loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
                     loanApplicationObject.TermNoOfDays = document.getElementById("termNoOfDays").value;
                     loanApplicationObject.TermPaymentNoOfDays = document.getElementById("termPaymentNoOfDays").value;
-                    loanApplicationObject.ForOverdue = null;
                     loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                     loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
                     loanApplicationObject.InterestRate = document.getElementById("interestRate").value;

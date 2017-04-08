@@ -45,6 +45,9 @@
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
+                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddOverdueApplicant()">
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Overdue Applicant
+                                    </button>
                                     <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddReconstructOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                     </button>
@@ -198,6 +201,51 @@
         </div>
     </div>
 
+    <!-- loan applciation recontruct Detail Modal -->
+    <div class="modal fade" id="reconstructDetailOverDueModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Overdue Applicants</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Applicant</label>
+                            <div class="col-sm-8">
+                                <div id="cboOverApplicant" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Balance</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">                         
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredOverdueAmount" id="amountToBeReconstructOverdue" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Penalty</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredOverdueAmount" id="penaltyToBeReconstructOverdue" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnReconstructOverdue" onclick="btnReconstructOverdueOnclick()"><i class="fa fa-plus fa-fw"></i> Add</button>
+                    <button class="btn btn-danger" id="btnCloseReconstructOverdue" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -227,6 +275,24 @@
             getApplicant();
         }
 
+        function btnAddOverdueApplicant() {
+            $("#reconstructDetailOverDueModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $('.requiredOverdueAmount').each(function () {
+                $(this).css({
+                    "border": "",
+                });
+            });
+
+            document.getElementById("amountToBeReconstructOverdue").value = 0;
+            document.getElementById("penaltyToBeReconstructOverdue").value = 0;
+
+            getApplicant();
+        }
+
         // get applicant
         function getApplicant() {
             var applicantArray = new Array();
@@ -248,6 +314,16 @@
 
                         disabled = false;
                     }
+
+                    cboOverApplicant.dispose();
+                    cboOverApplicant = new wijmo.input.ComboBox('#cboOverApplicant', {
+                        disabled: disabled,
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Applicant",
+                        selectedValuePath: "Applicant"
+                    });
 
                     cboApplicant.dispose();
                     cboApplicant = new wijmo.input.ComboBox('#cboApplicant', {
@@ -472,6 +548,51 @@
                 }
             });
             return loanApplicationListArray;
+        }
+
+        function btnReconstructOverdueOnclick() {
+            var loanReconstuctObject = new Object();
+            loanReconstuctObject.ApplicantId = cboOverApplicant.selectedItem["ApplicantId"];
+            loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstructOverdue").value;
+            loanReconstuctObject.ReconstructLoanTotalPenaltyAmount = document.getElementById("penaltyToBeReconstructOverdue").value;
+            var loanReconstuctData = JSON.stringify(loanReconstuctObject);
+
+
+            var isValid = true;
+            $('.requiredOverdueAmount').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            if (isValid) {
+                document.getElementById("btnReconstructOverdue").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+                $("#btnReconstructOverdue").prop("disabled", true);
+                $("#btnCloseReconstructOverdue").prop("disabled", true);
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/loanReconstruct/overdue/add',
+                    contentType: "application/json; charset=utf-8",
+                    data: loanReconstuctData,
+                    success: function (id) {
+                        if (id > 0) {
+                            window.location = '/Software/ReconstructDetail?id=' + id;
+                        } else {
+                            toastr.error("Bad Request");
+                        }
+                    }
+                });
+            } else {
+                toastr.error("Invalid Entry");
+            }
         }
 
         // add new reconstruct
@@ -796,7 +917,8 @@
                 getUserRightsMessageError();
             }
 
-            cboApplicant = new wijmo.input.ComboBox('#cboApplicant')
+            cboApplicant = new wijmo.input.ComboBox('#cboApplicant');
+            cboOverApplicant = new wijmo.input.ComboBox('#cboOverApplicant');
             cboLoanNumber = new wijmo.input.ComboBox('#cboLoanNumber')
         }
     </script>

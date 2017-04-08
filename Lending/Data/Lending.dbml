@@ -538,7 +538,6 @@
       <Column Name="TermId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TermNoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="TermPaymentNoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="ForOverdue" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="MaturityDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="PrincipalAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="InterestId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />

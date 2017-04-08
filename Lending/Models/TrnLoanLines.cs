@@ -26,5 +26,6 @@ namespace Lending.Models
         public Boolean IsLoanRenew { get; set; }
         public String DueDate { get; set; }
         public Boolean? ForOverdue { get; set; }
+        public Decimal TermNoOfDays { get; set; }
     }
 }

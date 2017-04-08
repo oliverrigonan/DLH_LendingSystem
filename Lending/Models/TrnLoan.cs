@@ -23,7 +23,6 @@ namespace Lending.Models
         public String Term { get; set; }
         public Decimal TermNoOfDays { get; set; }
         public Decimal TermPaymentNoOfDays { get; set; }
-        public Boolean? ForOverdue { get; set; }
         public String MaturityDate { get; set; }
         public Decimal PrincipalAmount { get; set; }
         public Boolean IsAdvanceInterest { get; set; }

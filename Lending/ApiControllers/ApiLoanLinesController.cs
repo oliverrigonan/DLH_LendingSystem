@@ -27,7 +27,8 @@ namespace Lending.ApiControllers
                                 CollectibleDate = d.CollectibleDate.ToShortDateString(),
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
-                                PenaltyAmount = d.PenaltyAmount
+                                PenaltyAmount = d.PenaltyAmount,
+                                TermNoOfDays = d.trnLoan.TermNoOfDays
                             };
 
             return loanLines.ToList();
@@ -51,8 +52,8 @@ namespace Lending.ApiControllers
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
                                 PenaltyAmount = d.PenaltyAmount,
-                                ForOverdue = d.trnLoan.ForOverdue,
-                                BalanceAmount = d.trnLoan.TotalBalanceAmount
+                                BalanceAmount = d.trnLoan.TotalBalanceAmount,
+                                TermNoOfDays = d.trnLoan.TermNoOfDays
                             };
 
             return loanLines.ToList();
@@ -87,7 +88,8 @@ namespace Lending.ApiControllers
                                 IsLoanApplication = d.trnLoan.IsLoanApplication,
                                 IsLoanReconstruct = d.trnLoan.IsLoanReconstruct,
                                 IsLoanRenew = d.trnLoan.IsLoanRenew,
-                                DueDate = d.trnLoan.MaturityDate.ToShortDateString()
+                                DueDate = d.trnLoan.MaturityDate.ToShortDateString(),
+                                TermNoOfDays = d.trnLoan.TermNoOfDays
                             };
 
             return loanLines.ToList();

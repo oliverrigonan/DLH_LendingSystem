@@ -231,7 +231,6 @@ namespace Lending.ApiControllers
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                     newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-                                    newLoan.ForOverdue = null;
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = loanRenew.RenewPrincipalAmount;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;

@@ -12562,8 +12562,6 @@ namespace Lending.Data
 		
 		private decimal _TermPaymentNoOfDays;
 		
-		private System.Nullable<bool> _ForOverdue;
-		
 		private System.DateTime _MaturityDate;
 		
 		private decimal _PrincipalAmount;
@@ -12662,8 +12660,6 @@ namespace Lending.Data
     partial void OnTermNoOfDaysChanged();
     partial void OnTermPaymentNoOfDaysChanging(decimal value);
     partial void OnTermPaymentNoOfDaysChanged();
-    partial void OnForOverdueChanging(System.Nullable<bool> value);
-    partial void OnForOverdueChanged();
     partial void OnMaturityDateChanging(System.DateTime value);
     partial void OnMaturityDateChanged();
     partial void OnPrincipalAmountChanging(decimal value);
@@ -12921,26 +12917,6 @@ namespace Lending.Data
 					this._TermPaymentNoOfDays = value;
 					this.SendPropertyChanged("TermPaymentNoOfDays");
 					this.OnTermPaymentNoOfDaysChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ForOverdue", DbType="Bit")]
-		public System.Nullable<bool> ForOverdue
-		{
-			get
-			{
-				return this._ForOverdue;
-			}
-			set
-			{
-				if ((this._ForOverdue != value))
-				{
-					this.OnForOverdueChanging(value);
-					this.SendPropertyChanging();
-					this._ForOverdue = value;
-					this.SendPropertyChanged("ForOverdue");
-					this.OnForOverdueChanged();
 				}
 			}
 		}
