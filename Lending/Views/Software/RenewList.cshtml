@@ -454,6 +454,7 @@
                                 LoanNumber: loanApplicationListResult[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
+                                Particulars: loanApplicationListResult[i]["Particulars"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
                                 PreviousPenaltyAmount: loanApplicationListResult[i]["PreviousPenaltyAmount"],
                                 InterestAmount: loanApplicationListResult[i]["InterestAmount"],
@@ -711,6 +712,12 @@
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
                                 "width": 170,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
                             },
                             {
                                 "header": "Renew Amount",

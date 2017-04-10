@@ -31,7 +31,7 @@ namespace Lending.Reports
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(PageSize.A3);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
-                    document.SetMargins(50f, 50f, 50f, 50f);
+                    document.SetMargins(30f, 30f, 30f, 30f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                     // Document Starts

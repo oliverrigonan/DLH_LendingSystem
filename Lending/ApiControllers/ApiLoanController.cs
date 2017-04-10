@@ -587,7 +587,7 @@ namespace Lending.ApiControllers
                                         Decimal collectibleAmount = loan.NetCollectionAmount;
                                         Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
                                         newLoanLine.LoanId = Convert.ToInt32(id);
-                                        newLoanLine.DayReference = "OD-" + loans.FirstOrDefault().LoanNumber + "- 001" + " (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
+                                        newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-001 (" + Convert.ToDateTime(loan.LoanDate).ToString("MMM dd, yyyy") + ") - " + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
                                         newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate);
                                         newLoanLine.CollectibleAmount = collectibleAmount;
                                         newLoanLine.PaidAmount = 0;

@@ -31,7 +31,7 @@ namespace Lending.Reports
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(PageSize.A3);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
-                    document.SetMargins(50f, 50f, 50f, 50f);
+                    document.SetMargins(30f, 30f, 30f, 30f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                     // Document Starts
@@ -137,7 +137,7 @@ namespace Lending.Reports
                     float[] spaceTableWithCells = new float[] { 100f };
                     spaceTable.SetWidths(spaceTableWithCells);
                     spaceTable.WidthPercentage = 100;
-                    spaceTable.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 20f, PaddingTop = 10f, HorizontalAlignment = 1 });
+                    spaceTable.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 5f, PaddingTop = 5f, HorizontalAlignment = 1 });
                     document.Add(spaceTable);
 
                     PdfPTable loanDetaiAmountlData = new PdfPTable(5);

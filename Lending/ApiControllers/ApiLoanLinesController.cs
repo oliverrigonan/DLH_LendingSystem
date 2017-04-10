@@ -73,6 +73,8 @@ namespace Lending.ApiControllers
                             && d.trnLoan.IsLocked == true
                             && d.trnLoan.IsLoanReconstruct == false
                             && d.trnLoan.TotalBalanceAmount > 0
+                            && d.PaidAmount == 0
+                            && d.PenaltyAmount == 0
                             select new Models.TrnLoanLines
                             {
                                 Id = d.Id,

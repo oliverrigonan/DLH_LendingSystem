@@ -269,6 +269,7 @@
     <Compile Include="Reports\RepExpensesSummaryReportController.cs" />
     <Compile Include="Reports\RepLoanDetailReportController.cs" />
     <Compile Include="Reports\RepLoanSummaryReportController.cs" />
+    <Compile Include="Reports\RepOverdueCollectionPDFController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -440,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RepOverdueCollectionPDF\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

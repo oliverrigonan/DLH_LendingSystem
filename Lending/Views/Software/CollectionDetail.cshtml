@@ -173,6 +173,25 @@
                             <div class="panel-body">
                                 <div id="collectionLinesFlexgrid" class="grid"></div>
                             </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -410,6 +429,12 @@
                         $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
 
                         collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                        collectionLinesCollectionView.pageSize = 15;
+
+                        collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
                         collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
                         collectionLinesFlexgrid.trackChanges = true;
                     },
@@ -890,9 +915,24 @@
             return collectionLinesArray;
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtons() {
+            if (collectionLinesCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (collectionLinesCollectionView.pageIndex + 1) + ' / ' + collectionLinesCollectionView.pageCount;
+        }
+
         // create collection line flexgrid
         function createCollectionLineFlexgrid() {
             collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+            collectionLinesCollectionView.pageSize = 15;
+
+            collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
 
             collectionLinesFlexgrid = new wijmo.grid.FlexGrid('#collectionLinesFlexgrid');
             collectionLinesFlexgrid.initialize({
@@ -939,6 +979,34 @@
             });
 
             collectionLinesFlexgrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtons();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToFirstPage();
+                updateNavigateButtons();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToPreviousPage();
+                updateNavigateButtons();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToNextPage();
+                updateNavigateButtons();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToLastPage();
+                updateNavigateButtons();
+            });
+
+
             createCurrentCollectionFlexgrid();
         }
 
@@ -1263,6 +1331,12 @@
                                     $("#collectionLineDetailModal").modal("hide");
 
                                     collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                                    collectionLinesCollectionView.pageSize = 15;
+
+                                    collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                        updateNavigateButtons();
+                                    });
+
                                     collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
                                     collectionLinesFlexgrid.trackChanges = true;
                                 },
@@ -1346,6 +1420,12 @@
                         $("#deleteConfirmationCollectionLineModal").modal("hide");
 
                         collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                        collectionLinesCollectionView.pageSize = 15;
+
+                        collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
                         collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
                         collectionLinesFlexgrid.trackChanges = true;
                     },

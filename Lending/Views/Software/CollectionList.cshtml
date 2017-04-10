@@ -288,6 +288,7 @@
                                 CollectionNumber: collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
                                 Applicant: collectionListResult[i]["Applicant"],
+                                Particulars: collectionListResult[i]["Particulars"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumberDetail: collectionListResult[i]["LoanNumberDetail"],
                                 LoanId: collectionListResult[i]["LoanId"],
@@ -511,6 +512,14 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "Loan Detail",
+                                "binding": "LoanDetailButton",
+                                "width": 120,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
                                 "header": "L",
                                 "binding": "IsLocked",
                                 "width": 35,
@@ -544,6 +553,18 @@
                                 "width": 165,
                             },
                             {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "Status",
+                                "allowSorting": true,
+                                "width": 130
+                            },
+                            {
                                 "header": "Total Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
@@ -554,20 +575,6 @@
                                 "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": 130
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "Status",
-                                "allowSorting": true,
-                                "width": 130
-                            },
-                            {
-                                "header": "Loan Detail",
-                                "binding": "LoanDetailButton",
-                                "width": 120,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
                             }
                 ],
                 autoGenerateColumns: false,

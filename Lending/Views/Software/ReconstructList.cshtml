@@ -221,7 +221,7 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4">Balance</label>
                             <div class="col-sm-8">
-                                <div class="input-group numberField">                         
+                                <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredOverdueAmount" id="amountToBeReconstructOverdue" placeholder="0.00" />
                                 </div>
@@ -234,6 +234,12 @@
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredOverdueAmount" id="penaltyToBeReconstructOverdue" placeholder="0.00" />
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Particulars</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredOverdueAmount" rows="7" id="overdueParticulars" placeholder="Particulars"></textarea>
                             </div>
                         </div>
                     </form>
@@ -290,7 +296,7 @@
             document.getElementById("amountToBeReconstructOverdue").value = 0;
             document.getElementById("penaltyToBeReconstructOverdue").value = 0;
 
-            getApplicant();
+            getApplicantOverdue();
         }
 
         // get applicant
@@ -315,16 +321,6 @@
                         disabled = false;
                     }
 
-                    cboOverApplicant.dispose();
-                    cboOverApplicant = new wijmo.input.ComboBox('#cboOverApplicant', {
-                        disabled: disabled,
-                        itemsSource: applicantArray,
-                        isEditable: false,
-                        required: true,
-                        displayMemberPath: "Applicant",
-                        selectedValuePath: "Applicant"
-                    });
-
                     cboApplicant.dispose();
                     cboApplicant = new wijmo.input.ComboBox('#cboApplicant', {
                         disabled: disabled,
@@ -339,6 +335,42 @@
                     });
 
                     getApplicantLoanNumber();
+                }
+            });
+        }
+
+
+        // get applicant
+        function getApplicantOverdue() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/applicant/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                Id: applicantResults[i]["Id"],
+                                ApplicantFullName: applicantResults[i]["ApplicantFullName"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboOverApplicant.dispose();
+                    cboOverApplicant = new wijmo.input.ComboBox('#cboOverApplicant', {
+                        disabled: disabled,
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "ApplicantFullName",
+                        selectedValuePath: "ApplicantFullName"
+                    });
                 }
             });
         }
@@ -522,6 +554,7 @@
                                 LoanNumber: loanApplicationListResult[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
+                                Particulars: loanApplicationListResult[i]["Particulars"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
                                 PreviousPenaltyAmount: loanApplicationListResult[i]["PreviousPenaltyAmount"],
                                 InterestAmount: loanApplicationListResult[i]["InterestAmount"],
@@ -552,11 +585,11 @@
 
         function btnReconstructOverdueOnclick() {
             var loanReconstuctObject = new Object();
-            loanReconstuctObject.ApplicantId = cboOverApplicant.selectedItem["ApplicantId"];
+            loanReconstuctObject.ApplicantId = cboOverApplicant.selectedItem["Id"];
             loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstructOverdue").value;
             loanReconstuctObject.ReconstructLoanTotalPenaltyAmount = document.getElementById("penaltyToBeReconstructOverdue").value;
+            loanReconstuctObject.Particulars = document.getElementById("overdueParticulars").value;
             var loanReconstuctData = JSON.stringify(loanReconstuctObject);
-
 
             var isValid = true;
             $('.requiredOverdueAmount').each(function () {
@@ -823,6 +856,12 @@
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
                                 "width": 170,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
                             },
                             {
                                 "header": "Reconstruct Amount",
