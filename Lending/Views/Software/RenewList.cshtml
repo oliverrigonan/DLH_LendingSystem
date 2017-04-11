@@ -497,6 +497,8 @@
             loanRenewObject.RenewLoanTotalPenaltyAmount = document.getElementById("penaltyToBeRenew").value;
             var loanRenewData = JSON.stringify(loanRenewObject);
 
+
+
             $.ajax({
                 type: "POST",
                 url: '/api/loanRenew/add',
@@ -696,7 +698,7 @@
                                 "width": 100,
                             },
                             {
-                                "header": "Renew Number",
+                                "header": "Renew No.",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
                                 "width": 160,
@@ -726,7 +728,13 @@
                                 "width": 160,
                             },
                             {
-                                "header": "Collection Amount",
+                                "header": "Net",
+                                "binding": "NetAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Net Collection",
                                 "binding": "NetCollectionAmount",
                                 "allowSorting": true,
                                 "width": 160,

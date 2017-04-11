@@ -53,13 +53,13 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Reconstruct Number</label>
+                                                <label class="control-label col-sm-4">Recon. Number</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control requiredLoanApplication" id="loanApplicationNumber" placeholder="Loan Number" />
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Reconstruct Date</label>
+                                                <label class="control-label col-sm-4">Recon. Date</label>
                                                 <div class="col-sm-8">
                                                     <div id="loanApplicationLoanDate" style="width: 100%;"></div>
                                                 </div>
@@ -101,19 +101,19 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Terms (Payment)</label>
+                                                <label class="control-label col-sm-4">Terms</label>
                                                 <div class="col-sm-8">
                                                     <div id="cboTerm" style="width: 100%;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">No. of Days</label>
+                                                <label class="control-label col-sm-4">Days</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control numberField" id="termNoOfDays" placeholder="0.00" disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">No. of Days Per Pay</label>
+                                                <label class="control-label col-sm-4">Days Per Pay</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control numberField" id="termPaymentNoOfDays" placeholder="0.00" disabled />
                                                 </div>
@@ -149,7 +149,7 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Recons. Amount</label>
+                                                <label class="control-label col-sm-4">Recon. Amount</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -164,7 +164,7 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Interest</label>
+                                                <label class="control-label col-sm-4">Interest Name</label>
                                                 <div class="col-sm-8">
                                                     <div id="cboInterest" style="width: 100%;"></div>
                                                 </div>
@@ -179,7 +179,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Interest Amount</label>
+                                                <label class="control-label col-sm-4">Interest</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -203,7 +203,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Deductions</label>
+                                                <label class="control-label col-sm-4">Deduction</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -218,11 +218,44 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Collection Amount</label>
+                                                <label class="control-label col-sm-4">Net Collection</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
                                                         <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetCollectionAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Paid</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalPaid" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Penalty</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalPenalty" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Balance</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalBalance" placeholder="0.00" disabled />
                                                     </div>
                                                 </div>
                                             </div>
@@ -245,12 +278,12 @@
                             </li>
                             <li>
                                 <a href="#loanLines" data-toggle="tab" id="loanLinesTab">
-                                    Reconstruct Lines - Collection (Auto Generate When Locked)
+                                    Posting (Auto-Generated)
                                 </a>
                             </li>
                             <li>
                                 <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
-                                    Loan Reconstruct
+                                    Reconstructed Loan
                                 </a>
                             </li>
                         </ul>
@@ -339,7 +372,7 @@
                             <div class="tab-pane fade in" id="loanLines">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Reconstruct Lines
+                                        Posting (Auto-Generated)
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanLinesFlexgrid" class="grid"></div>
@@ -368,7 +401,7 @@
                             <div class="tab-pane fade in" id="loanReconstruct">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Loan Reconstruct
+                                        Reconstructed Loan
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanReconstructFlexgrid" class="grid"></div>
@@ -648,7 +681,7 @@
 
                     cboloanApplicationApplicant.dispose();
                     cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant', {
-                        disabled: disabled,
+                        disabled: true,
                         placeholder: "Select",
                         itemsSource: applicantArray,
                         isEditable: false,
@@ -733,6 +766,9 @@
                         document.getElementById('previousPenaltyAmount').value = loanApplicationResult.PreviousPenaltyAmount.toLocaleString();
                         document.getElementById('loanApplicationDeductionAmount').value = loanApplicationResult.DeductionAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetCollectionAmount').value = loanApplicationResult.NetCollectionAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalTotalBalance').value = loanApplicationResult.TotalBalanceAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalTotalPaid').value = loanApplicationResult.TotalPaidAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalTotalPenalty').value = loanApplicationResult.TotalPenaltyAmount.toLocaleString();
                         document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
@@ -2185,6 +2221,7 @@
             var netCollectionAmount = parseFloat(principalAmountValue) + parseFloat(interestAmountValue) + parseFloat(totalDeductions);
 
             document.getElementById('loanApplicationTotalNetCollectionAmount').value = netCollectionAmount.toLocaleString();
+            document.getElementById('loanApplicationTotalTotalBalance').value = netCollectionAmount.toLocaleString();
         }
 
         // jqueries codes

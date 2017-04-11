@@ -107,19 +107,19 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Terms (Payment)</label>
+                                                <label class="control-label col-sm-4">Terms</label>
                                                 <div class="col-sm-8">
                                                     <div id="cboTerm" style="width: 100%;"></div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Number of Days</label>
+                                                <label class="control-label col-sm-4">Days</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control numberField" id="termNoOfDays" placeholder="0.00" disabled />
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">No. of Days Per Pay</label>
+                                                <label class="control-label col-sm-4">Days Per Pay</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control numberField" id="termPaymentNoOfDays" placeholder="0.00" disabled />
                                                 </div>
@@ -155,7 +155,7 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Principal Amount</label>
+                                                <label class="control-label col-sm-4">Principal</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -170,7 +170,7 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Interest</label>
+                                                <label class="control-label col-sm-4">Interest Name</label>
                                                 <div class="col-sm-8">
                                                     <div id="cboInterest" style="width: 100%;"></div>
                                                 </div>
@@ -185,7 +185,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Interest Amount</label>
+                                                <label class="control-label col-sm-4">Interest</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -200,7 +200,7 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Deductions</label>
+                                                <label class="control-label col-sm-4">Deduction</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -215,7 +215,7 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Net Amount</label>
+                                                <label class="control-label col-sm-4">Net</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
@@ -224,11 +224,45 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Collection Amount</label>
+                                                <label class="control-label col-sm-4">Net Collection</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
                                                         <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalNetCollectionAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Paid</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalPaid" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Penalty</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalPenalty" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Total Balance</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalBalance" placeholder="0.00" disabled />
                                                     </div>
                                                 </div>
                                             </div>
@@ -251,7 +285,7 @@
                             </li>
                             <li>
                                 <a href="#loanLines" data-toggle="tab" id="loanLinesTab">
-                                    Loan Lines - Collection (Auto Generate When Locked)
+                                    Posting (Auto-Generated)
                                 </a>
                             </li>
                         </ul>
@@ -340,7 +374,7 @@
                             <div class="tab-pane fade in" id="loanLines">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        Loan Lines
+                                        Posting (Auto-Generated)
                                     </div>
                                     <div class="panel-body">
                                         <div id="loanLinesFlexgrid" class="grid"></div>
@@ -792,6 +826,9 @@
                         document.getElementById('loanApplicationDeductionAmount').value = loanApplicationResult.DeductionAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetAmount').value = loanApplicationResult.NetAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetCollectionAmount').value = loanApplicationResult.NetCollectionAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalTotalBalance').value = loanApplicationResult.TotalBalanceAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalTotalPaid').value = loanApplicationResult.TotalPaidAmount.toLocaleString();
+                        document.getElementById('loanApplicationTotalTotalPenalty').value = loanApplicationResult.TotalPenaltyAmount.toLocaleString();
                         document.getElementById('stampCreatedBy').innerHTML = loanApplicationResult.CreatedByUser;
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
@@ -1413,7 +1450,7 @@
                         }
 
                         disabled = false;
-                    } 
+                    }
 
                     cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#cboloanApplicationPreparedBy');
                     getUser();
@@ -2101,6 +2138,7 @@
 
             document.getElementById('loanApplicationTotalNetAmount').value = netAmount.toLocaleString();
             document.getElementById('loanApplicationTotalNetCollectionAmount').value = netCollectionAmount.toLocaleString();
+            document.getElementById('loanApplicationTotalTotalBalance').value = netCollectionAmount.toLocaleString();
         }
 
         // jqueries codes

@@ -144,7 +144,7 @@ body {
 }
 
 .navbar-inverse {
-    background-color: #004d4d;;
+    background: #004d4d;;
     border-bottom: none;
     box-shadow: -1px 1px 10px 1px;
 }

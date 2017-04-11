@@ -242,7 +242,7 @@ namespace Lending.ApiControllers
                                     newLoan.PreviousBalanceAmount = 0;
                                     newLoan.PreviousPenaltyAmount = loanReconstruct.ReconstructLoanTotalPenaltyAmount;
                                     newLoan.DeductionAmount = 0;
-                                    newLoan.NetAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.NetAmount = 0;
                                     newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
                                     newLoan.TotalPaidAmount = 0;
                                     newLoan.TotalPenaltyAmount = 0;

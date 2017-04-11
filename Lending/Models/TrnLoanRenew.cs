@@ -18,5 +18,8 @@ namespace Lending.Models
         public Decimal RenewPrincipalAmount { get; set; }
         public Decimal RenewLoanTotalBalanceAmount { get; set; }
         public Decimal RenewLoanTotalPenaltyAmount { get; set; }
+        public Boolean IsLoanApplication { get; set; }
+        public Boolean IsLoanReconstruct { get; set; }
+        public Boolean IsLoanRenew { get; set; }
     }
 }

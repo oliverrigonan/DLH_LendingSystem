@@ -30,7 +30,10 @@ namespace Lending.ApiControllers
                              RenewLoanNumber = d.trnLoan1.IsLoanApplication == true ? d.trnLoan1.IsReconstruct == true ? "LN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "LN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanReconstruct == true ? d.trnLoan1.IsReconstruct == true ? "RC - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RC - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanRenew == true ? d.trnLoan1.IsReconstruct == true ? "RN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.LoanNumber,
                              RenewPrincipalAmount = d.trnLoan.PrincipalAmount,
                              RenewLoanTotalBalanceAmount = d.RenewLoanTotalBalanceAmount,
-                             RenewLoanTotalPenaltyAmount = d.RenewLoanTotalPenaltyAmount
+                             RenewLoanTotalPenaltyAmount = d.RenewLoanTotalPenaltyAmount,
+                             IsLoanApplication = d.trnLoan1.IsLoanApplication,
+                             IsLoanReconstruct = d.trnLoan1.IsLoanReconstruct,
+                             IsLoanRenew = d.trnLoan1.IsLoanRenew
                          };
 
             return renews.ToList();
@@ -240,7 +243,7 @@ namespace Lending.ApiControllers
                                     newLoan.PreviousBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
                                     newLoan.PreviousPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
                                     newLoan.DeductionAmount = 0;
-                                    newLoan.NetAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.NetAmount = loanRenew.RenewPrincipalAmount;
                                     newLoan.NetCollectionAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
                                     newLoan.TotalPaidAmount = 0;
                                     newLoan.TotalPenaltyAmount = 0;
