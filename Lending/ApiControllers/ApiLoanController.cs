@@ -1139,11 +1139,12 @@ namespace Lending.ApiControllers
         // loan list by areaid - overdue
         [Authorize]
         [HttpGet]
-        [Route("api/loan/overdue/{areaId}")]
-        public List<Models.TrnLoan> listOverdue(String areaId)
+        [Route("api/loan/overdue/{date}/{areaId}")]
+        public List<Models.TrnLoan> listOverdue(String date, String areaId)
         {
             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.LoanDate)
                                    where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                   && d.LoanDate.Year <= Convert.ToDateTime(date).Year
                                    && d.IsReconstruct == false
                                    && d.IsRenew == false
                                    && d.IsLocked == true

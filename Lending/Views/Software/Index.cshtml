@@ -254,6 +254,7 @@
         var cboDate;
         var cboDateOverdue;
         var isCboDateSelected = false;
+        var isCboOverDueDateSelected = false;
         var cboArea;
         var loanLinesCollectionView;
         var loanLinesFlexgrid;
@@ -264,7 +265,38 @@
             cboDateOverdue = new wijmo.input.InputDate('#cboDateOverdue', {
                 format: 'MM-dd-yyyy',
                 value: new Date(),
-                mask: '99-99-9999'
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (isCboOverDueDateSelected == true) {
+                        NProgress.start();
+                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());
+                        loanApplicationCollectionView.canFilter = true;
+                        loanApplicationCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchLoanApplication').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            loanApplicationCollectionView.refresh();
+                        });
+
+                        loanApplicationCollectionView.filter = function (item) {
+                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsLoanApplications();
+                        });
+
+                        // Flex Grid
+                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                        loanApplicationFlexGrid.trackChanges = true;
+                        //getTotalCollection();
+                    } else {
+                        isCboOverDueDateSelected = true;
+                    }
+                }
             });
 
             cboDate.dispose();
@@ -861,9 +893,11 @@
 
         // get loan application list
         function getOverdueLoans() {
+            var collectibleDate = [cboDateOverdue.value.getMonth() + 1, cboDateOverdue.value.getDate(), cboDateOverdue.value.getFullYear()].join('-');
             var loanApplicationListArray = new wijmo.collections.ObservableArray;
+
             $.ajax({
-                url: '/api/loan/overdue/' + cboAreaOverdue.selectedItem["Id"],
+                url: '/api/loan/overdue/' + collectibleDate + "/" + cboAreaOverdue.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
