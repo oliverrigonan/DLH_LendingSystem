@@ -133,25 +133,22 @@ namespace Lending.Reports
                     {
                         foreach (var loanYear in loanYears)
                         {
-                            if (Convert.ToDateTime(date).Year >= loanYear.Elements.First().LoanDate.Year)
+                            loanData.AddCell(new PdfPCell(new Phrase(loanYear.Elements.First().LoanDate.Year.ToString(), fontArial13Bold)) { Colspan = 9, PaddingTop = 10f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+
+                            foreach (var loanApplication in loanApplications)
                             {
-                                loanData.AddCell(new PdfPCell(new Phrase(loanYear.Elements.First().LoanDate.Year.ToString(), fontArial13Bold)) { Colspan = 9, PaddingTop = 10f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-
-                                foreach (var loanApplication in loanApplications)
+                                if (loanApplication.LoanDate.Year == loanYear.Elements.First().LoanDate.Year)
                                 {
-                                    if (loanApplication.LoanDate.Year == loanYear.Elements.First().LoanDate.Year)
+                                    var applicant = loanApplication.mstApplicant.ApplicantLastName + ", " + loanApplication.mstApplicant.ApplicantFirstName + " " + loanApplication.mstApplicant.ApplicantMiddleName;
+                                    loanData.AddCell(new PdfPCell(new Phrase(applicant, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                                    loanData.AddCell(new PdfPCell(new Phrase(loanApplication.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+
+                                    for (var i = 1; i <= 6; i++)
                                     {
-                                        var applicant = loanApplication.mstApplicant.ApplicantLastName + ", " + loanApplication.mstApplicant.ApplicantFirstName + " " + loanApplication.mstApplicant.ApplicantMiddleName;
-                                        loanData.AddCell(new PdfPCell(new Phrase(applicant, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                                        loanData.AddCell(new PdfPCell(new Phrase(loanApplication.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-
-                                        for (var i = 1; i <= 6; i++)
-                                        {
-                                            loanData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                                        }
-
-                                        loanData.AddCell(new PdfPCell(new Phrase(loanApplication.Particulars, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                                        loanData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                                     }
+
+                                    loanData.AddCell(new PdfPCell(new Phrase(loanApplication.Particulars, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                                 }
                             }
                         }

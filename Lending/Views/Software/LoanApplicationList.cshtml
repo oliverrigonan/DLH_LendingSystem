@@ -415,15 +415,15 @@
                         loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
                         loanApplicationFlexGrid.trackChanges = true;
                     },
-                    404: function () {
-                        toastr.error("Not Found");
+                    404: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
                         $('#deleteConfirmationLoanApplicationModal').modal('hide');
                         document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanApplication").prop("disabled", false);
                         $("#btnCloseDeleteLoanApplicationModal").prop("disabled", false);
                     },
-                    400: function () {
-                        toastr.error("Bad Request");
+                    400: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         $('#deleteConfirmationLoanApplicationModal').modal('hide');
                         document.getElementById("btnConfirmDeleteLoanApplication").innerHTML = "Delete";
                         $("#btnConfirmDeleteLoanApplication").prop("disabled", false);

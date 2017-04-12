@@ -735,7 +735,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanRenew", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get
@@ -4530,7 +4530,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstArea_mstAreaStaff", Storage="_mstArea", ThisKey="AreaId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstArea_mstAreaStaff", Storage="_mstArea", ThisKey="AreaId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstArea mstArea
 		{
 			get
@@ -4564,7 +4564,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_mstAreaStaff", Storage="_mstStaff", ThisKey="StaffId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_mstAreaStaff", Storage="_mstStaff", ThisKey="StaffId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public mstStaff mstStaff
 		{
 			get
@@ -11935,7 +11935,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnCollection_trnCollectionLine", Storage="_trnCollection", ThisKey="CollectionId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnCollection_trnCollectionLine", Storage="_trnCollection", ThisKey="CollectionId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnCollection trnCollection
 		{
 			get
@@ -14006,7 +14006,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanCollateral", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanCollateral", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get
@@ -14222,7 +14222,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanDeduction", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanDeduction", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get
@@ -14485,7 +14485,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanLine", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanLine", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get
@@ -14703,7 +14703,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="trnLoan_trnLoanReconstruct", Storage="_trnLoan", ThisKey="LoanId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public trnLoan trnLoan
 		{
 			get

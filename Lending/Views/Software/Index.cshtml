@@ -269,29 +269,29 @@
                 onValueChanged: function () {
                     if (isCboOverDueDateSelected == true) {
                         NProgress.start();
-                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());
-                        loanApplicationCollectionView.canFilter = true;
-                        loanApplicationCollectionView.pageSize = 15;
+                        //loanApplicationCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());
+                        //loanApplicationCollectionView.canFilter = true;
+                        //loanApplicationCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchLoanApplication').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            loanApplicationCollectionView.refresh();
-                        });
+                        //var filterText = '';
+                        //$('#searchLoanApplication').keyup(function () {
+                        //    filterText = this.value.toLowerCase();
+                        //    loanApplicationCollectionView.refresh();
+                        //});
 
-                        loanApplicationCollectionView.filter = function (item) {
-                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
-                        }
+                        //loanApplicationCollectionView.filter = function (item) {
+                        //    return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                        //                       || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                        //                       || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                        //}
 
-                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsLoanApplications();
-                        });
+                        //loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        //    updateNavigateButtonsLoanApplications();
+                        //});
 
-                        // Flex Grid
-                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
-                        loanApplicationFlexGrid.trackChanges = true;
+                        //// Flex Grid
+                        //loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                        //loanApplicationFlexGrid.trackChanges = true;
                         //getTotalCollection();
                     } else {
                         isCboOverDueDateSelected = true;
@@ -306,28 +306,28 @@
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     if (isCboDateSelected == true) {
-                        NProgress.start();
-                        loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesData());
-                        loanLinesCollectionView.canFilter = true;
-                        loanLinesCollectionView.pageSize = 15;
+                        //NProgress.start();
+                        //loanLinesCollectionView = new wijmo.collections.CollectionView(getLoanLinesData());
+                        //loanLinesCollectionView.canFilter = true;
+                        //loanLinesCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#applicantCollectionsSearchInput').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            loanLinesCollectionView.refresh();
-                        });
+                        //var filterText = '';
+                        //$('#applicantCollectionsSearchInput').keyup(function () {
+                        //    filterText = this.value.toLowerCase();
+                        //    loanLinesCollectionView.refresh();
+                        //});
 
-                        loanLinesCollectionView.filter = function (item) {
-                            return !filterText || (item.DayReference.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
-                        }
+                        //loanLinesCollectionView.filter = function (item) {
+                        //    return !filterText || (item.DayReference.toLowerCase().indexOf(filterText) > -1)
+                        //                       || (item.Applicant.toLowerCase().indexOf(filterText) > -1);
+                        //}
 
-                        loanLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
+                        //loanLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        //    updateNavigateButtons();
+                        //});
 
-                        loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
-                        loanLinesFlexgrid.trackChanges = true;
+                        //loanLinesFlexgrid.itemsSource = loanLinesCollectionView;
+                        //loanLinesFlexgrid.trackChanges = true;
                         //getTotalCollection();
                     } else {
                         isCboDateSelected = true;
@@ -516,16 +516,16 @@
             var collectibleDate = [cboDate.value.getMonth() + 1, cboDate.value.getDate(), cboDate.value.getFullYear()].join('-');
 
             $.ajax({
-                url: '/api/loanLines/listByCollectibleDateDate/byAreaId/' + collectibleDate + '/' + cboArea.selectedItem["Id"],
+                url: '/api/loan/active/' + cboArea.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
-                success: function (loanLinesResults) {
-                    if (loanLinesResults.length > 0) {
-                        for (i = 0; i < loanLinesResults.length; i++) {
+                success: function (loanApplicationListResult) {
+                    if (loanApplicationListResult.length > 0) {
+                        for (i = 0; i < loanApplicationListResult.length; i++) {
 
-                            var getDueDate = new Date(loanLinesResults[i]["DueDate"]);
-                            var getCollectibleDate = new Date(loanLinesResults[i]["CollectibleDate"]);
+                            var getDueDate = new Date(loanApplicationListResult[i]["DueDate"]);
+                            var getCollectibleDate = new Date(loanApplicationListResult[i]["CollectibleDate"]);
 
                             var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
                             var diffDays = Math.round(Math.abs((getDueDate.getTime() - getCollectibleDate.getTime()) / (oneDay)));
@@ -533,10 +533,10 @@
                             var loanStatus = "Active";
                             var transactionType = "btnDetailLoan()";
 
-                            if (loanLinesResults[i]["CollectibleDate"] == loanLinesResults[i]["DueDate"]) {
+                            if (loanApplicationListResult[i]["CollectibleDate"] == loanApplicationListResult[i]["DueDate"]) {
                                 loanStatus = "Active (Due)";
                             } else {
-                                if (loanLinesResults[i]["IsLoanRenew"]) {
+                                if (loanApplicationListResult[i]["IsLoanRenew"]) {
                                     if (diffDays == 7) {
                                         loanStatus = "Active (Renew) - 7 Days before Due"
                                     } else {
@@ -599,24 +599,39 @@
                                 }
                             }
 
-                            var newDate = new Date(loanLinesResults[i]["CollectibleDate"]);
+                            var newDate = new Date(loanApplicationListResult[i]["CollectibleDate"]);
                             var collectibleDate = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var newDueDate = new Date(loanLinesResults[i]["DueDate"]);
+                            var newDueDate = new Date(loanApplicationListResult[i]["MaturityDate"]);
                             var collectionDueDate = ('0' + (newDueDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDueDate.getDate()).slice(-2) + '-' + newDueDate.getFullYear();
 
                             loanLinesArray.push({
                                 BtnDetail: "<button class='btn btn-primary btn-xs btn-block' onclick='" + transactionType + "'><i class='fa fa-edit fa-fw'></i> Detail</button>",
-                                Id: loanLinesResults[i]["Id"],
-                                DayReference: loanLinesResults[i]["DayReference"],
+                                Id: loanApplicationListResult[i]["Id"],
+                                DayReference: loanApplicationListResult[i]["DayReference"],
                                 CollectibleDate: collectibleDate,
-                                CollectibleAmount: loanLinesResults[i]["CollectibleAmount"],
-                                PaidAmount: loanLinesResults[i]["PaidAmount"],
-                                PenaltyAmount: loanLinesResults[i]["PenaltyAmount"],
-                                Applicant: loanLinesResults[i]["Applicant"],
+                                DueDate: collectionDueDate,
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
+                                LoanDate: newDate.getFullYear().toString(),
+                                Applicant: loanApplicationListResult[i]["Applicant"],
+                                Particulars: loanApplicationListResult[i]["Particulars"],
+                                PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                InterestAmount: loanApplicationListResult[i]["InterestAmount"],
+                                DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
+                                NetAmount: loanApplicationListResult[i]["NetAmount"],
+                                NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
+                                TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
+                                IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
                                 LoanStatus: loanStatus,
-                                LoanId: loanLinesResults[i]["LoanId"],
-                                DueDate: collectionDueDate
+                                IsLocked: loanApplicationListResult[i]["IsLocked"],
+                                CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
+                                CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
+                                CreatedDateTime: loanApplicationListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
                             });
                         }
                     }
@@ -740,20 +755,20 @@
         function btnDetailLoan() {
             loanLinesCollectionView.editItem(loanLinesCollectionView.currentItem);
             var currentItem = loanLinesCollectionView.currentEditItem;
-            window.open("/Software/LoanApplicationDetail?id=" + currentItem.LoanId, "_blank");
+            window.open("/Software/LoanApplicationDetail?id=" + currentItem.Id, "_blank");
         }
 
 
         function btnDetailReconstruct() {
             loanLinesCollectionView.editItem(loanLinesCollectionView.currentItem);
             var currentItem = loanLinesCollectionView.currentEditItem;
-            window.open("/Software/ReconstructDetail?id=" + currentItem.LoanId, "_blank");
+            window.open("/Software/ReconstructDetail?id=" + currentItem.Id, "_blank");
         }
 
         function btnDetailRenew() {
             loanLinesCollectionView.editItem(loanLinesCollectionView.currentItem);
             var currentItem = loanLinesCollectionView.currentEditItem;
-            window.open("/Software/RenewDetail?id=" + currentItem.LoanId, "_blank");
+            window.open("/Software/RenewDetail?id=" + currentItem.Id, "_blank");
         }
 
         //function btnCSV() {
@@ -897,7 +912,7 @@
             var loanApplicationListArray = new wijmo.collections.ObservableArray;
 
             $.ajax({
-                url: '/api/loan/overdue/' + collectibleDate + "/" + cboAreaOverdue.selectedItem["Id"],
+                url: '/api/loan/overdue/' + cboAreaOverdue.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',

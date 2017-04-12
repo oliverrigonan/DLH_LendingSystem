@@ -429,7 +429,7 @@
                         collectionFlexGrid.trackChanges = true;
                     },
                     404: function () {
-                        toastr.error("Not Found");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
                         $('#deleteConfirmationCollectionModal').modal('hide');
                         document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
                         $("#btnConfirmDeleteCollection").prop("disabled", false);
@@ -437,7 +437,7 @@
                     },
                     400: function () {
                         toastr.error("Bad Request");
-                        $('#deleteConfirmationCollectionModal').modal('hide');
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
                         $("#btnConfirmDeleteCollection").prop("disabled", false);
                         $("#btnCloseDeleteCollectionModal").prop("disabled", false);

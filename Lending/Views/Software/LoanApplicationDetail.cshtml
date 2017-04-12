@@ -980,7 +980,7 @@
                     },
                     404: function (message) {
                         $("#processingModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 404 - Not Found");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
                         $("#btnUnlock").prop("disabled", false);
                         $("#btnPrint").prop("disabled", false);
                         $("#btnClose").prop("disabled", false);
@@ -988,7 +988,7 @@
                     },
                     400: function (message) {
                         $("#processingModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 400 - Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         $("#btnUnlock").prop("disabled", false);
                         $("#btnPrint").prop("disabled", false);
                         $("#btnClose").prop("disabled", false);
@@ -996,7 +996,7 @@
                     },
                     500: function (message) {
                         $("#processingModal").modal("hide");
-                        toastr.error(message.responseText.replace(/"/g, ""), "Error 500 - Internal Server Error");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Internal Server Error");
                         $("#btnUnlock").prop("disabled", false);
                         $("#btnPrint").prop("disabled", false);
                         $("#btnClose").prop("disabled", false);

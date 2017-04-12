@@ -157,7 +157,7 @@
                                 <table style="width: 100%">
                                     <tr>
                                         <td>
-                                            Collection Lines
+                                            Collections
                                         </td>
                                         <td align="right">
                                             <button class="btn btn-primary btn-sm" id="btnFullPayment" onclick="btnFullPaymentOnclick()">
@@ -438,8 +438,15 @@
                         collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
                         collectionLinesFlexgrid.trackChanges = true;
                     },
-                    400: function () {
-                        toastr.error("Bad Request");
+                    404: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+
+                        $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
+                    },
+                    400: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
                         document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
 
@@ -1340,15 +1347,15 @@
                                     collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
                                     collectionLinesFlexgrid.trackChanges = true;
                                 },
-                                404: function () {
-                                    toastr.error("Record Not Found");
+                                404: function (message) {
+                                    toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
 
                                     if (isPenalty) {
                                         $("#penaltyModal").modal("hide");
                                     } else {
                                         $("#paymentModal").modal("hide");
                                     }
-                                    $("#collectionLineDetailModal").modal("hide");
+                                    //$("#collectionLineDetailModal").modal("hide");
 
                                     document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
                                     $("#btnSaveCollectionLine").prop("disabled", false);
@@ -1358,15 +1365,15 @@
                                     $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
                                     $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
                                 },
-                                400: function () {
-                                    toastr.error("Bad Request");
+                                400: function (message) {
+                                    toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
 
                                     if (isPenalty) {
                                         $("#penaltyModal").modal("hide");
                                     } else {
                                         $("#paymentModal").modal("hide");
                                     }
-                                    $("#collectionLineDetailModal").modal("hide");
+                                    //$("#collectionLineDetailModal").modal("hide");
 
                                     document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
                                     $("#btnSaveCollectionLine").prop("disabled", false);
@@ -1429,8 +1436,8 @@
                         collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
                         collectionLinesFlexgrid.trackChanges = true;
                     },
-                    404: function () {
-                        toastr.error("Record Not Found");
+                    404: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
 
                         $("#deleteConfirmationCollectionLineModal").modal("hide");
 
@@ -1438,8 +1445,8 @@
                         $("#btnConfirmDeleteCollectionLine").prop("disabled", false);
                         $("#btnCloseDeleteCollectionLineModal").prop("disabled", false);
                     },
-                    400: function () {
-                        toastr.error("Bad Request");
+                    400: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
 
                         $("#deleteConfirmationCollectionLineModal").modal("hide");
 

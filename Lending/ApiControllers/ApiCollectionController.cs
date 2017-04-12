@@ -502,36 +502,36 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var collectionLines = from d in db.trnCollectionLines
-                                                      where d.CollectionId == Convert.ToInt32(id)
-                                                      select new Models.TrnCollectionLines
-                                                      {
-                                                          Id = d.Id,
-                                                          CollectionId = d.CollectionId,
-                                                          LoanLinesId = d.LoanLinesId,
-                                                          LoanLinesDayReference = d.trnLoanLine.DayReference,
-                                                          LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
-                                                          PenaltyId = d.PenaltyId,
-                                                          Penalty = d.mstPenalty.Penalty,
-                                                          PenaltyAmount = d.PenaltyAmount,
-                                                          PaidAmount = d.PaidAmount,
-                                                          IsReconstructed = d.trnLoanLine.trnLoan.IsReconstruct
-                                                      };
+                                //var collectionLines = from d in db.trnCollectionLines
+                                //                      where d.CollectionId == Convert.ToInt32(id)
+                                //                      select new Models.TrnCollectionLines
+                                //                      {
+                                //                          Id = d.Id,
+                                //                          CollectionId = d.CollectionId,
+                                //                          LoanLinesId = d.LoanLinesId,
+                                //                          LoanLinesDayReference = d.trnLoanLine.DayReference,
+                                //                          LoanLinesCollectibleDate = d.trnLoanLine.CollectibleDate.ToShortDateString(),
+                                //                          PenaltyId = d.PenaltyId,
+                                //                          Penalty = d.mstPenalty.Penalty,
+                                //                          PenaltyAmount = d.PenaltyAmount,
+                                //                          PaidAmount = d.PaidAmount,
+                                //                          IsReconstructed = d.trnLoanLine.trnLoan.IsReconstruct
+                                //                      };
 
-                                if (collectionLines.Any())
-                                {
-                                    var isReconstructed = false;
-                                    foreach (var collectionLine in collectionLines)
-                                    {
-                                        if (collectionLine.IsReconstructed)
-                                        {
-                                            isReconstructed = true;
-                                            break;
-                                        }
-                                    }
+                                //if (collectionLines.Any())
+                                //{
+                                //    //var isReconstructed = false;
+                                //    //foreach (var collectionLine in collectionLines)
+                                //    //{
+                                //    //    if (collectionLine.IsReconstructed)
+                                //    //    {
+                                //    //        isReconstructed = true;
+                                //    //        break;
+                                //    //    }
+                                //    //}
 
-                                    if (!isReconstructed)
-                                    {
+                                //    //if (!isReconstructed)
+                                //    //{
                                         var unlockCollection = collections.FirstOrDefault();
                                         unlockCollection.IsLocked = false;
                                         unlockCollection.UpdatedByUserId = userId;
@@ -541,48 +541,48 @@ namespace Lending.ApiControllers
                                         this.updateLoan(Convert.ToInt32(id));
 
                                         return Request.CreateResponse(HttpStatusCode.OK);
-                                    }
-                                    else
-                                    {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                    }
-                                }
-                                else
-                                {
-                                    var unlockCollection = collections.FirstOrDefault();
-                                    unlockCollection.IsLocked = false;
-                                    unlockCollection.UpdatedByUserId = userId;
-                                    unlockCollection.UpdatedDateTime = DateTime.Now;
-                                    db.SubmitChanges();
+                                    //}
+                                    //else
+                                    //{
+                                    //    return Request.CreateResponse(HttpStatusCode.BadRequest, "");
+                                    //}
+                                //}
+                                //else
+                                //{
+                                //    var unlockCollection = collections.FirstOrDefault();
+                                //    unlockCollection.IsLocked = false;
+                                //    unlockCollection.UpdatedByUserId = userId;
+                                //    unlockCollection.UpdatedDateTime = DateTime.Now;
+                                //    db.SubmitChanges();
 
-                                    this.updateLoan(Convert.ToInt32(id));
+                                //    this.updateLoan(Convert.ToInt32(id));
 
-                                    return Request.CreateResponse(HttpStatusCode.OK);
-                                }
+                                //    return Request.CreateResponse(HttpStatusCode.OK);
+                                //}
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Already Unlocked.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 
@@ -640,27 +640,27 @@ namespace Lending.ApiControllers
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete locked record.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 

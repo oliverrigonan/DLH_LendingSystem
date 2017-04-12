@@ -52,5 +52,8 @@ namespace Lending.Models
         public Int32 UpdatedByUserId { get; set; }
         public String UpdatedByUser { get; set; }
         public String UpdatedDateTime { get; set; }
+        public String DayReference { get; set; }
+        public String CollectibleDate { get; set; }
+        public Decimal CollectibleAmount { get; set; }
     }
 }

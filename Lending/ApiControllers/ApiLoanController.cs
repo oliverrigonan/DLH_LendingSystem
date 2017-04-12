@@ -652,113 +652,155 @@ namespace Lending.ApiControllers
                 {
                     if (loans.FirstOrDefault().IsLocked)
                     {
-                        var collection = from d in db.trnCollections
-                                         where d.LoanId == Convert.ToInt32(id)
-                                         && d.IsLocked == true
-                                         select d;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        if (!collection.Any())
+                        if (mstUserForms.Any())
                         {
-                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-                            var mstUserForms = from d in db.mstUserForms
-                                               where d.UserId == userId
-                                               select new Models.MstUserForm
-                                               {
-                                                   Id = d.Id,
-                                                   Form = d.sysForm.Form,
-                                                   CanPerformActions = d.CanPerformActions
-                                               };
+                            String matchPageString = "LoanApplicationDetail";
+                            Boolean canPerformActions = false;
 
-                            if (mstUserForms.Any())
+                            foreach (var mstUserForm in mstUserForms)
                             {
-                                String matchPageString = "LoanApplicationDetail";
-                                Boolean canPerformActions = false;
-
-                                foreach (var mstUserForm in mstUserForms)
+                                if (mstUserForm.Form.Equals(matchPageString))
                                 {
-                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    if (mstUserForm.CanPerformActions)
                                     {
-                                        if (mstUserForm.CanPerformActions)
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var existLoanReconstruct = from d in db.trnLoanReconstructs
+                                                           where d.ReconstructLoanId == Convert.ToInt32(id)
+                                                           select d;
+
+                                if (!existLoanReconstruct.Any())
+                                {
+                                    var existLoanRenew = from d in db.trnLoanRenews
+                                                         where d.RenewLoanId == Convert.ToInt32(id)
+                                                         select d;
+
+                                    if (!existLoanRenew.Any())
+                                    {
+                                        //if (loans.FirstOrDefault().IsLoanReconstruct)
+                                        //{
+                                        //    var loanReconstructs = from d in db.trnLoanReconstructs
+                                        //                           where d.LoanId == Convert.ToInt32(id)
+                                        //                           select new Models.TrnLoanReconstruct
+                                        //                           {
+                                        //                               Id = d.Id,
+                                        //                               LoanId = d.LoanId,
+                                        //                               ReconstructLoanId = d.ReconstructLoanId
+                                        //                           };
+
+                                        //    if (loanReconstructs.Any())
+                                        //    {
+                                        //        foreach (var loanReconstruct in loanReconstructs)
+                                        //        {
+                                        //            var loanReconUpdate = from d in db.trnLoans
+                                        //                                  where d.Id == loanReconstruct.ReconstructLoanId
+                                        //                                  select d;
+
+                                        //            if (loanReconUpdate.Any())
+                                        //            {
+                                        //                var updateLoanRecon = loanReconUpdate.FirstOrDefault();
+                                        //                updateLoanRecon.IsReconstruct = false;
+                                        //                db.SubmitChanges();
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //}
+
+                                        //if (loans.FirstOrDefault().IsLoanRenew)
+                                        //{
+                                        //    var loanRenews = from d in db.trnLoanRenews
+                                        //                     where d.LoanId == Convert.ToInt32(id)
+                                        //                     select new Models.TrnLoanRenew
+                                        //                     {
+                                        //                         Id = d.Id,
+                                        //                         LoanId = d.LoanId,
+                                        //                         RenewLoanId = d.RenewLoanId
+                                        //                     };
+
+                                        //    if (loanRenews.Any())
+                                        //    {
+                                        //        foreach (var loanRenew in loanRenews)
+                                        //        {
+                                        //            var loanRenewUpdate = from d in db.trnLoans
+                                        //                                  where d.Id == loanRenew.RenewLoanId
+                                        //                                  select d;
+
+                                        //            if (loanRenewUpdate.Any())
+                                        //            {
+                                        //                var updateLoanRenew = loanRenewUpdate.FirstOrDefault();
+                                        //                updateLoanRenew.IsRenew = false;
+                                        //                db.SubmitChanges();
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //}
+
+                                        if (loans.FirstOrDefault().IsLoanReconstruct)
                                         {
-                                            canPerformActions = true;
+                                            var loanReconstruct = from d in db.trnLoanReconstructs
+                                                                  where d.LoanId == Convert.ToInt32(id)
+                                                                  select d;
+
+                                            if (loanReconstruct.Any())
+                                            {
+                                                var existLoan = from d in db.trnLoans
+                                                                where d.Id == loanReconstruct.FirstOrDefault().ReconstructLoanId
+                                                                select d;
+
+                                                if (existLoan.Any())
+                                                {
+                                                    var updateLoan = existLoan.FirstOrDefault();
+                                                    updateLoan.IsReconstruct = false;
+                                                    db.SubmitChanges();
+                                                }
+                                            }
                                         }
 
-                                        break;
-                                    }
-                                }
-
-                                if (canPerformActions)
-                                {
-                                    var existLoanReconstruct = from d in db.trnLoanReconstructs
-                                                               where d.ReconstructLoanId == Convert.ToInt32(id)
-                                                               select d;
-
-                                    if (!existLoanReconstruct.Any())
-                                    {
-                                        var existLoanRenew = from d in db.trnLoanRenews
-                                                             where d.RenewLoanId == Convert.ToInt32(id)
-                                                             select d;
-
-                                        if (!existLoanRenew.Any())
+                                        if (loans.FirstOrDefault().IsLoanRenew)
                                         {
-                                            if (loans.FirstOrDefault().IsLoanReconstruct)
+                                            var loanRenew = from d in db.trnLoanRenews
+                                                            where d.LoanId == Convert.ToInt32(id)
+                                                            select d;
+
+                                            if (loanRenew.Any())
                                             {
-                                                var loanReconstructs = from d in db.trnLoanReconstructs
-                                                                       where d.LoanId == Convert.ToInt32(id)
-                                                                       select new Models.TrnLoanReconstruct
-                                                                       {
-                                                                           Id = d.Id,
-                                                                           LoanId = d.LoanId,
-                                                                           ReconstructLoanId = d.ReconstructLoanId
-                                                                       };
+                                                var existLoan = from d in db.trnLoans
+                                                                where d.Id == loanRenew.FirstOrDefault().RenewLoanId
+                                                                select d;
 
-                                                if (loanReconstructs.Any())
+                                                if (existLoan.Any())
                                                 {
-                                                    foreach (var loanReconstruct in loanReconstructs)
-                                                    {
-                                                        var loanReconUpdate = from d in db.trnLoans
-                                                                              where d.Id == loanReconstruct.ReconstructLoanId
-                                                                              select d;
-
-                                                        if (loanReconUpdate.Any())
-                                                        {
-                                                            var updateLoanRecon = loanReconUpdate.FirstOrDefault();
-                                                            updateLoanRecon.IsReconstruct = false;
-                                                            db.SubmitChanges();
-                                                        }
-                                                    }
+                                                    var updateLoan = existLoan.FirstOrDefault();
+                                                    updateLoan.IsRenew = false;
+                                                    db.SubmitChanges();
                                                 }
                                             }
+                                        }
 
-                                            if (loans.FirstOrDefault().IsLoanRenew)
-                                            {
-                                                var loanRenews = from d in db.trnLoanRenews
-                                                                 where d.LoanId == Convert.ToInt32(id)
-                                                                 select new Models.TrnLoanRenew
-                                                                 {
-                                                                     Id = d.Id,
-                                                                     LoanId = d.LoanId,
-                                                                     RenewLoanId = d.RenewLoanId
-                                                                 };
+                                        var collection = from d in db.trnCollections
+                                                         where d.LoanId == Convert.ToInt32(id)
+                                                         && d.IsLocked == true
+                                                         select d;
 
-                                                if (loanRenews.Any())
-                                                {
-                                                    foreach (var loanRenew in loanRenews)
-                                                    {
-                                                        var loanRenewUpdate = from d in db.trnLoans
-                                                                              where d.Id == loanRenew.RenewLoanId
-                                                                              select d;
-
-                                                        if (loanRenewUpdate.Any())
-                                                        {
-                                                            var updateLoanRenew = loanRenewUpdate.FirstOrDefault();
-                                                            updateLoanRenew.IsRenew = false;
-                                                            db.SubmitChanges();
-                                                        }
-                                                    }
-                                                }
-                                            }
-
+                                        if (!collection.Any())
+                                        {
                                             var loanLines = from d in db.trnLoanLines
                                                             where d.LoanId == Convert.ToInt32(id)
                                                             select d;
@@ -779,42 +821,42 @@ namespace Lending.ApiControllers
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete if there are collections exist.");
                                         }
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was renewed.");
                                     }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was reconstructed.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Already Unlocked.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 
@@ -831,134 +873,147 @@ namespace Lending.ApiControllers
                 {
                     if (!loans.FirstOrDefault().IsLocked)
                     {
-                        var collection = from d in db.trnCollections
-                                         where d.LoanId == Convert.ToInt32(id)
-                                         && d.IsLocked == true
-                                         select d;
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
 
-                        if (!collection.Any())
+                        if (mstUserForms.Any())
                         {
-                            var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-                            var mstUserForms = from d in db.mstUserForms
-                                               where d.UserId == userId
-                                               select new Models.MstUserForm
-                                               {
-                                                   Id = d.Id,
-                                                   Form = d.sysForm.Form,
-                                                   CanPerformActions = d.CanPerformActions
-                                               };
+                            String matchPageString = "LoanApplicationDetail";
+                            Boolean canPerformActions = false;
 
-                            if (mstUserForms.Any())
+                            foreach (var mstUserForm in mstUserForms)
                             {
-                                String matchPageString = "LoanApplicationDetail";
-                                Boolean canPerformActions = false;
-
-                                foreach (var mstUserForm in mstUserForms)
+                                if (mstUserForm.Form.Equals(matchPageString))
                                 {
-                                    if (mstUserForm.Form.Equals(matchPageString))
+                                    if (mstUserForm.CanPerformActions)
                                     {
-                                        if (mstUserForm.CanPerformActions)
-                                        {
-                                            canPerformActions = true;
-                                        }
-
-                                        break;
+                                        canPerformActions = true;
                                     }
+
+                                    break;
                                 }
+                            }
 
-                                if (canPerformActions)
+                            if (canPerformActions)
+                            {
+                                var existLoanReconstruct = from d in db.trnLoanReconstructs
+                                                           where d.ReconstructLoanId == Convert.ToInt32(id)
+                                                           select d;
+
+                                if (!existLoanReconstruct.Any())
                                 {
-                                    // loan reconstructs 
-                                    var existLoanReconstruct = from d in db.trnLoanReconstructs
-                                                               where d.ReconstructLoanId == Convert.ToInt32(id)
-                                                               select d;
-
-                                    if (!existLoanReconstruct.Any())
-                                    {
-                                        var loanReconstruct = from d in db.trnLoanReconstructs
-                                                              where d.LoanId == Convert.ToInt32(id)
-                                                              select d;
-
-                                        if (loanReconstruct.Any())
-                                        {
-                                            var existLoan = from d in db.trnLoans
-                                                            where d.Id == loanReconstruct.FirstOrDefault().ReconstructLoanId
-                                                            select d;
-
-                                            if (existLoan.Any())
-                                            {
-                                                var updateLoan = existLoan.FirstOrDefault();
-                                                updateLoan.IsReconstruct = false;
-                                                db.SubmitChanges();
-
-                                                db.trnLoanReconstructs.DeleteAllOnSubmit(loanReconstruct);
-                                                db.SubmitChanges();
-                                            }
-                                        }
-                                    }
-
-                                    // loan renews
                                     var existLoanRenew = from d in db.trnLoanRenews
                                                          where d.RenewLoanId == Convert.ToInt32(id)
                                                          select d;
 
                                     if (!existLoanRenew.Any())
                                     {
-                                        var loanRenew = from d in db.trnLoanRenews
-                                                        where d.LoanId == Convert.ToInt32(id)
-                                                        select d;
-
-                                        if (loanRenew.Any())
+                                        if (loans.FirstOrDefault().IsLoanReconstruct)
                                         {
-                                            var existLoan = from d in db.trnLoans
-                                                            where d.Id == loanRenew.FirstOrDefault().RenewLoanId
-                                                            select d;
+                                            var loanReconstruct = from d in db.trnLoanReconstructs
+                                                                  where d.LoanId == Convert.ToInt32(id)
+                                                                  select d;
 
-                                            if (existLoan.Any())
+                                            if (loanReconstruct.Any())
                                             {
-                                                var updateLoan = existLoan.FirstOrDefault();
-                                                updateLoan.IsRenew = false;
-                                                db.SubmitChanges();
+                                                var existLoan = from d in db.trnLoans
+                                                                where d.Id == loanReconstruct.FirstOrDefault().ReconstructLoanId
+                                                                select d;
 
-                                                db.trnLoanRenews.DeleteAllOnSubmit(loanRenew);
-                                                db.SubmitChanges();
+                                                if (existLoan.Any())
+                                                {
+                                                    var updateLoan = existLoan.FirstOrDefault();
+                                                    updateLoan.IsReconstruct = false;
+                                                    db.SubmitChanges();
+
+                                                    db.trnLoanReconstructs.DeleteAllOnSubmit(loanReconstruct);
+                                                    db.SubmitChanges();
+                                                }
                                             }
                                         }
+
+                                        if (loans.FirstOrDefault().IsLoanRenew)
+                                        {
+                                            var loanRenew = from d in db.trnLoanRenews
+                                                            where d.LoanId == Convert.ToInt32(id)
+                                                            select d;
+
+                                            if (loanRenew.Any())
+                                            {
+                                                var existLoan = from d in db.trnLoans
+                                                                where d.Id == loanRenew.FirstOrDefault().RenewLoanId
+                                                                select d;
+
+                                                if (existLoan.Any())
+                                                {
+                                                    var updateLoan = existLoan.FirstOrDefault();
+                                                    updateLoan.IsRenew = false;
+                                                    db.SubmitChanges();
+
+                                                    db.trnLoanRenews.DeleteAllOnSubmit(loanRenew);
+                                                    db.SubmitChanges();
+                                                }
+                                            }
+                                        }
+
+
+                                        var collection = from d in db.trnCollections
+                                                         where d.LoanId == Convert.ToInt32(id)
+                                                         && d.IsLocked == true
+                                                         select d;
+
+                                        if (!collection.Any())
+                                        {
+                                            db.trnLoans.DeleteOnSubmit(loans.First());
+                                            db.SubmitChanges();
+
+                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete if there are collections exist.");
+                                        }
                                     }
-
-                                    db.trnLoans.DeleteOnSubmit(loans.First());
-                                    db.SubmitChanges();
-
-                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was renewed.");
+                                    }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was reconstructed.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete locked record.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 
@@ -1139,12 +1194,11 @@ namespace Lending.ApiControllers
         // loan list by areaid - overdue
         [Authorize]
         [HttpGet]
-        [Route("api/loan/overdue/{date}/{areaId}")]
-        public List<Models.TrnLoan> listOverdue(String date, String areaId)
+        [Route("api/loan/overdue/{areaId}")]
+        public List<Models.TrnLoan> listOverdue(String areaId)
         {
             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.LoanDate)
                                    where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                   && d.LoanDate.Year <= Convert.ToDateTime(date).Year
                                    && d.IsReconstruct == false
                                    && d.IsRenew == false
                                    && d.IsLocked == true
@@ -1195,6 +1249,102 @@ namespace Lending.ApiControllers
                                    };
 
             return loanApplications.ToList();
+        }
+
+        // loan list by areaid - active
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/active/{areaId}")]
+        public List<Models.TrnLoan> listActive(String areaId)
+        {
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.LoanDate)
+                                   where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                   && d.IsReconstruct == false
+                                   && d.IsRenew == false
+                                   && d.IsLocked == true
+                                   && d.IsLoanReconstruct == false
+                                   && d.TotalBalanceAmount > 0
+                                   select new Models.TrnLoan
+                                   {
+                                       Id = d.Id,
+                                       LoanNumber = d.LoanNumber,
+                                       LoanDate = d.LoanDate.ToShortDateString(),
+                                       ApplicantId = d.ApplicantId,
+                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                       Area = d.mstApplicant.mstArea.Area,
+                                       Particulars = d.Particulars,
+                                       PreparedByUserId = d.PreparedByUserId,
+                                       PreparedByUser = d.mstUser.FullName,
+                                       TermId = d.TermId,
+                                       Term = d.mstTerm.Term,
+                                       TermNoOfDays = d.TermNoOfDays,
+                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
+                                       PrincipalAmount = d.PrincipalAmount,
+                                       InterestId = d.InterestId,
+                                       Interest = d.mstInterest.Interest,
+                                       InterestRate = d.InterestRate,
+                                       InterestAmount = d.InterestAmount,
+                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                       PreviousPenaltyAmount = d.PreviousPenaltyAmount,
+                                       DeductionAmount = d.DeductionAmount,
+                                       NetAmount = d.NetAmount,
+                                       NetCollectionAmount = d.NetCollectionAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       IsReconstruct = d.IsReconstruct,
+                                       IsRenew = d.IsRenew,
+                                       IsLoanApplication = d.IsLoanApplication,
+                                       IsLoanReconstruct = d.IsLoanReconstruct,
+                                       IsLoanRenew = d.IsLoanRenew,
+                                       IsFullyPaid = d.IsFullyPaid,
+                                       IsLocked = d.IsLocked,
+                                       CreatedByUserId = d.CreatedByUserId,
+                                       CreatedByUser = d.mstUser1.FullName,
+                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                       UpdatedByUserId = d.UpdatedByUserId,
+                                       UpdatedByUser = d.mstUser2.FullName,
+                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                       CollectibleAmount = getCollectibleAmount(d.Id),
+                                       DayReference = getDayReference(d.Id)
+                                   };
+
+            return loanApplications.ToList();
+        }
+
+        public Decimal getCollectibleAmount(Int32 loanId)
+        {
+            var loanLines = from d in db.trnLoanLines
+                            where d.LoanId == loanId
+                            && d.PaidAmount == 0
+                            && d.PenaltyAmount == 0
+                            select d;
+
+            Decimal collectibleAmount = 0;
+            if (loanLines.Any())
+            {
+                collectibleAmount = loanLines.FirstOrDefault().CollectibleAmount;
+            }
+
+            return collectibleAmount;
+        }
+
+        public String getDayReference(Int32 loanId)
+        {
+            var loanLines = from d in db.trnLoanLines
+                            where d.LoanId == loanId
+                            && d.PaidAmount == 0
+                            && d.PenaltyAmount == 0
+                            select d;
+
+            String dayReferenceGlobal = " ";
+            if (loanLines.Any())
+            {
+                dayReferenceGlobal = loanLines.FirstOrDefault().DayReference;
+            }
+
+            return dayReferenceGlobal;
         }
     }
 }

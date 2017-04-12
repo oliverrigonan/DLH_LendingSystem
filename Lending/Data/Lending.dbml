@@ -14,7 +14,7 @@
       <Column Name="RenewLoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RenewLoanTotalBalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="RenewLoanTotalPenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Association Name="trnLoan_trnLoanRenew" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanRenew" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="trnLoan_trnLoanRenew1" Member="trnLoan1" ThisKey="RenewLoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
     </Type>
   </Table>
@@ -181,8 +181,8 @@
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="AreaId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="mstArea_mstAreaStaff" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" />
-      <Association Name="mstStaff_mstAreaStaff" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
+      <Association Name="mstArea_mstAreaStaff" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="mstStaff_mstAreaStaff" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.mstBranch" Member="mstBranches">
@@ -502,7 +502,7 @@
       <Column Name="PenaltyId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="mstPenalty_trnCollectionLine" Member="mstPenalty" ThisKey="PenaltyId" OtherKey="Id" Type="mstPenalty" IsForeignKey="true" />
-      <Association Name="trnCollection_trnCollectionLine" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" />
+      <Association Name="trnCollection_trnCollectionLine" Member="trnCollection" ThisKey="CollectionId" OtherKey="Id" Type="trnCollection" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="trnLoanLine_trnCollectionLine" Member="trnLoanLine" ThisKey="LoanLinesId" OtherKey="Id" Type="trnLoanLine" IsForeignKey="true" />
     </Type>
   </Table>
@@ -586,7 +586,7 @@
       <Column Name="Brand" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="ModelNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="SerialNumber" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
-      <Association Name="trnLoan_trnLoanCollateral" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanCollateral" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnLoanDeductions" Member="trnLoanDeductions">
@@ -596,7 +596,7 @@
       <Column Name="DeductionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="DeductionAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="mstDeduction_trnLoanDeduction" Member="mstDeduction" ThisKey="DeductionId" OtherKey="Id" Type="mstDeduction" IsForeignKey="true" />
-      <Association Name="trnLoan_trnLoanDeduction" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanDeduction" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnLoanLines" Member="trnLoanLines">
@@ -609,7 +609,7 @@
       <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="trnLoanLine_trnCollectionLine" Member="trnCollectionLines" ThisKey="Id" OtherKey="LoanLinesId" Type="trnCollectionLine" />
-      <Association Name="trnLoan_trnLoanLine" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanLine" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.trnLoanReconstruct" Member="trnLoanReconstructs">
@@ -619,7 +619,7 @@
       <Column Name="ReconstructLoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ReconstructLoanTotalBalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="ReconstructLoanTotalPenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Association Name="trnLoan_trnLoanReconstruct" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
+      <Association Name="trnLoan_trnLoanReconstruct" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="trnLoan_trnLoanReconstruct1" Member="trnLoan1" ThisKey="ReconstructLoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
     </Type>
   </Table>

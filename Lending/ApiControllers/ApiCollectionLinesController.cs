@@ -153,42 +153,42 @@ namespace Lending.ApiControllers
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Amount must not be greater than collectible amount.");
                                         }
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                                     }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "This record already exist.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Record locked.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 
@@ -368,32 +368,32 @@ namespace Lending.ApiControllers
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot delete locked record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.NotFound);
+                        return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 
@@ -466,59 +466,48 @@ namespace Lending.ApiControllers
 
                                 if (loanLines.Any())
                                 {
-                                    var penalty = from d in db.mstPenalties
-                                                  select d;
-
-                                    if (penalty.Any())
+                                    foreach (var loanLine in loanLines)
                                     {
-                                        foreach (var loanLine in loanLines)
-                                        {
-                                            Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
-                                            newCollectionLine.CollectionId = collectionLines.CollectionId;
-                                            newCollectionLine.LoanLinesId = loanLine.Id;
-                                            newCollectionLine.PenaltyId = penalty.FirstOrDefault().Id;
-                                            newCollectionLine.PenaltyAmount = 0;
-                                            newCollectionLine.PaidAmount = loanLine.CollectibleAmount;
-                                            db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
-                                            db.SubmitChanges();
-                                        }
+                                        Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
+                                        newCollectionLine.CollectionId = collectionLines.CollectionId;
+                                        newCollectionLine.LoanLinesId = loanLine.Id;
+                                        newCollectionLine.PenaltyId = null;
+                                        newCollectionLine.PenaltyAmount = 0;
+                                        newCollectionLine.PaidAmount = loanLine.CollectibleAmount;
+                                        db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
+                                        db.SubmitChanges();
+                                    }
 
-                                        return Request.CreateResponse(HttpStatusCode.OK);
-                                    }
-                                    else
-                                    {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                    }
+                                    return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
                         }
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot update locked record.");
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
                 }
             }
-            catch (Exception e)
+            catch
             {
-                Debug.WriteLine(e);
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
 
