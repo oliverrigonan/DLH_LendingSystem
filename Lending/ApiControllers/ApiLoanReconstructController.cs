@@ -29,7 +29,6 @@ namespace Lending.ApiControllers
                                    ReconstructLoanId = d.ReconstructLoanId,
                                    ReconstructLoanNumber = d.trnLoan1.IsLoanApplication == true ? d.trnLoan1.IsReconstruct == true ? "LN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "LN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanReconstruct == true ? d.trnLoan1.IsReconstruct == true ? "RC - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RC - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanRenew == true ? d.trnLoan1.IsReconstruct == true ? "RN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.LoanNumber,
                                    ReconstructLoanTotalBalanceAmount = d.ReconstructLoanTotalBalanceAmount,
-                                   ReconstructLoanTotalPenaltyAmount = d.ReconstructLoanTotalPenaltyAmount,
                                    IsLoanApplication = d.trnLoan1.IsLoanApplication,
                                    IsLoanReconstruct = d.trnLoan1.IsLoanReconstruct,
                                    IsLoanRenew = d.trnLoan1.IsRenew
@@ -84,7 +83,6 @@ namespace Lending.ApiControllers
                                    InterestRate = d.InterestRate,
                                    InterestAmount = d.InterestAmount,
                                    PreviousBalanceAmount = d.PreviousBalanceAmount,
-                                   PreviousPenaltyAmount = d.PreviousPenaltyAmount,
                                    DeductionAmount = d.DeductionAmount,
                                    NetAmount = d.NetAmount,
                                    NetCollectionAmount = d.NetCollectionAmount,
@@ -103,10 +101,26 @@ namespace Lending.ApiControllers
                                    CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                    UpdatedByUserId = d.UpdatedByUserId,
                                    UpdatedByUser = d.mstUser2.FullName,
-                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                   ReconstructedDocNumber = getReconstructedDocNumber(d.Id)
                                };
 
             return reconstructs.ToList();
+        }
+
+        public String getReconstructedDocNumber(Int32 loanId)
+        {
+            var reconstructedLoans = from d in db.trnLoanReconstructs
+                                     where d.LoanId == loanId
+                                     select d;
+
+            String reconstructedDocNumber = " ";
+            if (reconstructedLoans.Any())
+            {
+                reconstructedDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber;
+            }
+
+            return reconstructedDocNumber;
         }
 
         // reconstruct get by id
@@ -140,7 +154,6 @@ namespace Lending.ApiControllers
                                   InterestRate = d.InterestRate,
                                   InterestAmount = d.InterestAmount,
                                   PreviousBalanceAmount = d.PreviousBalanceAmount,
-                                  PreviousPenaltyAmount = d.PreviousPenaltyAmount,
                                   DeductionAmount = d.DeductionAmount,
                                   NetAmount = d.NetAmount,
                                   NetCollectionAmount = d.NetCollectionAmount,
@@ -240,7 +253,6 @@ namespace Lending.ApiControllers
                                     Decimal interestAmount = (loanReconstruct.ReconstructLoanTotalBalanceAmount / 100) * interest.FirstOrDefault().Rate;
                                     newLoan.InterestAmount = interestAmount;
                                     newLoan.PreviousBalanceAmount = 0;
-                                    newLoan.PreviousPenaltyAmount = loanReconstruct.ReconstructLoanTotalPenaltyAmount;
                                     newLoan.DeductionAmount = 0;
                                     newLoan.NetAmount = 0;
                                     newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
@@ -265,7 +277,6 @@ namespace Lending.ApiControllers
                                     newLoanReconstruct.LoanId = newLoan.Id;
                                     newLoanReconstruct.ReconstructLoanId = loanReconstruct.ReconstructLoanId;
                                     newLoanReconstruct.ReconstructLoanTotalBalanceAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
-                                    newLoanReconstruct.ReconstructLoanTotalPenaltyAmount = loanReconstruct.ReconstructLoanTotalPenaltyAmount;
                                     db.trnLoanReconstructs.InsertOnSubmit(newLoanReconstruct);
                                     db.SubmitChanges();
 
@@ -356,21 +367,20 @@ namespace Lending.ApiControllers
                             {
                                 Data.trnLoan newLoan = new Data.trnLoan();
                                 newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
-                                newLoan.LoanDate = DateTime.Today;
+                                newLoan.LoanDate = Convert.ToDateTime(loanReconstruct.LoanDate);
                                 newLoan.ApplicantId = loanReconstruct.ApplicantId;
                                 newLoan.Particulars = loanReconstruct.Particulars;
                                 newLoan.PreparedByUserId = userId;
                                 newLoan.TermId = term.FirstOrDefault().Id;
                                 newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
                                 newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-                                newLoan.MaturityDate = DateTime.Today;
+                                newLoan.MaturityDate = Convert.ToDateTime(loanReconstruct.LoanDate);
                                 newLoan.PrincipalAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
                                 newLoan.InterestId = interest.FirstOrDefault().Id;
                                 newLoan.InterestRate = interest.FirstOrDefault().Rate;
                                 Decimal interestAmount = (loanReconstruct.ReconstructLoanTotalBalanceAmount / 100) * interest.FirstOrDefault().Rate;
                                 newLoan.InterestAmount = interestAmount;
                                 newLoan.PreviousBalanceAmount = 0;
-                                newLoan.PreviousPenaltyAmount = loanReconstruct.ReconstructLoanTotalPenaltyAmount;
                                 newLoan.DeductionAmount = 0;
                                 newLoan.NetAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
                                 newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;

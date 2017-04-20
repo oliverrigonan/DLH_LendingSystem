@@ -46,7 +46,7 @@
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
                                     <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddOverdueApplicant()">
-                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Overdue Applicant
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Overdue
                                     </button>
                                     <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddReconstructOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
@@ -182,15 +182,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Penalty</label>
-                            <div class="col-sm-8">
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField" id="penaltyToBeReconstruct" placeholder="0.00" disabled />
-                                </div>
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -219,20 +210,17 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="control-label col-sm-4">Date or Year</label>
+                            <div class="col-sm-8">
+                                <div id="cboOverdueYear" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="control-label col-sm-4">Balance</label>
                             <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredOverdueAmount" id="amountToBeReconstructOverdue" placeholder="0.00" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Penalty</label>
-                            <div class="col-sm-8">
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredOverdueAmount" id="penaltyToBeReconstructOverdue" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
@@ -270,6 +258,7 @@
         var isEndLoanDateClicked = false;
         var cboApplicant;
         var cboLoanNumber;
+        var cboOverdueYear;
 
         // reconstuct
         function btnAddReconstructOnclick() {
@@ -293,8 +282,8 @@
                 });
             });
 
+            cboOverdueYear.value = new Date('01-01-2000');
             document.getElementById("amountToBeReconstructOverdue").value = 0;
-            document.getElementById("penaltyToBeReconstructOverdue").value = 0;
 
             getApplicantOverdue();
         }
@@ -409,18 +398,23 @@
                         selectedValuePath: "LoanNumberDetail",
                         onSelectedIndexChanged: function () {
                             document.getElementById("amountToBeReconstruct").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
-                            document.getElementById("penaltyToBeReconstruct").value = this.selectedItem["TotalPenaltyAmount"].toLocaleString();
                         }
                     });
 
                     document.getElementById("amountToBeReconstruct").value = cboLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
-                    document.getElementById("penaltyToBeReconstruct").value = cboLoanNumber.selectedItem["TotalPenaltyAmount"].toLocaleString();
                 }
             });
         }
 
         // create cbo date for loan date
         function createCboLoanDate() {
+            cboOverdueYear.dispose();
+            cboOverdueYear = new wijmo.input.InputDate('#cboOverdueYear', {
+                format: 'MM-dd-yyyy',
+                value: new Date('01-01-2000'),
+                mask: '99-99-9999',
+            });
+
             cboReconstructDate.dispose();
             cboReconstructDate = new wijmo.input.InputDate('#cboReconstructDate', {
                 format: 'MM-dd-yyyy',
@@ -443,7 +437,9 @@
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -489,7 +485,9 @@
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -538,12 +536,12 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Active";
+                            var loanStatus = "Overdue - Active";
                             if (loanApplicationListResult[i]["IsReconstruct"]) {
                                 loanStatus = "Overdue - Reconstructed";
                             } else {
                                 if (loanApplicationListResult[i]["IsRenew"]) {
-                                    loanStatus = "Renewd";
+                                    loanStatus = "Overdue - Renewd";
                                 }
                             }
 
@@ -573,6 +571,7 @@
                                 UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
                                 UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                                ReconstructedDocNumber: loanApplicationListResult[i]["ReconstructedDocNumber"],
                             });
                         }
                     }
@@ -587,8 +586,8 @@
             var loanReconstuctObject = new Object();
             loanReconstuctObject.ApplicantId = cboOverApplicant.selectedItem["Id"];
             loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstructOverdue").value;
-            loanReconstuctObject.ReconstructLoanTotalPenaltyAmount = document.getElementById("penaltyToBeReconstructOverdue").value;
             loanReconstuctObject.Particulars = document.getElementById("overdueParticulars").value;
+            loanReconstuctObject.LoanDate = cboOverdueYear.value;
             var loanReconstuctData = JSON.stringify(loanReconstuctObject);
 
             var isValid = true;
@@ -638,7 +637,6 @@
             loanReconstuctObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
             loanReconstuctObject.ReconstructLoanId = cboLoanNumber.selectedItem["Id"];
             loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstruct").value;
-            loanReconstuctObject.ReconstructLoanTotalPenaltyAmount = document.getElementById("penaltyToBeReconstruct").value;
             var loanReconstuctData = JSON.stringify(loanReconstuctObject);
 
             $.ajax({
@@ -729,7 +727,9 @@
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -796,7 +796,9 @@
             loanApplicationCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -862,6 +864,12 @@
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
+                            },
+                            {
+                                "header": "Reconstructed Loan",
+                                "binding": "ReconstructedDocNumber",
+                                "allowSorting": true,
+                                "width": 230,
                             },
                             {
                                 "header": "Recon. Amount",
@@ -941,6 +949,7 @@
         window.onload = function () {
             NProgress.start();
             toastrModification();
+            cboOverdueYear = new wijmo.input.InputDate('#cboOverdueYear');
             cboReconstructDate = new wijmo.input.InputDate('#cboReconstructDate');
             createCboLoanDate();
             cboReconstructEndDate = new wijmo.input.InputDate('#cboReconstructEndDate');

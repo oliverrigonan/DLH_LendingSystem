@@ -21,5 +21,6 @@ namespace Lending.Models
         public Boolean IsLoanReconstruct { get; set; }
         public Boolean IsLoanRenew { get; set; }
         public String Particulars { get; set; }
+        public String LoanDate { get; set; }
     }
 }

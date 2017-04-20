@@ -30,7 +30,6 @@ namespace Lending.ApiControllers
                              RenewLoanNumber = d.trnLoan1.IsLoanApplication == true ? d.trnLoan1.IsReconstruct == true ? "LN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "LN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanReconstruct == true ? d.trnLoan1.IsReconstruct == true ? "RC - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RC - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.IsLoanRenew == true ? d.trnLoan1.IsReconstruct == true ? "RN - " + d.trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsRenew == true ? "RN - " + d.trnLoan1.LoanNumber + " (Renewed)" : d.trnLoan1.LoanNumber,
                              RenewPrincipalAmount = d.trnLoan.PrincipalAmount,
                              RenewLoanTotalBalanceAmount = d.RenewLoanTotalBalanceAmount,
-                             RenewLoanTotalPenaltyAmount = d.RenewLoanTotalPenaltyAmount,
                              IsLoanApplication = d.trnLoan1.IsLoanApplication,
                              IsLoanReconstruct = d.trnLoan1.IsLoanReconstruct,
                              IsLoanRenew = d.trnLoan1.IsLoanRenew
@@ -85,7 +84,6 @@ namespace Lending.ApiControllers
                              InterestRate = d.InterestRate,
                              InterestAmount = d.InterestAmount,
                              PreviousBalanceAmount = d.PreviousBalanceAmount,
-                             PreviousPenaltyAmount = d.PreviousPenaltyAmount,
                              DeductionAmount = d.DeductionAmount,
                              NetAmount = d.NetAmount,
                              NetCollectionAmount = d.NetCollectionAmount,
@@ -104,10 +102,26 @@ namespace Lending.ApiControllers
                              CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                              UpdatedByUserId = d.UpdatedByUserId,
                              UpdatedByUser = d.mstUser2.FullName,
-                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                             RenewedDocNumber = getRenewdDocNumber(d.Id)
                          };
 
             return renews.ToList();
+        }
+
+        public String getRenewdDocNumber(Int32 loanId)
+        {
+            var reconstructedLoans = from d in db.trnLoanRenews
+                                     where d.LoanId == loanId
+                                     select d;
+
+            String renewdDocNumber = " ";
+            if (reconstructedLoans.Any())
+            {
+                renewdDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber;
+            }
+
+            return renewdDocNumber;
         }
 
         // renew get by id
@@ -141,7 +155,6 @@ namespace Lending.ApiControllers
                             InterestRate = d.InterestRate,
                             InterestAmount = d.InterestAmount,
                             PreviousBalanceAmount = d.PreviousBalanceAmount,
-                            PreviousPenaltyAmount = d.PreviousPenaltyAmount,
                             DeductionAmount = d.DeductionAmount,
                             NetAmount = d.NetAmount,
                             NetCollectionAmount = d.NetCollectionAmount,
@@ -241,7 +254,6 @@ namespace Lending.ApiControllers
                                     Decimal interestAmount = (loanRenew.RenewPrincipalAmount / 100) * interest.FirstOrDefault().Rate;
                                     newLoan.InterestAmount = interestAmount;
                                     newLoan.PreviousBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
-                                    newLoan.PreviousPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
                                     newLoan.DeductionAmount = 0;
                                     newLoan.NetAmount = loanRenew.RenewPrincipalAmount;
                                     newLoan.NetCollectionAmount = loanRenew.RenewPrincipalAmount + loanRenew.RenewLoanTotalBalanceAmount + loanRenew.RenewLoanTotalPenaltyAmount + interestAmount;
@@ -266,7 +278,6 @@ namespace Lending.ApiControllers
                                     newLoanRenew.LoanId = newLoan.Id;
                                     newLoanRenew.RenewLoanId = loanRenew.RenewLoanId;
                                     newLoanRenew.RenewLoanTotalBalanceAmount = loanRenew.RenewLoanTotalBalanceAmount;
-                                    newLoanRenew.RenewLoanTotalPenaltyAmount = loanRenew.RenewLoanTotalPenaltyAmount;
                                     db.trnLoanRenews.InsertOnSubmit(newLoanRenew);
                                     db.SubmitChanges();
 

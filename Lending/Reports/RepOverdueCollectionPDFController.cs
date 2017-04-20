@@ -13,15 +13,13 @@ namespace Lending.Reports
 {
     public class RepOverdueCollectionPDFController : Controller
     {
-        // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // GET: RepOverdueCollectionPDF
         public ActionResult overdueCollection(String date, String areaId)
         {
             if (date != null && areaId != null)
             {
-                var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.LoanDate)
+                var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                        where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
                                        && d.IsReconstruct == false
                                        && d.IsRenew == false
@@ -32,17 +30,14 @@ namespace Lending.Reports
 
                 if (loanApplications.Any())
                 {
-                    // PDF settings
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(PageSize.A3);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
                     document.SetMargins(30f, 30f, 30f, 30f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
-                    // Document Starts
                     document.Open();
 
-                    // Fonts
                     Font fontArial19Bold = FontFactory.GetFont("Arial", 20, Font.BOLD);
                     Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
                     Font fontArial16Bold = FontFactory.GetFont("Arial", 16, Font.BOLD);
@@ -55,20 +50,15 @@ namespace Lending.Reports
                     Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
                     Font fontArial10 = FontFactory.GetFont("Arial", 10);
                     Font fontArial10ITALIC = FontFactory.GetFont("Arial", 10, Font.ITALIC);
-
-                    // line
                     Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
 
-                    // user company detail
                     var userCompanyDetail = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d).FirstOrDefault();
 
-                    // image
                     string imagepath = Server.MapPath("~/Images/dlhicon.jpg");
                     Image logo = Image.GetInstance(imagepath);
                     logo.ScalePercent(16f);
                     PdfPCell imageCell = new PdfPCell(logo);
 
-                    // header
                     PdfPTable loanApplicationheader = new PdfPTable(2);
                     float[] loanApplicationheaderWidthCells = new float[] { 7f, 100f };
                     loanApplicationheader.SetWidths(loanApplicationheaderWidthCells);
@@ -79,7 +69,6 @@ namespace Lending.Reports
                     loanApplicationheader.AddCell(new PdfPCell(new Phrase("Contact: " + userCompanyDetail.mstCompany.ContactNumber, fontArial12)) { HorizontalAlignment = 0, Border = 0 });
                     document.Add(loanApplicationheader);
 
-                    // line header
                     PdfPTable lineHeader = new PdfPTable(1);
                     float[] lineHeaderWithCells = new float[] { 100f };
                     lineHeader.SetWidths(lineHeaderWithCells);
@@ -97,7 +86,6 @@ namespace Lending.Reports
                         area = areaQuery.FirstOrDefault().Area;
                     }
 
-                    //  title
                     PdfPTable titleHeader = new PdfPTable(1);
                     float[] titleHeaderWithCells = new float[] { 100f };
                     titleHeader.SetWidths(titleHeaderWithCells);
@@ -112,15 +100,12 @@ namespace Lending.Reports
                     loanData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanData.AddCell(new PdfPCell(new Phrase("Balance", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     DateTime weekFirstDay = Convert.ToDateTime(date).AddDays(DayOfWeek.Sunday - Convert.ToDateTime(date).DayOfWeek);
-
                     for (var i = 1; i <= 6; i++)
                     {
                         DateTime weekLastDay = weekFirstDay.AddDays(i);
                         loanData.AddCell(new PdfPCell(new Phrase(weekLastDay.Day.ToString(), fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     }
-
                     loanData.AddCell(new PdfPCell(new Phrase("Particulars / Promises", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-
                     var loanYears = loanApplications.GroupBy(year => year.LoanDate.Year).Select(group =>
                             new
                             {
@@ -128,7 +113,6 @@ namespace Lending.Reports
                                 Elements = group.OrderByDescending(y => y.LoanDate.Year)
                             }
                         ).OrderByDescending(group => group.Elements.First().LoanDate.Year);
-
                     if (loanYears.Any())
                     {
                         foreach (var loanYear in loanYears)
@@ -153,7 +137,6 @@ namespace Lending.Reports
                             }
                         }
                     }
-
                     document.Add(loanData);
 
                     // Document End

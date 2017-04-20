@@ -248,12 +248,14 @@ namespace Lending.ApiControllers
 
                     if (loanLines.Any())
                     {
+                        // dri nga part sa penalty amount
                         var collectionPaidAmount = loanLines.FirstOrDefault().PaidAmount + collectionLine.PaidAmount;
                         var collectionPenaltyAmount = loanLines.FirstOrDefault().PenaltyAmount + collectionLine.PenaltyAmount;
 
                         var updateLoanLines = loanLines.FirstOrDefault();
                         updateLoanLines.PaidAmount = collectionPaidAmount;
                         updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
+                        updateLoanLines.BalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount - collectionPaidAmount) + collectionPenaltyAmount;
                         db.SubmitChanges();
 
                         var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
@@ -267,7 +269,7 @@ namespace Lending.ApiControllers
                             {
                                 var updateLoan = loan.FirstOrDefault();
 
-                                if (allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount) == 0)
+                                if ((allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount)) + allLoanLines.Sum(d => d.PenaltyAmount) == 0)
                                 {
                                     updateLoan.IsFullyPaid = true;
                                 }
@@ -275,10 +277,10 @@ namespace Lending.ApiControllers
                                 {
                                     updateLoan.IsFullyPaid = false;
                                 }
-
+                                   
                                 updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
                                 updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
-                                updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount);
+                                updateLoan.TotalBalanceAmount = (allLoanLines.FirstOrDefault().trnLoan.NetCollectionAmount - allLoanLines.Sum(d => d.PaidAmount)) + allLoanLines.Sum(d => d.PenaltyAmount);
                                 db.SubmitChanges();
                             }
                         }
@@ -325,6 +327,7 @@ namespace Lending.ApiControllers
                                 var updateLoanLines = loanLines.FirstOrDefault();
                                 updateLoanLines.PaidAmount = collectionPaidAmount;
                                 updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
+                                updateLoanLines.BalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount - collectionPaidAmount) + collectionPenaltyAmount;
                                 db.SubmitChanges();
 
                                 var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
@@ -349,7 +352,7 @@ namespace Lending.ApiControllers
 
                                         updateLoan.TotalPaidAmount = allLoanLines.Sum(d => d.PaidAmount);
                                         updateLoan.TotalPenaltyAmount = allLoanLines.Sum(d => d.PenaltyAmount);
-                                        updateLoan.TotalBalanceAmount = allLoanLines.Sum(d => d.CollectibleAmount) - allLoanLines.Sum(d => d.PaidAmount);
+                                        updateLoan.TotalBalanceAmount = (allLoanLines.FirstOrDefault().trnLoan.NetCollectionAmount - allLoanLines.Sum(d => d.PaidAmount)) + allLoanLines.Sum(d => d.PenaltyAmount);
                                         db.SubmitChanges();
                                     }
                                 }

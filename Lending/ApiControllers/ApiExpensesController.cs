@@ -30,7 +30,6 @@ namespace Lending.ApiControllers
                                AssignedStaffId = d.AssignedStaffId,
                                AssignedStaff = d.mstStaff.Staff,
                                Particulars = d.Particulars,
-                               IsCollectionExpense = d.IsCollectionExpense,
                                ExpenseAmount = d.ExpenseAmount,
                                PreparedByUserId = d.PreparedByUserId,
                                PreparedByUser = d.mstUser.FullName,
@@ -62,7 +61,6 @@ namespace Lending.ApiControllers
                               AssignedStaffId = d.AssignedStaffId,
                               AssignedStaff = d.mstStaff.Staff,
                               Particulars = d.Particulars,
-                              IsCollectionExpense = d.IsCollectionExpense,
                               ExpenseAmount = d.ExpenseAmount,
                               PreparedByUserId = d.PreparedByUserId,
                               PreparedByUser = d.mstUser.FullName,
@@ -143,7 +141,6 @@ namespace Lending.ApiControllers
                         newExpense.ExpenseDate = DateTime.Today;
                         newExpense.AssignedStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
                         newExpense.Particulars = "NA";
-                        newExpense.IsCollectionExpense = false;
                         newExpense.ExpenseAmount = 0;
                         newExpense.PreparedByUserId = userId;
                         newExpense.IsLocked = false;
@@ -220,7 +217,6 @@ namespace Lending.ApiControllers
                                 lockExpense.ExpenseDate = Convert.ToDateTime(expense.ExpenseDate);
                                 lockExpense.AssignedStaffId = expense.AssignedStaffId;
                                 lockExpense.Particulars = expense.Particulars;
-                                lockExpense.IsCollectionExpense = expense.IsCollectionExpense;
                                 lockExpense.ExpenseAmount = expense.ExpenseAmount;
                                 lockExpense.PreparedByUserId = expense.PreparedByUserId;
                                 lockExpense.IsLocked = true;
@@ -417,7 +413,6 @@ namespace Lending.ApiControllers
             var expense = from d in db.trnExpenses
                               where d.ExpenseDate == Convert.ToDateTime(date)
                               && d.AssignedStaffId == Convert.ToInt32(staffId)
-                              && d.IsCollectionExpense == true
                               && d.IsLocked == true
                               select d;
 

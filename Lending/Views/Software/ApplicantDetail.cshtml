@@ -4361,7 +4361,7 @@
                                     }
                                 }
                             }
-                             
+
                             applicantLoans.push({
                                 HoverButton: "<button class='btn btn-primary btn-xs btn-block' onclick='" + onClickFunctionName + "'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 Id: applicantLoanResults[i]["Id"],
@@ -4379,6 +4379,8 @@
                                 IsFullyPaid: applicantLoanResults[i]["IsFullyPaid"],
                                 LoanStatus: loanStatus,
                                 Particulars: applicantLoanResults[i]["Particulars"],
+                                ReconstructedDocNumber: applicantLoanResults[i]["ReconstructedDocNumber"],
+                                RenewedDocNumber: applicantLoanResults[i]["RenewedDocNumber"],
                             });
                         }
                     }
@@ -4451,16 +4453,16 @@
                                 "width": 150,
                             },
                             {
-                                "header": "Particulars",
-                                "binding": "Particulars",
-                                "allowSorting": true,
-                                "width": 300,
-                            },
-                            {
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
                                 "width": 180,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
                             },
                             {
                                 "header": "Net",
@@ -4475,12 +4477,6 @@
                                 "width": 120,
                             },
                             {
-                                "header": "Balance",
-                                "binding": "TotalBalanceAmount",
-                                "allowSorting": true,
-                                "width": 120,
-                            },
-                            {
                                 "header": "Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
@@ -4489,6 +4485,12 @@
                             {
                                 "header": "Penalty",
                                 "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 120,
                             },
@@ -4593,16 +4595,22 @@
                                 "width": 150,
                             },
                             {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
                             },
                             {
-                                "header": "Status",
-                                "binding": "LoanStatus",
+                                "header": "Reconstructed Loan",
+                                "binding": "ReconstructedDocNumber",
                                 "allowSorting": true,
-                                "width": 180,
+                                "width": 230,
                             },
                             {
                                 "header": "Net",
@@ -4613,12 +4621,6 @@
                             {
                                 "header": "Collection",
                                 "binding": "NetCollectionAmount",
-                                "allowSorting": true,
-                                "width": 120,
-                            },
-                            {
-                                "header": "Balance",
-                                "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 120,
                             },
@@ -4639,7 +4641,13 @@
                                 "binding": "IsFullyPaid",
                                 "allowSorting": true,
                                 "width": 50,
-                            }
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
                 ],
                 autoGenerateColumns: false,
                 itemsSource: applicantReconstructedLoansCollectionView,
@@ -4735,16 +4743,22 @@
                                 "width": 150,
                             },
                             {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
                             },
                             {
-                                "header": "Status",
-                                "binding": "LoanStatus",
+                                "header": "Renewed Loan",
+                                "binding": "RenewedDocNumber",
                                 "allowSorting": true,
-                                "width": 180,
+                                "width": 230,
                             },
                             {
                                 "header": "Net",
@@ -4759,12 +4773,6 @@
                                 "width": 120,
                             },
                             {
-                                "header": "Balance",
-                                "binding": "TotalBalanceAmount",
-                                "allowSorting": true,
-                                "width": 120,
-                            },
-                            {
                                 "header": "Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
@@ -4773,6 +4781,12 @@
                             {
                                 "header": "Penalty",
                                 "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 120,
                             },
@@ -5092,7 +5106,7 @@
         function createComboBoxLoan() {
             var loanNumbers = new Array();
             $.ajax({
-                url: '/api/loan/list/byApplicantId/forViewCollection/'+ getUrlParameter("id"),
+                url: '/api/loan/list/byApplicantId/forViewCollection/' + getUrlParameter("id"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',

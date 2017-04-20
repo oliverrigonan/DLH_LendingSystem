@@ -161,7 +161,7 @@
                                         </td>
                                         <td align="right">
                                             <button class="btn btn-primary btn-sm" id="btnFullPayment" onclick="btnFullPaymentOnclick()">
-                                                <i class="fa fa-money fa-fw"></i> Full Payment
+                                                <i class="fa fa-money fa-fw"></i> Full
                                             </button>
                                             <button class="btn btn-primary btn-sm" id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
                                                 <i class="fa fa-plus fa-fw"></i> Add
@@ -270,7 +270,7 @@
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Total Amount</label>
+                            <label class="control-label col-sm-4">Total Balance</label>
                             <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
@@ -300,11 +300,11 @@
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Balance</label>
+                            <label class="control-label col-sm-4">Total Balance</label>
                             <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredCollectionLines" id="BalanceAmount" placeholder="0.00" disabled />
+                                    <input type="text" class="form-control numberField requiredCollectionLines" id="TotalBalanceAmount" placeholder="0.00" disabled />
                                 </div>
                             </div>
                         </div>
@@ -314,6 +314,15 @@
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredCollectionLines" id="collectionLinesCollectibleAmount" placeholder="0.00" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Balance</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredCollectionLines" id="BalanceAmount" placeholder="0.00" disabled />
                                 </div>
                             </div>
                         </div>
@@ -533,7 +542,8 @@
                             applicantLoanNumberArray.push({
                                 Id: applicantLoanNumberResults[i]["Id"],
                                 LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
-                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"]
+                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
+                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"]
                             });
                         }
 
@@ -564,6 +574,7 @@
                     });
 
                     document.getElementById("loanTotalBalanceAmount").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
+
                     createRecentCollectionFlexgrid();
                     window.createRecentCollectionFlexgrid = function () {
                         return true;
@@ -1034,48 +1045,54 @@
                             if (loanLineResults[i]["IsCleared"]) {
                                 var isClearedLabel = "Cleared";
                             }
+
                             var pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
                             var penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
 
                             var canPerformActions = "@ViewData["CanPerformActions"]";
                             if (canPerformActions == 1) {
                                 if (isLocked) {
-                                    pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
-                                    penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
+                                    pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled>Pick</button>";
+                                    penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled>Penalty</button>";
                                 } else {
-                                    if (loanLineResults[i]["BalanceAmount"] == 0) {
-                                        pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
-                                        penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
-                                    } else {
-                                        if (loanLineResults[i]["TermNoOfDays"] == 0) {
-                                            pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
-                                            penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
-                                        } else {
-                                            if ((loanLineResults[i]["PaidAmount"] > 0) || (loanLineResults[i]["PenaltyAmount"] > 0)) {
-                                                pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
-                                                penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
-                                            } else {
-                                                pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
-                                                penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
-                                            }
-                                        }
-                                    }
+                                    pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'>Pick</button>";
+                                    penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()'>Penalty</button>";
+                                    //if (loanLineResults[i]["BalanceAmount"] == 0) {
+                                    //    pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
+                                    //    penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
+                                    //} else {
+                                    //    if (loanLineResults[i]["TermNoOfDays"] == 0) {
+                                    //        pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
+                                    //        penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()'><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
+                                    //    } else {
+                                    //        if ((loanLineResults[i]["PaidAmount"] > 0) || (loanLineResults[i]["PenaltyAmount"] > 0)) {
+                                    //            pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
+                                    //            penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
+                                    //        } else {
+
+                                    //        }
+                                    //    }
+                                    //}
                                 }
                             } else {
-                                pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Pick</button>";
-                                penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled><i class='fa fa-hand-o-right fa-fw'></i> Penalty</button>";
+                                pickButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnPickButtonOnclick()' disabled>Pick</button>";
+                                penaltyButton = "<button class='btn btn-warning btn-xs btn-block' onclick='btnPenaltyButtonOnclick()' disabled>Penalty</button>";
                             }
+
+                            var newDate = new Date(loanLineResults[i]["CollectibleDate"]);
+                            var collectibleDate = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             loanLineArray.push({
                                 BtnPick: pickButton,
                                 BtnPenalty: penaltyButton,
                                 Id: loanLineResults[i]["Id"],
                                 DayReference: loanLineResults[i]["DayReference"],
-                                CollectibleDate: loanLineResults[i]["CollectibleDate"],
+                                CollectibleDate: collectibleDate,
                                 CollectibleAmount: loanLineResults[i]["CollectibleAmount"],
                                 PaidAmount: loanLineResults[i]["PaidAmount"],
                                 PenaltyAmount: loanLineResults[i]["PenaltyAmount"],
-                                BalanceAmount: loanLineResults[i]["BalanceAmount"]
+                                BalanceAmount: loanLineResults[i]["BalanceAmount"],
+                                TotalBalanceAmount: loanLineResults[i]["TotalBalanceAmount"]
                             });
 
                             NProgress.done();
@@ -1101,9 +1118,10 @@
 
             loanLinesId = currentItem.Id;
             isPenalty = false;
-
-            document.getElementById("BalanceAmount").value = currentItem.BalanceAmount.toLocaleString();
+            
+            document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
             document.getElementById("collectionLinesCollectibleAmount").value = currentItem.CollectibleAmount.toLocaleString();
+            document.getElementById("BalanceAmount").value = currentItem.BalanceAmount.toLocaleString();
 
             if (currentItem.BalanceAmount > currentItem.CollectibleAmount) {
                 document.getElementById("collectionLinesPaidAmount").value = currentItem.CollectibleAmount.toLocaleString();
@@ -1126,7 +1144,9 @@
 
             loanLinesId = currentItem.Id;
             isPenalty = true;
+            document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
             document.getElementById("collectionLinesCollectibleAmount").value = currentItem.CollectibleAmount.toLocaleString();
+            document.getElementById("BalanceAmount").value = currentItem.BalanceAmount.toLocaleString();
             document.getElementById("collectionLinesPaidAmount").value = currentItem.CollectibleAmount.toLocaleString();
 
             createCboPenalty();
@@ -1142,7 +1162,7 @@
                             {
                                 "header": "Pick",
                                 "binding": "BtnPick",
-                                "width": 80,
+                                "width": 55,
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
@@ -1150,7 +1170,7 @@
                             {
                                 "header": "Penalty",
                                 "binding": "BtnPenalty",
-                                "width": 80,
+                                "width": 70,
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
@@ -1159,7 +1179,13 @@
                                 "header": "Loan Day Ref.",
                                 "binding": "DayReference",
                                 "allowSorting": true,
-                                "width": "6*",
+                                "width": "5*",
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "CollectibleDate",
+                                "allowSorting": true,
+                                "width": "2*",
                             },
                             {
                                 "header": "Collectible",
@@ -1176,6 +1202,12 @@
                             {
                                 "header": "Penalty",
                                 "binding": "PenaltyAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "BalanceAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
@@ -1492,6 +1524,7 @@
                                 PaidAmount: recentCollectionLinesResults[i]["PaidAmount"],
                                 CollectedDate: thisCollectionDateValue,
                                 CollectionStatus: recentCollectionLinesResults[i]["CollectionStatus"],
+                                BalanceAmount: recentCollectionLinesResults[i]["BalanceAmount"]
                             });
                         }
                     }
@@ -1519,9 +1552,9 @@
             recentCollectionLinesFlexgrid.initialize({
                 columns: [
                             {
-                                "header": "Collection No.",
+                                "header": "Detail",
                                 "binding": "RecentCollectionButton",
-                                "width": "2.5*",
+                                "width": "2*",
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
@@ -1530,7 +1563,13 @@
                                 "header": "Day Ref.",
                                 "binding": "LoanLinesDayReference",
                                 "allowSorting": true,
-                                "width": "7*",
+                                "width": "5*",
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "LoanLinesCollectibleDate",
+                                "allowSorting": true,
+                                "width": "1.5*",
                             },
                             {
                                 "header": "Paid",
@@ -1545,10 +1584,16 @@
                                 "width": "2*",
                             },
                             {
+                                "header": "Balance",
+                                "binding": "BalanceAmount",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
                                 "header": "Status",
                                 "binding": "CollectionStatus",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": "2.5*",
                             },
                 ],
                 autoGenerateColumns: false,

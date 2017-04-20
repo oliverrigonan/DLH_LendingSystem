@@ -37,7 +37,8 @@ namespace Lending.ApiControllers
                                       PenaltyAmount = d.PenaltyAmount,
                                       PaidAmount = d.PaidAmount,
                                       CollectedDate = d.trnCollection.CollectionDate.ToShortDateString(),
-                                      CollectionStatus = d.trnCollection.sysCollectionStatus.Status
+                                      CollectionStatus = d.trnCollection.sysCollectionStatus.Status,
+                                      BalanceAmount = d.trnLoanLine.BalanceAmount
                                   };
 
             return collectionLines.ToList();
@@ -62,7 +63,8 @@ namespace Lending.ApiControllers
                                       Penalty = d.mstPenalty.Penalty,
                                       PenaltyAmount = d.PenaltyAmount,
                                       PaidAmount = d.PaidAmount,
-                                      CollectionStatus = d.trnCollection.sysCollectionStatus.Status
+                                      CollectionStatus = d.trnCollection.sysCollectionStatus.Status,
+                                      BalanceAmount = d.trnLoanLine.BalanceAmount
                                   };
 
             return collectionLines.ToList();
@@ -453,7 +455,7 @@ namespace Lending.ApiControllers
                                 var loanLines = from d in db.trnLoanLines
                                                 where d.LoanId == collectionLines.LoanId
                                                 && d.trnLoan.IsLocked == true
-                                                && d.PaidAmount == 0
+                                                && (d.CollectibleAmount - d.PaidAmount) + d.PenaltyAmount > 0
                                                 select new Models.TrnLoanLines
                                                 {
                                                     Id = d.Id,
@@ -473,7 +475,18 @@ namespace Lending.ApiControllers
                                         newCollectionLine.LoanLinesId = loanLine.Id;
                                         newCollectionLine.PenaltyId = null;
                                         newCollectionLine.PenaltyAmount = 0;
-                                        newCollectionLine.PaidAmount = loanLine.CollectibleAmount;
+
+                                        Decimal paidAmount = 0;
+                                        if (loanLine.PaidAmount != 0 || loanLine.PenaltyAmount != 0)
+                                        {
+                                            paidAmount = (loanLine.CollectibleAmount - loanLine.PaidAmount) + loanLine.PenaltyAmount;
+                                        }
+                                        else
+                                        {
+                                            paidAmount = loanLine.CollectibleAmount;
+                                        }
+
+                                        newCollectionLine.PaidAmount = paidAmount;
                                         db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
                                         db.SubmitChanges();
                                     }

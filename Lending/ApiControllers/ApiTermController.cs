@@ -20,20 +20,20 @@ namespace Lending.ApiControllers
         public List<Models.MstTerm> listTerm()
         {
             var term = from d in db.mstTerms.OrderByDescending(d => d.Id)
-                            select new Models.MstTerm
-                            {
-                                Id = d.Id,
-                                Term = d.Term,
-                                Description = d.Description,
-                                NoOfDays = d.NoOfDays,
-                                PaymentNoOfDays = d.PaymentNoOfDays,
-                                CreatedByUserId = d.CreatedByUserId,
-                                CreatedByUser = d.mstUser.FullName,
-                                CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                UpdatedByUserId = d.UpdatedByUserId,
-                                UpdatedByUser = d.mstUser1.FullName,
-                                UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                            };
+                       select new Models.MstTerm
+                       {
+                           Id = d.Id,
+                           Term = d.Term,
+                           Description = d.Description,
+                           NoOfDays = d.NoOfDays,
+                           PaymentNoOfDays = d.PaymentNoOfDays,
+                           CreatedByUserId = d.CreatedByUserId,
+                           CreatedByUser = d.mstUser.FullName,
+                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                           UpdatedByUserId = d.UpdatedByUserId,
+                           UpdatedByUser = d.mstUser1.FullName,
+                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                       };
 
             return term.ToList();
         }
@@ -76,21 +76,28 @@ namespace Lending.ApiControllers
 
                     if (canPerformActions)
                     {
-                        Data.mstTerm newTerm = new Data.mstTerm();
+                        if (loanType.NoOfDays > loanType.PaymentNoOfDays)
+                        {
+                            Data.mstTerm newTerm = new Data.mstTerm();
 
-                        newTerm.Term = loanType.Term;
-                        newTerm.Description = loanType.Description;
-                        newTerm.NoOfDays = loanType.NoOfDays;
-                        newTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
-                        newTerm.CreatedByUserId = userId;
-                        newTerm.CreatedDateTime = DateTime.Now;
-                        newTerm.UpdatedByUserId = userId;
-                        newTerm.UpdatedDateTime = DateTime.Now;
+                            newTerm.Term = loanType.Term;
+                            newTerm.Description = loanType.Description;
+                            newTerm.NoOfDays = loanType.NoOfDays;
+                            newTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
+                            newTerm.CreatedByUserId = userId;
+                            newTerm.CreatedDateTime = DateTime.Now;
+                            newTerm.UpdatedByUserId = userId;
+                            newTerm.UpdatedDateTime = DateTime.Now;
 
-                        db.mstTerms.InsertOnSubmit(newTerm);
-                        db.SubmitChanges();
+                            db.mstTerms.InsertOnSubmit(newTerm);
+                            db.SubmitChanges();
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
                     }
                     else
                     {
@@ -149,17 +156,24 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            var updateTerm = term.FirstOrDefault();
+                            if (loanType.NoOfDays > loanType.PaymentNoOfDays)
+                            {
+                                var updateTerm = term.FirstOrDefault();
 
-                            updateTerm.Term = loanType.Term;
-                            updateTerm.Description = loanType.Description;
-                            updateTerm.NoOfDays = loanType.NoOfDays;
-                            updateTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
-                            updateTerm.UpdatedByUserId = userId;
-                            updateTerm.UpdatedDateTime = DateTime.Now;
-                            db.SubmitChanges();
+                                updateTerm.Term = loanType.Term;
+                                updateTerm.Description = loanType.Description;
+                                updateTerm.NoOfDays = loanType.NoOfDays;
+                                updateTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
+                                updateTerm.UpdatedByUserId = userId;
+                                updateTerm.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
                         }
                         else
                         {

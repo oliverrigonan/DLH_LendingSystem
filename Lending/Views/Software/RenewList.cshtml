@@ -188,15 +188,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Penalty</label>
-                            <div class="col-sm-8">
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField" id="penaltyToBeRenew" placeholder="0.00" disabled />
-                                </div>
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -311,12 +302,10 @@
                         selectedValuePath: "LoanNumberDetail",
                         onSelectedIndexChanged: function () {
                             document.getElementById("amountToBeRenew").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
-                            document.getElementById("penaltyToBeRenew").value = this.selectedItem["TotalPenaltyAmount"].toLocaleString();
                         }
                     });
 
                     document.getElementById("amountToBeRenew").value = cboLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
-                    document.getElementById("penaltyToBeRenew").value = cboLoanNumber.selectedItem["TotalPenaltyAmount"].toLocaleString();
                 }
             });
         }
@@ -345,7 +334,9 @@
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -390,7 +381,9 @@
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -400,6 +393,7 @@
                         loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
                         });
+
 
                         // Flex Grid
                         renewFlexGrid.itemsSource = loanApplicationCollectionView;
@@ -438,12 +432,12 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Active";
-                            if (loanApplicationListResult[i]["IsRenew"]) {
-                                loanStatus = "Overdue - Renewed";
+                            var loanStatus = "Renew - Active";
+                            if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                loanStatus = "Renew - Reconstructed";
                             } else {
                                 if (loanApplicationListResult[i]["IsRenew"]) {
-                                    loanStatus = "Renewd";
+                                    loanStatus = "Renew - Renewd";
                                 }
                             }
 
@@ -473,6 +467,7 @@
                                 UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
                                 UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                                RenewedDocNumber: loanApplicationListResult[i]["RenewedDocNumber"],
                             });
                         }
                     }
@@ -494,10 +489,7 @@
             loanRenewObject.RenewLoanId = cboLoanNumber.selectedItem["Id"];
             loanRenewObject.RenewPrincipalAmount = document.getElementById("principalAmount").value;
             loanRenewObject.RenewLoanTotalBalanceAmount = document.getElementById("amountToBeRenew").value;
-            loanRenewObject.RenewLoanTotalPenaltyAmount = document.getElementById("penaltyToBeRenew").value;
             var loanRenewData = JSON.stringify(loanRenewObject);
-
-
 
             $.ajax({
                 type: "POST",
@@ -586,8 +578,10 @@
 
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -654,7 +648,9 @@
             loanApplicationCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -720,6 +716,12 @@
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
+                            },
+                            {
+                                "header": "Renewed Loan",
+                                "binding": "RenewedDocNumber",
+                                "allowSorting": true,
+                                "width": 230,
                             },
                             {
                                 "header": "Renew Amount",

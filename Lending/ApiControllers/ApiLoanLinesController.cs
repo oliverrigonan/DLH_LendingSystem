@@ -28,6 +28,8 @@ namespace Lending.ApiControllers
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
                                 PenaltyAmount = d.PenaltyAmount,
+                                BalanceAmount = d.BalanceAmount,
+                                TotalBalanceAmount = d.trnLoan.TotalBalanceAmount,
                                 TermNoOfDays = d.trnLoan.TermNoOfDays
                             };
 
@@ -52,7 +54,8 @@ namespace Lending.ApiControllers
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
                                 PenaltyAmount = d.PenaltyAmount,
-                                BalanceAmount = d.trnLoan.TotalBalanceAmount,
+                                BalanceAmount = d.BalanceAmount,
+                                TotalBalanceAmount = d.trnLoan.TotalBalanceAmount,
                                 TermNoOfDays = d.trnLoan.TermNoOfDays
                             };
 

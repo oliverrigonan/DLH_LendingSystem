@@ -470,13 +470,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">No. of Days</label>
+                            <label class="control-label col-sm-4">Days</label>
                             <div class="col-sm-8">
                                 <div id="cboNoOfDays"></div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">No. of Days Per Pay</label>
+                            <label class="control-label col-sm-4">Days Per Pay</label>
                             <div class="col-sm-8">
                                 <div id="cboPaymentNoOfDays"></div>
                             </div>
@@ -1774,117 +1774,123 @@
                 termsObject.NoOfDays = cboNoOfDays.selectedValue;
                 termsObject.PaymentNoOfDays = cboPaymentNoOfDays.selectedValue;
                 var termData = JSON.stringify(termsObject);
-                if (termId == 0) {
-                    $.ajax({
-                        type: "POST",
-                        url: '/api/term/add',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: termData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Save Successful");
 
-                                $("#TermsEditDetailModal").modal("hide");
+                if (parseFloat(cboNoOfDays.selectedValue) > parseFloat(cboPaymentNoOfDays.selectedValue)) {
 
-                                termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
-                                termsCollectionView.canFilter = true;
-                                termsCollectionView.pageSize = 15;
+                    if (termId == 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: '/api/term/add',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: termData,
+                            statusCode: {
+                                200: function () {
+                                    toastr.success("Save Successful");
 
-                                var filterText = '';
-                                $('#searchTerms').keyup(function () {
-                                    filterText = this.value.toLowerCase();
-                                    termsCollectionView.refresh();
-                                });
+                                    $("#TermsEditDetailModal").modal("hide");
 
-                                termsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
-                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                    termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                                    termsCollectionView.canFilter = true;
+                                    termsCollectionView.pageSize = 15;
+
+                                    var filterText = '';
+                                    $('#searchTerms').keyup(function () {
+                                        filterText = this.value.toLowerCase();
+                                        termsCollectionView.refresh();
+                                    });
+
+                                    termsCollectionView.filter = function (item) {
+                                        return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                                           || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                    }
+
+                                    termsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                        updateNavigateButtonsLoanTerms();
+                                    });
+
+                                    termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                        updateTermsStampSecurity();
+                                    });
+
+                                    // Flex Grid
+                                    termsFlexGrid.itemsSource = termsCollectionView;
+                                    termsFlexGrid.trackChanges = true;
+                                },
+                                400: function () {
+                                    toastr.error("Bad Request");
+
+                                    $("#TermsEditDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveTerms").prop("disabled", false);
+                                    $("#btnCloseTerms").prop("disabled", false);
                                 }
-
-                                termsCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                    updateNavigateButtonsLoanTerms();
-                                });
-
-                                termsCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateTermsStampSecurity();
-                                });
-
-                                // Flex Grid
-                                termsFlexGrid.itemsSource = termsCollectionView;
-                                termsFlexGrid.trackChanges = true;
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#TermsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveTerms").prop("disabled", false);
-                                $("#btnCloseTerms").prop("disabled", false);
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        $.ajax({
+                            type: "PUT",
+                            url: '/api/term/update/' + termId,
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            data: termData,
+                            statusCode: {
+                                200: function () {
+                                    toastr.success("Update Successful");
+
+                                    $("#TermsEditDetailModal").modal("hide");
+
+                                    termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                                    termsCollectionView.canFilter = true;
+                                    termsCollectionView.pageSize = 15;
+
+                                    var filterText = '';
+                                    $('#searchTerms').keyup(function () {
+                                        filterText = this.value.toLowerCase();
+                                        termsCollectionView.refresh();
+                                    });
+
+                                    termsCollectionView.filter = function (item) {
+                                        return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                                           || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                    }
+
+                                    termsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                        updateNavigateButtonsLoanTerms();
+                                    });
+
+                                    termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                        updateTermsStampSecurity();
+                                    });
+
+                                    // Flex Grid
+                                    termsFlexGrid.itemsSource = termsCollectionView;
+                                    termsFlexGrid.trackChanges = true;
+                                },
+                                404: function () {
+                                    toastr.error("Not Found");
+
+                                    $("#TermsEditDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveTerms").prop("disabled", false);
+                                    $("#btnCloseTerms").prop("disabled", false);
+                                },
+                                400: function () {
+                                    toastr.error("Bad Request");
+
+                                    $("#TermsEditDetailModal").modal("hide");
+
+                                    document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                    $("#btnSaveTerms").prop("disabled", false);
+                                    $("#btnCloseTerms").prop("disabled", false);
+                                }
+                            }
+                        });
+                    }
                 } else {
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/term/update/' + termId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: termData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Update Successful");
-
-                                $("#TermsEditDetailModal").modal("hide");
-
-                                termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
-                                termsCollectionView.canFilter = true;
-                                termsCollectionView.pageSize = 15;
-
-                                var filterText = '';
-                                $('#searchTerms').keyup(function () {
-                                    filterText = this.value.toLowerCase();
-                                    termsCollectionView.refresh();
-                                });
-
-                                termsCollectionView.filter = function (item) {
-                                    return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
-                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                }
-
-                                termsCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                    updateNavigateButtonsLoanTerms();
-                                });
-
-                                termsCollectionView.currentChanged.addHandler(function (sender, args) {
-                                    updateTermsStampSecurity();
-                                });
-
-                                // Flex Grid
-                                termsFlexGrid.itemsSource = termsCollectionView;
-                                termsFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Not Found");
-
-                                $("#TermsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveTerms").prop("disabled", false);
-                                $("#btnCloseTerms").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#TermsEditDetailModal").modal("hide");
-
-                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveTerms").prop("disabled", false);
-                                $("#btnCloseTerms").prop("disabled", false);
-                            }
-                        }
-                    });
+                    toastr.error("The no of days must not be greater than the no of days per pay.");
                 }
             } else {
                 toastr.error("Invalid Entry");
@@ -2043,13 +2049,13 @@
                                 "width": "3*"
                             },
                             {
-                                "header": "No. of Days",
+                                "header": "Days",
                                 "binding": "NoOfDays",
                                 "allowSorting": true,
-                                "width": "1*"
+                                "width": "1.5*"
                             },
                             {
-                                "header": "No. of Days Per Pay",
+                                "header": "Days Per Pay",
                                 "binding": "PaymentNoOfDays",
                                 "allowSorting": true,
                                 "width": "1.5*"

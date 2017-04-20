@@ -283,7 +283,7 @@
                             collectionListArray.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
-                                LoanDetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='btnLoanDetailOnclick()'" + disabledButton + "><i class='fa fa-file-text-o fa-fw'></i> Loan Detail</button>",
+                                LoanDetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='btnLoanDetailOnclick()'" + disabledButton + "><i class='fa fa-file-text-o fa-fw'></i> Detail</button>",
                                 Id: collectionListResult[i]["Id"],
                                 CollectionNumber: collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
@@ -512,9 +512,9 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Loan Detail",
+                                "header": "Detail",
                                 "binding": "LoanDetailButton",
-                                "width": 120,
+                                "width": 100,
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
@@ -547,7 +547,7 @@
                                 "width": 220,
                             },
                             {
-                                "header": "Applicant Loan No.",
+                                "header": "Loan Doc No.",
                                 "binding": "LoanNumberDetail",
                                 "allowSorting": true,
                                 "width": 165,

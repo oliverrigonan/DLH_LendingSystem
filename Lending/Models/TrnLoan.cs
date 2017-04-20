@@ -55,5 +55,7 @@ namespace Lending.Models
         public String DayReference { get; set; }
         public String CollectibleDate { get; set; }
         public Decimal CollectibleAmount { get; set; }
+        public String ReconstructedDocNumber { get; set; }
+        public String RenewedDocNumber { get; set; }
     }
 }
