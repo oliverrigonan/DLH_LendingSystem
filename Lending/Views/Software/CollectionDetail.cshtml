@@ -1147,7 +1147,12 @@
             document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
             document.getElementById("collectionLinesCollectibleAmount").value = currentItem.CollectibleAmount.toLocaleString();
             document.getElementById("BalanceAmount").value = currentItem.BalanceAmount.toLocaleString();
-            document.getElementById("collectionLinesPaidAmount").value = currentItem.CollectibleAmount.toLocaleString();
+
+            if (currentItem.BalanceAmount > currentItem.CollectibleAmount) {
+                document.getElementById("collectionLinesPaidAmount").value = currentItem.CollectibleAmount.toLocaleString();
+            } else {
+                document.getElementById("collectionLinesPaidAmount").value = currentItem.BalanceAmount.toLocaleString();
+            }
 
             createCboPenalty();
         }
