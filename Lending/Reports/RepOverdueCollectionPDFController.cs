@@ -33,7 +33,7 @@ namespace Lending.Reports
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(PageSize.A3);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
-                    document.SetMargins(30f, 30f, 30f, 30f);
+                    document.SetMargins(30f, 30f, 20f, 20f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                     document.Open();
@@ -69,11 +69,12 @@ namespace Lending.Reports
                     loanApplicationheader.AddCell(new PdfPCell(new Phrase("Contact: " + userCompanyDetail.mstCompany.ContactNumber, fontArial12)) { HorizontalAlignment = 0, Border = 0 });
                     document.Add(loanApplicationheader);
 
+                    // line header
                     PdfPTable lineHeader = new PdfPTable(1);
                     float[] lineHeaderWithCells = new float[] { 100f };
                     lineHeader.SetWidths(lineHeaderWithCells);
                     lineHeader.WidthPercentage = 100;
-                    lineHeader.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 1 });
+                    lineHeader.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 1, Padding = 0f });
                     document.Add(lineHeader);
 
                     var area = "";

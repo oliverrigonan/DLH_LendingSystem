@@ -35,50 +35,98 @@
                     </div>
                 </div>
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#dailyReleaseMonitoringReport">Daily Release Monitoring</a></li>
+                    <li class="active"><a data-toggle="tab" href="#loanReport">Loan Report</a></li>
                     <li><a data-toggle="tab" href="#collectionReport">Collection Report</a></li>
+                    <li><a data-toggle="tab" href="#expensesReport">Expenses Report</a></li>
+                    <li><a data-toggle="tab" href="#setUpReport">Setup Report</a></li>
                 </ul>
                 <br />
                 <div class="tab-content">
-                    <div id="dailyReleaseMonitoringReport" class="tab-pane fade in active">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" align="right">
-                                <table border="0" style="width: 100%;">
-                                    <tr>
-                                        <td style="width: 28%;">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                <input type="text" id="dailyReleaseMonitoringReportSearhInput" class="form-control" placeholder="Search" />
-                                            </div>
-                                        </td>
-                                        <td style="width: 1%;"></td>
-                                        <td style="width: 30%;">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"> Start Date</span>
-                                                <div id="cboStartDatedailyReleaseMonitoringReport" style="width: 100%;"></div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 1%;"></td>
-                                        <td style="width: 30%;">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"> End Date</span>
-                                                <div id="cboEndDateDailyReleaseMonitoringReport" style="width: 100%;"></div>
-                                            </div>
-                                        </td>
-                                        <td style="width: 1%;"></td>
-                                        <td style="width: 9%;" align="right">
-                                            <button class="btn btn-primary btn-block" onclick="btnPrintDailyReleaseMonitoring()"><i class="fa fa-print fa-fw"></i> Print</button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="panel-body">
+                    <div id="loanReport" class="tab-pane fade in active">
+                        <ul class="nav nav-pills" style="background-color: #f7f7f7">
+                            <li class="active"><a data-toggle="pill" href="#dailyReleaseMonitoringReport">Daily Release Monitoring</a></li>
+                            <li><a data-toggle="pill" href="#requestForm">Request Form</a></li>
+                        </ul>
+                        <br />
+                        <div class="tab-content">
+                            <div id="dailyReleaseMonitoringReport" class="tab-pane fade in active">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 28%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="dailyReleaseMonitoringReportSearchInput" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Start Date</span>
+                                                        <div id="cboStartDateDailyReleaseMonitoringReport" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> End Date</span>
+                                                        <div id="cboEndDateDailyReleaseMonitoringReport" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 9%;" align="right">
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintDailyReleaseMonitoringReport()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
 
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="requestForm" class="tab-pane fade">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 28%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="requestFormSearchInput" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Start Date</span>
+                                                        <div id="cboStartDateRequestForm" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> End Date</span>
+                                                        <div id="cboEndDateRequestForm" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 9%;" align="right">
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintRequestFormDetail()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div id="collectionReport" class="tab-pane fade">
-                        <ul class="nav nav-pills">
+                        <ul class="nav nav-pills" style="background-color: #f7f7f7">
                             <li class="active"><a data-toggle="pill" href="#collectionReportActive">ACTIVE</a></li>
                             <li><a data-toggle="pill" href="#collectionReportOverdue">OVERDUE</a></li>
                         </ul>
@@ -92,26 +140,26 @@
                                                 <td style="width: 28%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="collectionReportHeaderSearchInput" class="form-control" placeholder="Search" />
+                                                        <input type="text" id="collectionReportActiveSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 30%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"> Start Date</span>
-                                                        <div id="cboStartDateCollectionReportHeader" style="width: 100%;"></div>
+                                                        <div id="cboStartDateCollectionReportActive" style="width: 100%;"></div>
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 30%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"> End Date</span>
-                                                        <div id="cboEndDateCollectionReportHeader" style="width: 100%;"></div>
+                                                        <div id="cboEndDateCollectionReportActive" style="width: 100%;"></div>
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 9%;" align="right">
-                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionActives()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionReportActive()"><i class="fa fa-print fa-fw"></i> Print</button>
                                                 </td>
                                             </tr>
                                         </table>
@@ -129,26 +177,26 @@
                                                 <td style="width: 28%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="collectionReportDetailSearchInput" class="form-control" placeholder="Search" />
+                                                        <input type="text" id="collectionReportOverdueSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 30%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"> Start Date</span>
-                                                        <div id="cboStartDateCollectionReportDetail" style="width: 100%;"></div>
+                                                        <div id="cboStartDateCollectionReportOverdue" style="width: 100%;"></div>
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 30%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"> End Date</span>
-                                                        <div id="cboEndDateCollectionReportDetail" style="width: 100%;"></div>
+                                                        <div id="cboEndDateCollectionReportOverdue" style="width: 100%;"></div>
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 9%;" align="right">
-                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionOverdues()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionReportOverdue()"><i class="fa fa-print fa-fw"></i> Print</button>
                                                 </td>
                                             </tr>
                                         </table>

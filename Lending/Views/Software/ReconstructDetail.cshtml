@@ -45,6 +45,12 @@
                         <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
                             <i class="fa fa-unlock fa-fw"></i> Unlock
                         </button>
+                        <button class="btn btn-primary" id="btnCashVoucher" onclick="btnCashVoucherOnClick()">
+                            <i class="fa fa-print fa-fw"></i> Cash Voucher
+                        </button>
+                        <button class="btn btn-primary" id="btnApplicantCollectibles" onclick="btnCollectiblesOnClick()">
+                            <i class="fa fa-print fa-fw"></i> Collectibles
+                        </button>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -229,6 +235,30 @@
                                                     <div class="input-group numberField">
                                                         <span class="input-group-addon">&#8369;</span>
                                                         <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationTotalTotalBalance" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Fully Paid</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <input type="checkbox" id="loanApplicationFullyPaid" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Reconstructed</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <input type="checkbox" id="loanApplicationReconstructed" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Renewed</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <input type="checkbox" id="loanApplicationRenewed" disabled />
                                                     </div>
                                                 </div>
                                             </div>
@@ -745,6 +775,10 @@
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = loanApplicationResult.UpdatedDateTime;
+
+                        document.getElementById('loanApplicationFullyPaid').checked = loanApplicationResult.IsFullyPaid;
+                        document.getElementById('loanApplicationReconstructed').checked = loanApplicationResult.IsReconstruct;
+                        document.getElementById('loanApplicationRenewed').checked = loanApplicationResult.IsRenew;
 
                         if (loanApplicationResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
@@ -2199,6 +2233,24 @@
         $('#loanApplicationPrincipalAmount').keyup(function () {
             computeDeductions();
         });
+
+        // print cash voucher
+        function btnCashVoucherOnClick() {
+            if (isLocked) {
+                window.open("/RepCashVoucherPDF/CashVoucherPDF?loanId=" + getUrlParameter("id"), "_blank");
+            } else {
+                toastr.error("Not Locked");
+            }
+        }
+
+        // print collectibles
+        function btnCollectiblesOnClick() {
+            if (isLocked) {
+                window.open("/RepCollectiblesPDF/Collectibles?loanId=" + getUrlParameter("id"), "_blank");
+            } else {
+                toastr.error("Not Locked");
+            }
+        }
     </script>
 </body>
 </html>

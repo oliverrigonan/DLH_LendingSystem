@@ -31,7 +31,7 @@ namespace Lending.Reports
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(PageSize.A3);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
-                    document.SetMargins(30f, 30f, 30f, 30f);
+                    document.SetMargins(30f, 30f, 20f, 20f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                     // Document Starts
@@ -79,7 +79,7 @@ namespace Lending.Reports
                     float[] lineHeaderWithCells = new float[] { 100f };
                     lineHeader.SetWidths(lineHeaderWithCells);
                     lineHeader.WidthPercentage = 100;
-                    lineHeader.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 1 });
+                    lineHeader.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 1, Padding = 0f });
                     document.Add(lineHeader);
 
                     //  title
@@ -87,7 +87,7 @@ namespace Lending.Reports
                     float[] titleHeaderWithCells = new float[] { 100f };
                     titleHeader.SetWidths(titleHeaderWithCells);
                     titleHeader.WidthPercentage = 100;
-                    titleHeader.AddCell(new PdfPCell(new Phrase("INDEX CARD (Applincants' Daily Collection)", fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
+                    titleHeader.AddCell(new PdfPCell(new Phrase("INDEX CARD (Applincants' Daily Collection)", fontArial13Bold)) { Border = 0, PaddingBottom = 10f, PaddingTop = 1f, HorizontalAlignment = 1 });
                     document.Add(titleHeader);
 
                     String docNumber = "";
@@ -147,18 +147,18 @@ namespace Lending.Reports
                     float[] spaceTableWithCells = new float[] { 100f };
                     spaceTable.SetWidths(spaceTableWithCells);
                     spaceTable.WidthPercentage = 100;
-                    spaceTable.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingBottom = 5f, PaddingTop = 5f, HorizontalAlignment = 1 });
+                    spaceTable.AddCell(new PdfPCell(new Phrase(" ")) { Border = 0, PaddingTop = 2f, HorizontalAlignment = 1 });
                     document.Add(spaceTable);
 
                     PdfPTable loanDetaiAmountlData = new PdfPTable(5);
                     float[] lloanDetaiAmountlDataWithCells = new float[] { 30f, 15f, 10f, 30f, 15f };
                     loanDetaiAmountlData.SetWidths(lloanDetaiAmountlDataWithCells);
                     loanDetaiAmountlData.WidthPercentage = 100;
-                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase("Collection Amount", fontArial12Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(loan.FirstOrDefault().NetCollectionAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase("Total Paid Amount", fontArial12Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 15f, PaddingRight = 5f });
-                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(loan.FirstOrDefault().TotalPaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase("Collection Amount", fontArial12Bold)) { Border = 0, PaddingTop = 1f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(loan.FirstOrDefault().NetCollectionAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 1f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase("Total Paid Amount", fontArial12Bold)) { Border = 0, PaddingTop = 1f, PaddingBottom = 6f, PaddingLeft = 15f, PaddingRight = 5f });
+                    loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(loan.FirstOrDefault().TotalPaidAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase("Balance Amount", fontArial12Bold)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(loan.FirstOrDefault().TotalBalanceAmount.ToString("#,##0.00"), fontArial12)) { Border = 0, HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanDetaiAmountlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12)) { Border = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -175,15 +175,15 @@ namespace Lending.Reports
                     if (loanLines.Any())
                     {
                         PdfPTable loanLineslData = new PdfPTable(6);
-                        float[] loanLineslDataWithCells = new float[] { 35f, 10f, 10f, 10f, 20f, 15f };
+                        float[] loanLineslDataWithCells = new float[] { 25f, 13f, 13f, 13f, 13f, 23f };
                         loanLineslData.SetWidths(loanLineslDataWithCells);
                         loanLineslData.WidthPercentage = 100;
                         loanLineslData.AddCell(new PdfPCell(new Phrase("Day Reference", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         loanLineslData.AddCell(new PdfPCell(new Phrase("Collectible", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         loanLineslData.AddCell(new PdfPCell(new Phrase("Paid", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                         loanLineslData.AddCell(new PdfPCell(new Phrase("Panalty", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        loanLineslData.AddCell(new PdfPCell(new Phrase("Status", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                        loanLineslData.AddCell(new PdfPCell(new Phrase("Others", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                        loanLineslData.AddCell(new PdfPCell(new Phrase("Balance", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                        loanLineslData.AddCell(new PdfPCell(new Phrase("Status / Others", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
                         foreach (var loanLine in loanLines)
                         {
@@ -202,8 +202,8 @@ namespace Lending.Reports
                             loanLineslData.AddCell(new PdfPCell(new Phrase(loanLine.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             loanLineslData.AddCell(new PdfPCell(new Phrase(loanLine.PaidAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             loanLineslData.AddCell(new PdfPCell(new Phrase(loanLine.PenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanLineslData.AddCell(new PdfPCell(new Phrase(loanLine.BalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             loanLineslData.AddCell(new PdfPCell(new Phrase(status, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            loanLineslData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         }
 
                         document.Add(loanLineslData);
