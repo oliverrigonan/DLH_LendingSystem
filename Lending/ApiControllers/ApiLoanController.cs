@@ -1340,15 +1340,15 @@ namespace Lending.ApiControllers
                                        UpdatedByUserId = d.UpdatedByUserId,
                                        UpdatedByUser = d.mstUser2.FullName,
                                        UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                       CollectibleAmount = getCollectibleAmount(d.Id),
-                                       DayReference = getDayReference(d.Id),
-                                       CollectibleDate = getCollectibleDate(d.Id)
+                                       CollectibleAmount = getLoanLines(d.Id).CollectibleAmount,
+                                       DayReference = getLoanLines(d.Id).DayReference,
+                                       CollectibleDate = getLoanLines(d.Id).CollectibleDate
                                    };
 
             return loanApplications.ToList();
         }
 
-        public Decimal getCollectibleAmount(Int32 loanId)
+        public LoanLinesObject getLoanLines(Int32 loanId)
         {
             var loanLines = from d in db.trnLoanLines
                             where d.LoanId == loanId
@@ -1357,45 +1357,35 @@ namespace Lending.ApiControllers
                             select d;
 
             Decimal collectibleAmount = 0;
+            String collectibleDate = " ";
+            String dayReference = " ";
             if (loanLines.Any())
             {
                 collectibleAmount = loanLines.FirstOrDefault().CollectibleAmount;
-            }
-
-            return collectibleAmount;
-        }
-
-        public String getDayReference(Int32 loanId)
-        {
-            var loanLines = from d in db.trnLoanLines
-                            where d.LoanId == loanId
-                            && d.PaidAmount == 0
-                            && d.PenaltyAmount == 0
-                            select d;
-
-            String dayReferenceGlobal = " ";
-            if (loanLines.Any())
-            {
-                dayReferenceGlobal = loanLines.FirstOrDefault().DayReference;
-            }
-
-            return dayReferenceGlobal;
-        }
-        public String getCollectibleDate(Int32 loanId)
-        {
-            var loanLines = from d in db.trnLoanLines
-                            where d.LoanId == loanId
-                            && d.PaidAmount == 0
-                            && d.PenaltyAmount == 0
-                            select d;
-
-            String collectibleDate = " ";
-            if (loanLines.Any())
-            {
                 collectibleDate = loanLines.FirstOrDefault().CollectibleDate.ToShortDateString();
+                dayReference = loanLines.FirstOrDefault().DayReference;
+                LoanLinesObject loanLinesObject = new LoanLinesObject(collectibleAmount, collectibleDate, dayReference);
+                return loanLinesObject;
             }
+            else
+            {
+                LoanLinesObject loanLinesObject = new LoanLinesObject(0, " ", " ");
+                return loanLinesObject;
+            }
+        }
+    }
 
-            return collectibleDate;
+    public class LoanLinesObject
+    {
+        public Decimal CollectibleAmount { get; set; }
+        public String CollectibleDate { get; set; }
+        public String DayReference { get; set; }
+
+        public LoanLinesObject(Decimal collectibleAmount, String collectibleDate, String dayReference)
+        {
+            CollectibleAmount = collectibleAmount;
+            CollectibleDate = collectibleDate;
+            DayReference = dayReference;
         }
     }
 }

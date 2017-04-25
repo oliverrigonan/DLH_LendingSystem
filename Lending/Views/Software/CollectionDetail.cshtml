@@ -161,7 +161,7 @@
                                         </td>
                                         <td align="right">
                                             <button class="btn btn-primary btn-sm" id="btnFullPayment" onclick="btnFullPaymentOnclick()">
-                                                <i class="fa fa-money fa-fw"></i> Full
+                                                <i class="fa fa-money fa-fw"></i> Add All
                                             </button>
                                             <button class="btn btn-primary btn-sm" id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
                                                 <i class="fa fa-plus fa-fw"></i> Add
@@ -265,7 +265,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Full Payment</h4>
+                    <h4 class="modal-title">Add All Payment</h4>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal">
@@ -281,7 +281,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnConfirmFullPaymentCollectionLine" onclick="btnConfirmFullPaymentCollectionLineOnclick()"><i class="fa fa-save fa-fw"></i> Update</button>
+                    <button class="btn btn-primary" id="btnConfirmFullPaymentCollectionLine" onclick="btnConfirmFullPaymentCollectionLineOnclick()"><i class="fa fa-check fa-fw"></i> Confirm</button>
                     <button class="btn btn-default" id="btnCloseFullPaymentCollectionLineModal" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -295,7 +295,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Payment for Collections</h4>
+                    <h4 class="modal-title">Payment</h4>
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal">
@@ -411,7 +411,7 @@
             });
 
             $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-            document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+            document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
         }
 
         // confirm full payment
@@ -433,7 +433,7 @@
                     200: function () {
                         toastr.success("Successfully Paid", "Successfully Paid");
                         $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
 
                         $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
 
@@ -450,14 +450,14 @@
                     404: function (message) {
                         toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
                         $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
 
                         $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
                     },
                     400: function (message) {
                         toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Update";
+                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
 
                         $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
                     }

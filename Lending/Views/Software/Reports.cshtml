@@ -36,7 +36,7 @@
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#loanReport">Loan Report</a></li>
-                    <li><a data-toggle="tab" href="#collectionReport">Collection Report</a></li>
+                    <li><a data-toggle="tab" href="#collectionReport">Collection / Remittance Report</a></li>
                     <li><a data-toggle="tab" href="#expensesReport">Expenses Report</a></li>
                     <li><a data-toggle="tab" href="#setUpReport">Setup Report</a></li>
                 </ul>
@@ -127,8 +127,9 @@
                     </div>
                     <div id="collectionReport" class="tab-pane fade">
                         <ul class="nav nav-pills" style="background-color: #f7f7f7">
-                            <li class="active"><a data-toggle="pill" href="#collectionReportActive">ACTIVE</a></li>
-                            <li><a data-toggle="pill" href="#collectionReportOverdue">OVERDUE</a></li>
+                            <li class="active"><a data-toggle="pill" href="#collectionReportActive">Active Collection</a></li>
+                            <li><a data-toggle="pill" href="#collectionReportOverdue">Overdue Collection</a></li>
+                            <li><a data-toggle="pill" href="#collectiblesReport">Overdue Collectibles / Receivables</a></li>
                         </ul>
                         <br />
                         <div class="tab-content">
@@ -192,6 +193,29 @@
                                                     <div class="input-group">
                                                         <span class="input-group-addon"> End Date</span>
                                                         <div id="cboEndDateCollectionReportOverdue" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 9%;" align="right">
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionReportOverdue()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collectiblesReport" class="tab-pane fade">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 90%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="collectionReportOverdueSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
