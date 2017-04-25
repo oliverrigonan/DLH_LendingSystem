@@ -13038,8 +13038,6 @@ namespace Lending.Data
 		
 		private bool _IsLoanRenew;
 		
-		private bool _IsFullyPaid;
-		
 		private bool _IsLocked;
 		
 		private int _CreatedByUserId;
@@ -13134,8 +13132,6 @@ namespace Lending.Data
     partial void OnIsLoanReconstructChanged();
     partial void OnIsLoanRenewChanging(bool value);
     partial void OnIsLoanRenewChanged();
-    partial void OnIsFullyPaidChanging(bool value);
-    partial void OnIsFullyPaidChanged();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
@@ -13699,26 +13695,6 @@ namespace Lending.Data
 					this._IsLoanRenew = value;
 					this.SendPropertyChanged("IsLoanRenew");
 					this.OnIsLoanRenewChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsFullyPaid", DbType="Bit NOT NULL")]
-		public bool IsFullyPaid
-		{
-			get
-			{
-				return this._IsFullyPaid;
-			}
-			set
-			{
-				if ((this._IsFullyPaid != value))
-				{
-					this.OnIsFullyPaidChanging(value);
-					this.SendPropertyChanging();
-					this._IsFullyPaid = value;
-					this.SendPropertyChanged("IsFullyPaid");
-					this.OnIsFullyPaidChanged();
 				}
 			}
 		}

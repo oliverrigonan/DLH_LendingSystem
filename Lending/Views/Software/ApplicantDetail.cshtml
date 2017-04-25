@@ -519,8 +519,8 @@
                                             <div class="tab-pane fade" id="applicantTransactions">
                                                 <ul class="nav nav-pills" style="background-color: #f7f7f7">
                                                     <li class="active"><a data-toggle="pill" href="#applicantLoans" id="applicantLoansTab">Loans</a></li>
-                                                    <li><a data-toggle="pill" href="#applicantReconstructedLoans" id="applicantReconstructedLoansTab">Reconstructed Loans</a></li>
                                                     <li><a data-toggle="pill" href="#applicantRenews" id="applicantRenewsTab">Renews</a></li>
+                                                    <li><a data-toggle="pill" href="#applicantReconstructedLoans" id="applicantReconstructedLoansTab">Reconstructed Loans and Overdues</a></li>
                                                     <li><a data-toggle="pill" href="#applicantCollections" id="applicantCollectionsTab">Collections</a></li>
                                                 </ul>
                                                 <br />
@@ -4337,11 +4337,39 @@
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             var loanStatus = "Active";
-                            if (applicantLoanResults[i]["IsReconstruct"]) {
-                                loanStatus = "Overdue - Reconstructed";
+                            if (applicantLoanResults[i]["IsLoanReconstruct"]) {
+                                if (applicantLoanResults[i]["IsReconstruct"]) {
+                                    loanStatus = "Overdue (Reconstructed)";
+                                } else {
+                                    if (applicantLoanResults[i]["IsRenew"]) {
+                                        loanStatus = "Overdue (Renewed)";
+                                    } else {
+                                        loanStatus = "Overdue (Active)";
+                                    }
+                                }
                             } else {
-                                if (applicantLoanResults[i]["IsRenew"]) {
-                                    loanStatus = "Renewed";
+                                if (applicantLoanResults[i]["IsLoanRenew"]) {
+                                    if (applicantLoanResults[i]["IsReconstruct"]) {
+                                        loanStatus = "Reconstructed";
+                                    } else {
+                                        if (applicantLoanResults[i]["IsRenew"]) {
+                                            loanStatus = "Renewed";
+                                        } else {
+                                            loanStatus = "Active";
+                                        }
+                                    }
+                                } else {
+                                    if (applicantLoanResults[i]["IsLoanApplication"]) {
+                                        if (applicantLoanResults[i]["IsReconstruct"]) {
+                                            loanStatus = "Reconstructed";
+                                        } else {
+                                            if (applicantLoanResults[i]["IsRenew"]) {
+                                                loanStatus = "Renewed";
+                                            } else {
+                                                loanStatus = "Active";
+                                            }
+                                        }
+                                    }
                                 }
                             }
 
@@ -4376,7 +4404,6 @@
                                 TotalPaidAmount: applicantLoanResults[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: applicantLoanResults[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: applicantLoanResults[i]["TotalBalanceAmount"],
-                                IsFullyPaid: applicantLoanResults[i]["IsFullyPaid"],
                                 LoanStatus: loanStatus,
                                 Particulars: applicantLoanResults[i]["Particulars"],
                                 ReconstructedDocNumber: applicantLoanResults[i]["ReconstructedDocNumber"],
@@ -4493,12 +4520,6 @@
                                 "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 120,
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,
@@ -4637,17 +4658,11 @@
                                 "width": 120,
                             },
                             {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": 50,
-                            },
-                            {
                                 "header": "Balance",
                                 "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 120,
-                            },
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: applicantReconstructedLoansCollectionView,
@@ -4789,12 +4804,6 @@
                                 "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": 120,
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,

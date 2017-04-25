@@ -281,15 +281,11 @@
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             var loanStatus = "Active";
-                            if (loanApplicationListResult[i]["ForOverdue"]) {
-                                loanStatus = "Old Loan Overdues";
+                            if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                loanStatus = "Reconstructed";
                             } else {
-                                if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                    loanStatus = "Reconstructed (Overdue)";
-                                } else {
-                                    if (loanApplicationListResult[i]["IsRenew"]) {
-                                        loanStatus = "Renewed";
-                                    }
+                                if (loanApplicationListResult[i]["IsRenew"]) {
+                                    loanStatus = "Renewed";
                                 }
                             }
 
@@ -309,7 +305,6 @@
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
-                                IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
                                 LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
@@ -569,12 +564,6 @@
                                 "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": 160,
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,

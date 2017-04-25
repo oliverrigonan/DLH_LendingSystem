@@ -1546,7 +1546,8 @@
             recentCollectionLinesCollectionView.editItem(recentCollectionLinesCollectionView.currentItem);
             var currentItem = recentCollectionLinesCollectionView.currentEditItem;
 
-            window.location = '/Software/CollectionDetail?id=' + currentItem.CollectionId;
+            var link = '/Software/CollectionDetail?id=' + currentItem.CollectionId;
+            window.open(link, "_blank");
         }
 
         // createRecentCollectionFlexgrid

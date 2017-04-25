@@ -239,14 +239,6 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Fully Paid</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <input type="checkbox" id="loanApplicationFullyPaid" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="control-label col-sm-4">Reconstructed</label>
                                                 <div class="col-sm-8">
                                                     <div class="input-group numberField">
@@ -775,8 +767,6 @@
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = loanApplicationResult.UpdatedDateTime;
-
-                        document.getElementById('loanApplicationFullyPaid').checked = loanApplicationResult.IsFullyPaid;
                         document.getElementById('loanApplicationReconstructed').checked = loanApplicationResult.IsReconstruct;
                         document.getElementById('loanApplicationRenewed').checked = loanApplicationResult.IsRenew;
 
@@ -2147,15 +2137,19 @@
             var currentItem = loanReconstructCollectionView.currentEditItem;
 
             if (currentItem.IsLoanApplication) {
-                window.location = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+                var link = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+                window.open(link, "_blank");
             } else {
                 if (currentItem.IsLoanReconstruct) {
-                    window.location = '/Software/ReconstructDetail?id=' + currentItem.ReconstructLoanId;
+                    var link = '/Software/ReconstructDetail?id=' + currentItem.ReconstructLoanId;
+                    window.open(link, "_blank");
                 } else {
                     if (currentItem.IsLoanRenew) {
-                        window.location = '/Software/RenewDetail?id=' + currentItem.ReconstructLoanId;
+                        var link = '/Software/RenewDetail?id=' + currentItem.ReconstructLoanId;
+                        window.open(link, "_blank");
                     } else {
-                        window.location = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+                        var link = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+                        window.open(link, "_blank");
                     }
                 }
             }

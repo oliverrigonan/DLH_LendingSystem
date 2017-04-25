@@ -58,7 +58,6 @@ namespace Lending.Reports
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsFullyPaid = d.IsFullyPaid,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,

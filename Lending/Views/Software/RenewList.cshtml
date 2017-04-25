@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Loan Number</label>
+                            <label class="control-label col-sm-4">Doc. Number</label>
                             <div class="col-sm-8">
                                 <div id="cboLoanNumber" style="width: 100%;"></div>
                             </div>
@@ -432,12 +432,12 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Renew - Active";
+                            var loanStatus = "Active";
                             if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                loanStatus = "Renew - Reconstructed";
+                                loanStatus = "Reconstructed";
                             } else {
                                 if (loanApplicationListResult[i]["IsRenew"]) {
-                                    loanStatus = "Renew - Renewd";
+                                    loanStatus = "Renewed";
                                 }
                             }
 
@@ -458,7 +458,6 @@
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
-                                IsFullyPaid: loanApplicationListResult[i]["IsFullyPaid"],
                                 LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
@@ -758,12 +757,6 @@
                                 "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
                                 "width": 160,
-                            },
-                            {
-                                "header": "F",
-                                "binding": "IsFullyPaid",
-                                "allowSorting": true,
-                                "width": 50,
                             }
                 ],
                 autoGenerateColumns: false,

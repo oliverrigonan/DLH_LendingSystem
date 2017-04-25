@@ -49,7 +49,7 @@ namespace Lending.ApiControllers
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
-                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN-" + d.LoanNumber + " (Reconstructed)" : "LN-" + d.LoanNumber : d.IsRenew == true ? "LN-" + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC-" + d.LoanNumber + " (Reconstructed)" : "RC-" + d.LoanNumber : d.IsRenew == true ? "RC-" + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN-" + d.LoanNumber + " (Reconstructed)" : "RN-" + d.LoanNumber : d.IsRenew == true ? "RN-" + d.LoanNumber + " (Renewed)" : d.LoanNumber,
+                                       LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
                                        TotalBalanceAmount = d.TotalBalanceAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount
                                    };
@@ -97,7 +97,7 @@ namespace Lending.ApiControllers
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
-                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN-" + d.LoanNumber + " (Reconstructed)" : "LN-" + d.LoanNumber : d.IsRenew == true ? "LN-" + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC-" + d.LoanNumber + " (Reconstructed)" : "RC-" + d.LoanNumber : d.IsRenew == true ? "RC-" + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN-" + d.LoanNumber + " (Reconstructed)" : "RN-" + d.LoanNumber : d.IsRenew == true ? "RN-" + d.LoanNumber + " (Renewed)" : d.LoanNumber,
+                                       LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
                                        TotalBalanceAmount = d.TotalBalanceAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount
                                    };
@@ -117,7 +117,7 @@ namespace Lending.ApiControllers
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
-                                       LoanNumberDetail = d.IsLoanApplication == true ? d.IsReconstruct == true ? "LN-" + d.LoanNumber + " (Reconstructed)" : "LN-" + d.LoanNumber : d.IsRenew == true ? "LN-" + d.LoanNumber + " (Renewed)" : d.IsLoanReconstruct == true ? d.IsReconstruct == true ? "RC-" + d.LoanNumber + " (Reconstructed)" : "RC-" + d.LoanNumber : d.IsRenew == true ? "RC-" + d.LoanNumber + " (Renewed)" : d.IsLoanRenew == true ? d.IsReconstruct == true ? "RN-" + d.LoanNumber + " (Reconstructed)" : "RN-" + d.LoanNumber : d.IsRenew == true ? "RN-" + d.LoanNumber + " (Renewed)" : d.LoanNumber,
+                                       LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
                                        LoanDate = d.LoanDate.ToShortDateString()
                                    };
 
@@ -167,7 +167,6 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
-                                       IsFullyPaid = d.IsFullyPaid,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -222,7 +221,6 @@ namespace Lending.ApiControllers
                            IsLoanApplication = d.IsLoanApplication,
                            IsLoanReconstruct = d.IsLoanReconstruct,
                            IsLoanRenew = d.IsLoanRenew,
-                           IsFullyPaid = d.IsFullyPaid,
                            IsLocked = d.IsLocked,
                            CreatedByUserId = d.CreatedByUserId,
                            CreatedByUser = d.mstUser1.FullName,
@@ -330,7 +328,6 @@ namespace Lending.ApiControllers
                                     newLoan.IsLoanApplication = true;
                                     newLoan.IsLoanReconstruct = false;
                                     newLoan.IsLoanRenew = false;
-                                    newLoan.IsFullyPaid = false;
                                     newLoan.IsLocked = false;
                                     newLoan.CreatedByUserId = userId;
                                     newLoan.CreatedDateTime = DateTime.Now;
@@ -447,7 +444,6 @@ namespace Lending.ApiControllers
                                         lockLoan.NetAmount = loan.NetAmount;
                                         lockLoan.NetCollectionAmount = loan.NetCollectionAmount;
                                         lockLoan.TotalBalanceAmount = loan.NetCollectionAmount;
-                                        lockLoan.IsFullyPaid = false;
                                         lockLoan.IsLocked = true;
                                         lockLoan.UpdatedByUserId = userId;
                                         lockLoan.UpdatedDateTime = DateTime.Now;
@@ -745,12 +741,14 @@ namespace Lending.ApiControllers
                             {
                                 var existLoanReconstruct = from d in db.trnLoanReconstructs
                                                            where d.ReconstructLoanId == Convert.ToInt32(id)
+                                                           && d.trnLoan.IsLocked == true
                                                            select d;
 
                                 if (!existLoanReconstruct.Any())
                                 {
                                     var existLoanRenew = from d in db.trnLoanRenews
                                                          where d.RenewLoanId == Convert.ToInt32(id)
+                                                         && d.trnLoan.IsLocked == true
                                                          select d;
 
                                     if (!existLoanRenew.Any())
@@ -1029,7 +1027,7 @@ namespace Lending.ApiControllers
             String reconstructedDocNumber = " ";
             if (reconstructedLoans.Any())
             {
-                reconstructedDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber;
+                reconstructedDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : " ";
             }
 
             return reconstructedDocNumber;
@@ -1037,14 +1035,14 @@ namespace Lending.ApiControllers
 
         public String getRenewdDocNumber(Int32 loanId)
         {
-            var reconstructedLoans = from d in db.trnLoanRenews
-                                     where d.LoanId == loanId
-                                     select d;
+            var renewedLoans = from d in db.trnLoanRenews
+                               where d.LoanId == loanId
+                               select d;
 
             String renewdDocNumber = " ";
-            if (reconstructedLoans.Any())
+            if (renewedLoans.Any())
             {
-                renewdDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? reconstructedLoans.FirstOrDefault().trnLoan1.IsReconstruct == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Reconstructed)" : "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber + " (Renewed)" : reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber;
+                renewdDocNumber = renewedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : renewedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : renewedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : " ";
             }
 
             return renewdDocNumber;
@@ -1095,7 +1093,6 @@ namespace Lending.ApiControllers
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsFullyPaid = d.IsFullyPaid,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -1150,7 +1147,6 @@ namespace Lending.ApiControllers
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
-                                               IsFullyPaid = d.IsFullyPaid,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -1205,7 +1201,6 @@ namespace Lending.ApiControllers
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
-                                                   IsFullyPaid = d.IsFullyPaid,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -1273,7 +1268,6 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
-                                       IsFullyPaid = d.IsFullyPaid,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -1332,7 +1326,6 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
-                                       IsFullyPaid = d.IsFullyPaid,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
