@@ -164,46 +164,46 @@
         var isLoanDateClicked = false;
         var isLoanEndDateClicked = false;
 
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
         // create cbo date for loan date
         function createCboLoanDate() {
             cboLoanDate.dispose();
             cboLoanDate = new wijmo.input.InputDate('#cboLoanDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(firstDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isLoanDateClicked == true) {
-                        NProgress.start();
-                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
-                        loanApplicationCollectionView.canFilter = true;
-                        loanApplicationCollectionView.pageSize = 15;
+                    NProgress.start();
+                    loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                    loanApplicationCollectionView.canFilter = true;
+                    loanApplicationCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchLoanApplication').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            loanApplicationCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchLoanApplication').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        loanApplicationCollectionView.refresh();
+                    });
 
-                        loanApplicationCollectionView.filter = function (item) {
-                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsLoanApplications();
-                        });
-
-                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
-                        loanApplicationFlexGrid.trackChanges = true;
-                    } else {
-                        isLoanDateClicked = true;
+                    loanApplicationCollectionView.filter = function (item) {
+                        return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Area.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsLoanApplications();
+                    });
+
+                    loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurity();
+                    });
+
+                    // Flex Grid
+                    loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                    loanApplicationFlexGrid.trackChanges = true;
                 }
             });
         }
@@ -213,41 +213,37 @@
             cboEndLoanDate.dispose();
             cboEndLoanDate = new wijmo.input.InputDate('#cboEndLoanDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(lastDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isLoanEndDateClicked == true) {
-                        NProgress.start();
-                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
-                        loanApplicationCollectionView.canFilter = true;
-                        loanApplicationCollectionView.pageSize = 15;
+                    NProgress.start();
+                    loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                    loanApplicationCollectionView.canFilter = true;
+                    loanApplicationCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchLoanApplication').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            loanApplicationCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchLoanApplication').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        loanApplicationCollectionView.refresh();
+                    });
 
-                        loanApplicationCollectionView.filter = function (item) {
-                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsLoanApplications();
-                        });
-
-                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
-                        loanApplicationFlexGrid.trackChanges = true;
-                    } else {
-                        isLoanEndDateClicked = true;
+                    loanApplicationCollectionView.filter = function (item) {
+                        return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Area.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsLoanApplications();
+                    });
+
+                    loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurity();
+                    });
+
+                    // Flex Grid
+                    loanApplicationFlexGrid.itemsSource = loanApplicationCollectionView;
+                    loanApplicationFlexGrid.trackChanges = true;
                 }
             });
         }

@@ -222,10 +222,10 @@ namespace Lending.ApiControllers
                             loanNumber = newLoanNumber.ToString();
                         }
 
-                        var term = from d in db.mstTerms select d;
+                        var term = from d in db.mstTerms.OrderByDescending(d => d.Id) select d;
                         if (term.Any())
                         {
-                            var interest = from d in db.mstInterests select d;
+                            var interest = from d in db.mstInterests.OrderByDescending(d => d.Id) select d;
                             if (interest.Any())
                             {
                                 var existLoan = from d in db.trnLoans
@@ -253,10 +253,10 @@ namespace Lending.ApiControllers
                                     newLoan.PreviousBalanceAmount = 0;
                                     newLoan.DeductionAmount = 0;
                                     newLoan.NetAmount = 0;
-                                    newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + interestAmount;
                                     newLoan.TotalPaidAmount = 0;
                                     newLoan.TotalPenaltyAmount = 0;
-                                    newLoan.TotalBalanceAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
+                                    newLoan.TotalBalanceAmount = 0;
                                     newLoan.IsReconstruct = false;
                                     newLoan.IsRenew = false;
                                     newLoan.IsLoanApplication = false;
@@ -356,48 +356,55 @@ namespace Lending.ApiControllers
                             loanNumber = newLoanNumber.ToString();
                         }
 
-                        var term = from d in db.mstTerms select d;
+                        var term = from d in db.mstTerms.OrderByDescending(d => d.Id) select d;
                         if (term.Any())
                         {
-                            var interest = from d in db.mstInterests select d;
+                            var interest = from d in db.mstInterests.OrderByDescending(d => d.Id) select d;
                             if (interest.Any())
                             {
-                                Data.trnLoan newLoan = new Data.trnLoan();
-                                newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
-                                newLoan.LoanDate = Convert.ToDateTime(loanReconstruct.LoanDate);
-                                newLoan.ApplicantId = loanReconstruct.ApplicantId;
-                                newLoan.Particulars = loanReconstruct.Particulars;
-                                newLoan.PreparedByUserId = userId;
-                                newLoan.TermId = term.FirstOrDefault().Id;
-                                newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
-                                newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-                                newLoan.MaturityDate = Convert.ToDateTime(loanReconstruct.LoanDate);
-                                newLoan.PrincipalAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
-                                newLoan.InterestId = interest.FirstOrDefault().Id;
-                                newLoan.InterestRate = interest.FirstOrDefault().Rate;
-                                Decimal interestAmount = (loanReconstruct.ReconstructLoanTotalBalanceAmount / 100) * interest.FirstOrDefault().Rate;
-                                newLoan.InterestAmount = interestAmount;
-                                newLoan.PreviousBalanceAmount = 0;
-                                newLoan.DeductionAmount = 0;
-                                newLoan.NetAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
-                                newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
-                                newLoan.TotalPaidAmount = 0;
-                                newLoan.TotalPenaltyAmount = 0;
-                                newLoan.TotalBalanceAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + loanReconstruct.ReconstructLoanTotalPenaltyAmount + interestAmount;
-                                newLoan.IsReconstruct = false;
-                                newLoan.IsRenew = false;
-                                newLoan.IsLoanApplication = false;
-                                newLoan.IsLoanReconstruct = true;
-                                newLoan.IsLoanRenew = false;
-                                newLoan.IsLocked = false;
-                                newLoan.CreatedByUserId = userId;
-                                newLoan.CreatedDateTime = DateTime.Now;
-                                newLoan.UpdatedByUserId = userId;
-                                newLoan.UpdatedDateTime = DateTime.Now;
-                                db.trnLoans.InsertOnSubmit(newLoan);
-                                db.SubmitChanges();
+                                if (loanReconstruct.ReconstructLoanTotalBalanceAmount != 0)
+                                {
+                                    Data.trnLoan newLoan = new Data.trnLoan();
+                                    newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
+                                    newLoan.LoanDate = Convert.ToDateTime(loanReconstruct.LoanDate);
+                                    newLoan.ApplicantId = loanReconstruct.ApplicantId;
+                                    newLoan.Particulars = loanReconstruct.Particulars;
+                                    newLoan.PreparedByUserId = userId;
+                                    newLoan.TermId = term.FirstOrDefault().Id;
+                                    newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
+                                    newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+                                    newLoan.MaturityDate = Convert.ToDateTime(loanReconstruct.LoanDate);
+                                    newLoan.PrincipalAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount;
+                                    newLoan.InterestId = interest.FirstOrDefault().Id;
+                                    newLoan.InterestRate = interest.FirstOrDefault().Rate;
+                                    Decimal interestAmount = (loanReconstruct.ReconstructLoanTotalBalanceAmount / 100) * interest.FirstOrDefault().Rate;
+                                    newLoan.InterestAmount = interestAmount;
+                                    newLoan.PreviousBalanceAmount = 0;
+                                    newLoan.DeductionAmount = 0;
+                                    newLoan.NetAmount = 0;
+                                    newLoan.NetCollectionAmount = loanReconstruct.ReconstructLoanTotalBalanceAmount + interestAmount;
+                                    newLoan.TotalPaidAmount = 0;
+                                    newLoan.TotalPenaltyAmount = 0;
+                                    newLoan.TotalBalanceAmount = 0;
+                                    newLoan.IsReconstruct = false;
+                                    newLoan.IsRenew = false;
+                                    newLoan.IsLoanApplication = false;
+                                    newLoan.IsLoanReconstruct = true;
+                                    newLoan.IsLoanRenew = false;
+                                    newLoan.IsLocked = false;
+                                    newLoan.CreatedByUserId = userId;
+                                    newLoan.CreatedDateTime = DateTime.Now;
+                                    newLoan.UpdatedByUserId = userId;
+                                    newLoan.UpdatedDateTime = DateTime.Now;
+                                    db.trnLoans.InsertOnSubmit(newLoan);
+                                    db.SubmitChanges();
 
-                                return newLoan.Id;
+                                    return newLoan.Id;
+                                }
+                                else
+                                {
+                                    return 0;
+                                }
                             }
                             else
                             {

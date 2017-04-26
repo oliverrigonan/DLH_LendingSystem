@@ -34,7 +34,7 @@ namespace Lending.ApiControllers
                                      Applicant = g.Key.Applicant
                                  };
 
-            return loanApplicants.ToList();
+            return loanApplicants.OrderBy(d => d.Applicant).ToList();
         }
 
         // loan list by applicantId
@@ -79,7 +79,7 @@ namespace Lending.ApiControllers
                                      Applicant = g.Key.Applicant
                                  };
 
-            return loanApplicants.ToList();
+            return loanApplicants.OrderBy(d => d.Applicant).ToList();
         }
 
         // loan list by applicantId
@@ -293,13 +293,13 @@ namespace Lending.ApiControllers
                             loanNumber = newLoanNumber.ToString();
                         }
 
-                        var applicant = from d in db.mstApplicants select d;
+                        var applicant = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
                         if (applicant.Any())
                         {
-                            var term = from d in db.mstTerms select d;
+                            var term = from d in db.mstTerms.OrderByDescending(d => d.Id) select d;
                             if (term.Any())
                             {
-                                var interest = from d in db.mstInterests select d;
+                                var interest = from d in db.mstInterests.OrderByDescending(d => d.Id) select d;
                                 if (interest.Any())
                                 {
                                     Data.trnLoan newLoan = new Data.trnLoan();

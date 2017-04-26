@@ -46,7 +46,7 @@
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
                                     <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddOverdueApplicant()">
-                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Overdue
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Loan Overdue
                                     </button>
                                     <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddReconstructOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
@@ -220,7 +220,7 @@
                             <div class="col-sm-8">
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredOverdueAmount" id="amountToBeReconstructOverdue" placeholder="0.00" />
+                                    <input type="text" class="form-control numberField requiredOverdueAmount requiredOverdueBalanceAmount" id="amountToBeReconstructOverdue" placeholder="0.00" />
                                 </div>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnReconstructOverdue" onclick="btnReconstructOverdueOnclick()"><i class="fa fa-plus fa-fw"></i> Add</button>
+                    <button class="btn btn-primary" id="btnReconstructOverdue" onclick="btnReconstructOverdueOnclick()"><i class="fa fa-refresh fa-fw"></i> Reconstruct</button>
                     <button class="btn btn-danger" id="btnCloseReconstructOverdue" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
                 </div>
             </div>
@@ -259,6 +259,10 @@
         var cboApplicant;
         var cboLoanNumber;
         var cboOverdueYear;
+
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
 
         // reconstuct
         function btnAddReconstructOnclick() {
@@ -418,44 +422,40 @@
             cboReconstructDate.dispose();
             cboReconstructDate = new wijmo.input.InputDate('#cboReconstructDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(firstDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isLoanDateClicked == true) {
-                        NProgress.start();
+                    NProgress.start();
 
-                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
-                        loanApplicationCollectionView.canFilter = true;
-                        loanApplicationCollectionView.pageSize = 15;
+                    loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                    loanApplicationCollectionView.canFilter = true;
+                    loanApplicationCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchLoanApplication').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            loanApplicationCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchLoanApplication').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        loanApplicationCollectionView.refresh();
+                    });
 
-                        loanApplicationCollectionView.filter = function (item) {
-                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
-
-                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        reconstructFlexGrid.itemsSource = loanApplicationCollectionView;
-                        reconstructFlexGrid.trackChanges = true;
-                    } else {
-                        isLoanDateClicked = true;
+                    loanApplicationCollectionView.filter = function (item) {
+                        return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtons();
+                    });
+
+                    loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurity();
+                    });
+
+                    // Flex Grid
+                    reconstructFlexGrid.itemsSource = loanApplicationCollectionView;
+                    reconstructFlexGrid.trackChanges = true;
                 }
             });
         }
@@ -466,44 +466,40 @@
             cboReconstructEndDate.dispose();
             cboReconstructEndDate = new wijmo.input.InputDate('#cboReconstructEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(lastDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isEndLoanDateClicked == true) {
-                        NProgress.start();
+                    NProgress.start();
 
-                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
-                        loanApplicationCollectionView.canFilter = true;
-                        loanApplicationCollectionView.pageSize = 15;
+                    loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                    loanApplicationCollectionView.canFilter = true;
+                    loanApplicationCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchLoanApplication').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            loanApplicationCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchLoanApplication').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        loanApplicationCollectionView.refresh();
+                    });
 
-                        loanApplicationCollectionView.filter = function (item) {
-                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
-
-                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        reconstructFlexGrid.itemsSource = loanApplicationCollectionView;
-                        reconstructFlexGrid.trackChanges = true;
-                    } else {
-                        isEndLoanDateClicked = true;
+                    loanApplicationCollectionView.filter = function (item) {
+                        return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtons();
+                    });
+
+                    loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurity();
+                    });
+
+                    // Flex Grid
+                    reconstructFlexGrid.itemsSource = loanApplicationCollectionView;
+                    reconstructFlexGrid.trackChanges = true;
                 }
             });
         }
@@ -604,23 +600,34 @@
             });
 
             if (isValid) {
-                document.getElementById("btnReconstructOverdue").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
-                $("#btnReconstructOverdue").prop("disabled", true);
-                $("#btnCloseReconstructOverdue").prop("disabled", true);
+                var amount = parseFloat(document.getElementById("amountToBeReconstructOverdue").value);
+                if (amount == 0) {
+                    $('.requiredOverdueBalanceAmount').each(function () {
+                        $(this).css({
+                            "border": "1px solid red"
+                        });
+                    });
 
-                $.ajax({
-                    type: "POST",
-                    url: '/api/loanReconstruct/overdue/add',
-                    contentType: "application/json; charset=utf-8",
-                    data: loanReconstuctData,
-                    success: function (id) {
-                        if (id > 0) {
-                            window.location = '/Software/ReconstructDetail?id=' + id;
-                        } else {
-                            toastr.error("Bad Request");
+                    toastr.error("The Amount must not be zero.");
+                } else {
+                    document.getElementById("btnReconstructOverdue").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+                    $("#btnReconstructOverdue").prop("disabled", true);
+                    $("#btnCloseReconstructOverdue").prop("disabled", true);
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/loanReconstruct/overdue/add',
+                        contentType: "application/json; charset=utf-8",
+                        data: loanReconstuctData,
+                        success: function (id) {
+                            if (id > 0) {
+                                window.location = '/Software/ReconstructDetail?id=' + id;
+                            } else {
+                                toastr.error("Bad Request");
+                            }
                         }
-                    }
-                });
+                    });
+                }
             } else {
                 toastr.error("Invalid Entry");
             }

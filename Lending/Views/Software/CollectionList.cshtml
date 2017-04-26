@@ -347,46 +347,46 @@
         var isCollectionEndDateClicked = false;
         var cboCollectionChangeCollector;
 
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
         // create cbo date for collection date
         function createCboCollectionDate() {
             cboCollectionDate.dispose();
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(firstDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isCollectionDateClicked == true) {
-                        NProgress.start();
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
-                        collectionCollectionView.canFilter = true;
-                        collectionCollectionView.pageSize = 15;
+                    NProgress.start();
+                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
+                    collectionCollectionView.canFilter = true;
+                    collectionCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchCollection').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            collectionCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchCollection').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        collectionCollectionView.refresh();
+                    });
 
-                        collectionCollectionView.filter = function (item) {
-                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Status.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
-
-                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
-                    } else {
-                        isCollectionDateClicked = true;
+                    collectionCollectionView.filter = function (item) {
+                        return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Status.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtons();
+                    });
+
+                    collectionCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurity();
+                    });
+
+                    // Flex Grid
+                    collectionFlexGrid.itemsSource = collectionCollectionView;
+                    collectionFlexGrid.trackChanges = true;
                 }
             });
         }
@@ -396,41 +396,37 @@
             cboCollectionEndDate.dispose();
             cboCollectionEndDate = new wijmo.input.InputDate('#cboCollectionEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(lastDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isCollectionEndDateClicked == true) {
-                        NProgress.start();
-                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
-                        collectionCollectionView.canFilter = true;
-                        collectionCollectionView.pageSize = 15;
+                    NProgress.start();
+                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
+                    collectionCollectionView.canFilter = true;
+                    collectionCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchCollection').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            collectionCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchCollection').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        collectionCollectionView.refresh();
+                    });
 
-                        collectionCollectionView.filter = function (item) {
-                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Status.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
-
-                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurity();
-                        });
-
-                        // Flex Grid
-                        collectionFlexGrid.itemsSource = collectionCollectionView;
-                        collectionFlexGrid.trackChanges = true;
-                    } else {
-                        isCollectionEndDateClicked = true;
+                    collectionCollectionView.filter = function (item) {
+                        return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Status.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtons();
+                    });
+
+                    collectionCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurity();
+                    });
+
+                    // Flex Grid
+                    collectionFlexGrid.itemsSource = collectionCollectionView;
+                    collectionFlexGrid.trackChanges = true;
                 }
             });
         }
@@ -852,42 +848,38 @@
             cboRemittanceDate.dispose();
             cboRemittanceDate = new wijmo.input.InputDate('#cboRemittanceDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(firstDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isRemittanceDateClicked == true) {
-                        NProgress.start();
-                        remittanceCollectionView = new wijmo.collections.CollectionView(getRemittanceByRemittanceDateList());
-                        remittanceCollectionView.canFilter = true;
-                        remittanceCollectionView.pageSize = 15;
+                    NProgress.start();
+                    remittanceCollectionView = new wijmo.collections.CollectionView(getRemittanceByRemittanceDateList());
+                    remittanceCollectionView.canFilter = true;
+                    remittanceCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchRemittance').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            remittanceCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchRemittance').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        remittanceCollectionView.refresh();
+                    });
 
-                        remittanceCollectionView.filter = function (item) {
-                            return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Area.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Staff.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        remittanceCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsRemittance();
-                        });
-
-                        remittanceCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurityRemittance();
-                        });
-
-                        // Flex Grid
-                        remittanceFlexGrid.itemsSource = remittanceCollectionView;
-                        remittanceFlexGrid.trackChanges = true;
-                    } else {
-                        isRemittanceDateClicked = true;
+                    remittanceCollectionView.filter = function (item) {
+                        return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    remittanceCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsRemittance();
+                    });
+
+                    remittanceCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurityRemittance();
+                    });
+
+                    // Flex Grid
+                    remittanceFlexGrid.itemsSource = remittanceCollectionView;
+                    remittanceFlexGrid.trackChanges = true;
                 }
             });
         }
@@ -897,42 +889,38 @@
             cboRemittanceEndDate.dispose();
             cboRemittanceEndDate = new wijmo.input.InputDate('#cboRemittanceEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(),
+                value: new Date(lastDay),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    if (isRemittanceEndDateClicked == true) {
-                        NProgress.start();
-                        remittanceCollectionView = new wijmo.collections.CollectionView(getRemittanceByRemittanceDateList());
-                        remittanceCollectionView.canFilter = true;
-                        remittanceCollectionView.pageSize = 15;
+                    NProgress.start();
+                    remittanceCollectionView = new wijmo.collections.CollectionView(getRemittanceByRemittanceDateList());
+                    remittanceCollectionView.canFilter = true;
+                    remittanceCollectionView.pageSize = 15;
 
-                        var filterText = '';
-                        $('#searchRemittance').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            remittanceCollectionView.refresh();
-                        });
+                    var filterText = '';
+                    $('#searchRemittance').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        remittanceCollectionView.refresh();
+                    });
 
-                        remittanceCollectionView.filter = function (item) {
-                            return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Area.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Staff.toLowerCase().indexOf(filterText) > -1);
-                        }
-
-                        remittanceCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtonsRemittance();
-                        });
-
-                        remittanceCollectionView.currentChanged.addHandler(function (sender, args) {
-                            updateStampSecurityRemittance();
-                        });
-
-                        // Flex Grid
-                        remittanceFlexGrid.itemsSource = remittanceCollectionView;
-                        remittanceFlexGrid.trackChanges = true;
-                    } else {
-                        isRemittanceEndDateClicked = true;
+                    remittanceCollectionView.filter = function (item) {
+                        return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
                     }
+
+                    remittanceCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsRemittance();
+                    });
+
+                    remittanceCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurityRemittance();
+                    });
+
+                    // Flex Grid
+                    remittanceFlexGrid.itemsSource = remittanceCollectionView;
+                    remittanceFlexGrid.trackChanges = true;
                 }
             });
         }

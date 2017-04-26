@@ -139,7 +139,7 @@ namespace Lending.ApiControllers
                         Data.trnExpense newExpense = new Data.trnExpense();
                         newExpense.ExpenseNumber = zeroFill(Convert.ToInt32(expenseNumber), 10);
                         newExpense.ExpenseDate = DateTime.Today;
-                        newExpense.AssignedStaffId = (from d in db.mstStaffs select d.Id).FirstOrDefault();
+                        newExpense.AssignedStaffId = (from d in db.mstStaffs.OrderByDescending(d => d.Id) select d.Id).FirstOrDefault();
                         newExpense.Particulars = "NA";
                         newExpense.ExpenseAmount = 0;
                         newExpense.PreparedByUserId = userId;
