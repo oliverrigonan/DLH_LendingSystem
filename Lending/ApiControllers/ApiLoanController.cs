@@ -397,6 +397,18 @@ namespace Lending.ApiControllers
                             String matchPageString = "LoanApplicationDetail";
                             Boolean canPerformActions = false;
 
+                            if (loans.FirstOrDefault().IsLoanReconstruct)
+                            {
+                                matchPageString = "ReconstructDetail";
+                            }
+                            else
+                            {
+                                if (loans.FirstOrDefault().IsLoanRenew)
+                                {
+                                    matchPageString = "RenewDetail";
+                                }
+                            }
+
                             foreach (var mstUserForm in mstUserForms)
                             {
                                 if (mstUserForm.Form.Equals(matchPageString))
@@ -813,6 +825,9 @@ namespace Lending.ApiControllers
                                             }
 
                                             var unlockLoan = loans.FirstOrDefault();
+                                            unlockLoan.TotalPaidAmount = 0;
+                                            unlockLoan.TotalPenaltyAmount = 0;
+                                            unlockLoan.TotalBalanceAmount = 0;
                                             unlockLoan.IsLocked = false;
                                             unlockLoan.UpdatedByUserId = userId;
                                             unlockLoan.UpdatedDateTime = DateTime.Now;

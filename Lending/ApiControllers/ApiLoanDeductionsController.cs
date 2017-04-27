@@ -95,9 +95,20 @@ namespace Lending.ApiControllers
                                     deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
                                 }
 
-                                var updateLoan = loan.FirstOrDefault();
-                                updateLoan.DeductionAmount = deductionAmount;
-                                db.SubmitChanges();
+                                if (loan.FirstOrDefault().IsLoanReconstruct)
+                                {
+                                    var updateLoan = loan.FirstOrDefault();
+                                    updateLoan.DeductionAmount = deductionAmount;
+                                    updateLoan.NetCollectionAmount = (loan.FirstOrDefault().PrincipalAmount + loan.FirstOrDefault().InterestAmount + deductionAmount);
+                                    db.SubmitChanges();
+                                }
+                                else
+                                {
+                                    var updateLoan = loan.FirstOrDefault();
+                                    updateLoan.DeductionAmount = deductionAmount;
+                                    updateLoan.NetAmount = (loan.FirstOrDefault().PrincipalAmount - deductionAmount);
+                                    db.SubmitChanges();
+                                }
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
                             }
@@ -189,9 +200,20 @@ namespace Lending.ApiControllers
                                         deductionAmount = loanDeductions.Sum(d => d.DeductionAmount);
                                     }
 
-                                    var updateLoan = loan.FirstOrDefault();
-                                    updateLoan.DeductionAmount = deductionAmount;
-                                    db.SubmitChanges();
+                                    if (loan.FirstOrDefault().IsLoanReconstruct)
+                                    {
+                                        var updateLoan = loan.FirstOrDefault();
+                                        updateLoan.DeductionAmount = deductionAmount;
+                                        updateLoan.NetCollectionAmount = (loan.FirstOrDefault().PrincipalAmount + loan.FirstOrDefault().InterestAmount + deductionAmount);
+                                        db.SubmitChanges();
+                                    }
+                                    else
+                                    {
+                                        var updateLoan = loan.FirstOrDefault();
+                                        updateLoan.DeductionAmount = deductionAmount;
+                                        updateLoan.NetAmount = (loan.FirstOrDefault().PrincipalAmount - deductionAmount);
+                                        db.SubmitChanges();
+                                    }
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
@@ -286,10 +308,21 @@ namespace Lending.ApiControllers
                                     }
 
                                     var updateDeleteLoan = from d in db.trnLoans where d.Id == Convert.ToInt32(loanId) select d;
-                                    var updateLoan = updateDeleteLoan.FirstOrDefault();
-                                    updateLoan.DeductionAmount = deductionAmount;
-                                    db.SubmitChanges();
-
+                                    if (updateDeleteLoan.FirstOrDefault().IsLoanReconstruct)
+                                    {
+                                        var updateLoan = updateDeleteLoan.FirstOrDefault();
+                                        updateLoan.DeductionAmount = deductionAmount;
+                                        updateLoan.NetCollectionAmount = (updateDeleteLoan.FirstOrDefault().PrincipalAmount + updateDeleteLoan.FirstOrDefault().InterestAmount + deductionAmount);
+                                        db.SubmitChanges();
+                                    }
+                                    else
+                                    {
+                                        var updateLoan = updateDeleteLoan.FirstOrDefault();
+                                        updateLoan.DeductionAmount = deductionAmount;
+                                        updateLoan.NetAmount = (updateDeleteLoan.FirstOrDefault().PrincipalAmount - deductionAmount);
+                                        db.SubmitChanges();
+                                    }
+                                    
                                     return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else

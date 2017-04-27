@@ -197,7 +197,7 @@ namespace Lending.ApiControllers
 
                 if (mstUserForms.Any())
                 {
-                    String matchPageString = "LoanApplicationList";
+                    String matchPageString = "RenewList";
                     Boolean canPerformActions = false;
 
                     foreach (var mstUserForm in mstUserForms)
@@ -346,7 +346,7 @@ namespace Lending.ApiControllers
 
                 if (mstUserForms.Any())
                 {
-                    String matchPageString = "LoanApplicationList";
+                    String matchPageString = "RenewList";
                     Boolean canPerformActions = false;
 
                     foreach (var mstUserForm in mstUserForms)
