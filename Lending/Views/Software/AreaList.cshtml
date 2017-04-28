@@ -169,6 +169,7 @@
                                 Area: areaListResult[i]["Area"],
                                 Description: areaListResult[i]["Description"],
                                 SupervisorStaff: areaListResult[i]["SupervisorStaff"],
+                                Collector: areaListResult[i]["Collector"],
                                 IsLocked: areaListResult[i]["IsLocked"],
                                 CreatedByUserId: areaListResult[i]["CreatedByUserId"],
                                 CreatedByUser: areaListResult[i]["CreatedByUser"],
@@ -241,7 +242,8 @@
                             return !filterText || (item.AreaNumber.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Area.toLowerCase().indexOf(filterText) > -1)
                                                || (item.Discription.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Collector.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         areaCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -325,7 +327,8 @@
                 return !filterText || (item.AreaNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Area.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Discription.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.SupervisorStaff.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Collector.toLowerCase().indexOf(filterText) > -1);
             }
 
             areaCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -381,8 +384,14 @@
                                 "width": "3*"
                             },
                             {
-                                "header": "Supervisor Staff",
+                                "header": "Supervisor",
                                 "binding": "SupervisorStaff",
+                                "allowSorting": true,
+                                "width": "2*"
+                            },
+                            {
+                                "header": "Collector",
+                                "binding": "Collector",
                                 "allowSorting": true,
                                 "width": "2*"
                             }

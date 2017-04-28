@@ -30,7 +30,6 @@
                         </ol>
                     </div>
                 </div>
-
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#dailyCollectibles" onclick="refreshLoanLines()">Active</a></li>
                     <li><a data-toggle="tab" href="#dailyCollectiblesOverdue" onclick="refreshoverduetable()">Overdue</a></li>
@@ -40,6 +39,9 @@
                 <div class="tab-content">
                     <div id="dailyCollectibles" class="tab-pane fade in active">
                         <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4>Active Collection</h4>
+                            </div>
                             <div class="panel-heading">
                                 <table border="0" style="width: 100%;">
                                     <tr>
@@ -96,6 +98,9 @@
                     </div>
                     <div id="dailyCollectiblesOverdue" class="tab-pane fade">
                         <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4>Overdue Collection</h4>
+                            </div>
                             <div class="panel-heading">
                                 <table border="0" style="width: 100%;">
                                     <tr>
@@ -364,7 +369,6 @@
                     });
 
                     createFlexGrid();
-                    createOverdueFlexGrid();
                 }
             });
         }
@@ -728,6 +732,11 @@
         }
 
         function refreshoverduetable() {
+            createOverdueFlexGrid();
+            window.createOverdueFlexGrid = function () {
+                return true;
+            }
+
             NProgress.start();
             setTimeout(function () {
                 overdueCollectionView = new wijmo.collections.CollectionView(getOverdueLoans());

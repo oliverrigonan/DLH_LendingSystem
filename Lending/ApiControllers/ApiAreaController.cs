@@ -20,6 +20,9 @@ namespace Lending.ApiControllers
         public List<Models.MstArea> listArea()
         {
             var areas = from d in db.mstAreas.OrderByDescending(d => d.Id)
+                        join s in db.mstAreaStaffs
+                        on d.Id equals s.AreaId
+                        into joinAreaStaffs
                         select new Models.MstArea
                         {
                             Id = d.Id,
@@ -28,6 +31,7 @@ namespace Lending.ApiControllers
                             Description = d.Description,
                             SupervisorStaffId = d.SupervisorStaffId,
                             SupervisorStaff = d.mstStaff.Staff,
+                            Collector = joinAreaStaffs.OrderByDescending(f => f.Id).Where(f => f.AreaId == d.Id).FirstOrDefault().mstStaff.Staff != null ? joinAreaStaffs.OrderByDescending(f => f.Id).Where(f => f.AreaId == d.Id).FirstOrDefault().mstStaff.Staff : " ",
                             IsLocked = d.IsLocked,
                             CreatedByUserId = d.CreatedByUserId,
                             CreatedByUser = d.mstUser.FullName,

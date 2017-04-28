@@ -15,8 +15,7 @@ namespace Lending.Models
         public String Description { get; set; }
         public Int32 SupervisorStaffId { get; set; }
         public String SupervisorStaff { get; set; }
-        public Int32 CollectorStaffId { get; set; }
-        public String CollectorStaff { get; set; }
+        public String Collector { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }

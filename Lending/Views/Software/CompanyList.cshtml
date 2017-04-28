@@ -35,24 +35,6 @@
                 </div>
 
                 <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%">
-                            <tr>
-                                <td>
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                        <input type="text" id="searchCompany" class="form-control" placeholder="Search" />
-                                    </div>
-                                </td>
-                                <td>&nbsp;&nbsp;&nbsp;</td>
-                                <td align="right">
-                                    @*<button class="btn btn-primary" id="btnAddNewCompany" onclick="btnAddNewCompanyOnclick()">
-                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
-                                    </button>*@
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
                     <div class="panel-body">
                         <div id="companyListFlexGrid" class="grid"></div>
                     </div>
@@ -226,18 +208,6 @@
                         $("#deleteConfirmationCompanyModal").modal("hide");
 
                         companyCollectionView = new wijmo.collections.CollectionView(getCompanyData());
-                        companyCollectionView.canFilter = true;
-
-                        var filterText = '';
-                        $('#searchCompany').keyup(function () {
-                            filterText = this.value.toLowerCase();
-                            companyCollectionView.refresh();
-                        });
-
-                        companyCollectionView.filter = function (item) {
-                            return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
-                        }
 
                         companyCollectionView.currentChanged.addHandler(function (sender, args) {
                             updateStampSecurity();
@@ -284,19 +254,7 @@
             toastrModification();
 
             companyCollectionView = new wijmo.collections.CollectionView(getCompanyData());
-            companyCollectionView.canFilter = true;
-
-            var filterText = '';
-            $('#searchCompany').keyup(function () {
-                filterText = this.value.toLowerCase();
-                companyCollectionView.refresh();
-            });
-
-            companyCollectionView.filter = function (item) {
-                return !filterText || (item.Company.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.ContactNumber.toLowerCase().indexOf(filterText) > -1);
-            }
-
+            
             companyCollectionView.currentChanged.addHandler(function (sender, args) {
                 updateStampSecurity();
             });

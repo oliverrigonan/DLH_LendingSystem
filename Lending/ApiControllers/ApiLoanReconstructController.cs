@@ -58,9 +58,13 @@ namespace Lending.ApiControllers
         public List<Models.TrnLoan> listReconstructByLoanDate(String startLoanDate, String endLoanDate)
         {
             var reconstructs = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                               where d.LoanDate >= Convert.ToDateTime(startLoanDate)
-                               && d.LoanDate <= Convert.ToDateTime(endLoanDate)
-                               && d.IsLoanReconstruct == true
+                               join s in db.trnLoanReconstructs
+                               on d.Id equals s.LoanId
+                               into joinReconstructs
+                               from listReconstructs in joinReconstructs.DefaultIfEmpty()
+                               where listReconstructs.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
+                               && listReconstructs.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
+                               && listReconstructs.trnLoan.IsLoanReconstruct == true
                                select new Models.TrnLoan
                                {
                                    Id = d.Id,
@@ -101,25 +105,10 @@ namespace Lending.ApiControllers
                                    UpdatedByUserId = d.UpdatedByUserId,
                                    UpdatedByUser = d.mstUser2.FullName,
                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                   ReconstructedDocNumber = getReconstructedDocNumber(d.Id)
+                                   ReconstructedDocNumber = joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " "
                                };
 
             return reconstructs.ToList();
-        }
-
-        public String getReconstructedDocNumber(Int32 loanId)
-        {
-            var reconstructedLoans = from d in db.trnLoanReconstructs
-                                     where d.LoanId == loanId
-                                     select d;
-
-            String reconstructedDocNumber = " ";
-            if (reconstructedLoans.Any())
-            {
-                reconstructedDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : " ";
-            }
-
-            return reconstructedDocNumber;
         }
 
         // reconstruct get by id

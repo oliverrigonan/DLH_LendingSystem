@@ -59,9 +59,13 @@ namespace Lending.ApiControllers
         public List<Models.TrnLoan> listRenewByLoanDate(String startLoanDate, String endLoanDate)
         {
             var renews = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                         where d.LoanDate >= Convert.ToDateTime(startLoanDate)
-                         && d.LoanDate <= Convert.ToDateTime(endLoanDate)
-                         && d.IsLoanRenew == true
+                         join s in db.trnLoanRenews
+                         on d.Id equals s.LoanId
+                         into joinRenews
+                         from listRenews in joinRenews.DefaultIfEmpty()
+                         where listRenews.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
+                         && listRenews.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
+                         && listRenews.trnLoan.IsLoanRenew == true
                          select new Models.TrnLoan
                          {
                              Id = d.Id,
@@ -102,25 +106,10 @@ namespace Lending.ApiControllers
                              UpdatedByUserId = d.UpdatedByUserId,
                              UpdatedByUser = d.mstUser2.FullName,
                              UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                             RenewedDocNumber = getRenewdDocNumber(d.Id)
+                             RenewedDocNumber = joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " "
                          };
 
             return renews.ToList();
-        }
-
-        public String getRenewdDocNumber(Int32 loanId)
-        {
-            var renewedLoans = from d in db.trnLoanRenews
-                               where d.LoanId == loanId
-                               select d;
-
-            String renewdDocNumber = " ";
-            if (renewedLoans.Any())
-            {
-                renewdDocNumber = renewedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : renewedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : renewedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : " ";
-            }
-
-            return renewdDocNumber;
         }
 
         // renew get by id

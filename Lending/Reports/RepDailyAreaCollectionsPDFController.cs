@@ -19,12 +19,17 @@ namespace Lending.Reports
             if (date != null && areaId != null)
             {
                 var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                       where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                       && d.IsReconstruct == false
-                                       && d.IsRenew == false
-                                       && d.IsLocked == true
-                                       && d.IsLoanReconstruct == false
-                                       && d.TotalBalanceAmount > 0
+                                       join s in db.trnLoanLines
+                                       on d.Id equals s.LoanId
+                                       into joinLoanApplications
+                                       from listLoanApplications in joinLoanApplications.DefaultIfEmpty()
+                                       where listLoanApplications.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && listLoanApplications.trnLoan.IsReconstruct == false
+                                       && listLoanApplications.trnLoan.IsRenew == false
+                                       && listLoanApplications.trnLoan.IsLocked == true
+                                       && listLoanApplications.trnLoan.IsLoanReconstruct == false
+                                       && listLoanApplications.trnLoan.TotalBalanceAmount > 0
+                                       && listLoanApplications.Id == joinLoanApplications.Where(f => f.PaidAmount == 0 && f.PenaltyAmount == 0).FirstOrDefault().Id
                                        select new Models.TrnLoan
                                        {
                                            Id = d.Id,
@@ -65,9 +70,9 @@ namespace Lending.Reports
                                            UpdatedByUserId = d.UpdatedByUserId,
                                            UpdatedByUser = d.mstUser2.FullName,
                                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                           CollectibleDate = getLoanLines(d.Id).CollectibleDate,
-                                           CollectibleAmount = getLoanLines(d.Id).CollectibleAmount,
-                                           DayReference = getLoanLines(d.Id).DayReference,
+                                           CollectibleAmount = listLoanApplications.CollectibleAmount,
+                                           DayReference = listLoanApplications.DayReference,
+                                           CollectibleDate = listLoanApplications.CollectibleDate.ToShortDateString(),
                                        };
 
                 if (loanApplications.Any())
@@ -157,7 +162,7 @@ namespace Lending.Reports
                         loanlData.AddCell(new PdfPCell(new Phrase(loanLine.MaturityDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(loanLine.DayReference, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(loanLine.CollectibleDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        
+
                         if (loanLine.DayReference.Equals(" "))
                         {
                             loanlData.AddCell(new PdfPCell(new Phrase(loanLine.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
@@ -227,46 +232,6 @@ namespace Lending.Reports
             {
                 return RedirectToAction("NotFound", "Software");
             }
-        }
-
-        public LoanLinesObject getLoanLines(Int32 loanId)
-        {
-            var loanLines = from d in db.trnLoanLines
-                            where d.LoanId == loanId
-                            && d.PaidAmount == 0
-                            && d.PenaltyAmount == 0
-                            select d;
-
-            Decimal collectibleAmount = 0;
-            String collectibleDate = " ";
-            String dayReference = " ";
-            if (loanLines.Any())
-            {
-                collectibleAmount = loanLines.FirstOrDefault().CollectibleAmount;
-                collectibleDate = loanLines.FirstOrDefault().CollectibleDate.ToShortDateString();
-                dayReference = loanLines.FirstOrDefault().DayReference;
-                LoanLinesObject loanLinesObject = new LoanLinesObject(collectibleAmount, collectibleDate, dayReference);
-                return loanLinesObject;
-            }
-            else
-            {
-                LoanLinesObject loanLinesObject = new LoanLinesObject(0, " ", " ");
-                return loanLinesObject;
-            }
-        }
-    }
-
-    public class LoanLinesObject
-    {
-        public Decimal CollectibleAmount { get; set; }
-        public String CollectibleDate { get; set; }
-        public String DayReference { get; set; }
-
-        public LoanLinesObject(Decimal collectibleAmount, String collectibleDate, String dayReference)
-        {
-            CollectibleAmount = collectibleAmount;
-            CollectibleDate = collectibleDate;
-            DayReference = dayReference;
         }
     }
 }
