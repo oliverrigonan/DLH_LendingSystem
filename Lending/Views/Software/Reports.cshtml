@@ -43,10 +43,10 @@
                 <div class="tab-content">
                     <div id="loanReport" class="tab-pane fade in active">
                         <ul class="nav nav-pills" style="background-color: #f7f7f7">
-                            <li class="active"><a data-toggle="pill" href="#dailyReleaseMonitoringReport">Daily Release Monitoring</a></li>
-                            <li><a data-toggle="pill" href="#loanSummaryReport">Loan Summary Report</a></li>
-                            <li><a data-toggle="pill" href="#renewSummaryReport">Renew Summary Report</a></li>
-                            <li><a data-toggle="pill" href="#reconstructSummaryReport">Reconstruct / Overdue Summary Report</a></li>
+                            <li class="active"><a data-toggle="pill" href="#dailyReleaseMonitoringReport" onclick="dailyReleaseMonitoringReportTabPillsOnclick()">Daily Release Monitoring</a></li>
+                            <li><a data-toggle="pill" href="#loanSummaryReport" onclick="loanSummaryReportTabPillsOnclick()">Loan Summary Report</a></li>
+                            <li><a data-toggle="pill" href="#renewSummaryReport" onclick="renewSummaryReportTabPillsOnclick()">Renew Summary Report</a></li>
+                            <li><a data-toggle="pill" href="#reconstructSummaryReport" onclick="reconstructSummaryReportTabPillsOnclick()">Reconstruct / Overdue Summary Report</a></li>
                         </ul>
                         <br />
                         <div class="tab-content">
@@ -55,14 +55,14 @@
                                     <div class="panel-heading" align="right">
                                         <table border="0" style="width: 100%;">
                                             <tr>
-                                                <td style="width: 59%;">
+                                                <td style="width: 61%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
                                                         <input type="text" id="dailyReleaseMonitoringReportSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
-                                                <td style="width: 40%;"></td>
+                                                <td style="width: 38%;"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -125,14 +125,14 @@
                                     <div class="panel-heading" align="right">
                                         <table border="0" style="width: 100%;">
                                             <tr>
-                                                <td style="width: 59%;">
+                                                <td style="width: 61%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="loanSummaryReportmSearchInput" class="form-control" placeholder="Search" />
+                                                        <input type="text" id="loanSummaryReportSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
-                                                <td style="width: 40%;"></td>
+                                                <td style="width: 38%;"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -167,7 +167,26 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-
+                                        <div id="loanSummaryReportFlexGrid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridLoanSummary">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridLoanSummary">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridLoanSummary">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridLoanSummary"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridLoanSummary">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanSummary">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -176,14 +195,14 @@
                                     <div class="panel-heading" align="right">
                                         <table border="0" style="width: 100%;">
                                             <tr>
-                                                <td style="width: 59%;">
+                                                <td style="width: 61%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="renewSummaryReportmSearchInput" class="form-control" placeholder="Search" />
+                                                        <input type="text" id="renewSummaryReportSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
-                                                <td style="width: 40%;"></td>
+                                                <td style="width: 38%;"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -218,7 +237,26 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-
+                                        <div id="renewSummaryReportFlexGrid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridRenewSummary">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridRenewSummary">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridRenewSummary">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridRenewSummary"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridRenewSummary">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridRenewSummary">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -227,14 +265,14 @@
                                     <div class="panel-heading" align="right">
                                         <table border="0" style="width: 100%;">
                                             <tr>
-                                                <td style="width: 59%;">
+                                                <td style="width: 61%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                        <input type="text" id="reconstructSummaryReportmSearchInput" class="form-control" placeholder="Search" />
+                                                        <input type="text" id="reconstructSummaryReportSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
-                                                <td style="width: 40%;"></td>
+                                                <td style="width: 38%;"></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -269,7 +307,26 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-
+                                        <div id="reconstructSummaryReportFlexGrid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridReconstructSummary">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridReconstructSummary">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridReconstructSummary">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridReconstructSummary"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridReconstructSummary">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridReconstructSummary">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -477,6 +534,11 @@
         var cboStartDateDailyReleaseMonitoringReportIsClicked = false;
         var cboEndDateDailyReleaseMonitoringReportIsClicked = false;
 
+        var loanRenewReconstructSummaryReportCollectionView;
+        var loanSummaryReportFlexGrid;
+        var renewSummaryReportFlexGrid;
+        var reconstructSummaryReportFlexGrid;
+
         function createCboArea() {
             var areaArray = new Array();
             $.ajax({
@@ -515,6 +577,51 @@
 
                     cboStartDateDailyReleaseMonitoringReport = new wijmo.input.InputDate('#cboStartDateDailyReleaseMonitoringReport');
                     createCboForDailyReleaseMonitoringStartDate();
+
+                    cboLoanSummaryReportArea.dispose();
+                    cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshLoanSummaryReportFlexGrid();
+                        }
+                    });
+
+                    cboRenewSummaryReportArea.dispose();
+                    cboRenewSummaryReportArea = new wijmo.input.ComboBox('#cboRenewSummaryReportArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshRenewSummaryReportFlexGrid();
+                        }
+                    });
+
+                    cboReconstructSummaryReportArea.dispose();
+                    cboReconstructSummaryReportArea = new wijmo.input.ComboBox('#cboReconstructSummaryReportArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshReconstructSummaryReportFlexGrid();
+                        }
+                    });
                 }
             });
         }
@@ -770,9 +877,830 @@
             });
         }
 
+        var cboStartDateLoanSummaryReportIsClicked = false;
+        var cboEndDateLoanSummaryReportIsClicked = false;
+
+        function createCboStartDateLoanSummaryReport() {
+            cboStartDateLoanSummaryReport.dispose();
+            cboStartDateLoanSummaryReport = new wijmo.input.InputDate('#cboStartDateLoanSummaryReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateLoanSummaryReportIsClicked) {
+                        NProgress.start();
+                        refreshLoanSummaryReportFlexGrid();
+                    } else {
+                        cboStartDateLoanSummaryReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createCboEndDateLoanSummaryReport() {
+            cboEndDateLoanSummaryReport.dispose();
+            cboEndDateLoanSummaryReport = new wijmo.input.InputDate('#cboEndDateLoanSummaryReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateLoanSummaryReportIsClicked) {
+                        NProgress.start();
+                        refreshLoanSummaryReportFlexGrid();
+                    } else {
+                        cboEndDateLoanSummaryReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function dailyReleaseMonitoringReportTabPillsOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                refreshLoanSummaryReportFlexGrid();
+            }, 200);
+        }
+
+        var isDataLoad = false;
+        function loanSummaryReportTabPillsOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                createLoanSummaryReportFlexGrid();
+                window.createLoanSummaryReportFlexGrid = function () {
+                    return true;
+                }
+
+                if (isDataLoad) {
+                    refreshLoanSummaryReportFlexGrid();
+                } else {
+                    isDataLoad = true;
+                }
+            }, 200);
+        }
+
+        var isRenewDataLoad = false;
+        function renewSummaryReportTabPillsOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                createRenewSummaryReportFlexGrid();
+                window.createRenewSummaryReportFlexGrid = function () {
+                    return true;
+                }
+
+                if (isRenewDataLoad) {
+                    refreshRenewSummaryReportFlexGrid();
+                } else {
+                    isRenewDataLoad = true;
+                }
+            }, 200);
+        }
+
+        var isRconstructDataLoad = false;
+        function reconstructSummaryReportTabPillsOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                createReconstructSummaryReportFlexGrid();
+                window.createReconstructSummaryReportFlexGrid = function () {
+                    return true;
+                }
+
+                if (isRconstructDataLoad) {
+                    refreshReconstructSummaryReportFlexGrid();
+                } else {
+                    isRconstructDataLoad = true;
+                }
+            }, 200);
+        }
+
+        var cboStartDateRenewSummaryReportIsClicked = false;
+        function createCboStartDateRenewSummaryReport() {
+            cboStartDateRenewSummaryReport.dispose();
+            cboStartDateRenewSummaryReport = new wijmo.input.InputDate('#cboStartDateRenewSummaryReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateRenewSummaryReportIsClicked) {
+                        NProgress.start();
+                        refreshRenewSummaryReportFlexGrid();
+                    } else {
+                        cboStartDateRenewSummaryReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var cboEndDateRenewSummaryReportIsClicked = false;
+        function createCboEndDateRenewSummaryReport() {
+            cboEndDateRenewSummaryReport.dispose();
+            cboEndDateRenewSummaryReport = new wijmo.input.InputDate('#cboEndDateRenewSummaryReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateRenewSummaryReportIsClicked) {
+                        NProgress.start();
+                        refreshRenewSummaryReportFlexGrid();
+                    } else {
+                        cboEndDateRenewSummaryReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var cboStartDateReconstructSummaryReportIsClicked = false;
+        function createCboStartDateReconstructSummaryReport() {
+            cboStartDateReconstructSummaryReport.dispose();
+            cboStartDateReconstructSummaryReport = new wijmo.input.InputDate('#cboStartDateReconstructSummaryReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateReconstructSummaryReportIsClicked) {
+                        NProgress.start();
+                        refreshReconstructSummaryReportFlexGrid();
+                    } else {
+                        cboStartDateReconstructSummaryReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var cboEndDateReconstructSummaryReportIsClicked = false;
+        function createCboEndDateReconstructSummaryReport() {
+            cboEndDateReconstructSummaryReport.dispose();
+            cboEndDateReconstructSummaryReport = new wijmo.input.InputDate('#cboEndDateReconstructSummaryReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateReconstructSummaryReportIsClicked) {
+                        NProgress.start();
+                        refreshReconstructSummaryReportFlexGrid();
+                    } else {
+                        cboEndDateReconstructSummaryReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function getLoanRenewReconstructSummaryReport(loanType, areaId) {
+            var startDate = [cboStartDateLoanSummaryReport.value.getMonth() + 1, cboStartDateLoanSummaryReport.value.getDate(), cboStartDateLoanSummaryReport.value.getFullYear()].join('-');
+            var endDate = [cboEndDateLoanSummaryReport.value.getMonth() + 1, cboEndDateLoanSummaryReport.value.getDate(), cboEndDateLoanSummaryReport.value.getFullYear()].join('-');
+
+            if (loanType == "loan") {
+                startDate = [cboStartDateLoanSummaryReport.value.getMonth() + 1, cboStartDateLoanSummaryReport.value.getDate(), cboStartDateLoanSummaryReport.value.getFullYear()].join('-');
+                endDate = [cboEndDateLoanSummaryReport.value.getMonth() + 1, cboEndDateLoanSummaryReport.value.getDate(), cboEndDateLoanSummaryReport.value.getFullYear()].join('-');
+            } else {
+                if (loanType == "renew") {
+                    startDate = [cboStartDateRenewSummaryReport.value.getMonth() + 1, cboStartDateRenewSummaryReport.value.getDate(), cboStartDateRenewSummaryReport.value.getFullYear()].join('-');
+                    endDate = [cboEndDateRenewSummaryReport.value.getMonth() + 1, cboEndDateRenewSummaryReport.value.getDate(), cboEndDateRenewSummaryReport.value.getFullYear()].join('-');
+                } else {
+                    if (loanType == "reconstruct") {
+                        startDate = [cboStartDateReconstructSummaryReport.value.getMonth() + 1, cboStartDateReconstructSummaryReport.value.getDate(), cboStartDateReconstructSummaryReport.value.getFullYear()].join('-');
+                        endDate = [cboEndDateReconstructSummaryReport.value.getMonth() + 1, cboEndDateReconstructSummaryReport.value.getDate(), cboEndDateReconstructSummaryReport.value.getFullYear()].join('-');
+                    }
+                }
+            }
+
+            var loanApplicationListArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loan/renew/reconstruct/summary/report/' + loanType + '/' + areaId + '/' + startDate + '/' + endDate,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanApplicationListResult) {
+                    if (loanApplicationListResult.length > 0) {
+                        for (i = 0; i < loanApplicationListResult.length; i++) {
+
+                            var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
+                            var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            var loanStatus = "Active";
+                            var docPrefix = "LN-";
+                            if (loanApplicationListResult[i]["IsLoanReconstruct"]) {
+                                loanStatus = "Overdue (Active)";
+                                docPrefix = "RC-"
+                                if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                    loanStatus = "Overdue (Reconstructed)";
+                                } else {
+                                    if (loanApplicationListResult[i]["IsRenew"]) {
+                                        loanStatus = "Overdue (Renewed)";
+                                    }
+                                }
+                            } else {
+                                if (loanApplicationListResult[i]["IsLoanRenew"]) {
+                                    docPrefix = "RN-"
+                                }
+
+                                if (loanApplicationListResult[i]["IsReconstruct"]) {
+                                    loanStatus = "Reconstructed";
+                                } else {
+                                    if (loanApplicationListResult[i]["IsRenew"]) {
+                                        loanStatus = "Renewed";
+                                    }
+                                }
+                            }
+
+                            var transactionType = "btnSummaryReportDetailLoan()";
+                            if (loanApplicationListResult[i]["IsLoanRenew"]) {
+                                transactionType = "btnSummaryReportDetailRenew()";
+                            }
+
+                            loanApplicationListArray.push({
+                                DetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='" + transactionType + "'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                Id: loanApplicationListResult[i]["Id"],
+                                LoanNumber: docPrefix + loanApplicationListResult[i]["LoanNumber"],
+                                LoanDate: loanDateValue,
+                                Applicant: loanApplicationListResult[i]["Applicant"],
+                                Area: loanApplicationListResult[i]["Area"],
+                                Particulars: loanApplicationListResult[i]["Particulars"],
+                                PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
+                                InterestAmount: loanApplicationListResult[i]["InterestAmount"],
+                                DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
+                                NetAmount: loanApplicationListResult[i]["NetAmount"],
+                                NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
+                                TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
+                                LoanStatus: loanStatus,
+                                IsLocked: loanApplicationListResult[i]["IsLocked"],
+                                CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
+                                CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
+                                CreatedDateTime: loanApplicationListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                                RenewedDocNumber: loanApplicationListResult[i]["RenewedDocNumber"],
+                                ReconstructedDocNumber: loanApplicationListResult[i]["ReconstructedDocNumber"],
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return loanApplicationListArray;
+        }
+
+        function btnSummaryReportDetailLoan() {
+
+        }
+
+        function btnSummaryReportDetailRenew() {
+
+        }
+
+        function refreshLoanSummaryReportFlexGrid() {
+            loanRenewReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("loan", cboLoanSummaryReportArea.selectedItem["Id"]));
+            loanRenewReconstructSummaryReportCollectionView.canFilter = true;
+            loanRenewReconstructSummaryReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#loanSummaryReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanRenewReconstructSummaryReportCollectionView.refresh();
+            });
+
+            loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanSummary();
+            });
+
+            // Flex Grid
+            loanSummaryReportFlexGrid.itemsSource = loanRenewReconstructSummaryReportCollectionView;
+            loanSummaryReportFlexGrid.trackChanges = true;
+        }
+
+        function updateNavigateButtonsLoanSummary() {
+            if (loanRenewReconstructSummaryReportCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridLoanSummary').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridLoanSummary').style.display = 'block';
+            btnCurrentPageGridLoanSummary.innerHTML = (loanRenewReconstructSummaryReportCollectionView.pageIndex + 1) + ' / ' + loanRenewReconstructSummaryReportCollectionView.pageCount;
+        }
+
+        function createLoanSummaryReportFlexGrid() {
+            loanRenewReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("loan", cboLoanSummaryReportArea.selectedItem["Id"]));
+            loanRenewReconstructSummaryReportCollectionView.canFilter = true;
+            loanRenewReconstructSummaryReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#loanSummaryReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanRenewReconstructSummaryReportCollectionView.refresh();
+            });
+
+            loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanSummary();
+            });
+
+            // Flex Grid
+            loanSummaryReportFlexGrid = new wijmo.grid.FlexGrid('#loanSummaryReportFlexGrid');
+            loanSummaryReportFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Loan No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 170,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Principal",
+                                "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Net",
+                                "binding": "NetAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Net Collection",
+                                "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanRenewReconstructSummaryReportCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            loanSummaryReportFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridLoanSummary = document.getElementById('btnMoveToFirstPageGridLoanSummary');
+            btnPreviousPageGridLoanSummary = document.getElementById('btnMoveToPreviousPageGridLoanSummary');
+            btnNextPageGridLoanSummary = document.getElementById('btnMoveToNextPageGridLoanSummary');
+            btnLastPageGridLoanSummary = document.getElementById('btnMoveToLastPageGridLoanSummary');
+            btnCurrentPageGridLoanSummary = document.getElementById('btnCurrentPageGridLoanSummary');
+
+            updateNavigateButtonsLoanSummary();
+
+            btnFirstPageGridLoanSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToFirstPage();
+                updateNavigateButtonsLoanSummary();
+            });
+            btnPreviousPageGridLoanSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToPreviousPage();
+                updateNavigateButtonsLoanSummary();
+            });
+            btnNextPageGridLoanSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToNextPage();
+                updateNavigateButtonsLoanSummary();
+            });
+            btnLastPageGridLoanSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToLastPage();
+                updateNavigateButtonsLoanSummary();
+            });
+        }
+
+        function updateNavigateButtonsRenewSummary() {
+            if (loanRenewReconstructSummaryReportCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridRenewSummary').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridRenewSummary').style.display = 'block';
+            btnCurrentPageGridRenewSummary.innerHTML = (loanRenewReconstructSummaryReportCollectionView.pageIndex + 1) + ' / ' + loanRenewReconstructSummaryReportCollectionView.pageCount;
+        }
+
+        function refreshRenewSummaryReportFlexGrid() {
+            loanRenewReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("renew", cboRenewSummaryReportArea.selectedItem["Id"]));
+            loanRenewReconstructSummaryReportCollectionView.canFilter = true;
+            loanRenewReconstructSummaryReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#renewSummaryReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanRenewReconstructSummaryReportCollectionView.refresh();
+            });
+
+            loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsRenewSummary();
+            });
+
+            // Flex Grid
+            renewSummaryReportFlexGrid.itemsSource = loanRenewReconstructSummaryReportCollectionView;
+            renewSummaryReportFlexGrid.trackChanges = true;
+        }
+
+        function createRenewSummaryReportFlexGrid() {
+            loanRenewReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("renew", cboRenewSummaryReportArea.selectedItem["Id"]));
+            loanRenewReconstructSummaryReportCollectionView.canFilter = true;
+            loanRenewReconstructSummaryReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#renewSummaryReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanRenewReconstructSummaryReportCollectionView.refresh();
+            });
+
+            loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsRenewSummary();
+            });
+
+            // Flex Grid
+            renewSummaryReportFlexGrid = new wijmo.grid.FlexGrid('#renewSummaryReportFlexGrid');
+            renewSummaryReportFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Renew No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 170,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Renewed Loan",
+                                "binding": "RenewedDocNumber",
+                                "allowSorting": true,
+                                "width": 230,
+                            },
+                            {
+                                "header": "Renew Amount",
+                                "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Net",
+                                "binding": "NetAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Net Collection",
+                                "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanRenewReconstructSummaryReportCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            renewSummaryReportFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridRenewSummary = document.getElementById('btnMoveToFirstPageGridRenewSummary');
+            btnPreviousPageGridRenewSummary = document.getElementById('btnMoveToPreviousPageGridRenewSummary');
+            btnNextPageGridRenewSummary = document.getElementById('btnMoveToNextPageGridRenewSummary');
+            btnLastPageGridRenewSummary = document.getElementById('btnMoveToLastPageGridRenewSummary');
+            btnCurrentPageGridRenewSummary = document.getElementById('btnCurrentPageGridRenewSummary');
+
+            updateNavigateButtonsRenewSummary();
+
+            btnFirstPageGridRenewSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToFirstPage();
+                updateNavigateButtonsRenewSummary();
+            });
+            btnPreviousPageGridRenewSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToPreviousPage();
+                updateNavigateButtonsRenewSummary();
+            });
+            btnNextPageGridRenewSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToNextPage();
+                updateNavigateButtonsRenewSummary();
+            });
+            btnLastPageGridRenewSummary.addEventListener('click', function () {
+                loanRenewReconstructSummaryReportCollectionView.moveToLastPage();
+                updateNavigateButtonsRenewSummary();
+            });
+        }
+
+        function refreshReconstructSummaryReportFlexGrid() {
+            loanRenewReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("reconstruct", cboReconstructSummaryReportArea.selectedItem["Id"]));
+            loanRenewReconstructSummaryReportCollectionView.canFilter = true;
+            loanRenewReconstructSummaryReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#reconstructSummaryReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanRenewReconstructSummaryReportCollectionView.refresh();
+            });
+
+            loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsRenewSummary();
+            });
+
+            // Flex Grid
+            reconstructSummaryReportFlexGrid.itemsSource = loanRenewReconstructSummaryReportCollectionView;
+            reconstructSummaryReportFlexGrid.trackChanges = true;
+        }
+
+        function updateNavigateButtonsReconstructSummary() {
+            if (loanReconstructReconstructSummaryReportCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridReconstructSummary').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridReconstructSummary').style.display = 'block';
+            btnCurrentPageGridReconstructSummary.innerHTML = (loanReconstructReconstructSummaryReportCollectionView.pageIndex + 1) + ' / ' + loanRenewReconstructSummaryReportCollectionView.pageCount;
+        }
+
+        function createReconstructSummaryReportFlexGrid() {
+            loanReconstructReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("reconstruct", cboReconstructSummaryReportArea.selectedItem["Id"]));
+            loanReconstructReconstructSummaryReportCollectionView.canFilter = true;
+            loanReconstructReconstructSummaryReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#reconstructSummaryReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                loanReconstructReconstructSummaryReportCollectionView.refresh();
+            });
+
+            loanReconstructReconstructSummaryReportCollectionView.filter = function (item) {
+                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            loanReconstructReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsReconstructSummary();
+            });
+
+            // Flex Grid
+            reconstructSummaryReportFlexGrid = new wijmo.grid.FlexGrid('#reconstructSummaryReportFlexGrid');
+            reconstructSummaryReportFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Recon. No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "LoanStatus",
+                                "allowSorting": true,
+                                "width": 170,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Reconstructed Loan",
+                                "binding": "ReconstructedDocNumber",
+                                "allowSorting": true,
+                                "width": 230,
+                            },
+                            {
+                                "header": "Recon. Amount",
+                                "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Net Collection",
+                                "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanRenewReconstructSummaryReportCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            reconstructSummaryReportFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridReconstructSummary = document.getElementById('btnMoveToFirstPageGridReconstructSummary');
+            btnPreviousPageGridReconstructSummary = document.getElementById('btnMoveToPreviousPageGridReconstructSummary');
+            btnNextPageGridReconstructSummary = document.getElementById('btnMoveToNextPageGridReconstructSummary');
+            btnLastPageGridReconstructSummary = document.getElementById('btnMoveToLastPageGridReconstructSummary');
+            btnCurrentPageGridReconstructSummary = document.getElementById('btnCurrentPageGridReconstructSummary');
+
+            updateNavigateButtonsReconstructSummary();
+
+            btnFirstPageGridReconstructSummary.addEventListener('click', function () {
+                loanReconstructReconstructSummaryReportCollectionView.moveToFirstPage();
+                updateNavigateButtonsReconstructSummary();
+            });
+            btnPreviousPageGridReconstructSummary.addEventListener('click', function () {
+                loanReconstructReconstructSummaryReportCollectionView.moveToPreviousPage();
+                updateNavigateButtonsReconstructSummary();
+            });
+            btnNextPageGridReconstructSummary.addEventListener('click', function () {
+                loanReconstructReconstructSummaryReportCollectionView.moveToNextPage();
+                updateNavigateButtonsReconstructSummary();
+            });
+            btnLastPageGridReconstructSummary.addEventListener('click', function () {
+                loanReconstructReconstructSummaryReportCollectionView.moveToLastPage();
+                updateNavigateButtonsReconstructSummary();
+            });
+        }
+
         window.onload = function () {
             cboDailyReleaseMonitoringArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringArea');
+            cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea');
+            cboRenewSummaryReportArea = new wijmo.input.ComboBox('#cboRenewSummaryReportArea');
+            cboReconstructSummaryReportArea = new wijmo.input.ComboBox('#cboReconstructSummaryReportArea');
             createCboArea();
+            cboStartDateLoanSummaryReport = new wijmo.input.InputDate('#cboStartDateLoanSummaryReport');
+            createCboStartDateLoanSummaryReport();
+            cboEndDateLoanSummaryReport = new wijmo.input.InputDate('#cboEndDateLoanSummaryReport');
+            createCboEndDateLoanSummaryReport();
+            cboStartDateRenewSummaryReport = new wijmo.input.InputDate('#cboStartDateRenewSummaryReport');
+            createCboStartDateRenewSummaryReport();
+            cboEndDateRenewSummaryReport = new wijmo.input.InputDate('#cboEndDateRenewSummaryReport');
+            createCboEndDateRenewSummaryReport();
+            cboStartDateReconstructSummaryReport = new wijmo.input.InputDate('#cboStartDateReconstructSummaryReport');
+            createCboStartDateReconstructSummaryReport();
+            cboEndDateReconstructSummaryReport = new wijmo.input.InputDate('#cboEndDateReconstructSummaryReport');
+            createCboEndDateReconstructSummaryReport();
         }
     </script>
 </body>

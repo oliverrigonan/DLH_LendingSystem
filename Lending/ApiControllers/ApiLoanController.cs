@@ -1417,5 +1417,191 @@ namespace Lending.ApiControllers
 
             return loanApplications.ToList();
         }
+
+        // loan renew reconstruct report
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/renew/reconstruct/summary/report/{loanType}/{areaId}/{startLoanDate}/{endLoanDate}")]
+        public List<Models.TrnLoan> loanRenewReconstructSummaryReports(String loanType, String areaId, String startLoanDate, String endLoanDate)
+        {
+            if (loanType.Equals("loan"))
+            {
+                var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                                       where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                                       && d.LoanDate <= Convert.ToDateTime(endLoanDate)
+                                       && d.IsLocked == true
+                                       && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsLoanApplication == true
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate.ToShortDateString(),
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                           Area = d.mstApplicant.mstArea.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.mstUser.FullName,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsReconstruct = d.IsReconstruct,
+                                           IsRenew = d.IsRenew,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.mstUser1.FullName,
+                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.mstUser2.FullName,
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
+
+                return loanApplications.ToList();
+            }
+            else
+            {
+                if (loanType.Equals("renew"))
+                {
+                    var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                                           join s in db.trnLoanRenews
+                                           on d.Id equals s.LoanId
+                                           into joinRenews
+                                           from listRenews in joinRenews.DefaultIfEmpty()
+                                           where listRenews.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
+                                           && listRenews.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
+                                           && listRenews.trnLoan.IsLocked == true
+                                           && listRenews.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                           && listRenews.trnLoan.IsLoanRenew == true
+                                           select new Models.TrnLoan
+                                           {
+                                               Id = d.Id,
+                                               LoanNumber = d.LoanNumber,
+                                               LoanDate = d.LoanDate.ToShortDateString(),
+                                               ApplicantId = d.ApplicantId,
+                                               Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                               Area = d.mstApplicant.mstArea.Area,
+                                               Particulars = d.Particulars,
+                                               PreparedByUserId = d.PreparedByUserId,
+                                               PreparedByUser = d.mstUser.FullName,
+                                               TermId = d.TermId,
+                                               Term = d.mstTerm.Term,
+                                               TermNoOfDays = d.TermNoOfDays,
+                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                               MaturityDate = d.MaturityDate.ToShortDateString(),
+                                               PrincipalAmount = d.PrincipalAmount,
+                                               InterestId = d.InterestId,
+                                               Interest = d.mstInterest.Interest,
+                                               InterestRate = d.InterestRate,
+                                               InterestAmount = d.InterestAmount,
+                                               PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                               DeductionAmount = d.DeductionAmount,
+                                               NetAmount = d.NetAmount,
+                                               NetCollectionAmount = d.NetCollectionAmount,
+                                               TotalPaidAmount = d.TotalPaidAmount,
+                                               TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                               TotalBalanceAmount = d.TotalBalanceAmount,
+                                               IsReconstruct = d.IsReconstruct,
+                                               IsRenew = d.IsRenew,
+                                               IsLoanApplication = d.IsLoanApplication,
+                                               IsLoanReconstruct = d.IsLoanReconstruct,
+                                               IsLoanRenew = d.IsLoanRenew,
+                                               IsLocked = d.IsLocked,
+                                               CreatedByUserId = d.CreatedByUserId,
+                                               CreatedByUser = d.mstUser1.FullName,
+                                               CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                               UpdatedByUserId = d.UpdatedByUserId,
+                                               UpdatedByUser = d.mstUser2.FullName,
+                                               UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                               RenewedDocNumber = joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " ",
+                                               ReconstructedDocNumber = " "
+                                           };
+
+                    return loanApplications.ToList();
+                }
+                else
+                {
+                    if (loanType.Equals("reconstruct"))
+                    {
+                        var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                                               join s in db.trnLoanReconstructs
+                                               on d.Id equals s.LoanId
+                                               into joinReconstructs
+                                               from listReconstructs in joinReconstructs.DefaultIfEmpty()
+                                               where listReconstructs.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
+                                               && listReconstructs.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
+                                               && listReconstructs.trnLoan.IsLocked == true
+                                               && listReconstructs.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                               && listReconstructs.trnLoan.IsLoanReconstruct == true
+                                               select new Models.TrnLoan
+                                               {
+                                                   Id = d.Id,
+                                                   LoanNumber = d.LoanNumber,
+                                                   LoanDate = d.LoanDate.ToShortDateString(),
+                                                   ApplicantId = d.ApplicantId,
+                                                   Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                                   Area = d.mstApplicant.mstArea.Area,
+                                                   Particulars = d.Particulars,
+                                                   PreparedByUserId = d.PreparedByUserId,
+                                                   PreparedByUser = d.mstUser.FullName,
+                                                   TermId = d.TermId,
+                                                   Term = d.mstTerm.Term,
+                                                   TermNoOfDays = d.TermNoOfDays,
+                                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
+                                                   MaturityDate = d.MaturityDate.ToShortDateString(),
+                                                   PrincipalAmount = d.PrincipalAmount,
+                                                   InterestId = d.InterestId,
+                                                   Interest = d.mstInterest.Interest,
+                                                   InterestRate = d.InterestRate,
+                                                   InterestAmount = d.InterestAmount,
+                                                   PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                                   DeductionAmount = d.DeductionAmount,
+                                                   NetAmount = d.NetAmount,
+                                                   NetCollectionAmount = d.NetCollectionAmount,
+                                                   TotalPaidAmount = d.TotalPaidAmount,
+                                                   TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                                   TotalBalanceAmount = d.TotalBalanceAmount,
+                                                   IsReconstruct = d.IsReconstruct,
+                                                   IsRenew = d.IsRenew,
+                                                   IsLoanApplication = d.IsLoanApplication,
+                                                   IsLoanReconstruct = d.IsLoanReconstruct,
+                                                   IsLoanRenew = d.IsLoanRenew,
+                                                   IsLocked = d.IsLocked,
+                                                   CreatedByUserId = d.CreatedByUserId,
+                                                   CreatedByUser = d.mstUser1.FullName,
+                                                   CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                                   UpdatedByUserId = d.UpdatedByUserId,
+                                                   UpdatedByUser = d.mstUser2.FullName,
+                                                   UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                                   RenewedDocNumber = " ",
+                                                   ReconstructedDocNumber = joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " "
+                                               };
+
+                        return loanApplications.ToList();
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
     }
 }
