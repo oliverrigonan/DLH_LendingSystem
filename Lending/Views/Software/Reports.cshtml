@@ -36,7 +36,7 @@
                 </div>
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#loanReport">Loan / Renew / Reconstruct Reports</a></li>
-                    <li><a data-toggle="tab" href="#collectionReport">Collection / Remittance Report</a></li>
+                    <li><a data-toggle="tab" href="#collectionReport" onclick="collectionReportOnClick()">Collection / Remittance Report</a></li>
                     <li><a data-toggle="tab" href="#expensesReport">Expenses Report</a></li>
                 </ul>
                 <br />
@@ -334,9 +334,9 @@
                     </div>
                     <div id="collectionReport" class="tab-pane fade">
                         <ul class="nav nav-pills" style="background-color: #f7f7f7">
-                            <li class="active"><a data-toggle="pill" href="#collectionReportActive">Active Collection</a></li>
-                            <li><a data-toggle="pill" href="#collectionReportOverdue">Overdue Collection</a></li>
-                            <li><a data-toggle="pill" href="#dailyCollectionAndRemittanceReport">Daily Collection and Remittance</a></li>
+                            <li class="active"><a data-toggle="pill" href="#collectionReportActive" onclick="collectionReportActiveOnClick()">Active Collection</a></li>
+                            <li><a data-toggle="pill" href="#collectionReportOverdue" onclick="collectionReportOverdueOnClick()">Overdue Collection</a></li>
+                            <li><a data-toggle="pill" href="#dailyCollectionAndRemittanceReport" onclick="dailyCollectionAndRemittanceReportOnClick()">Daily Collection and Remittance</a></li>
                         </ul>
                         <br />
                         <div class="tab-content">
@@ -387,7 +387,26 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-
+                                        <div id="collectionReportFlexGridActive"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridCollectionReportActive">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollectionReportActive">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollectionReportActive">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollectionReportActive"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollectionReportActive">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollectionReportActive">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -438,7 +457,26 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-
+                                        <div id="collectionReportFlexGridOverdue"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridCollectionReportOverdue">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollectionReportOverdue">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollectionReportOverdue">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollectionReportOverdue"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollectionReportOverdue">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollectionReportOverdue">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -539,6 +577,87 @@
         var renewSummaryReportFlexGrid;
         var reconstructSummaryReportFlexGrid;
 
+        var cboStartDateCollectionReportActiveReport;
+        var cboStartDateCollectionReportActiveReportIsClicked = false;
+        var cboEndDateCollectionReportActiveReport;
+        var cboEndDateCollectionReportActiveReportIsClicked = false;
+        var cboCollectionReportActiveArea;
+
+        function createcboStartDateCollectionReportActiveReport() {
+            cboStartDateCollectionReportActiveReport.dispose();
+            cboStartDateCollectionReportActiveReport = new wijmo.input.InputDate('#cboStartDateCollectionReportActiveReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateCollectionReportActiveReportIsClicked) {
+                        NProgress.start();
+                        refreshActiveCollectionFlexgrid();
+                    } else {
+                        cboStartDateCollectionReportActiveReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createcboEndDateCollectionReportActiveReport() {
+            cboEndDateCollectionReportActiveReport.dispose();
+            cboEndDateCollectionReportActiveReport = new wijmo.input.InputDate('#cboEndDateCollectionReportActiveReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateCollectionReportActiveReportIsClicked) {
+                        NProgress.start();
+                        refreshActiveCollectionFlexgrid();
+                    } else {
+                        cboEndDateCollectionReportActiveReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var cboStartDateCollectionReportOverdueReport;
+        var cboStartDateCollectionReportOverdueReportIsClicked = false;
+        var cboEndDateCollectionReportOverdueReport;
+        var cboEndDateCollectionReportOverdueReportIsClicked = false;
+        var cboCollectionReportOverdueArea;
+
+        function createcboStartDateCollectionReportOverdueReport() {
+            cboStartDateCollectionReportOverdueReport.dispose();
+            cboStartDateCollectionReportOverdueReport = new wijmo.input.InputDate('#cboStartDateCollectionReportOverdueReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateCollectionReportOverdueReportIsClicked) {
+                        NProgress.start();
+                        refreshOverdueCollectionFlexgrid();
+                    } else {
+                        cboStartDateCollectionReportOverdueReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createcboEndDateCollectionReportOverdueReport() {
+            cboEndDateCollectionReportOverdueReport.dispose();
+            cboEndDateCollectionReportOverdueReport = new wijmo.input.InputDate('#cboEndDateCollectionReportOverdueReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateCollectionReportOverdueReportIsClicked) {
+                        NProgress.start();
+                        refreshOverdueCollectionFlexgrid();
+                    } else {
+                        cboEndDateCollectionReportOverdueReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+
         function createCboArea() {
             var areaArray = new Array();
             $.ajax({
@@ -620,6 +739,36 @@
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshReconstructSummaryReportFlexGrid();
+                        }
+                    });
+
+                    cboCollectionReportActiveArea.dispose();
+                    cboCollectionReportActiveArea = new wijmo.input.ComboBox('#cboCollectionReportActiveArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshActiveCollectionFlexgrid();
+                        }
+                    });
+
+                    cboCollectionReportOverdueArea.dispose();
+                    cboCollectionReportOverdueArea = new wijmo.input.ComboBox('#cboCollectionReportOverdueArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshOverdueCollectionFlexgrid();
                         }
                     });
                 }
@@ -804,6 +953,12 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
                                 "header": "Doc. No.",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
@@ -814,12 +969,6 @@
                                 "binding": "Applicant",
                                 "allowSorting": true,
                                 "width": 250,
-                            },
-                            {
-                                "header": "Loan Date",
-                                "binding": "LoanDate",
-                                "allowSorting": true,
-                                "width": 100,
                             },
                             {
                                 "header": "Due Date",
@@ -1103,9 +1252,6 @@
                             }
 
                             var transactionType = "btnSummaryReportDetailLoan()";
-                            if (loanApplicationListResult[i]["IsLoanRenew"]) {
-                                transactionType = "btnSummaryReportDetailRenew()";
-                            }
 
                             loanApplicationListArray.push({
                                 DetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='" + transactionType + "'><i class='fa fa-edit fa-fw'></i> Detail</button>",
@@ -1118,11 +1264,14 @@
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
                                 InterestAmount: loanApplicationListResult[i]["InterestAmount"],
                                 DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
+                                PreviousBalanceAmount: loanApplicationListResult[i]["PreviousBalanceAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
+                                IsLoanReconstruct: loanApplicationListResult[i]["IsLoanReconstruct"],
+                                IsLoanRenew: loanApplicationListResult[i]["IsLoanRenew"],
                                 LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
@@ -1144,11 +1293,18 @@
         }
 
         function btnSummaryReportDetailLoan() {
+            loanRenewReconstructSummaryReportCollectionView.editItem(loanRenewReconstructSummaryReportCollectionView.currentItem);
+            var currentItem = loanRenewReconstructSummaryReportCollectionView.currentEditItem;
 
-        }
-
-        function btnSummaryReportDetailRenew() {
-
+            if (currentItem.IsLoanReconstruct) {
+                window.open("/Software/ReconstructDetail?id=" + currentItem.Id, "_blank");
+            } else {
+                if (currentItem.IsLoanRenew) {
+                    window.open("/Software/RenewDetail?id=" + currentItem.Id, "_blank");
+                } else {
+                    window.open("/Software/LoanApplicationDetail?id=" + currentItem.Id, "_blank");
+                }
+            }
         }
 
         function refreshLoanSummaryReportFlexGrid() {
@@ -1254,6 +1410,18 @@
                             {
                                 "header": "Principal",
                                 "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Interest",
+                                "binding": "InterestAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Deduction",
+                                "binding": "DeductionAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
@@ -1440,6 +1608,24 @@
                                 "width": 160,
                             },
                             {
+                                "header": "Interest",
+                                "binding": "InterestAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Deduction",
+                                "binding": "DeductionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Prev. Balance",
+                                "binding": "PreviousBalanceAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
                                 "header": "Net",
                                 "binding": "NetAmount",
                                 "allowSorting": true,
@@ -1527,7 +1713,7 @@
             }
 
             loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
-                updateNavigateButtonsRenewSummary();
+                updateNavigateButtonsReconstructSummary();
             });
 
             // Flex Grid
@@ -1536,18 +1722,18 @@
         }
 
         function updateNavigateButtonsReconstructSummary() {
-            if (loanReconstructReconstructSummaryReportCollectionView.pageSize <= 0) {
+            if (loanRenewReconstructSummaryReportCollectionView.pageSize <= 0) {
                 document.getElementById('naviagtionPageGridReconstructSummary').style.display = 'none';
                 return;
             }
             document.getElementById('naviagtionPageGridReconstructSummary').style.display = 'block';
-            btnCurrentPageGridReconstructSummary.innerHTML = (loanReconstructReconstructSummaryReportCollectionView.pageIndex + 1) + ' / ' + loanRenewReconstructSummaryReportCollectionView.pageCount;
+            btnCurrentPageGridReconstructSummary.innerHTML = (loanRenewReconstructSummaryReportCollectionView.pageIndex + 1) + ' / ' + loanRenewReconstructSummaryReportCollectionView.pageCount;
         }
 
         function createReconstructSummaryReportFlexGrid() {
-            loanReconstructReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("reconstruct", cboReconstructSummaryReportArea.selectedItem["Id"]));
-            loanReconstructReconstructSummaryReportCollectionView.canFilter = true;
-            loanReconstructReconstructSummaryReportCollectionView.pageSize = 15;
+            loanRenewReconstructSummaryReportCollectionView = new wijmo.collections.CollectionView(getLoanRenewReconstructSummaryReport("reconstruct", cboReconstructSummaryReportArea.selectedItem["Id"]));
+            loanRenewReconstructSummaryReportCollectionView.canFilter = true;
+            loanRenewReconstructSummaryReportCollectionView.pageSize = 15;
 
             var filterText = '';
             $('#reconstructSummaryReportSearchInput').keyup(function () {
@@ -1555,7 +1741,7 @@
                 loanReconstructReconstructSummaryReportCollectionView.refresh();
             });
 
-            loanReconstructReconstructSummaryReportCollectionView.filter = function (item) {
+            loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
                                    || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
@@ -1563,7 +1749,7 @@
                                    || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
-            loanReconstructReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+            loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
                 updateNavigateButtonsReconstructSummary();
             });
 
@@ -1618,6 +1804,18 @@
                             {
                                 "header": "Recon. Amount",
                                 "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Interest",
+                                "binding": "InterestAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Addition",
+                                "binding": "DeductionAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
@@ -1683,6 +1881,420 @@
             });
         }
 
+        var collectionCollectionView;
+        var collectionReportFlexGridActive;
+        var collectionReportFlexGridOverdue;
+
+        // get colllection list by collection date and area id
+        function getCollectionByCollectionDateList(collectionLoanType) {
+            var collectionListArray = new wijmo.collections.ObservableArray;
+
+            var areaId = cboCollectionReportActiveArea.selectedItem["Id"];
+            var startDate = [cboStartDateCollectionReportActiveReport.value.getMonth() + 1, cboStartDateCollectionReportActiveReport.value.getDate(), cboStartDateCollectionReportActiveReport.value.getFullYear()].join('-');
+            var endDate = [cboEndDateCollectionReportActiveReport.value.getMonth() + 1, cboEndDateCollectionReportActiveReport.value.getDate(), cboEndDateCollectionReportActiveReport.value.getFullYear()].join('-');
+            var apiUrl = '/api/collections/list/ByCollectionDate/active/' + areaId + '/' + startDate + '/' + endDate;
+
+            if (collectionLoanType == "overdue") {
+                startDate = [cboStartDateCollectionReportOverdueReport.value.getMonth() + 1, cboStartDateCollectionReportOverdueReport.value.getDate(), cboStartDateCollectionReportOverdueReport.value.getFullYear()].join('-');
+                endDate = [cboEndDateCollectionReportOverdueReport.value.getMonth() + 1, cboEndDateCollectionReportOverdueReport.value.getDate(), cboEndDateCollectionReportOverdueReport.value.getFullYear()].join('-');
+                areaId = cboCollectionReportOverdueArea.selectedItem["Id"];
+                apiUrl = '/api/collections/list/ByCollectionDate/overdue/' + areaId + '/' + startDate + '/' + endDate;
+            } else {
+                if (collectionLoanType == " ") {
+                    startDate = [cboStartDateCollectionReportActiveReport.value.getMonth() + 1, cboStartDateCollectionReportActiveReport.value.getDate(), cboStartDateCollectionReportActiveReport.value.getFullYear()].join('-');
+                    endDate = [cboEndDateCollectionReportActiveReport.value.getMonth() + 1, cboEndDateCollectionReportActiveReport.value.getDate(), cboEndDateCollectionReportActiveReport.value.getFullYear()].join('-');
+                    areaId = cboCollectionReportActiveArea.selectedItem["Id"];
+                    apiUrl = '/api/collections/list/ByCollectionDate/active/' + areaId + '/' + startDate + '/' + endDate;
+                }
+            }
+
+            $.ajax({
+                url: apiUrl,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectionListResult) {
+                    if (collectionListResult.length > 0) {
+                        for (i = 0; i < collectionListResult.length; i++) {
+                            var newDate = new Date(collectionListResult[i]["CollectionDate"]);
+                            var collectionDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            collectionListArray.push({
+                                DetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='btnDetailButton()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                Id: collectionListResult[i]["Id"],
+                                CollectionNumber: collectionListResult[i]["CollectionNumber"],
+                                CollectionDate: collectionDateValue,
+                                Applicant: collectionListResult[i]["Applicant"],
+                                Particulars: collectionListResult[i]["Particulars"],
+                                LoanId: collectionListResult[i]["LoanId"],
+                                LoanNumberDetail: collectionListResult[i]["LoanNumberDetail"],
+                                LoanId: collectionListResult[i]["LoanId"],
+                                LoanNumber: collectionListResult[i]["LoanNumber"],
+                                StatusId: collectionListResult[i]["StatusId"],
+                                Status: collectionListResult[i]["Status"],
+                                Particulars: collectionListResult[i]["Particulars"],
+                                TotalPaidAmount: collectionListResult[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: collectionListResult[i]["TotalPenaltyAmount"],
+                                PreparedByUserId: collectionListResult[i]["PreparedByUserId"],
+                                PreparedByUser: collectionListResult[i]["PreparedByUser"],
+                                IsReconstruct: collectionListResult[i]["IsReconstruct"],
+                                IsRenew: collectionListResult[i]["IsRenew"],
+                                IsLoanApplication: collectionListResult[i]["IsLoanApplication"],
+                                IsLoanReconstruct: collectionListResult[i]["IsLoanReconstruct"],
+                                IsLoanRenew: collectionListResult[i]["IsLoanRenew"],
+                                IsLocked: collectionListResult[i]["IsLocked"],
+                                CreatedByUserId: collectionListResult[i]["CreatedByUserId"],
+                                CreatedByUser: collectionListResult[i]["CreatedByUser"],
+                                CreatedDateTime: collectionListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: collectionListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: collectionListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: collectionListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return collectionListArray;
+        }
+
+        // Navigation Buttons
+        function updateNavigateButtonsCollectionReportActive() {
+            if (collectionCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridCollectionReportActive').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridCollectionReportActive').style.display = 'block';
+            btnCurrentPageGridCollectionReportActive.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
+        }
+
+        function createCollectionFlexGridActive() {
+            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList(" "));
+            collectionCollectionView.canFilter = true;
+            collectionCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#collectionReportActiveSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectionCollectionView.refresh();
+            });
+
+            collectionCollectionView.filter = function (item) {
+                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportActive();
+            });
+
+            // Flex Grid
+            collectionReportFlexGridActive = new wijmo.grid.FlexGrid('#collectionReportFlexGridActive');
+            collectionReportFlexGridActive.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "CollectionDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Collection No.",
+                                "binding": "CollectionNumber",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "Status",
+                                "allowSorting": true,
+                                "width": 130
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: collectionCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            collectionReportFlexGridActive.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollectionReportActive = document.getElementById('btnMoveToFirstPageGridCollectionReportActive');
+            btnPreviousPageGridCollectionReportActive = document.getElementById('btnMoveToPreviousPageGridCollectionReportActive');
+            btnNextPageGridCollectionReportActive = document.getElementById('btnMoveToNextPageGridCollectionReportActive');
+            btnLastPageGridCollectionReportActive = document.getElementById('btnMoveToLastPageGridCollectionReportActive');
+            btnCurrentPageGridCollectionReportActive = document.getElementById('btnCurrentPageGridCollectionReportActive');
+
+            updateNavigateButtonsCollectionReportActive();
+
+            btnFirstPageGridCollectionReportActive.addEventListener('click', function () {
+                collectionCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollectionReportActive();
+            });
+            btnPreviousPageGridCollectionReportActive.addEventListener('click', function () {
+                collectionCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollectionReportActive();
+            });
+            btnNextPageGridCollectionReportActive.addEventListener('click', function () {
+                collectionCollectionView.moveToNextPage();
+                updateNavigateButtonsCollectionReportActive();
+            });
+            btnLastPageGridCollectionReportActive.addEventListener('click', function () {
+                collectionCollectionView.moveToLastPage();
+                updateNavigateButtonsCollectionReportActive();
+            });
+        }
+
+        function refreshActiveCollectionFlexgrid() {
+            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList(" "));
+            collectionCollectionView.canFilter = true;
+            collectionCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#collectionReportActiveSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectionCollectionView.refresh();
+            });
+
+            collectionCollectionView.filter = function (item) {
+                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportActive();
+            });
+
+            // Flex Grid
+            collectionReportFlexGridActive.itemsSource = collectionCollectionView;
+            collectionReportFlexGridActive.trackChanges = true;
+        }
+
+        var isCollectionActiveDataLoad = false;
+        function collectionReportActiveOnClick() {
+            NProgress.start();
+            setTimeout(function () {
+                if (isCollectionActiveDataLoad) {
+                    refreshActiveCollectionFlexgrid();
+                } else {
+                    isCollectionActiveDataLoad = true;
+                }
+            }, 200);
+        }
+
+        function collectionReportOnClick() {
+            setTimeout(function () {
+                createCollectionFlexGridActive();
+                window.createCollectionFlexGridActive = function () {
+                    return true;
+                }
+            }, 200);
+        }
+
+        // Navigation Buttons
+        function updateNavigateButtonsCollectionReportOverdue() {
+            if (collectionCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridCollectionReportOverdue').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridCollectionReportOverdue').style.display = 'block';
+            btnCurrentPageGridCollectionReportOverdue.innerHTML = (collectionCollectionView.pageIndex + 1) + ' / ' + collectionCollectionView.pageCount;
+        }
+
+        function createCollectionFlexGridOverdue() {
+            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList("overdue"));
+            collectionCollectionView.canFilter = true;
+            collectionCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#collectionReportOverdueSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectionCollectionView.refresh();
+            });
+
+            collectionCollectionView.filter = function (item) {
+                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportOverdue();
+            });
+
+            // Flex Grid
+            collectionReportFlexGridOverdue = new wijmo.grid.FlexGrid('#collectionReportFlexGridOverdue');
+            collectionReportFlexGridOverdue.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "CollectionDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Collection No.",
+                                "binding": "CollectionNumber",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "Status",
+                                "allowSorting": true,
+                                "width": 130
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: collectionCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            collectionReportFlexGridOverdue.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollectionReportOverdue = document.getElementById('btnMoveToFirstPageGridCollectionReportOverdue');
+            btnPreviousPageGridCollectionReportOverdue = document.getElementById('btnMoveToPreviousPageGridCollectionReportOverdue');
+            btnNextPageGridCollectionReportOverdue = document.getElementById('btnMoveToNextPageGridCollectionReportOverdue');
+            btnLastPageGridCollectionReportOverdue = document.getElementById('btnMoveToLastPageGridCollectionReportOverdue');
+            btnCurrentPageGridCollectionReportOverdue = document.getElementById('btnCurrentPageGridCollectionReportOverdue');
+
+            updateNavigateButtonsCollectionReportOverdue();
+
+            btnFirstPageGridCollectionReportOverdue.addEventListener('click', function () {
+                collectionCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollectionReportOverdue();
+            });
+            btnPreviousPageGridCollectionReportOverdue.addEventListener('click', function () {
+                collectionCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollectionReportOverdue();
+            });
+            btnNextPageGridCollectionReportOverdue.addEventListener('click', function () {
+                collectionCollectionView.moveToNextPage();
+                updateNavigateButtonsCollectionReportOverdue();
+            });
+            btnLastPageGridCollectionReportOverdue.addEventListener('click', function () {
+                collectionCollectionView.moveToLastPage();
+                updateNavigateButtonsCollectionReportOverdue();
+            });
+        }
+
+        function refreshOverdueCollectionFlexgrid() {
+            collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList("overdue"));
+            collectionCollectionView.canFilter = true;
+            collectionCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#collectionReportOverdueSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectionCollectionView.refresh();
+            });
+
+            collectionCollectionView.filter = function (item) {
+                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportOverdue();
+            });
+
+            // Flex Grid
+            collectionReportFlexGridOverdue.itemsSource = collectionCollectionView;
+            collectionReportFlexGridOverdue.trackChanges = true;
+        }
+
+        var isCollectionOverdueDataLoad = false;
+        function collectionReportOverdueOnClick() {
+            NProgress.start();
+            setTimeout(function () {
+                createCollectionFlexGridOverdue();
+                window.createCollectionFlexGridOverdue = function () {
+                    return true;
+                }
+
+                if (isCollectionOverdueDataLoad) {
+                    refreshOverdueCollectionFlexgrid();
+                } else {
+                    isCollectionOverdueDataLoad = true;
+                }
+            }, 200);
+        }
+
         window.onload = function () {
             cboDailyReleaseMonitoringArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringArea');
             cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea');
@@ -1701,6 +2313,16 @@
             createCboStartDateReconstructSummaryReport();
             cboEndDateReconstructSummaryReport = new wijmo.input.InputDate('#cboEndDateReconstructSummaryReport');
             createCboEndDateReconstructSummaryReport();
+            cboStartDateCollectionReportActiveReport = new wijmo.input.InputDate('#cboStartDateCollectionReportActiveReport');
+            createcboStartDateCollectionReportActiveReport();
+            cboEndDateCollectionReportActiveReport = new wijmo.input.InputDate('#cboEndDateCollectionReportActiveReport');
+            createcboEndDateCollectionReportActiveReport();
+            cboCollectionReportActiveArea = new wijmo.input.ComboBox('#cboCollectionReportActiveArea');
+            cboStartDateCollectionReportOverdueReport = new wijmo.input.InputDate('#cboStartDateCollectionReportOverdueReport');
+            createcboStartDateCollectionReportOverdueReport();
+            cboEndDateCollectionReportOverdueReport = new wijmo.input.InputDate('#cboEndDateCollectionReportOverdueReport');
+            createcboEndDateCollectionReportOverdueReport();
+            cboCollectionReportOverdueArea = new wijmo.input.ComboBox('#cboCollectionReportOverdueArea');
         }
     </script>
 </body>

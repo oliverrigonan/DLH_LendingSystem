@@ -1033,36 +1033,6 @@ namespace Lending.ApiControllers
             }
         }
 
-        public String getReconstructedDocNumber(Int32 loanId)
-        {
-            var reconstructedLoans = from d in db.trnLoanReconstructs
-                                     where d.LoanId == loanId
-                                     select d;
-
-            String reconstructedDocNumber = " ";
-            if (reconstructedLoans.Any())
-            {
-                reconstructedDocNumber = reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : reconstructedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + reconstructedLoans.FirstOrDefault().trnLoan1.LoanNumber : " ";
-            }
-
-            return reconstructedDocNumber;
-        }
-
-        public String getRenewdDocNumber(Int32 loanId)
-        {
-            var renewedLoans = from d in db.trnLoanRenews
-                               where d.LoanId == loanId
-                               select d;
-
-            String renewdDocNumber = " ";
-            if (renewedLoans.Any())
-            {
-                renewdDocNumber = renewedLoans.FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : renewedLoans.FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : renewedLoans.FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN - " + renewedLoans.FirstOrDefault().trnLoan1.LoanNumber : " ";
-            }
-
-            return renewdDocNumber;
-        }
-
         // loan list by applicant and transaction type
         [Authorize]
         [HttpGet]
@@ -1115,8 +1085,8 @@ namespace Lending.ApiControllers
                                            UpdatedByUserId = d.UpdatedByUserId,
                                            UpdatedByUser = d.mstUser2.FullName,
                                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                           ReconstructedDocNumber = getReconstructedDocNumber(d.Id),
-                                           RenewedDocNumber = getRenewdDocNumber(d.Id)
+                                           ReconstructedDocNumber = " ",
+                                           RenewedDocNumber = " "
                                        };
 
                 return loanApplications.ToList();
@@ -1126,9 +1096,13 @@ namespace Lending.ApiControllers
                 if (transactionType.Equals("ReconstructedLoans"))
                 {
                     var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                           where d.IsLoanReconstruct == true
-                                           && d.ApplicantId == Convert.ToInt32(applicantId)
-                                           && d.IsLocked == true
+                                           join s in db.trnLoanReconstructs
+                                           on d.Id equals s.LoanId
+                                           into joinReconstructs
+                                           from listReconstructs in joinReconstructs.DefaultIfEmpty()
+                                           where listReconstructs.trnLoan.IsLoanReconstruct == true
+                                           && listReconstructs.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
+                                           && listReconstructs.trnLoan.IsLocked == true
                                            select new Models.TrnLoan
                                            {
                                                Id = d.Id,
@@ -1169,8 +1143,8 @@ namespace Lending.ApiControllers
                                                UpdatedByUserId = d.UpdatedByUserId,
                                                UpdatedByUser = d.mstUser2.FullName,
                                                UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                               ReconstructedDocNumber = getReconstructedDocNumber(d.Id),
-                                               RenewedDocNumber = getRenewdDocNumber(d.Id)
+                                               ReconstructedDocNumber = joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " ",
+                                               RenewedDocNumber = " "
                                            };
 
                     return loanApplications.ToList();
@@ -1180,9 +1154,13 @@ namespace Lending.ApiControllers
                     if (transactionType.Equals("Renews"))
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               where d.IsLoanRenew == true
-                                               && d.ApplicantId == Convert.ToInt32(applicantId)
-                                               && d.IsLocked == true
+                                               join s in db.trnLoanRenews
+                                               on d.Id equals s.LoanId
+                                               into joinRenews
+                                               from listRenews in joinRenews.DefaultIfEmpty()
+                                               where listRenews.trnLoan.IsLoanRenew == true
+                                               && listRenews.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
+                                               && listRenews.trnLoan.IsLocked == true
                                                select new Models.TrnLoan
                                                {
                                                    Id = d.Id,
@@ -1223,8 +1201,8 @@ namespace Lending.ApiControllers
                                                    UpdatedByUserId = d.UpdatedByUserId,
                                                    UpdatedByUser = d.mstUser2.FullName,
                                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                                   ReconstructedDocNumber = getReconstructedDocNumber(d.Id),
-                                                   RenewedDocNumber = getRenewdDocNumber(d.Id)
+                                                   ReconstructedDocNumber = " ",
+                                                   RenewedDocNumber = joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " "
                                                };
 
                         return loanApplications.ToList();
