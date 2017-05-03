@@ -774,5 +774,38 @@ namespace Lending.ApiControllers
 
             return collections.ToList();
         }
+
+        // daily collection remittance API List
+        [HttpGet]
+        [Route("api/collections/list/dailyCollectionRemittance/{date}")]
+        public List<Models.RepDailyCollectionRemittance> listDailyCollectionRemittance(String date)
+        {
+            var dailyCollectionRemittanceList = from d in db.mstAreas.OrderBy(d => d.Area)
+                                                join c in db.trnCollections
+                                                on d.Id equals c.trnLoan.mstApplicant.AreaId
+                                                into joinAreaCollections
+                                                from listAreaCollections in joinAreaCollections.DefaultIfEmpty().GroupBy(c => c.trnLoan.mstApplicant.AreaId)
+                                                join s in db.mstAreaStaffs.OrderByDescending(s => s.Id)
+                                                on d.Id equals s.AreaId
+                                                into joinAreaStaffs
+                                                from listAreaStaffs in joinAreaStaffs.DefaultIfEmpty().GroupBy(s => s.AreaId)
+                                                join e in db.trnExpenses
+                                                on joinAreaStaffs.FirstOrDefault().StaffId equals e.AssignedStaffId
+                                                into joinAreaExpenses
+                                                from listAreaExpenses in joinAreaExpenses.DefaultIfEmpty().GroupBy(e => e.AssignedStaffId)
+                                                join r in db.trnRemittances
+                                                on d.Id equals r.AreaId
+                                                into joinAreaRemittances
+                                                from listAreaRemittances in joinAreaRemittances.DefaultIfEmpty().GroupBy(r => r.AreaId)
+                                                select new Models.RepDailyCollectionRemittance
+                                                {
+                                                    Area = d.Area,
+                                                    GrossCollection = joinAreaCollections.Where(c => c.CollectionDate == Convert.ToDateTime(date)).Sum(c => c.TotalPaidAmount) != null ? joinAreaCollections.Where(c => c.CollectionDate == Convert.ToDateTime(date)).Sum(c => c.TotalPaidAmount) : 0,
+                                                    Expenses = joinAreaExpenses.Where(e => e.ExpenseDate == Convert.ToDateTime(date)).Where(e => e.AssignedStaffId == joinAreaStaffs.FirstOrDefault().StaffId).Sum(e => e.ExpenseAmount) != null ? joinAreaExpenses.Where(e => e.ExpenseDate == Convert.ToDateTime(date)).Where(e => e.AssignedStaffId == joinAreaStaffs.FirstOrDefault().StaffId).Sum(e => e.ExpenseAmount) : 0,
+                                                    NetRemitted = joinAreaRemittances.Where(r => r.RemittanceDate == Convert.ToDateTime(date)).Sum(r => r.RemitAmount) != null ? joinAreaRemittances.Where(r => r.RemittanceDate == Convert.ToDateTime(date)).Sum(r => r.RemitAmount) : 0
+                                                };
+
+            return dailyCollectionRemittanceList.ToList();
+        }
     }
 }

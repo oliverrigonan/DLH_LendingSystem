@@ -235,6 +235,7 @@
     <Compile Include="Models\MstPenalty.cs" />
     <Compile Include="Models\MstTerm.cs" />
     <Compile Include="Models\MstUserForm.cs" />
+    <Compile Include="Models\RepDailyCollectionRemittance.cs" />
     <Compile Include="Models\SysCivilStatus.cs" />
     <Compile Include="Models\MstApplicantRealPropertiesOwned.cs" />
     <Compile Include="Models\SysCollectionStatus.cs" />
