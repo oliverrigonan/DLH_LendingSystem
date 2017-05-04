@@ -642,29 +642,35 @@
 
         // add new reconstruct
         function btnReconstructOnclick() {
-            document.getElementById("btnReconstruct").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Reconstructing";
-            $("#btnReconstruct").prop("disabled", true);
-            $("#btnCloseReconstruct").prop("disabled", true);
+            var totalBalanceAmount = parseFloat(document.getElementById("amountToBeReconstruct").value);
 
-            var loanReconstuctObject = new Object();
-            loanReconstuctObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
-            loanReconstuctObject.ReconstructLoanId = cboLoanNumber.selectedItem["Id"];
-            loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstruct").value;
-            var loanReconstuctData = JSON.stringify(loanReconstuctObject);
+            if (totalBalanceAmount > 0) {
+                document.getElementById("btnReconstruct").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Reconstructing";
+                $("#btnReconstruct").prop("disabled", true);
+                $("#btnCloseReconstruct").prop("disabled", true);
 
-            $.ajax({
-                type: "POST",
-                url: '/api/loanReconstruct/add',
-                contentType: "application/json; charset=utf-8",
-                data: loanReconstuctData,
-                success: function (id) {
-                    if (id > 0) {
-                        window.location = '/Software/ReconstructDetail?id=' + id;
-                    } else {
-                        toastr.error("Bad Request");
+                var loanReconstuctObject = new Object();
+                loanReconstuctObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
+                loanReconstuctObject.ReconstructLoanId = cboLoanNumber.selectedItem["Id"];
+                loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstruct").value;
+                var loanReconstuctData = JSON.stringify(loanReconstuctObject);
+
+                $.ajax({
+                    type: "POST",
+                    url: '/api/loanReconstruct/add',
+                    contentType: "application/json; charset=utf-8",
+                    data: loanReconstuctData,
+                    success: function (id) {
+                        if (id > 0) {
+                            window.location = '/Software/ReconstructDetail?id=' + id;
+                        } else {
+                            toastr.error("Bad Request");
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                toastr.error("The amount must not be zero.");
+            }
         }
 
 

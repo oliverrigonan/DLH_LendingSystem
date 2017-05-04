@@ -621,7 +621,6 @@
       <Column Name="CollectibleAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="PenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="BalanceAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="trnLoanLine_trnCollectionLine" Member="trnCollectionLines" ThisKey="Id" OtherKey="LoanLinesId" Type="trnCollectionLine" />
       <Association Name="trnLoan_trnLoanLine" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>

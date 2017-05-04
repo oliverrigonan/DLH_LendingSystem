@@ -22,7 +22,6 @@ namespace Lending.ApiControllers
         {
             var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                  where d.IsLocked == true
-                                 && d.TotalBalanceAmount > 0
                                  group d by new
                                  {
                                      ApplicantId = d.ApplicantId,
@@ -50,8 +49,7 @@ namespace Lending.ApiControllers
                                    {
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
-                                       TotalBalanceAmount = d.TotalBalanceAmount,
-                                       TotalPenaltyAmount = d.TotalPenaltyAmount
+                                       TotalBalanceAmount = d.TotalBalanceAmount
                                    };
 
             return loanApplications.ToList();
@@ -65,7 +63,6 @@ namespace Lending.ApiControllers
         {
             var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                  where d.IsLocked == true
-                                 && d.TotalBalanceAmount > 0
                                  && d.IsReconstruct == false
                                  && d.IsRenew == false
                                  group d by new
@@ -91,15 +88,13 @@ namespace Lending.ApiControllers
             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
-                                   && d.TotalBalanceAmount > 0
                                    && d.IsReconstruct == false
                                    && d.IsRenew == false
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
-                                       TotalBalanceAmount = d.TotalBalanceAmount,
-                                       TotalPenaltyAmount = d.TotalPenaltyAmount
+                                       TotalBalanceAmount = d.TotalBalanceAmount
                                    };
 
             return loanApplications.ToList();
@@ -567,7 +562,6 @@ namespace Lending.ApiControllers
                                                         newLoanLine.CollectibleAmount = finalCollectibleAmount;
                                                         newLoanLine.PaidAmount = 0;
                                                         newLoanLine.PenaltyAmount = 0;
-                                                        newLoanLine.BalanceAmount = finalCollectibleAmount;
                                                         db.trnLoanLines.InsertOnSubmit(newLoanLine);
                                                         db.SubmitChanges();
 
@@ -622,7 +616,6 @@ namespace Lending.ApiControllers
                                                             newLoanLine.CollectibleAmount = finalCollectibleAmount;
                                                             newLoanLine.PaidAmount = 0;
                                                             newLoanLine.PenaltyAmount = 0;
-                                                            newLoanLine.BalanceAmount = finalCollectibleAmount;
                                                             db.trnLoanLines.InsertOnSubmit(newLoanLine);
                                                             db.SubmitChanges();
 
@@ -655,7 +648,6 @@ namespace Lending.ApiControllers
                                             newLoanLine.CollectibleAmount = collectibleAmount;
                                             newLoanLine.PaidAmount = 0;
                                             newLoanLine.PenaltyAmount = 0;
-                                            newLoanLine.BalanceAmount = collectibleAmount;
                                             db.trnLoanLines.InsertOnSubmit(newLoanLine);
                                             db.SubmitChanges();
 
@@ -1100,9 +1092,9 @@ namespace Lending.ApiControllers
                                            on d.Id equals s.LoanId
                                            into joinReconstructs
                                            from listReconstructs in joinReconstructs.DefaultIfEmpty()
-                                           where listReconstructs.trnLoan.IsLoanReconstruct == true
-                                           && listReconstructs.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
-                                           && listReconstructs.trnLoan.IsLocked == true
+                                           where d.IsLoanReconstruct == true
+                                           && d.ApplicantId == Convert.ToInt32(applicantId)
+                                           && d.IsLocked == true
                                            select new Models.TrnLoan
                                            {
                                                Id = d.Id,
@@ -1158,9 +1150,9 @@ namespace Lending.ApiControllers
                                                on d.Id equals s.LoanId
                                                into joinRenews
                                                from listRenews in joinRenews.DefaultIfEmpty()
-                                               where listRenews.trnLoan.IsLoanRenew == true
-                                               && listRenews.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
-                                               && listRenews.trnLoan.IsLocked == true
+                                               where d.IsLoanRenew == true
+                                               && d.ApplicantId == Convert.ToInt32(applicantId)
+                                               && d.IsLocked == true
                                                select new Models.TrnLoan
                                                {
                                                    Id = d.Id,
@@ -1284,12 +1276,12 @@ namespace Lending.ApiControllers
                                          on d.Id equals s.LoanId
                                          into joinLoanApplications
                                          from listLoanApplications in joinLoanApplications.DefaultIfEmpty()
-                                         where listLoanApplications.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                         && listLoanApplications.trnLoan.IsReconstruct == false
-                                         && listLoanApplications.trnLoan.IsRenew == false
-                                         && listLoanApplications.trnLoan.IsLocked == true
-                                         && listLoanApplications.trnLoan.IsLoanReconstruct == false
-                                         && listLoanApplications.trnLoan.TotalBalanceAmount > 0
+                                         where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                         && d.IsReconstruct == false
+                                         && d.IsRenew == false
+                                         && d.IsLocked == true
+                                         && d.IsLoanReconstruct == false
+                                         && d.TotalBalanceAmount > 0
                                          && listLoanApplications.Id == joinLoanApplications.Where(f => f.PaidAmount == 0 && f.PenaltyAmount == 0).FirstOrDefault().Id
                                          select new Models.TrnLoan
                                          {
@@ -1463,11 +1455,11 @@ namespace Lending.ApiControllers
                                            on d.Id equals s.LoanId
                                            into joinRenews
                                            from listRenews in joinRenews.DefaultIfEmpty()
-                                           where listRenews.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
-                                           && listRenews.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
-                                           && listRenews.trnLoan.IsLocked == true
-                                           && listRenews.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                           && listRenews.trnLoan.IsLoanRenew == true
+                                           where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                                           && d.LoanDate <= Convert.ToDateTime(endLoanDate)
+                                           && d.IsLocked == true
+                                           && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                           && d.IsLoanRenew == true
                                            select new Models.TrnLoan
                                            {
                                                Id = d.Id,
@@ -1523,11 +1515,11 @@ namespace Lending.ApiControllers
                                                on d.Id equals s.LoanId
                                                into joinReconstructs
                                                from listReconstructs in joinReconstructs.DefaultIfEmpty()
-                                               where listReconstructs.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
-                                               && listReconstructs.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
-                                               && listReconstructs.trnLoan.IsLocked == true
-                                               && listReconstructs.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                               && listReconstructs.trnLoan.IsLoanReconstruct == true
+                                               where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                                               && d.LoanDate <= Convert.ToDateTime(endLoanDate)
+                                               && d.IsLocked == true
+                                               && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                               && d.IsLoanReconstruct == true
                                                select new Models.TrnLoan
                                                {
                                                    Id = d.Id,

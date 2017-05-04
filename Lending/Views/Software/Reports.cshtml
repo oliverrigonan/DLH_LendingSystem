@@ -513,7 +513,26 @@
                                         </table>
                                     </div>
                                     <div class="panel-body">
-
+                                        <div id="dailyCollectionAndRemittanceReportFlexGrid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridCollectionReportDailyCollectionAndRemittanceReport">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollectionReportDailyCollectionAndRemittanceReport">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollectionReportDailyCollectionAndRemittanceReport">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollectionReportDailyCollectionAndRemittanceReport"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollectionReportDailyCollectionAndRemittanceReport">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollectionReportDailyCollectionAndRemittanceReport">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -656,6 +675,46 @@
                 }
             });
         }
+
+        var cboStartDateDailyCollectionAndRemittanceReport;
+        var cboStartDateDailyCollectionAndRemittanceReportIsClicked = false;
+        var cboEndDateDailyCollectionAndRemittanceReport;
+        var cboEndDateDailyCollectionAndRemittanceReportIsClicked = false;
+
+        function createCboStartDateDailyCollectionAndRemittanceReport() {
+            cboStartDateDailyCollectionAndRemittanceReport.dispose();
+            cboStartDateDailyCollectionAndRemittanceReport = new wijmo.input.InputDate('#cboStartDateDailyCollectionAndRemittanceReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateDailyCollectionAndRemittanceReportIsClicked) {
+                        NProgress.start();
+                        refreshDailyCollectionRemittanceFlexGrid();
+                    } else {
+                        cboStartDateDailyCollectionAndRemittanceReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createCboEndDateDailyCollectionAndRemittanceReport() {
+            cboEndDateDailyCollectionAndRemittanceReport.dispose();
+            cboEndDateDailyCollectionAndRemittanceReport = new wijmo.input.InputDate('#cboEndDateDailyCollectionAndRemittanceReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateDailyCollectionAndRemittanceReportIsClicked) {
+                        NProgress.start();
+                        refreshDailyCollectionRemittanceFlexGrid();
+                    } else {
+                        cboEndDateDailyCollectionAndRemittanceReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
 
 
         function createCboArea() {
@@ -2295,6 +2354,182 @@
             }, 200);
         }
 
+
+        function getDailyCollectionRemittance() {
+            var dailyCollectionRemittanceObservableArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboStartDateDailyCollectionAndRemittanceReport.value.getMonth() + 1, cboStartDateDailyCollectionAndRemittanceReport.value.getDate(), cboStartDateDailyCollectionAndRemittanceReport.value.getFullYear()].join('-');
+            var endDate = [cboEndDateDailyCollectionAndRemittanceReport.value.getMonth() + 1, cboEndDateDailyCollectionAndRemittanceReport.value.getDate(), cboEndDateDailyCollectionAndRemittanceReport.value.getFullYear()].join('-');
+
+            $.ajax({
+                url: '/api/collections/list/dailyCollectionRemittance/' + startDate + '/' + endDate,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (dailyCollectionRemittanceResult) {
+                    if (dailyCollectionRemittanceResult.length > 0) {
+                        for (i = 0; i < dailyCollectionRemittanceResult.length; i++) {
+                            //var newGrossCollectionDate = new Date(dailyCollectionRemittanceResult[i]["GrossCollectionDate"]);
+                            //var grossCollectionDate = ('0' + (newGrossCollectionDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newGrossCollectionDate.getDate()).slice(-2) + '-' + newGrossCollectionDate.getFullYear();
+
+                            //var newNetRemittedDate = new Date(dailyCollectionRemittanceResult[i]["NetRemittedDate"]);
+                            //var netRemittedDate = ('0' + (newNetRemittedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newNetRemittedDate.getDate()).slice(-2) + '-' + newNetRemittedDate.getFullYear();
+
+                            dailyCollectionRemittanceObservableArray.push({
+                                Area: dailyCollectionRemittanceResult[i]["Area"],
+                                //GrossCollectionDate: grossCollectionDate,
+                                GrossCollection: dailyCollectionRemittanceResult[i]["GrossCollection"],
+                                //NetRemittedDate: netRemittedDate,
+                                NetRemitted: dailyCollectionRemittanceResult[i]["NetRemitted"],
+                                Remarks: dailyCollectionRemittanceResult[i]["Remarks"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return dailyCollectionRemittanceObservableArray;
+        }
+
+        var dailyCollectionAndRemittanceReportCollectionView;
+        var dailyCollectionAndRemittanceReportFlexGrid;
+
+        var isDailyCollectionRemittanceDataLoad = false
+        function dailyCollectionAndRemittanceReportOnClick() {
+            NProgress.start();
+            setTimeout(function () {
+                createDailyCollectionRemittanceFlexGrid();
+                window.createDailyCollectionRemittanceFlexGrid = function () {
+                    return true;
+                }
+
+                if (isDailyCollectionRemittanceDataLoad) {
+                    refreshDailyCollectionRemittanceFlexGrid();
+                } else {
+                    isDailyCollectionRemittanceDataLoad = true;
+                }
+            }, 200);
+        }
+
+        function updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport() {
+            if (dailyCollectionAndRemittanceReportCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridCollectionReportDailyCollectionAndRemittanceReport').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridCollectionReportDailyCollectionAndRemittanceReport').style.display = 'block';
+            btnCurrentPageGridCollectionReportDailyCollectionAndRemittanceReport.innerHTML = (dailyCollectionAndRemittanceReportCollectionView.pageIndex + 1) + ' / ' + dailyCollectionAndRemittanceReportCollectionView.pageCount;
+        }
+
+        function refreshDailyCollectionRemittanceFlexGrid() {
+            dailyCollectionAndRemittanceReportCollectionView = new wijmo.collections.CollectionView(getDailyCollectionRemittance());
+            dailyCollectionAndRemittanceReportCollectionView.canFilter = true;
+            dailyCollectionAndRemittanceReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#dailyCollectionAndRemittanceReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                dailyCollectionAndRemittanceReportCollectionView.refresh();
+            });
+
+            dailyCollectionAndRemittanceReportCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            dailyCollectionAndRemittanceReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+            });
+
+            // Flex Grid
+            dailyCollectionAndRemittanceReportFlexGrid.itemsSource = dailyCollectionAndRemittanceReportCollectionView;
+            dailyCollectionAndRemittanceReportFlexGrid.trackChanges = true;
+        }
+
+        function createDailyCollectionRemittanceFlexGrid() {
+            dailyCollectionAndRemittanceReportCollectionView = new wijmo.collections.CollectionView(getDailyCollectionRemittance());
+            dailyCollectionAndRemittanceReportCollectionView.canFilter = true;
+            dailyCollectionAndRemittanceReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#dailyCollectionAndRemittanceReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                dailyCollectionAndRemittanceReportCollectionView.refresh();
+            });
+
+            dailyCollectionAndRemittanceReportCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            dailyCollectionAndRemittanceReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+            });
+
+            // Flex Grid
+            dailyCollectionAndRemittanceReportFlexGrid = new wijmo.grid.FlexGrid('#dailyCollectionAndRemittanceReportFlexGrid');
+            dailyCollectionAndRemittanceReportFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Gross Collection",
+                                "binding": "GrossCollection",
+                                "allowSorting": true,
+                                "width": 200,
+                            },
+                            {
+                                "header": "Net Remitted",
+                                "binding": "NetRemitted",
+                                "allowSorting": true,
+                                "width": 200
+                            },
+                            {
+                                "header": "Remarks",
+                                "binding": "Remarks",
+                                "allowSorting": true,
+                                "width": 350
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: dailyCollectionAndRemittanceReportCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            dailyCollectionAndRemittanceReportFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollectionReportDailyCollectionAndRemittanceReport = document.getElementById('btnMoveToFirstPageGridCollectionReportDailyCollectionAndRemittanceReport');
+            btnPreviousPageGridCollectionReportDailyCollectionAndRemittanceReport = document.getElementById('btnMoveToPreviousPageGridCollectionReportDailyCollectionAndRemittanceReport');
+            btnNextPageGridCollectionReportDailyCollectionAndRemittanceReport = document.getElementById('btnMoveToNextPageGridCollectionReportDailyCollectionAndRemittanceReport');
+            btnLastPageGridCollectionReportDailyCollectionAndRemittanceReport = document.getElementById('btnMoveToLastPageGridCollectionReportDailyCollectionAndRemittanceReport');
+            btnCurrentPageGridCollectionReportDailyCollectionAndRemittanceReport = document.getElementById('btnCurrentPageGridCollectionReportDailyCollectionAndRemittanceReport');
+
+            updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+
+            btnFirstPageGridCollectionReportDailyCollectionAndRemittanceReport.addEventListener('click', function () {
+                dailyCollectionAndRemittanceReportCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+            });
+            btnPreviousPageGridCollectionReportDailyCollectionAndRemittanceReport.addEventListener('click', function () {
+                dailyCollectionAndRemittanceReportCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+            });
+            btnNextPageGridCollectionReportDailyCollectionAndRemittanceReport.addEventListener('click', function () {
+                dailyCollectionAndRemittanceReportCollectionView.moveToNextPage();
+                updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+            });
+            btnLastPageGridCollectionReportDailyCollectionAndRemittanceReport.addEventListener('click', function () {
+                dailyCollectionAndRemittanceReportCollectionView.moveToLastPage();
+                updateNavigateButtonsCollectionReportDailyCollectionAndRemittanceReport();
+            });
+        }
+
         window.onload = function () {
             cboDailyReleaseMonitoringArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringArea');
             cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea');
@@ -2323,6 +2558,10 @@
             cboEndDateCollectionReportOverdueReport = new wijmo.input.InputDate('#cboEndDateCollectionReportOverdueReport');
             createcboEndDateCollectionReportOverdueReport();
             cboCollectionReportOverdueArea = new wijmo.input.ComboBox('#cboCollectionReportOverdueArea');
+            cboStartDateDailyCollectionAndRemittanceReport = new wijmo.input.InputDate('#cboStartDateDailyCollectionAndRemittanceReport');
+            createCboStartDateDailyCollectionAndRemittanceReport();
+            cboEndDateDailyCollectionAndRemittanceReport = new wijmo.input.InputDate('#cboEndDateDailyCollectionAndRemittanceReport');
+            createCboEndDateDailyCollectionAndRemittanceReport();
         }
     </script>
 </body>

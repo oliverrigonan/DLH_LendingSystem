@@ -14691,8 +14691,6 @@ namespace Lending.Data
 		
 		private decimal _PenaltyAmount;
 		
-		private decimal _BalanceAmount;
-		
 		private EntitySet<trnCollectionLine> _trnCollectionLines;
 		
 		private EntityRef<trnLoan> _trnLoan;
@@ -14715,8 +14713,6 @@ namespace Lending.Data
     partial void OnPaidAmountChanged();
     partial void OnPenaltyAmountChanging(decimal value);
     partial void OnPenaltyAmountChanged();
-    partial void OnBalanceAmountChanging(decimal value);
-    partial void OnBalanceAmountChanged();
     #endregion
 		
 		public trnLoanLine()
@@ -14866,26 +14862,6 @@ namespace Lending.Data
 					this._PenaltyAmount = value;
 					this.SendPropertyChanged("PenaltyAmount");
 					this.OnPenaltyAmountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BalanceAmount", DbType="Decimal(18,5) NOT NULL")]
-		public decimal BalanceAmount
-		{
-			get
-			{
-				return this._BalanceAmount;
-			}
-			set
-			{
-				if ((this._BalanceAmount != value))
-				{
-					this.OnBalanceAmountChanging(value);
-					this.SendPropertyChanging();
-					this._BalanceAmount = value;
-					this.SendPropertyChanged("BalanceAmount");
-					this.OnBalanceAmountChanged();
 				}
 			}
 		}

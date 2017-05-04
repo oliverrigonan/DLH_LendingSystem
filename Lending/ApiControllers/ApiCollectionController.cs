@@ -259,7 +259,6 @@ namespace Lending.ApiControllers
                             var updateLoanLines = loanLines.FirstOrDefault();
                             updateLoanLines.PaidAmount = collectionPaidAmount;
                             updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
-                            updateLoanLines.BalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount - collectionPaidAmount) + collectionPenaltyAmount;
                             db.SubmitChanges();
 
                             var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
@@ -326,7 +325,6 @@ namespace Lending.ApiControllers
                                     var updateLoanLines = loanLines.FirstOrDefault();
                                     updateLoanLines.PaidAmount = collectionPaidAmount;
                                     updateLoanLines.PenaltyAmount = collectionPenaltyAmount;
-                                    updateLoanLines.BalanceAmount = (loanLines.FirstOrDefault().CollectibleAmount - collectionPaidAmount) + collectionPenaltyAmount;
                                     db.SubmitChanges();
 
                                     var loan = from d in db.trnLoans where d.Id == loanLines.FirstOrDefault().LoanId select d;
@@ -396,35 +394,42 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var collectionLines = from d in db.trnCollectionLines
-                                                      where d.CollectionId == Convert.ToInt32(id)
-                                                      select d;
-
-                                Decimal totalPaidAmount = 0;
-                                Decimal totalPenaltyAmount = 0;
-                                if (collectionLines.Any())
+                                if (collections.FirstOrDefault().trnLoan.TotalBalanceAmount > 0)
                                 {
-                                    totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
-                                    totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
+                                    var collectionLines = from d in db.trnCollectionLines
+                                                          where d.CollectionId == Convert.ToInt32(id)
+                                                          select d;
+
+                                    Decimal totalPaidAmount = 0;
+                                    Decimal totalPenaltyAmount = 0;
+                                    if (collectionLines.Any())
+                                    {
+                                        totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
+                                        totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
+                                    }
+
+                                    var lockCollection = collections.FirstOrDefault();
+                                    lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                                    lockCollection.LoanId = collection.LoanId;
+                                    lockCollection.StatusId = collection.StatusId;
+                                    lockCollection.Particulars = collection.Particulars;
+                                    lockCollection.CollectorStaffId = collection.CollectorStaffId;
+                                    lockCollection.PreparedByUserId = collection.PreparedByUserId;
+                                    lockCollection.TotalPaidAmount = totalPaidAmount;
+                                    lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
+                                    lockCollection.IsLocked = true;
+                                    lockCollection.UpdatedByUserId = userId;
+                                    lockCollection.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
+
+                                    this.updateLoan(Convert.ToInt32(id));
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
                                 }
-
-                                var lockCollection = collections.FirstOrDefault();
-                                lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                lockCollection.LoanId = collection.LoanId;
-                                lockCollection.StatusId = collection.StatusId;
-                                lockCollection.Particulars = collection.Particulars;
-                                lockCollection.CollectorStaffId = collection.CollectorStaffId;
-                                lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                                lockCollection.TotalPaidAmount = totalPaidAmount;
-                                lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
-                                lockCollection.IsLocked = true;
-                                lockCollection.UpdatedByUserId = userId;
-                                lockCollection.UpdatedDateTime = DateTime.Now;
-                                db.SubmitChanges();
-
-                                this.updateLoan(Convert.ToInt32(id));
-
-                                return Request.CreateResponse(HttpStatusCode.OK);
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
                             }
                             else
                             {
@@ -776,23 +781,16 @@ namespace Lending.ApiControllers
         }
 
         // daily collection remittance API List
+        [Authorize]
         [HttpGet]
-        [Route("api/collections/list/dailyCollectionRemittance/{date}")]
-        public List<Models.RepDailyCollectionRemittance> listDailyCollectionRemittance(String date)
+        [Route("api/collections/list/dailyCollectionRemittance/{startDate}/{endDate}")]
+        public List<Models.RepDailyCollectionRemittance> listDailyCollectionRemittance(String startDate, String endDate)
         {
             var dailyCollectionRemittanceList = from d in db.mstAreas.OrderBy(d => d.Area)
                                                 join c in db.trnCollections
                                                 on d.Id equals c.trnLoan.mstApplicant.AreaId
                                                 into joinAreaCollections
                                                 from listAreaCollections in joinAreaCollections.DefaultIfEmpty().GroupBy(c => c.trnLoan.mstApplicant.AreaId)
-                                                join s in db.mstAreaStaffs.OrderByDescending(s => s.Id)
-                                                on d.Id equals s.AreaId
-                                                into joinAreaStaffs
-                                                from listAreaStaffs in joinAreaStaffs.DefaultIfEmpty().GroupBy(s => s.AreaId)
-                                                join e in db.trnExpenses
-                                                on joinAreaStaffs.FirstOrDefault().StaffId equals e.AssignedStaffId
-                                                into joinAreaExpenses
-                                                from listAreaExpenses in joinAreaExpenses.DefaultIfEmpty().GroupBy(e => e.AssignedStaffId)
                                                 join r in db.trnRemittances
                                                 on d.Id equals r.AreaId
                                                 into joinAreaRemittances
@@ -800,9 +798,9 @@ namespace Lending.ApiControllers
                                                 select new Models.RepDailyCollectionRemittance
                                                 {
                                                     Area = d.Area,
-                                                    GrossCollection = joinAreaCollections.Where(c => c.CollectionDate == Convert.ToDateTime(date)).Sum(c => c.TotalPaidAmount) != null ? joinAreaCollections.Where(c => c.CollectionDate == Convert.ToDateTime(date)).Sum(c => c.TotalPaidAmount) : 0,
-                                                    Expenses = joinAreaExpenses.Where(e => e.ExpenseDate == Convert.ToDateTime(date)).Where(e => e.AssignedStaffId == joinAreaStaffs.FirstOrDefault().StaffId).Sum(e => e.ExpenseAmount) != null ? joinAreaExpenses.Where(e => e.ExpenseDate == Convert.ToDateTime(date)).Where(e => e.AssignedStaffId == joinAreaStaffs.FirstOrDefault().StaffId).Sum(e => e.ExpenseAmount) : 0,
-                                                    NetRemitted = joinAreaRemittances.Where(r => r.RemittanceDate == Convert.ToDateTime(date)).Sum(r => r.RemitAmount) != null ? joinAreaRemittances.Where(r => r.RemittanceDate == Convert.ToDateTime(date)).Sum(r => r.RemitAmount) : 0
+                                                    GrossCollection = joinAreaCollections.Where(c => c.CollectionDate >= Convert.ToDateTime(startDate) && c.CollectionDate <= Convert.ToDateTime(endDate)).Sum(c => c.TotalPaidAmount) != null ? joinAreaCollections.Where(c => c.CollectionDate >= Convert.ToDateTime(startDate) && c.CollectionDate <= Convert.ToDateTime(endDate)).Sum(c => c.TotalPaidAmount) : 0,
+                                                    NetRemitted = joinAreaRemittances.Where(r => r.RemittanceDate >= Convert.ToDateTime(startDate) && r.RemittanceDate <= Convert.ToDateTime(endDate)).Sum(r => r.RemitAmount) != null ? joinAreaRemittances.Where(r => r.RemittanceDate >= Convert.ToDateTime(startDate) && r.RemittanceDate <= Convert.ToDateTime(endDate)).Sum(r => r.RemitAmount) : 0,
+                                                    Remarks = " "
                                                 };
 
             return dailyCollectionRemittanceList.ToList();

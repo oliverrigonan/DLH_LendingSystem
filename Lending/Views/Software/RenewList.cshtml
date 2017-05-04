@@ -45,9 +45,6 @@
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
-                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddLoanRenewOnclick()">
-                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Loan Renew
-                                    </button>
                                     <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddRenewOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                     </button>
@@ -202,40 +199,40 @@
     </div>
 
     <!-- loan applciation renew Detail Modal -->
-    <div class="modal fade" id="loanrenewDetailModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Renew</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Applicant</label>
-                            <div class="col-sm-8">
-                                <div id="cboLoanRenewApplicant" style="width: 100%;"></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Principal Amount</label>
-                            <div class="col-sm-8">
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredLoanRenew" id="loanRenewPrincipalAmount" placeholder="0.00" />
+    @*<div class="modal fade" id="loanrenewDetailModal" role="dialog">
+        <div class="modal-dialog">*@
+    <!-- Modal content-->
+    @*<div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Renew</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Applicant</label>
+                                <div class="col-sm-8">
+                                    <div id="cboLoanRenewApplicant" style="width: 100%;"></div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnLoanRenew" onclick="btnLoanRenewOnclick()"><i class="fa fa-refresh fa-fw"></i> Renew</button>
-                    <button class="btn btn-danger" id="btnCloseLoanRenew" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Principal Amount</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group numberField">
+                                        <span class="input-group-addon">&#8369;</span>
+                                        <input type="text" class="form-control numberField requiredLoanRenew" id="loanRenewPrincipalAmount" placeholder="0.00" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="btnLoanRenew" onclick="btnLoanRenewOnclick()"><i class="fa fa-refresh fa-fw"></i> Renew</button>
+                        <button class="btn btn-danger" id="btnCloseLoanRenew" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div>*@
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
@@ -284,24 +281,23 @@
             getApplicant();
         }
 
-        function btnAddLoanRenewOnclick() {
-            $("#loanrenewDetailModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+        //function btnAddLoanRenewOnclick() {
+        //    $("#loanrenewDetailModal").modal({
+        //        "show": true,
+        //        "backdrop": "static"
+        //    });
 
 
-            $('.requiredLoanRenew').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
+        //    $('.requiredLoanRenew').each(function () {
+        //        $(this).css({
+        //            "border": "",
+        //        });
+        //    });
 
 
-            getLoanRenewApplicant();
-            document.getElementById("loanRenewPrincipalAmount").value = "0";
-        }
-
+        //    getLoanRenewApplicant();
+        //    document.getElementById("loanRenewPrincipalAmount").value = "0";
+        //}
 
         // get applicant
         function getLoanRenewApplicant() {
@@ -620,45 +616,45 @@
             return isValid;
         }
 
-        function btnLoanRenewOnclick() {
-            var loanRenewObject = new Object();
-            loanRenewObject.ApplicantId = cboLoanRenewApplicant.selectedItem["Id"];
-            loanRenewObject.RenewPrincipalAmount = document.getElementById("loanRenewPrincipalAmount").value;
-            var loanRenewData = JSON.stringify(loanRenewObject);
+        //function btnLoanRenewOnclick() {
+        //    var loanRenewObject = new Object();
+        //    loanRenewObject.ApplicantId = cboLoanRenewApplicant.selectedItem["Id"];
+        //    loanRenewObject.RenewPrincipalAmount = document.getElementById("loanRenewPrincipalAmount").value;
+        //    var loanRenewData = JSON.stringify(loanRenewObject);
 
-            var pamount = parseFloat(document.getElementById('loanRenewPrincipalAmount').value.replace(/,/g, ''));
-            if (inputValidationForLoanRenew()) {
-                if (pamount != 0) {
-                    document.getElementById("btnLoanRenew").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Renewing";
-                    $("#btnLoanRenew").prop("disabled", true);
-                    $("#btnCloseLoanRenew").prop("disabled", true);
+        //    var pamount = parseFloat(document.getElementById('loanRenewPrincipalAmount').value.replace(/,/g, ''));
+        //    if (inputValidationForLoanRenew()) {
+        //        if (pamount != 0) {
+        //            document.getElementById("btnLoanRenew").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Renewing";
+        //            $("#btnLoanRenew").prop("disabled", true);
+        //            $("#btnCloseLoanRenew").prop("disabled", true);
 
-                    $.ajax({
-                        type: "POST",
-                        url: '/api/loanRenew/add/loanRenew',
-                        contentType: "application/json; charset=utf-8",
-                        data: loanRenewData,
-                        success: function (id) {
-                            if (id > 0) {
-                                window.location = '/Software/RenewDetail?id=' + id;
-                            } else {
-                                toastr.error("Bad Request");
-                            }
-                        }
-                    });
-                } else {
-                    $('.requiredLoanRenew').each(function () {
-                        $(this).css({
-                            "border": "1px solid red"
-                        });
-                    });
+        //            $.ajax({
+        //                type: "POST",
+        //                url: '/api/loanRenew/add/loanRenew',
+        //                contentType: "application/json; charset=utf-8",
+        //                data: loanRenewData,
+        //                success: function (id) {
+        //                    if (id > 0) {
+        //                        window.location = '/Software/RenewDetail?id=' + id;
+        //                    } else {
+        //                        toastr.error("Bad Request");
+        //                    }
+        //                }
+        //            });
+        //        } else {
+        //            $('.requiredLoanRenew').each(function () {
+        //                $(this).css({
+        //                    "border": "1px solid red"
+        //                });
+        //            });
 
-                    toastr.error("Please Enter Principal Amount.");
-                }
-            } else {
-                toastr.error("Invalid Entry");
-            }
-        }
+        //            toastr.error("Please Enter Principal Amount.");
+        //        }
+        //    } else {
+        //        toastr.error("Invalid Entry");
+        //    }
+        //}
 
         // add new renew
         function btnRenewOnclick() {

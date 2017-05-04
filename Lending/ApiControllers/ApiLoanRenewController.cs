@@ -27,7 +27,7 @@ namespace Lending.ApiControllers
                              Id = d.Id,
                              LoanId = d.LoanId,
                              RenewLoanId = d.RenewLoanId,
-                             RenewLoanNumber = d.trnLoan1.IsLoanApplication == true ? "LN - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsLoanReconstruct == true ? "RC - " + d.trnLoan1.LoanNumber : d.trnLoan1.IsLoanRenew == true ? "RN - " + d.trnLoan1.LoanNumber : " ",
+                             RenewLoanNumber = d.trnLoan1.IsLoanApplication == true ? "LN-" + d.trnLoan1.LoanNumber : d.trnLoan1.IsLoanReconstruct == true ? "RC-" + d.trnLoan1.LoanNumber : d.trnLoan1.IsLoanRenew == true ? "RN-" + d.trnLoan1.LoanNumber : " ",
                              RenewPrincipalAmount = d.trnLoan.PrincipalAmount,
                              RenewLoanTotalBalanceAmount = d.RenewLoanTotalBalanceAmount,
                              IsLoanApplication = d.trnLoan1.IsLoanApplication,
@@ -63,9 +63,9 @@ namespace Lending.ApiControllers
                          on d.Id equals s.LoanId
                          into joinRenews
                          from listRenews in joinRenews.DefaultIfEmpty()
-                         where listRenews.trnLoan.LoanDate >= Convert.ToDateTime(startLoanDate)
-                         && listRenews.trnLoan.LoanDate <= Convert.ToDateTime(endLoanDate)
-                         && listRenews.trnLoan.IsLoanRenew == true
+                         where d.LoanDate >= Convert.ToDateTime(startLoanDate)
+                         && d.LoanDate <= Convert.ToDateTime(endLoanDate)
+                         && d.IsLoanRenew == true
                          select new Models.TrnLoan
                          {
                              Id = d.Id,
@@ -314,127 +314,126 @@ namespace Lending.ApiControllers
             }
         }
 
+        //// add loan renew
+        //[Authorize]
+        //[HttpPost]
+        //[Route("api/loanRenew/add/loanRenew")]
+        //public Int32 addLoanRenewLoanRenew(Models.TrnLoanRenew loanRenew)
+        //{
+        //    try
+        //    {
+        //        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+        //        var mstUserForms = from d in db.mstUserForms
+        //                           where d.UserId == userId
+        //                           select new Models.MstUserForm
+        //                           {
+        //                               Id = d.Id,
+        //                               Form = d.sysForm.Form,
+        //                               CanPerformActions = d.CanPerformActions
+        //                           };
 
-        // add loan renew
-        [Authorize]
-        [HttpPost]
-        [Route("api/loanRenew/add/loanRenew")]
-        public Int32 addLoanRenewLoanRenew(Models.TrnLoanRenew loanRenew)
-        {
-            try
-            {
-                var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-                var mstUserForms = from d in db.mstUserForms
-                                   where d.UserId == userId
-                                   select new Models.MstUserForm
-                                   {
-                                       Id = d.Id,
-                                       Form = d.sysForm.Form,
-                                       CanPerformActions = d.CanPerformActions
-                                   };
+        //        if (mstUserForms.Any())
+        //        {
+        //            String matchPageString = "RenewList";
+        //            Boolean canPerformActions = false;
 
-                if (mstUserForms.Any())
-                {
-                    String matchPageString = "RenewList";
-                    Boolean canPerformActions = false;
+        //            foreach (var mstUserForm in mstUserForms)
+        //            {
+        //                if (mstUserForm.Form.Equals(matchPageString))
+        //                {
+        //                    if (mstUserForm.CanPerformActions)
+        //                    {
+        //                        canPerformActions = true;
+        //                    }
 
-                    foreach (var mstUserForm in mstUserForms)
-                    {
-                        if (mstUserForm.Form.Equals(matchPageString))
-                        {
-                            if (mstUserForm.CanPerformActions)
-                            {
-                                canPerformActions = true;
-                            }
+        //                    break;
+        //                }
+        //            }
 
-                            break;
-                        }
-                    }
+        //            if (canPerformActions)
+        //            {
+        //                String loanNumber = "0000000001";
+        //                var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanRenew == true select d;
+        //                if (loan.Any())
+        //                {
+        //                    var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
+        //                    loanNumber = newLoanNumber.ToString();
+        //                }
 
-                    if (canPerformActions)
-                    {
-                        String loanNumber = "0000000001";
-                        var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanRenew == true select d;
-                        if (loan.Any())
-                        {
-                            var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
-                            loanNumber = newLoanNumber.ToString();
-                        }
+        //                var term = from d in db.mstTerms.OrderByDescending(d => d.Id) select d;
+        //                if (term.Any())
+        //                {
+        //                    var interest = from d in db.mstInterests.OrderByDescending(d => d.Id) select d;
+        //                    if (interest.Any())
+        //                    {
+        //                        if (loanRenew.RenewPrincipalAmount != 0)
+        //                        {
+        //                            Data.trnLoan newLoan = new Data.trnLoan();
+        //                            newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
+        //                            newLoan.LoanDate = DateTime.Today;
+        //                            newLoan.ApplicantId = loanRenew.ApplicantId;
+        //                            newLoan.Particulars = "NA";
+        //                            newLoan.PreparedByUserId = userId;
+        //                            newLoan.TermId = term.FirstOrDefault().Id;
+        //                            newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
+        //                            newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
+        //                            newLoan.MaturityDate = DateTime.Today;
+        //                            newLoan.PrincipalAmount = loanRenew.RenewPrincipalAmount;
+        //                            newLoan.InterestId = interest.FirstOrDefault().Id;
+        //                            newLoan.InterestRate = interest.FirstOrDefault().Rate;
+        //                            Decimal interestAmount = (loanRenew.RenewPrincipalAmount / 100) * interest.FirstOrDefault().Rate;
+        //                            newLoan.InterestAmount = interestAmount;
+        //                            newLoan.PreviousBalanceAmount = 0;
+        //                            newLoan.DeductionAmount = 0;
+        //                            newLoan.NetAmount = loanRenew.RenewPrincipalAmount;
+        //                            newLoan.NetCollectionAmount = loanRenew.RenewPrincipalAmount + interestAmount;
+        //                            newLoan.TotalPaidAmount = 0;
+        //                            newLoan.TotalPenaltyAmount = 0;
+        //                            newLoan.TotalBalanceAmount = 0;
+        //                            newLoan.IsReconstruct = false;
+        //                            newLoan.IsRenew = false;
+        //                            newLoan.IsLoanApplication = false;
+        //                            newLoan.IsLoanReconstruct = false;
+        //                            newLoan.IsLoanRenew = true;
+        //                            newLoan.IsLocked = false;
+        //                            newLoan.CreatedByUserId = userId;
+        //                            newLoan.CreatedDateTime = DateTime.Now;
+        //                            newLoan.UpdatedByUserId = userId;
+        //                            newLoan.UpdatedDateTime = DateTime.Now;
+        //                            db.trnLoans.InsertOnSubmit(newLoan);
+        //                            db.SubmitChanges();
 
-                        var term = from d in db.mstTerms.OrderByDescending(d => d.Id) select d;
-                        if (term.Any())
-                        {
-                            var interest = from d in db.mstInterests.OrderByDescending(d => d.Id) select d;
-                            if (interest.Any())
-                            {
-                                if (loanRenew.RenewPrincipalAmount != 0)
-                                {
-                                    Data.trnLoan newLoan = new Data.trnLoan();
-                                    newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
-                                    newLoan.LoanDate = DateTime.Today;
-                                    newLoan.ApplicantId = loanRenew.ApplicantId;
-                                    newLoan.Particulars = "NA";
-                                    newLoan.PreparedByUserId = userId;
-                                    newLoan.TermId = term.FirstOrDefault().Id;
-                                    newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
-                                    newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
-                                    newLoan.MaturityDate = DateTime.Today;
-                                    newLoan.PrincipalAmount = loanRenew.RenewPrincipalAmount;
-                                    newLoan.InterestId = interest.FirstOrDefault().Id;
-                                    newLoan.InterestRate = interest.FirstOrDefault().Rate;
-                                    Decimal interestAmount = (loanRenew.RenewPrincipalAmount / 100) * interest.FirstOrDefault().Rate;
-                                    newLoan.InterestAmount = interestAmount;
-                                    newLoan.PreviousBalanceAmount = 0;
-                                    newLoan.DeductionAmount = 0;
-                                    newLoan.NetAmount = loanRenew.RenewPrincipalAmount;
-                                    newLoan.NetCollectionAmount = loanRenew.RenewPrincipalAmount + interestAmount;
-                                    newLoan.TotalPaidAmount = 0;
-                                    newLoan.TotalPenaltyAmount = 0;
-                                    newLoan.TotalBalanceAmount = 0;
-                                    newLoan.IsReconstruct = false;
-                                    newLoan.IsRenew = false;
-                                    newLoan.IsLoanApplication = false;
-                                    newLoan.IsLoanReconstruct = false;
-                                    newLoan.IsLoanRenew = true;
-                                    newLoan.IsLocked = false;
-                                    newLoan.CreatedByUserId = userId;
-                                    newLoan.CreatedDateTime = DateTime.Now;
-                                    newLoan.UpdatedByUserId = userId;
-                                    newLoan.UpdatedDateTime = DateTime.Now;
-                                    db.trnLoans.InsertOnSubmit(newLoan);
-                                    db.SubmitChanges();
-
-                                    return newLoan.Id;
-                                }
-                                else
-                                {
-                                    return 0;
-                                }
-                            }
-                            else
-                            {
-                                return 0;
-                            }
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            catch
-            {
-                return 0;
-            }
-        }
+        //                            return newLoan.Id;
+        //                        }
+        //                        else
+        //                        {
+        //                            return 0;
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        return 0;
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    return 0;
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return 0;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return 0;
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return 0;
+        //    }
+        //}
     }
 }

@@ -38,7 +38,6 @@ namespace Lending.ApiControllers
                                       PaidAmount = d.PaidAmount,
                                       CollectedDate = d.trnCollection.CollectionDate.ToShortDateString(),
                                       CollectionStatus = d.trnCollection.sysCollectionStatus.Status,
-                                      BalanceAmount = d.trnLoanLine.BalanceAmount
                                   };
 
             return collectionLines.ToList();
@@ -64,7 +63,6 @@ namespace Lending.ApiControllers
                                       PenaltyAmount = d.PenaltyAmount,
                                       PaidAmount = d.PaidAmount,
                                       CollectionStatus = d.trnCollection.sysCollectionStatus.Status,
-                                      BalanceAmount = d.trnLoanLine.BalanceAmount
                                   };
 
             return collectionLines.ToList();
@@ -126,36 +124,43 @@ namespace Lending.ApiControllers
 
                                     if (loanLines.Any())
                                     {
-                                        if (collectionLines.PaidAmount <= loanLines.FirstOrDefault().CollectibleAmount)
+                                        if (loanLines.FirstOrDefault().trnLoan.TotalBalanceAmount > 0)
                                         {
-                                            Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
-                                            newCollectionLine.CollectionId = collectionLines.CollectionId;
-                                            newCollectionLine.LoanLinesId = collectionLines.LoanLinesId;
-                                            newCollectionLine.PenaltyId = collectionLines.PenaltyId;
-                                            newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
-                                            newCollectionLine.PaidAmount = collectionLines.PaidAmount;
-                                            db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
-                                            db.SubmitChanges();
-
-                                            var collectionLineAmount = from d in db.trnCollectionLines
-                                                                       where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
-                                                                       select d;
-
-                                            Decimal totalPaidAmount = 0;
-                                            if (collectionLineAmount.Any())
+                                            if (collectionLines.PaidAmount <= loanLines.FirstOrDefault().trnLoan.TotalBalanceAmount)
                                             {
-                                                totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                                Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
+                                                newCollectionLine.CollectionId = collectionLines.CollectionId;
+                                                newCollectionLine.LoanLinesId = collectionLines.LoanLinesId;
+                                                newCollectionLine.PenaltyId = collectionLines.PenaltyId;
+                                                newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
+                                                newCollectionLine.PaidAmount = collectionLines.PaidAmount;
+                                                db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
+                                                db.SubmitChanges();
+
+                                                var collectionLineAmount = from d in db.trnCollectionLines
+                                                                           where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
+                                                                           select d;
+
+                                                Decimal totalPaidAmount = 0;
+                                                if (collectionLineAmount.Any())
+                                                {
+                                                    totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                                }
+
+                                                var updateCollection = collection.FirstOrDefault();
+                                                updateCollection.TotalPaidAmount = totalPaidAmount;
+                                                db.SubmitChanges();
+
+                                                return Request.CreateResponse(HttpStatusCode.OK);
                                             }
-
-                                            var updateCollection = collection.FirstOrDefault();
-                                            updateCollection.TotalPaidAmount = totalPaidAmount;
-                                            db.SubmitChanges();
-
-                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                            else
+                                            {
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Amount must not be greater than the total balance amount.");
+                                            }
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Amount must not be greater than collectible amount.");
+                                            return Request.CreateResponse(HttpStatusCode.NotFound, "No Total Balance.");
                                         }
                                     }
                                     else
@@ -400,129 +405,129 @@ namespace Lending.ApiControllers
         }
 
         // full payment
-        [Authorize]
-        [HttpPost]
-        [Route("api/collectionLines/fullPayment")]
-        public HttpResponseMessage fullPaymentCollectionLines(Models.TrnCollectionLines collectionLines)
-        {
-            try
-            {
-                var collection = from d in db.trnCollections where d.Id == collectionLines.CollectionId select d;
-                if (collection.Any())
-                {
-                    if (!collection.FirstOrDefault().IsLocked)
-                    {
-                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
-                        var mstUserForms = from d in db.mstUserForms
-                                           where d.UserId == userId
-                                           select new Models.MstUserForm
-                                           {
-                                               Id = d.Id,
-                                               Form = d.sysForm.Form,
-                                               CanPerformActions = d.CanPerformActions
-                                           };
+        //[Authorize]
+        //[HttpPost]
+        //[Route("api/collectionLines/fullPayment")]
+        //public HttpResponseMessage fullPaymentCollectionLines(Models.TrnCollectionLines collectionLines)
+        //{
+        //    try
+        //    {
+        //        var collection = from d in db.trnCollections where d.Id == collectionLines.CollectionId select d;
+        //        if (collection.Any())
+        //        {
+        //            if (!collection.FirstOrDefault().IsLocked)
+        //            {
+        //                var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+        //                var mstUserForms = from d in db.mstUserForms
+        //                                   where d.UserId == userId
+        //                                   select new Models.MstUserForm
+        //                                   {
+        //                                       Id = d.Id,
+        //                                       Form = d.sysForm.Form,
+        //                                       CanPerformActions = d.CanPerformActions
+        //                                   };
 
-                        if (mstUserForms.Any())
-                        {
-                            String matchPageString = "CollectionDetail";
-                            Boolean canPerformActions = false;
+        //                if (mstUserForms.Any())
+        //                {
+        //                    String matchPageString = "CollectionDetail";
+        //                    Boolean canPerformActions = false;
 
-                            foreach (var mstUserForm in mstUserForms)
-                            {
-                                if (mstUserForm.Form.Equals(matchPageString))
-                                {
-                                    if (mstUserForm.CanPerformActions)
-                                    {
-                                        canPerformActions = true;
-                                    }
+        //                    foreach (var mstUserForm in mstUserForms)
+        //                    {
+        //                        if (mstUserForm.Form.Equals(matchPageString))
+        //                        {
+        //                            if (mstUserForm.CanPerformActions)
+        //                            {
+        //                                canPerformActions = true;
+        //                            }
 
-                                    break;
-                                }
-                            }
+        //                            break;
+        //                        }
+        //                    }
 
-                            if (canPerformActions)
-                            {
-                                var collectionLine = from d in db.trnCollectionLines
-                                                     where d.CollectionId == collectionLines.CollectionId
-                                                     select d;
+        //                    if (canPerformActions)
+        //                    {
+        //                        var collectionLine = from d in db.trnCollectionLines
+        //                                             where d.CollectionId == collectionLines.CollectionId
+        //                                             select d;
 
-                                if (collectionLine.Any())
-                                {
-                                    db.trnCollectionLines.DeleteAllOnSubmit(collectionLine);
-                                    db.SubmitChanges();
-                                }
+        //                        if (collectionLine.Any())
+        //                        {
+        //                            db.trnCollectionLines.DeleteAllOnSubmit(collectionLine);
+        //                            db.SubmitChanges();
+        //                        }
 
-                                var loanLines = from d in db.trnLoanLines
-                                                where d.LoanId == collectionLines.LoanId
-                                                && d.trnLoan.IsLocked == true
-                                                && (d.CollectibleAmount - d.PaidAmount) + d.PenaltyAmount > 0
-                                                select new Models.TrnLoanLines
-                                                {
-                                                    Id = d.Id,
-                                                    DayReference = d.DayReference,
-                                                    CollectibleDate = d.CollectibleDate.ToShortDateString(),
-                                                    CollectibleAmount = d.CollectibleAmount,
-                                                    PaidAmount = d.PaidAmount,
-                                                    PenaltyAmount = d.PenaltyAmount
-                                                };
+        //                        var loanLines = from d in db.trnLoanLines
+        //                                        where d.LoanId == collectionLines.LoanId
+        //                                        && d.trnLoan.IsLocked == true
+        //                                        && (d.CollectibleAmount - d.PaidAmount) + d.PenaltyAmount > 0
+        //                                        select new Models.TrnLoanLines
+        //                                        {
+        //                                            Id = d.Id,
+        //                                            DayReference = d.DayReference,
+        //                                            CollectibleDate = d.CollectibleDate.ToShortDateString(),
+        //                                            CollectibleAmount = d.CollectibleAmount,
+        //                                            PaidAmount = d.PaidAmount,
+        //                                            PenaltyAmount = d.PenaltyAmount
+        //                                        };
 
-                                if (loanLines.Any())
-                                {
-                                    foreach (var loanLine in loanLines)
-                                    {
-                                        Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
-                                        newCollectionLine.CollectionId = collectionLines.CollectionId;
-                                        newCollectionLine.LoanLinesId = loanLine.Id;
-                                        newCollectionLine.PenaltyId = null;
-                                        newCollectionLine.PenaltyAmount = 0;
+        //                        if (loanLines.Any())
+        //                        {
+        //                            foreach (var loanLine in loanLines)
+        //                            {
+        //                                Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
+        //                                newCollectionLine.CollectionId = collectionLines.CollectionId;
+        //                                newCollectionLine.LoanLinesId = loanLine.Id;
+        //                                newCollectionLine.PenaltyId = null;
+        //                                newCollectionLine.PenaltyAmount = 0;
 
-                                        Decimal paidAmount = 0;
-                                        if (loanLine.PaidAmount != 0 || loanLine.PenaltyAmount != 0)
-                                        {
-                                            paidAmount = (loanLine.CollectibleAmount - loanLine.PaidAmount) + loanLine.PenaltyAmount;
-                                        }
-                                        else
-                                        {
-                                            paidAmount = loanLine.CollectibleAmount;
-                                        }
+        //                                Decimal paidAmount = 0;
+        //                                if (loanLine.PaidAmount != 0 || loanLine.PenaltyAmount != 0)
+        //                                {
+        //                                    paidAmount = (loanLine.CollectibleAmount - loanLine.PaidAmount) + loanLine.PenaltyAmount;
+        //                                }
+        //                                else
+        //                                {
+        //                                    paidAmount = loanLine.CollectibleAmount;
+        //                                }
 
-                                        newCollectionLine.PaidAmount = paidAmount;
-                                        db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
-                                        db.SubmitChanges();
-                                    }
+        //                                newCollectionLine.PaidAmount = paidAmount;
+        //                                db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
+        //                                db.SubmitChanges();
+        //                            }
 
-                                    return Request.CreateResponse(HttpStatusCode.OK);
-                                }
-                                else
-                                {
-                                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
-                                }
-                            }
-                            else
-                            {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
-                            }
-                        }
-                        else
-                        {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
-                        }
-                    }
-                    else
-                    {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot update locked record.");
-                    }
-                }
-                else
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
-                }
-            }
-            catch
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
-            }
-        }
+        //                            return Request.CreateResponse(HttpStatusCode.OK);
+        //                        }
+        //                        else
+        //                        {
+        //                            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
+        //                    }
+        //                }
+        //                else
+        //                {
+        //                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
+        //                }
+        //            }
+        //            else
+        //            {
+        //                return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot update locked record.");
+        //            }
+        //        }
+        //        else
+        //        {
+        //            return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found.");
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
+        //    }
+        //}
 
     }
 }

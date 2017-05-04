@@ -169,7 +169,14 @@ namespace Lending.Reports
                         }
                         else
                         {
-                            loanlData.AddCell(new PdfPCell(new Phrase(loanLine.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            if (loanLine.TotalBalanceAmount <= loanLine.CollectibleAmount)
+                            {
+                                loanlData.AddCell(new PdfPCell(new Phrase(loanLine.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            }
+                            else
+                            {
+                                loanlData.AddCell(new PdfPCell(new Phrase(loanLine.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            }
                         }
 
                         if (loanLine.DayReference.Equals(" "))

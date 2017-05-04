@@ -28,7 +28,6 @@ namespace Lending.ApiControllers
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
                                 PenaltyAmount = d.PenaltyAmount,
-                                BalanceAmount = d.BalanceAmount,
                                 TotalBalanceAmount = d.trnLoan.TotalBalanceAmount,
                                 TermNoOfDays = d.trnLoan.TermNoOfDays
                             };
@@ -46,6 +45,7 @@ namespace Lending.ApiControllers
                             where d.LoanId == Convert.ToInt32(loanId)
                             && d.trnLoan.IsReconstruct == false
                             && d.trnLoan.IsRenew == false
+                            && d.trnLoan.TotalBalanceAmount > 0
                             select new Models.TrnLoanLines
                             {
                                 Id = d.Id,
@@ -54,7 +54,6 @@ namespace Lending.ApiControllers
                                 CollectibleAmount = d.CollectibleAmount,
                                 PaidAmount = d.PaidAmount,
                                 PenaltyAmount = d.PenaltyAmount,
-                                BalanceAmount = d.BalanceAmount,
                                 TotalBalanceAmount = d.trnLoan.TotalBalanceAmount,
                                 TermNoOfDays = d.trnLoan.TermNoOfDays
                             };

@@ -160,9 +160,9 @@
                                             Collections
                                         </td>
                                         <td align="right">
-                                            <button class="btn btn-primary btn-sm" id="btnFullPayment" onclick="btnFullPaymentOnclick()">
-                                                <i class="fa fa-money fa-fw"></i> Add All
-                                            </button>
+                                            <!-- <button class="btn btn-primary btn-sm" id="btnFullPayment" onclick="btnFullPaymentOnclick()">
+                                                 <i class="fa fa-money fa-fw"></i> Add All
+                                             </button> -->
                                             <button class="btn btn-primary btn-sm" id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
                                                 <i class="fa fa-plus fa-fw"></i> Add
                                             </button>
@@ -259,10 +259,10 @@
     </div>
 
     <!-- full payment confirmation collection line modal -->
-    <div class="modal fade" id="fullPaymentConfirmationCollectionLineModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
+    <!--<div class="modal fade" id="fullPaymentConfirmationCollectionLineModal" role="dialog">
+        <div class="modal-dialog">-->
+    <!-- Modal content-->
+    <!--<div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add All Payment</h4>
@@ -286,8 +286,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+    </div>-->
     <!-- payment modal -->
     <div class="modal fade" id="paymentModal" role="dialog">
         <div class="modal-dialog">
@@ -314,15 +313,6 @@
                                 <div class="input-group numberField">
                                     <span class="input-group-addon">&#8369;</span>
                                     <input type="text" class="form-control numberField requiredCollectionLines" id="collectionLinesCollectibleAmount" placeholder="0.00" disabled />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Balance</label>
-                            <div class="col-sm-8">
-                                <div class="input-group numberField">
-                                    <span class="input-group-addon">&#8369;</span>
-                                    <input type="text" class="form-control numberField requiredCollectionLines" id="BalanceAmount" placeholder="0.00" disabled />
                                 </div>
                             </div>
                         </div>
@@ -404,66 +394,66 @@
         var cboCollectionCollectorStaff;
 
         // full payment
-        function btnFullPaymentOnclick() {
-            $("#fullPaymentConfirmationCollectionLineModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
+        //function btnFullPaymentOnclick() {
+        //    $("#fullPaymentConfirmationCollectionLineModal").modal({
+        //        "show": true,
+        //        "backdrop": "static"
+        //    });
 
-            $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-            document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
-        }
+        //    $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+        //    document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
+        //}
 
         // confirm full payment
-        function btnConfirmFullPaymentCollectionLineOnclick() {
-            $("#btnConfirmFullPaymentCollectionLine").prop("disabled", true);
-            document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating"
+        //function btnConfirmFullPaymentCollectionLineOnclick() {
+        //    $("#btnConfirmFullPaymentCollectionLine").prop("disabled", true);
+        //    document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating"
 
-            var collectionLinesObject = new Object();
-            collectionLinesObject.CollectionId = getUrlParameter("id");
-            collectionLinesObject.LoanId = cboCollectionApplicantLoanNumber.selectedItem["Id"];
-            var collectionLinesData = JSON.stringify(collectionLinesObject);
+        //    var collectionLinesObject = new Object();
+        //    collectionLinesObject.CollectionId = getUrlParameter("id");
+        //    collectionLinesObject.LoanId = cboCollectionApplicantLoanNumber.selectedItem["Id"];
+        //    var collectionLinesData = JSON.stringify(collectionLinesObject);
 
-            $.ajax({
-                type: "POST",
-                url: '/api/collectionLines/fullPayment',
-                contentType: "application/json; charset=utf-8",
-                data: collectionLinesData,
-                statusCode: {
-                    200: function () {
-                        toastr.success("Successfully Paid", "Successfully Paid");
-                        $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
+        //    $.ajax({
+        //        type: "POST",
+        //        url: '/api/collectionLines/fullPayment',
+        //        contentType: "application/json; charset=utf-8",
+        //        data: collectionLinesData,
+        //        statusCode: {
+        //            200: function () {
+        //                toastr.success("Successfully Paid", "Successfully Paid");
+        //                $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+        //                document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
 
-                        $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
+        //                $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
 
-                        collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
-                        collectionLinesCollectionView.pageSize = 15;
+        //                collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+        //                collectionLinesCollectionView.pageSize = 15;
 
-                        collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
-                            updateNavigateButtons();
-                        });
+        //                collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+        //                    updateNavigateButtons();
+        //                });
 
-                        collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
-                        collectionLinesFlexgrid.trackChanges = true;
-                    },
-                    404: function (message) {
-                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
-                        $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
+        //                collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
+        //                collectionLinesFlexgrid.trackChanges = true;
+        //            },
+        //            404: function (message) {
+        //                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+        //                $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+        //                document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
 
-                        $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
-                    },
-                    400: function (message) {
-                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
-                        $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
-                        document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
+        //                $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
+        //            },
+        //            400: function (message) {
+        //                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+        //                $("#btnConfirmFullPaymentCollectionLine").prop("disabled", false);
+        //                document.getElementById("btnConfirmFullPaymentCollectionLine").innerHTML = "<i class'fa fa-check fa-fw'></i> Confirm";
 
-                        $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
-                    }
-                }
-            });
-        }
+        //                $("#fullPaymentConfirmationCollectionLineModal").modal('hide');
+        //            }
+        //        }
+        //    });
+        //}
 
         // create collection Date
         function createCollectionDate() {
@@ -569,11 +559,11 @@
                             recentCollectionLinesFlexgrid.itemsSource = recentCollectionLinesCollectionView;
                             recentCollectionLinesFlexgrid.trackChanges = true;
 
-                            document.getElementById("loanTotalBalanceAmount").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
+                            //document.getElementById("loanTotalBalanceAmount").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
                         }
                     });
 
-                    document.getElementById("loanTotalBalanceAmount").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
+                    //document.getElementById("loanTotalBalanceAmount").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
 
                     createRecentCollectionFlexgrid();
                     window.createRecentCollectionFlexgrid = function () {
@@ -1091,13 +1081,12 @@
                                 CollectibleAmount: loanLineResults[i]["CollectibleAmount"],
                                 PaidAmount: loanLineResults[i]["PaidAmount"],
                                 PenaltyAmount: loanLineResults[i]["PenaltyAmount"],
-                                BalanceAmount: loanLineResults[i]["BalanceAmount"],
                                 TotalBalanceAmount: loanLineResults[i]["TotalBalanceAmount"]
                             });
-
-                            NProgress.done();
                         }
                     }
+
+                    NProgress.done();
                 }
             });
 
@@ -1118,15 +1107,17 @@
 
             loanLinesId = currentItem.Id;
             isPenalty = false;
-            
+
             document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
             document.getElementById("collectionLinesCollectibleAmount").value = currentItem.CollectibleAmount.toLocaleString();
-            document.getElementById("BalanceAmount").value = currentItem.BalanceAmount.toLocaleString();
 
-            if (currentItem.BalanceAmount > currentItem.CollectibleAmount) {
-                document.getElementById("collectionLinesPaidAmount").value = currentItem.CollectibleAmount.toLocaleString();
+            var totalBalance = parseFloat(currentItem.TotalBalanceAmount);
+            var collectionLineCollectibleAmount = parseFloat(currentItem.CollectibleAmount);
+
+            if (totalBalance <= collectionLineCollectibleAmount) {
+                document.getElementById('collectionLinesPaidAmount').value = currentItem.TotalBalanceAmount.toLocaleString();
             } else {
-                document.getElementById("collectionLinesPaidAmount").value = currentItem.BalanceAmount.toLocaleString();
+                document.getElementById('collectionLinesPaidAmount').value = currentItem.CollectibleAmount.toLocaleString();
             }
 
             createCboPenalty();
@@ -1146,13 +1137,6 @@
             isPenalty = true;
             document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
             document.getElementById("collectionLinesCollectibleAmount").value = currentItem.CollectibleAmount.toLocaleString();
-            document.getElementById("BalanceAmount").value = currentItem.BalanceAmount.toLocaleString();
-
-            if (currentItem.BalanceAmount > currentItem.CollectibleAmount) {
-                document.getElementById("collectionLinesPaidAmount").value = currentItem.CollectibleAmount.toLocaleString();
-            } else {
-                document.getElementById("collectionLinesPaidAmount").value = currentItem.BalanceAmount.toLocaleString();
-            }
 
             createCboPenalty();
         }
@@ -1209,13 +1193,7 @@
                                 "binding": "PenaltyAmount",
                                 "allowSorting": true,
                                 "width": "2*",
-                            },
-                            {
-                                "header": "Balance",
-                                "binding": "BalanceAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: currentCollectionsCollectionView,
@@ -1329,104 +1307,101 @@
             if (inputValidationForCollectionLine()) {
                 var collectibleAmount = parseFloat(document.getElementById('collectionLinesCollectibleAmount').value.replace(/\,/g, ''));
                 var paidAmount = parseFloat(document.getElementById('collectionLinesPaidAmount').value.replace(/\,/g, ''));
-                var balanceAmount = parseFloat(document.getElementById('BalanceAmount').value.replace(/\,/g, ''));
+                var totalBalance = parseFloat(document.getElementById('TotalBalanceAmount').value.replace(/\,/g, ''));
 
-                if (paidAmount <= balanceAmount) {
-                    if (paidAmount <= collectibleAmount) {
-                        document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                        $("#btnSaveCollectionLine").prop("disabled", true);
-                        $("#btnCloseCollectionLine").prop("disabled", true);
+                if (paidAmount <= totalBalance) {
 
-                        document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                        $("#btnSaveCollectionLineForPenalty").prop("disabled", true);
-                        $("#btnCloseCollectionLineForPenalty").prop("disabled", true);
+                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                    $("#btnSaveCollectionLine").prop("disabled", true);
+                    $("#btnCloseCollectionLine").prop("disabled", true);
 
-                        var loanApplicationDeductionObject = new Object();
-                        loanApplicationDeductionObject.CollectionId = getUrlParameter("id");
-                        loanApplicationDeductionObject.LoanLinesId = loanLinesId;
+                    document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
+                    $("#btnSaveCollectionLineForPenalty").prop("disabled", true);
+                    $("#btnCloseCollectionLineForPenalty").prop("disabled", true);
 
-                        if (isPenalty) {
-                            loanApplicationDeductionObject.PaidAmount = 0;
-                            loanApplicationDeductionObject.PenaltyId = cboPenalty.selectedItem["Id"];
-                            loanApplicationDeductionObject.PenaltyAmount = document.getElementById('collectionLinesPenaltyAmount').value;
-                        } else {
-                            loanApplicationDeductionObject.PaidAmount = document.getElementById('collectionLinesPaidAmount').value;
-                            loanApplicationDeductionObject.PenaltyId = null;
-                            loanApplicationDeductionObject.PenaltyAmount = 0;
-                        }
+                    var loanApplicationDeductionObject = new Object();
+                    loanApplicationDeductionObject.CollectionId = getUrlParameter("id");
+                    loanApplicationDeductionObject.LoanLinesId = loanLinesId;
 
-                        var loanApplicationDeductionData = JSON.stringify(loanApplicationDeductionObject);
-
-                        $.ajax({
-                            type: "POST",
-                            url: '/api/collectionLines/add',
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            data: loanApplicationDeductionData,
-                            statusCode: {
-                                200: function () {
-                                    toastr.success("Save Successful");
-
-                                    if (isPenalty) {
-                                        $("#penaltyModal").modal("hide");
-                                    } else {
-                                        $("#paymentModal").modal("hide");
-                                    }
-                                    $("#collectionLineDetailModal").modal("hide");
-
-                                    collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
-                                    collectionLinesCollectionView.pageSize = 15;
-
-                                    collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                        updateNavigateButtons();
-                                    });
-
-                                    collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
-                                    collectionLinesFlexgrid.trackChanges = true;
-                                },
-                                404: function (message) {
-                                    toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
-
-                                    if (isPenalty) {
-                                        $("#penaltyModal").modal("hide");
-                                    } else {
-                                        $("#paymentModal").modal("hide");
-                                    }
-                                    //$("#collectionLineDetailModal").modal("hide");
-
-                                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveCollectionLine").prop("disabled", false);
-                                    $("#btnCloseCollectionLine").prop("disabled", false);
-
-                                    document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
-                                    $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
-                                },
-                                400: function (message) {
-                                    toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
-
-                                    if (isPenalty) {
-                                        $("#penaltyModal").modal("hide");
-                                    } else {
-                                        $("#paymentModal").modal("hide");
-                                    }
-                                    //$("#collectionLineDetailModal").modal("hide");
-
-                                    document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveCollectionLine").prop("disabled", false);
-                                    $("#btnCloseCollectionLine").prop("disabled", false);
-
-                                    document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
-                                    $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
-                                }
-                            }
-                        });
+                    if (isPenalty) {
+                        loanApplicationDeductionObject.PaidAmount = 0;
+                        loanApplicationDeductionObject.PenaltyId = cboPenalty.selectedItem["Id"];
+                        loanApplicationDeductionObject.PenaltyAmount = document.getElementById('collectionLinesPenaltyAmount').value;
                     } else {
-                        toastr.error("Paid Amount must not be greater than Collectible Amount");
+                        loanApplicationDeductionObject.PaidAmount = document.getElementById('collectionLinesPaidAmount').value;
+                        loanApplicationDeductionObject.PenaltyId = null;
+                        loanApplicationDeductionObject.PenaltyAmount = 0;
                     }
+
+                    var loanApplicationDeductionData = JSON.stringify(loanApplicationDeductionObject);
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/collectionLines/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: loanApplicationDeductionData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Save Successful");
+
+                                if (isPenalty) {
+                                    $("#penaltyModal").modal("hide");
+                                } else {
+                                    $("#paymentModal").modal("hide");
+                                }
+                                $("#collectionLineDetailModal").modal("hide");
+
+                                collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
+                                collectionLinesCollectionView.pageSize = 15;
+
+                                collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtons();
+                                });
+
+                                collectionLinesFlexgrid.itemsSource = collectionLinesCollectionView;
+                                collectionLinesFlexgrid.trackChanges = true;
+                            },
+                            404: function (message) {
+                                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                                if (isPenalty) {
+                                    $("#penaltyModal").modal("hide");
+                                } else {
+                                    $("#paymentModal").modal("hide");
+                                }
+                                //$("#collectionLineDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollectionLine").prop("disabled", false);
+                                $("#btnCloseCollectionLine").prop("disabled", false);
+
+                                document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
+                                $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
+                            },
+                            400: function (message) {
+                                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                                if (isPenalty) {
+                                    $("#penaltyModal").modal("hide");
+                                } else {
+                                    $("#paymentModal").modal("hide");
+                                }
+                                //$("#collectionLineDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollectionLine").prop("disabled", false);
+                                $("#btnCloseCollectionLine").prop("disabled", false);
+
+                                document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
+                                $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
+                            }
+                        }
+                    });
                 } else {
-                    toastr.error("Paid Amount must not be greater than Balance Amount");
+                    toastr.error("The amount must not be greater than the total balance amount.");
                 }
             } else {
                 toastr.error("Invalid Entry");
@@ -1528,8 +1503,7 @@
                                 PenaltyAmount: recentCollectionLinesResults[i]["PenaltyAmount"],
                                 PaidAmount: recentCollectionLinesResults[i]["PaidAmount"],
                                 CollectedDate: thisCollectionDateValue,
-                                CollectionStatus: recentCollectionLinesResults[i]["CollectionStatus"],
-                                BalanceAmount: recentCollectionLinesResults[i]["BalanceAmount"]
+                                CollectionStatus: recentCollectionLinesResults[i]["CollectionStatus"]
                             });
                         }
                     }
@@ -1586,12 +1560,6 @@
                             {
                                 "header": "Penalty",
                                 "binding": "PenaltyAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Balance",
-                                "binding": "BalanceAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
