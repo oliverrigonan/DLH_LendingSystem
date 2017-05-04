@@ -798,8 +798,8 @@ namespace Lending.ApiControllers
                                                 select new Models.RepDailyCollectionRemittance
                                                 {
                                                     Area = d.Area,
-                                                    GrossCollection = joinAreaCollections.Where(c => c.CollectionDate >= Convert.ToDateTime(startDate) && c.CollectionDate <= Convert.ToDateTime(endDate)).Sum(c => c.TotalPaidAmount) != null ? joinAreaCollections.Where(c => c.CollectionDate >= Convert.ToDateTime(startDate) && c.CollectionDate <= Convert.ToDateTime(endDate)).Sum(c => c.TotalPaidAmount) : 0,
-                                                    NetRemitted = joinAreaRemittances.Where(r => r.RemittanceDate >= Convert.ToDateTime(startDate) && r.RemittanceDate <= Convert.ToDateTime(endDate)).Sum(r => r.RemitAmount) != null ? joinAreaRemittances.Where(r => r.RemittanceDate >= Convert.ToDateTime(startDate) && r.RemittanceDate <= Convert.ToDateTime(endDate)).Sum(r => r.RemitAmount) : 0,
+                                                    GrossCollection = joinAreaCollections.Where(c => c.CollectionDate >= Convert.ToDateTime(startDate) && c.CollectionDate <= Convert.ToDateTime(endDate) && c.IsLocked == true).Sum(c => c.TotalPaidAmount) != null ? joinAreaCollections.Where(c => c.CollectionDate >= Convert.ToDateTime(startDate) && c.CollectionDate <= Convert.ToDateTime(endDate) && c.IsLocked == true).Sum(c => c.TotalPaidAmount) : 0,
+                                                    NetRemitted = joinAreaRemittances.Where(r => r.RemittanceDate >= Convert.ToDateTime(startDate) && r.RemittanceDate <= Convert.ToDateTime(endDate) && r.IsLocked == true).Sum(r => r.RemitAmount) != null ? joinAreaRemittances.Where(r => r.RemittanceDate >= Convert.ToDateTime(startDate) && r.RemittanceDate <= Convert.ToDateTime(endDate) && r.IsLocked == true).Sum(r => r.RemitAmount) : 0,
                                                     Remarks = " "
                                                 };
 

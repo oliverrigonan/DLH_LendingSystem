@@ -2367,6 +2367,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (dailyCollectionRemittanceResult) {
                     if (dailyCollectionRemittanceResult.length > 0) {
+                        var remarks = " ";
                         for (i = 0; i < dailyCollectionRemittanceResult.length; i++) {
                             //var newGrossCollectionDate = new Date(dailyCollectionRemittanceResult[i]["GrossCollectionDate"]);
                             //var grossCollectionDate = ('0' + (newGrossCollectionDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newGrossCollectionDate.getDate()).slice(-2) + '-' + newGrossCollectionDate.getFullYear();
@@ -2374,13 +2375,21 @@
                             //var newNetRemittedDate = new Date(dailyCollectionRemittanceResult[i]["NetRemittedDate"]);
                             //var netRemittedDate = ('0' + (newNetRemittedDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newNetRemittedDate.getDate()).slice(-2) + '-' + newNetRemittedDate.getFullYear();
 
+                            if (parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]) > parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"])) {
+                                var differenceCollectionRemittance = parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]) - parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"]);
+                                remarks = "Over " + differenceCollectionRemittance.toLocaleString();
+                            } else {
+                                var differenceCollectionRemittance = parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"]) - parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]);
+                                remarks = "Less " + differenceCollectionRemittance.toLocaleString();
+                            }
+
                             dailyCollectionRemittanceObservableArray.push({
                                 Area: dailyCollectionRemittanceResult[i]["Area"],
                                 //GrossCollectionDate: grossCollectionDate,
                                 GrossCollection: dailyCollectionRemittanceResult[i]["GrossCollection"],
                                 //NetRemittedDate: netRemittedDate,
                                 NetRemitted: dailyCollectionRemittanceResult[i]["NetRemitted"],
-                                Remarks: dailyCollectionRemittanceResult[i]["Remarks"]
+                                Remarks: remarks
                             });
                         }
                     }
@@ -2490,7 +2499,7 @@
                                 "header": "Remarks",
                                 "binding": "Remarks",
                                 "allowSorting": true,
-                                "width": 350
+                                "width": 320
                             }
                 ],
                 autoGenerateColumns: false,
