@@ -37,7 +37,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#loanReport">Loan / Renew / Reconstruct Reports</a></li>
                     <li><a data-toggle="tab" href="#collectionReport" onclick="collectionReportOnClick()">Collection / Remittance Report</a></li>
-                    <li><a data-toggle="tab" href="#expensesReport">Expenses Report</a></li>
+                    <li><a data-toggle="tab" href="#expensesReport" onclick="expensesReportOnClick()">Expenses Report</a></li>
                 </ul>
                 <br />
                 <div class="tab-content">
@@ -571,7 +571,26 @@
                                 </table>
                             </div>
                             <div class="panel-body">
-
+                                <div id="expensesListFlexGrid" class="grid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridExpenses">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridExpenses">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridExpenses">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridExpenses"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridExpenses">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridExpenses">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -601,6 +620,56 @@
         var cboEndDateCollectionReportActiveReport;
         var cboEndDateCollectionReportActiveReportIsClicked = false;
         var cboCollectionReportActiveArea;
+
+        var cboStartExpensesReport;
+        var cboStartExpensesReportIsClicked = false;
+        var cboEndExpensesReport;
+        var cboEndExpensesReportIsClicked = false;
+
+
+
+        function createcboStartExpensesReport() {
+            cboStartExpensesReport.dispose();
+            cboStartExpensesReport = new wijmo.input.InputDate('#cboStartExpensesReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartExpensesReportIsClicked) {
+                        NProgress.start();
+                        refreshExpensesFlexGrid();
+                    } else {
+                        cboStartExpensesReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createcboEndExpensesReport() {
+            cboEndExpensesReport.dispose();
+            cboEndExpensesReport = new wijmo.input.InputDate('#cboEndExpensesReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndExpensesReportIsClicked) {
+                        NProgress.start();
+                        refreshExpensesFlexGrid();
+                    } else {
+                        cboEndExpensesReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+
+
+
 
         function createcboStartDateCollectionReportActiveReport() {
             cboStartDateCollectionReportActiveReport.dispose();
@@ -2188,6 +2257,17 @@
             }, 200);
         }
 
+        function expensesReportOnClick() {
+            NProgress.start();
+            setTimeout(function () {
+                createExpensesFlexGrid();
+                window.createExpensesFlexGrid = function () {
+                    return true;
+                }
+                refreshExpensesFlexGrid();
+            }, 200);
+        }
+
         // Navigation Buttons
         function updateNavigateButtonsCollectionReportOverdue() {
             if (collectionCollectionView.pageSize <= 0) {
@@ -2379,8 +2459,12 @@
                                 var differenceCollectionRemittance = parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]) - parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"]);
                                 remarks = "Over " + differenceCollectionRemittance.toLocaleString();
                             } else {
-                                var differenceCollectionRemittance = parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"]) - parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]);
-                                remarks = "Less " + differenceCollectionRemittance.toLocaleString();
+                                if (parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]) < parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"])) {
+                                    var differenceCollectionRemittance = parseFloat(dailyCollectionRemittanceResult[i]["GrossCollection"]) - parseFloat(dailyCollectionRemittanceResult[i]["NetRemitted"]);
+                                    remarks = "Less " + differenceCollectionRemittance.toLocaleString();
+                                } else {
+                                    remarks = " ";
+                                }
                             }
 
                             dailyCollectionRemittanceObservableArray.push({
@@ -2539,6 +2623,195 @@
             });
         }
 
+        // get expenses list
+        function getExpensesList() {
+            var expensesListArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboStartExpensesReport.value.getMonth() + 1, cboStartExpensesReport.value.getDate(), cboStartExpensesReport.value.getFullYear()].join('-');
+            var endDate = [cboEndExpensesReport.value.getMonth() + 1, cboEndExpensesReport.value.getDate(), cboEndExpensesReport.value.getFullYear()].join('-');
+            $.ajax({
+                url: '/api/expenses/listByExpensesDate/' + startDate + '/' + endDate,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (expensesListResult) {
+                    if (expensesListResult.length > 0) {
+                        for (i = 0; i < expensesListResult.length; i++) {
+
+                            expensesListArray.push({
+                                DetailButton: "<button class='btn btn-primary btn-xs btn-block' onclick='expensesDetailOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                Id: expensesListResult[i]["Id"],
+                                ExpenseNumber: expensesListResult[i]["ExpenseNumber"],
+                                ExpenseDate: expensesListResult[i]["ExpenseDate"],
+                                AssignedStaffId: expensesListResult[i]["AssignedStaffId"],
+                                AssignedStaff: expensesListResult[i]["AssignedStaff"],
+                                Particulars: expensesListResult[i]["Particulars"],
+                                IsCollectionExpense: expensesListResult[i]["IsCollectionExpense"],
+                                ExpenseAmount: expensesListResult[i]["ExpenseAmount"],
+                                PreparedByUserId: expensesListResult[i]["PreparedByUserId"],
+                                PreparedByUser: expensesListResult[i]["PreparedByUser"],
+                                IsLocked: expensesListResult[i]["IsLocked"],
+                                CreatedByUserId: expensesListResult[i]["CreatedByUserId"],
+                                CreatedByUser: expensesListResult[i]["CreatedByUser"],
+                                CreatedDateTime: expensesListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: expensesListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: expensesListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: expensesListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return expensesListArray;
+        }
+
+        var expensesCollectionView;
+        var expensesListFlexGrid;
+
+        function expensesDetailOnclick() {
+            expensesCollectionView.editItem(expensesCollectionView.currentItem);
+            var currentItem = expensesCollectionView.currentEditItem;
+            window.open("/Software/ExpenseDetail?id=" + currentItem.Id, "_blank");
+        }
+
+        function updateNavigateButtonsCollectionReportExpenses() {
+            if (expensesCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridExpenses').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridExpenses').style.display = 'block';
+            btnCurrentPageGridCollectionReportExpenses.innerHTML = (expensesCollectionView.pageIndex + 1) + ' / ' + expensesCollectionView.pageCount;
+        }
+
+        function refreshExpensesFlexGrid() {
+            expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
+            expensesCollectionView.canFilter = true;
+            expensesCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#expensesReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                expensesCollectionView.refresh();
+            });
+
+            expensesCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportExpenses();
+            });
+
+            // Flex Grid
+            expensesListFlexGrid.itemsSource = expensesCollectionView;
+            expensesListFlexGrid.trackChanges = true;
+        }
+
+        function createExpensesFlexGrid() {
+            expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
+            expensesCollectionView.canFilter = true;
+            expensesCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#expensesReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                expensesCollectionView.refresh();
+            });
+
+            expensesCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionReportExpenses();
+            });
+
+            // Flex Grid
+            expensesListFlexGrid = new wijmo.grid.FlexGrid('#expensesListFlexGrid');
+            expensesListFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "DetailButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "ExpenseDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Expense No.",
+                                "binding": "ExpenseNumber",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Staff",
+                                "binding": "AssignedStaff",
+                                "allowSorting": true,
+                                "width": 250,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Amount",
+                                "binding": "ExpenseAmount",
+                                "allowSorting": true,
+                                "width": 150,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: expensesCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            expensesListFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollectionReportExpenses = document.getElementById('btnMoveToFirstPageGridExpenses');
+            btnPreviousPageGridCollectionReportExpenses = document.getElementById('btnMoveToPreviousPageGridExpenses');
+            btnNextPageGridCollectionReportExpenses = document.getElementById('btnMoveToNextPageGridExpenses');
+            btnLastPageGridCollectionReportExpenses = document.getElementById('btnMoveToLastPageGridExpenses');
+            btnCurrentPageGridCollectionReportExpenses = document.getElementById('btnCurrentPageGridExpenses');
+
+            updateNavigateButtonsCollectionReportExpenses();
+
+            btnFirstPageGridCollectionReportExpenses.addEventListener('click', function () {
+                expensesCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollectionReportExpenses();
+            });
+            btnPreviousPageGridCollectionReportExpenses.addEventListener('click', function () {
+                expensesCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollectionReportExpenses();
+            });
+            btnNextPageGridCollectionReportExpenses.addEventListener('click', function () {
+                expensesCollectionView.moveToNextPage();
+                updateNavigateButtonsCollectionReportExpenses();
+            });
+            btnLastPageGridCollectionReportExpenses.addEventListener('click', function () {
+                expensesCollectionView.moveToLastPage();
+                updateNavigateButtonsCollectionReportExpenses();
+            });
+        }
+
+
+
+
+
+
         window.onload = function () {
             cboDailyReleaseMonitoringArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringArea');
             cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea');
@@ -2571,6 +2844,10 @@
             createCboStartDateDailyCollectionAndRemittanceReport();
             cboEndDateDailyCollectionAndRemittanceReport = new wijmo.input.InputDate('#cboEndDateDailyCollectionAndRemittanceReport');
             createCboEndDateDailyCollectionAndRemittanceReport();
+            cboStartExpensesReport = new wijmo.input.InputDate('#cboStartExpensesReport');
+            createcboStartExpensesReport();
+            cboEndExpensesReport = new wijmo.input.InputDate('#cboEndExpensesReport');
+            createcboEndExpensesReport();
         }
     </script>
 </body>
