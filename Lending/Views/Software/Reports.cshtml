@@ -795,6 +795,11 @@
                 contentType: 'application/json; charset=utf-8',
                 data: {},
                 success: function (areaResults) {
+                    areaArray.push({
+                        Id: "0",
+                        Area: "All Areas"
+                    });
+
                     var disabled = true;
                     if (areaResults.length > 0) {
                         for (i = 0; i < areaResults.length; i++) {
@@ -1099,16 +1104,10 @@
                                 "width": 250,
                             },
                             {
-                                "header": "Due Date",
-                                "binding": "DueDate",
-                                "allowSorting": true,
-                                "width": 100,
-                            },
-                            {
                                 "header": "Area",
                                 "binding": "Area",
                                 "allowSorting": true,
-                                "width": 185,
+                                "width": 200,
                             },
                             {
                                 "header": "Net",
@@ -1524,6 +1523,12 @@
                                 "width": 220,
                             },
                             {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 200,
+                            },
+                            {
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
@@ -1710,6 +1715,12 @@
                                 "binding": "Applicant",
                                 "allowSorting": true,
                                 "width": 220,
+                            },
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 200,
                             },
                             {
                                 "header": "Status",
@@ -1910,6 +1921,12 @@
                                 "binding": "Applicant",
                                 "allowSorting": true,
                                 "width": 220,
+                            },
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 200,
                             },
                             {
                                 "header": "Status",
@@ -2807,10 +2824,37 @@
             });
         }
 
+        function btnPrintDailyReleaseMonitoringReportPrint() {
+            var newStartDate = new Date(cboStartDateDailyReleaseMonitoringReport.value);
+            var dailyReleaseMonitoringStartDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateDailyReleaseMonitoringReport.value);
+            var dailyReleaseMonitoringEndDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepDailyReleaseMonitoring/dailyReleaseMonitoringPDF?startDate=" + dailyReleaseMonitoringStartDate + "&endDate=" + dailyReleaseMonitoringEndDate + "&areaId=" + cboDailyReleaseMonitoringArea.selectedItem["Id"], "_blank");
+        }
 
+        function btnPrintLoanSummaryReporPrint() {
+            var newStartDate = new Date(cboStartDateLoanSummaryReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateLoanSummaryReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepLoanRenewReconstructSummaryPDF/loanRenewReconstructSummaryReport?loanType=loan&areaId=" + cboLoanSummaryReportArea.selectedItem["Id"] + "&startLoanDate=" + startDate + "&endLoanDate=" + endDate, "_blank");
+        }
 
+        function btnPrintRenewSummaryReporPrint() {
+            var newStartDate = new Date(cboStartDateRenewSummaryReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateRenewSummaryReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepLoanRenewReconstructSummaryPDF/loanRenewReconstructSummaryReport?loanType=renew&areaId=" + cboRenewSummaryReportArea.selectedItem["Id"] + "&startLoanDate=" + startDate + "&endLoanDate=" + endDate, "_blank");
+        }
 
-
+        function btnPrintReconstructSummaryReporPrint() {
+            var newStartDate = new Date(cboStartDateReconstructSummaryReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateReconstructSummaryReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepLoanRenewReconstructSummaryPDF/loanRenewReconstructSummaryReport?loanType=reconstruct&areaId=" + cboReconstructSummaryReportArea.selectedItem["Id"] + "&startLoanDate=" + startDate + "&endLoanDate=" + endDate, "_blank");
+        }
 
         window.onload = function () {
             cboDailyReleaseMonitoringArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringArea');
