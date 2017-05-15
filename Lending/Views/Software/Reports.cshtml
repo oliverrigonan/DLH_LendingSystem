@@ -336,6 +336,7 @@
                         <ul class="nav nav-pills" style="background-color: #f7f7f7">
                             <li class="active"><a data-toggle="pill" href="#collectionReportActive" onclick="collectionReportActiveOnClick()">Active Collection</a></li>
                             <li><a data-toggle="pill" href="#collectionReportOverdue" onclick="collectionReportOverdueOnClick()">Overdue Collection</a></li>
+                            <li><a data-toggle="pill" href="#totalCollectionReport" onclick="totalCollectionReportOnClick()">Total Collection</a></li>
                             <li><a data-toggle="pill" href="#dailyCollectionAndRemittanceReport" onclick="dailyCollectionAndRemittanceReportOnClick()">Daily Collection and Remittance</a></li>
                         </ul>
                         <br />
@@ -473,6 +474,73 @@
                                                     <span class="glyphicon glyphicon-step-forward"></span> Next
                                                 </button>
                                                 <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollectionReportOverdue">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="totalCollectionReport" class="tab-pane fade">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 59%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="totalCollectionReportSearchInput" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 40%;"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Start Date</span>
+                                                        <div id="cboStartDateTotalCollectionReportReport" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> End Date</span>
+                                                        <div id="cboEndDateTotalCollectionReportReport" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 28%;">
+                                                    
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 9%;" align="right">
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionReportOverdueReport()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="totalCollectionReportFlexGrid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridTotalCollectionReport">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridTotalCollectionReport">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridTotalCollectionReport">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridTotalCollectionReport"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridTotalCollectionReport">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridTotalCollectionReport">
                                                     <span class="glyphicon glyphicon-fast-forward"></span> Last
                                                 </button>
                                             </div>
@@ -2451,6 +2519,22 @@
             }, 200);
         }
 
+        var isTotalCollectionDataLoad = false;
+        function totalCollectionReportOnClick() {
+            NProgress.start();
+            setTimeout(function () {
+                createTotalCollectionFlexGrid();
+                window.createTotalCollectionFlexGrid = function () {
+                    return true;
+                }
+
+                if (isTotalCollectionDataLoad) {
+                    refreshTotalCollectionFlexGrid();
+                } else {
+                    isTotalCollectionDataLoad = true;
+                }
+            }, 200);
+        }
 
         function getDailyCollectionRemittance() {
             var dailyCollectionRemittanceObservableArray = new wijmo.collections.ObservableArray;
@@ -2856,7 +2940,199 @@
             window.open("/RepLoanRenewReconstructSummaryPDF/loanRenewReconstructSummaryReport?loanType=reconstruct&areaId=" + cboReconstructSummaryReportArea.selectedItem["Id"] + "&startLoanDate=" + startDate + "&endLoanDate=" + endDate, "_blank");
         }
 
+        var cboStartDateTotalCollectionReportReport;
+        var cboEndDateTotalCollectionReportReport;
+        var cboStartDateTotalCollectionReportReportIsClicked = false;
+        var cboEndDateTotalCollectionReportReportIsClicked = false;
+
+        function createcboStartDateTotalCollectionReportReport() {
+            cboStartDateTotalCollectionReportReport.dispose();
+            cboStartDateTotalCollectionReportReport = new wijmo.input.InputDate('#cboStartDateTotalCollectionReportReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateTotalCollectionReportReportIsClicked) {
+                        NProgress.start();
+                        refreshTotalCollectionFlexGrid();
+                    } else {
+                        cboStartDateTotalCollectionReportReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createcboEndDateTotalCollectionReportReport() {
+            cboEndDateTotalCollectionReportReport.dispose();
+            cboEndDateTotalCollectionReportReport = new wijmo.input.InputDate('#cboEndDateTotalCollectionReportReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateTotalCollectionReportReportIsClicked) {
+                        NProgress.start();
+                        refreshTotalCollectionFlexGrid();
+                    } else {
+                        cboEndDateTotalCollectionReportReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var totalCollectionReportCollectionView;
+        var totalCollectionReportFlexGrid;
+
+        function getTotalCollections() {
+            var totalCollectionObservableArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboStartDateTotalCollectionReportReport.value.getMonth() + 1, cboStartDateTotalCollectionReportReport.value.getDate(), cboStartDateTotalCollectionReportReport.value.getFullYear()].join('-');
+            var endDate = [cboEndDateTotalCollectionReportReport.value.getMonth() + 1, cboEndDateTotalCollectionReportReport.value.getDate(), cboEndDateTotalCollectionReportReport.value.getFullYear()].join('-');
+
+            $.ajax({
+                url: '/api/totalcollections/list/ByCollectionDate/' + startDate + '/' + endDate,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (totalCollectionListResults) {
+                    if (totalCollectionListResults.length > 0) {
+                        for (i = 0; i < totalCollectionListResults.length; i++) {
+                            totalCollectionObservableArray.push({
+                                Area: totalCollectionListResults[i]["Area"],
+                                Active: totalCollectionListResults[i]["Active"],
+                                Overdue: totalCollectionListResults[i]["Overdue"],
+                                TotalCollection: totalCollectionListResults[i]["TotalCollection"],
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return totalCollectionObservableArray;
+        }
+
+        function updateNavigateButtonsTotalCollectionReport() {
+            if (totalCollectionReportCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridTotalCollectionReport').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridTotalCollectionReport').style.display = 'block';
+            btnCurrentPageGridTotalCollectionReport.innerHTML = (totalCollectionReportCollectionView.pageIndex + 1) + ' / ' + totalCollectionReportCollectionView.pageCount;
+        }
+
+        function refreshTotalCollectionFlexGrid() {
+            totalCollectionReportCollectionView = new wijmo.collections.CollectionView(getTotalCollections());
+            totalCollectionReportCollectionView.canFilter = true;
+            totalCollectionReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#totalCollectionReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                totalCollectionReportCollectionView.refresh();
+            });
+
+            totalCollectionReportCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            totalCollectionReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsTotalCollectionReport();
+            });
+
+            // Flex Grid
+            totalCollectionReportFlexGrid.itemsSource = totalCollectionReportCollectionView;
+            totalCollectionReportFlexGrid.trackChanges = true;
+        }
+
+        function createTotalCollectionFlexGrid() {
+            totalCollectionReportCollectionView = new wijmo.collections.CollectionView(getTotalCollections());
+            totalCollectionReportCollectionView.canFilter = true;
+            totalCollectionReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#totalCollectionReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                totalCollectionReportCollectionView.refresh();
+            });
+
+            totalCollectionReportCollectionView.filter = function (item) {
+                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            totalCollectionReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsTotalCollectionReport();
+            });
+
+            // Flex Grid
+            totalCollectionReportFlexGrid = new wijmo.grid.FlexGrid('#totalCollectionReportFlexGrid');
+            totalCollectionReportFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 400,
+                            },
+                            {
+                                "header": "Active",
+                                "binding": "Active",
+                                "allowSorting": true,
+                                "width": 200,
+                            },
+                            {
+                                "header": "Overdue",
+                                "binding": "Overdue",
+                                "allowSorting": true,
+                                "width": 200,
+                            },
+                            {
+                                "header": "Gross Collection",
+                                "binding": "TotalCollection",
+                                "allowSorting": true,
+                                "width": 200,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: totalCollectionReportCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            totalCollectionReportFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnMoveToFirstPageGridTotalCollectionReport = document.getElementById('btnMoveToFirstPageGridTotalCollectionReport');
+            btnMoveToPreviousPageGridTotalCollectionReport = document.getElementById('btnMoveToPreviousPageGridTotalCollectionReport');
+            btnMoveToNextPageGridTotalCollectionReport = document.getElementById('btnMoveToNextPageGridTotalCollectionReport');
+            btnMoveToLastPageGridTotalCollectionReport = document.getElementById('btnMoveToLastPageGridTotalCollectionReport');
+            btnCurrentPageGridTotalCollectionReport = document.getElementById('btnCurrentPageGridTotalCollectionReport');
+
+            updateNavigateButtonsTotalCollectionReport();
+
+            btnMoveToFirstPageGridTotalCollectionReport.addEventListener('click', function () {
+                totalCollectionReportCollectionView.moveToFirstPage();
+                updateNavigateButtonsTotalCollectionReport();
+            });
+            btnMoveToPreviousPageGridTotalCollectionReport.addEventListener('click', function () {
+                totalCollectionReportCollectionView.moveToPreviousPage();
+                updateNavigateButtonsTotalCollectionReport();
+            });
+            btnMoveToNextPageGridTotalCollectionReport.addEventListener('click', function () {
+                totalCollectionReportCollectionView.moveToNextPage();
+                updateNavigateButtonsTotalCollectionReport();
+            });
+            btnMoveToLastPageGridTotalCollectionReport.addEventListener('click', function () {
+                totalCollectionReportCollectionView.moveToLastPage();
+                updateNavigateButtonsTotalCollectionReport();
+            });
+        }
+
         window.onload = function () {
+            cboStartDateTotalCollectionReportReport = new wijmo.input.InputDate('#cboStartDateTotalCollectionReportReport');
+            cboEndDateTotalCollectionReportReport = new wijmo.input.InputDate('#cboEndDateTotalCollectionReportReport');
+            createcboStartDateTotalCollectionReportReport();
+            createcboEndDateTotalCollectionReportReport();
             cboDailyReleaseMonitoringArea = new wijmo.input.ComboBox('#cboDailyReleaseMonitoringArea');
             cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea');
             cboRenewSummaryReportArea = new wijmo.input.ComboBox('#cboRenewSummaryReportArea');

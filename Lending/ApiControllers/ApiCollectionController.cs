@@ -394,42 +394,35 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                if (collections.FirstOrDefault().trnLoan.TotalBalanceAmount > 0)
+                                var collectionLines = from d in db.trnCollectionLines
+                                                      where d.CollectionId == Convert.ToInt32(id)
+                                                      select d;
+
+                                Decimal totalPaidAmount = 0;
+                                Decimal totalPenaltyAmount = 0;
+                                if (collectionLines.Any())
                                 {
-                                    var collectionLines = from d in db.trnCollectionLines
-                                                          where d.CollectionId == Convert.ToInt32(id)
-                                                          select d;
-
-                                    Decimal totalPaidAmount = 0;
-                                    Decimal totalPenaltyAmount = 0;
-                                    if (collectionLines.Any())
-                                    {
-                                        totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
-                                        totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
-                                    }
-
-                                    var lockCollection = collections.FirstOrDefault();
-                                    lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                    lockCollection.LoanId = collection.LoanId;
-                                    lockCollection.StatusId = collection.StatusId;
-                                    lockCollection.Particulars = collection.Particulars;
-                                    lockCollection.CollectorStaffId = collection.CollectorStaffId;
-                                    lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                                    lockCollection.TotalPaidAmount = totalPaidAmount;
-                                    lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
-                                    lockCollection.IsLocked = true;
-                                    lockCollection.UpdatedByUserId = userId;
-                                    lockCollection.UpdatedDateTime = DateTime.Now;
-                                    db.SubmitChanges();
-
-                                    this.updateLoan(Convert.ToInt32(id));
-
-                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                    totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
+                                    totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
                                 }
-                                else
-                                {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                }
+
+                                var lockCollection = collections.FirstOrDefault();
+                                lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                                lockCollection.LoanId = collection.LoanId;
+                                lockCollection.StatusId = collection.StatusId;
+                                lockCollection.Particulars = collection.Particulars;
+                                lockCollection.CollectorStaffId = collection.CollectorStaffId;
+                                lockCollection.PreparedByUserId = collection.PreparedByUserId;
+                                lockCollection.TotalPaidAmount = totalPaidAmount;
+                                lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
+                                lockCollection.IsLocked = true;
+                                lockCollection.UpdatedByUserId = userId;
+                                lockCollection.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                this.updateLoan(Convert.ToInt32(id));
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
                             }
                             else
                             {
@@ -706,38 +699,75 @@ namespace Lending.ApiControllers
         [Route("api/collections/list/ByCollectionDate/active/{areaId}/{startCollectionDate}/{endCollectionDate}")]
         public List<Models.TrnCollection> listCollectionByCollectionDateActive(String areaId, String startCollectionDate, String endCollectionDate)
         {
-            var collections = from d in db.trnCollections
-                              where d.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                              && d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
-                              && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
-                              && d.trnLoan.IsLoanReconstruct != true
-                              && d.IsLocked == true
-                              select new Models.TrnCollection
-                              {
-                                  Id = d.Id,
-                                  CollectionNumber = d.CollectionNumber,
-                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  ApplicantId = d.trnLoan.ApplicantId,
-                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
-                                  LoanId = d.LoanId,
-                                  LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
-                                  StatusId = d.StatusId,
-                                  Status = d.sysCollectionStatus.Status,
-                                  Particulars = d.Particulars,
-                                  TotalPaidAmount = d.TotalPaidAmount,
-                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
-                                  PreparedByUserId = d.PreparedByUserId,
-                                  PreparedByUser = d.mstUser.FullName,
-                                  IsLocked = d.IsLocked,
-                                  CreatedByUserId = d.CreatedByUserId,
-                                  CreatedByUser = d.mstUser.FullName,
-                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                  UpdatedByUserId = d.UpdatedByUserId,
-                                  UpdatedByUser = d.mstUser1.FullName,
-                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                              };
+            if (areaId.Equals("0"))
+            {
+                var collections = from d in db.trnCollections
+                                  where d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                  && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                  && d.trnLoan.IsLoanReconstruct != true
+                                  && d.IsLocked == true
+                                  select new Models.TrnCollection
+                                  {
+                                      Id = d.Id,
+                                      CollectionNumber = d.CollectionNumber,
+                                      CollectionDate = d.CollectionDate.ToShortDateString(),
+                                      ApplicantId = d.trnLoan.ApplicantId,
+                                      Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                      LoanId = d.LoanId,
+                                      LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      StatusId = d.StatusId,
+                                      Status = d.sysCollectionStatus.Status,
+                                      Particulars = d.Particulars,
+                                      TotalPaidAmount = d.TotalPaidAmount,
+                                      TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                      PreparedByUserId = d.PreparedByUserId,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      IsLocked = d.IsLocked,
+                                      CreatedByUserId = d.CreatedByUserId,
+                                      CreatedByUser = d.mstUser.FullName,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedByUserId = d.UpdatedByUserId,
+                                      UpdatedByUser = d.mstUser1.FullName,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
 
-            return collections.ToList();
+                return collections.ToList();
+            }
+            else
+            {
+                var collections = from d in db.trnCollections
+                                  where d.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                  && d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                  && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                  && d.trnLoan.IsLoanReconstruct != true
+                                  && d.IsLocked == true
+                                  select new Models.TrnCollection
+                                  {
+                                      Id = d.Id,
+                                      CollectionNumber = d.CollectionNumber,
+                                      CollectionDate = d.CollectionDate.ToShortDateString(),
+                                      ApplicantId = d.trnLoan.ApplicantId,
+                                      Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                      LoanId = d.LoanId,
+                                      LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      StatusId = d.StatusId,
+                                      Status = d.sysCollectionStatus.Status,
+                                      Particulars = d.Particulars,
+                                      TotalPaidAmount = d.TotalPaidAmount,
+                                      TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                      PreparedByUserId = d.PreparedByUserId,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      IsLocked = d.IsLocked,
+                                      CreatedByUserId = d.CreatedByUserId,
+                                      CreatedByUser = d.mstUser.FullName,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedByUserId = d.UpdatedByUserId,
+                                      UpdatedByUser = d.mstUser1.FullName,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
+
+                return collections.ToList();
+            }
         }
 
         // collection list - overdue
@@ -746,38 +776,75 @@ namespace Lending.ApiControllers
         [Route("api/collections/list/ByCollectionDate/overdue/{areaId}/{startCollectionDate}/{endCollectionDate}")]
         public List<Models.TrnCollection> listCollectionByCollectionDateOverdue(String areaId, String startCollectionDate, String endCollectionDate)
         {
-            var collections = from d in db.trnCollections
-                              where d.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                              && d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
-                              && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
-                              && d.trnLoan.IsLoanReconstruct == true
-                              && d.IsLocked == true
-                              select new Models.TrnCollection
-                              {
-                                  Id = d.Id,
-                                  CollectionNumber = d.CollectionNumber,
-                                  CollectionDate = d.CollectionDate.ToShortDateString(),
-                                  ApplicantId = d.trnLoan.ApplicantId,
-                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
-                                  LoanId = d.LoanId,
-                                  LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
-                                  StatusId = d.StatusId,
-                                  Status = d.sysCollectionStatus.Status,
-                                  Particulars = d.Particulars,
-                                  TotalPaidAmount = d.TotalPaidAmount,
-                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
-                                  PreparedByUserId = d.PreparedByUserId,
-                                  PreparedByUser = d.mstUser.FullName,
-                                  IsLocked = d.IsLocked,
-                                  CreatedByUserId = d.CreatedByUserId,
-                                  CreatedByUser = d.mstUser.FullName,
-                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                  UpdatedByUserId = d.UpdatedByUserId,
-                                  UpdatedByUser = d.mstUser1.FullName,
-                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                              };
+            if (areaId.Equals("0"))
+            {
+                var collections = from d in db.trnCollections
+                                  where d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                  && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                  && d.trnLoan.IsLoanReconstruct == true
+                                  && d.IsLocked == true
+                                  select new Models.TrnCollection
+                                  {
+                                      Id = d.Id,
+                                      CollectionNumber = d.CollectionNumber,
+                                      CollectionDate = d.CollectionDate.ToShortDateString(),
+                                      ApplicantId = d.trnLoan.ApplicantId,
+                                      Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                      LoanId = d.LoanId,
+                                      LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      StatusId = d.StatusId,
+                                      Status = d.sysCollectionStatus.Status,
+                                      Particulars = d.Particulars,
+                                      TotalPaidAmount = d.TotalPaidAmount,
+                                      TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                      PreparedByUserId = d.PreparedByUserId,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      IsLocked = d.IsLocked,
+                                      CreatedByUserId = d.CreatedByUserId,
+                                      CreatedByUser = d.mstUser.FullName,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedByUserId = d.UpdatedByUserId,
+                                      UpdatedByUser = d.mstUser1.FullName,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
 
-            return collections.ToList();
+                return collections.ToList();
+            }
+            else
+            {
+                var collections = from d in db.trnCollections
+                                  where d.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                  && d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                  && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                  && d.trnLoan.IsLoanReconstruct == true
+                                  && d.IsLocked == true
+                                  select new Models.TrnCollection
+                                  {
+                                      Id = d.Id,
+                                      CollectionNumber = d.CollectionNumber,
+                                      CollectionDate = d.CollectionDate.ToShortDateString(),
+                                      ApplicantId = d.trnLoan.ApplicantId,
+                                      Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                      LoanId = d.LoanId,
+                                      LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      StatusId = d.StatusId,
+                                      Status = d.sysCollectionStatus.Status,
+                                      Particulars = d.Particulars,
+                                      TotalPaidAmount = d.TotalPaidAmount,
+                                      TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                      PreparedByUserId = d.PreparedByUserId,
+                                      PreparedByUser = d.mstUser.FullName,
+                                      IsLocked = d.IsLocked,
+                                      CreatedByUserId = d.CreatedByUserId,
+                                      CreatedByUser = d.mstUser.FullName,
+                                      CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                      UpdatedByUserId = d.UpdatedByUserId,
+                                      UpdatedByUser = d.mstUser1.FullName,
+                                      UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                  };
+
+                return collections.ToList();
+            }
         }
 
         // daily collection remittance API List
@@ -804,6 +871,53 @@ namespace Lending.ApiControllers
                                                 };
 
             return dailyCollectionRemittanceList.ToList();
+        }
+
+        // total collection list - active and overdue
+        [Authorize]
+        [HttpGet]
+        [Route("api/totalcollections/list/ByCollectionDate/{startCollectionDate}/{endCollectionDate}")]
+        public List<Models.TrnCollection> listTotalCollectionByCollectionDate(String startCollectionDate, String endCollectionDate)
+        {
+            var collections = from d in db.trnCollections
+                              where d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                              && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                              && d.IsLocked == true
+                              group d by new
+                              {
+                                  IsLoanReconstruct = d.trnLoan.IsLoanReconstruct
+                              } into g
+                              select new Models.TrnCollection
+                              {
+                                  AreaId = g.FirstOrDefault().trnLoan.mstApplicant.AreaId,
+                                  Area = g.FirstOrDefault().trnLoan.mstApplicant.mstArea.Area,
+                                  TotalPaidAmount = g.Sum(d => d.TotalPaidAmount),
+                                  IsLoanReconstruct = g.Key.IsLoanReconstruct
+                              };
+
+            var collectionsGroupByArea = from d in db.mstAreas
+                                         join c in collections
+                                         on d.Id equals c.AreaId
+                                         into joinAreaCollections
+                                         from listAreaCollections in joinAreaCollections.DefaultIfEmpty()
+                                         group joinAreaCollections by new 
+                                         {
+                                             AreaId = d.Id,
+                                             Area = d.Area,
+                                             Active = joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) != null ? joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) : 0,
+                                             Overdue = joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) != null ? joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) : 0,
+                                             TotalCollection = joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) != null && joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) != null ? joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) + joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) : 0
+                                         } into g
+                                         select new Models.TrnCollection
+                                         {
+                                             AreaId = g.Key.AreaId,
+                                             Area = g.Key.Area,
+                                             Active = g.Key.Active,
+                                             Overdue = g.Key.Overdue,
+                                             TotalCollection = g.Key.TotalCollection
+                                         };
+
+            return collectionsGroupByArea.OrderBy(d => d.Area).ToList();
         }
     }
 }

@@ -37,5 +37,11 @@ namespace Lending.Models
         public Boolean IsLoanApplication { get; set; }
         public Boolean IsLoanReconstruct { get; set; }
         public Boolean IsLoanRenew { get; set; }
+        public Int32 AreaId { get; set; }
+        public String Area { get; set; }
+        public Decimal Active { get; set; }
+        public Decimal Overdue { get; set; }
+        public Decimal TotalCollection { get; set; }
+        public Decimal TotalGrossCollection { get; set; }
     }
 }
