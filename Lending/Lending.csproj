@@ -262,12 +262,14 @@
     <Compile Include="Models\TrnLoanRenew.cs" />
     <Compile Include="Models\TrnRemittance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\RepActiveOverdueCollectionPDFController.cs" />
     <Compile Include="Reports\RepCashVoucherPDFController.cs" />
     <Compile Include="Reports\RepCollectiblesPDFController.cs" />
     <Compile Include="Reports\RepDailyAreaCollectionsPDFController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringController.cs" />
     <Compile Include="Reports\RepLoanRenewReconstructSummaryPDFController.cs" />
     <Compile Include="Reports\RepOverdueCollectionPDFController.cs" />
+    <Compile Include="Reports\RepTotalCollectionPDFController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -439,8 +441,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\RepActiveOverdueCollectionPDF\" />
     <Folder Include="Views\RepDailyReleaseMonitoring\" />
     <Folder Include="Views\RepLoanRenewReconstructSummaryPDF\" />
+    <Folder Include="Views\RepTotalCollectionPDF\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

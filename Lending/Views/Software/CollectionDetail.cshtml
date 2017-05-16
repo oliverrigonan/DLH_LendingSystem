@@ -1121,6 +1121,14 @@
             }
 
             createCboPenalty();
+
+            document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollectionLine").prop("disabled", false);
+            $("#btnCloseCollectionLine").prop("disabled", false);
+
+            document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
+            $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
         }
 
         // pick button
@@ -1136,9 +1144,19 @@
             loanLinesId = currentItem.Id;
             isPenalty = true;
             document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
+            document.getElementById("TotalBalanceAmount").value = currentItem.TotalBalanceAmount.toLocaleString();
             document.getElementById("collectionLinesCollectibleAmount").value = currentItem.CollectibleAmount.toLocaleString();
-
+            document.getElementById('collectionLinesPaidAmount').value = 0;
             createCboPenalty();
+
+            document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollectionLine").prop("disabled", false);
+            $("#btnCloseCollectionLine").prop("disabled", false);
+
+            document.getElementById("btnSaveCollectionLineForPenalty").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+            $("#btnSaveCollectionLineForPenalty").prop("disabled", false);
+            $("#btnCloseCollectionLineForPenalty").prop("disabled", false);
+
         }
 
         // current colelction flexgrid
@@ -1345,12 +1363,8 @@
                             200: function () {
                                 toastr.success("Save Successful");
 
-                                if (isPenalty) {
-                                    $("#penaltyModal").modal("hide");
-                                } else {
-                                    $("#paymentModal").modal("hide");
-                                }
-                                $("#collectionLineDetailModal").modal("hide");
+                                $("#paymentModal").modal("hide");
+                                $("#penaltyModal").modal("hide");
 
                                 collectionLinesCollectionView = new wijmo.collections.CollectionView(getCollectionLinesByCollectionId());
                                 collectionLinesCollectionView.pageSize = 15;
@@ -1365,11 +1379,9 @@
                             404: function (message) {
                                 toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
 
-                                if (isPenalty) {
-                                    $("#penaltyModal").modal("hide");
-                                } else {
-                                    $("#paymentModal").modal("hide");
-                                }
+                                $("#paymentModal").modal("hide");
+                                $("#penaltyModal").modal("hide");
+
                                 //$("#collectionLineDetailModal").modal("hide");
 
                                 document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
@@ -1383,11 +1395,9 @@
                             400: function (message) {
                                 toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
 
-                                if (isPenalty) {
-                                    $("#penaltyModal").modal("hide");
-                                } else {
-                                    $("#paymentModal").modal("hide");
-                                }
+                                $("#paymentModal").modal("hide");
+                                $("#penaltyModal").modal("hide");
+
                                 //$("#collectionLineDetailModal").modal("hide");
 
                                 document.getElementById("btnSaveCollectionLine").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";

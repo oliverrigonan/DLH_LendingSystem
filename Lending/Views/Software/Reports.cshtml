@@ -519,7 +519,7 @@
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 9%;" align="right">
-                                                    <button class="btn btn-primary btn-block" onclick="btnPrintCollectionReportOverdueReport()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintTotalCollectionReport()"><i class="fa fa-print fa-fw"></i> Print</button>
                                                 </td>
                                             </tr>
                                         </table>
@@ -3126,6 +3126,30 @@
                 totalCollectionReportCollectionView.moveToLastPage();
                 updateNavigateButtonsTotalCollectionReport();
             });
+        }
+
+        function btnPrintCollectionReportActiveReport() {
+            var newStartDate = new Date(cboStartDateCollectionReportActiveReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateCollectionReportActiveReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepActiveOverdueCollectionPDF/activeOverdueReport?collectionType=active&areaId=" + cboCollectionReportActiveArea.selectedItem["Id"] + "&startCollectionDate=" + startDate + "&endCollectionDate=" + endDate, "_blank");
+        }
+
+        function btnPrintCollectionReportOverdueReport() {
+            var newStartDate = new Date(cboStartDateCollectionReportOverdueReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateCollectionReportOverdueReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepActiveOverdueCollectionPDF/activeOverdueReport?collectionType=overdue&areaId=" + cboCollectionReportOverdueArea.selectedItem["Id"] + "&startCollectionDate=" + startDate + "&endCollectionDate=" + endDate, "_blank");
+        }
+
+        function btnPrintTotalCollectionReport() {
+            var newStartDate = new Date(cboStartDateTotalCollectionReportReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateTotalCollectionReportReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepTotalCollectionPDF/totalCollection?startCollectionDate=" + startDate + "&endCollectionDate=" + endDate, "_blank");
         }
 
         window.onload = function () {
