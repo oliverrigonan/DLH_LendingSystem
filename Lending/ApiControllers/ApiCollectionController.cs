@@ -214,17 +214,22 @@ namespace Lending.ApiControllers
                              && d.IsLocked == true
                              select d;
 
+            Decimal TotalPaidAmount = 0;
+            Decimal TotalPenaltyAmount = 0;
             if (collection.Any())
             {
-                var loan = from d in db.trnLoans where d.Id == collection.FirstOrDefault().LoanId select d;
-                if (loan.Any())
-                {
-                    var updateLoan = loan.FirstOrDefault();
-                    updateLoan.TotalPaidAmount = collection.Sum(d => d.TotalPaidAmount);
-                    updateLoan.TotalPenaltyAmount = collection.Sum(d => d.TotalPenaltyAmount);
-                    updateLoan.TotalBalanceAmount = (loan.FirstOrDefault().NetCollectionAmount - collection.Sum(d => d.TotalPaidAmount)) + collection.Sum(d => d.TotalPenaltyAmount);
-                    db.SubmitChanges();
-                }
+                TotalPaidAmount = collection.Sum(d => d.TotalPaidAmount);
+                TotalPenaltyAmount = collection.Sum(d => d.TotalPenaltyAmount);
+            }
+
+            var loan = from d in db.trnLoans where d.Id == loanId select d;
+            if (loan.Any())
+            {
+                var updateLoan = loan.FirstOrDefault();
+                updateLoan.TotalPaidAmount = TotalPaidAmount;
+                updateLoan.TotalPenaltyAmount = TotalPenaltyAmount;
+                updateLoan.TotalBalanceAmount = (loan.FirstOrDefault().NetCollectionAmount - TotalPaidAmount) + TotalPenaltyAmount;
+                db.SubmitChanges();
             }
         }
 
@@ -281,47 +286,54 @@ namespace Lending.ApiControllers
                                     {
                                         if (!loan.FirstOrDefault().IsRenewed)
                                         {
-                                            var collectionLines = from d in db.trnCollectionLines
-                                                                  where d.CollectionId == Convert.ToInt32(id)
-                                                                  select d;
-
-                                            Decimal totalPaidAmount = 0;
-                                            Decimal totalPenaltyAmount = 0;
-                                            if (collectionLines.Any())
+                                            if (loan.FirstOrDefault().IsLocked)
                                             {
-                                                totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
-                                                totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
+                                                var collectionLines = from d in db.trnCollectionLines
+                                                                      where d.CollectionId == Convert.ToInt32(id)
+                                                                      select d;
+
+                                                Decimal totalPaidAmount = 0;
+                                                Decimal totalPenaltyAmount = 0;
+                                                if (collectionLines.Any())
+                                                {
+                                                    totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
+                                                    totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
+                                                }
+
+                                                var lockCollection = collections.FirstOrDefault();
+                                                lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                                                lockCollection.LoanId = collection.LoanId;
+                                                lockCollection.Particulars = collection.Particulars;
+                                                lockCollection.CollectorStaffId = collection.CollectorStaffId;
+                                                lockCollection.PreparedByUserId = collection.PreparedByUserId;
+                                                lockCollection.TotalPaidAmount = totalPaidAmount;
+                                                lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
+                                                lockCollection.IsLocked = true;
+                                                lockCollection.UpdatedByUserId = userId;
+                                                lockCollection.UpdatedDateTime = DateTime.Now;
+                                                db.SubmitChanges();
+                                                this.updateLoan(Convert.ToInt32(collection.LoanId));
+
+                                                return Request.CreateResponse(HttpStatusCode.OK);
                                             }
-
-                                            var lockCollection = collections.FirstOrDefault();
-                                            lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                            lockCollection.LoanId = collection.LoanId;
-                                            lockCollection.Particulars = collection.Particulars;
-                                            lockCollection.CollectorStaffId = collection.CollectorStaffId;
-                                            lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                                            lockCollection.TotalPaidAmount = totalPaidAmount;
-                                            lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
-                                            lockCollection.IsLocked = true;
-                                            lockCollection.UpdatedByUserId = userId;
-                                            lockCollection.UpdatedDateTime = DateTime.Now;
-                                            db.SubmitChanges();
-                                            this.updateLoan(Convert.ToInt32(collection.LoanId));
-
-                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                            else
+                                            {
+                                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot pay unlocked loan record.");
+                                            }
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Pay Renewed Loan.");
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot pay renewed loan.");
                                         }
                                     }
                                     else
                                     {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Pay Reconstructed Loan.");
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot pay reconstructed loan.");
                                     }
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Invalid Loan Record.");
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Invalid loan lecord.");
                                 }
                             }
                             else

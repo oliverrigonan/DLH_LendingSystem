@@ -274,149 +274,148 @@
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <ul id="myTab" class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#loanDeductions" data-toggle="tab" id="loanDeductionsTab">
-                                    Additionals
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#loanApplicationCollateral" data-toggle="tab" id="loanApplicationCollateralTab">
-                                    Collateral
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#loanLines" data-toggle="tab" id="loanLinesTab">
-                                    Posting (Auto-Generated)
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
-                                    Reconstructed Loan
-                                </a>
-                            </li>
-                        </ul>
-                        <br />
-                        <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade in active" id="loanDeductions">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    Additionals
-                                                </td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary " id="btnAddLoanApplicationDeduction" onclick="btnAddLoanApplicationDeductionOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i> Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanApplicationDeductionFlexGrid" class="grid"></div>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="btn-group col-md-7" id="naviagtionPageGridDeduction">
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridDeduction">
-                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridDeduction">
-                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridDeduction"></button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridDeduction">
-                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridDeduction">
-                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                                </button>
-                                            </div>
-                                        </div>
+                    </div>
+                </div>
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#loanDeductions" data-toggle="tab" id="loanDeductionsTab">
+                            Additionals
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#loanApplicationCollateral" data-toggle="tab" id="loanApplicationCollateralTab">
+                            Collateral
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#loanLines" data-toggle="tab" id="loanLinesTab">
+                            Posting (Auto-Generated)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
+                            Reconstructed Loan
+                        </a>
+                    </li>
+                </ul>
+                <br />
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="loanDeductions">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            Additionals
+                                        </td>
+                                        <td align="right">
+                                            <button class="btn btn-primary " id="btnAddLoanApplicationDeduction" onclick="btnAddLoanApplicationDeductionOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i> Add
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="loanApplicationDeductionFlexGrid" class="grid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridDeduction">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridDeduction">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridDeduction">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridDeduction"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridDeduction">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridDeduction">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade in" id="loanApplicationCollateral">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <table style="width: 100%">
-                                            <tr>
-                                                <td>
-                                                    Collateral
-                                                </td>
-                                                <td align="right">
-                                                    <button class="btn btn-primary " id="btnAddLoanApplicationCollateral" onclick="btnAddLoanApplicationCollateralOnclick()">
-                                                        <i class="fa fa-plus fa-fw"></i> Add
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanApplicationCollateralFlexGrid" class="grid"></div>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="btn-group col-md-7" id="naviagtionPageGridCollateral">
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollateral">
-                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollateral">
-                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollateral"></button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollateral">
-                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollateral">
-                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                                </button>
-                                            </div>
-                                        </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="loanApplicationCollateral">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>
+                                            Collateral
+                                        </td>
+                                        <td align="right">
+                                            <button class="btn btn-primary " id="btnAddLoanApplicationCollateral" onclick="btnAddLoanApplicationCollateralOnclick()">
+                                                <i class="fa fa-plus fa-fw"></i> Add
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="panel-body">
+                                <div id="loanApplicationCollateralFlexGrid" class="grid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridCollateral">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollateral">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollateral">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollateral"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollateral">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollateral">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade in" id="loanLines">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Posting (Auto-Generated)
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanLinesFlexgrid" class="grid"></div>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <div class="row">
-                                            <div class="btn-group col-md-7" id="naviagtionPageGridLoanLines">
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridLoanLines">
-                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridLoanLines">
-                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridLoanLines"></button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridLoanLines">
-                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
-                                                </button>
-                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanLines">
-                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                                </button>
-                                            </div>
-                                        </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="loanLines">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Posting (Auto-Generated)
+                            </div>
+                            <div class="panel-body">
+                                <div id="loanLinesFlexgrid" class="grid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridLoanLines">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridLoanLines">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridLoanLines">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridLoanLines"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridLoanLines">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanLines">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade in" id="loanReconstruct">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Reconstructed Loan
-                                    </div>
-                                    <div class="panel-body">
-                                        <div id="loanReconstructFlexgrid" class="grid"></div>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="loanReconstruct">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Reconstructed Loan
+                            </div>
+                            <div class="panel-body">
+                                <div id="loanReconstructFlexgrid" class="grid"></div>
                             </div>
                         </div>
                     </div>

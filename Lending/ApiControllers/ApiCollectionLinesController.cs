@@ -113,48 +113,34 @@ namespace Lending.ApiControllers
 
                                 if (loan.Any())
                                 {
-                                    if (!loan.FirstOrDefault().IsReconstructed)
+                                    Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
+                                    newCollectionLine.CollectionId = collectionLines.CollectionId;
+                                    newCollectionLine.PayDate = Convert.ToDateTime(collectionLines.PayDate);
+                                    newCollectionLine.Particulars = collectionLines.Particulars;
+                                    newCollectionLine.StatusId = collectionLines.StatusId;
+                                    newCollectionLine.PaidAmount = collectionLines.PaidAmount;
+                                    newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
+                                    db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
+                                    db.SubmitChanges();
+
+                                    var collectionLineAmount = from d in db.trnCollectionLines
+                                                               where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
+                                                               select d;
+
+                                    Decimal totalPaidAmount = 0;
+                                    Decimal totalPenaltyAmount = 0;
+                                    if (collectionLineAmount.Any())
                                     {
-                                        if (!loan.FirstOrDefault().IsRenewed)
-                                        {
-                                            Data.trnCollectionLine newCollectionLine = new Data.trnCollectionLine();
-                                            newCollectionLine.CollectionId = collectionLines.CollectionId;
-                                            newCollectionLine.PayDate = Convert.ToDateTime(collectionLines.PayDate);
-                                            newCollectionLine.Particulars = collectionLines.Particulars;
-                                            newCollectionLine.StatusId = collectionLines.StatusId;
-                                            newCollectionLine.PaidAmount = collectionLines.PaidAmount;
-                                            newCollectionLine.PenaltyAmount = collectionLines.PenaltyAmount;
-                                            db.trnCollectionLines.InsertOnSubmit(newCollectionLine);
-                                            db.SubmitChanges();
-
-                                            var collectionLineAmount = from d in db.trnCollectionLines
-                                                                       where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
-                                                                       select d;
-
-                                            Decimal totalPaidAmount = 0;
-                                            Decimal totalPenaltyAmount = 0;
-                                            if (collectionLineAmount.Any())
-                                            {
-                                                totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
-                                                totalPenaltyAmount = collectionLineAmount.Sum(d => d.PenaltyAmount);
-                                            }
-
-                                            var updateCollection = collection.FirstOrDefault();
-                                            updateCollection.TotalPaidAmount = totalPaidAmount;
-                                            updateCollection.TotalPaidAmount = totalPenaltyAmount;
-                                            db.SubmitChanges();
-
-                                            return Request.CreateResponse(HttpStatusCode.OK);
-                                        }
-                                        else
-                                        {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Pay Renewed Loan.");
-                                        }
+                                        totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                        totalPenaltyAmount = collectionLineAmount.Sum(d => d.PenaltyAmount);
                                     }
-                                    else
-                                    {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Pay Reconstructed Loan.");
-                                    }
+
+                                    var updateCollection = collection.FirstOrDefault();
+                                    updateCollection.TotalPaidAmount = totalPaidAmount;
+                                    updateCollection.TotalPaidAmount = totalPenaltyAmount;
+                                    db.SubmitChanges();
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else
                                 {
@@ -233,58 +219,43 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                     var loan = from d in db.trnLoans
-                                           where d.Id == collectionLines.LoanId
-                                           select d;
+                                    var loan = from d in db.trnLoans
+                                               where d.Id == collectionLines.LoanId
+                                               select d;
 
-                                     if (loan.Any())
-                                     {
-                                         if (!loan.FirstOrDefault().IsReconstructed)
-                                         {
-                                             if (!loan.FirstOrDefault().IsRenewed)
-                                             {
+                                    if (loan.Any())
+                                    {
+                                        var updateCollectionLines = collectionLine.FirstOrDefault();
+                                        updateCollectionLines.CollectionId = collectionLines.CollectionId;
+                                        updateCollectionLines.PayDate = Convert.ToDateTime(collectionLines.PayDate);
+                                        updateCollectionLines.Particulars = collectionLines.Particulars;
+                                        updateCollectionLines.StatusId = collectionLines.StatusId;
+                                        updateCollectionLines.PaidAmount = collectionLines.PaidAmount;
+                                        updateCollectionLines.PenaltyAmount = collectionLines.PenaltyAmount;
+                                        db.SubmitChanges();
 
-                                                 var updateCollectionLines = collectionLine.FirstOrDefault();
-                                                 updateCollectionLines.CollectionId = collectionLines.CollectionId;
-                                                 updateCollectionLines.PayDate = Convert.ToDateTime(collectionLines.PayDate);
-                                                 updateCollectionLines.Particulars = collectionLines.Particulars;
-                                                 updateCollectionLines.StatusId = collectionLines.StatusId;
-                                                 updateCollectionLines.PaidAmount = collectionLines.PaidAmount;
-                                                 updateCollectionLines.PenaltyAmount = collectionLines.PenaltyAmount;
-                                                 db.SubmitChanges();
+                                        var collectionLineAmount = from d in db.trnCollectionLines
+                                                                   where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
+                                                                   select d;
 
-                                                 var collectionLineAmount = from d in db.trnCollectionLines
-                                                                            where d.CollectionId == Convert.ToInt32(collectionLines.CollectionId)
-                                                                            select d;
+                                        Decimal totalPaidAmount = 0;
+                                        Decimal totalPenaltyAmount = 0;
+                                        if (collectionLineAmount.Any())
+                                        {
+                                            totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
+                                            totalPenaltyAmount = collectionLineAmount.Sum(d => d.PenaltyAmount);
+                                        }
 
-                                                 Decimal totalPaidAmount = 0;
-                                                 Decimal totalPenaltyAmount = 0;
-                                                 if (collectionLineAmount.Any())
-                                                 {
-                                                     totalPaidAmount = collectionLineAmount.Sum(d => d.PaidAmount);
-                                                     totalPenaltyAmount = collectionLineAmount.Sum(d => d.PenaltyAmount);
-                                                 }
+                                        var updateCollection = collection.FirstOrDefault();
+                                        updateCollection.TotalPaidAmount = totalPaidAmount;
+                                        updateCollection.TotalPaidAmount = totalPenaltyAmount;
+                                        db.SubmitChanges();
 
-                                                 var updateCollection = collection.FirstOrDefault();
-                                                 updateCollection.TotalPaidAmount = totalPaidAmount;
-                                                 updateCollection.TotalPaidAmount = totalPenaltyAmount;
-                                                 db.SubmitChanges();
-
-                                                 return Request.CreateResponse(HttpStatusCode.OK);
-                                             }
-                                             else
-                                             {
-                                                 return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Pay Renewed Loan.");
-                                             }
-                                         }
-                                         else
-                                         {
-                                             return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Pay Reconstructed Loan.");
-                                         }
+                                        return Request.CreateResponse(HttpStatusCode.OK);
                                     }
                                     else
-                                     {
-                                         return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Invalid Loan Record.");
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Invalid Loan Record.");
                                     }
                                 }
                                 else

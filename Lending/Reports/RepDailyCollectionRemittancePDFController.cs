@@ -126,6 +126,10 @@ namespace Lending.Reports
                                 Decimal diff = dailyCollectionRemittanceList.GrossCollection - dailyCollectionRemittanceList.NetRemitted;
                                 collectionData.AddCell(new PdfPCell(new Phrase("Less " + diff.ToString("#,##0.00"), fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             }
+                            else
+                            {
+                                collectionData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            }
                         }
 
                         collectionData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });

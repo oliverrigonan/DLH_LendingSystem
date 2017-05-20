@@ -14,6 +14,33 @@ namespace Lending.ApiControllers
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
+        // update loan lines
+        public void updateLoan(Int32 loanId)
+        {
+            var collection = from d in db.trnCollections
+                             where d.LoanId == loanId
+                             && d.IsLocked == true
+                             select d;
+
+            Decimal TotalPaidAmount = 0;
+            Decimal TotalPenaltyAmount = 0;
+            if (collection.Any())
+            {
+                TotalPaidAmount = collection.Sum(d => d.TotalPaidAmount);
+                TotalPenaltyAmount = collection.Sum(d => d.TotalPenaltyAmount);
+            }
+
+            var loan = from d in db.trnLoans where d.Id == loanId select d;
+            if (loan.Any())
+            {
+                var updateLoan = loan.FirstOrDefault();
+                updateLoan.TotalPaidAmount = TotalPaidAmount;
+                updateLoan.TotalPenaltyAmount = TotalPenaltyAmount;
+                updateLoan.TotalBalanceAmount = (loan.FirstOrDefault().NetCollectionAmount - TotalPaidAmount) + TotalPenaltyAmount;
+                db.SubmitChanges();
+            }
+        }
+
         // loan applicants
         [Authorize]
         [HttpGet]
@@ -21,7 +48,6 @@ namespace Lending.ApiControllers
         public List<Models.TrnLoan> listLoanApplicants()
         {
             var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                 where d.IsLocked == true
                                  group d by new
                                  {
                                      ApplicantId = d.ApplicantId,
@@ -44,7 +70,6 @@ namespace Lending.ApiControllers
         {
             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
-                                   && d.IsLocked == true
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
@@ -509,6 +534,8 @@ namespace Lending.ApiControllers
                                                 db.SubmitChanges();
                                             }
 
+                                            updateLoan(Convert.ToInt32(id));
+
                                             return Request.CreateResponse(HttpStatusCode.OK);
                                         }
                                         else
@@ -647,18 +674,20 @@ namespace Lending.ApiControllers
                                         unlockLoan.UpdatedDateTime = DateTime.Now;
                                         db.SubmitChanges();
 
+                                        updateLoan(Convert.ToInt32(id));
+
                                         return Request.CreateResponse(HttpStatusCode.OK);
                                     }
                                 }
                             }
                             else
                             {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
+                                return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to unlock record.");
                             }
                         }
                         else
                         {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to delete record.");
+                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. You have no rights to unlock record.");
                         }
                     }
                     else
@@ -788,7 +817,7 @@ namespace Lending.ApiControllers
                                         }
                                         else
                                         {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete if there are collections exist.");
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete if there are locked collections exist.");
                                         }
                                     }
                                 }
