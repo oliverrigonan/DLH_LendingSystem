@@ -19,34 +19,38 @@ namespace Lending.Reports
         {
             if (startCollectionDate != null && endCollectionDate != null)
             {
-                var collections = from d in db.trnCollections
-                                  where d.CollectionDate >= Convert.ToDateTime(startCollectionDate)
-                                  && d.CollectionDate <= Convert.ToDateTime(endCollectionDate)
-                                  && d.IsLocked == true
-                                  group d by new
-                                  {
-                                      IsLoanReconstruct = d.trnLoan.IsLoanReconstruct
-                                  } into g
+                var collections = from d in db.mstAreas
+                                  join c in db.trnCollections
+                                  on d.Id equals c.trnLoan.mstApplicant.AreaId
+                                  into joinAreaCollections
+                                  from listAreaCollections in joinAreaCollections.DefaultIfEmpty()
                                   select new Models.TrnCollection
                                   {
-                                      AreaId = g.FirstOrDefault().trnLoan.mstApplicant.AreaId,
-                                      Area = g.FirstOrDefault().trnLoan.mstApplicant.mstArea.Area,
-                                      TotalPaidAmount = g.Sum(d => d.TotalPaidAmount),
-                                      IsLoanReconstruct = g.Key.IsLoanReconstruct
+                                      AreaId = d.Id,
+                                      Area = d.Area,
+                                      Active = joinAreaCollections.Where(a => a.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                          && a.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                          && a.IsLocked == true
+                                          && a.trnLoan.IsLoanReconstruct != true).Sum(a => a.TotalPaidAmount) != null ? joinAreaCollections.Where(a => a.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                          && a.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                          && a.IsLocked == true
+                                          && a.trnLoan.IsLoanReconstruct != true).Sum(a => a.TotalPaidAmount) : 0,
+                                      Overdue = joinAreaCollections.Where(a => a.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                          && a.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                          && a.IsLocked == true
+                                          && a.trnLoan.IsLoanReconstruct == true).Sum(a => a.TotalPaidAmount) != null ? joinAreaCollections.Where(a => a.CollectionDate >= Convert.ToDateTime(startCollectionDate)
+                                          && a.CollectionDate <= Convert.ToDateTime(endCollectionDate)
+                                          && a.IsLocked == true
+                                          && a.trnLoan.IsLoanReconstruct == true).Sum(a => a.TotalPaidAmount) : 0
                                   };
 
-                var collectionsGroupByAreas = from d in db.mstAreas
-                                              join c in collections
-                                              on d.Id equals c.AreaId
-                                              into joinAreaCollections
-                                              from listAreaCollections in joinAreaCollections.DefaultIfEmpty()
-                                              group joinAreaCollections by new
+                var collectionsGroupByAreas = from d in collections
+                                              group d by new
                                               {
-                                                  AreaId = d.Id,
+                                                  AreaId = d.AreaId,
                                                   Area = d.Area,
-                                                  Active = joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) != null ? joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) : 0,
-                                                  Overdue = joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) != null ? joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) : 0,
-                                                  TotalCollection = joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) != null && joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) != null ? joinAreaCollections.Where(s => s.IsLoanReconstruct != true).Sum(s => s.TotalPaidAmount) + joinAreaCollections.Where(s => s.IsLoanReconstruct == true).Sum(s => s.TotalPaidAmount) : 0
+                                                  Active = d.Active,
+                                                  Overdue = d.Overdue
                                               } into g
                                               select new Models.TrnCollection
                                               {
@@ -54,7 +58,7 @@ namespace Lending.Reports
                                                   Area = g.Key.Area,
                                                   Active = g.Key.Active,
                                                   Overdue = g.Key.Overdue,
-                                                  TotalCollection = g.Key.TotalCollection
+                                                  TotalCollection = Convert.ToDecimal(g.Key.Active) + Convert.ToDecimal(g.Key.Overdue)
                                               };
 
                 if (collectionsGroupByAreas.Any())

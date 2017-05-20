@@ -165,7 +165,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editStaffOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteStaffOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: staffListResult[i]["Id"],
-                                StaffNumber: staffListResult[i]["StaffNumber"],
+                                StaffNumber: "ST-" + staffListResult[i]["StaffNumber"],
                                 Staff: staffListResult[i]["Staff"],
                                 ContactNumber: staffListResult[i]["ContactNumber"],
                                 Address: staffListResult[i]["Address"],

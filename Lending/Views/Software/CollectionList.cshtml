@@ -470,7 +470,7 @@
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 LoanDetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='btnLoanDetailOnclick()'" + disabledButton + "><i class='fa fa-file-text-o fa-fw'></i> Loan Detail</button>",
                                 Id: collectionListResult[i]["Id"],
-                                CollectionNumber: collectionListResult[i]["CollectionNumber"],
+                                CollectionNumber: "CL-" + collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
                                 Applicant: collectionListResult[i]["Applicant"],
                                 Particulars: collectionListResult[i]["Particulars"],
@@ -718,7 +718,7 @@
                                 "header": "Collection No.",
                                 "binding": "CollectionNumber",
                                 "allowSorting": true,
-                                "width": 120,
+                                "width": 150,
                             },
                             {
                                 "header": "Applicant",
@@ -745,12 +745,6 @@
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "Status",
-                                "allowSorting": true,
-                                "width": 130
                             },
                             {
                                 "header": "Total Paid",

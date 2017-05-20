@@ -280,10 +280,10 @@
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
                             var loanStatus = "Active";
-                            if (loanApplicationListResult[i]["IsReconstruct"]) {
+                            if (loanApplicationListResult[i]["IsReconstructed"]) {
                                 loanStatus = "Reconstructed";
                             } else {
-                                if (loanApplicationListResult[i]["IsRenew"]) {
+                                if (loanApplicationListResult[i]["IsRenewed"]) {
                                     loanStatus = "Renewed";
                                 }
                             }
@@ -292,7 +292,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: loanApplicationListResult[i]["Id"],
-                                LoanNumber: loanApplicationListResult[i]["LoanNumber"],
+                                LoanNumber: "LN-" + loanApplicationListResult[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 Area: loanApplicationListResult[i]["Area"],
@@ -302,6 +302,7 @@
                                 DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
@@ -556,6 +557,12 @@
                             {
                                 "header": "Net Collection",
                                 "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },

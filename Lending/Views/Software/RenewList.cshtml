@@ -544,7 +544,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: loanApplicationListResult[i]["Id"],
-                                LoanNumber: loanApplicationListResult[i]["LoanNumber"],
+                                LoanNumber: "RN-" + loanApplicationListResult[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 Particulars: loanApplicationListResult[i]["Particulars"],
@@ -554,6 +554,7 @@
                                 DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
@@ -660,9 +661,9 @@
         function btnRenewOnclick() {
             var loanRenewObject = new Object();
             loanRenewObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
-            loanRenewObject.RenewLoanId = cboLoanNumber.selectedItem["Id"];
+            loanRenewObject.ReconstructRenewLoanId = cboLoanNumber.selectedItem["Id"];
             loanRenewObject.RenewPrincipalAmount = document.getElementById("principalAmount").value;
-            loanRenewObject.RenewLoanTotalBalanceAmount = document.getElementById("amountToBeRenew").value;
+            loanRenewObject.BalanceAmount = document.getElementById("amountToBeRenew").value;
             var loanRenewData = JSON.stringify(loanRenewObject);
 
             var pamount = parseFloat(document.getElementById('principalAmount').value.replace(/,/g, ''));
@@ -961,6 +962,12 @@
                             {
                                 "header": "Net Collection",
                                 "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },

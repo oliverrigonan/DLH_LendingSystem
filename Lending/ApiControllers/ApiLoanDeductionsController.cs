@@ -27,7 +27,6 @@ namespace Lending.ApiControllers
                                       LoanId = d.LoanId,
                                       DeductionId = d.DeductionId,
                                       Deduction = d.mstDeduction.Deduction,
-                                      IsPercentage = d.mstDeduction.IsPercentage,
                                       PercentageRate = d.mstDeduction.PercentageRate,
                                       DeductionAmount = d.DeductionAmount
                                   };

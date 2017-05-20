@@ -165,7 +165,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editAreaOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteAreaOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: areaListResult[i]["Id"],
-                                AreaNumber: areaListResult[i]["AreaNumber"],
+                                AreaNumber: "AR-" + areaListResult[i]["AreaNumber"],
                                 Area: areaListResult[i]["Area"],
                                 Description: areaListResult[i]["Description"],
                                 SupervisorStaff: areaListResult[i]["SupervisorStaff"],
@@ -369,7 +369,7 @@
                                 "header": "Area Number",
                                 "binding": "AreaNumber",
                                 "allowSorting": true,
-                                "width": "1.5*"
+                                "width": "1.8*"
                             },
                             {
                                 "header": "Area",

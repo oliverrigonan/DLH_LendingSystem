@@ -11,19 +11,13 @@ namespace Lending.Models
         [Key]
         public Int32 Id { get; set; }
         public Int32 CollectionId { get; set; }
-        public String Collection { get; set; }
-        public Int32 LoanId { get; set; }
-        public Int32 LoanLinesLoanId { get; set; }
-        public Int32 LoanLinesId { get; set; }
-        public String LoanLinesDayReference { get; set; }
-        public String LoanLinesCollectibleDate { get; set; }
-        public Int32? PenaltyId { get; set; }
-        public String Penalty { get; set; }
-        public Decimal PenaltyAmount { get; set; }
+        public String CollectionNumber { get; set; }
+        public String PayDate { get; set; }
+        public String Particulars { get; set; }
+        public Int32 StatusId { get; set; }
+        public String Status { get; set; }
         public Decimal PaidAmount { get; set; }
-        public Decimal BalanceAmount { get; set; }
-        public Boolean IsReconstructed { get; set; }
-        public String CollectedDate { get; set; }
-        public String CollectionStatus { get; set; }
+        public Decimal PenaltyAmount { get; set; }
+        public Int32 LoanId { get; set; }
     }
 }

@@ -40,7 +40,6 @@ namespace Lending.Reports
                                                TermId = d.TermId,
                                                Term = d.mstTerm.Term,
                                                TermNoOfDays = d.TermNoOfDays,
-                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                MaturityDate = d.MaturityDate.ToShortDateString(),
                                                PrincipalAmount = d.PrincipalAmount,
                                                InterestId = d.InterestId,
@@ -51,14 +50,15 @@ namespace Lending.Reports
                                                DeductionAmount = d.DeductionAmount,
                                                NetAmount = d.NetAmount,
                                                NetCollectionAmount = d.NetCollectionAmount,
+                                               CollectibleAmount = d.CollectibleAmount,
                                                TotalPaidAmount = d.TotalPaidAmount,
                                                TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                TotalBalanceAmount = d.TotalBalanceAmount,
-                                               IsReconstruct = d.IsReconstruct,
-                                               IsRenew = d.IsRenew,
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
+                                               IsReconstructed = d.IsReconstructed,
+                                               IsRenewed = d.IsRenewed,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -92,7 +92,6 @@ namespace Lending.Reports
                                                TermId = d.TermId,
                                                Term = d.mstTerm.Term,
                                                TermNoOfDays = d.TermNoOfDays,
-                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                MaturityDate = d.MaturityDate.ToShortDateString(),
                                                PrincipalAmount = d.PrincipalAmount,
                                                InterestId = d.InterestId,
@@ -103,14 +102,15 @@ namespace Lending.Reports
                                                DeductionAmount = d.DeductionAmount,
                                                NetAmount = d.NetAmount,
                                                NetCollectionAmount = d.NetCollectionAmount,
+                                               CollectibleAmount = d.CollectibleAmount,
                                                TotalPaidAmount = d.TotalPaidAmount,
                                                TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                TotalBalanceAmount = d.TotalBalanceAmount,
-                                               IsReconstruct = d.IsReconstruct,
-                                               IsRenew = d.IsRenew,
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
+                                               IsReconstructed = d.IsReconstructed,
+                                               IsRenewed = d.IsRenewed,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -130,7 +130,7 @@ namespace Lending.Reports
                     if (areaId.Equals("0"))
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanRenews
+                                               join s in db.trnLoanReconstructRenews
                                                on d.Id equals s.LoanId
                                                into joinRenews
                                                from listRenews in joinRenews.DefaultIfEmpty()
@@ -152,7 +152,6 @@ namespace Lending.Reports
                                                    TermId = d.TermId,
                                                    Term = d.mstTerm.Term,
                                                    TermNoOfDays = d.TermNoOfDays,
-                                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                                    PrincipalAmount = d.PrincipalAmount,
                                                    InterestId = d.InterestId,
@@ -163,14 +162,15 @@ namespace Lending.Reports
                                                    DeductionAmount = d.DeductionAmount,
                                                    NetAmount = d.NetAmount,
                                                    NetCollectionAmount = d.NetCollectionAmount,
+                                                   CollectibleAmount = d.CollectibleAmount,
                                                    TotalPaidAmount = d.TotalPaidAmount,
                                                    TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                    TotalBalanceAmount = d.TotalBalanceAmount,
-                                                   IsReconstruct = d.IsReconstruct,
-                                                   IsRenew = d.IsRenew,
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
+                                                   IsReconstructed = d.IsReconstructed,
+                                                   IsRenewed = d.IsRenewed,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -187,7 +187,7 @@ namespace Lending.Reports
                     else
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanRenews
+                                               join s in db.trnLoanReconstructRenews
                                                on d.Id equals s.LoanId
                                                into joinRenews
                                                from listRenews in joinRenews.DefaultIfEmpty()
@@ -210,7 +210,6 @@ namespace Lending.Reports
                                                    TermId = d.TermId,
                                                    Term = d.mstTerm.Term,
                                                    TermNoOfDays = d.TermNoOfDays,
-                                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                                    PrincipalAmount = d.PrincipalAmount,
                                                    InterestId = d.InterestId,
@@ -221,14 +220,15 @@ namespace Lending.Reports
                                                    DeductionAmount = d.DeductionAmount,
                                                    NetAmount = d.NetAmount,
                                                    NetCollectionAmount = d.NetCollectionAmount,
+                                                   CollectibleAmount = d.CollectibleAmount,
                                                    TotalPaidAmount = d.TotalPaidAmount,
                                                    TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                    TotalBalanceAmount = d.TotalBalanceAmount,
-                                                   IsReconstruct = d.IsReconstruct,
-                                                   IsRenew = d.IsRenew,
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
+                                                   IsReconstructed = d.IsReconstructed,
+                                                   IsRenewed = d.IsRenewed,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -250,7 +250,7 @@ namespace Lending.Reports
                         if (areaId.Equals("0"))
                         {
                             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                                   join s in db.trnLoanReconstructs
+                                                   join s in db.trnLoanReconstructRenews
                                                    on d.Id equals s.LoanId
                                                    into joinReconstructs
                                                    from listReconstructs in joinReconstructs.DefaultIfEmpty()
@@ -272,7 +272,6 @@ namespace Lending.Reports
                                                        TermId = d.TermId,
                                                        Term = d.mstTerm.Term,
                                                        TermNoOfDays = d.TermNoOfDays,
-                                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                                        PrincipalAmount = d.PrincipalAmount,
                                                        InterestId = d.InterestId,
@@ -283,11 +282,12 @@ namespace Lending.Reports
                                                        DeductionAmount = d.DeductionAmount,
                                                        NetAmount = d.NetAmount,
                                                        NetCollectionAmount = d.NetCollectionAmount,
+                                                       CollectibleAmount = d.CollectibleAmount,
                                                        TotalPaidAmount = d.TotalPaidAmount,
                                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                                       IsReconstruct = d.IsReconstruct,
-                                                       IsRenew = d.IsRenew,
+                                                       IsReconstructed = d.IsReconstructed,
+                                                       IsRenewed = d.IsRenewed,
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
@@ -307,7 +307,7 @@ namespace Lending.Reports
                         else
                         {
                             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                                   join s in db.trnLoanReconstructs
+                                                   join s in db.trnLoanReconstructRenews
                                                    on d.Id equals s.LoanId
                                                    into joinReconstructs
                                                    from listReconstructs in joinReconstructs.DefaultIfEmpty()
@@ -330,7 +330,6 @@ namespace Lending.Reports
                                                        TermId = d.TermId,
                                                        Term = d.mstTerm.Term,
                                                        TermNoOfDays = d.TermNoOfDays,
-                                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                                        PrincipalAmount = d.PrincipalAmount,
                                                        InterestId = d.InterestId,
@@ -344,8 +343,8 @@ namespace Lending.Reports
                                                        TotalPaidAmount = d.TotalPaidAmount,
                                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                                       IsReconstruct = d.IsReconstruct,
-                                                       IsRenew = d.IsRenew,
+                                                       IsReconstructed = d.IsReconstructed,
+                                                       IsRenewed = d.IsRenewed,
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
@@ -392,7 +391,6 @@ namespace Lending.Reports
                                                TermId = d.TermId,
                                                Term = d.Term,
                                                TermNoOfDays = d.TermNoOfDays,
-                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                MaturityDate = d.MaturityDate,
                                                PrincipalAmount = d.PrincipalAmount,
                                                InterestId = d.InterestId,
@@ -406,8 +404,8 @@ namespace Lending.Reports
                                                TotalPaidAmount = d.TotalPaidAmount,
                                                TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                TotalBalanceAmount = d.TotalBalanceAmount,
-                                               IsReconstruct = d.IsReconstruct,
-                                               IsRenew = d.IsRenew,
+                                               IsReconstructed = d.IsReconstructed,
+                                               IsRenewed = d.IsRenewed,
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,

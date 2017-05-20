@@ -11,6 +11,7 @@ namespace Lending.Models
         [Key]
         public Int32 Id { get; set; }
         public String ApplicantNumber { get; set; }
+        public Boolean IsCoMaker { get; set; }
         public byte[] Photo { get; set; }
         public Int32 AreaId { get; set; }
         public String Area { get; set; }

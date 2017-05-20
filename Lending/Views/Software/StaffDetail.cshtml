@@ -133,7 +133,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (staffDetailResult) {
                     if (staffDetailResult != null) {
-                        document.getElementById("staffNumber").value = staffDetailResult.StaffNumber;
+                        document.getElementById("staffNumber").value = "ST-" + staffDetailResult.StaffNumber;
                         document.getElementById("staffName").value = staffDetailResult.Staff;
                         document.getElementById("staffContactNumber").value = staffDetailResult.ContactNumber;
                         document.getElementById("staffAddress").value = staffDetailResult.Address;

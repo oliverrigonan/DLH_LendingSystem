@@ -34,8 +34,6 @@ namespace Lending.Reports
                                           Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                           LoanId = d.LoanId,
                                           LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
-                                          StatusId = d.StatusId,
-                                          Status = d.sysCollectionStatus.Status,
                                           Particulars = d.Particulars,
                                           TotalPaidAmount = d.TotalPaidAmount,
                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -70,8 +68,6 @@ namespace Lending.Reports
                                           Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                           LoanId = d.LoanId,
                                           LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
-                                          StatusId = d.StatusId,
-                                          Status = d.sysCollectionStatus.Status,
                                           Particulars = d.Particulars,
                                           TotalPaidAmount = d.TotalPaidAmount,
                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -110,8 +106,6 @@ namespace Lending.Reports
                                               Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                               LoanId = d.LoanId,
                                               LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
-                                              StatusId = d.StatusId,
-                                              Status = d.sysCollectionStatus.Status,
                                               Particulars = d.Particulars,
                                               TotalPaidAmount = d.TotalPaidAmount,
                                               TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -146,8 +140,6 @@ namespace Lending.Reports
                                               Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                               LoanId = d.LoanId,
                                               LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
-                                              StatusId = d.StatusId,
-                                              Status = d.sysCollectionStatus.Status,
                                               Particulars = d.Particulars,
                                               TotalPaidAmount = d.TotalPaidAmount,
                                               TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -189,8 +181,6 @@ namespace Lending.Reports
                                                           Applicant = d.Applicant,
                                                           LoanId = d.LoanId,
                                                           LoanNumberDetail = d.LoanNumberDetail,
-                                                          StatusId = d.StatusId,
-                                                          Status = d.Status,
                                                           Particulars = d.Particulars,
                                                           TotalPaidAmount = d.TotalPaidAmount,
                                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -310,7 +300,7 @@ namespace Lending.Reports
                             collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.Applicant, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.Area, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.Particulars, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.Status, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            collectionData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.TotalPaidAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                             collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.TotalPenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         }

@@ -486,20 +486,13 @@
                                     <div class="panel-heading" align="right">
                                         <table border="0" style="width: 100%;">
                                             <tr>
-                                                <td style="width: 59%;">
+                                                <td style="width: 28%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
                                                         <input type="text" id="totalCollectionReportSearchInput" class="form-control" placeholder="Search" />
                                                     </div>
                                                 </td>
                                                 <td style="width: 1%;"></td>
-                                                <td style="width: 40%;"></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="panel-heading" align="right">
-                                        <table border="0" style="width: 100%;">
-                                            <tr>
                                                 <td style="width: 30%;">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"> Start Date</span>
@@ -512,10 +505,6 @@
                                                         <span class="input-group-addon"> End Date</span>
                                                         <div id="cboEndDateTotalCollectionReportReport" style="width: 100%;"></div>
                                                     </div>
-                                                </td>
-                                                <td style="width: 1%;"></td>
-                                                <td style="width: 28%;">
-                                                    
                                                 </td>
                                                 <td style="width: 1%;"></td>
                                                 <td style="width: 9%;" align="right">
@@ -1462,6 +1451,7 @@
                                 PreviousBalanceAmount: loanApplicationListResult[i]["PreviousBalanceAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
@@ -1635,6 +1625,12 @@
                             {
                                 "header": "Net Collection",
                                 "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },
@@ -1845,6 +1841,12 @@
                                 "width": 160,
                             },
                             {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
                                 "header": "Total Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
@@ -2039,6 +2041,12 @@
                                 "width": 160,
                             },
                             {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
                                 "header": "Total Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
@@ -2143,8 +2151,6 @@
                                 LoanNumberDetail: collectionListResult[i]["LoanNumberDetail"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
-                                StatusId: collectionListResult[i]["StatusId"],
-                                Status: collectionListResult[i]["Status"],
                                 Particulars: collectionListResult[i]["Particulars"],
                                 TotalPaidAmount: collectionListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: collectionListResult[i]["TotalPenaltyAmount"],
@@ -2161,7 +2167,8 @@
                                 CreatedDateTime: collectionListResult[i]["CreatedDateTime"],
                                 UpdatedByUserId: collectionListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: collectionListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: collectionListResult[i]["UpdatedDateTime"]
+                                UpdatedDateTime: collectionListResult[i]["UpdatedDateTime"],
+                                Area: collectionListResult[i]["Area"]
                             });
                         }
                     }
@@ -2170,6 +2177,12 @@
                 }
             });
             return collectionListArray;
+        }
+
+        function btnDetailButton() {
+            collectionCollectionView.editItem(collectionCollectionView.currentItem);
+            var currentItem = collectionCollectionView.currentEditItem;
+            window.open("/Software/CollectionDetail?id=" + currentItem.Id, "_blank");
         }
 
         // Navigation Buttons
@@ -2234,16 +2247,16 @@
                                 "width": 220,
                             },
                             {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "Status",
-                                "allowSorting": true,
-                                "width": 130
                             },
                             {
                                 "header": "Total Paid",
@@ -2415,16 +2428,16 @@
                                 "width": 220,
                             },
                             {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "Status",
-                                "allowSorting": true,
-                                "width": 130
                             },
                             {
                                 "header": "Total Paid",

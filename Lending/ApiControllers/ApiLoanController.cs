@@ -49,6 +49,7 @@ namespace Lending.ApiControllers
                                    {
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
+                                       CollectibleAmount = d.CollectibleAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount
                                    };
 
@@ -63,8 +64,8 @@ namespace Lending.ApiControllers
         {
             var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                  where d.IsLocked == true
-                                 && d.IsReconstruct == false
-                                 && d.IsRenew == false
+                                 && d.IsReconstructed == false
+                                 && d.IsRenewed == false
                                  group d by new
                                  {
                                      ApplicantId = d.ApplicantId,
@@ -88,8 +89,8 @@ namespace Lending.ApiControllers
             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
                                    where d.ApplicantId == Convert.ToInt32(applicantId)
                                    && d.IsLocked == true
-                                   && d.IsReconstruct == false
-                                   && d.IsRenew == false
+                                   && d.IsReconstructed == false
+                                   && d.IsRenewed == false
                                    select new Models.TrnLoan
                                    {
                                        Id = d.Id,
@@ -143,7 +144,6 @@ namespace Lending.ApiControllers
                                        TermId = d.TermId,
                                        Term = d.mstTerm.Term,
                                        TermNoOfDays = d.TermNoOfDays,
-                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                        PrincipalAmount = d.PrincipalAmount,
                                        InterestId = d.InterestId,
@@ -154,14 +154,15 @@ namespace Lending.ApiControllers
                                        DeductionAmount = d.DeductionAmount,
                                        NetAmount = d.NetAmount,
                                        NetCollectionAmount = d.NetCollectionAmount,
+                                       CollectibleAmount = d.CollectibleAmount,
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       IsReconstruct = d.IsReconstruct,
-                                       IsRenew = d.IsRenew,
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
+                                       IsReconstructed = d.IsReconstructed,
+                                       IsRenewed = d.IsRenewed,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -197,7 +198,6 @@ namespace Lending.ApiControllers
                            TermId = d.TermId,
                            Term = d.mstTerm.Term,
                            TermNoOfDays = d.TermNoOfDays,
-                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                            MaturityDate = d.MaturityDate.ToShortDateString(),
                            PrincipalAmount = d.PrincipalAmount,
                            InterestId = d.InterestId,
@@ -208,14 +208,15 @@ namespace Lending.ApiControllers
                            DeductionAmount = d.DeductionAmount,
                            NetAmount = d.NetAmount,
                            NetCollectionAmount = d.NetCollectionAmount,
+                           CollectibleAmount = d.CollectibleAmount,
                            TotalPaidAmount = d.TotalPaidAmount,
                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                            TotalBalanceAmount = d.TotalBalanceAmount,
-                           IsReconstruct = d.IsReconstruct,
-                           IsRenew = d.IsRenew,
                            IsLoanApplication = d.IsLoanApplication,
                            IsLoanReconstruct = d.IsLoanReconstruct,
                            IsLoanRenew = d.IsLoanRenew,
+                           IsReconstructed = d.IsReconstructed,
+                           IsRenewed = d.IsRenewed,
                            IsLocked = d.IsLocked,
                            CreatedByUserId = d.CreatedByUserId,
                            CreatedByUser = d.mstUser1.FullName,
@@ -288,7 +289,10 @@ namespace Lending.ApiControllers
                             loanNumber = newLoanNumber.ToString();
                         }
 
-                        var applicant = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
+                        var applicant = from d in db.mstApplicants.OrderByDescending(d => d.Id)
+                                        where d.IsCoMaker != true
+                                        select d;
+
                         if (applicant.Any())
                         {
                             var term = from d in db.mstTerms.OrderByDescending(d => d.Id) select d;
@@ -305,7 +309,6 @@ namespace Lending.ApiControllers
                                     newLoan.PreparedByUserId = userId;
                                     newLoan.TermId = term.FirstOrDefault().Id;
                                     newLoan.TermNoOfDays = term.FirstOrDefault().NoOfDays;
-                                    newLoan.TermPaymentNoOfDays = term.FirstOrDefault().PaymentNoOfDays;
                                     newLoan.MaturityDate = DateTime.Today;
                                     newLoan.PrincipalAmount = 0;
                                     newLoan.InterestId = interest.FirstOrDefault().Id;
@@ -315,14 +318,15 @@ namespace Lending.ApiControllers
                                     newLoan.DeductionAmount = 0;
                                     newLoan.NetAmount = 0;
                                     newLoan.NetCollectionAmount = 0;
+                                    newLoan.CollectibleAmount = 0;
                                     newLoan.TotalPaidAmount = 0;
                                     newLoan.TotalPenaltyAmount = 0;
                                     newLoan.TotalBalanceAmount = 0;
-                                    newLoan.IsReconstruct = false;
-                                    newLoan.IsRenew = false;
                                     newLoan.IsLoanApplication = true;
                                     newLoan.IsLoanReconstruct = false;
                                     newLoan.IsLoanRenew = false;
+                                    newLoan.IsReconstructed = false;
+                                    newLoan.IsRenewed = false;
                                     newLoan.IsLocked = false;
                                     newLoan.CreatedByUserId = userId;
                                     newLoan.CreatedDateTime = DateTime.Now;
@@ -419,259 +423,99 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                if (loan.NetCollectionAmount != 0)
+                                if (loans.FirstOrDefault().IsReconstructed)
                                 {
-                                    if (loan.TermNoOfDays >= loan.TermPaymentNoOfDays)
-                                    {
-                                        var loanDeduction = from d in db.trnLoanDeductions
-                                                            where d.LoanId == Convert.ToInt32(id)
-                                                            select d;
-
-                                        Decimal deductionAmount = 0;
-                                        if (loanDeduction.Any())
-                                        {
-                                            deductionAmount = loanDeduction.Sum(d => d.DeductionAmount);
-                                        }
-
-                                        var lockLoan = loans.FirstOrDefault();
-                                        lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
-                                        lockLoan.ApplicantId = loan.ApplicantId;
-                                        lockLoan.Particulars = loan.Particulars;
-                                        lockLoan.PreparedByUserId = loan.PreparedByUserId;
-                                        lockLoan.TermId = loan.TermId;
-                                        lockLoan.TermNoOfDays = loan.TermNoOfDays;
-                                        lockLoan.TermPaymentNoOfDays = loan.TermPaymentNoOfDays;
-                                        lockLoan.MaturityDate = DateTime.Today;
-                                        lockLoan.PrincipalAmount = loan.PrincipalAmount;
-                                        lockLoan.InterestId = loan.InterestId;
-                                        lockLoan.InterestRate = loan.InterestRate;
-                                        lockLoan.InterestAmount = loan.InterestAmount;
-                                        lockLoan.PreviousBalanceAmount = loan.PreviousBalanceAmount;
-                                        lockLoan.DeductionAmount = deductionAmount;
-                                        lockLoan.NetAmount = loan.NetAmount;
-                                        lockLoan.NetCollectionAmount = loan.NetCollectionAmount;
-                                        lockLoan.TotalBalanceAmount = loan.NetCollectionAmount;
-                                        lockLoan.IsLocked = true;
-                                        lockLoan.UpdatedByUserId = userId;
-                                        lockLoan.UpdatedDateTime = DateTime.Now;
-                                        db.SubmitChanges();
-
-                                        if (loans.FirstOrDefault().IsLoanReconstruct)
-                                        {
-                                            var loanReconstructs = from d in db.trnLoanReconstructs
-                                                                   where d.LoanId == Convert.ToInt32(id)
-                                                                   select new Models.TrnLoanReconstruct
-                                                                   {
-                                                                       Id = d.Id,
-                                                                       LoanId = d.LoanId,
-                                                                       ReconstructLoanId = d.ReconstructLoanId
-                                                                   };
-
-                                            if (loanReconstructs.Any())
-                                            {
-                                                foreach (var loanReconstruct in loanReconstructs)
-                                                {
-                                                    var loanReconUpdate = from d in db.trnLoans
-                                                                          where d.Id == loanReconstruct.ReconstructLoanId
-                                                                          select d;
-
-                                                    if (loanReconUpdate.Any())
-                                                    {
-                                                        var updateLoanRecon = loanReconUpdate.FirstOrDefault();
-                                                        updateLoanRecon.IsReconstruct = true;
-                                                        db.SubmitChanges();
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        if (loans.FirstOrDefault().IsLoanRenew)
-                                        {
-                                            var loanRenews = from d in db.trnLoanRenews
-                                                             where d.LoanId == Convert.ToInt32(id)
-                                                             select new Models.TrnLoanRenew
-                                                             {
-                                                                 Id = d.Id,
-                                                                 LoanId = d.LoanId,
-                                                                 RenewLoanId = d.RenewLoanId
-                                                             };
-
-                                            if (loanRenews.Any())
-                                            {
-                                                foreach (var loanRenew in loanRenews)
-                                                {
-                                                    var loanRenewUpdate = from d in db.trnLoans
-                                                                          where d.Id == loanRenew.RenewLoanId
-                                                                          select d;
-
-                                                    if (loanRenewUpdate.Any())
-                                                    {
-                                                        var updateLoanRenew = loanRenewUpdate.FirstOrDefault();
-                                                        updateLoanRenew.IsRenew = true;
-                                                        db.SubmitChanges();
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        if (loan.TermNoOfDays > 0 && loan.TermPaymentNoOfDays > 0)
-                                        {
-                                            Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
-                                            Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
-                                            Decimal loanNetCollectionAmount = loan.NetCollectionAmount;
-
-                                            var dayCount = 0;
-                                            for (var i = 1; i <= loan.TermNoOfDays; i++)
-                                            {
-                                                if (i % loan.TermPaymentNoOfDays == 0)
-                                                {
-                                                    Decimal finalCollectibleAmount = ceilCollectibleAmount * loan.TermPaymentNoOfDays;
-
-                                                    dayCount += 1;
-
-                                                    if (loanNetCollectionAmount < finalCollectibleAmount)
-                                                    {
-                                                        finalCollectibleAmount = loanNetCollectionAmount;
-                                                    }
-
-                                                    if (finalCollectibleAmount != 0)
-                                                    {
-                                                        Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
-                                                        newLoanLine.LoanId = Convert.ToInt32(id);
-
-                                                        if (loans.FirstOrDefault().IsLoanApplication)
-                                                        {
-                                                            newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + "-" + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
-                                                        }
-                                                        else
-                                                        {
-                                                            if (loans.FirstOrDefault().IsLoanReconstruct)
-                                                            {
-                                                                newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + "-" + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
-                                                            }
-                                                            else
-                                                            {
-                                                                if (loans.FirstOrDefault().IsLoanRenew)
-                                                                {
-                                                                    newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + "-" + Convert.ToDateTime(loan.LoanDate).AddDays(i).DayOfWeek.ToString();
-                                                                }
-                                                            }
-                                                        }
-
-                                                        newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate).AddDays(i);
-                                                        newLoanLine.CollectibleAmount = finalCollectibleAmount;
-                                                        newLoanLine.PaidAmount = 0;
-                                                        newLoanLine.PenaltyAmount = 0;
-                                                        db.trnLoanLines.InsertOnSubmit(newLoanLine);
-                                                        db.SubmitChanges();
-
-                                                        loanNetCollectionAmount -= finalCollectibleAmount;
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    var termNoOfDays = loan.TermNoOfDays;
-                                                    var termNoOfDaysPerPay = loan.TermPaymentNoOfDays;
-
-                                                    var restDays = loan.TermNoOfDays - loan.TermPaymentNoOfDays;
-
-                                                    if (i - loan.TermPaymentNoOfDays == restDays)
-                                                    {
-                                                        var countResults = Convert.ToInt32(i);
-                                                        Debug.WriteLine(countResults);
-                                                        Decimal finalCollectibleAmount = ceilCollectibleAmount * loan.TermPaymentNoOfDays;
-
-                                                        dayCount += 1;
-
-                                                        if (loanNetCollectionAmount < finalCollectibleAmount)
-                                                        {
-                                                            finalCollectibleAmount = loanNetCollectionAmount;
-                                                        }
-
-                                                        if (finalCollectibleAmount != 0)
-                                                        {
-                                                            Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
-                                                            newLoanLine.LoanId = Convert.ToInt32(id);
-
-                                                            if (loans.FirstOrDefault().IsLoanApplication)
-                                                            {
-                                                                newLoanLine.DayReference = "LN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + "-" + Convert.ToDateTime(loan.LoanDate).AddDays(countResults).DayOfWeek.ToString();
-                                                            }
-                                                            else
-                                                            {
-                                                                if (loans.FirstOrDefault().IsLoanReconstruct)
-                                                                {
-                                                                    newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + "-" + Convert.ToDateTime(loan.LoanDate).AddDays(countResults).DayOfWeek.ToString();
-                                                                }
-                                                                else
-                                                                {
-                                                                    if (loans.FirstOrDefault().IsLoanRenew)
-                                                                    {
-                                                                        newLoanLine.DayReference = "RN-" + loans.FirstOrDefault().LoanNumber + "-" + this.zeroFill(dayCount, 3) + "-" + Convert.ToDateTime(loan.LoanDate).AddDays(countResults).DayOfWeek.ToString();
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate).AddDays(countResults);
-                                                            newLoanLine.CollectibleAmount = finalCollectibleAmount;
-                                                            newLoanLine.PaidAmount = 0;
-                                                            newLoanLine.PenaltyAmount = 0;
-                                                            db.trnLoanLines.InsertOnSubmit(newLoanLine);
-                                                            db.SubmitChanges();
-
-                                                            loanNetCollectionAmount -= finalCollectibleAmount;
-                                                        }
-                                                    }
-                                                }
-
-                                                if (i == loan.TermNoOfDays)
-                                                {
-                                                    var loanLines = from d in db.trnLoanLines.OrderByDescending(d => d.Id)
-                                                                    where d.LoanId == Convert.ToInt32(id)
-                                                                    select d;
-
-                                                    if (loanLines.Any())
-                                                    {
-                                                        lockLoan.MaturityDate = loanLines.FirstOrDefault().CollectibleDate;
-                                                        db.SubmitChanges();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            Decimal collectibleAmount = loan.NetCollectionAmount;
-                                            Data.trnLoanLine newLoanLine = new Data.trnLoanLine();
-                                            newLoanLine.LoanId = Convert.ToInt32(id);
-                                            newLoanLine.DayReference = "RC-" + loans.FirstOrDefault().LoanNumber + "-001-" + Convert.ToDateTime(loan.LoanDate).DayOfWeek.ToString();
-                                            newLoanLine.CollectibleDate = Convert.ToDateTime(loan.LoanDate);
-                                            newLoanLine.CollectibleAmount = collectibleAmount;
-                                            newLoanLine.PaidAmount = 0;
-                                            newLoanLine.PenaltyAmount = 0;
-                                            db.trnLoanLines.InsertOnSubmit(newLoanLine);
-                                            db.SubmitChanges();
-
-                                            var loanLines = from d in db.trnLoanLines.OrderByDescending(d => d.Id)
-                                                            where d.LoanId == Convert.ToInt32(id)
-                                                            select d;
-
-                                            if (loanLines.Any())
-                                            {
-                                                lockLoan.MaturityDate = loanLines.FirstOrDefault().CollectibleDate;
-                                                db.SubmitChanges();
-                                            }
-                                        }
-
-                                        return Request.CreateResponse(HttpStatusCode.OK);
-                                    }
-                                    else
-                                    {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
-                                    }
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This record was reconstructed.");
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    if (loans.FirstOrDefault().IsRenewed)
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This record was renewed.");
+                                    }
+                                    else
+                                    {
+                                        if (loan.NetCollectionAmount != 0)
+                                        {
+                                            var loanDeduction = from d in db.trnLoanDeductions
+                                                                where d.LoanId == Convert.ToInt32(id)
+                                                                select d;
+
+                                            Decimal deductionAmount = 0;
+                                            if (loanDeduction.Any())
+                                            {
+                                                deductionAmount = loanDeduction.Sum(d => d.DeductionAmount);
+                                            }
+
+                                            var lockLoan = loans.FirstOrDefault();
+                                            lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
+                                            lockLoan.ApplicantId = loan.ApplicantId;
+                                            lockLoan.Particulars = loan.Particulars;
+                                            lockLoan.PreparedByUserId = loan.PreparedByUserId;
+                                            lockLoan.TermId = loan.TermId;
+                                            lockLoan.TermNoOfDays = loan.TermNoOfDays;
+                                            lockLoan.MaturityDate = DateTime.Today;
+                                            lockLoan.PrincipalAmount = loan.PrincipalAmount;
+                                            lockLoan.InterestId = loan.InterestId;
+                                            lockLoan.InterestRate = loan.InterestRate;
+                                            lockLoan.InterestAmount = loan.InterestAmount;
+                                            lockLoan.PreviousBalanceAmount = loan.PreviousBalanceAmount;
+                                            lockLoan.DeductionAmount = deductionAmount;
+                                            lockLoan.NetAmount = loan.NetAmount;
+                                            lockLoan.NetCollectionAmount = loan.NetCollectionAmount;
+                                            lockLoan.IsLocked = true;
+                                            lockLoan.UpdatedByUserId = userId;
+                                            lockLoan.UpdatedDateTime = DateTime.Now;
+                                            db.SubmitChanges();
+
+                                            var loanReconstructRenews = from d in db.trnLoanReconstructRenews
+                                                                        where d.LoanId == Convert.ToInt32(id)
+                                                                        select d;
+
+                                            if (loanReconstructRenews.Any())
+                                            {
+                                                var loanReconRenewUpdate = from d in db.trnLoans
+                                                                           where d.Id == loanReconstructRenews.FirstOrDefault().ReconstructRenewLoanId
+                                                                           select d;
+
+                                                if (loanReconRenewUpdate.Any())
+                                                {
+                                                    if (loans.FirstOrDefault().IsLoanReconstruct)
+                                                    {
+                                                        var updateLoanRecon = loanReconRenewUpdate.FirstOrDefault();
+                                                        updateLoanRecon.IsReconstructed = true;
+                                                        db.SubmitChanges();
+                                                    }
+                                                    else
+                                                    {
+                                                        if (loans.FirstOrDefault().IsLoanRenew)
+                                                        {
+                                                            var updateLoanRenew = loanReconRenewUpdate.FirstOrDefault();
+                                                            updateLoanRenew.IsRenewed = true;
+                                                            db.SubmitChanges();
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+                                            if (loan.TermNoOfDays > 0)
+                                            {
+                                                Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
+                                                Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
+
+                                                lockLoan.MaturityDate = DateTime.Today.AddDays(Convert.ToDouble(loan.TermNoOfDays));
+                                                lockLoan.CollectibleAmount = ceilCollectibleAmount;
+                                                lockLoan.TotalBalanceAmount = (loans.FirstOrDefault().NetCollectionAmount - loans.FirstOrDefault().TotalPaidAmount) + loan.TotalPenaltyAmount;
+                                                db.SubmitChanges();
+                                            }
+
+                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        }
+                                    }
                                 }
                             }
                             else
@@ -728,6 +572,18 @@ namespace Lending.ApiControllers
                             String matchPageString = "LoanApplicationDetail";
                             Boolean canPerformActions = false;
 
+                            if (loans.FirstOrDefault().IsLoanReconstruct)
+                            {
+                                matchPageString = "ReconstructDetail";
+                            }
+                            else
+                            {
+                                if (loans.FirstOrDefault().IsLoanRenew)
+                                {
+                                    matchPageString = "RenewDetail";
+                                }
+                            }
+
                             foreach (var mstUserForm in mstUserForms)
                             {
                                 if (mstUserForm.Form.Equals(matchPageString))
@@ -743,103 +599,56 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var existLoanReconstruct = from d in db.trnLoanReconstructs
-                                                           where d.ReconstructLoanId == Convert.ToInt32(id)
-                                                           && d.trnLoan.IsLocked == true
-                                                           select d;
-
-                                if (!existLoanReconstruct.Any())
+                                if (loans.FirstOrDefault().IsReconstructed)
                                 {
-                                    var existLoanRenew = from d in db.trnLoanRenews
-                                                         where d.RenewLoanId == Convert.ToInt32(id)
-                                                         && d.trnLoan.IsLocked == true
-                                                         select d;
-
-                                    if (!existLoanRenew.Any())
-                                    {
-                                        if (loans.FirstOrDefault().IsLoanReconstruct)
-                                        {
-                                            var loanReconstruct = from d in db.trnLoanReconstructs
-                                                                  where d.LoanId == Convert.ToInt32(id)
-                                                                  select d;
-
-                                            if (loanReconstruct.Any())
-                                            {
-                                                var existLoan = from d in db.trnLoans
-                                                                where d.Id == loanReconstruct.FirstOrDefault().ReconstructLoanId
-                                                                select d;
-
-                                                if (existLoan.Any())
-                                                {
-                                                    var updateLoan = existLoan.FirstOrDefault();
-                                                    updateLoan.IsReconstruct = false;
-                                                    db.SubmitChanges();
-                                                }
-                                            }
-                                        }
-
-                                        if (loans.FirstOrDefault().IsLoanRenew)
-                                        {
-                                            var loanRenew = from d in db.trnLoanRenews
-                                                            where d.LoanId == Convert.ToInt32(id)
-                                                            select d;
-
-                                            if (loanRenew.Any())
-                                            {
-                                                var existLoan = from d in db.trnLoans
-                                                                where d.Id == loanRenew.FirstOrDefault().RenewLoanId
-                                                                select d;
-
-                                                if (existLoan.Any())
-                                                {
-                                                    var updateLoan = existLoan.FirstOrDefault();
-                                                    updateLoan.IsRenew = false;
-                                                    db.SubmitChanges();
-                                                }
-                                            }
-                                        }
-
-                                        var collection = from d in db.trnCollections
-                                                         where d.LoanId == Convert.ToInt32(id)
-                                                         && d.IsLocked == true
-                                                         select d;
-
-                                        if (!collection.Any())
-                                        {
-                                            var loanLines = from d in db.trnLoanLines
-                                                            where d.LoanId == Convert.ToInt32(id)
-                                                            select d;
-
-                                            if (loanLines.Any())
-                                            {
-                                                db.trnLoanLines.DeleteAllOnSubmit(loanLines);
-                                                db.SubmitChanges();
-                                            }
-
-                                            var unlockLoan = loans.FirstOrDefault();
-                                            unlockLoan.TotalPaidAmount = 0;
-                                            unlockLoan.TotalPenaltyAmount = 0;
-                                            unlockLoan.TotalBalanceAmount = 0;
-                                            unlockLoan.IsLocked = false;
-                                            unlockLoan.UpdatedByUserId = userId;
-                                            unlockLoan.UpdatedDateTime = DateTime.Now;
-                                            db.SubmitChanges();
-
-                                            return Request.CreateResponse(HttpStatusCode.OK);
-                                        }
-                                        else
-                                        {
-                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete if there are collections exist.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was renewed.");
-                                    }
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This record was reconstructed.");
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was reconstructed.");
+                                    if (loans.FirstOrDefault().IsRenewed)
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This record was renewed.");
+                                    }
+                                    else
+                                    {
+                                        var loanReconstructRenews = from d in db.trnLoanReconstructRenews
+                                                                    where d.LoanId == Convert.ToInt32(id)
+                                                                    select d;
+
+                                        if (loanReconstructRenews.Any())
+                                        {
+                                            var loanReconRenewUpdate = from d in db.trnLoans
+                                                                       where d.Id == loanReconstructRenews.FirstOrDefault().ReconstructRenewLoanId
+                                                                       select d;
+
+                                            if (loanReconRenewUpdate.Any())
+                                            {
+                                                if (loans.FirstOrDefault().IsLoanReconstruct)
+                                                {
+                                                    var updateLoanRecon = loanReconRenewUpdate.FirstOrDefault();
+                                                    updateLoanRecon.IsReconstructed = false;
+                                                    db.SubmitChanges();
+                                                }
+                                                else
+                                                {
+                                                    if (loans.FirstOrDefault().IsLoanRenew)
+                                                    {
+                                                        var updateLoanRenew = loanReconRenewUpdate.FirstOrDefault();
+                                                        updateLoanRenew.IsRenewed = false;
+                                                        db.SubmitChanges();
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        var unlockLoan = loans.FirstOrDefault();
+                                        unlockLoan.IsLocked = false;
+                                        unlockLoan.UpdatedByUserId = userId;
+                                        unlockLoan.UpdatedDateTime = DateTime.Now;
+                                        db.SubmitChanges();
+
+                                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    }
                                 }
                             }
                             else
@@ -896,6 +705,18 @@ namespace Lending.ApiControllers
                             String matchPageString = "LoanApplicationDetail";
                             Boolean canPerformActions = false;
 
+                            if (loans.FirstOrDefault().IsLoanReconstruct)
+                            {
+                                matchPageString = "ReconstructDetail";
+                            }
+                            else
+                            {
+                                if (loans.FirstOrDefault().IsLoanRenew)
+                                {
+                                    matchPageString = "RenewDetail";
+                                }
+                            }
+
                             foreach (var mstUserForm in mstUserForms)
                             {
                                 if (mstUserForm.Form.Equals(matchPageString))
@@ -911,66 +732,47 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var existLoanReconstruct = from d in db.trnLoanReconstructs
-                                                           where d.ReconstructLoanId == Convert.ToInt32(id)
-                                                           select d;
-
-                                if (!existLoanReconstruct.Any())
+                                if (loans.FirstOrDefault().IsReconstructed)
                                 {
-                                    var existLoanRenew = from d in db.trnLoanRenews
-                                                         where d.RenewLoanId == Convert.ToInt32(id)
-                                                         select d;
-
-                                    if (!existLoanRenew.Any())
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This record was reconstructed.");
+                                }
+                                else
+                                {
+                                    if (loans.FirstOrDefault().IsRenewed)
                                     {
-                                        if (loans.FirstOrDefault().IsLoanReconstruct)
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This record was renewed.");
+                                    }
+                                    else
+                                    {
+                                        var loanReconstructRenews = from d in db.trnLoanReconstructRenews
+                                                                    where d.LoanId == Convert.ToInt32(id)
+                                                                    select d;
+
+                                        if (loanReconstructRenews.Any())
                                         {
-                                            var loanReconstruct = from d in db.trnLoanReconstructs
-                                                                  where d.LoanId == Convert.ToInt32(id)
-                                                                  select d;
+                                            var loanReconRenewUpdate = from d in db.trnLoans
+                                                                       where d.Id == loanReconstructRenews.FirstOrDefault().ReconstructRenewLoanId
+                                                                       select d;
 
-                                            if (loanReconstruct.Any())
+                                            if (loanReconRenewUpdate.Any())
                                             {
-                                                var existLoan = from d in db.trnLoans
-                                                                where d.Id == loanReconstruct.FirstOrDefault().ReconstructLoanId
-                                                                select d;
-
-                                                if (existLoan.Any())
+                                                if (loans.FirstOrDefault().IsLoanReconstruct)
                                                 {
-                                                    var updateLoan = existLoan.FirstOrDefault();
-                                                    updateLoan.IsReconstruct = false;
+                                                    var updateLoanRecon = loanReconRenewUpdate.FirstOrDefault();
+                                                    updateLoanRecon.IsReconstructed = false;
                                                     db.SubmitChanges();
-
-                                                    db.trnLoanReconstructs.DeleteAllOnSubmit(loanReconstruct);
-                                                    db.SubmitChanges();
+                                                }
+                                                else
+                                                {
+                                                    if (loans.FirstOrDefault().IsLoanRenew)
+                                                    {
+                                                        var updateLoanRenew = loanReconRenewUpdate.FirstOrDefault();
+                                                        updateLoanRenew.IsRenewed = false;
+                                                        db.SubmitChanges();
+                                                    }
                                                 }
                                             }
                                         }
-
-                                        if (loans.FirstOrDefault().IsLoanRenew)
-                                        {
-                                            var loanRenew = from d in db.trnLoanRenews
-                                                            where d.LoanId == Convert.ToInt32(id)
-                                                            select d;
-
-                                            if (loanRenew.Any())
-                                            {
-                                                var existLoan = from d in db.trnLoans
-                                                                where d.Id == loanRenew.FirstOrDefault().RenewLoanId
-                                                                select d;
-
-                                                if (existLoan.Any())
-                                                {
-                                                    var updateLoan = existLoan.FirstOrDefault();
-                                                    updateLoan.IsRenew = false;
-                                                    db.SubmitChanges();
-
-                                                    db.trnLoanRenews.DeleteAllOnSubmit(loanRenew);
-                                                    db.SubmitChanges();
-                                                }
-                                            }
-                                        }
-
 
                                         var collection = from d in db.trnCollections
                                                          where d.LoanId == Convert.ToInt32(id)
@@ -989,14 +791,6 @@ namespace Lending.ApiControllers
                                             return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot delete if there are collections exist.");
                                         }
                                     }
-                                    else
-                                    {
-                                        return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was renewed.");
-                                    }
-                                }
-                                else
-                                {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. This loan was reconstructed.");
                                 }
                             }
                             else
@@ -1019,8 +813,9 @@ namespace Lending.ApiControllers
                     return Request.CreateResponse(HttpStatusCode.NotFound, "Sorry. Data not found");
                 }
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "Something went wrong from the server.");
             }
         }
@@ -1051,7 +846,6 @@ namespace Lending.ApiControllers
                                            TermId = d.TermId,
                                            Term = d.mstTerm.Term,
                                            TermNoOfDays = d.TermNoOfDays,
-                                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
                                            PrincipalAmount = d.PrincipalAmount,
                                            InterestId = d.InterestId,
@@ -1062,14 +856,15 @@ namespace Lending.ApiControllers
                                            DeductionAmount = d.DeductionAmount,
                                            NetAmount = d.NetAmount,
                                            NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstruct = d.IsReconstruct,
-                                           IsRenew = d.IsRenew,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -1088,7 +883,7 @@ namespace Lending.ApiControllers
                 if (transactionType.Equals("ReconstructedLoans"))
                 {
                     var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                           join s in db.trnLoanReconstructs
+                                           join s in db.trnLoanReconstructRenews
                                            on d.Id equals s.LoanId
                                            into joinReconstructs
                                            from listReconstructs in joinReconstructs.DefaultIfEmpty()
@@ -1109,7 +904,6 @@ namespace Lending.ApiControllers
                                                TermId = d.TermId,
                                                Term = d.mstTerm.Term,
                                                TermNoOfDays = d.TermNoOfDays,
-                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                MaturityDate = d.MaturityDate.ToShortDateString(),
                                                PrincipalAmount = d.PrincipalAmount,
                                                InterestId = d.InterestId,
@@ -1120,14 +914,15 @@ namespace Lending.ApiControllers
                                                DeductionAmount = d.DeductionAmount,
                                                NetAmount = d.NetAmount,
                                                NetCollectionAmount = d.NetCollectionAmount,
+                                               CollectibleAmount = d.CollectibleAmount,
                                                TotalPaidAmount = d.TotalPaidAmount,
                                                TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                TotalBalanceAmount = d.TotalBalanceAmount,
-                                               IsReconstruct = d.IsReconstruct,
-                                               IsRenew = d.IsRenew,
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
+                                               IsReconstructed = d.IsReconstructed,
+                                               IsRenewed = d.IsRenewed,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -1146,7 +941,7 @@ namespace Lending.ApiControllers
                     if (transactionType.Equals("Renews"))
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanRenews
+                                               join s in db.trnLoanReconstructRenews
                                                on d.Id equals s.LoanId
                                                into joinRenews
                                                from listRenews in joinRenews.DefaultIfEmpty()
@@ -1167,7 +962,6 @@ namespace Lending.ApiControllers
                                                    TermId = d.TermId,
                                                    Term = d.mstTerm.Term,
                                                    TermNoOfDays = d.TermNoOfDays,
-                                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                                    PrincipalAmount = d.PrincipalAmount,
                                                    InterestId = d.InterestId,
@@ -1178,14 +972,15 @@ namespace Lending.ApiControllers
                                                    DeductionAmount = d.DeductionAmount,
                                                    NetAmount = d.NetAmount,
                                                    NetCollectionAmount = d.NetCollectionAmount,
+                                                   CollectibleAmount = d.CollectibleAmount,
                                                    TotalPaidAmount = d.TotalPaidAmount,
                                                    TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                    TotalBalanceAmount = d.TotalBalanceAmount,
-                                                   IsReconstruct = d.IsReconstruct,
-                                                   IsRenew = d.IsRenew,
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
+                                                   IsReconstructed = d.IsReconstructed,
+                                                   IsRenewed = d.IsRenewed,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -1215,8 +1010,8 @@ namespace Lending.ApiControllers
         {
             var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                    where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                   && d.IsReconstruct == false
-                                   && d.IsRenew == false
+                                   && d.IsReconstructed == false
+                                   && d.IsRenewed == false
                                    && d.IsLocked == true
                                    && d.IsLoanReconstruct == true
                                    && d.TotalBalanceAmount > 0
@@ -1234,7 +1029,6 @@ namespace Lending.ApiControllers
                                        TermId = d.TermId,
                                        Term = d.mstTerm.Term,
                                        TermNoOfDays = d.TermNoOfDays,
-                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                        PrincipalAmount = d.PrincipalAmount,
                                        InterestId = d.InterestId,
@@ -1245,14 +1039,15 @@ namespace Lending.ApiControllers
                                        DeductionAmount = d.DeductionAmount,
                                        NetAmount = d.NetAmount,
                                        NetCollectionAmount = d.NetCollectionAmount,
+                                       CollectibleAmount = d.CollectibleAmount,
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       IsReconstruct = d.IsReconstruct,
-                                       IsRenew = d.IsRenew,
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
+                                       IsReconstructed = d.IsReconstructed,
+                                       IsRenewed = d.IsRenewed,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -1272,17 +1067,12 @@ namespace Lending.ApiControllers
         public List<Models.TrnLoan> listActive(String areaId)
         {
             var joinedLoanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                         join s in db.trnLoanLines
-                                         on d.Id equals s.LoanId
-                                         into joinLoanApplications
-                                         from listLoanApplications in joinLoanApplications.DefaultIfEmpty()
                                          where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                         && d.IsReconstruct == false
-                                         && d.IsRenew == false
+                                         && d.IsReconstructed == false
+                                         && d.IsRenewed == false
                                          && d.IsLocked == true
                                          && d.IsLoanReconstruct == false
                                          && d.TotalBalanceAmount > 0
-                                         && listLoanApplications.Id == joinLoanApplications.Where(f => f.PaidAmount == 0 && f.PenaltyAmount == 0).FirstOrDefault().Id
                                          select new Models.TrnLoan
                                          {
                                              Id = d.Id,
@@ -1297,7 +1087,6 @@ namespace Lending.ApiControllers
                                              TermId = d.TermId,
                                              Term = d.mstTerm.Term,
                                              TermNoOfDays = d.TermNoOfDays,
-                                             TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                              MaturityDate = d.MaturityDate.ToShortDateString(),
                                              PrincipalAmount = d.PrincipalAmount,
                                              InterestId = d.InterestId,
@@ -1308,11 +1097,12 @@ namespace Lending.ApiControllers
                                              DeductionAmount = d.DeductionAmount,
                                              NetAmount = d.NetAmount,
                                              NetCollectionAmount = d.NetCollectionAmount,
+                                             CollectibleAmount = d.CollectibleAmount,
                                              TotalPaidAmount = d.TotalPaidAmount,
                                              TotalPenaltyAmount = d.TotalPenaltyAmount,
                                              TotalBalanceAmount = d.TotalBalanceAmount,
-                                             IsReconstruct = d.IsReconstruct,
-                                             IsRenew = d.IsRenew,
+                                             IsReconstructed = d.IsReconstructed,
+                                             IsRenewed = d.IsRenewed,
                                              IsLoanApplication = d.IsLoanApplication,
                                              IsLoanReconstruct = d.IsLoanReconstruct,
                                              IsLoanRenew = d.IsLoanRenew,
@@ -1323,9 +1113,6 @@ namespace Lending.ApiControllers
                                              UpdatedByUserId = d.UpdatedByUserId,
                                              UpdatedByUser = d.mstUser2.FullName,
                                              UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                             CollectibleAmount = listLoanApplications.CollectibleAmount,
-                                             DayReference = listLoanApplications.DayReference,
-                                             CollectibleDate = listLoanApplications.CollectibleDate.ToShortDateString(),
                                          };
 
             return joinedLoanApplications.ToList();
@@ -1358,7 +1145,6 @@ namespace Lending.ApiControllers
                                            TermId = d.TermId,
                                            Term = d.mstTerm.Term,
                                            TermNoOfDays = d.TermNoOfDays,
-                                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
                                            PrincipalAmount = d.PrincipalAmount,
                                            InterestId = d.InterestId,
@@ -1372,11 +1158,11 @@ namespace Lending.ApiControllers
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstruct = d.IsReconstruct,
-                                           IsRenew = d.IsRenew,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -1410,7 +1196,6 @@ namespace Lending.ApiControllers
                                            TermId = d.TermId,
                                            Term = d.mstTerm.Term,
                                            TermNoOfDays = d.TermNoOfDays,
-                                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
                                            PrincipalAmount = d.PrincipalAmount,
                                            InterestId = d.InterestId,
@@ -1424,11 +1209,11 @@ namespace Lending.ApiControllers
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstruct = d.IsReconstruct,
-                                           IsRenew = d.IsRenew,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -1471,7 +1256,6 @@ namespace Lending.ApiControllers
                                                TermId = d.TermId,
                                                Term = d.mstTerm.Term,
                                                TermNoOfDays = d.TermNoOfDays,
-                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                MaturityDate = d.MaturityDate.ToShortDateString(),
                                                PrincipalAmount = d.PrincipalAmount,
                                                InterestId = d.InterestId,
@@ -1485,8 +1269,8 @@ namespace Lending.ApiControllers
                                                TotalPaidAmount = d.TotalPaidAmount,
                                                TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                TotalBalanceAmount = d.TotalBalanceAmount,
-                                               IsReconstruct = d.IsReconstruct,
-                                               IsRenew = d.IsRenew,
+                                               IsReconstructed = d.IsReconstructed,
+                                               IsRenewed = d.IsRenewed,
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
@@ -1523,7 +1307,6 @@ namespace Lending.ApiControllers
                                                TermId = d.TermId,
                                                Term = d.mstTerm.Term,
                                                TermNoOfDays = d.TermNoOfDays,
-                                               TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                MaturityDate = d.MaturityDate.ToShortDateString(),
                                                PrincipalAmount = d.PrincipalAmount,
                                                InterestId = d.InterestId,
@@ -1537,8 +1320,8 @@ namespace Lending.ApiControllers
                                                TotalPaidAmount = d.TotalPaidAmount,
                                                TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                TotalBalanceAmount = d.TotalBalanceAmount,
-                                               IsReconstruct = d.IsReconstruct,
-                                               IsRenew = d.IsRenew,
+                                               IsReconstructed = d.IsReconstructed,
+                                               IsRenewed = d.IsRenewed,
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
@@ -1561,7 +1344,7 @@ namespace Lending.ApiControllers
                     if (areaId.Equals("0"))
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanRenews
+                                               join s in db.trnLoanReconstructRenews
                                                on d.Id equals s.LoanId
                                                into joinRenews
                                                from listRenews in joinRenews.DefaultIfEmpty()
@@ -1583,7 +1366,6 @@ namespace Lending.ApiControllers
                                                    TermId = d.TermId,
                                                    Term = d.mstTerm.Term,
                                                    TermNoOfDays = d.TermNoOfDays,
-                                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                                    PrincipalAmount = d.PrincipalAmount,
                                                    InterestId = d.InterestId,
@@ -1597,8 +1379,8 @@ namespace Lending.ApiControllers
                                                    TotalPaidAmount = d.TotalPaidAmount,
                                                    TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                    TotalBalanceAmount = d.TotalBalanceAmount,
-                                                   IsReconstruct = d.IsReconstruct,
-                                                   IsRenew = d.IsRenew,
+                                                   IsReconstructed = d.IsReconstructed,
+                                                   IsRenewed = d.IsRenewed,
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
@@ -1618,7 +1400,7 @@ namespace Lending.ApiControllers
                     else
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanRenews
+                                               join s in db.trnLoanReconstructRenews
                                                on d.Id equals s.LoanId
                                                into joinRenews
                                                from listRenews in joinRenews.DefaultIfEmpty()
@@ -1641,7 +1423,6 @@ namespace Lending.ApiControllers
                                                    TermId = d.TermId,
                                                    Term = d.mstTerm.Term,
                                                    TermNoOfDays = d.TermNoOfDays,
-                                                   TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                    MaturityDate = d.MaturityDate.ToShortDateString(),
                                                    PrincipalAmount = d.PrincipalAmount,
                                                    InterestId = d.InterestId,
@@ -1655,8 +1436,8 @@ namespace Lending.ApiControllers
                                                    TotalPaidAmount = d.TotalPaidAmount,
                                                    TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                    TotalBalanceAmount = d.TotalBalanceAmount,
-                                                   IsReconstruct = d.IsReconstruct,
-                                                   IsRenew = d.IsRenew,
+                                                   IsReconstructed = d.IsReconstructed,
+                                                   IsRenewed = d.IsRenewed,
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
@@ -1681,7 +1462,7 @@ namespace Lending.ApiControllers
                         if (areaId.Equals("0"))
                         {
                             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                                   join s in db.trnLoanReconstructs
+                                                   join s in db.trnLoanReconstructRenews
                                                    on d.Id equals s.LoanId
                                                    into joinReconstructs
                                                    from listReconstructs in joinReconstructs.DefaultIfEmpty()
@@ -1703,7 +1484,6 @@ namespace Lending.ApiControllers
                                                        TermId = d.TermId,
                                                        Term = d.mstTerm.Term,
                                                        TermNoOfDays = d.TermNoOfDays,
-                                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                                        PrincipalAmount = d.PrincipalAmount,
                                                        InterestId = d.InterestId,
@@ -1717,8 +1497,8 @@ namespace Lending.ApiControllers
                                                        TotalPaidAmount = d.TotalPaidAmount,
                                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                                       IsReconstruct = d.IsReconstruct,
-                                                       IsRenew = d.IsRenew,
+                                                       IsReconstructed = d.IsReconstructed,
+                                                       IsRenewed = d.IsRenewed,
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
@@ -1738,7 +1518,7 @@ namespace Lending.ApiControllers
                         else
                         {
                             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                                   join s in db.trnLoanReconstructs
+                                                   join s in db.trnLoanReconstructRenews
                                                    on d.Id equals s.LoanId
                                                    into joinReconstructs
                                                    from listReconstructs in joinReconstructs.DefaultIfEmpty()
@@ -1761,7 +1541,6 @@ namespace Lending.ApiControllers
                                                        TermId = d.TermId,
                                                        Term = d.mstTerm.Term,
                                                        TermNoOfDays = d.TermNoOfDays,
-                                                       TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                                        MaturityDate = d.MaturityDate.ToShortDateString(),
                                                        PrincipalAmount = d.PrincipalAmount,
                                                        InterestId = d.InterestId,
@@ -1775,8 +1554,8 @@ namespace Lending.ApiControllers
                                                        TotalPaidAmount = d.TotalPaidAmount,
                                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                                       IsReconstruct = d.IsReconstruct,
-                                                       IsRenew = d.IsRenew,
+                                                       IsReconstructed = d.IsReconstructed,
+                                                       IsRenewed = d.IsRenewed,
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,

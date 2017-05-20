@@ -12,7 +12,6 @@ namespace Lending.Models
         public Int32 Id { get; set; }
         public String Deduction { get; set; }
         public String Description { get; set; }
-        public Boolean IsPercentage { get; set; }
         public Decimal PercentageRate { get; set; }
         public Decimal DeductionAmount { get; set; }
         public Int32 CreatedByUserId { get; set; }

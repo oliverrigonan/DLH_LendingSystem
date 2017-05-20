@@ -402,54 +402,37 @@
                             var loanStatus = "Active";
                             var transactionType = "btnDetailLoan()";
 
-                            var collectibleAmount = loanApplicationListResult[i]["CollectibleAmount"];
-                            if (loanApplicationListResult[i]["DayReference"] == " ") {
-                                var loanStatus = "Pending";
-                                collectibleAmount = loanApplicationListResult[i]["TotalBalanceAmount"];
-                                if (loanApplicationListResult[i]["IsLoanRenew"]) {
-                                    transactionType = "btnDetailRenew()";
-                                }
-                            } else {
-                                if (loanApplicationListResult[i]["CollectibleDate"] == loanApplicationListResult[i]["DueDate"]) {
-                                    loanStatus = "Active (Due)";
-                                } else {
-                                    if (loanApplicationListResult[i]["IsLoanRenew"]) {
-                                        loanStatus = "Active Renew";
-                                        transactionType = "btnDetailRenew()";
+                            if (loanApplicationListResult[i]["IsLoanRenew"]) {
+                                loanStatus = "Active Renew";
+                                transactionType = "btnDetailRenew()";
 
-                                        if (loanApplicationListResult[i]["CollectibleDate"] == loanApplicationListResult[i]["DueDate"]) {
-                                            loanStatus = "Active Renew (Due)";
+                                if (cboDateActiveValue == collectionDueDate) {
+                                    loanStatus = "Due";
+                                } else {
+                                    if (cboDateActiveValue < collectionDueDate) {
+                                        if (diffDays == 7) {
+                                            loanStatus = "7 Days before due";
                                         } else {
-                                            if (cboDateActiveValue == collectionDueDate) {
-                                                loanStatus = "Due";
+                                            if (diffDays == 6) {
+                                                loanStatus = "6 Days before due";
                                             } else {
-                                                if (cboDateActiveValue < collectionDueDate) {
-                                                    if (diffDays == 7) {
-                                                        loanStatus = "7 Days before due";
+                                                if (diffDays == 5) {
+                                                    loanStatus = "5 Days before due";
+                                                } else {
+                                                    if (diffDays == 4) {
+                                                        loanStatus = "4 Days before due";
                                                     } else {
-                                                        if (diffDays == 6) {
-                                                            loanStatus = "6 Days before due";
+                                                        if (diffDays == 3) {
+                                                            loanStatus = "3 Days before due";
                                                         } else {
-                                                            if (diffDays == 5) {
-                                                                loanStatus = "5 Days before due";
+                                                            if (diffDays == 2) {
+                                                                loanStatus = "2 Days before due";
                                                             } else {
-                                                                if (diffDays == 4) {
-                                                                    loanStatus = "4 Days before due";
+                                                                if (diffDays == 1) {
+                                                                    loanStatus = "1 Day before due";
                                                                 } else {
-                                                                    if (diffDays == 3) {
-                                                                        loanStatus = "3 Days before due";
-                                                                    } else {
-                                                                        if (diffDays == 2) {
-                                                                            loanStatus = "2 Days before due";
-                                                                        } else {
-                                                                            if (diffDays == 1) {
-                                                                                loanStatus = "1 Day before due";
-                                                                            } else {
-                                                                                if (diffDays == 0) {
-                                                                                    loanStatus = "Tomorrow is Due Date";
-                                                                                }
-                                                                            }
-                                                                        }
+                                                                    if (diffDays == 0) {
+                                                                        loanStatus = "Tomorrow is Due Date";
                                                                     }
                                                                 }
                                                             }
@@ -459,35 +442,39 @@
                                             }
                                         }
                                     } else {
-                                        if (cboDateActiveValue == collectionDueDate) {
-                                            loanStatus = "Due";
+                                        if (cboDateActiveValue > collectionDueDate) {
+                                            loanStatus = "Overdue";
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (cboDateActiveValue == collectionDueDate) {
+                                    loanStatus = "Due";
+                                } else {
+                                    if (cboDateActiveValue < collectionDueDate) {
+                                        if (diffDays == 7) {
+                                            loanStatus = "7 Days before due";
                                         } else {
-                                            if (cboDateActiveValue < collectionDueDate) {
-                                                if (diffDays == 7) {
-                                                    loanStatus = "7 Days before due";
+                                            if (diffDays == 6) {
+                                                loanStatus = "6 Days before due";
+                                            } else {
+                                                if (diffDays == 5) {
+                                                    loanStatus = "5 Days before due";
                                                 } else {
-                                                    if (diffDays == 6) {
-                                                        loanStatus = "6 Days before due";
+                                                    if (diffDays == 4) {
+                                                        loanStatus = "4 Days before due";
                                                     } else {
-                                                        if (diffDays == 5) {
-                                                            loanStatus = "5 Days before due";
+                                                        if (diffDays == 3) {
+                                                            loanStatus = "3 Days before due";
                                                         } else {
-                                                            if (diffDays == 4) {
-                                                                loanStatus = "4 Days before due";
+                                                            if (diffDays == 2) {
+                                                                loanStatus = "2 Days before due";
                                                             } else {
-                                                                if (diffDays == 3) {
-                                                                    loanStatus = "3 Days before due";
+                                                                if (diffDays == 1) {
+                                                                    loanStatus = "1 Day before due";
                                                                 } else {
-                                                                    if (diffDays == 2) {
-                                                                        loanStatus = "2 Days before due";
-                                                                    } else {
-                                                                        if (diffDays == 1) {
-                                                                            loanStatus = "1 Day before due";
-                                                                        } else {
-                                                                            if (diffDays == 0) {
-                                                                                loanStatus = "Tomorrow is Due Date";
-                                                                            }
-                                                                        }
+                                                                    if (diffDays == 0) {
+                                                                        loanStatus = "Tomorrow is Due Date";
                                                                     }
                                                                 }
                                                             }
@@ -496,8 +483,17 @@
                                                 }
                                             }
                                         }
+                                    } else {
+                                        if (cboDateActiveValue > collectionDueDate) {
+                                            loanStatus = "Overdue";
+                                        }
                                     }
                                 }
+                            }
+
+                            var docNumber = "LN-" + loanApplicationListResult[i]["LoanNumber"];
+                            if (loanApplicationListResult[i]["IsLoanRenew"]) {
+                                docNumber = "RN-" + loanApplicationListResult[i]["LoanNumber"];
                             }
 
                             loanLinesArray.push({
@@ -506,8 +502,9 @@
                                 DayReference: loanApplicationListResult[i]["DayReference"],
                                 CollectibleDate: collectibleDate,
                                 DueDate: collectionDueDate,
-                                CollectibleAmount: collectibleAmount,
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 LoanDate: newDate.getFullYear().toString(),
+                                DocNumber: docNumber,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 Particulars: loanApplicationListResult[i]["Particulars"],
                                 PrincipalAmount: loanApplicationListResult[i]["PrincipalAmount"],
@@ -582,23 +579,23 @@
                                 "header": "Applicant",
                                 "binding": "Applicant",
                                 "allowSorting": true,
-                                "width": "3.5*",
-                            },
-                            {
-                                "header": "Balance",
-                                "binding": "TotalBalanceAmount",
-                                "allowSorting": true,
-                                "width": "2*",
-                            },
-                            {
-                                "header": "Day Reference",
-                                "binding": "DayReference",
-                                "allowSorting": true,
                                 "width": "5*",
+                            },
+                            {
+                                "header": "Doc Number",
+                                "binding": "DocNumber",
+                                "allowSorting": true,
+                                "width": "3*",
                             },
                             {
                                 "header": "Due Date",
                                 "binding": "DueDate",
+                                "allowSorting": true,
+                                "width": "2*",
+                            },
+                            {
+                                "header": "Balance",
+                                "binding": "TotalBalanceAmount",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
@@ -612,7 +609,7 @@
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
-                                "width": "3.5*",
+                                "width": "3*",
                             }
                 ],
                 autoGenerateColumns: false,
@@ -700,6 +697,7 @@
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
                                 LoanStatus: "Overdue",
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
                                 CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
@@ -807,12 +805,6 @@
                                 "width": 206,
                             },
                             {
-                                "header": "Balance",
-                                "binding": "TotalBalanceAmount",
-                                "allowSorting": true,
-                                "width": 140,
-                            },
-                            {
                                 "header": "Doc Number",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
@@ -825,17 +817,23 @@
                                 "width": 70,
                             },
                             {
+                                "header": "Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 250,
                             },
-                            {
-                                "header": "Status",
-                                "binding": "LoanStatus",
-                                "allowSorting": true,
-                                "width": 150,
-                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: overdueCollectionView,

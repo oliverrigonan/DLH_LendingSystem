@@ -344,7 +344,7 @@
         function getApplicantOverdue() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/applicant/list',
+                url: '/api/applicant/list/Applicant',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -539,12 +539,12 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Overdue (Active)";
+                            var loanStatus = "Active";
                             if (loanApplicationListResult[i]["IsReconstruct"]) {
-                                loanStatus = "Overdue (Reconstructed)";
+                                loanStatus = "Reconstructed";
                             } else {
                                 if (loanApplicationListResult[i]["IsRenew"]) {
-                                    loanStatus = "Overdue (Renewed)";
+                                    loanStatus = "Renewed";
                                 }
                             }
 
@@ -552,7 +552,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditLoanApplicationOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteLoanApplicationOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: loanApplicationListResult[i]["Id"],
-                                LoanNumber: loanApplicationListResult[i]["LoanNumber"],
+                                LoanNumber: "RC-" + loanApplicationListResult[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
                                 Applicant: loanApplicationListResult[i]["Applicant"],
                                 Particulars: loanApplicationListResult[i]["Particulars"],
@@ -562,6 +562,7 @@
                                 DeductionAmount: loanApplicationListResult[i]["DeductionAmount"],
                                 NetAmount: loanApplicationListResult[i]["NetAmount"],
                                 NetCollectionAmount: loanApplicationListResult[i]["NetCollectionAmount"],
+                                CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
@@ -651,8 +652,8 @@
 
                 var loanReconstuctObject = new Object();
                 loanReconstuctObject.ApplicantId = cboApplicant.selectedItem["ApplicantId"];
-                loanReconstuctObject.ReconstructLoanId = cboLoanNumber.selectedItem["Id"];
-                loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstruct").value;
+                loanReconstuctObject.ReconstructRenewLoanId = cboLoanNumber.selectedItem["Id"];
+                loanReconstuctObject.BalanceAmount = document.getElementById("amountToBeReconstruct").value;
                 var loanReconstuctData = JSON.stringify(loanReconstuctObject);
 
                 $.ajax({
@@ -911,6 +912,12 @@
                             {
                                 "header": "Net Collection",
                                 "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
                                 "allowSorting": true,
                                 "width": 160,
                             },

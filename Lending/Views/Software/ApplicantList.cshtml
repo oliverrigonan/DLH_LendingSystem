@@ -45,6 +45,13 @@
                                     </div>
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Type</span>
+                                        <div id="applicantType"></div>
+                                    </div>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
                                     <button class="btn btn-primary" id="btnAddApplicant" onclick="btnAddApplicantOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
@@ -139,12 +146,23 @@
         var btnNextPageGrid;
         var btnLastPageGrid;
         var btnCurrentPageGrid;
+        var applicantTypes = ["Applicant", "Co-Maker"];
+        var applicantType = new wijmo.input.ComboBox('#applicantType', {
+            placeholder: "Select",
+            itemsSource: applicantTypes,
+            isEditable: false,
+            required: true,
+            onSelectedIndexChanged: function () {
+                NProgress.start();
+                refreshGrid();
+            }
+        });
 
         // get applicants
         function getApplicantList() {
             var applicants = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/applicant/list',
+                url: '/api/applicant/list/' + applicantType.selectedValue,
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -162,11 +180,16 @@
                                 disabledButton = "";
                             }
 
+                            var applicantNumber = "AP-" + applicantListResult[i]["ApplicantNumber"];
+                            if (applicantListResult[i]["IsCoMaker"]) {
+                                applicantNumber = "CM-" + applicantListResult[i]["ApplicantNumber"];
+                            }
+
                             applicants.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: applicantListResult[i]["Id"],
-                                ApplicantNumber: applicantListResult[i]["ApplicantNumber"],
+                                ApplicantNumber: applicantNumber,
                                 ApplicantFullName: applicantListResult[i]["ApplicantLastName"] + ", " + applicantListResult[i]["ApplicantFirstName"] + " " + applicantListResult[i]["ApplicantMiddleName"],
                                 Area: applicantListResult[i]["Area"],
                                 ContactNumber: applicantListResult[i]["ContactNumber"],
@@ -307,10 +330,46 @@
             btnCurrentPageGrid.innerHTML = (applicantCollectionView.pageIndex + 1) + ' / ' + applicantCollectionView.pageCount;
         }
 
+        function createApplicantType() {
+
+        }
+
+        function refreshGrid() {
+            applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
+            applicantCollectionView.canFilter = true;
+            applicantCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchApplicant').keyup(function () {
+                filterText = this.value.toLowerCase();
+                applicantCollectionView.refresh();
+            });
+
+            applicantCollectionView.filter = function (item) {
+                return !filterText || (item.ApplicantNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            applicantCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsApplicant();
+            });
+
+            applicantCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateStampSecurity();
+            });
+
+            // Flex Grid
+            applicantFlexGrid.itemsSource = applicantCollectionView;
+            applicantFlexGrid.trackChanges = true;
+        }
+
         // ready function
         window.onload = function () {
             NProgress.start();
             toastrModification();
+
+            createApplicantType();
 
             applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
             applicantCollectionView.canFilter = true;

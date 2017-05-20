@@ -26,7 +26,6 @@ namespace Lending.ApiControllers
                            Term = d.Term,
                            Description = d.Description,
                            NoOfDays = d.NoOfDays,
-                           PaymentNoOfDays = d.PaymentNoOfDays,
                            CreatedByUserId = d.CreatedByUserId,
                            CreatedByUser = d.mstUser.FullName,
                            CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
@@ -76,28 +75,20 @@ namespace Lending.ApiControllers
 
                     if (canPerformActions)
                     {
-                        if (loanType.NoOfDays > loanType.PaymentNoOfDays)
-                        {
-                            Data.mstTerm newTerm = new Data.mstTerm();
+                        Data.mstTerm newTerm = new Data.mstTerm();
 
-                            newTerm.Term = loanType.Term;
-                            newTerm.Description = loanType.Description;
-                            newTerm.NoOfDays = loanType.NoOfDays;
-                            newTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
-                            newTerm.CreatedByUserId = userId;
-                            newTerm.CreatedDateTime = DateTime.Now;
-                            newTerm.UpdatedByUserId = userId;
-                            newTerm.UpdatedDateTime = DateTime.Now;
+                        newTerm.Term = loanType.Term;
+                        newTerm.Description = loanType.Description;
+                        newTerm.NoOfDays = loanType.NoOfDays;
+                        newTerm.CreatedByUserId = userId;
+                        newTerm.CreatedDateTime = DateTime.Now;
+                        newTerm.UpdatedByUserId = userId;
+                        newTerm.UpdatedDateTime = DateTime.Now;
 
-                            db.mstTerms.InsertOnSubmit(newTerm);
-                            db.SubmitChanges();
+                        db.mstTerms.InsertOnSubmit(newTerm);
+                        db.SubmitChanges();
 
-                            return Request.CreateResponse(HttpStatusCode.OK);
-                        }
-                        else
-                        {
-                            return Request.CreateResponse(HttpStatusCode.BadRequest);
-                        }
+                        return Request.CreateResponse(HttpStatusCode.OK);
                     }
                     else
                     {
@@ -156,24 +147,16 @@ namespace Lending.ApiControllers
 
                         if (canPerformActions)
                         {
-                            if (loanType.NoOfDays > loanType.PaymentNoOfDays)
-                            {
-                                var updateTerm = term.FirstOrDefault();
+                            var updateTerm = term.FirstOrDefault();
 
-                                updateTerm.Term = loanType.Term;
-                                updateTerm.Description = loanType.Description;
-                                updateTerm.NoOfDays = loanType.NoOfDays;
-                                updateTerm.PaymentNoOfDays = loanType.PaymentNoOfDays;
-                                updateTerm.UpdatedByUserId = userId;
-                                updateTerm.UpdatedDateTime = DateTime.Now;
-                                db.SubmitChanges();
+                            updateTerm.Term = loanType.Term;
+                            updateTerm.Description = loanType.Description;
+                            updateTerm.NoOfDays = loanType.NoOfDays;
+                            updateTerm.UpdatedByUserId = userId;
+                            updateTerm.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
 
-                                return Request.CreateResponse(HttpStatusCode.OK);
-                            }
-                            else
-                            {
-                                return Request.CreateResponse(HttpStatusCode.BadRequest);
-                            }
+                            return Request.CreateResponse(HttpStatusCode.OK);
                         }
                         else
                         {

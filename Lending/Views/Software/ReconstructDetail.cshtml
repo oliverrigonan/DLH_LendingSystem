@@ -56,6 +56,9 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Detail
+                                    </div>
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
@@ -104,6 +107,9 @@
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Term
+                                    </div>
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
@@ -116,12 +122,6 @@
                                                 <label class="control-label col-sm-4">Days</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control numberField" id="termNoOfDays" placeholder="0.00" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Days Per Pay</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control numberField" id="termPaymentNoOfDays" placeholder="0.00" disabled />
                                                 </div>
                                             </div>
                                         </form>
@@ -152,6 +152,9 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Enter Amount
+                                    </div>
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
@@ -209,8 +212,20 @@
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Calculate upon locking
+                                    </div>
                                     <div class="panel-body">
                                         <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Collectible</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredLoanApplication" id="loanApplicationCollectible" placeholder="0.00" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Total Paid</label>
                                                 <div class="col-sm-8">
@@ -293,7 +308,7 @@
                                                     Additionals
                                                 </td>
                                                 <td align="right">
-                                                    <button class="btn btn-primary btn-sm" id="btnAddLoanApplicationDeduction" onclick="btnAddLoanApplicationDeductionOnclick()">
+                                                    <button class="btn btn-primary " id="btnAddLoanApplicationDeduction" onclick="btnAddLoanApplicationDeductionOnclick()">
                                                         <i class="fa fa-plus fa-fw"></i> Add
                                                     </button>
                                                 </td>
@@ -333,7 +348,7 @@
                                                     Collateral
                                                 </td>
                                                 <td align="right">
-                                                    <button class="btn btn-primary btn-sm" id="btnAddLoanApplicationCollateral" onclick="btnAddLoanApplicationCollateralOnclick()">
+                                                    <button class="btn btn-primary " id="btnAddLoanApplicationCollateral" onclick="btnAddLoanApplicationCollateralOnclick()">
                                                         <i class="fa fa-plus fa-fw"></i> Add
                                                     </button>
                                                 </td>
@@ -512,12 +527,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Is Percentage</label>
-                            <div class="col-sm-8">
-                                <input type="checkbox" id="loanApplicationDeductionIsPercentage" disabled />
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label col-sm-4">Rate</label>
                             <div class="col-sm-8">
                                 <div class="input-group numberField">
@@ -648,7 +657,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/applicant/list',
+                url: '/api/applicant/list/Applicant',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -744,7 +753,7 @@
                         document.getElementById('loanApplicationTotalNetCollectionAmount').disabled = true;
                         document.getElementById('loanApplicationPrincipalAmount').disabled = true;
                         cboloanApplicationPreparedBy.disabled = true;
-                        document.getElementById("loanApplicationNumber").value = loanApplicationResult.LoanNumber;
+                        document.getElementById("loanApplicationNumber").value = "RC-" + loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
                         loanApplicationMaturityDate.value = new Date(loanApplicationResult.MaturityDate);
                         cboloanApplicationApplicant.selectedValue = loanApplicationResult.Applicant;
@@ -753,13 +762,13 @@
                         cboloanApplicationPreparedBy.selectedValue = loanApplicationResult.PreparedByUser;
                         cboTerm.selectedValue = loanApplicationResult.Term;
                         document.getElementById("termNoOfDays").value = loanApplicationResult.TermNoOfDays;
-                        document.getElementById("termPaymentNoOfDays").value = loanApplicationResult.TermPaymentNoOfDays;
                         document.getElementById('loanApplicationPrincipalAmount').value = loanApplicationResult.PrincipalAmount.toLocaleString();
                         cboInterest.selectedValue = loanApplicationResult.Interest;
                         document.getElementById('interestRate').value = loanApplicationResult.InterestRate.toLocaleString();
                         document.getElementById('interestAmount').value = loanApplicationResult.InterestAmount.toLocaleString();
                         document.getElementById('loanApplicationDeductionAmount').value = loanApplicationResult.DeductionAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalNetCollectionAmount').value = loanApplicationResult.NetCollectionAmount.toLocaleString();
+                        document.getElementById('loanApplicationCollectible').value = loanApplicationResult.CollectibleAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalTotalBalance').value = loanApplicationResult.TotalBalanceAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalTotalPaid').value = loanApplicationResult.TotalPaidAmount.toLocaleString();
                         document.getElementById('loanApplicationTotalTotalPenalty').value = loanApplicationResult.TotalPenaltyAmount.toLocaleString();
@@ -837,7 +846,6 @@
                     loanApplicationObject.PreparedByUserId = cboloanApplicationPreparedBy.selectedItem["Id"];
                     loanApplicationObject.TermId = cboTerm.selectedItem["Id"];
                     loanApplicationObject.TermNoOfDays = document.getElementById("termNoOfDays").value;
-                    loanApplicationObject.TermPaymentNoOfDays = document.getElementById("termPaymentNoOfDays").value;
                     loanApplicationObject.PrincipalAmount = document.getElementById('loanApplicationPrincipalAmount').value;
                     loanApplicationObject.InterestId = cboInterest.selectedItem["Id"];
                     loanApplicationObject.InterestRate = document.getElementById("interestRate").value;
@@ -1357,7 +1365,6 @@
                         selectedValuePath: "Term",
                         onSelectedIndexChanged: function () {
                             document.getElementById("termNoOfDays").value = this.selectedItem["NoOfDays"];
-                            document.getElementById("termPaymentNoOfDays").value = this.selectedItem["PaymentNoOfDays"];
                         }
                     });
                 }
@@ -1488,7 +1495,6 @@
 
             loanDeductionId = currentItem.Id;
             cboDeduction.selectedValue = currentItem.Deduction;
-            document.getElementById("loanApplicationDeductionIsPercentage").checked = currentItem.IsPercentage;
             document.getElementById("loanApplicationDeductionPercentageRate").value = currentItem.PercentageRate;
             document.getElementById("loanApplicationDeductionDeductionAmount").value = currentItem.DeductionAmount;
         }
@@ -1733,12 +1739,6 @@
                                 "width": "3*",
                             },
                             {
-                                "header": "Is P",
-                                "binding": "IsPercentage",
-                                "allowSorting": true,
-                                "width": "1*",
-                            },
-                            {
                                 "header": "Rate",
                                 "binding": "PercentageRate",
                                 "allowSorting": true,
@@ -1823,10 +1823,9 @@
                         displayMemberPath: "Deduction",
                         selectedValuePath: "Deduction",
                         onSelectedIndexChanged: function () {
-                            document.getElementById("loanApplicationDeductionIsPercentage").checked = this.selectedItem["IsPercentage"];
                             document.getElementById("loanApplicationDeductionPercentageRate").value = this.selectedItem["PercentageRate"];
 
-                            if (this.selectedItem["IsPercentage"]) {
+                            if (this.selectedItem["PercentageRate"] > 0) {
                                 var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
                                 var deductionAmount = (principalAmountValue / 100) * this.selectedItem["PercentageRate"];
 
@@ -1837,10 +1836,9 @@
                         }
                     });
 
-                    document.getElementById("loanApplicationDeductionIsPercentage").checked = cboDeduction.selectedItem["IsPercentage"];
                     document.getElementById("loanApplicationDeductionPercentageRate").value = cboDeduction.selectedItem["PercentageRate"];
 
-                    if (cboDeduction.selectedItem["IsPercentage"]) {
+                    if (cboDeduction.selectedItem["PercentageRate"] > 0) {
                         var principalAmountValue = document.getElementById('loanApplicationPrincipalAmount').value.replace(/\,/g, '');
                         var deductionAmount = (principalAmountValue / 100) * cboDeduction.selectedItem["PercentageRate"];
 
@@ -1883,24 +1881,59 @@
         function getLoanLinesListByLoanId() {
             var loanLinesArray = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanLines/listByLoanId/' + getUrlParameter("id"),
+                url: '/api/collectionLines/listByLoanId/' + getUrlParameter("id"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
                 success: function (loanLinesResults) {
                     if (loanLinesResults.length > 0) {
                         for (i = 0; i < loanLinesResults.length; i++) {
+                            var btnRecentCollection = "<button class='btn btn-default btn-xs btn-block' onclick='btnViewRecentCollectionOnclick()'>" + "CL-" + loanLinesResults[i]["CollectionNumber"] + "</button>";
 
-                            var newDate = new Date(loanLinesResults[i]["CollectibleDate"]);
-                            var collectibleDate = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+                            var thisCollectionDate = new Date(loanLinesResults[i]["PayDate"]);
+
+                            var weekday = new Array(7);
+                            var day = "";
+
+                            if (thisCollectionDate.getDay() == 0) {
+                                day = "Sunday";
+                            } else {
+                                if (thisCollectionDate.getDay() == 1) {
+                                    day = "Monday";
+                                } else {
+                                    if (thisCollectionDate.getDay() == 2) {
+                                        day = "Tuesday";
+                                    } else {
+                                        if (thisCollectionDate.getDay() == 3) {
+                                            day = "Wednesday";
+                                        } else {
+                                            if (thisCollectionDate.getDay() == 4) {
+                                                day = "Thursday";
+                                            } else {
+                                                if (thisCollectionDate.getDay() == 5) {
+                                                    day = "Friday";
+                                                } else {
+                                                    if (thisCollectionDate.getDay() == 6) {
+                                                        day = "Saturday";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            var thisCollectionDateValue = [thisCollectionDate.getMonth() + 1, thisCollectionDate.getDate(), thisCollectionDate.getFullYear()].join('-') + " " + day;
 
                             loanLinesArray.push({
+                                RecentCollectionButton: btnRecentCollection,
                                 Id: loanLinesResults[i]["Id"],
-                                DayReference: loanLinesResults[i]["DayReference"],
-                                CollectibleDate: collectibleDate,
-                                CollectibleAmount: loanLinesResults[i]["CollectibleAmount"],
+                                CollectionId: loanLinesResults[i]["CollectionId"],
+                                PayDate: thisCollectionDateValue,
+                                Particulars: loanLinesResults[i]["Particulars"],
+                                Status: loanLinesResults[i]["Status"],
                                 PaidAmount: loanLinesResults[i]["PaidAmount"],
-                                PenaltyAmount: loanLinesResults[i]["PenaltyAmount"]
+                                PenaltyAmount: loanLinesResults[i]["PenaltyAmount"],
                             });
                         }
                     }
@@ -1950,35 +1983,43 @@
             loanLinesFlexgrid.initialize({
                 columns: [
                             {
-                                "header": "Day Reference",
-                                "binding": "DayReference",
-                                "allowSorting": true,
-                                "width": "4.5*",
+                                "header": "Detail",
+                                "binding": "RecentCollectionButton",
+                                "width": 130,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
                             },
                             {
-                                "header": "Collectible Date",
-                                "binding": "CollectibleDate",
+                                "header": "Date",
+                                "binding": "PayDate",
                                 "allowSorting": true,
-                                "width": "2.3*",
+                                "width": 220,
                             },
                             {
-                                "header": "Collectible",
-                                "binding": "CollectibleAmount",
+                                "header": "Status",
+                                "binding": "Status",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 190,
                             },
                             {
                                 "header": "Paid",
                                 "binding": "PaidAmount",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 145,
                             },
                             {
                                 "header": "Penalty",
                                 "binding": "PenaltyAmount",
                                 "allowSorting": true,
-                                "width": "2*",
-                            }
+                                "width": 145,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanLinesCollectionView,
@@ -2040,7 +2081,7 @@
         function getLoanReconstruct() {
             var loanReconstructs = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanReconstruct/list/ByLoanId/' + getUrlParameter("id"),
+                url: '/api/loanReconstructRenews/list/ByLoanId/' + getUrlParameter("id"),
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -2066,13 +2107,9 @@
                                 Id: loanReconstructsResults[i]["Id"],
                                 BtnLoanNumber: btnLoanNumber,
                                 LoanId: loanReconstructsResults[i]["DayReference"],
-                                ReconstructLoanId: loanReconstructsResults[i]["ReconstructLoanId"],
-                                ReconstructLoanNumber: loanReconstructsResults[i]["ReconstructLoanNumber"],
-                                ReconstructLoanTotalBalanceAmount: loanReconstructsResults[i]["ReconstructLoanTotalBalanceAmount"],
-                                ReconstructLoanTotalPenaltyAmount: loanReconstructsResults[i]["ReconstructLoanTotalPenaltyAmount"],
-                                IsLoanApplication: loanReconstructsResults[i]["IsLoanApplication"],
-                                IsLoanReconstruct: loanReconstructsResults[i]["IsLoanReconstruct"],
-                                IsLoanRenew: loanReconstructsResults[i]["IsLoanRenew"],
+                                RenewLoanId: loanReconstructsResults[i]["ReconstructRenewLoanId"],
+                                RenewLoanNumber: loanReconstructsResults[i]["ReconstructRenewLoanNumber"],
+                                BalanceAmount: loanReconstructsResults[i]["BalanceAmount"]
                             });
                         }
                     }
@@ -2100,17 +2137,17 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Reconstructed Loan",
-                                "binding": "ReconstructLoanNumber",
+                                "header": "Renewed Loan",
+                                "binding": "RenewLoanNumber",
                                 "allowSorting": true,
                                 "width": "2*",
                             },
                             {
                                 "header": "Balance Amount",
-                                "binding": "ReconstructLoanTotalBalanceAmount",
+                                "binding": "BalanceAmount",
                                 "allowSorting": true,
                                 "width": "2*",
-                            }
+                            },
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanReconstructCollectionView,

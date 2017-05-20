@@ -112,7 +112,7 @@
                                             Area Collector / Staff
                                         </td>
                                         <td align="right">
-                                            <button class="btn btn-primary btn-sm" id="btnAddAreaStaff" onclick="btnAddAreaStaffOnclick()">
+                                            <button class="btn btn-primary " id="btnAddAreaStaff" onclick="btnAddAreaStaffOnclick()">
                                                 <i class="fa fa-plus fa-fw"></i> Add
                                             </button>
                                         </td>
@@ -221,7 +221,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (areaDetailResult) {
                     if (areaDetailResult != null) {
-                        document.getElementById("areaNumber").value = areaDetailResult.AreaNumber;
+                        document.getElementById("areaNumber").value ="AR-" + areaDetailResult.AreaNumber;
                         document.getElementById("areaName").value = areaDetailResult.Area;
                         document.getElementById("areaDescription").value = areaDetailResult.Description;
                         cboAreaSuperVisor.selectedValue = areaDetailResult.SupervisorStaff;

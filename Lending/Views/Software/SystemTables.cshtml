@@ -51,11 +51,11 @@
                             Terms
                         </a>
                     </li>
-                    <li>
-                        <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
-                            Penalties
-                        </a>
-                    </li>
+                    @*<li>
+                            <a href="#Penalties" data-toggle="tab" id="PenaltiesTab">
+                                Penalties
+                            </a>
+                        </li>*@
                     <li>
                         <a href="#Interests" data-toggle="tab" id="InterestsTab">
                             Interests
@@ -340,12 +340,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Is Percentage</label>
-                            <div class="col-sm-8">
-                                <input type="checkbox" id="deductionIsPercentage" />
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <label class="control-label col-sm-4">Rate</label>
                             <div class="col-sm-8">
                                 <div class="input-group numberField">
@@ -473,12 +467,6 @@
                             <label class="control-label col-sm-4">Days</label>
                             <div class="col-sm-8">
                                 <div id="cboNoOfDays"></div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Days Per Pay</label>
-                            <div class="col-sm-8">
-                                <div id="cboPaymentNoOfDays"></div>
                             </div>
                         </div>
                     </form>
@@ -1189,7 +1177,6 @@
             deductionId = 0;
             document.getElementById("deductionName").value = "NA";
             document.getElementById("deductionDescription").value = "NA";
-            document.getElementById("deductionIsPercentage").checked = false;
             document.getElementById("deductionPercentageRate").value = 0;
             document.getElementById("deductionAmount").value = 0;
         }
@@ -1214,18 +1201,9 @@
             deductionsCollectionView.editItem(deductionsCollectionView.currentItem);
             var deductionTypeCurrentEditItem = deductionsCollectionView.currentEditItem;
 
-            if (deductionTypeCurrentEditItem.IsPercentage) {
-                document.getElementById("deductionPercentageRate").disabled = false;
-                document.getElementById("deductionAmount").disabled = true;
-            } else {
-                document.getElementById("deductionPercentageRate").disabled = true;
-                document.getElementById("deductionAmount").disabled = false;
-            }
-
             deductionId = deductionTypeCurrentEditItem.Id;
             document.getElementById("deductionName").value = deductionTypeCurrentEditItem.Deduction;
             document.getElementById("deductionDescription").value = deductionTypeCurrentEditItem.Description;
-            document.getElementById("deductionIsPercentage").checked = deductionTypeCurrentEditItem.IsPercentage;
             document.getElementById("deductionPercentageRate").value = deductionTypeCurrentEditItem.PercentageRate.toLocaleString();
             document.getElementById("deductionAmount").value = deductionTypeCurrentEditItem.DeductionAmount.toLocaleString();
         }
@@ -1259,7 +1237,6 @@
                 var DeductionsObject = new Object();
                 DeductionsObject.Deduction = document.getElementById('deductionName').value;
                 DeductionsObject.Description = document.getElementById('deductionDescription').value;
-                DeductionsObject.IsPercentage = document.getElementById('deductionIsPercentage').checked;
                 DeductionsObject.PercentageRate = document.getElementById('deductionPercentageRate').value;
                 DeductionsObject.DeductionAmount = document.getElementById('deductionAmount').value;
                 var DeductionsData = JSON.stringify(DeductionsObject);
@@ -1533,12 +1510,6 @@
                                 "width": "3*"
                             },
                             {
-                                "header": "Is P",
-                                "binding": "IsPercentage",
-                                "allowSorting": true,
-                                "width": "1*"
-                            },
-                            {
                                 "header": "Percentage Rate",
                                 "binding": "PercentageRate",
                                 "allowSorting": true,
@@ -1670,7 +1641,6 @@
         }
 
         var cboNoOfDays;
-        var cboPaymentNoOfDays;
 
         // allowance days
         function createCboPaymentNoOfDays() {
@@ -1679,11 +1649,6 @@
             for (var i = 0; i <= 365; i++) {
                 days[i] = i;
             }
-
-            cboPaymentNoOfDays.dispose();
-            cboPaymentNoOfDays = new wijmo.input.ComboBox('#cboPaymentNoOfDays', {
-                itemsSource: days
-            });
 
             cboNoOfDays.dispose();
             cboNoOfDays = new wijmo.input.ComboBox('#cboNoOfDays', {
@@ -1712,7 +1677,6 @@
             document.getElementById("termName").value = "NA";
             document.getElementById("termDescription").value = "NA";
             cboNoOfDays.selectedValue = "0";
-            cboPaymentNoOfDays.selectedValue = "0";
         }
 
         // edit Terms
@@ -1739,7 +1703,6 @@
             document.getElementById("termName").value = termCurrentEditItem.Term;
             document.getElementById("termDescription").value = termCurrentEditItem.Description;
             cboNoOfDays.selectedValue = termCurrentEditItem.NoOfDays;
-            cboPaymentNoOfDays.selectedValue = termCurrentEditItem.PaymentNoOfDays;
         }
 
         // form input validation
@@ -1772,125 +1735,119 @@
                 termsObject.Term = document.getElementById('termName').value;
                 termsObject.Description = document.getElementById('termDescription').value;
                 termsObject.NoOfDays = cboNoOfDays.selectedValue;
-                termsObject.PaymentNoOfDays = cboPaymentNoOfDays.selectedValue;
                 var termData = JSON.stringify(termsObject);
 
-                if (parseFloat(cboNoOfDays.selectedValue) > parseFloat(cboPaymentNoOfDays.selectedValue)) {
+                if (termId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/term/add',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: termData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Save Successful");
 
-                    if (termId == 0) {
-                        $.ajax({
-                            type: "POST",
-                            url: '/api/term/add',
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            data: termData,
-                            statusCode: {
-                                200: function () {
-                                    toastr.success("Save Successful");
+                                $("#TermsEditDetailModal").modal("hide");
 
-                                    $("#TermsEditDetailModal").modal("hide");
+                                termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                                termsCollectionView.canFilter = true;
+                                termsCollectionView.pageSize = 15;
 
-                                    termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
-                                    termsCollectionView.canFilter = true;
-                                    termsCollectionView.pageSize = 15;
+                                var filterText = '';
+                                $('#searchTerms').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    termsCollectionView.refresh();
+                                });
 
-                                    var filterText = '';
-                                    $('#searchTerms').keyup(function () {
-                                        filterText = this.value.toLowerCase();
-                                        termsCollectionView.refresh();
-                                    });
-
-                                    termsCollectionView.filter = function (item) {
-                                        return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
-                                                           || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                    }
-
-                                    termsCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                        updateNavigateButtonsLoanTerms();
-                                    });
-
-                                    termsCollectionView.currentChanged.addHandler(function (sender, args) {
-                                        updateTermsStampSecurity();
-                                    });
-
-                                    // Flex Grid
-                                    termsFlexGrid.itemsSource = termsCollectionView;
-                                    termsFlexGrid.trackChanges = true;
-                                },
-                                400: function () {
-                                    toastr.error("Bad Request");
-
-                                    $("#TermsEditDetailModal").modal("hide");
-
-                                    document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveTerms").prop("disabled", false);
-                                    $("#btnCloseTerms").prop("disabled", false);
+                                termsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
                                 }
+
+                                termsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsLoanTerms();
+                                });
+
+                                termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateTermsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                termsFlexGrid.itemsSource = termsCollectionView;
+                                termsFlexGrid.trackChanges = true;
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveTerms").prop("disabled", false);
+                                $("#btnCloseTerms").prop("disabled", false);
                             }
-                        });
-                    } else {
-                        $.ajax({
-                            type: "PUT",
-                            url: '/api/term/update/' + termId,
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json",
-                            data: termData,
-                            statusCode: {
-                                200: function () {
-                                    toastr.success("Update Successful");
-
-                                    $("#TermsEditDetailModal").modal("hide");
-
-                                    termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
-                                    termsCollectionView.canFilter = true;
-                                    termsCollectionView.pageSize = 15;
-
-                                    var filterText = '';
-                                    $('#searchTerms').keyup(function () {
-                                        filterText = this.value.toLowerCase();
-                                        termsCollectionView.refresh();
-                                    });
-
-                                    termsCollectionView.filter = function (item) {
-                                        return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
-                                                           || (item.Description.toLowerCase().indexOf(filterText) > -1);
-                                    }
-
-                                    termsCollectionView.collectionChanged.addHandler(function (sender, args) {
-                                        updateNavigateButtonsLoanTerms();
-                                    });
-
-                                    termsCollectionView.currentChanged.addHandler(function (sender, args) {
-                                        updateTermsStampSecurity();
-                                    });
-
-                                    // Flex Grid
-                                    termsFlexGrid.itemsSource = termsCollectionView;
-                                    termsFlexGrid.trackChanges = true;
-                                },
-                                404: function () {
-                                    toastr.error("Not Found");
-
-                                    $("#TermsEditDetailModal").modal("hide");
-
-                                    document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveTerms").prop("disabled", false);
-                                    $("#btnCloseTerms").prop("disabled", false);
-                                },
-                                400: function () {
-                                    toastr.error("Bad Request");
-
-                                    $("#TermsEditDetailModal").modal("hide");
-
-                                    document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                    $("#btnSaveTerms").prop("disabled", false);
-                                    $("#btnCloseTerms").prop("disabled", false);
-                                }
-                            }
-                        });
-                    }
+                        }
+                    });
                 } else {
-                    toastr.error("The no of days must not be greater than the no of days per pay.");
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/term/update/' + termId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: termData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Update Successful");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                termsCollectionView = new wijmo.collections.CollectionView(getTermsList());
+                                termsCollectionView.canFilter = true;
+                                termsCollectionView.pageSize = 15;
+
+                                var filterText = '';
+                                $('#searchTerms').keyup(function () {
+                                    filterText = this.value.toLowerCase();
+                                    termsCollectionView.refresh();
+                                });
+
+                                termsCollectionView.filter = function (item) {
+                                    return !filterText || (item.Term.toLowerCase().indexOf(filterText) > -1)
+                                                       || (item.Description.toLowerCase().indexOf(filterText) > -1);
+                                }
+
+                                termsCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                    updateNavigateButtonsLoanTerms();
+                                });
+
+                                termsCollectionView.currentChanged.addHandler(function (sender, args) {
+                                    updateTermsStampSecurity();
+                                });
+
+                                // Flex Grid
+                                termsFlexGrid.itemsSource = termsCollectionView;
+                                termsFlexGrid.trackChanges = true;
+                            },
+                            404: function () {
+                                toastr.error("Not Found");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveTerms").prop("disabled", false);
+                                $("#btnCloseTerms").prop("disabled", false);
+                            },
+                            400: function () {
+                                toastr.error("Bad Request");
+
+                                $("#TermsEditDetailModal").modal("hide");
+
+                                document.getElementById("btnSaveTerms").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
+                                $("#btnSaveTerms").prop("disabled", false);
+                                $("#btnCloseTerms").prop("disabled", false);
+                            }
+                        }
+                    });
                 }
             } else {
                 toastr.error("Invalid Entry");
@@ -2051,12 +2008,6 @@
                             {
                                 "header": "Days",
                                 "binding": "NoOfDays",
-                                "allowSorting": true,
-                                "width": "1.5*"
-                            },
-                            {
-                                "header": "Days Per Pay",
-                                "binding": "PaymentNoOfDays",
                                 "allowSorting": true,
                                 "width": "1.5*"
                             }
@@ -3115,21 +3066,20 @@
                 getUserRightsMessageError();
             }
 
-            cboPaymentNoOfDays = new wijmo.input.ComboBox('#cboPaymentNoOfDays');
             createCboPaymentNoOfDays();
         }
 
-        $('#deductionIsPercentage').change(function () {
-            if ($(this).is(":checked")) {
-                document.getElementById("deductionPercentageRate").disabled = false;
-                document.getElementById("deductionAmount").disabled = true;
-                document.getElementById("deductionAmount").value = 0;
-            } else {
-                document.getElementById("deductionPercentageRate").disabled = true;
-                document.getElementById("deductionAmount").disabled = false;
-                document.getElementById("deductionPercentageRate").value = 0;
-            }
-        });
+        //$('#deductionIsPercentage').change(function () {
+        //    if ($(this).is(":checked")) {
+        //        document.getElementById("deductionPercentageRate").disabled = false;
+        //        document.getElementById("deductionAmount").disabled = true;
+        //        document.getElementById("deductionAmount").value = 0;
+        //    } else {
+        //        document.getElementById("deductionPercentageRate").disabled = true;
+        //        document.getElementById("deductionAmount").disabled = false;
+        //        document.getElementById("deductionPercentageRate").value = 0;
+        //    }
+        //});
     </script>
 </body>
 </html>

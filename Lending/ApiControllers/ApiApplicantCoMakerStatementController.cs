@@ -8,42 +8,40 @@ using Microsoft.AspNet.Identity;
 
 namespace Lending.ApiControllers
 {
-    public class ApiCoMakerStatementRealPropertiesOwnedController : ApiController
+    public class ApiApplicantCoMakerStatementController : ApiController
     {
         // data
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        // co maker real properties owned list by co-maker id
+        // applicant co maker statement
         [Authorize]
         [HttpGet]
-        [Route("api/coMakerStatementRealPropertiesOwned/listByCoMakerId/{coMakerId}")]
-        public List<Models.MstCoMakerStatementRealPropertiesOwned> listCoMakerStatementRealPropertiesOwnedByCoMakerId(String coMakerId)
+        [Route("api/applicantCoMakerStatement/listByApplicantId/{applicantId}")]
+        public List<Models.MstApplicantCoMakerStatement> listApplicantRealPropertiesOwnedByApplicantId(String applicantId)
         {
-            var coMakerStatementRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds.OrderByDescending(d => d.Id)
-                                                       where d.CoMakerId == Convert.ToInt32(coMakerId)
-                                                       select new Models.MstCoMakerStatementRealPropertiesOwned
-                                                       {
-                                                           Id = d.Id,
-                                                           CoMakerId = d.CoMakerId,
-                                                           CoMaker = d.mstCoMakerStatement.CoMakerLastName + ", " + d.mstCoMakerStatement.CoMakerFirstName + " " + d.mstCoMakerStatement.CoMakerMiddleName,
-                                                           Real = d.Real,
-                                                           Location = d.Location,
-                                                           PresentValue = d.PresentValue,
-                                                           EcumberedTo = d.EcumberedTo
-                                                       };
+            var applicantCoMakerStatements = from d in db.mstApplicantCoMakerStatements.OrderByDescending(d => d.Id)
+                                             where d.ApplicantId == Convert.ToInt32(applicantId)
+                                             select new Models.MstApplicantCoMakerStatement
+                                             {
+                                                 Id = d.Id,
+                                                 ApplicantId = d.ApplicantId,
+                                                 CoMakerApplicantId = d.CoMakerApplicantId,
+                                                 CoMaker = d.mstApplicant1.ApplicantLastName + " " + d.mstApplicant1.ApplicantFirstName + ", " + d.mstApplicant1.ApplicantMiddleName,
+                                                 ContactNumber = d.mstApplicant1.ContactNumber
+                                             };
 
-            return coMakerStatementRealPropertiesOwneds.ToList();
+            return applicantCoMakerStatements.ToList();
         }
 
-        // add co maker real properties owned
+        // add co maker statement
         [Authorize]
         [HttpPost]
-        [Route("api/coMakerStatementRealPropertiesOwned/add")]
-        public HttpResponseMessage addCoMakerStatementRealPropertiesOwned(Models.MstCoMakerStatementRealPropertiesOwned coMakersRealPropertiesOwned)
+        [Route("api/applicantCoMakerStatement/add")]
+        public HttpResponseMessage addApplicantCoMakerStatement(Models.MstApplicantCoMakerStatement coMakerStatement)
         {
             try
             {
-                var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakersRealPropertiesOwned.CoMakerId select d;
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(coMakerStatement.ApplicantId) select d;
                 if (applicants.Any())
                 {
                     if (!applicants.FirstOrDefault().IsLocked)
@@ -78,14 +76,10 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                Data.mstCoMakerStatementRealPropertiesOwned newCoMakerRealPropertiesOwned = new Data.mstCoMakerStatementRealPropertiesOwned();
-                                newCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
-                                newCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
-                                newCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
-                                newCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
-                                newCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
-
-                                db.mstCoMakerStatementRealPropertiesOwneds.InsertOnSubmit(newCoMakerRealPropertiesOwned);
+                                Data.mstApplicantCoMakerStatement newCoMaker = new Data.mstApplicantCoMakerStatement();
+                                newCoMaker.ApplicantId = coMakerStatement.ApplicantId;
+                                newCoMaker.CoMakerApplicantId = coMakerStatement.CoMakerApplicantId;
+                                db.mstApplicantCoMakerStatements.InsertOnSubmit(newCoMaker);
                                 db.SubmitChanges();
 
                                 return Request.CreateResponse(HttpStatusCode.OK);
@@ -116,21 +110,21 @@ namespace Lending.ApiControllers
             }
         }
 
-        // update  co maker real properties owned
+        // update co maker statement
         [Authorize]
         [HttpPut]
-        [Route("api/coMakerStatementRealPropertiesOwned/update/{id}")]
-        public HttpResponseMessage updateCoMakerStatementRealPropertiesOwned(String id, Models.MstCoMakerStatementRealPropertiesOwned coMakersRealPropertiesOwned)
+        [Route("api/applicantCoMakerStatement/update/{id}")]
+        public HttpResponseMessage updateApplicantCoMakerStatement(String id, Models.MstApplicantCoMakerStatement coMakerStatement)
         {
             try
             {
-                var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakersRealPropertiesOwned.CoMakerId select d;
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(coMakerStatement.ApplicantId) select d;
                 if (applicants.Any())
                 {
                     if (!applicants.FirstOrDefault().IsLocked)
                     {
-                        var coMakeRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
-                        if (coMakeRealPropertiesOwneds.Any())
+                        var coMakerStatements = from d in db.mstApplicantCoMakerStatements where d.Id == Convert.ToInt32(id) select d;
+                        if (coMakerStatements.Any())
                         {
                             var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
                             var mstUserForms = from d in db.mstUserForms
@@ -162,13 +156,8 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    var updateCoMakerRealPropertiesOwned = coMakeRealPropertiesOwneds.FirstOrDefault();
-                                    updateCoMakerRealPropertiesOwned.CoMakerId = coMakersRealPropertiesOwned.CoMakerId;
-                                    updateCoMakerRealPropertiesOwned.Real = coMakersRealPropertiesOwned.Real;
-                                    updateCoMakerRealPropertiesOwned.Location = coMakersRealPropertiesOwned.Location;
-                                    updateCoMakerRealPropertiesOwned.PresentValue = coMakersRealPropertiesOwned.PresentValue;
-                                    updateCoMakerRealPropertiesOwned.EcumberedTo = coMakersRealPropertiesOwned.EcumberedTo;
-
+                                    var updateCoMaker = coMakerStatements.FirstOrDefault();
+                                    updateCoMaker.CoMakerApplicantId = coMakerStatement.CoMakerApplicantId;
                                     db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);
@@ -204,18 +193,18 @@ namespace Lending.ApiControllers
             }
         }
 
-        // delete co maker real properties owned
+        // delete co maker statement
         [Authorize]
         [HttpDelete]
-        [Route("api/coMakerStatementRealPropertiesOwned/delete/{id}")]
-        public HttpResponseMessage deleteCoMakerStatementRealPropertiesOwned(String id)
+        [Route("api/applicantCoMakerStatement/delete/{id}")]
+        public HttpResponseMessage deleteApplicantCoMakerStatement(String id)
         {
             try
             {
-                var coMakeRealPropertiesOwneds = from d in db.mstCoMakerStatementRealPropertiesOwneds where d.Id == Convert.ToInt32(id) select d;
-                if (coMakeRealPropertiesOwneds.Any())
+                var coMakerStatements = from d in db.mstApplicantCoMakerStatements where d.Id == Convert.ToInt32(id) select d;
+                if (coMakerStatements.Any())
                 {
-                    var applicants = from d in db.mstApplicants where d.mstCoMakerStatements.FirstOrDefault().Id == coMakeRealPropertiesOwneds.FirstOrDefault().CoMakerId select d;
+                    var applicants = from d in db.mstApplicants where d.Id == coMakerStatements.FirstOrDefault().ApplicantId select d;
                     if (applicants.Any())
                     {
                         if (!applicants.FirstOrDefault().IsLocked)
@@ -250,7 +239,7 @@ namespace Lending.ApiControllers
 
                                 if (canPerformActions)
                                 {
-                                    db.mstCoMakerStatementRealPropertiesOwneds.DeleteOnSubmit(coMakeRealPropertiesOwneds.First());
+                                    db.mstApplicantCoMakerStatements.DeleteOnSubmit(coMakerStatements.First());
                                     db.SubmitChanges();
 
                                     return Request.CreateResponse(HttpStatusCode.OK);

@@ -22,7 +22,6 @@ namespace Lending.Models
         public Int32 TermId { get; set; }
         public String Term { get; set; }
         public Decimal TermNoOfDays { get; set; }
-        public Decimal TermPaymentNoOfDays { get; set; }
         public String MaturityDate { get; set; }
         public Decimal PrincipalAmount { get; set; }
         public Boolean IsAdvanceInterest { get; set; }
@@ -35,16 +34,18 @@ namespace Lending.Models
         public Decimal DeductionAmount { get; set; }
         public Decimal NetAmount { get; set; }
         public Decimal NetCollectionAmount { get; set; }
+        public Decimal CollectibleAmount { get; set; }
         public Decimal TotalPaidAmount { get; set; }
         public Decimal TotalPenaltyAmount { get; set; }
         public Decimal TotalBalanceAmount { get; set; }
-        public Decimal NoOfAbsent { get; set; }
-        public Boolean IsReconstruct { get; set; }
-        public Boolean IsRenew { get; set; }
         public Boolean IsLoanApplication { get; set; }
         public Boolean IsLoanReconstruct { get; set; }
         public Boolean IsLoanRenew { get; set; }
+        public Boolean IsReconstructed { get; set; }
+        public Boolean IsRenewed { get; set; }
         public Boolean IsFullyPaid { get; set; }
+        public String ReconstructedDocNumber { get; set; }
+        public String RenewedDocNumber { get; set; }
         public Boolean IsLocked { get; set; }
         public Int32 CreatedByUserId { get; set; }
         public String CreatedByUser { get; set; }
@@ -52,10 +53,5 @@ namespace Lending.Models
         public Int32 UpdatedByUserId { get; set; }
         public String UpdatedByUser { get; set; }
         public String UpdatedDateTime { get; set; }
-        public String DayReference { get; set; }
-        public String CollectibleDate { get; set; }
-        public Decimal CollectibleAmount { get; set; }
-        public String ReconstructedDocNumber { get; set; }
-        public String RenewedDocNumber { get; set; }
     }
 }

@@ -25,7 +25,6 @@ namespace Lending.ApiControllers
                                Id = d.Id,
                                Deduction = d.Deduction,
                                Description = d.Description,
-                               IsPercentage = d.IsPercentage,
                                PercentageRate = d.PercentageRate,
                                DeductionAmount = d.DeductionAmount,
                                CreatedByUserId = d.CreatedByUserId,
@@ -80,7 +79,6 @@ namespace Lending.ApiControllers
                         Data.mstDeduction newDeductions = new Data.mstDeduction();
                         newDeductions.Deduction = deductions.Deduction;
                         newDeductions.Description = deductions.Description;
-                        newDeductions.IsPercentage = deductions.IsPercentage;
                         newDeductions.PercentageRate = deductions.PercentageRate;
                         newDeductions.DeductionAmount = deductions.DeductionAmount;
                         newDeductions.CreatedByUserId = userId;
@@ -152,7 +150,6 @@ namespace Lending.ApiControllers
                             var updateDeductions = deductions.FirstOrDefault();
                             updateDeductions.Deduction = deduction.Deduction;
                             updateDeductions.Description = deduction.Description;
-                            updateDeductions.IsPercentage = deduction.IsPercentage;
                             updateDeductions.PercentageRate = deduction.PercentageRate;
                             updateDeductions.DeductionAmount = deduction.DeductionAmount;
                             updateDeductions.UpdatedByUserId = userId;

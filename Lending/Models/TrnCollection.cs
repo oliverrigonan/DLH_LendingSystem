@@ -16,8 +16,6 @@ namespace Lending.Models
         public String Applicant { get; set; }
         public Int32 LoanId { get; set; }
         public String LoanNumberDetail { get; set; }
-        public Int32 StatusId { get; set; }
-        public String Status { get; set; }
         public String Particulars { get; set; }
         public Decimal TotalPaidAmount { get; set; }
         public Decimal TotalPenaltyAmount { get; set; }
@@ -32,8 +30,8 @@ namespace Lending.Models
         public Int32 UpdatedByUserId { get; set; }
         public String UpdatedByUser { get; set; }
         public String UpdatedDateTime { get; set; }
-        public Boolean IsReconstruct { get; set; }
-        public Boolean IsRenew { get; set; }
+        public Boolean IsReconstructed { get; set; }
+        public Boolean IsRenewed { get; set; }
         public Boolean IsLoanApplication { get; set; }
         public Boolean IsLoanReconstruct { get; set; }
         public Boolean IsLoanRenew { get; set; }

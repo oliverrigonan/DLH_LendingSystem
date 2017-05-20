@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiControllers\ApiApplicantApplianceOwnedController.cs" />
+    <Compile Include="ApiControllers\ApiApplicantCoMakerStatementController.cs" />
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiAreaStaffController.cs" />
@@ -187,17 +188,11 @@
     <Compile Include="ApiControllers\ApiInterestController.cs" />
     <Compile Include="ApiControllers\ApiLoanCollateralController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRequirementsController.cs" />
-    <Compile Include="ApiControllers\ApiLoanLinesController.cs" />
-    <Compile Include="ApiControllers\ApiLoanReconstructController.cs" />
-    <Compile Include="ApiControllers\ApiLoanRenewController.cs" />
-    <Compile Include="ApiControllers\ApiPenaltyController.cs" />
+    <Compile Include="ApiControllers\ApiLoanReconstructRenewController.cs" />
     <Compile Include="ApiControllers\ApiRemittanceController.cs" />
     <Compile Include="ApiControllers\ApiRequirementsController.cs" />
     <Compile Include="ApiControllers\ApiResidenceTypeController.cs" />
     <Compile Include="ApiControllers\ApiAreaController.cs" />
-    <Compile Include="ApiControllers\ApiCoMakerStatementApplianceOwnedController.cs" />
-    <Compile Include="ApiControllers\ApiCoMakerStatementController.cs" />
-    <Compile Include="ApiControllers\ApiCoMakerStatementRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiStaffController.cs" />
     <Compile Include="ApiControllers\ApiTermController.cs" />
     <Compile Include="ApiControllers\ApiUserController.cs" />
@@ -225,14 +220,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\MstAccount.cs" />
     <Compile Include="Models\MstApplicant.cs" />
     <Compile Include="Models\MstApplicantApplianceOwned.cs" />
+    <Compile Include="Models\MstApplicantCoMakerStatement.cs" />
     <Compile Include="Models\MstApplicantRequirements.cs" />
     <Compile Include="Models\MstAreaStaff.cs" />
     <Compile Include="Models\MstDeductions.cs" />
     <Compile Include="Models\MstInterest.cs" />
-    <Compile Include="Models\MstPenalty.cs" />
     <Compile Include="Models\MstTerm.cs" />
     <Compile Include="Models\MstUserForm.cs" />
     <Compile Include="Models\RepDailyCollectionRemittance.cs" />
@@ -243,9 +237,6 @@
     <Compile Include="Models\SysResidenceType.cs" />
     <Compile Include="Models\MstArea.cs" />
     <Compile Include="Models\MstBranch.cs" />
-    <Compile Include="Models\MstCoMakerStatement.cs" />
-    <Compile Include="Models\MstCoMakerStatementApplianceOwned.cs" />
-    <Compile Include="Models\MstCoMakerStatementRealPropertiesOwned.cs" />
     <Compile Include="Models\MstCompany.cs" />
     <Compile Include="Models\MstRequirements.cs" />
     <Compile Include="Models\MstStaff.cs" />
@@ -257,16 +248,16 @@
     <Compile Include="Models\TrnLoan.cs" />
     <Compile Include="Models\TrnLoanCollateral.cs" />
     <Compile Include="Models\TrnLoanDeductions.cs" />
-    <Compile Include="Models\TrnLoanLines.cs" />
-    <Compile Include="Models\TrnLoanReconstruct.cs" />
-    <Compile Include="Models\TrnLoanRenew.cs" />
+    <Compile Include="Models\TrnLoanReconstructRenew.cs" />
     <Compile Include="Models\TrnRemittance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\RepActiveOverdueCollectionPDFController.cs" />
     <Compile Include="Reports\RepCashVoucherPDFController.cs" />
     <Compile Include="Reports\RepCollectiblesPDFController.cs" />
     <Compile Include="Reports\RepDailyAreaCollectionsPDFController.cs" />
+    <Compile Include="Reports\RepDailyCollectionRemittancePDFController.cs" />
     <Compile Include="Reports\RepDailyReleaseMonitoringController.cs" />
+    <Compile Include="Reports\RepExpensesPDFController.cs" />
     <Compile Include="Reports\RepLoanRenewReconstructSummaryPDFController.cs" />
     <Compile Include="Reports\RepOverdueCollectionPDFController.cs" />
     <Compile Include="Reports\RepTotalCollectionPDFController.cs" />
@@ -441,10 +432,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\RepActiveOverdueCollectionPDF\" />
-    <Folder Include="Views\RepDailyReleaseMonitoring\" />
-    <Folder Include="Views\RepLoanRenewReconstructSummaryPDF\" />
-    <Folder Include="Views\RepTotalCollectionPDF\" />
+    <Folder Include="Views\RepDailyCollectionRemittance\" />
+    <Folder Include="Views\RepExpensesPDF\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

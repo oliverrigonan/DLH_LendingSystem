@@ -19,17 +19,12 @@ namespace Lending.Reports
             if (date != null && areaId != null)
             {
                 var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                       join s in db.trnLoanLines
-                                       on d.Id equals s.LoanId
-                                       into joinLoanApplications
-                                       from listLoanApplications in joinLoanApplications.DefaultIfEmpty()
-                                       where listLoanApplications.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                       && listLoanApplications.trnLoan.IsReconstruct == false
-                                       && listLoanApplications.trnLoan.IsRenew == false
-                                       && listLoanApplications.trnLoan.IsLocked == true
-                                       && listLoanApplications.trnLoan.IsLoanReconstruct == false
-                                       && listLoanApplications.trnLoan.TotalBalanceAmount > 0
-                                       && listLoanApplications.Id == joinLoanApplications.Where(f => f.PaidAmount == 0 && f.PenaltyAmount == 0).FirstOrDefault().Id
+                                       where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsReconstructed == false
+                                       && d.IsRenewed == false
+                                       && d.IsLoanReconstruct == false
+                                       && d.TotalBalanceAmount > 0
+                                       && d.IsLocked == true
                                        select new Models.TrnLoan
                                        {
                                            Id = d.Id,
@@ -44,7 +39,6 @@ namespace Lending.Reports
                                            TermId = d.TermId,
                                            Term = d.mstTerm.Term,
                                            TermNoOfDays = d.TermNoOfDays,
-                                           TermPaymentNoOfDays = d.TermPaymentNoOfDays,
                                            MaturityDate = d.MaturityDate.ToShortDateString(),
                                            PrincipalAmount = d.PrincipalAmount,
                                            InterestId = d.InterestId,
@@ -55,11 +49,12 @@ namespace Lending.Reports
                                            DeductionAmount = d.DeductionAmount,
                                            NetAmount = d.NetAmount,
                                            NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstruct = d.IsReconstruct,
-                                           IsRenew = d.IsRenew,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
@@ -69,10 +64,7 @@ namespace Lending.Reports
                                            CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                            UpdatedByUserId = d.UpdatedByUserId,
                                            UpdatedByUser = d.mstUser2.FullName,
-                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                           CollectibleAmount = listLoanApplications.CollectibleAmount,
-                                           DayReference = listLoanApplications.DayReference,
-                                           CollectibleDate = listLoanApplications.CollectibleDate.ToShortDateString(),
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                                        };
 
                 if (loanApplications.Any())
@@ -142,56 +134,38 @@ namespace Lending.Reports
                     titleHeader.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(date).ToString("MMMM dd, yyyy") + " - " + Convert.ToDateTime(date).DayOfWeek.ToString(), fontArial12)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
                     document.Add(titleHeader);
 
-                    PdfPTable loanlData = new PdfPTable(7);
-                    float[] loanlDataWithCells = new float[] { 23f, 12f, 10f, 23f, 10f, 12f, 9f };
+                    PdfPTable loanlData = new PdfPTable(6);
+                    float[] loanlDataWithCells = new float[] { 30f, 15f, 10f, 15f, 15f, 25f };
                     loanlData.SetWidths(loanlDataWithCells);
                     loanlData.WidthPercentage = 100;
                     loanlData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanlData.AddCell(new PdfPCell(new Phrase("Balance", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Doc No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Due Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanlData.AddCell(new PdfPCell(new Phrase("Day Reference", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanlData.AddCell(new PdfPCell(new Phrase("Col. Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Balance", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Collectible", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Others", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     Decimal totalCollectibles = 0;
-                    foreach (var loanLine in loanApplications)
+                    foreach (var loanApplication in loanApplications)
                     {
-                        var applicant = loanLine.Applicant;
-                        loanlData.AddCell(new PdfPCell(new Phrase(applicant, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanLine.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanLine.MaturityDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanLine.DayReference, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanLine.CollectibleDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                        totalCollectibles += loanApplication.CollectibleAmount;
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                        if (loanLine.DayReference.Equals(" "))
+                        if (loanApplication.IsLoanRenew)
                         {
-                            loanlData.AddCell(new PdfPCell(new Phrase(loanLine.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanlData.AddCell(new PdfPCell(new Phrase("RN-" + loanApplication.LoanNumber, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         }
                         else
                         {
-                            if (loanLine.TotalBalanceAmount <= loanLine.CollectibleAmount)
-                            {
-                                loanlData.AddCell(new PdfPCell(new Phrase(loanLine.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            }
-                            else
-                            {
-                                loanlData.AddCell(new PdfPCell(new Phrase(loanLine.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                            }
+                            loanlData.AddCell(new PdfPCell(new Phrase("LN-" + loanApplication.LoanNumber, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         }
 
-                        if (loanLine.DayReference.Equals(" "))
-                        {
-                            totalCollectibles += loanLine.TotalBalanceAmount;
-                            loanlData.AddCell(new PdfPCell(new Phrase("Pending", fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        }
-                        else
-                        {
-                            totalCollectibles += loanLine.CollectibleAmount;
-                            loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        }
-
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.MaturityDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     }
-                    loanlData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { HorizontalAlignment = 2, Colspan = 5, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+
+                    loanlData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { HorizontalAlignment = 2, Colspan = 4, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(totalCollectibles.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 
