@@ -423,7 +423,7 @@ namespace Lending.Reports
                         MemoryStream workStream = new MemoryStream();
                         Rectangle rectangle = new Rectangle(PageSize.A3.Rotate());
                         Document document = new Document(rectangle, 72, 72, 72, 72);
-                        document.SetMargins(30f, 30f, 20f, 20f);
+                        document.SetMargins(30f, 30f, 50f, 20f);
                         PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                         document.Open();
@@ -501,7 +501,17 @@ namespace Lending.Reports
                             }
                         }
 
-                        titleHeader.AddCell(new PdfPCell(new Phrase("From " + Convert.ToDateTime(startLoanDate).ToString("MMMM dd, yyyy") + " to " + Convert.ToDateTime(endLoanDate).ToString("MMMM dd, yyyy"), fontArial12)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
+                        titleHeader.AddCell(new PdfPCell(new Phrase("From " + Convert.ToDateTime(startLoanDate).ToString("MMMM dd, yyyy") + " to " + Convert.ToDateTime(endLoanDate).ToString("MMMM dd, yyyy"), fontArial12)) { Border = 0, PaddingBottom = 5f, PaddingTop = 2f, HorizontalAlignment = 1 });
+
+                        if (areaId.Equals("0"))
+                        {
+                            titleHeader.AddCell(new PdfPCell(new Phrase("All Areas", fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                        }
+                        else
+                        {
+                            titleHeader.AddCell(new PdfPCell(new Phrase(area, fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                        }
+
                         document.Add(titleHeader);
 
                         PdfPTable loanlData = new PdfPTable(13);
@@ -559,15 +569,15 @@ namespace Lending.Reports
                         }
 
                         loanlData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { Colspan = 4, HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalPrincipalAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalInterestAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalPreviousBalanceAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalDeductionAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalNetCollectionAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalTotalPaidAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalTotalPenaltyAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalTotalBalanceAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalPrincipalAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalInterestAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalPreviousBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalDeductionAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalNetCollectionAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalTotalPaidAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalTotalPenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalTotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 
                         document.Add(loanlData);
                         document.Close();

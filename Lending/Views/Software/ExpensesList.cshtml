@@ -276,7 +276,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditExpensesOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteExpensesOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: expensesListResult[i]["Id"],
-                                ExpenseNumber: expensesListResult[i]["ExpenseNumber"],
+                                ExpenseNumber: "EX-" + expensesListResult[i]["ExpenseNumber"],
                                 ExpenseDate: expensesListResult[i]["ExpenseDate"],
                                 AssignedStaffId: expensesListResult[i]["AssignedStaffId"],
                                 AssignedStaff: expensesListResult[i]["AssignedStaff"],

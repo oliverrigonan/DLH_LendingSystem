@@ -2143,7 +2143,7 @@
                             collectionListArray.push({
                                 DetailButton: "<button class='btn btn-primary btn-xs btn-block'  onclick='btnDetailButton()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 Id: collectionListResult[i]["Id"],
-                                CollectionNumber: collectionListResult[i]["CollectionNumber"],
+                                CollectionNumber: "CL-" + collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
                                 Applicant: collectionListResult[i]["Applicant"],
                                 Particulars: collectionListResult[i]["Particulars"],
@@ -2754,7 +2754,7 @@
                             expensesListArray.push({
                                 DetailButton: "<button class='btn btn-primary btn-xs btn-block' onclick='expensesDetailOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 Id: expensesListResult[i]["Id"],
-                                ExpenseNumber: expensesListResult[i]["ExpenseNumber"],
+                                ExpenseNumber: "EX-" + expensesListResult[i]["ExpenseNumber"],
                                 ExpenseDate: expensesListResult[i]["ExpenseDate"],
                                 AssignedStaffId: expensesListResult[i]["AssignedStaffId"],
                                 AssignedStaff: expensesListResult[i]["AssignedStaff"],
@@ -3163,6 +3163,22 @@
             var newEndDate = new Date(cboEndDateTotalCollectionReportReport.value);
             var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
             window.open("/RepTotalCollectionPDF/totalCollection?startCollectionDate=" + startDate + "&endCollectionDate=" + endDate, "_blank");
+        }
+
+        function btnDateDailyCollectionAndRemittanceReportPrint() {
+            var newStartDate = new Date(cboStartDateDailyCollectionAndRemittanceReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateDailyCollectionAndRemittanceReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepDailyCollectionRemittancePDF/dailyCollectionRemittance?startCollectionDate=" + startDate + "&endCollectionDate=" + endDate, "_blank");
+        }
+
+        function btnExpensesReportPrint() {
+            var newStartDate = new Date(cboStartExpensesReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndExpensesReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepExpensesPDF/expensesPDF?startExpenseDate=" + startDate + "&endExpensesDate=" + endDate, "_blank");
         }
 
         window.onload = function () {

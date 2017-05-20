@@ -12,7 +12,6 @@ namespace Lending.Reports
 {
     public class RepTotalCollectionPDFController : Controller
     {
-
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
         public ActionResult totalCollection(String startCollectionDate, String endCollectionDate)
@@ -66,7 +65,7 @@ namespace Lending.Reports
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(PageSize.A3);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
-                    document.SetMargins(30f, 30f, 20f, 20f);
+                    document.SetMargins(30f, 30f, 50f, 20f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                     document.Open();
@@ -143,7 +142,7 @@ namespace Lending.Reports
                         collectionData.AddCell(new PdfPCell(new Phrase(collectionsGroupByArea.TotalCollection.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     }
 
-                    collectionData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(totalActive.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(totalOverdue.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(totaGross.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });

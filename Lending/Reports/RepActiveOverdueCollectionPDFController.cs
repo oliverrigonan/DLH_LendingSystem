@@ -175,7 +175,7 @@ namespace Lending.Reports
                                                       select new Models.TrnCollection
                                                       {
                                                           Id = d.Id,
-                                                          CollectionNumber = d.CollectionNumber,
+                                                          CollectionNumber = "CL-" + d.CollectionNumber,
                                                           CollectionDate = d.CollectionDate,
                                                           ApplicantId = d.ApplicantId,
                                                           Applicant = d.Applicant,
@@ -201,7 +201,7 @@ namespace Lending.Reports
                         MemoryStream workStream = new MemoryStream();
                         Rectangle rectangle = new Rectangle(PageSize.A3.Rotate());
                         Document document = new Document(rectangle, 72, 72, 72, 72);
-                        document.SetMargins(30f, 30f, 20f, 20f);
+                        document.SetMargins(30f, 30f, 50f, 20f);
                         PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                         document.Open();
@@ -272,7 +272,17 @@ namespace Lending.Reports
                             }
                         }
 
-                        titleHeader.AddCell(new PdfPCell(new Phrase("From " + Convert.ToDateTime(startCollectionDate).ToString("MMMM dd, yyyy") + " to " + Convert.ToDateTime(endCollectionDate).ToString("MMMM dd, yyyy"), fontArial12)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
+                        titleHeader.AddCell(new PdfPCell(new Phrase("From " + Convert.ToDateTime(startCollectionDate).ToString("MMMM dd, yyyy") + " to " + Convert.ToDateTime(endCollectionDate).ToString("MMMM dd, yyyy"), fontArial12)) { Border = 0, PaddingBottom = 5f, PaddingTop = 2f, HorizontalAlignment = 1 });
+
+                        if (areaId.Equals("0"))
+                        {
+                            titleHeader.AddCell(new PdfPCell(new Phrase("All Areas", fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                        }
+                        else
+                        {
+                            titleHeader.AddCell(new PdfPCell(new Phrase(area, fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                        }
+
                         document.Add(titleHeader);
 
                         PdfPTable collectionData = new PdfPTable(8);
@@ -305,7 +315,7 @@ namespace Lending.Reports
                             collectionData.AddCell(new PdfPCell(new Phrase(collectionActiveAndOverdue.TotalPenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                         }
 
-                        collectionData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11)) { Colspan = 6, HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { Colspan = 6, HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionData.AddCell(new PdfPCell(new Phrase(totalPaidAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionData.AddCell(new PdfPCell(new Phrase(totalPenaltyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 

@@ -1314,7 +1314,13 @@
                         var photoDiv = document.getElementById("photoDiv").appendChild(imageElement);
                         photoDiv.appendChild(photoDivElement);
                         document.getElementById("applicantNumber").disabled = true;
-                        document.getElementById("applicantNumber").value = "AP-" + applicantDetailResult.ApplicantNumber;
+
+                        if (applicantDetailResult.IsCoMaker) {
+                            document.getElementById("applicantNumber").value = "CM-" + applicantDetailResult.ApplicantNumber;
+                        } else {
+                            document.getElementById("applicantNumber").value = "AP-" + applicantDetailResult.ApplicantNumber;
+                        }
+
                         document.getElementById("isCoMaker").checked = applicantDetailResult.IsCoMaker;
                         document.getElementById("applicantLastName").value = applicantDetailResult.ApplicantLastName;
                         document.getElementById("applicantFirstName").value = applicantDetailResult.ApplicantFirstName;

@@ -957,7 +957,7 @@
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditRemittanceOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteRemittanceOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
                                 Id: remittanceListResult[i]["Id"],
-                                RemittanceNumber: remittanceListResult[i]["RemittanceNumber"],
+                                RemittanceNumber: "RM-" + remittanceListResult[i]["RemittanceNumber"],
                                 RemittanceDate: remittanceDateValue,
                                 AreaId: remittanceListResult[i]["AreaId"],
                                 Area: remittanceListResult[i]["Area"],

@@ -247,7 +247,7 @@
                 success: function (expensesResult) {
                     if (expensesResult != null) {
                         document.getElementById("expensesNumber").disabled = true;
-                        document.getElementById("expensesNumber").value = expensesResult.ExpenseNumber;
+                        document.getElementById("expensesNumber").value = "EX-" + expensesResult.ExpenseNumber;
                         cboExpensesPreparedBy.disabled = true;
                         cboExpensesDate.value = new Date(expensesResult.ExpenseDate);
                         cboStaff.selectedValue = expensesResult.AssignedStaff;

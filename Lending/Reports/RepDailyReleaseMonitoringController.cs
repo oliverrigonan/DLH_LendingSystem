@@ -175,7 +175,7 @@ namespace Lending.Reports
                         MemoryStream workStream = new MemoryStream();
                         Rectangle rectangle = new Rectangle(PageSize.A3);
                         Document document = new Document(rectangle, 72, 72, 72, 72);
-                        document.SetMargins(30f, 30f, 20f, 20f);
+                        document.SetMargins(30f, 30f, 50f, 20f);
                         PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                         document.Open();
@@ -234,7 +234,17 @@ namespace Lending.Reports
                         titleHeader.SetWidths(titleHeaderWithCells);
                         titleHeader.WidthPercentage = 100;
                         titleHeader.AddCell(new PdfPCell(new Phrase("Daily Release Monitoring", fontArial13Bold)) { Border = 0, PaddingBottom = 5f, PaddingTop = 1f, HorizontalAlignment = 1 });
-                        titleHeader.AddCell(new PdfPCell(new Phrase("From " + Convert.ToDateTime(startDate).ToString("MMMM dd, yyyy") + " to " + Convert.ToDateTime(endDate).ToString("MMMM dd, yyyy"), fontArial12)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
+                        titleHeader.AddCell(new PdfPCell(new Phrase("From " + Convert.ToDateTime(startDate).ToString("MMMM dd, yyyy") + " to " + Convert.ToDateTime(endDate).ToString("MMMM dd, yyyy"), fontArial12)) { Border = 0, PaddingBottom = 5f, PaddingTop = 2f, HorizontalAlignment = 1 });
+
+                        if (areaId.Equals("0"))
+                        {
+                            titleHeader.AddCell(new PdfPCell(new Phrase("All Areas", fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                        }
+                        else
+                        {
+                            titleHeader.AddCell(new PdfPCell(new Phrase(area, fontArial13Bold)) { Border = 0, PaddingBottom = 12f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                        }
+
                         document.Add(titleHeader);
 
                         PdfPTable loanlData = new PdfPTable(6);
@@ -261,7 +271,7 @@ namespace Lending.Reports
                         }
 
                         loanlData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { Colspan = 4, HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(totalNetAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                         document.Add(loanlData);
