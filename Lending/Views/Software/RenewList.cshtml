@@ -802,15 +802,15 @@
                         renewFlexGrid.itemsSource = loanApplicationCollectionView;
                         renewFlexGrid.trackChanges = true;
                     },
-                    404: function () {
-                        toastr.error("Not Found");
+                    404: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
                         $('#deleteConfirmationRenewModal').modal('hide');
                         document.getElementById("btnConfirmDeleteRenew").innerHTML = "Delete";
                         $("#btnConfirmDeleteRenew").prop("disabled", false);
                         $("#btnCloseDeleteRenewModal").prop("disabled", false);
                     },
-                    400: function () {
-                        toastr.error("Bad Request");
+                    400: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         $('#deleteConfirmationRenewModal').modal('hide');
                         document.getElementById("btnConfirmDeleteRenew").innerHTML = "Delete";
                         $("#btnConfirmDeleteRenew").prop("disabled", false);

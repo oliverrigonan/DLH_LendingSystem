@@ -588,7 +588,7 @@
         function btnReconstructOverdueOnclick() {
             var loanReconstuctObject = new Object();
             loanReconstuctObject.ApplicantId = cboOverApplicant.selectedItem["Id"];
-            loanReconstuctObject.ReconstructLoanTotalBalanceAmount = document.getElementById("amountToBeReconstructOverdue").value;
+            loanReconstuctObject.BalanceAmount = document.getElementById("amountToBeReconstructOverdue").value;
             loanReconstuctObject.Particulars = document.getElementById("overdueParticulars").value;
             loanReconstuctObject.LoanDate = cboOverdueYear.value;
             var loanReconstuctData = JSON.stringify(loanReconstuctObject);
@@ -764,15 +764,15 @@
                         reconstructFlexGrid.itemsSource = loanApplicationCollectionView;
                         reconstructFlexGrid.trackChanges = true;
                     },
-                    404: function () {
-                        toastr.error("Not Found");
+                    404: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
                         $('#deleteConfirmationReconstructModal').modal('hide');
                         document.getElementById("btnConfirmDeleteReconstruct").innerHTML = "Delete";
                         $("#btnConfirmDeleteReconstruct").prop("disabled", false);
                         $("#btnCloseDeleteReconstructModal").prop("disabled", false);
                     },
-                    400: function () {
-                        toastr.error("Bad Request");
+                    400: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
                         $('#deleteConfirmationReconstructModal').modal('hide');
                         document.getElementById("btnConfirmDeleteReconstruct").innerHTML = "Delete";
                         $("#btnConfirmDeleteReconstruct").prop("disabled", false);
