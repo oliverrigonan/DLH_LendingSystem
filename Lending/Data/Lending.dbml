@@ -205,7 +205,7 @@
       <Column Name="AreaId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="mstArea_mstAreaStaff" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="mstStaff_mstAreaStaff" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="mstStaff_mstAreaStaff" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.mstBranch" Member="mstBranches">
@@ -307,6 +307,7 @@
       <Column Name="Term" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="NoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentNoOfDays" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -446,6 +447,7 @@
       <Column Name="ExpenseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="AssignedStaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="IsCollectionExpense" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ExpenseAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />

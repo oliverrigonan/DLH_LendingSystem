@@ -379,8 +379,7 @@
 
                     collectionCollectionView.filter = function (item) {
                         return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
                     }
 
                     collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -419,8 +418,7 @@
 
                     collectionCollectionView.filter = function (item) {
                         return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
                     }
 
                     collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -478,8 +476,6 @@
                                 LoanNumberDetail: collectionListResult[i]["LoanNumberDetail"],
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
-                                StatusId: collectionListResult[i]["StatusId"],
-                                Status: collectionListResult[i]["Status"],
                                 Particulars: collectionListResult[i]["Particulars"],
                                 TotalPaidAmount: collectionListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: collectionListResult[i]["TotalPenaltyAmount"],
@@ -600,8 +596,7 @@
 
                         collectionCollectionView.filter = function (item) {
                             return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                               || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -667,8 +662,7 @@
 
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -812,8 +806,7 @@
 
                 collectionCollectionView.filter = function (item) {
                     return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                       || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
                 }
 
                 collectionCollectionView.collectionChanged.addHandler(function (sender, args) {

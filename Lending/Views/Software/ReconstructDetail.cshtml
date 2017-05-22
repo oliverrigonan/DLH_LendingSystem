@@ -775,8 +775,8 @@
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = loanApplicationResult.UpdatedDateTime;
-                        document.getElementById('loanApplicationReconstructed').checked = loanApplicationResult.IsReconstruct;
-                        document.getElementById('loanApplicationRenewed').checked = loanApplicationResult.IsRenew;
+                        document.getElementById('loanApplicationReconstructed').checked = loanApplicationResult.IsReconstructed;
+                        document.getElementById('loanApplicationRenewed').checked = loanApplicationResult.IsRenewed;
 
                         if (loanApplicationResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);

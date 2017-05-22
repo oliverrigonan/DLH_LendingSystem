@@ -5107,7 +5107,7 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_mstAreaStaff", Storage="_mstStaff", ThisKey="StaffId", OtherKey="Id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_mstAreaStaff", Storage="_mstStaff", ThisKey="StaffId", OtherKey="Id", IsForeignKey=true)]
 		public mstStaff mstStaff
 		{
 			get
@@ -7287,6 +7287,8 @@ namespace Lending.Data
 		
 		private decimal _NoOfDays;
 		
+		private decimal _PaymentNoOfDays;
+		
 		private int _CreatedByUserId;
 		
 		private System.DateTime _CreatedDateTime;
@@ -7313,6 +7315,8 @@ namespace Lending.Data
     partial void OnDescriptionChanged();
     partial void OnNoOfDaysChanging(decimal value);
     partial void OnNoOfDaysChanged();
+    partial void OnPaymentNoOfDaysChanging(decimal value);
+    partial void OnPaymentNoOfDaysChanged();
     partial void OnCreatedByUserIdChanging(int value);
     partial void OnCreatedByUserIdChanged();
     partial void OnCreatedDateTimeChanging(System.DateTime value);
@@ -7407,6 +7411,26 @@ namespace Lending.Data
 					this._NoOfDays = value;
 					this.SendPropertyChanged("NoOfDays");
 					this.OnNoOfDaysChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentNoOfDays", DbType="Decimal(18,5) NOT NULL")]
+		public decimal PaymentNoOfDays
+		{
+			get
+			{
+				return this._PaymentNoOfDays;
+			}
+			set
+			{
+				if ((this._PaymentNoOfDays != value))
+				{
+					this.OnPaymentNoOfDaysChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentNoOfDays = value;
+					this.SendPropertyChanged("PaymentNoOfDays");
+					this.OnPaymentNoOfDaysChanged();
 				}
 			}
 		}
@@ -10469,6 +10493,8 @@ namespace Lending.Data
 		
 		private string _Particulars;
 		
+		private bool _IsCollectionExpense;
+		
 		private int _PreparedByUserId;
 		
 		private decimal _ExpenseAmount;
@@ -10505,6 +10531,8 @@ namespace Lending.Data
     partial void OnAssignedStaffIdChanged();
     partial void OnParticularsChanging(string value);
     partial void OnParticularsChanged();
+    partial void OnIsCollectionExpenseChanging(bool value);
+    partial void OnIsCollectionExpenseChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
     partial void OnExpenseAmountChanging(decimal value);
@@ -10630,6 +10658,26 @@ namespace Lending.Data
 					this._Particulars = value;
 					this.SendPropertyChanged("Particulars");
 					this.OnParticularsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsCollectionExpense", DbType="Bit NOT NULL")]
+		public bool IsCollectionExpense
+		{
+			get
+			{
+				return this._IsCollectionExpense;
+			}
+			set
+			{
+				if ((this._IsCollectionExpense != value))
+				{
+					this.OnIsCollectionExpenseChanging(value);
+					this.SendPropertyChanging();
+					this._IsCollectionExpense = value;
+					this.SendPropertyChanged("IsCollectionExpense");
+					this.OnIsCollectionExpenseChanged();
 				}
 			}
 		}

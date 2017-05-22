@@ -14,9 +14,61 @@ namespace Lending.Reports
     {
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        public ActionResult dailyAreaCollectionsPDF(String date, String areaId)
+        public List<Models.TrnLoan> loanApplicationsList(String date, String areaId)
         {
-            if (date != null && areaId != null)
+            if (areaId.Equals("0"))
+            {
+                var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                       where d.IsReconstructed == false
+                                       && d.IsRenewed == false
+                                       && d.IsLoanReconstruct == false
+                                       && d.TotalBalanceAmount > 0
+                                       && d.IsLocked == true
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate.ToShortDateString(),
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                           Area = d.mstApplicant.mstArea.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.mstUser.FullName,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.mstUser1.FullName,
+                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.mstUser2.FullName,
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
+
+                return loanApplications.ToList();
+            }
+            else
             {
                 var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                        where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
@@ -65,6 +117,58 @@ namespace Lending.Reports
                                            UpdatedByUserId = d.UpdatedByUserId,
                                            UpdatedByUser = d.mstUser2.FullName,
                                            UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
+
+                return loanApplications.ToList();
+            }
+        }
+
+
+        public ActionResult dailyAreaCollectionsPDF(String date, String areaId)
+        {
+            if (date != null && areaId != null)
+            {
+                var loanApplications = from d in loanApplicationsList(date, areaId)
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate,
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.Applicant,
+                                           Area = d.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.PreparedByUser,
+                                           TermId = d.TermId,
+                                           Term = d.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate,
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.CreatedByUser,
+                                           CreatedDateTime = d.CreatedDateTime,
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.UpdatedByUser,
+                                           UpdatedDateTime = d.UpdatedDateTime
                                        };
 
                 if (loanApplications.Any())
@@ -116,21 +220,26 @@ namespace Lending.Reports
                     lineHeader.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { Border = 1, Padding = 0f });
                     document.Add(lineHeader);
 
-                    var area = "";
+                    var area = " ";
                     var areaQuery = from d in db.mstAreas
                                     where d.Id == Convert.ToInt32(areaId)
                                     select d;
 
-                    if (areaQuery.Any())
-                    {
-                        area = areaQuery.FirstOrDefault().Area;
-                    }
 
                     PdfPTable titleHeader = new PdfPTable(1);
                     float[] titleHeaderWithCells = new float[] { 100f };
                     titleHeader.SetWidths(titleHeaderWithCells);
                     titleHeader.WidthPercentage = 100;
-                    titleHeader.AddCell(new PdfPCell(new Phrase(area + " Daily Collection (ACTIVE)", fontArial13Bold)) { Border = 0, PaddingBottom = 5f, PaddingTop = 1f, HorizontalAlignment = 1 });
+
+                    if (areaQuery.Any())
+                    {
+                        titleHeader.AddCell(new PdfPCell(new Phrase(areaQuery.FirstOrDefault().Area + " Daily Collection (ACTIVE)", fontArial13Bold)) { Border = 0, PaddingBottom = 5f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                    }
+                    else
+                    {
+                        titleHeader.AddCell(new PdfPCell(new Phrase("Daily Collection in All Areas (ACTIVE)", fontArial13Bold)) { Border = 0, PaddingBottom = 5f, PaddingTop = 1f, HorizontalAlignment = 1 });
+                    }
+
                     titleHeader.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(date).ToString("MMMM dd, yyyy") + " - " + Convert.ToDateTime(date).DayOfWeek.ToString(), fontArial12)) { Border = 0, PaddingBottom = 12f, PaddingTop = 2f, HorizontalAlignment = 1 });
                     document.Add(titleHeader);
 

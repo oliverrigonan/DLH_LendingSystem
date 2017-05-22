@@ -531,7 +531,7 @@
                                                     <li class="active"><a data-toggle="pill" href="#applicantLoans" id="applicantLoansTab">Loans</a></li>
                                                     <li><a data-toggle="pill" href="#applicantRenews" id="applicantRenewsTab">Renews</a></li>
                                                     <li><a data-toggle="pill" href="#applicantReconstructedLoans" id="applicantReconstructedLoansTab">Reconstructed Loans and Overdues</a></li>
-                                                    <li><a data-toggle="pill" href="#applicantCollections" id="applicantCollectionsTab">Collections</a></li>
+                                                    <li><a data-toggle="pill" href="#applicantCollections" id="applicantCollectionsTab">Collections / Posting / Index</a></li>
                                                 </ul>
                                                 <br />
                                                 <div class="tab-content">
@@ -643,7 +643,7 @@
                                                     <div id="applicantCollections" class="tab-pane fade">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                Collections
+                                                                Collections / Posting / Index
                                                             </div>
                                                             <div class="panel-heading">
                                                                 <table border="0" style="width: 100%;">
@@ -665,24 +665,43 @@
                                                                 </table>
                                                             </div>
                                                             <div class="panel-body">
-                                                                <div id="applicantCollectionsFlexgrid"></div>
-                                                            </div>
-                                                            <div class="panel-footer">
-                                                                <div class="row">
-                                                                    <div class="btn-group col-md-7" id="naviagtionPageGridCollections">
-                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollections">
-                                                                            <span class="glyphicon glyphicon-fast-backward"></span> First
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollections">
-                                                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollections"></button>
-                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollections">
-                                                                            <span class="glyphicon glyphicon-step-forward"></span> Next
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollections">
-                                                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                                                        </button>
+                                                                <ul class="nav nav-tabs">
+                                                                    <li class="active"><a data-toggle="tab" href="#summaryCollection">Summary</a></li>
+                                                                    <li><a data-toggle="tab" href="#detailCollection">Detail</a></li>
+                                                                </ul>
+                                                                <br />
+                                                                <div class="tab-content">
+                                                                    <div id="summaryCollection" class="tab-pane fade in active">
+                                                                        <div class="panel panel-default">
+                                                                            <div class="panel-heading">
+                                                                                Collection Summary
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div id="applicantCollectionsFlexgrid"></div>
+                                                                            </div>
+                                                                            <div class="panel-footer">
+                                                                                <div class="row">
+                                                                                    <div class="btn-group col-md-7" id="naviagtionPageGridCollections">
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollections">
+                                                                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollections">
+                                                                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollections"></button>
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollections">
+                                                                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollections">
+                                                                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="detailCollection" class="tab-pane fade">
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3548,42 +3567,163 @@
                             var newDate = new Date(applicantLoanResults[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var loanStatus = "Active";
-                            if (applicantLoanResults[i]["IsLoanReconstruct"]) {
-                                if (applicantLoanResults[i]["IsReconstruct"]) {
-                                    loanStatus = "Overdue (Reconstructed)";
-                                } else {
-                                    if (applicantLoanResults[i]["IsRenew"]) {
-                                        loanStatus = "Overdue (Renewed)";
-                                    } else {
-                                        loanStatus = "Overdue (Active)";
-                                    }
-                                }
-                            } else {
-                                if (applicantLoanResults[i]["IsLoanRenew"]) {
-                                    if (applicantLoanResults[i]["IsReconstruct"]) {
+                            var getDueDate = new Date(applicantLoanResults[i]["MaturityDate"]);
+                            var newDate2 = new Date();
+                            var newCurrentDate = ('0' + (newDate2.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate2.getDate()).slice(-2) + '-' + newDate2.getFullYear();
+                            var getCurrentDate = new Date(newCurrentDate);
+                            var oneDay = 24 * 60 * 60 * 1000;
+                            var diffDays = Math.round(Math.abs((getDueDate.getTime() - getCurrentDate.getTime()) / (oneDay)));
+                            var loanStatus = "New";
+                            if (applicantLoanResults[i]["IsLocked"]) {
+                                if (applicantLoanResults[i]["TermNoOfDays"] == 0) {
+                                    if (applicantLoanResults[i]["IsReconstructed"]) {
                                         loanStatus = "Reconstructed";
                                     } else {
-                                        if (applicantLoanResults[i]["IsRenew"]) {
+                                        if (applicantLoanResults[i]["IsRenewed"]) {
                                             loanStatus = "Renewed";
                                         } else {
-                                            loanStatus = "Active";
+                                            if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                loanStatus = "Fully Paid";
+                                            } else {
+                                                if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                    loanStatus = "Current - No Term";
+                                                }
+                                            }
                                         }
                                     }
                                 } else {
-                                    if (applicantLoanResults[i]["IsLoanApplication"]) {
-                                        if (applicantLoanResults[i]["IsReconstruct"]) {
-                                            loanStatus = "Reconstructed";
-                                        } else {
-                                            if (applicantLoanResults[i]["IsRenew"]) {
-                                                loanStatus = "Renewed";
+                                    if (getDueDate.toDateString() == getCurrentDate.toDateString()) {
+                                        loanStatus = "Due";
+                                    } else {
+                                        if (getCurrentDate < getDueDate) {
+                                            if (applicantLoanResults[i]["IsReconstructed"]) {
+                                                loanStatus = "Reconstructed";
                                             } else {
-                                                loanStatus = "Active";
+                                                if (applicantLoanResults[i]["IsRenewed"]) {
+                                                    loanStatus = "Renewed";
+                                                } else {
+                                                    if (diffDays == 7) {
+                                                        if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                            loanStatus = "Fully Paid";
+                                                        } else {
+                                                            if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                loanStatus = "Current - 7 Days before due";
+                                                            } else {
+                                                                loanStatus = "7 Days before due";
+                                                            }
+                                                        }
+                                                    } else {
+                                                        if (diffDays == 6) {
+                                                            if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                loanStatus = "Fully Paid";
+                                                            } else {
+                                                                if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                    loanStatus = "Current - 6 Days before due";
+                                                                } else {
+                                                                    loanStatus = "6 Days before due";
+                                                                }
+                                                            }
+                                                        } else {
+                                                            if (diffDays == 5) {
+                                                                if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                    loanStatus = "Fully Paid";
+                                                                } else {
+                                                                    if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                        loanStatus = "Current - 5 Days before due";
+                                                                    } else {
+                                                                        loanStatus = "5 Days before due";
+                                                                    }
+                                                                }
+                                                            } else {
+                                                                if (diffDays == 4) {
+                                                                    if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                        loanStatus = "Fully Paid";
+                                                                    } else {
+                                                                        if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                            loanStatus = "Current - 4 Days before due";
+                                                                        } else {
+                                                                            loanStatus = "4 Days before due";
+                                                                        }
+                                                                    }
+                                                                } else {
+                                                                    if (diffDays == 3) {
+                                                                        if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                            loanStatus = "Fully Paid";
+                                                                        } else {
+                                                                            if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                                loanStatus = "Current - 3 Days before due";
+                                                                            } else {
+                                                                                loanStatus = "3 Days before due";
+                                                                            }
+                                                                        }
+                                                                    } else {
+                                                                        if (diffDays == 2) {
+                                                                            if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                                loanStatus = "Fully Paid";
+                                                                            } else {
+                                                                                if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                                    loanStatus = "Current - 2 Days before due";
+                                                                                } else {
+                                                                                    loanStatus = "2 Days before due";
+                                                                                }
+                                                                            }
+                                                                        } else {
+                                                                            if (diffDays == 1) {
+                                                                                if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                                    loanStatus = "Fully Paid";
+                                                                                } else {
+                                                                                    if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                                        loanStatus = "Current - 1 Day before due";
+                                                                                    } else {
+                                                                                        loanStatus = "1 Day before due";
+                                                                                    }
+                                                                                }
+                                                                            } else {
+                                                                                if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                                                    loanStatus = "Fully Paid";
+                                                                                } else {
+                                                                                    if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                                                        loanStatus = "Current";
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            if (getCurrentDate > getDueDate) {
+                                                if (diffDays > 1) {
+                                                    if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                        loanStatus = "Fully Paid";
+                                                    } else {
+                                                        if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                            loanStatus = "Current - Overdue (" + diffDays + " Days)";
+                                                        }
+                                                    }
+                                                } else {
+                                                    if (applicantLoanResults[i]["TotalBalanceAmount"] <= 0) {
+                                                        loanStatus = "Fully Paid";
+                                                    } else {
+                                                        if (applicantLoanResults[i]["TotalPaidAmount"] > 0) {
+                                                            loanStatus = "Current - Overdue (" + diffDays + " Day)";
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
                                 }
+                            } else {
+                                loanStatus = "Not Locked";
                             }
+
+                            var newMaturityDate = new Date(applicantLoanResults[i]["MaturityDate"]);
+                            var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
 
                             var loanNumberDetail = "";
                             var onClickFunctionName = "";
@@ -3607,6 +3747,7 @@
                                 Id: applicantLoanResults[i]["Id"],
                                 LoanNumber: loanNumberDetail + applicantLoanResults[i]["LoanNumber"],
                                 LoanDate: loanDateValue,
+                                MaturityDate: maturityDateValue,
                                 Applicant: applicantLoanResults[i]["Applicant"],
                                 PrincipalAmount: applicantLoanResults[i]["PrincipalAmount"],
                                 InterestAmount: applicantLoanResults[i]["InterestAmount"],
@@ -3681,6 +3822,18 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "Loan Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Due Date",
+                                "binding": "MaturityDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
                                 "header": "Loan No.",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
@@ -3690,7 +3843,7 @@
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
-                                "width": 170,
+                                "width": 190,
                             },
                             {
                                 "header": "Particulars",
@@ -3829,8 +3982,14 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Date",
+                                "header": "Recon Date",
                                 "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Due Date",
+                                "binding": "MaturityDate",
                                 "allowSorting": true,
                                 "width": 100,
                             },
@@ -3844,7 +4003,7 @@
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
-                                "width": 170,
+                                "width": 190,
                             },
                             {
                                 "header": "Particulars",
@@ -3983,7 +4142,7 @@
                                 "isContentHtml": true
                             },
                             {
-                                "header": "Date",
+                                "header": "Renew Date",
                                 "binding": "LoanDate",
                                 "allowSorting": true,
                                 "width": 100,
@@ -3998,7 +4157,7 @@
                                 "header": "Status",
                                 "binding": "LoanStatus",
                                 "allowSorting": true,
-                                "width": 170,
+                                "width": 190,
                             },
                             {
                                 "header": "Particulars",

@@ -15,9 +15,61 @@ namespace Lending.Reports
     {
         private Data.LendingDataContext db = new Data.LendingDataContext();
 
-        public ActionResult overdueCollection(String date, String areaId)
+        public List<Models.TrnLoan> listLoanApplicationsOverdue(String date, String areaId)
         {
-            if (date != null && areaId != null)
+            if (areaId.Equals("0"))
+            {
+                var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                       where d.IsReconstructed == false
+                                       && d.IsRenewed == false
+                                       && d.IsLocked == true
+                                       && d.IsLoanReconstruct == true
+                                       && d.TotalBalanceAmount > 0
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate.ToShortDateString(),
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                           Area = d.mstApplicant.mstArea.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.mstUser.FullName,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.mstUser1.FullName,
+                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.mstUser2.FullName,
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
+
+                return loanApplications.ToList();
+            }
+            else
             {
                 var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                        where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
@@ -26,7 +78,98 @@ namespace Lending.Reports
                                        && d.IsLocked == true
                                        && d.IsLoanReconstruct == true
                                        && d.TotalBalanceAmount > 0
-                                       select d;
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate.ToShortDateString(),
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                           Area = d.mstApplicant.mstArea.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.mstUser.FullName,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.mstUser1.FullName,
+                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.mstUser2.FullName,
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
+
+                return loanApplications.ToList();
+            }
+        }
+
+        public ActionResult overdueCollection(String date, String areaId)
+        {
+            if (date != null && areaId != null)
+            {
+                var loanApplications = from d in listLoanApplicationsOverdue(date, areaId)
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate,
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.Applicant,
+                                           Area = d.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.PreparedByUser,
+                                           TermId = d.TermId,
+                                           Term = d.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate,
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.CreatedByUser,
+                                           CreatedDateTime = d.CreatedDateTime,
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.UpdatedByUser,
+                                           UpdatedDateTime = d.UpdatedDateTime
+                                       };
 
                 if (loanApplications.Any())
                 {
@@ -82,16 +225,21 @@ namespace Lending.Reports
                                     where d.Id == Convert.ToInt32(areaId)
                                     select d;
 
-                    if (areaQuery.Any())
-                    {
-                        area = areaQuery.FirstOrDefault().Area;
-                    }
-
                     PdfPTable titleHeader = new PdfPTable(1);
                     float[] titleHeaderWithCells = new float[] { 100f };
                     titleHeader.SetWidths(titleHeaderWithCells);
                     titleHeader.WidthPercentage = 100;
-                    titleHeader.AddCell(new PdfPCell(new Phrase(area + " OVERDUE - " + Convert.ToDateTime(date).ToString("MMMM", CultureInfo.InvariantCulture).ToUpper(), fontArial13Bold)) { Border = 0, PaddingBottom = 10f, PaddingTop = 2f, HorizontalAlignment = 0 });
+
+                    if (areaQuery.Any())
+                    {
+                        area = areaQuery.FirstOrDefault().Area;
+                        titleHeader.AddCell(new PdfPCell(new Phrase(area + " OVERDUE - " + Convert.ToDateTime(date).ToString("MMMM", CultureInfo.InvariantCulture).ToUpper(), fontArial13Bold)) { Border = 0, PaddingBottom = 10f, PaddingTop = 2f, HorizontalAlignment = 0 });
+                    }
+                    else
+                    {
+                        titleHeader.AddCell(new PdfPCell(new Phrase("OVERDUE in All Areas - " + Convert.ToDateTime(date).ToString("MMMM", CultureInfo.InvariantCulture).ToUpper(), fontArial13Bold)) { Border = 0, PaddingBottom = 10f, PaddingTop = 2f, HorizontalAlignment = 0 });
+                    }
+
                     document.Add(titleHeader);
 
                     PdfPTable loanData = new PdfPTable(10);
@@ -108,24 +256,24 @@ namespace Lending.Reports
                         loanData.AddCell(new PdfPCell(new Phrase(weekLastDay.Day.ToString(), fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     }
                     loanData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    var loanYears = loanApplications.GroupBy(year => year.LoanDate.Year).Select(group =>
+                    var loanYears = loanApplications.GroupBy(year => Convert.ToDateTime(year.LoanDate).Year).Select(group =>
                             new
                             {
                                 Name = group.Key,
-                                Elements = group.OrderByDescending(y => y.LoanDate.Year)
+                                Elements = group.OrderByDescending(y => Convert.ToDateTime(y.LoanDate).Year)
                             }
-                        ).OrderByDescending(group => group.Elements.First().LoanDate.Year);
+                        ).OrderByDescending(group => Convert.ToDateTime(group.Elements.First().LoanDate).Year);
                     if (loanYears.Any())
                     {
                         foreach (var loanYear in loanYears)
                         {
-                            loanData.AddCell(new PdfPCell(new Phrase(loanYear.Elements.First().LoanDate.Year.ToString(), fontArial13Bold)) { Colspan = 10, PaddingTop = 10f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                            loanData.AddCell(new PdfPCell(new Phrase(Convert.ToDateTime(loanYear.Elements.First().LoanDate).Year.ToString(), fontArial13Bold)) { Colspan = 10, PaddingTop = 10f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 
                             foreach (var loanApplication in loanApplications)
                             {
-                                if (loanApplication.LoanDate.Year == loanYear.Elements.First().LoanDate.Year)
+                                if (Convert.ToDateTime(loanApplication.LoanDate).Year == Convert.ToDateTime(loanYear.Elements.First().LoanDate).Year)
                                 {
-                                    var applicant = loanApplication.mstApplicant.ApplicantLastName + ", " + loanApplication.mstApplicant.ApplicantFirstName + " " + loanApplication.mstApplicant.ApplicantMiddleName;
+                                    var applicant = loanApplication.Applicant;
                                     loanData.AddCell(new PdfPCell(new Phrase(applicant, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                                     loanData.AddCell(new PdfPCell(new Phrase(loanApplication.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                                     loanData.AddCell(new PdfPCell(new Phrase(loanApplication.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });

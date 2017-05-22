@@ -75,7 +75,9 @@ namespace Lending.ApiControllers
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
                                        CollectibleAmount = d.CollectibleAmount,
-                                       TotalBalanceAmount = d.TotalBalanceAmount
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       IsReconstructed = d.IsReconstructed,
+                                       IsRenewed = d.IsRenewed
                                    };
 
             return loanApplications.ToList();
@@ -528,7 +530,7 @@ namespace Lending.ApiControllers
                                                 Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
                                                 Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
 
-                                                lockLoan.MaturityDate = DateTime.Today.AddDays(Convert.ToDouble(loan.TermNoOfDays));
+                                                lockLoan.MaturityDate = Convert.ToDateTime(loan.LoanDate).AddDays(Convert.ToDouble(loan.TermNoOfDays));
                                                 lockLoan.CollectibleAmount = ceilCollectibleAmount;
                                                 lockLoan.TotalBalanceAmount = (loans.FirstOrDefault().NetCollectionAmount - loans.FirstOrDefault().TotalPaidAmount) + loan.TotalPenaltyAmount;
                                                 db.SubmitChanges();
@@ -1037,56 +1039,111 @@ namespace Lending.ApiControllers
         [Route("api/loan/overdue/{areaId}")]
         public List<Models.TrnLoan> listOverdue(String areaId)
         {
-            var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                   where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                   && d.IsReconstructed == false
-                                   && d.IsRenewed == false
-                                   && d.IsLocked == true
-                                   && d.IsLoanReconstruct == true
-                                   && d.TotalBalanceAmount > 0
-                                   select new Models.TrnLoan
-                                   {
-                                       Id = d.Id,
-                                       LoanNumber = d.LoanNumber,
-                                       LoanDate = d.LoanDate.ToShortDateString(),
-                                       ApplicantId = d.ApplicantId,
-                                       Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                       Area = d.mstApplicant.mstArea.Area,
-                                       Particulars = d.Particulars,
-                                       PreparedByUserId = d.PreparedByUserId,
-                                       PreparedByUser = d.mstUser.FullName,
-                                       TermId = d.TermId,
-                                       Term = d.mstTerm.Term,
-                                       TermNoOfDays = d.TermNoOfDays,
-                                       MaturityDate = d.MaturityDate.ToShortDateString(),
-                                       PrincipalAmount = d.PrincipalAmount,
-                                       InterestId = d.InterestId,
-                                       Interest = d.mstInterest.Interest,
-                                       InterestRate = d.InterestRate,
-                                       InterestAmount = d.InterestAmount,
-                                       PreviousBalanceAmount = d.PreviousBalanceAmount,
-                                       DeductionAmount = d.DeductionAmount,
-                                       NetAmount = d.NetAmount,
-                                       NetCollectionAmount = d.NetCollectionAmount,
-                                       CollectibleAmount = d.CollectibleAmount,
-                                       TotalPaidAmount = d.TotalPaidAmount,
-                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
-                                       TotalBalanceAmount = d.TotalBalanceAmount,
-                                       IsLoanApplication = d.IsLoanApplication,
-                                       IsLoanReconstruct = d.IsLoanReconstruct,
-                                       IsLoanRenew = d.IsLoanRenew,
-                                       IsReconstructed = d.IsReconstructed,
-                                       IsRenewed = d.IsRenewed,
-                                       IsLocked = d.IsLocked,
-                                       CreatedByUserId = d.CreatedByUserId,
-                                       CreatedByUser = d.mstUser1.FullName,
-                                       CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                       UpdatedByUserId = d.UpdatedByUserId,
-                                       UpdatedByUser = d.mstUser2.FullName,
-                                       UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
-                                   };
+            if (areaId.Equals("0"))
+            {
+                var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                       where d.IsReconstructed == false
+                                       && d.IsRenewed == false
+                                       && d.IsLocked == true
+                                       && d.IsLoanReconstruct == true
+                                       && d.TotalBalanceAmount > 0
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate.ToShortDateString(),
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                           Area = d.mstApplicant.mstArea.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.mstUser.FullName,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.mstUser1.FullName,
+                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.mstUser2.FullName,
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
 
-            return loanApplications.ToList();
+                return loanApplications.ToList();
+            }
+            else
+            {
+                var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                       where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsReconstructed == false
+                                       && d.IsRenewed == false
+                                       && d.IsLocked == true
+                                       && d.IsLoanReconstruct == true
+                                       && d.TotalBalanceAmount > 0
+                                       select new Models.TrnLoan
+                                       {
+                                           Id = d.Id,
+                                           LoanNumber = d.LoanNumber,
+                                           LoanDate = d.LoanDate.ToShortDateString(),
+                                           ApplicantId = d.ApplicantId,
+                                           Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                           Area = d.mstApplicant.mstArea.Area,
+                                           Particulars = d.Particulars,
+                                           PreparedByUserId = d.PreparedByUserId,
+                                           PreparedByUser = d.mstUser.FullName,
+                                           TermId = d.TermId,
+                                           Term = d.mstTerm.Term,
+                                           TermNoOfDays = d.TermNoOfDays,
+                                           MaturityDate = d.MaturityDate.ToShortDateString(),
+                                           PrincipalAmount = d.PrincipalAmount,
+                                           InterestId = d.InterestId,
+                                           Interest = d.mstInterest.Interest,
+                                           InterestRate = d.InterestRate,
+                                           InterestAmount = d.InterestAmount,
+                                           PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                           DeductionAmount = d.DeductionAmount,
+                                           NetAmount = d.NetAmount,
+                                           NetCollectionAmount = d.NetCollectionAmount,
+                                           CollectibleAmount = d.CollectibleAmount,
+                                           TotalPaidAmount = d.TotalPaidAmount,
+                                           TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                           TotalBalanceAmount = d.TotalBalanceAmount,
+                                           IsLoanApplication = d.IsLoanApplication,
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsReconstructed = d.IsReconstructed,
+                                           IsRenewed = d.IsRenewed,
+                                           IsLocked = d.IsLocked,
+                                           CreatedByUserId = d.CreatedByUserId,
+                                           CreatedByUser = d.mstUser1.FullName,
+                                           CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                           UpdatedByUserId = d.UpdatedByUserId,
+                                           UpdatedByUser = d.mstUser2.FullName,
+                                           UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                       };
+
+                return loanApplications.ToList();
+            }
         }
 
         // loan list by areaid - active
@@ -1095,56 +1152,111 @@ namespace Lending.ApiControllers
         [Route("api/loan/active/{areaId}")]
         public List<Models.TrnLoan> listActive(String areaId)
         {
-            var joinedLoanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                         where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                         && d.IsReconstructed == false
-                                         && d.IsRenewed == false
-                                         && d.IsLocked == true
-                                         && d.IsLoanReconstruct == false
-                                         && d.TotalBalanceAmount > 0
-                                         select new Models.TrnLoan
-                                         {
-                                             Id = d.Id,
-                                             LoanNumber = d.LoanNumber,
-                                             LoanDate = d.LoanDate.ToShortDateString(),
-                                             ApplicantId = d.ApplicantId,
-                                             Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
-                                             Area = d.mstApplicant.mstArea.Area,
-                                             Particulars = d.Particulars,
-                                             PreparedByUserId = d.PreparedByUserId,
-                                             PreparedByUser = d.mstUser.FullName,
-                                             TermId = d.TermId,
-                                             Term = d.mstTerm.Term,
-                                             TermNoOfDays = d.TermNoOfDays,
-                                             MaturityDate = d.MaturityDate.ToShortDateString(),
-                                             PrincipalAmount = d.PrincipalAmount,
-                                             InterestId = d.InterestId,
-                                             Interest = d.mstInterest.Interest,
-                                             InterestRate = d.InterestRate,
-                                             InterestAmount = d.InterestAmount,
-                                             PreviousBalanceAmount = d.PreviousBalanceAmount,
-                                             DeductionAmount = d.DeductionAmount,
-                                             NetAmount = d.NetAmount,
-                                             NetCollectionAmount = d.NetCollectionAmount,
-                                             CollectibleAmount = d.CollectibleAmount,
-                                             TotalPaidAmount = d.TotalPaidAmount,
-                                             TotalPenaltyAmount = d.TotalPenaltyAmount,
-                                             TotalBalanceAmount = d.TotalBalanceAmount,
-                                             IsReconstructed = d.IsReconstructed,
-                                             IsRenewed = d.IsRenewed,
-                                             IsLoanApplication = d.IsLoanApplication,
-                                             IsLoanReconstruct = d.IsLoanReconstruct,
-                                             IsLoanRenew = d.IsLoanRenew,
-                                             IsLocked = d.IsLocked,
-                                             CreatedByUserId = d.CreatedByUserId,
-                                             CreatedByUser = d.mstUser1.FullName,
-                                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
-                                             UpdatedByUserId = d.UpdatedByUserId,
-                                             UpdatedByUser = d.mstUser2.FullName,
-                                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                         };
+            if (areaId.Equals("0"))
+            {
+                var joinedLoanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                             where d.IsReconstructed == false
+                                             && d.IsRenewed == false
+                                             && d.IsLocked == true
+                                             && d.IsLoanReconstruct == false
+                                             && d.TotalBalanceAmount > 0
+                                             select new Models.TrnLoan
+                                             {
+                                                 Id = d.Id,
+                                                 LoanNumber = d.LoanNumber,
+                                                 LoanDate = d.LoanDate.ToShortDateString(),
+                                                 ApplicantId = d.ApplicantId,
+                                                 Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                                 Area = d.mstApplicant.mstArea.Area,
+                                                 Particulars = d.Particulars,
+                                                 PreparedByUserId = d.PreparedByUserId,
+                                                 PreparedByUser = d.mstUser.FullName,
+                                                 TermId = d.TermId,
+                                                 Term = d.mstTerm.Term,
+                                                 TermNoOfDays = d.TermNoOfDays,
+                                                 MaturityDate = d.MaturityDate.ToShortDateString(),
+                                                 PrincipalAmount = d.PrincipalAmount,
+                                                 InterestId = d.InterestId,
+                                                 Interest = d.mstInterest.Interest,
+                                                 InterestRate = d.InterestRate,
+                                                 InterestAmount = d.InterestAmount,
+                                                 PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                                 DeductionAmount = d.DeductionAmount,
+                                                 NetAmount = d.NetAmount,
+                                                 NetCollectionAmount = d.NetCollectionAmount,
+                                                 CollectibleAmount = d.CollectibleAmount,
+                                                 TotalPaidAmount = d.TotalPaidAmount,
+                                                 TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                                 TotalBalanceAmount = d.TotalBalanceAmount,
+                                                 IsReconstructed = d.IsReconstructed,
+                                                 IsRenewed = d.IsRenewed,
+                                                 IsLoanApplication = d.IsLoanApplication,
+                                                 IsLoanReconstruct = d.IsLoanReconstruct,
+                                                 IsLoanRenew = d.IsLoanRenew,
+                                                 IsLocked = d.IsLocked,
+                                                 CreatedByUserId = d.CreatedByUserId,
+                                                 CreatedByUser = d.mstUser1.FullName,
+                                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                                 UpdatedByUserId = d.UpdatedByUserId,
+                                                 UpdatedByUser = d.mstUser2.FullName,
+                                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                             };
 
-            return joinedLoanApplications.ToList();
+                return joinedLoanApplications.ToList();
+            }
+            else
+            {
+                var joinedLoanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                             where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                             && d.IsReconstructed == false
+                                             && d.IsRenewed == false
+                                             && d.IsLocked == true
+                                             && d.IsLoanReconstruct == false
+                                             && d.TotalBalanceAmount > 0
+                                             select new Models.TrnLoan
+                                             {
+                                                 Id = d.Id,
+                                                 LoanNumber = d.LoanNumber,
+                                                 LoanDate = d.LoanDate.ToShortDateString(),
+                                                 ApplicantId = d.ApplicantId,
+                                                 Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                                 Area = d.mstApplicant.mstArea.Area,
+                                                 Particulars = d.Particulars,
+                                                 PreparedByUserId = d.PreparedByUserId,
+                                                 PreparedByUser = d.mstUser.FullName,
+                                                 TermId = d.TermId,
+                                                 Term = d.mstTerm.Term,
+                                                 TermNoOfDays = d.TermNoOfDays,
+                                                 MaturityDate = d.MaturityDate.ToShortDateString(),
+                                                 PrincipalAmount = d.PrincipalAmount,
+                                                 InterestId = d.InterestId,
+                                                 Interest = d.mstInterest.Interest,
+                                                 InterestRate = d.InterestRate,
+                                                 InterestAmount = d.InterestAmount,
+                                                 PreviousBalanceAmount = d.PreviousBalanceAmount,
+                                                 DeductionAmount = d.DeductionAmount,
+                                                 NetAmount = d.NetAmount,
+                                                 NetCollectionAmount = d.NetCollectionAmount,
+                                                 CollectibleAmount = d.CollectibleAmount,
+                                                 TotalPaidAmount = d.TotalPaidAmount,
+                                                 TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                                 TotalBalanceAmount = d.TotalBalanceAmount,
+                                                 IsReconstructed = d.IsReconstructed,
+                                                 IsRenewed = d.IsRenewed,
+                                                 IsLoanApplication = d.IsLoanApplication,
+                                                 IsLoanReconstruct = d.IsLoanReconstruct,
+                                                 IsLoanRenew = d.IsLoanRenew,
+                                                 IsLocked = d.IsLocked,
+                                                 CreatedByUserId = d.CreatedByUserId,
+                                                 CreatedByUser = d.mstUser1.FullName,
+                                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                                 UpdatedByUserId = d.UpdatedByUserId,
+                                                 UpdatedByUser = d.mstUser2.FullName,
+                                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                             };
+
+                return joinedLoanApplications.ToList();
+            }
         }
 
         // daily release monitoring
