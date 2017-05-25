@@ -207,8 +207,14 @@ input[type="text"] {
     color: #000;
 }
 
+
+textarea {
+    resize: initial;
+}
+
 textarea.form-control {
     color: #000;
+    resize: initial;
 }
 
 .wj-dropdown {

@@ -2153,6 +2153,8 @@ namespace Lending.Data
 		
 		private System.DateTime _UpdatedDateTime;
 		
+		private System.Data.Linq.Binary _PhotoSignature;
+		
 		private EntitySet<mstApplicantApplianceOwned> _mstApplicantApplianceOwneds;
 		
 		private EntitySet<mstApplicantCoMakerStatement> _mstApplicantCoMakerStatements;
@@ -2277,6 +2279,8 @@ namespace Lending.Data
     partial void OnUpdatedByUserIdChanged();
     partial void OnUpdatedDateTimeChanging(System.DateTime value);
     partial void OnUpdatedDateTimeChanged();
+    partial void OnPhotoSignatureChanging(System.Data.Linq.Binary value);
+    partial void OnPhotoSignatureChanged();
     #endregion
 		
 		public mstApplicant()
@@ -3276,6 +3280,26 @@ namespace Lending.Data
 					this._UpdatedDateTime = value;
 					this.SendPropertyChanged("UpdatedDateTime");
 					this.OnUpdatedDateTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhotoSignature", DbType="VarBinary(MAX) NOT NULL", CanBeNull=false, UpdateCheck=UpdateCheck.Never)]
+		public System.Data.Linq.Binary PhotoSignature
+		{
+			get
+			{
+				return this._PhotoSignature;
+			}
+			set
+			{
+				if ((this._PhotoSignature != value))
+				{
+					this.OnPhotoSignatureChanging(value);
+					this.SendPropertyChanging();
+					this._PhotoSignature = value;
+					this.SendPropertyChanged("PhotoSignature");
+					this.OnPhotoSignatureChanged();
 				}
 			}
 		}

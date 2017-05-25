@@ -225,7 +225,8 @@ namespace Lending.ApiControllers
                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
                                  UpdatedByUserId = d.UpdatedByUserId,
                                  UpdatedByUser = d.mstUser1.FullName,
-                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
+                                 PhotoSignature = d.PhotoSignature.ToArray()
                              };
 
             return (Models.MstApplicant)applicants.FirstOrDefault();
@@ -291,6 +292,13 @@ namespace Lending.ApiControllers
                         String file = Convert.ToBase64String(bytes);
                         byte[] imgarr = Convert.FromBase64String(file);
 
+
+                        string pathSignature = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"Images\applicantPhotoPlaceHolder.png");
+
+                        Byte[] bytesSignature = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/signature.png"));
+                        String fileSignature = Convert.ToBase64String(bytesSignature);
+                        byte[] imgarrSignature = Convert.FromBase64String(fileSignature);
+
                         String applicantNumber = "0000000001";
                         var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id) select d;
                         if (applicants.Any())
@@ -346,6 +354,7 @@ namespace Lending.ApiControllers
                         newApplicant.CreatedDateTime = DateTime.Now;
                         newApplicant.UpdatedByUserId = userId;
                         newApplicant.UpdatedDateTime = DateTime.Now;
+                        newApplicant.PhotoSignature = imgarrSignature;
 
                         db.mstApplicants.InsertOnSubmit(newApplicant);
                         db.SubmitChanges();
@@ -716,7 +725,85 @@ namespace Lending.ApiControllers
             }
         }
 
-        // delete anton applicant
+        // update applicant photo signature
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/updatePhoto/signature/{id}")]
+        public HttpResponseMessage updateApplicantPhotoSignature(String id, Models.MstApplicant applicant)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
+
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var updateApplicant = applicants.FirstOrDefault();
+                                byte[] imgarr = applicant.PhotoSignature;
+                                updateApplicant.PhotoSignature = new Binary(imgarr);
+                                updateApplicant.UpdatedByUserId = userId;
+                                updateApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // delete
         [Authorize]
         [HttpPut]
         [Route("api/applicant/deletePhoto/{id}")]
@@ -766,6 +853,88 @@ namespace Lending.ApiControllers
                                 byte[] imgarr = Convert.FromBase64String(file);
 
                                 updateApplicant.Photo = imgarr;
+                                updateApplicant.UpdatedByUserId = userId;
+                                updateApplicant.UpdatedDateTime = DateTime.Now;
+                                db.SubmitChanges();
+
+                                return Request.CreateResponse(HttpStatusCode.OK);
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                            }
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // delete
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/deletePhoto/signature/{id}")]
+        public HttpResponseMessage deleteApplicantPhotoSignature(String id)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    if (!applicants.FirstOrDefault().IsLocked)
+                    {
+                        var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                        var mstUserForms = from d in db.mstUserForms
+                                           where d.UserId == userId
+                                           select new Models.MstUserForm
+                                           {
+                                               Id = d.Id,
+                                               Form = d.sysForm.Form,
+                                               CanPerformActions = d.CanPerformActions
+                                           };
+
+                        if (mstUserForms.Any())
+                        {
+                            String matchPageString = "ApplicantDetail";
+                            Boolean canPerformActions = false;
+
+                            foreach (var mstUserForm in mstUserForms)
+                            {
+                                if (mstUserForm.Form.Equals(matchPageString))
+                                {
+                                    if (mstUserForm.CanPerformActions)
+                                    {
+                                        canPerformActions = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
+                            if (canPerformActions)
+                            {
+                                var updateApplicant = applicants.FirstOrDefault();
+
+                                Byte[] bytes = File.ReadAllBytes(HttpContext.Current.Server.MapPath("~/Images/signature.png"));
+                                String file = Convert.ToBase64String(bytes);
+                                byte[] imgarr = Convert.FromBase64String(file);
+
+                                updateApplicant.PhotoSignature = imgarr;
                                 updateApplicant.UpdatedByUserId = userId;
                                 updateApplicant.UpdatedDateTime = DateTime.Now;
                                 db.SubmitChanges();

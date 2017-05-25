@@ -125,6 +125,7 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PhotoSignature" Type="System.Data.Linq.Binary" DbType="VarBinary(MAX) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
       <Association Name="mstApplicant_mstApplicantApplianceOwned" Member="mstApplicantApplianceOwneds" ThisKey="Id" OtherKey="ApplicantId" Type="mstApplicantApplianceOwned" />
       <Association Name="mstApplicant_mstApplicantCoMakerStatement" Member="mstApplicantCoMakerStatements" ThisKey="Id" OtherKey="ApplicantId" Type="mstApplicantCoMakerStatement" />
       <Association Name="mstApplicant_mstApplicantCoMakerStatement1" Member="mstApplicantCoMakerStatements1" ThisKey="Id" OtherKey="CoMakerApplicantId" Type="mstApplicantCoMakerStatement" />

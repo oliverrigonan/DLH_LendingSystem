@@ -77,13 +77,15 @@
                                                             </div>
                                                             <div class="panel-body">
                                                                 <div class="row">
-                                                                    <div class="col-md-6">
+                                                                    <div class="col-md-7">
                                                                         <div id="photoDiv" style="width: 100%" align="center"></div>
                                                                     </div>
-                                                                    <div class="col-md-6">
-                                                                        <button class="btn btn-default  btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()"><i class="fa fa-image fa-fw"></i> Change Photo</button>
+                                                                    <div class="col-md-5">
+                                                                        <button class="btn btn-default  btn-block" id="btnApplicantChangePhoto" onclick="btnApplicantChangePhotoOnclick()">
+                                                                            <i class="fa fa-image fa-fw"></i> Change Photo
+                                                                        </button>
                                                                         <button class="btn btn-danger  btn-block" id="btnApplicantDeletePhoto" onclick="btnApplicantDeletePhotoOnclick()">
-                                                                            <i class="fa fa-trash fa-fw"></i> Rmove and Set to <br /> Default Photo
+                                                                            <i class="fa fa-trash fa-fw"></i> Reset to Default
                                                                         </button>
                                                                         <br />
                                                                         <form class="form-horizontal">
@@ -402,6 +404,27 @@
                                                             </div>
                                                         </div>
                                                         <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                Signature (Photo)
+
+                                                            </div>
+                                                            <div class="panel-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-7">
+                                                                        <div id="photoSignatureDiv" style="width: 100%" align="center"></div>
+                                                                    </div>
+                                                                    <div class="col-md-5">
+                                                                        <button class="btn btn-default btn-block" id="btnApplicantChangePhotoSignature" onclick="btnApplicantChangePhotoSignatureOnclick()">
+                                                                            <i class="fa fa-image fa-fw"></i> Change Photo
+                                                                        </button>
+                                                                        <button class="btn btn-danger btn-block" id="btnApplicantDeletePhotoSignature" onclick="btnApplicantDeletePhotoSignatureOnclick()">
+                                                                            <i class="fa fa-trash fa-fw"></i> Reset to Default
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="panel panel-default">
                                                             <div class="panel-body">
                                                                 <div class="row">
                                                                     <div class="col-md-6">
@@ -538,9 +561,6 @@
                                                     <div id="applicantLoans" class="tab-pane fade in active">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                Loans
-                                                            </div>
-                                                            <div class="panel-heading">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
                                                                     <input type="text" id="applicantLoanSearchInput" class="form-control" placeholder="Search" />
@@ -572,9 +592,6 @@
                                                     </div>
                                                     <div id="applicantReconstructedLoans" class="tab-pane fade">
                                                         <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                Reconstructed Loans
-                                                            </div>
                                                             <div class="panel-heading">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
@@ -608,9 +625,6 @@
                                                     <div id="applicantRenews" class="tab-pane fade">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                Renews
-                                                            </div>
-                                                            <div class="panel-heading">
                                                                 <div class="input-group">
                                                                     <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
                                                                     <input type="text" id="applicantRenewLoanSearchInput" class="form-control" placeholder="Search" />
@@ -642,9 +656,6 @@
                                                     </div>
                                                     <div id="applicantCollections" class="tab-pane fade">
                                                         <div class="panel panel-default">
-                                                            <div class="panel-heading">
-                                                                Collections / Posting / Index
-                                                            </div>
                                                             <div class="panel-heading">
                                                                 <table border="0" style="width: 100%;">
                                                                     <tr>
@@ -747,6 +758,35 @@
         </div>
     </div>
 
+
+    <!-- applicant detail change photo -->
+    <div class="modal fade" id="applicantDetailChangePhotoModalSignature" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Change Photo</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Choose an image file</label><br />
+                        <input type="file" class="form-control" id="applicantImageSignature">
+                    </div>
+                    <div align="center" id="divImageSignature">
+                        <img id="imageDisplaySignature" src="#" class="img-responsive img-thumbnail" />
+                        <hr />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnOkChangePhotoSignature" onclick="btnOkChangePhotoSignatureOnclick()"><i class="fa fa-check fa-fw"></i> Update</button>
+                    <button class="btn btn-danger" id="btnCloseChangePhotoSignature" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- delete confirmation applicant photo modal -->
     <div class="modal fade" id="deleteConfirmationApplicantDetailPhotoModal" role="dialog">
         <div class="modal-dialog modal-sm">
@@ -762,6 +802,25 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailPhoto" onclick="btnConfirmDeleteApplicantDetailPhotoOnclick()">Delete</button>
                     <button class="btn btn-default" id="btnCloseApplicantDetailPhoto" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- delete confirmation applicant photo modal -->
+    <div class="modal fade" id="deleteConfirmationApplicantDetailPhotoModalSignature" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Photo</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Photo?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteApplicantDetailPhotoSignature" onclick="btnConfirmDeleteApplicantDetailPhotoSignatureOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseApplicantDetailPhotoSignature" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -1332,6 +1391,16 @@
                         var photoDivElement = document.createElement("DIV");
                         var photoDiv = document.getElementById("photoDiv").appendChild(imageElement);
                         photoDiv.appendChild(photoDivElement);
+
+                        var imageElementSignature = document.createElement("images");
+                        var imageDataSignature = new Image();
+                        imageDataSignature.src = "data:image/jpeg;base64," + applicantDetailResult.PhotoSignature;
+                        imageDataSignature.className = "img-responsive img-thumbnail";
+                        imageElementSignature.appendChild(imageDataSignature);
+                        var photoSignatureDivElement = document.createElement("DIV");
+                        var photoSignatureDiv = document.getElementById("photoSignatureDiv").appendChild(imageElementSignature);
+                        photoSignatureDiv.appendChild(photoSignatureDivElement);
+
                         document.getElementById("applicantNumber").disabled = true;
 
                         if (applicantDetailResult.IsCoMaker) {
@@ -2780,12 +2849,128 @@
             $("#divImage").hide();
         }
 
+
+        // btn change photo image
+        function btnApplicantChangePhotoSignatureOnclick() {
+            $("#applicantDetailChangePhotoModalSignature").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            $("#divImageSignature").hide();
+        }
+
+
         // btn delete photo image
         function btnApplicantDeletePhotoOnclick() {
             $("#deleteConfirmationApplicantDetailPhotoModal").modal({
                 "show": true,
                 "backdrop": "static"
             });
+        }
+
+        function btnApplicantDeletePhotoSignatureOnclick() {
+            $("#deleteConfirmationApplicantDetailPhotoModalSignature").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+        }
+
+        function btnConfirmDeleteApplicantDetailPhotoSignatureOnclick() {
+            if (inputValidation()) {
+                document.getElementById("btnConfirmDeleteApplicantDetailPhotoSignature").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+                $("#btnConfirmDeleteApplicantDetailPhotoSignature").prop("disabled", true);
+                $("#btnCloseApplicantDetailPhotoSignature").prop("disabled", true);
+
+                var applicantDetailObject = new Object();
+                applicantDetailObject.IsCoMaker = document.getElementById("isCoMaker").checked;
+                applicantDetailObject.ApplicantLastName = document.getElementById('applicantLastName').value;
+                applicantDetailObject.ApplicantFirstName = document.getElementById('applicantFirstName').value;
+                applicantDetailObject.ApplicantMiddleName = document.getElementById('applicantMiddleName').value;
+                applicantDetailObject.BirthDate = cboBirthDate.value;
+                applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
+                applicantDetailObject.AreaId = cboApplicantArea.selectedItem["Id"];
+                applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
+                applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
+                applicantDetailObject.ContactNumber = document.getElementById('applicantContactNumber').value;
+                applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
+                applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
+                applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
+                applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
+                applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
+                applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
+                applicantDetailObject.BusinessTelephoneNumber = document.getElementById('applicantBusinessTelephoneNumber').value;
+                applicantDetailObject.BusinessYear = document.getElementById('applicantBusinessYears').value;
+                applicantDetailObject.BusinessMerchandise = document.getElementById('applicantBBusinessMerchandise').value;
+                applicantDetailObject.BusinessStockValues = document.getElementById('applicantValuesOfStocks').value;
+                applicantDetailObject.BusinessBeginningCapital = document.getElementById('applicantBusinessBeginningCapital').value;
+                applicantDetailObject.BusinessLowSalesPeriod = document.getElementById('applicantSalesLowPeriod').value;
+                applicantDetailObject.BusinessLowestDailySales = document.getElementById('applicantLowestDailySales').value;
+                applicantDetailObject.BusinessAverageDailySales = document.getElementById('applicantAverageDailySales').value;
+                applicantDetailObject.EmployedCompany = document.getElementById('applicantEmployedCompanyName').value;
+                applicantDetailObject.EmployedCompanyAddress = document.getElementById('applicantEmployedCompanyAddress').value;
+                applicantDetailObject.EmployedPositionOccupied = document.getElementById('applicantEmployedPositionOccupied').value;
+                applicantDetailObject.EmployedServiceLength = document.getElementById('applicantEmployedLengthOfService').value;
+                applicantDetailObject.EmployedTelephoneNumber = document.getElementById('applicantEmployedTelephoneNumber').value;
+                applicantDetailObject.SpouseFullName = document.getElementById('applicantSpouseName').value;
+                applicantDetailObject.SpouseEmployerBusiness = document.getElementById('applicantSpouseEmployerOrBusiness').value;
+                applicantDetailObject.SpouseEmployerBusinessAddress = document.getElementById('applicantSpouseBusinessAddress').value;
+                applicantDetailObject.SpouseBusinessTelephoneNumber = document.getElementById('applicantSpouseTelephoneNumber').value;
+                applicantDetailObject.SpousePositionOccupied = document.getElementById('applicantSpousePositionOccupied').value;
+                applicantDetailObject.SpouseMonthlySalary = document.getElementById('applicantSpouseMonthlySalary').value;
+                applicantDetailObject.SpouseLengthOfService = document.getElementById('applicantSpouseLengthOfService').value;
+                applicantDetailObject.NumberOfChildren = document.getElementById('applicantSpouseNumberOfChildren').value;
+                applicantDetailObject.Studying = document.getElementById('applicantSpouseNumberOfStudying').value;
+                applicantDetailObject.Schools = document.getElementById('applicantSpouseChildrenSchools').value;
+                var applicantDetailData = JSON.stringify(applicantDetailObject);
+
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/applicant/update/' + getUrlParameter("id"),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: applicantDetailData,
+                    statusCode: {
+                        200: function () {
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/applicant/deletePhoto/signature/' + getUrlParameter("id"),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                statusCode: {
+                                    200: function () {
+                                        toastr.success("Reloading the page", "Remove Photo Successful");
+                                        btnSaveChangesApplicantOnclick();
+                                    },
+                                    404: function () {
+                                        toastr.error("Not Found");
+
+                                        document.getElementById("btnConfirmDeleteApplicantDetailPhotoSignature").innerHTML = "Delete";
+                                        $("#btnConfirmDeleteApplicantDetailPhotoSignature").prop("disabled", false);
+                                        $("#btnCloseApplicantDetailPhotoSignature").prop("disabled", false);
+                                    },
+                                    400: function () {
+                                        toastr.error("Bad Request");
+
+                                        document.getElementById("btnConfirmDeleteApplicantDetailPhotoSignature").innerHTML = "Delete";
+                                        $("#btnConfirmDeleteApplicantDetailPhotoSignature").prop("disabled", false);
+                                        $("#btnCloseApplicantDetailPhotoSignature").prop("disabled", false);
+                                    }
+                                }
+                            });
+                        },
+                        404: function () {
+                            toastr.error("Not Found");
+                        },
+                        400: function () {
+                            toastr.error("Bad Request");
+                        }
+                    }
+                });
+            } else {
+                toastr.error("Invalid Entry");
+            }
         }
 
         // btn confirm delete photo image
@@ -2869,6 +3054,110 @@
                                         document.getElementById("btnConfirmDeleteApplicantDetailPhoto").innerHTML = "Delete";
                                         $("#btnConfirmDeleteApplicantDetailPhoto").prop("disabled", false);
                                         $("#btnCloseApplicantDetailPhoto").prop("disabled", false);
+                                    }
+                                }
+                            });
+                        },
+                        404: function () {
+                            toastr.error("Not Found");
+                        },
+                        400: function () {
+                            toastr.error("Bad Request");
+                        }
+                    }
+                });
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        function btnOkChangePhotoSignatureOnclick() {
+            if (inputValidation()) {
+                document.getElementById("btnOkChangePhotoSignature").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Updating";
+                $("#btnOkChangePhotoSignature").prop("disabled", true);
+                $("#btnCloseChangePhotoSignature").prop("disabled", true);
+
+                var applicantDetailObject = new Object();
+                applicantDetailObject.IsCoMaker = document.getElementById("isCoMaker").checked;
+                applicantDetailObject.ApplicantLastName = document.getElementById('applicantLastName').value;
+                applicantDetailObject.ApplicantFirstName = document.getElementById('applicantFirstName').value;
+                applicantDetailObject.ApplicantMiddleName = document.getElementById('applicantMiddleName').value;
+                applicantDetailObject.BirthDate = cboBirthDate.value;
+                applicantDetailObject.CivilStatusId = cboCivilStatus.selectedItem["Id"];
+                applicantDetailObject.AreaId = cboApplicantArea.selectedItem["Id"];
+                applicantDetailObject.CityAddress = document.getElementById('applicantCityAddress').value;
+                applicantDetailObject.ProvinceAddress = document.getElementById('applicantProvinceAddress').value;
+                applicantDetailObject.ContactNumber = document.getElementById('applicantContactNumber').value;
+                applicantDetailObject.ResidenceTypeId = cboResidenceType.selectedItem["Id"];
+                applicantDetailObject.ResidenceMonthlyRentAmount = document.getElementById("applicantResidenceMonthyRent").value;
+                applicantDetailObject.LandResidenceTypeId = cboLandResidenceType.selectedItem["Id"];
+                applicantDetailObject.LandResidenceMonthlyRentAmount = document.getElementById("applicantLandResidenceMonthyRent").value;
+                applicantDetailObject.LengthOfStay = document.getElementById('applicantLengthOfStay').value;
+                applicantDetailObject.BusinessAddress = document.getElementById('applicantBusinessAddress').value;
+                applicantDetailObject.BusinessKaratulaName = document.getElementById('applicantBusinessKaratulaName').value;
+                applicantDetailObject.BusinessTelephoneNumber = document.getElementById('applicantBusinessTelephoneNumber').value;
+                applicantDetailObject.BusinessYear = document.getElementById('applicantBusinessYears').value;
+                applicantDetailObject.BusinessMerchandise = document.getElementById('applicantBBusinessMerchandise').value;
+                applicantDetailObject.BusinessStockValues = document.getElementById('applicantValuesOfStocks').value;
+                applicantDetailObject.BusinessBeginningCapital = document.getElementById('applicantBusinessBeginningCapital').value;
+                applicantDetailObject.BusinessLowSalesPeriod = document.getElementById('applicantSalesLowPeriod').value;
+                applicantDetailObject.BusinessLowestDailySales = document.getElementById('applicantLowestDailySales').value;
+                applicantDetailObject.BusinessAverageDailySales = document.getElementById('applicantAverageDailySales').value;
+                applicantDetailObject.EmployedCompany = document.getElementById('applicantEmployedCompanyName').value;
+                applicantDetailObject.EmployedCompanyAddress = document.getElementById('applicantEmployedCompanyAddress').value;
+                applicantDetailObject.EmployedPositionOccupied = document.getElementById('applicantEmployedPositionOccupied').value;
+                applicantDetailObject.EmployedServiceLength = document.getElementById('applicantEmployedLengthOfService').value;
+                applicantDetailObject.EmployedTelephoneNumber = document.getElementById('applicantEmployedTelephoneNumber').value;
+                applicantDetailObject.SpouseFullName = document.getElementById('applicantSpouseName').value;
+                applicantDetailObject.SpouseEmployerBusiness = document.getElementById('applicantSpouseEmployerOrBusiness').value;
+                applicantDetailObject.SpouseEmployerBusinessAddress = document.getElementById('applicantSpouseBusinessAddress').value;
+                applicantDetailObject.SpouseBusinessTelephoneNumber = document.getElementById('applicantSpouseTelephoneNumber').value;
+                applicantDetailObject.SpousePositionOccupied = document.getElementById('applicantSpousePositionOccupied').value;
+                applicantDetailObject.SpouseMonthlySalary = document.getElementById('applicantSpouseMonthlySalary').value;
+                applicantDetailObject.SpouseLengthOfService = document.getElementById('applicantSpouseLengthOfService').value;
+                applicantDetailObject.NumberOfChildren = document.getElementById('applicantSpouseNumberOfChildren').value;
+                applicantDetailObject.Studying = document.getElementById('applicantSpouseNumberOfStudying').value;
+                applicantDetailObject.Schools = document.getElementById('applicantSpouseChildrenSchools').value;
+                var applicantDetailData = JSON.stringify(applicantDetailObject);
+
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/applicant/update/' + getUrlParameter("id"),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: applicantDetailData,
+                    statusCode: {
+                        200: function () {
+                            var applicantDetailPhotoObject = new Object();
+                            applicantDetailPhotoObject.PhotoSignature = $('#imageDisplaySignature').attr('src').replace(/^data:image\/(png|jpeg);base64,/, "");
+                            var applicantDetailPhotoData = JSON.stringify(applicantDetailPhotoObject);
+
+                            $.ajax({
+                                type: "PUT",
+                                url: '/api/applicant/updatePhoto/signature/' + getUrlParameter("id"),
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                data: applicantDetailPhotoData,
+                                statusCode: {
+                                    200: function () {
+                                        toastr.success("Reloading the page", "Update Photo Successful");
+                                        window.setTimeout(function () {
+                                            location.reload();
+                                        }, 1500);
+                                    },
+                                    404: function () {
+                                        toastr.error("Not Found");
+
+                                        document.getElementById("btnOkChangePhotoSignature").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
+                                        $("#btnOkChangePhotoSignature").prop("disabled", false);
+                                        $("#btnCloseChangePhotoSignature").prop("disabled", false);
+                                    },
+                                    400: function () {
+                                        toastr.error("Bad Request");
+
+                                        document.getElementById("btnOkChangePhotoSignature").innerHTML = "<i class='fa fa-check fa-fw'></i> Upload";
+                                        $("#btnOkChangePhotoSignature").prop("disabled", false);
+                                        $("#btnCloseChangePhotoSignature").prop("disabled", false);
                                     }
                                 }
                             });
@@ -3005,6 +3294,30 @@
 
         // onload image
         document.querySelector('#applicantImage').addEventListener('change', function () {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var binaryString = this.result;
+            }
+            reader.readAsBinaryString(this.files[0]);
+        }, false);
+
+
+
+
+        // Read URL image
+        function readURLSignature(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $("#divImageSignature").show();
+                    $('#imageDisplaySignature').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // onload image
+        document.querySelector('#applicantImageSignature').addEventListener('change', function () {
             var reader = new FileReader();
             reader.onload = function () {
                 var binaryString = this.result;
@@ -4268,6 +4581,11 @@
             $("#applicantImage").change(function () {
                 readURL(this);
                 $('#imageDisplay').show();
+            });
+
+            $("#applicantImageSignature").change(function () {
+                readURLSignature(this);
+                $('#imageDisplaySignature').show();
             });
 
             NProgress.start();

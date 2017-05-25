@@ -38,7 +38,7 @@ namespace Lending.Reports
                 if (dailyCollectionRemittanceLists.Any())
                 {
                     MemoryStream workStream = new MemoryStream();
-                    Rectangle rectangle = new Rectangle(PageSize.A3);
+                    Rectangle rectangle = new Rectangle(612f, 936f).Rotate();
                     Document document = new Document(rectangle, 72, 72, 72, 72);
                     document.SetMargins(30f, 30f, 50f, 20f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;

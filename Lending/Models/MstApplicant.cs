@@ -64,5 +64,6 @@ namespace Lending.Models
         public Int32 UpdatedByUserId { get; set; }
         public String UpdatedByUser { get; set; }
         public String UpdatedDateTime { get; set; }
+        public byte[] PhotoSignature { get; set; }
     }
 }
