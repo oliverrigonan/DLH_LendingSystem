@@ -44,39 +44,56 @@ namespace Lending.Reports
                 if (expenses.Any())
                 {
                     MemoryStream workStream = new MemoryStream();
-                    Rectangle rectangle = new Rectangle(PageSize.A3);
+                    Rectangle rectangle = new Rectangle(612f, 936f);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
                     document.SetMargins(30f, 30f, 50f, 20f);
                     PdfWriter.GetInstance(document, workStream).CloseStream = false;
 
                     document.Open();
 
-                    Font fontArial19Bold = FontFactory.GetFont("Arial", 20, Font.BOLD);
-                    Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
-                    Font fontArial16Bold = FontFactory.GetFont("Arial", 16, Font.BOLD);
-                    Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
-                    Font fontArial13Bold = FontFactory.GetFont("Arial", 13, Font.BOLD);
-                    Font fontArial12 = FontFactory.GetFont("Arial", 12);
-                    Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
-                    Font fontArial11 = FontFactory.GetFont("Arial", 11);
-                    Font fontArial11ITALIC = FontFactory.GetFont("Arial", 12, Font.ITALIC);
-                    Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
-                    Font fontArial10 = FontFactory.GetFont("Arial", 10);
-                    Font fontArial10ITALIC = FontFactory.GetFont("Arial", 10, Font.ITALIC);
+                    //Font fontArial19Bold = FontFactory.GetFont("Arial", 20, Font.BOLD);
+                    //Font fontArial17Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
+                    //Font fontArial16Bold = FontFactory.GetFont("Arial", 16, Font.BOLD);
+                    //Font fontArial12Bold = FontFactory.GetFont("Arial", 12, Font.BOLD);
+                    //Font fontArial13Bold = FontFactory.GetFont("Arial", 13, Font.BOLD);
+                    //Font fontArial12 = FontFactory.GetFont("Arial", 12);
+                    //Font fontArial11Bold = FontFactory.GetFont("Arial", 11, Font.BOLD);
+                    //Font fontArial11 = FontFactory.GetFont("Arial", 11);
+                    //Font fontArial11ITALIC = FontFactory.GetFont("Arial", 12, Font.ITALIC);
+                    //Font fontArial10Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
+                    //Font fontArial10 = FontFactory.GetFont("Arial", 10);
+                    //Font fontArial10ITALIC = FontFactory.GetFont("Arial", 10, Font.ITALIC);
+
+                    // Fonts
+                    Font fontArial19Bold = FontFactory.GetFont("Arial", 17, Font.BOLD);
+                    Font fontArial17Bold = FontFactory.GetFont("Arial", 14, Font.BOLD);
+                    Font fontArial16Bold = FontFactory.GetFont("Arial", 13, Font.BOLD);
+                    Font fontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
+                    Font fontArial13Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
+                    Font fontArial12 = FontFactory.GetFont("Arial", 9);
+                    Font fontArial11Bold = FontFactory.GetFont("Arial", 8, Font.BOLD);
+                    Font fontArial11 = FontFactory.GetFont("Arial", 8);
+                    Font fontArial11ITALIC = FontFactory.GetFont("Arial", 9, Font.ITALIC);
+                    Font fontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
+                    Font fontArial10 = FontFactory.GetFont("Arial", 7);
+                    Font fontArial10ITALIC = FontFactory.GetFont("Arial", 7, Font.ITALIC);
+
                     Paragraph line = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, BaseColor.BLACK, Element.ALIGN_LEFT, 1)));
 
                     var userCompanyDetail = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d).FirstOrDefault();
 
+                    // image
                     string imagepath = Server.MapPath("~/Images/dlhicon.jpg");
                     Image logo = Image.GetInstance(imagepath);
-                    logo.ScalePercent(16f);
+                    logo.ScalePercent(11f);
                     PdfPCell imageCell = new PdfPCell(logo);
 
+                    // header
                     PdfPTable loanApplicationheader = new PdfPTable(2);
                     float[] loanApplicationheaderWidthCells = new float[] { 7f, 100f };
                     loanApplicationheader.SetWidths(loanApplicationheaderWidthCells);
                     loanApplicationheader.WidthPercentage = 100;
-                    loanApplicationheader.AddCell(new PdfPCell(imageCell) { Rowspan = 3, Border = 0, PaddingRight = 10f, PaddingBottom = 5f });
+                    loanApplicationheader.AddCell(new PdfPCell(imageCell) { Rowspan = 3, Border = 0, PaddingRight = 10f, PaddingBottom = 5f, PaddingTop = 4f });
                     loanApplicationheader.AddCell(new PdfPCell(new Phrase(userCompanyDetail.mstCompany.Company, fontArial19Bold)) { HorizontalAlignment = 0, Border = 0, PaddingBottom = 2f });
                     loanApplicationheader.AddCell(new PdfPCell(new Phrase("Address: " + userCompanyDetail.mstCompany.Address, fontArial12)) { HorizontalAlignment = 0, Border = 0 });
                     loanApplicationheader.AddCell(new PdfPCell(new Phrase("Contact: " + userCompanyDetail.mstCompany.ContactNumber, fontArial12)) { HorizontalAlignment = 0, Border = 0 });
@@ -102,22 +119,22 @@ namespace Lending.Reports
                     float[] collectionDataWithCells = new float[] { 10f, 15f, 25f, 30f, 20f };
                     collectionData.SetWidths(collectionDataWithCells);
                     collectionData.WidthPercentage = 100;
-                    collectionData.AddCell(new PdfPCell(new Phrase("Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Doc No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Staff", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Doc No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Staff", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Particulars", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    collectionData.AddCell(new PdfPCell(new Phrase("Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
 
                     Decimal totalExpenseAmount = 0;
                     foreach (var expense in expenses)
                     {
                         totalExpenseAmount += expense.ExpenseAmount;
 
-                        collectionData.AddCell(new PdfPCell(new Phrase(expense.ExpenseDate, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionData.AddCell(new PdfPCell(new Phrase(expense.ExpenseNumber, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionData.AddCell(new PdfPCell(new Phrase(expense.AssignedStaff, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionData.AddCell(new PdfPCell(new Phrase(expense.Particulars, fontArial11)) { PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
-                        collectionData.AddCell(new PdfPCell(new Phrase(expense.ExpenseAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 3f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase(expense.ExpenseDate, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase(expense.ExpenseNumber, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase(expense.AssignedStaff, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase(expense.Particulars, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase(expense.ExpenseAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                     }
 
                     collectionData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { Colspan = 4, HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
