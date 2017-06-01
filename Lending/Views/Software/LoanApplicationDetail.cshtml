@@ -263,22 +263,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Reconstructed</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <input type="checkbox" id="loanApplicationReconstructed" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Renewed</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <input type="checkbox" id="loanApplicationRenewed" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -300,6 +284,11 @@
                     <li>
                         <a href="#loanLines" data-toggle="tab" id="loanLinesTab">
                             Posting (Auto-Generated)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#loanHistory" data-toggle="tab" id="loanHistoryTab">
+                            Loan History
                         </a>
                     </li>
                 </ul>
@@ -407,6 +396,35 @@
                                             <span class="glyphicon glyphicon-step-forward"></span> Next
                                         </button>
                                         <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanLines">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="loanHistory" class="tab-pane fade in">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                Loan History
+                            </div>
+                            <div class="panel-body">
+                                <div id="loanHistoryFlexgrid" class="grid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridLoanHistory">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridLoanHistory">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridLoanHistory">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridLoanHistory"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridLoanHistory">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanHistory">
                                             <span class="glyphicon glyphicon-fast-forward"></span> Last
                                         </button>
                                     </div>
@@ -619,6 +637,8 @@
         var loanApplicationDeductionFlexGrid;
         var cboDeduction;
         var loanDeductionId = 0;
+        var loanHistoryCollectionView;
+        var loanHistoryFlexgrid;
 
         // create loan Application Loan Date
         function createloanApplicationLoanDate() {
@@ -705,6 +725,21 @@
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName",
                         onSelectedIndexChanged: function () {
+                            createFlexGridForLoanHistory();
+                            window.createFlexGridForLoanHistory = function () {
+                                return true;
+                            }
+
+                            loanHistoryCollectionView = new wijmo.collections.CollectionView(getLoanHistory());
+                            loanHistoryCollectionView.pageSize = 15;
+
+                            loanHistoryCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtonsLoanHistory();
+                            });
+
+                            loanHistoryFlexgrid.itemsSource = loanHistoryCollectionView;
+                            loanHistoryFlexgrid.trackChanges = true;
+
                             document.getElementById("loanApplicationApplicantArea").value = this.selectedItem["Area"];
                         }
                     });
@@ -788,7 +823,7 @@
         // get loan application by id
         function getLoanApplicationById() {
             $.ajax({
-                url: '/api/loan/getById/' + getUrlParameter("id"),
+                url: '/api/loan/getById/' + getUrlParameter("id") + '/loan',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -825,8 +860,6 @@
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = loanApplicationResult.UpdatedDateTime;
-                        document.getElementById('loanApplicationReconstructed').checked = loanApplicationResult.IsReconstructed;
-                        document.getElementById('loanApplicationRenewed').checked = loanApplicationResult.IsRenewed;
 
                         if (loanApplicationResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
@@ -2123,6 +2156,272 @@
             }
             refreshLoanLinesFlexGrid();
         });
+
+
+
+
+
+        // loan history
+        function getLoanHistory() {
+            var loanHistorys = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/loanHistory/list/' + cboloanApplicationApplicant.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (loanHistorysResults) {
+                    if (loanHistorysResults.length > 0) {
+                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
+
+                        for (i = 0; i < loanHistorysResults.length; i++) {
+                            var newDate = new Date(loanHistorysResults[i]["LoanDate"]);
+                            var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            var newMaturityDate = new Date(loanHistorysResults[i]["MaturityDate"]);
+                            var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
+
+                            loanHistorys.push({
+                                Id: loanHistorysResults[i]["Id"],
+                                BtnLoanNumber: btnLoanNumber,
+                                LoanId: loanHistorysResults[i]["LoanId"],
+                                LoanDate: loanDateValue,
+                                MaturityDate: maturityDateValue,
+                                LoanNumber: loanHistorysResults[i]["LoanNumber"],
+                                Area: loanHistorysResults[i]["Area"],
+                                Particulars: loanHistorysResults[i]["Particulars"],
+                                PrincipalAmount: loanHistorysResults[i]["PrincipalAmount"],
+                                InterestAmount: loanHistorysResults[i]["InterestAmount"],
+                                DeductionAmount: loanHistorysResults[i]["DeductionAmount"],
+                                PreviousBalanceAmount: loanHistorysResults[i]["PreviousBalanceAmount"],
+                                NetAmount: loanHistorysResults[i]["NetAmount"],
+                                NetCollectionAmount: loanHistorysResults[i]["NetCollectionAmount"],
+                                CollectibleAmount: loanHistorysResults[i]["CollectibleAmount"],
+                                TotalPaidAmount: loanHistorysResults[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: loanHistorysResults[i]["TotalPenaltyAmount"],
+                                TotalBalanceAmount: loanHistorysResults[i]["TotalBalanceAmount"],
+                                IsLocked: loanHistorysResults[i]["IsLocked"],
+                                IsLoanApplication: loanHistorysResults[i]["IsLoanApplication"],
+                                IsLoanReconstruct: loanHistorysResults[i]["IsLoanReconstruct"],
+                                IsLoanRenew: loanHistorysResults[i]["IsLoanRenew"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+
+            return loanHistorys;
+        }
+
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsLoanHistory() {
+            if (loanHistoryCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridLoanHistory').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridLoanHistory').style.display = 'block';
+            btnCurrentPageGridLoanHistory.innerHTML = (loanHistoryCollectionView.pageIndex + 1) + ' / ' + loanHistoryCollectionView.pageCount;
+        }
+
+        // create flexgrid for loan application reconstrcut
+        function createFlexGridForLoanHistory() {
+            loanHistoryCollectionView = new wijmo.collections.CollectionView(getLoanHistory());
+            loanHistoryCollectionView.pageSize = 15;
+
+            loanHistoryCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanHistory();
+            });
+
+            loanHistoryFlexgrid = new wijmo.grid.FlexGrid('#loanHistoryFlexgrid');
+            loanHistoryFlexgrid.initialize({
+                columns: [
+                             {
+                                 "header": "Detail",
+                                 "binding": "BtnLoanNumber",
+                                 "width": "1*",
+                                 "align": "center",
+                                 "allowResizing": false,
+                                 "isContentHtml": true
+                             },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "allowSorting": true,
+                                "width": 50,
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "LoanDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Due Date",
+                                "binding": "MaturityDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Doc No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Principal",
+                                "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Interest",
+                                "binding": "InterestAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Deduction / Additionals",
+                                "binding": "DeductionAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Prev. Balance",
+                                "binding": "PreviousBalanceAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Net",
+                                "binding": "NetAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Net Collection",
+                                "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Total Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: loanHistoryCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            loanHistoryFlexgrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridLoanHistory = document.getElementById('btnMoveToFirstPageGridLoanHistory');
+            btnPreviousPageGridLoanHistory = document.getElementById('btnMoveToPreviousPageGridLoanHistory');
+            btnNextPageGridLoanHistory = document.getElementById('btnMoveToNextPageGridLoanHistory');
+            btnLastPageGridLoanHistory = document.getElementById('btnMoveToLastPageGridLoanHistory');
+            btnCurrentPageGridLoanHistory = document.getElementById('btnCurrentPageGridLoanHistory');
+
+            updateNavigateButtonsLoanHistory();
+
+            btnFirstPageGridLoanHistory.addEventListener('click', function () {
+                loanHistoryCollectionView.moveToFirstPage();
+                updateNavigateButtonsLoanHistory();
+            });
+            btnPreviousPageGridLoanHistory.addEventListener('click', function () {
+                loanHistoryCollectionView.moveToPreviousPage();
+                updateNavigateButtonsLoanHistory();
+            });
+            btnNextPageGridLoanHistory.addEventListener('click', function () {
+                loanHistoryCollectionView.moveToNextPage();
+                updateNavigateButtonsLoanHistory();
+            });
+            btnLastPageGridLoanHistory.addEventListener('click', function () {
+                loanHistoryCollectionView.moveToLastPage();
+                updateNavigateButtonsLoanHistory();
+            });
+        }
+
+        // loan app
+        function btnLoanNumberOnclick() {
+            loanHistoryCollectionView.editItem(loanHistoryCollectionView.currentItem);
+            var currentItem = loanHistoryCollectionView.currentEditItem;
+
+            if (currentItem.IsLoanApplication) {
+                var link = '/Software/LoanApplicationDetail?id=' + currentItem.Id;
+                window.open(link, "_blank");
+            } else {
+                if (currentItem.IsLoanReconstruct) {
+                    var link = '/Software/ReconstructDetail?id=' + currentItem.Id;
+                    window.open(link, "_blank");
+                } else {
+                    if (currentItem.IsLoanRenew) {
+                        var link = '/Software/RenewDetail?id=' + currentItem.Id;
+                        window.open(link, "_blank");
+                    } else {
+                        var link = '/Software/LoanApplicationDetail?id=' + currentItem.Id;
+                        window.open(link, "_blank");
+                    }
+                }
+            }
+        }
+
+        // tab
+        $('#loanHistoryTab').click(function () {
+            NProgress.start();
+            $("#loanApplicationCollateral").hide();
+            $("#loanDeductions").hide();
+            $("#loanLines").hide();
+            $("#loanHistory").show();
+
+            createFlexGridForLoanHistory();
+            window.createFlexGridForLoanHistory = function () {
+                return true;
+            }
+
+            loanHistoryCollectionView = new wijmo.collections.CollectionView(getLoanHistory());
+            loanHistoryCollectionView.pageSize = 15;
+
+            loanHistoryCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanHistory();
+            });
+
+            loanHistoryFlexgrid.itemsSource = loanHistoryCollectionView;
+            loanHistoryFlexgrid.trackChanges = true;
+        });
+
+
+
 
         // on load page
         window.onload = function () {

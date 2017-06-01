@@ -6,14 +6,15 @@ using System.Web;
 
 namespace Lending.Models
 {
-    public class TrnLoan
+    public class TrnLoanHistory
     {
         [Key]
         public Int32 Id { get; set; }
+        public Int32 ApplicantId { get; set; }
+        public Int32 LoanId { get; set; }
         public String LoanNumber { get; set; }
         public String LoanNumberDetail { get; set; }
         public String LoanDate { get; set; }
-        public Int32 ApplicantId { get; set; }
         public String Applicant { get; set; }
         public String Area { get; set; }
         public String Particulars { get; set; }
@@ -43,17 +44,8 @@ namespace Lending.Models
         public Boolean IsLoanRenew { get; set; }
         public Boolean IsReconstructed { get; set; }
         public Boolean IsRenewed { get; set; }
-        public Boolean IsFullyPaid { get; set; }
         public String ReconstructedDocNumber { get; set; }
         public String RenewedDocNumber { get; set; }
         public Boolean IsLocked { get; set; }
-        public Int32 CreatedByUserId { get; set; }
-        public String CreatedByUser { get; set; }
-        public String CreatedDateTime { get; set; }
-        public Int32 UpdatedByUserId { get; set; }
-        public String UpdatedByUser { get; set; }
-        public String UpdatedDateTime { get; set; }
-        public DateTime DateTImeMaturityDate { get; set; }
-        public DateTime DateTImeLoanDate { get; set; }
     }
 }

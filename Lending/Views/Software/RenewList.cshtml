@@ -45,7 +45,7 @@
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td align="right">
-                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddRenewOnclick()">
+                                    <button class="btn btn-primary" id="btnAddLoanApplication" onclick="btnAddLoanApplicationOnclick()">
                                         <i class="fa fa-plus fa-fw"></i>&nbsp; Add
                                     </button>
                                 </td>
@@ -261,6 +261,26 @@
         var m = date.getMonth();
         var firstDay = new Date(y, fm, 1);
         var lastDay = new Date(y, m + 1, 0);
+
+        // add new loan application
+        function btnAddLoanApplicationOnclick() {
+            document.getElementById("btnAddLoanApplication").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnAddLoanApplication").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/loan/add/renew',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/RenewDetail?id=' + id;
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
 
         // reconstuct
         function btnAddRenewOnclick() {
@@ -531,161 +551,6 @@
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
                             var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
 
-                            var getDueDate = new Date(loanApplicationListResult[i]["MaturityDate"]);
-                            var newDate2 = new Date();
-                            var newCurrentDate = ('0' + (newDate2.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate2.getDate()).slice(-2) + '-' + newDate2.getFullYear();
-                            var getCurrentDate = new Date(newCurrentDate);
-                            var oneDay = 24 * 60 * 60 * 1000;
-                            var diffDays = Math.round(Math.abs((getDueDate.getTime() - getCurrentDate.getTime()) / (oneDay)));
-                            var loanStatus = "New";
-                            if (loanApplicationListResult[i]["IsLocked"]) {
-                                if (loanApplicationListResult[i]["TermNoOfDays"] == 0) {
-                                    if (loanApplicationListResult[i]["IsReconstructed"]) {
-                                        loanStatus = "Reconstructed";
-                                    } else {
-                                        if (loanApplicationListResult[i]["IsRenewed"]) {
-                                            loanStatus = "Renewed";
-                                        } else {
-                                            if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                loanStatus = "Fully Paid";
-                                            } else {
-                                                if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                    loanStatus = "Current - No Term";
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    if (getDueDate.toDateString() == getCurrentDate.toDateString()) {
-                                        loanStatus = "Due";
-                                    } else {
-                                        if (getCurrentDate < getDueDate) {
-                                            if (loanApplicationListResult[i]["IsReconstructed"]) {
-                                                loanStatus = "Reconstructed";
-                                            } else {
-                                                if (loanApplicationListResult[i]["IsRenewed"]) {
-                                                    loanStatus = "Renewed";
-                                                } else {
-                                                    if (diffDays == 7) {
-                                                        if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                            loanStatus = "Fully Paid";
-                                                        } else {
-                                                            if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                loanStatus = "Current - 7 Days before due";
-                                                            } else {
-                                                                loanStatus = "7 Days before due";
-                                                            }
-                                                        }
-                                                    } else {
-                                                        if (diffDays == 6) {
-                                                            if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                loanStatus = "Fully Paid";
-                                                            } else {
-                                                                if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                    loanStatus = "Current - 6 Days before due";
-                                                                } else {
-                                                                    loanStatus = "6 Days before due";
-                                                                }
-                                                            }
-                                                        } else {
-                                                            if (diffDays == 5) {
-                                                                if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                    loanStatus = "Fully Paid";
-                                                                } else {
-                                                                    if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                        loanStatus = "Current - 5 Days before due";
-                                                                    } else {
-                                                                        loanStatus = "5 Days before due";
-                                                                    }
-                                                                }
-                                                            } else {
-                                                                if (diffDays == 4) {
-                                                                    if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                        loanStatus = "Fully Paid";
-                                                                    } else {
-                                                                        if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                            loanStatus = "Current - 4 Days before due";
-                                                                        } else {
-                                                                            loanStatus = "4 Days before due";
-                                                                        }
-                                                                    }
-                                                                } else {
-                                                                    if (diffDays == 3) {
-                                                                        if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                            loanStatus = "Fully Paid";
-                                                                        } else {
-                                                                            if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                                loanStatus = "Current - 3 Days before due";
-                                                                            } else {
-                                                                                loanStatus = "3 Days before due";
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        if (diffDays == 2) {
-                                                                            if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                                loanStatus = "Fully Paid";
-                                                                            } else {
-                                                                                if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                                    loanStatus = "Current - 2 Days before due";
-                                                                                } else {
-                                                                                    loanStatus = "2 Days before due";
-                                                                                }
-                                                                            }
-                                                                        } else {
-                                                                            if (diffDays == 1) {
-                                                                                if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                                    loanStatus = "Fully Paid";
-                                                                                } else {
-                                                                                    if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                                        loanStatus = "Current - 1 Day before due";
-                                                                                    } else {
-                                                                                        loanStatus = "1 Day before due";
-                                                                                    }
-                                                                                }
-                                                                            } else {
-                                                                                if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                                                    loanStatus = "Fully Paid";
-                                                                                } else {
-                                                                                    if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                                                        loanStatus = "Current";
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            if (getCurrentDate > getDueDate) {
-                                                if (diffDays > 1) {
-                                                    if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                        loanStatus = "Fully Paid";
-                                                    } else {
-                                                        if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                            loanStatus = "Current - Overdue (" + diffDays + " Days)";
-                                                        }
-                                                    }
-                                                } else {
-                                                    if (loanApplicationListResult[i]["TotalBalanceAmount"] <= 0) {
-                                                        loanStatus = "Fully Paid";
-                                                    } else {
-                                                        if (loanApplicationListResult[i]["TotalPaidAmount"] > 0) {
-                                                            loanStatus = "Current - Overdue (" + diffDays + " Day)";
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                loanStatus = "Not Locked";
-                            }
-
                             var newMaturityDate = new Date(loanApplicationListResult[i]["MaturityDate"]);
                             var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
 
@@ -708,7 +573,6 @@
                                 TotalPaidAmount: loanApplicationListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: loanApplicationListResult[i]["TotalPenaltyAmount"],
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
-                                LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
                                 CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
@@ -716,7 +580,6 @@
                                 UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
                                 UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
-                                RenewedDocNumber: loanApplicationListResult[i]["RenewedDocNumber"],
                             });
                         }
                     }
@@ -863,24 +726,24 @@
         }
 
 
-        // add new loan application
-        function btnAddLoanApplicationOnclick() {
-            document.getElementById("btnAddLoanApplication").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
-            $("#btnAddLoanApplication").prop("disabled", true);
+        //// add new loan application
+        //function btnAddLoanApplicationOnclick() {
+        //    document.getElementById("btnAddLoanApplication").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+        //    $("#btnAddLoanApplication").prop("disabled", true);
 
-            $.ajax({
-                type: "POST",
-                url: '/api/loan/add',
-                contentType: "application/json; charset=utf-8",
-                success: function (id) {
-                    if (id > 0) {
-                        window.location = '/Software/LoanApplicationDetail?id=' + id;
-                    } else {
-                        toastr.error("Bad Request");
-                    }
-                }
-            });
-        }
+        //    $.ajax({
+        //        type: "POST",
+        //        url: '/api/loan/add',
+        //        contentType: "application/json; charset=utf-8",
+        //        success: function (id) {
+        //            if (id > 0) {
+        //                window.location = '/Software/LoanApplicationDetail?id=' + id;
+        //            } else {
+        //                toastr.error("Bad Request");
+        //            }
+        //        }
+        //    });
+        //}
 
         // edit loan application
         function btnEditLoanApplicationOnclick() {
@@ -1068,22 +931,10 @@
                                 "width": 220,
                             },
                             {
-                                "header": "Status",
-                                "binding": "LoanStatus",
-                                "allowSorting": true,
-                                "width": 190,
-                            },
-                            {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
-                            },
-                            {
-                                "header": "Renewed Loan",
-                                "binding": "RenewedDocNumber",
-                                "allowSorting": true,
-                                "width": 230,
                             },
                             {
                                 "header": "Renew Amount",

@@ -79,12 +79,6 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Loan Status</label>
-                                                <div class="col-sm-8">
-                                                    <input type="text" class="form-control requiredCollection" id="loanStatus" placeholder="Status" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="control-label col-sm-4">Particulars</label>
                                                 <div class="col-sm-8">
                                                     <textarea class="form-control requiredCollection" rows="5" id="collectionParticulars" placeholder="Particulars"></textarea>
@@ -694,19 +688,6 @@
                             } else {
                                 document.getElementById("payPaidAmount").value = this.selectedItem["TotalBalanceAmount"].toLocaleString();
                             }
-
-                            if (this.selectedItem["IsReconstructed"]) {
-                                document.getElementById("loanStatus").value = "Reconstructed";
-                                toastr.error("Reconstructed");
-                            } else {
-                                if (this.selectedItem["IsReconstructed"]) {
-                                    document.getElementById("loanStatus").value = "Renewed";
-                                    toastr.error("Renewed");
-                                } else {
-                                    document.getElementById("loanStatus").value = "Current Loan";
-                                    toastr.success("Current Loan");
-                                }
-                            }
                         }
                     });
 
@@ -721,15 +702,6 @@
                         document.getElementById("payPaidAmount").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
                     }
 
-                    if (cboCollectionApplicantLoanNumber.selectedItem["IsReconstructed"]) {
-                        document.getElementById("loanStatus").value = "Reconstructed";
-                    } else {
-                        if (cboCollectionApplicantLoanNumber.selectedItem["IsReconstructed"]) {
-                            document.getElementById("loanStatus").value = "Renewed";
-                        } else {
-                            document.getElementById("loanStatus").value = "Current Loan";
-                        }
-                    }
                     createRecentCollectionFlexgrid();
                     window.createRecentCollectionFlexgrid = function () {
                         return true;

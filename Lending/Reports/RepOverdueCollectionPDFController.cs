@@ -20,9 +20,7 @@ namespace Lending.Reports
             if (areaId.Equals("0"))
             {
                 var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
-                                       where d.IsReconstructed == false
-                                       && d.IsRenewed == false
-                                       && d.IsLocked == true
+                                       where d.IsLocked == true
                                        && d.IsLoanReconstruct == true
                                        && d.TotalBalanceAmount > 0
                                        select new Models.TrnLoan
@@ -53,8 +51,6 @@ namespace Lending.Reports
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstructed = d.IsReconstructed,
-                                           IsRenewed = d.IsRenewed,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
@@ -73,8 +69,6 @@ namespace Lending.Reports
             {
                 var loanApplications = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
                                        where d.mstApplicant.AreaId == Convert.ToInt32(areaId)
-                                       && d.IsReconstructed == false
-                                       && d.IsRenewed == false
                                        && d.IsLocked == true
                                        && d.IsLoanReconstruct == true
                                        && d.TotalBalanceAmount > 0
@@ -106,8 +100,6 @@ namespace Lending.Reports
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstructed = d.IsReconstructed,
-                                           IsRenewed = d.IsRenewed,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
@@ -157,8 +149,6 @@ namespace Lending.Reports
                                            TotalPaidAmount = d.TotalPaidAmount,
                                            TotalPenaltyAmount = d.TotalPenaltyAmount,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
-                                           IsReconstructed = d.IsReconstructed,
-                                           IsRenewed = d.IsRenewed,
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,

@@ -57,8 +57,6 @@ namespace Lending.Reports
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
-                                               IsReconstructed = d.IsReconstructed,
-                                               IsRenewed = d.IsRenewed,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -109,8 +107,6 @@ namespace Lending.Reports
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
-                                               IsReconstructed = d.IsReconstructed,
-                                               IsRenewed = d.IsRenewed,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -130,10 +126,6 @@ namespace Lending.Reports
                     if (areaId.Equals("0"))
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanReconstructRenews
-                                               on d.Id equals s.LoanId
-                                               into joinRenews
-                                               from listRenews in joinRenews.DefaultIfEmpty()
                                                where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                                                && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                                && d.IsLocked == true
@@ -169,8 +161,6 @@ namespace Lending.Reports
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
-                                                   IsReconstructed = d.IsReconstructed,
-                                                   IsRenewed = d.IsRenewed,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -178,8 +168,6 @@ namespace Lending.Reports
                                                    UpdatedByUserId = d.UpdatedByUserId,
                                                    UpdatedByUser = d.mstUser2.FullName,
                                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                                   RenewedDocNumber = joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " ",
-                                                   ReconstructedDocNumber = " "
                                                };
 
                         return loanApplications.ToList();
@@ -187,10 +175,6 @@ namespace Lending.Reports
                     else
                     {
                         var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                               join s in db.trnLoanReconstructRenews
-                                               on d.Id equals s.LoanId
-                                               into joinRenews
-                                               from listRenews in joinRenews.DefaultIfEmpty()
                                                where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                                                && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                                && d.IsLocked == true
@@ -227,8 +211,6 @@ namespace Lending.Reports
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
-                                                   IsReconstructed = d.IsReconstructed,
-                                                   IsRenewed = d.IsRenewed,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -236,8 +218,6 @@ namespace Lending.Reports
                                                    UpdatedByUserId = d.UpdatedByUserId,
                                                    UpdatedByUser = d.mstUser2.FullName,
                                                    UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                                   RenewedDocNumber = joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinRenews.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " ",
-                                                   ReconstructedDocNumber = " "
                                                };
 
                         return loanApplications.ToList();
@@ -250,10 +230,6 @@ namespace Lending.Reports
                         if (areaId.Equals("0"))
                         {
                             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                                   join s in db.trnLoanReconstructRenews
-                                                   on d.Id equals s.LoanId
-                                                   into joinReconstructs
-                                                   from listReconstructs in joinReconstructs.DefaultIfEmpty()
                                                    where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                                                    && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                                    && d.IsLocked == true
@@ -286,8 +262,6 @@ namespace Lending.Reports
                                                        TotalPaidAmount = d.TotalPaidAmount,
                                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                                       IsReconstructed = d.IsReconstructed,
-                                                       IsRenewed = d.IsRenewed,
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
@@ -298,8 +272,6 @@ namespace Lending.Reports
                                                        UpdatedByUserId = d.UpdatedByUserId,
                                                        UpdatedByUser = d.mstUser2.FullName,
                                                        UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                                       RenewedDocNumber = " ",
-                                                       ReconstructedDocNumber = joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " "
                                                    };
 
                             return loanApplications.ToList();
@@ -307,10 +279,6 @@ namespace Lending.Reports
                         else
                         {
                             var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
-                                                   join s in db.trnLoanReconstructRenews
-                                                   on d.Id equals s.LoanId
-                                                   into joinReconstructs
-                                                   from listReconstructs in joinReconstructs.DefaultIfEmpty()
                                                    where d.LoanDate >= Convert.ToDateTime(startLoanDate)
                                                    && d.LoanDate <= Convert.ToDateTime(endLoanDate)
                                                    && d.IsLocked == true
@@ -343,8 +311,6 @@ namespace Lending.Reports
                                                        TotalPaidAmount = d.TotalPaidAmount,
                                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                                       IsReconstructed = d.IsReconstructed,
-                                                       IsRenewed = d.IsRenewed,
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
@@ -355,8 +321,6 @@ namespace Lending.Reports
                                                        UpdatedByUserId = d.UpdatedByUserId,
                                                        UpdatedByUser = d.mstUser2.FullName,
                                                        UpdatedDateTime = d.UpdatedDateTime.ToShortDateString(),
-                                                       RenewedDocNumber = " ",
-                                                       ReconstructedDocNumber = joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanApplication == true ? "LN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanReconstruct == true ? "RC-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.IsLoanRenew == true ? "RN-" + joinReconstructs.Where(g => g.LoanId == d.Id).FirstOrDefault().trnLoan1.LoanNumber : " "
                                                    };
 
                             return loanApplications.ToList();

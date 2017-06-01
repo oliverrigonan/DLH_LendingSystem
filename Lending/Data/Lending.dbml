@@ -488,8 +488,6 @@
       <Column Name="IsLoanApplication" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsLoanReconstruct" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsLoanRenew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsReconstructed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="IsRenewed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -498,8 +496,6 @@
       <Association Name="trnLoan_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="LoanId" Type="trnCollection" />
       <Association Name="trnLoan_trnLoanCollateral" Member="trnLoanCollaterals" ThisKey="Id" OtherKey="LoanId" Type="trnLoanCollateral" />
       <Association Name="trnLoan_trnLoanDeduction" Member="trnLoanDeductions" ThisKey="Id" OtherKey="LoanId" Type="trnLoanDeduction" />
-      <Association Name="trnLoan_trnLoanReconstructRenew" Member="trnLoanReconstructRenews" ThisKey="Id" OtherKey="LoanId" Type="trnLoanReconstructRenew" />
-      <Association Name="trnLoan_trnLoanReconstructRenew1" Member="trnLoanReconstructRenews1" ThisKey="Id" OtherKey="ReconstructRenewLoanId" Type="trnLoanReconstructRenew" />
       <Association Name="mstApplicant_trnLoan" Member="mstApplicant" ThisKey="ApplicantId" OtherKey="Id" Type="mstApplicant" IsForeignKey="true" />
       <Association Name="mstInterest_trnLoan" Member="mstInterest" ThisKey="InterestId" OtherKey="Id" Type="mstInterest" IsForeignKey="true" />
       <Association Name="mstTerm_trnLoan" Member="mstTerm" ThisKey="TermId" OtherKey="Id" Type="mstTerm" IsForeignKey="true" />
@@ -527,15 +523,6 @@
       <Column Name="DeductionAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="mstDeduction_trnLoanDeduction" Member="mstDeduction" ThisKey="DeductionId" OtherKey="Id" Type="mstDeduction" IsForeignKey="true" />
       <Association Name="trnLoan_trnLoanDeduction" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.trnLoanReconstructRenew" Member="trnLoanReconstructRenews">
-    <Type Name="trnLoanReconstructRenew">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="LoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ReconstructRenewLoanId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="trnLoan_trnLoanReconstructRenew" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="trnLoan_trnLoanReconstructRenew1" Member="trnLoan1" ThisKey="ReconstructRenewLoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

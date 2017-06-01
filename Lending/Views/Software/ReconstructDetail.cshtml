@@ -253,22 +253,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Reconstructed</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <input type="checkbox" id="loanApplicationReconstructed" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Renewed</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <input type="checkbox" id="loanApplicationRenewed" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -294,7 +278,7 @@
                     </li>
                     <li>
                         <a href="#loanReconstruct" data-toggle="tab" id="loanReconstructTab">
-                            Reconstructed Loan
+                            Loan History
                         </a>
                     </li>
                 </ul>
@@ -412,10 +396,29 @@
                     <div class="tab-pane fade in" id="loanReconstruct">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Reconstructed Loan
+                                Loan History
                             </div>
                             <div class="panel-body">
                                 <div id="loanReconstructFlexgrid" class="grid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGridLoanReconstruct">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridLoanReconstruct">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridLoanReconstruct">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridLoanReconstruct"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridLoanReconstruct">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridLoanReconstruct">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -606,6 +609,8 @@
         var loanApplicationDeductionFlexGrid;
         var cboDeduction;
         var loanDeductionId = 0;
+        var loanReconstructCollectionView;
+        var loanReconstructFlexgrid;
 
         // create loan Application Loan Date
         function createloanApplicationLoanDate() {
@@ -684,7 +689,7 @@
 
                     cboloanApplicationApplicant.dispose();
                     cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant', {
-                        disabled: true,
+                        //disabled: true,
                         placeholder: "Select",
                         itemsSource: applicantArray,
                         isEditable: false,
@@ -692,6 +697,21 @@
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName",
                         onSelectedIndexChanged: function () {
+                            createFlexGridForLoanReconstruct();
+                            window.createFlexGridForLoanReconstruct = function () {
+                                return true;
+                            }
+
+                            loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
+                            loanReconstructCollectionView.pageSize = 15;
+
+                            loanReconstructCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtonsLoanReconstruct();
+                            });
+
+                            loanReconstructFlexgrid.itemsSource = loanReconstructCollectionView;
+                            loanReconstructFlexgrid.trackChanges = true;
+
                             document.getElementById("loanApplicationApplicantArea").value = this.selectedItem["Area"];
                         }
                     });
@@ -740,7 +760,7 @@
         // get loan application by id
         function getLoanApplicationById() {
             $.ajax({
-                url: '/api/reconstruct/getById/' + getUrlParameter("id"),
+                url: '/api/loan/getById/' + getUrlParameter("id") + '/reconstruct',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -750,7 +770,6 @@
                         document.getElementById("loanApplicationNumber").disabled = true;
                         document.getElementById('loanApplicationDeductionAmount').disabled = true;
                         document.getElementById('loanApplicationTotalNetCollectionAmount').disabled = true;
-                        document.getElementById('loanApplicationPrincipalAmount').disabled = true;
                         cboloanApplicationPreparedBy.disabled = true;
                         document.getElementById("loanApplicationNumber").value = "RC-" + loanApplicationResult.LoanNumber;
                         loanApplicationLoanDate.value = new Date(loanApplicationResult.LoanDate);
@@ -775,8 +794,6 @@
                         document.getElementById('stampCreatedDate').innerHTML = loanApplicationResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = loanApplicationResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = loanApplicationResult.UpdatedDateTime;
-                        document.getElementById('loanApplicationReconstructed').checked = loanApplicationResult.IsReconstructed;
-                        document.getElementById('loanApplicationRenewed').checked = loanApplicationResult.IsRenewed;
 
                         if (loanApplicationResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
@@ -1876,6 +1893,15 @@
             refreshDeductionFlexGrid();
         });
 
+        // view recent collection
+        function btnViewRecentCollectionOnclick() {
+            loanLinesCollectionView.editItem(loanLinesCollectionView.currentItem);
+            var currentItem = loanLinesCollectionView.currentEditItem;
+
+            var link = '/Software/CollectionDetail?id=' + currentItem.CollectionId;
+            window.open(link, "_blank");
+        }
+
         // loan lines
         function getLoanLinesListByLoanId() {
             var loanLinesArray = new wijmo.collections.ObservableArray;
@@ -2073,14 +2099,11 @@
             refreshLoanLinesFlexGrid();
         });
 
-        var loanReconstructCollectionView;
-        var loanReconstructFlexgrid;
-
-        // loan lines
+        // loan history
         function getLoanReconstruct() {
             var loanReconstructs = new wijmo.collections.ObservableArray;
             $.ajax({
-                url: '/api/loanReconstructRenews/list/ByLoanId/' + getUrlParameter("id"),
+                url: '/api/loanHistory/list/' + cboloanApplicationApplicant.selectedItem["Id"],
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -2089,26 +2112,35 @@
                         var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
 
                         for (i = 0; i < loanReconstructsResults.length; i++) {
-                            //var loanNumberReconstructed = loanReconstructsResults[i]["ReconstructLoanNumber"];
-                            //if (loanReconstructsResults[i]["IsLoanApplication"]) {
-                            //    loanNumberReconstructed = "LN - " + loanReconstructsResults[i]["ReconstructLoanNumber"];
-                            //} else {
-                            //    if (loanReconstructsResults[i]["IsLoanReconstruct"]) {
-                            //        loanNumberReconstructed = "RC - " + loanReconstructsResults[i]["ReconstructLoanNumber"];
-                            //    } else {
-                            //        if (loanReconstructsResults[i]["IsLoanRenew"]) {
-                            //            loanNumberReconstructed = "RN - " + loanReconstructsResults[i]["ReconstructLoanNumber"];
-                            //        }
-                            //    }
-                            //}
+                            var newDate = new Date(loanReconstructsResults[i]["LoanDate"]);
+                            var loanDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            var newMaturityDate = new Date(loanReconstructsResults[i]["MaturityDate"]);
+                            var maturityDateValue = ('0' + (newMaturityDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newMaturityDate.getDate()).slice(-2) + '-' + newMaturityDate.getFullYear();
 
                             loanReconstructs.push({
                                 Id: loanReconstructsResults[i]["Id"],
                                 BtnLoanNumber: btnLoanNumber,
-                                LoanId: loanReconstructsResults[i]["DayReference"],
-                                RenewLoanId: loanReconstructsResults[i]["ReconstructRenewLoanId"],
-                                RenewLoanNumber: loanReconstructsResults[i]["ReconstructRenewLoanNumber"],
-                                BalanceAmount: loanReconstructsResults[i]["BalanceAmount"]
+                                LoanId: loanReconstructsResults[i]["LoanId"],
+                                LoanDate: loanDateValue,
+                                MaturityDate: maturityDateValue,
+                                LoanNumber: loanReconstructsResults[i]["LoanNumber"],
+                                Area: loanReconstructsResults[i]["Area"],
+                                Particulars: loanReconstructsResults[i]["Particulars"],
+                                PrincipalAmount: loanReconstructsResults[i]["PrincipalAmount"],
+                                InterestAmount: loanReconstructsResults[i]["InterestAmount"],
+                                DeductionAmount: loanReconstructsResults[i]["DeductionAmount"],
+                                PreviousBalanceAmount: loanReconstructsResults[i]["PreviousBalanceAmount"],
+                                NetAmount: loanReconstructsResults[i]["NetAmount"],
+                                NetCollectionAmount: loanReconstructsResults[i]["NetCollectionAmount"],
+                                CollectibleAmount: loanReconstructsResults[i]["CollectibleAmount"],
+                                TotalPaidAmount: loanReconstructsResults[i]["TotalPaidAmount"],
+                                TotalPenaltyAmount: loanReconstructsResults[i]["TotalPenaltyAmount"],
+                                TotalBalanceAmount: loanReconstructsResults[i]["TotalBalanceAmount"],
+                                IsLocked: loanReconstructsResults[i]["IsLocked"],
+                                IsLoanApplication: loanReconstructsResults[i]["IsLoanApplication"],
+                                IsLoanReconstruct: loanReconstructsResults[i]["IsLoanReconstruct"],
+                                IsLoanRenew: loanReconstructsResults[i]["IsLoanRenew"]
                             });
                         }
                     }
@@ -2120,33 +2152,126 @@
             return loanReconstructs;
         }
 
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsLoanReconstruct() {
+            if (loanReconstructCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridLoanReconstruct').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridLoanReconstruct').style.display = 'block';
+            btnCurrentPageGridLoanReconstruct.innerHTML = (loanReconstructCollectionView.pageIndex + 1) + ' / ' + loanReconstructCollectionView.pageCount;
+        }
+
         // create flexgrid for loan application reconstrcut
         function createFlexGridForLoanReconstruct() {
             loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
+            loanReconstructCollectionView.pageSize = 15;
+
+            loanReconstructCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanReconstruct();
+            });
 
             loanReconstructFlexgrid = new wijmo.grid.FlexGrid('#loanReconstructFlexgrid');
             loanReconstructFlexgrid.initialize({
                 columns: [
+                             {
+                                 "header": "Detail",
+                                 "binding": "BtnLoanNumber",
+                                 "width": "1*",
+                                 "align": "center",
+                                 "allowResizing": false,
+                                 "isContentHtml": true
+                             },
                             {
-                                "header": "Loan App",
-                                "binding": "BtnLoanNumber",
-                                "width": "1*",
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Renewed Loan",
-                                "binding": "RenewLoanNumber",
+                                "header": "L",
+                                "binding": "IsLocked",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 50,
                             },
                             {
-                                "header": "Balance Amount",
-                                "binding": "BalanceAmount",
+                                "header": "Date",
+                                "binding": "LoanDate",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 100,
                             },
+                            {
+                                "header": "Due Date",
+                                "binding": "MaturityDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Doc No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Principal",
+                                "binding": "PrincipalAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Interest",
+                                "binding": "InterestAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Deduction / Additionals",
+                                "binding": "DeductionAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Prev. Balance",
+                                "binding": "PreviousBalanceAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Net",
+                                "binding": "NetAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Net Collection",
+                                "binding": "NetCollectionAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Collectible",
+                                "binding": "CollectibleAmount",
+                                "allowSorting": true,
+                                "width": 160,
+                            },
+                            {
+                                "header": "Total Paid",
+                                "binding": "TotalPaidAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Total Penalty",
+                                "binding": "TotalPenaltyAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            },
+                            {
+                                "header": "Total Balance",
+                                "binding": "TotalBalanceAmount",
+                                "allowSorting": true,
+                                "width": 180,
+                            }
                 ],
                 autoGenerateColumns: false,
                 itemsSource: loanReconstructCollectionView,
@@ -2157,6 +2282,32 @@
             });
 
             loanReconstructFlexgrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridLoanReconstruct = document.getElementById('btnMoveToFirstPageGridLoanReconstruct');
+            btnPreviousPageGridLoanReconstruct = document.getElementById('btnMoveToPreviousPageGridLoanReconstruct');
+            btnNextPageGridLoanReconstruct = document.getElementById('btnMoveToNextPageGridLoanReconstruct');
+            btnLastPageGridLoanReconstruct = document.getElementById('btnMoveToLastPageGridLoanReconstruct');
+            btnCurrentPageGridLoanReconstruct = document.getElementById('btnCurrentPageGridLoanReconstruct');
+
+            updateNavigateButtonsLoanReconstruct();
+
+            btnFirstPageGridLoanReconstruct.addEventListener('click', function () {
+                loanReconstructCollectionView.moveToFirstPage();
+                updateNavigateButtonsLoanReconstruct();
+            });
+            btnPreviousPageGridLoanReconstruct.addEventListener('click', function () {
+                loanReconstructCollectionView.moveToPreviousPage();
+                updateNavigateButtonsLoanReconstruct();
+            });
+            btnNextPageGridLoanReconstruct.addEventListener('click', function () {
+                loanReconstructCollectionView.moveToNextPage();
+                updateNavigateButtonsLoanReconstruct();
+            });
+            btnLastPageGridLoanReconstruct.addEventListener('click', function () {
+                loanReconstructCollectionView.moveToLastPage();
+                updateNavigateButtonsLoanReconstruct();
+            });
         }
 
         // loan app
@@ -2165,18 +2316,18 @@
             var currentItem = loanReconstructCollectionView.currentEditItem;
 
             if (currentItem.IsLoanApplication) {
-                var link = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+                var link = '/Software/LoanApplicationDetail?id=' + currentItem.Id;
                 window.open(link, "_blank");
             } else {
                 if (currentItem.IsLoanReconstruct) {
-                    var link = '/Software/ReconstructDetail?id=' + currentItem.ReconstructLoanId;
+                    var link = '/Software/ReconstructDetail?id=' + currentItem.Id;
                     window.open(link, "_blank");
                 } else {
                     if (currentItem.IsLoanRenew) {
-                        var link = '/Software/RenewDetail?id=' + currentItem.ReconstructLoanId;
+                        var link = '/Software/RenewDetail?id=' + currentItem.Id;
                         window.open(link, "_blank");
                     } else {
-                        var link = '/Software/LoanApplicationDetail?id=' + currentItem.ReconstructLoanId;
+                        var link = '/Software/LoanApplicationDetail?id=' + currentItem.Id;
                         window.open(link, "_blank");
                     }
                 }
@@ -2197,6 +2348,12 @@
             }
 
             loanReconstructCollectionView = new wijmo.collections.CollectionView(getLoanReconstruct());
+            loanReconstructCollectionView.pageSize = 15;
+
+            loanReconstructCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsLoanReconstruct();
+            });
+
             loanReconstructFlexgrid.itemsSource = loanReconstructCollectionView;
             loanReconstructFlexgrid.trackChanges = true;
         });
