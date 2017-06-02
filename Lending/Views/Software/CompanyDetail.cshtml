@@ -100,84 +100,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%">
-                            <tr>
-                                <td>
-                                    List of Branches
-                                </td>
-                                <td align="right">
-                                    <button class="btn btn-primary " id="btnAddBranch" onclick="btnAddBranchOnclick()">
-                                        <i class="fa fa-plus fa-fw"></i> Add
-                                    </button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body">
-                        <div id="branchFlexGrid" class="grid"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- company detail branch edit  -->
-    <div class="modal fade" id="companyDetailBranchEditModal" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Branch Detail</h4>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Branch</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control requiredBranch" id="branchName" placeholder="Branch Name" />
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Address</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control requiredBranch" rows="5" id="branchAddress" placeholder="Branch Address"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-4">Contact Number</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control requiredBranch" id="branchContactNumber" placeholder="Branch Contact Number" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="btnSaveBranch" onclick="btnSaveBranchOnclick()"><i class="fa fa-save fa-fw"></i> Save</button>
-                    <button class="btn btn-danger" id="btnCancelBranch" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- delete confirmation company detail branch modal -->
-    <div class="modal fade" id="deleteConfirmationCompanyDetailBranchModal" role="dialog">
-        <div class="modal-dialog modal-sm">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Delete Branch</h4>
-                </div>
-                <div class="modal-body">
-                    Are you sure that you want to delete this branch?
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" id="btnConfirmDeleteBranch" onclick="btnConfirmDeleteBranchOnclick()">Delete</button>
-                    <button class="btn btn-default" id="btnConfirmCloseBranch" data-dismiss="modal">No</button>
-                </div>
             </div>
         </div>
     </div>
@@ -187,9 +109,6 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script type="text/javascript">
         // global variables
-        var branchCollectionView;
-        var branchFlexGrid;
-        var branchId = 0;
         var isLocked = false;
 
         // get company data
@@ -208,7 +127,6 @@
                         document.getElementById('stampCreatedDate').innerHTML = companyDetailResult.CreatedDateTime;
                         document.getElementById('stampUpdatedBy').innerHTML = companyDetailResult.UpdatedByUser;
                         document.getElementById('stampUpdatedDate').innerHTML = companyDetailResult.UpdatedDateTime;
-                        createBranchFlexGrid();
 
                         if (companyDetailResult.IsLocked) {
                             document.getElementById("companyName").disabled = true;
@@ -216,7 +134,6 @@
                             document.getElementById("companyContactNumber").disabled = true;
 
                             $("#btnLockCompany").prop("disabled", true);
-                            $("#btnAddBranch").prop("disabled", true);
 
                             isLocked = true;
                         } else {
@@ -257,7 +174,6 @@
                 $("#btnLockCompany").prop("disabled", true);
                 $("#btnUnlockCompany").prop("disabled", true);
                 $("#btnClose").prop("disabled", true);
-                $("#btnAddBranch").prop("disabled", true);
 
                 var companyDetailObject = new Object();
                 companyDetailObject.Company = document.getElementById('companyName').value;
@@ -307,7 +223,6 @@
             $("#btnUnlockCompany").prop("disabled", true);
             $("#btnLockCompany").prop("disabled", true);
             $("#btnClose").prop("disabled", true);
-            $("#btnAddBranch").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",
@@ -339,334 +254,6 @@
                     }
                 }
             });
-        }
-
-        // get branch list by company id
-        function getBranchListByCompanyId() {
-            var branchesArray = new wijmo.collections.ObservableArray;
-            $.ajax({
-                url: '/api/branch/listByCompanyId/' + getUrlParameter("id"),
-                cache: false,
-                type: 'GET',
-                contentType: 'application/json; charset=utf-8',
-                success: function (branchListResult) {
-                    if (branchListResult.length > 0) {
-                        for (i = 0; i < branchListResult.length; i++) {
-                            var btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                            var btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
-
-                            var canPerformActions = "@ViewData["CanPerformActions"]";
-                            if (canPerformActions == 1) {
-                                if (isLocked) {
-                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                                } else {
-                                    btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()'><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                                    btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()'><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                                }
-                            } else {
-                                btnEditButton = "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditBranchOnclick()' disabled><i class='fa fa-edit fa-fw'></i> Edit</button>";
-                                btnDeleteButton = "<button class='btn btn-danger btn-xs btn-block' onclick='btnDeleteBranchOnclick()' disabled><i class='fa fa-trash fa-fw'></i> Delete</button>";
-                            }
-
-                            branchesArray.push({
-                                EditButton: btnEditButton,
-                                DeleteButton: btnDeleteButton,
-                                Id: branchListResult[i]["Id"],
-                                CompanyId: branchListResult[i]["CompanyId"],
-                                Company: branchListResult[i]["Company"],
-                                Branch: branchListResult[i]["Branch"],
-                                Address: branchListResult[i]["Address"],
-                                ContactNumber: branchListResult[i]["ContactNumber"]
-                            });
-                        }
-                    }
-
-                    NProgress.done();
-                }
-            });
-            return branchesArray;
-        }
-
-        // add branch
-        function btnAddBranchOnclick() {
-            $("#companyDetailBranchEditModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredBranch').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveBranch").prop("disabled", false);
-            $("#btnCancelBranch").prop("disabled", false);
-
-            branchId = 0;
-            document.getElementById("branchName").value = "NA";
-            document.getElementById("branchAddress").value = "NA";
-            document.getElementById("branchContactNumber").value = "NA";
-        }
-
-        // edit branch
-        function btnEditBranchOnclick() {
-            $("#companyDetailBranchEditModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            $('.requiredBranch').each(function () {
-                $(this).css({
-                    "border": "",
-                });
-            });
-
-            document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-            $("#btnSaveBranch").prop("disabled", false);
-            $("#btnCancelBranch").prop("disabled", false);
-
-            branchCollectionView.editItem(branchCollectionView.currentItem);
-            var branchCuurentItem = branchCollectionView.currentEditItem;
-
-            branchId = branchCuurentItem.Id;
-            document.getElementById("branchName").value = branchCuurentItem.Branch;
-            document.getElementById("branchAddress").value = branchCuurentItem.Address;
-            document.getElementById("branchContactNumber").value = branchCuurentItem.ContactNumber;
-        }
-
-        // form input validation
-        function inputValidationForBranch() {
-            var isValid = true;
-            $('.requiredBranch').each(function () {
-                if ($.trim($(this).val()) == '') {
-                    isValid = false;
-                    $(this).css({
-                        "border": "1px solid red"
-                    });
-                } else {
-                    $(this).css({
-                        "border": "",
-                    });
-                }
-            });
-
-            return isValid;
-        }
-
-        // save branch
-        function btnSaveBranchOnclick() {
-            if (inputValidationForBranch()) {
-                document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving";
-                $("#btnSaveBranch").prop("disabled", true);
-                $("#btnCancelBranch").prop("disabled", true);
-
-                var branchDetailObject = new Object();
-                branchDetailObject.CompanyId = getUrlParameter("id");
-                branchDetailObject.Branch = document.getElementById('branchName').value;
-                branchDetailObject.Address = document.getElementById('branchAddress').value;
-                branchDetailObject.ContactNumber = document.getElementById('branchContactNumber').value;
-                var branchDetailData = JSON.stringify(branchDetailObject);
-
-                if (branchId == 0) {
-                    $.ajax({
-                        type: "POST",
-                        url: '/api/branch/add',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: branchDetailData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Save Successful");
-
-                                $("#companyDetailBranchEditModal").modal("hide");
-
-                                branchCollectionView = new wijmo.collections.CollectionView(getBranchListByCompanyId());
-                                branchFlexGrid.itemsSource = branchCollectionView;
-                                branchFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Not Found");
-
-                                $("#companyDetailBranchEditModal").modal("hide");
-
-                                document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveBranch").prop("disabled", false);
-                                $("#btnCancelBranch").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#companyDetailBranchEditModal").modal("hide");
-
-                                document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveBranch").prop("disabled", false);
-                                $("#btnCancelBranch").prop("disabled", false);
-                            }
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        type: "PUT",
-                        url: '/api/branch/update/' + branchId,
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        data: branchDetailData,
-                        statusCode: {
-                            200: function () {
-                                toastr.success("Update Successful");
-
-                                $("#companyDetailBranchEditModal").modal("hide");
-
-                                branchCollectionView = new wijmo.collections.CollectionView(getBranchListByCompanyId());
-                                branchFlexGrid.itemsSource = branchCollectionView;
-                                branchFlexGrid.trackChanges = true;
-                            },
-                            404: function () {
-                                toastr.error("Not Found");
-
-                                $("#companyDetailBranchEditModal").modal("hide");
-
-                                document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveBranch").prop("disabled", false);
-                                $("#btnCancelBranch").prop("disabled", false);
-                            },
-                            400: function () {
-                                toastr.error("Bad Request");
-
-                                $("#companyDetailBranchEditModal").modal("hide");
-
-                                document.getElementById("btnSaveBranch").innerHTML = "<i class='fa fa-save fa-fw'></i> Save";
-                                $("#btnSaveBranch").prop("disabled", false);
-                                $("#btnCancelBranch").prop("disabled", false);
-                            }
-                        }
-                    });
-                }
-            } else {
-                toastr.error("Invalid Entry");
-            }
-        }
-
-        // delete branch
-        function btnDeleteBranchOnclick() {
-            $("#deleteConfirmationCompanyDetailBranchModal").modal({
-                "show": true,
-                "backdrop": "static"
-            });
-
-            document.getElementById("btnConfirmDeleteBranch").innerHTML = "Delete";
-            $("#btnConfirmDeleteBranch").prop("disabled", false);
-            $("#btnConfirmCloseBranch").prop("disabled", false);
-        }
-
-        // confirm delete branch
-        function btnConfirmDeleteBranchOnclick() {
-            document.getElementById("btnConfirmDeleteBranch").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
-            $("#btnConfirmDeleteBranch").prop("disabled", true);
-            $("#btnConfirmCloseBranch").prop("disabled", true);
-
-            branchCollectionView.editItem(branchCollectionView.currentItem);
-            var branchCuurentItem = branchCollectionView.currentEditItem;
-
-            $.ajax({
-                type: "DELETE",
-                url: '/api/branch/delete/' + branchCuurentItem.Id,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                statusCode: {
-                    200: function () {
-                        toastr.success("Delete Successful");
-
-                        $("#deleteConfirmationCompanyDetailBranchModal").modal("hide");
-
-                        branchCollectionView = new wijmo.collections.CollectionView(getBranchListByCompanyId());
-                        branchFlexGrid.itemsSource = branchCollectionView;
-                        branchFlexGrid.trackChanges = true;
-                    },
-                    404: function () {
-                        toastr.error("Record Not Found");
-
-                        $("#deleteConfirmationCompanyDetailBranchModal").modal("hide");
-
-                        document.getElementById("btnConfirmDeleteBranch").innerHTML = "Delete";
-                        $("#btnConfirmDeleteBranch").prop("disabled", false);
-                        $("#btnConfirmCloseBranch").prop("disabled", false);
-                    },
-                    400: function () {
-                        toastr.error("Bad Request");
-
-                        $("#deleteConfirmationCompanyDetailBranchModal").modal("hide");
-
-                        document.getElementById("btnConfirmDeleteBranch").innerHTML = "Delete";
-                        $("#btnConfirmDeleteBranch").prop("disabled", false);
-                        $("#btnConfirmCloseBranch").prop("disabled", false);
-                    }
-                }
-            });
-        }
-
-        // create flexgrid for branch list
-        function createBranchFlexGrid() {
-            branchCollectionView = new wijmo.collections.CollectionView(getBranchListByCompanyId());
-
-            // Flex Grid
-            branchFlexGrid = new wijmo.grid.FlexGrid('#branchFlexGrid');
-            branchFlexGrid.initialize({
-                columns: [
-                            {
-                                "header": "Appliance Owned",
-                                "isReadOnly": true,
-                                "visible": false,
-                                "allowDragging": false,
-                                "width": "*"
-                            },
-                            {
-                                "header": "Edit",
-                                "binding": "EditButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Delete",
-                                "binding": "DeleteButton",
-                                "width": 80,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Branch",
-                                "binding": "Branch",
-                                "allowSorting": true,
-                                "width": "3*",
-                            },
-                            {
-                                "header": "Address",
-                                "binding": "Address",
-                                "allowSorting": true,
-                                "width": "4*",
-                            },
-                            {
-                                "header": "Contact Number",
-                                "binding": "ContactNumber",
-                                "allowSorting": true,
-                                "width": "2*",
-                            }
-                ],
-                autoGenerateColumns: false,
-                itemsSource: branchCollectionView,
-                isReadOnly: true,
-                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
-                allowDragging: wijmo.grid.AllowDragging.None,
-                selectionMode: wijmo.grid.SelectionMode.Row
-            });
-
-            branchFlexGrid.trackChanges = true;
         }
 
         // on load page

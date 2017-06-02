@@ -51,7 +51,7 @@ namespace Lending.ApiControllers
         public Models.TrnRemittance listRemmittance(String id)
         {
             var remmitance = from d in db.trnRemittances
-                             where d.Id >= Convert.ToInt32(id)
+                             where d.Id == Convert.ToInt32(id)
                              select new Models.TrnRemittance
                              {
                                  Id = d.Id,
@@ -95,8 +95,8 @@ namespace Lending.ApiControllers
         // add remittance
         [Authorize]
         [HttpPost]
-        [Route("api/remittance/save/lock")]
-        public HttpResponseMessage saveLockRemittance(Models.TrnRemittance remittance)
+        [Route("api/remittance/add")]
+        public Int32 addLockRemittance()
         {
             try
             {
@@ -112,7 +112,7 @@ namespace Lending.ApiControllers
 
                 if (mstUserForms.Any())
                 {
-                    String matchPageString = "CollectionList";
+                    String matchPageString = "RemittanceList";
                     Boolean canPerformActions = false;
 
                     foreach (var mstUserForm in mstUserForms)
@@ -138,38 +138,59 @@ namespace Lending.ApiControllers
                             remittanceNumber = newRemittanceNumber.ToString();
                         }
 
-                        Data.trnRemittance newRemittance = new Data.trnRemittance();
-                        newRemittance.RemittanceNumber = zeroFill(Convert.ToInt32(remittanceNumber), 10);
-                        newRemittance.RemittanceDate = Convert.ToDateTime(remittance.RemittanceDate);
-                        newRemittance.AreaId = remittance.AreaId;
-                        newRemittance.StaffId = remittance.StaffId;
-                        newRemittance.Particulars = remittance.Particulars;
-                        newRemittance.PreparedByUserId = userId;
-                        newRemittance.RemitAmount = remittance.RemitAmount;
-                        newRemittance.IsLocked = true;
-                        newRemittance.CreatedByUserId = userId;
-                        newRemittance.CreatedDateTime = DateTime.Now;
-                        newRemittance.UpdatedByUserId = userId;
-                        newRemittance.UpdatedDateTime = DateTime.Now;
+                        var area = from d in db.mstAreas.OrderByDescending(d => d.Id)
+                                   select d;
 
-                        db.trnRemittances.InsertOnSubmit(newRemittance);
-                        db.SubmitChanges();
+                        if (area.Any())
+                        {
+                            var staff = from d in db.mstStaffs.OrderByDescending(d => d.Id)
+                                        select d;
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                            if (staff.Any())
+                            {
+                                Data.trnRemittance newRemittance = new Data.trnRemittance();
+                                newRemittance.RemittanceNumber = zeroFill(Convert.ToInt32(remittanceNumber), 10);
+                                newRemittance.RemittanceDate = DateTime.Today;
+                                newRemittance.AreaId = area.FirstOrDefault().Id;
+                                newRemittance.StaffId = staff.FirstOrDefault().Id;
+                                newRemittance.Particulars = "NA";
+                                newRemittance.PreparedByUserId = userId;
+                                newRemittance.RemitAmount = 0;
+                                newRemittance.IsLocked = false;
+                                newRemittance.CreatedByUserId = userId;
+                                newRemittance.CreatedDateTime = DateTime.Now;
+                                newRemittance.UpdatedByUserId = userId;
+                                newRemittance.UpdatedDateTime = DateTime.Now;
+
+                                db.trnRemittances.InsertOnSubmit(newRemittance);
+                                db.SubmitChanges();
+
+                                return newRemittance.Id;
+                            }
+                            else
+                            {
+                                return 0;
+                            }
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+
                     }
                     else
                     {
-                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        return 0;
                     }
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return 0;
                 }
             }
             catch
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return 0;
             }
         }
 
@@ -198,7 +219,7 @@ namespace Lending.ApiControllers
 
                         if (mstUserForms.Any())
                         {
-                            String matchPageString = "CollectionList";
+                            String matchPageString = "RemittanceDetail";
                             Boolean canPerformActions = false;
 
                             foreach (var mstUserForm in mstUserForms)
@@ -281,7 +302,7 @@ namespace Lending.ApiControllers
 
                         if (mstUserForms.Any())
                         {
-                            String matchPageString = "CollectionList";
+                            String matchPageString = "RemittanceDetail";
                             Boolean canPerformActions = false;
 
                             foreach (var mstUserForm in mstUserForms)
@@ -358,7 +379,7 @@ namespace Lending.ApiControllers
 
                         if (mstUserForms.Any())
                         {
-                            String matchPageString = "CollectionList";
+                            String matchPageString = "RemittanceList";
                             Boolean canPerformActions = false;
 
                             foreach (var mstUserForm in mstUserForms)

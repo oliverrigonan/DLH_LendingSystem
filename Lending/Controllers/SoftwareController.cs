@@ -35,7 +35,7 @@ namespace Lending.Controllers
                 if (pageName.Equals(userForm.Form))
                 {
                     var CanPerformActions = 0;
-                    if (userForm.CanPerformActions) 
+                    if (userForm.CanPerformActions)
                     {
                         CanPerformActions = 1;
                     }
@@ -433,5 +433,70 @@ namespace Lending.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult RemittanceList()
+        {
+            if (pageAccess("RemittanceList").Equals("RemittanceList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult RemittanceDetail(Int32? id)
+        {
+            if (pageAccess("RemittanceDetail").Equals("RemittanceDetail"))
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult VaultList()
+        {
+            if (pageAccess("VaultList").Equals("VaultList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult VaultDetail(Int32? id)
+        {
+            if (pageAccess("VaultDetail").Equals("VaultDetail"))
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
     }
 }

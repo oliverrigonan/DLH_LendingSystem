@@ -460,9 +460,7 @@
                     loanApplicationCollectionView.filter = function (item) {
                         return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                            || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
                     }
 
                     loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -503,9 +501,7 @@
                     loanApplicationCollectionView.filter = function (item) {
                         return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                            || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
                     }
 
                     loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -798,9 +794,7 @@
                         loanApplicationCollectionView.filter = function (item) {
                             return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
                         }
 
                         loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -867,9 +861,7 @@
             loanApplicationCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {

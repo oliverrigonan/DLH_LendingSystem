@@ -512,13 +512,7 @@ namespace Lending.ApiControllers
                     if (canPerformActions)
                     {
                         String loanNumber = "0000000001";
-                        var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanApplication == true select d;
-                        if (loan.Any())
-                        {
-                            var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
-                            loanNumber = newLoanNumber.ToString();
-                        }
-
+                        
                         var applicant = from d in db.mstApplicants.OrderByDescending(d => d.Id)
                                         where d.IsCoMaker != true
                                         select d;
@@ -533,6 +527,13 @@ namespace Lending.ApiControllers
                                 {
                                     if (loanType.Equals("loan"))
                                     {
+                                        var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanApplication == true select d;
+                                        if (loan.Any())
+                                        {
+                                            var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
+                                            loanNumber = newLoanNumber.ToString();
+                                        }
+
                                         Data.trnLoan newLoan = new Data.trnLoan();
                                         newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                                         newLoan.LoanDate = DateTime.Today;
@@ -571,6 +572,13 @@ namespace Lending.ApiControllers
                                     {
                                         if (loanType.Equals("renew"))
                                         {
+                                            var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanRenew == true select d;
+                                            if (loan.Any())
+                                            {
+                                                var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
+                                                loanNumber = newLoanNumber.ToString();
+                                            }
+
                                             Data.trnLoan newLoan = new Data.trnLoan();
                                             newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                                             newLoan.LoanDate = DateTime.Today;
@@ -609,6 +617,13 @@ namespace Lending.ApiControllers
                                         {
                                             if (loanType.Equals("reconstruct"))
                                             {
+                                                var loan = from d in db.trnLoans.OrderByDescending(d => d.Id) where d.IsLoanReconstruct == true select d;
+                                                if (loan.Any())
+                                                {
+                                                    var newLoanNumber = Convert.ToInt32(loan.FirstOrDefault().LoanNumber) + 0000000001;
+                                                    loanNumber = newLoanNumber.ToString();
+                                                }
+
                                                 Data.trnLoan newLoan = new Data.trnLoan();
                                                 newLoan.LoanNumber = zeroFill(Convert.ToInt32(loanNumber), 10);
                                                 newLoan.LoanDate = DateTime.Today;
@@ -1025,25 +1040,42 @@ namespace Lending.ApiControllers
                                            DateTImeMaturityDate = d.MaturityDate,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
-                                           IsLoanRenew = d.IsLoanRenew
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLoanReconstruct = d.IsLoanReconstruct
                                        };
 
-                var groupoanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
-                                           where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
-                                           group d by d.ApplicantId into g
-                                           select new Models.TrnLoan
-                                           {
-                                               ApplicantId = g.FirstOrDefault().ApplicantId,
-                                               Id = g.FirstOrDefault().Id,
-                                               Applicant = g.FirstOrDefault().Applicant,
-                                               LoanNumber = g.FirstOrDefault().LoanNumber,
-                                               MaturityDate = g.FirstOrDefault().DateTImeMaturityDate.ToShortDateString(),
-                                               TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
-                                               CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
-                                               IsLoanRenew = g.FirstOrDefault().IsLoanRenew
-                                           };
+                var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
+                                            group d by d.ApplicantId into g
+                                            select new Models.TrnLoan
+                                            {
+                                                ApplicantId = g.FirstOrDefault().ApplicantId,
+                                                Id = g.FirstOrDefault().Id,
+                                                Applicant = g.FirstOrDefault().Applicant,
+                                                LoanNumber = g.FirstOrDefault().LoanNumber,
+                                                DateTImeMaturityDate = g.FirstOrDefault().DateTImeMaturityDate,
+                                                TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
+                                                CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
+                                                IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct
+                                            };
 
-                return groupoanApplications.OrderBy(d => d.Applicant).ToList();
+                var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
+                                          where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
+                                          && d.IsLoanReconstruct == false
+                                          select new Models.TrnLoan
+                                          {
+                                              ApplicantId = d.ApplicantId,
+                                              Id = d.Id,
+                                              Applicant = d.Applicant,
+                                              LoanNumber = d.LoanNumber,
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
+                                              TotalBalanceAmount = d.TotalBalanceAmount,
+                                              CollectibleAmount = d.CollectibleAmount,
+                                              IsLoanRenew = d.IsLoanRenew,
+                                              IsLoanReconstruct = d.IsLoanReconstruct
+                                          };
+
+                return loanApplicationList.OrderBy(d => d.Applicant).ToList();
             }
             else
             {
@@ -1060,25 +1092,41 @@ namespace Lending.ApiControllers
                                            DateTImeMaturityDate = d.MaturityDate,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
-                                           IsLoanRenew = d.IsLoanRenew
+                                           IsLoanRenew = d.IsLoanRenew,
+                                           IsLoanReconstruct = d.IsLoanReconstruct
                                        };
 
-                var groupoanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
-                                           where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
-                                           group d by d.ApplicantId into g
-                                           select new Models.TrnLoan
-                                           {
-                                               ApplicantId = g.FirstOrDefault().ApplicantId,
-                                               Id = g.FirstOrDefault().Id,
-                                               Applicant = g.FirstOrDefault().Applicant,
-                                               LoanNumber = g.FirstOrDefault().LoanNumber,
-                                               MaturityDate = g.FirstOrDefault().DateTImeMaturityDate.ToShortDateString(),
-                                               TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
-                                               CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
-                                               IsLoanRenew = g.FirstOrDefault().IsLoanRenew
-                                           };
+                var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
+                                            group d by d.ApplicantId into g
+                                            select new Models.TrnLoan
+                                            {
+                                                ApplicantId = g.FirstOrDefault().ApplicantId,
+                                                Id = g.FirstOrDefault().Id,
+                                                Applicant = g.FirstOrDefault().Applicant,
+                                                LoanNumber = g.FirstOrDefault().LoanNumber,
+                                                DateTImeMaturityDate = g.FirstOrDefault().DateTImeMaturityDate,
+                                                TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
+                                                CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
+                                                IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct
+                                            };
 
-                return groupoanApplications.OrderBy(d => d.Applicant).ToList();
+                var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
+                                          where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
+                                          && d.IsLoanReconstruct == false
+                                          select new Models.TrnLoan
+                                          {
+                                              ApplicantId = d.ApplicantId,
+                                              Id = d.Id,
+                                              Applicant = d.Applicant,
+                                              LoanNumber = d.LoanNumber,
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
+                                              TotalBalanceAmount = d.TotalBalanceAmount,
+                                              CollectibleAmount = d.CollectibleAmount,
+                                              IsLoanRenew = d.IsLoanRenew
+                                          };
+
+                return loanApplicationList.OrderBy(d => d.Applicant).ToList();
             }
         }
 
@@ -1099,36 +1147,54 @@ namespace Lending.ApiControllers
                                            Id = d.Id,
                                            Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                            LoanNumber = d.LoanNumber,
+                                           DateTImeLoanDate = d.LoanDate,
                                            DateTImeMaturityDate = d.MaturityDate,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLocked = d.IsLocked,
-                                           Particulars = d.Particulars,
-                                           DateTImeLoanDate = d.LoanDate,
+                                           Particulars = d.Particulars
                                        };
 
-                var groupoanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
-                                           where d.DateTImeMaturityDate < Convert.ToDateTime(date)
-                                           group d by d.ApplicantId into g
-                                           select new Models.TrnLoan
-                                           {
-                                               ApplicantId = g.FirstOrDefault().ApplicantId,
-                                               Id = g.FirstOrDefault().Id,
-                                               Applicant = g.FirstOrDefault().Applicant,
-                                               LoanNumber = g.FirstOrDefault().LoanNumber,
-                                               MaturityDate = g.FirstOrDefault().DateTImeMaturityDate.ToShortDateString(),
-                                               TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
-                                               CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
-                                               IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
-                                               IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
-                                               IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                               Particulars = g.FirstOrDefault().Particulars,
-                                               LoanDate = g.FirstOrDefault().DateTImeLoanDate.ToLongDateString(),
-                                           };
+                var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
+                                            group d by d.ApplicantId into g
+                                            select new Models.TrnLoan
+                                            {
+                                                ApplicantId = g.FirstOrDefault().ApplicantId,
+                                                Id = g.FirstOrDefault().Id,
+                                                Applicant = g.FirstOrDefault().Applicant,
+                                                LoanNumber = g.FirstOrDefault().LoanNumber,
+                                                DateTImeLoanDate = g.FirstOrDefault().DateTImeLoanDate,
+                                                DateTImeMaturityDate = g.FirstOrDefault().DateTImeMaturityDate,
+                                                TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
+                                                CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
+                                                IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
+                                                IsLocked = g.FirstOrDefault().IsLoanRenew,
+                                                Particulars = g.FirstOrDefault().Particulars
+                                            };
 
-                return groupoanApplications.OrderBy(d => d.Applicant).ToList();
+                var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
+                                          where d.DateTImeMaturityDate < Convert.ToDateTime(date)
+                                          || d.IsLoanReconstruct == true
+                                          select new Models.TrnLoan
+                                          {
+                                              ApplicantId = d.ApplicantId,
+                                              Id = d.Id,
+                                              Applicant = d.Applicant,
+                                              LoanNumber = d.LoanNumber,
+                                              LoanDate = d.DateTImeLoanDate.ToLongDateString(),
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
+                                              TotalBalanceAmount = d.TotalBalanceAmount,
+                                              CollectibleAmount = d.CollectibleAmount,
+                                              IsLoanRenew = d.IsLoanRenew,
+                                              IsLoanReconstruct = d.IsLoanReconstruct,
+                                              IsLocked = d.IsLoanRenew,
+                                              Particulars = d.Particulars
+                                          };
+
+                return loanApplicationList.OrderBy(d => d.Applicant).ToList();
             }
             else
             {
@@ -1142,36 +1208,54 @@ namespace Lending.ApiControllers
                                            Id = d.Id,
                                            Applicant = d.mstApplicant.ApplicantLastName + " " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
                                            LoanNumber = d.LoanNumber,
+                                           DateTImeLoanDate = d.LoanDate,
                                            DateTImeMaturityDate = d.MaturityDate,
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLocked = d.IsLocked,
-                                           Particulars = d.Particulars,
-                                           DateTImeLoanDate = d.LoanDate,
+                                           Particulars = d.Particulars
                                        };
 
-                var groupoanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
-                                           where d.DateTImeMaturityDate < Convert.ToDateTime(date)
-                                           group d by d.ApplicantId into g
-                                           select new Models.TrnLoan
-                                           {
-                                               ApplicantId = g.FirstOrDefault().ApplicantId,
-                                               Id = g.FirstOrDefault().Id,
-                                               Applicant = g.FirstOrDefault().Applicant,
-                                               LoanNumber = g.FirstOrDefault().LoanNumber,
-                                               MaturityDate = g.FirstOrDefault().DateTImeMaturityDate.ToShortDateString(),
-                                               TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
-                                               CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
-                                               IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
-                                               IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
-                                               IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                               Particulars = g.FirstOrDefault().Particulars,
-                                               LoanDate = g.FirstOrDefault().DateTImeLoanDate.ToLongDateString(),
-                                           };
+                var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
+                                            group d by d.ApplicantId into g
+                                            select new Models.TrnLoan
+                                            {
+                                                ApplicantId = g.FirstOrDefault().ApplicantId,
+                                                Id = g.FirstOrDefault().Id,
+                                                Applicant = g.FirstOrDefault().Applicant,
+                                                LoanNumber = g.FirstOrDefault().LoanNumber,
+                                                DateTImeLoanDate = g.FirstOrDefault().DateTImeLoanDate,
+                                                DateTImeMaturityDate = g.FirstOrDefault().DateTImeMaturityDate,
+                                                TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
+                                                CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
+                                                IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
+                                                IsLocked = g.FirstOrDefault().IsLoanRenew,
+                                                Particulars = g.FirstOrDefault().Particulars
+                                            };
 
-                return groupoanApplications.OrderBy(d => d.Applicant).ToList();
+                var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
+                                          where d.DateTImeMaturityDate < Convert.ToDateTime(date)
+                                          || d.IsLoanReconstruct == true
+                                          select new Models.TrnLoan
+                                          {
+                                              ApplicantId = d.ApplicantId,
+                                              Id = d.Id,
+                                              Applicant = d.Applicant,
+                                              LoanNumber = d.LoanNumber,
+                                              LoanDate = d.DateTImeLoanDate.ToLongDateString(),
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
+                                              TotalBalanceAmount = d.TotalBalanceAmount,
+                                              CollectibleAmount = d.CollectibleAmount,
+                                              IsLoanRenew = d.IsLoanRenew,
+                                              IsLoanReconstruct = d.IsLoanReconstruct,
+                                              IsLocked = d.IsLoanRenew,
+                                              Particulars = d.Particulars
+                                          };
+
+                return loanApplicationList.OrderBy(d => d.Applicant).ToList();
             }
         }
 

@@ -69,9 +69,6 @@ namespace Lending.Data
     partial void InsertmstAreaStaff(mstAreaStaff instance);
     partial void UpdatemstAreaStaff(mstAreaStaff instance);
     partial void DeletemstAreaStaff(mstAreaStaff instance);
-    partial void InsertmstBranch(mstBranch instance);
-    partial void UpdatemstBranch(mstBranch instance);
-    partial void DeletemstBranch(mstBranch instance);
     partial void InsertmstCompany(mstCompany instance);
     partial void UpdatemstCompany(mstCompany instance);
     partial void DeletemstCompany(mstCompany instance);
@@ -259,14 +256,6 @@ namespace Lending.Data
 			get
 			{
 				return this.GetTable<mstAreaStaff>();
-			}
-		}
-		
-		public System.Data.Linq.Table<mstBranch> mstBranches
-		{
-			get
-			{
-				return this.GetTable<mstBranch>();
 			}
 		}
 		
@@ -5175,205 +5164,6 @@ namespace Lending.Data
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstBranch")]
-	public partial class mstBranch : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _CompanyId;
-		
-		private string _Branch;
-		
-		private string _Address;
-		
-		private string _ContactNumber;
-		
-		private EntityRef<mstCompany> _mstCompany;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnCompanyIdChanging(int value);
-    partial void OnCompanyIdChanged();
-    partial void OnBranchChanging(string value);
-    partial void OnBranchChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
-    partial void OnContactNumberChanging(string value);
-    partial void OnContactNumberChanged();
-    #endregion
-		
-		public mstBranch()
-		{
-			this._mstCompany = default(EntityRef<mstCompany>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="Int NOT NULL")]
-		public int CompanyId
-		{
-			get
-			{
-				return this._CompanyId;
-			}
-			set
-			{
-				if ((this._CompanyId != value))
-				{
-					if (this._mstCompany.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCompanyIdChanging(value);
-					this.SendPropertyChanging();
-					this._CompanyId = value;
-					this.SendPropertyChanged("CompanyId");
-					this.OnCompanyIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Branch", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string Branch
-		{
-			get
-			{
-				return this._Branch;
-			}
-			set
-			{
-				if ((this._Branch != value))
-				{
-					this.OnBranchChanging(value);
-					this.SendPropertyChanging();
-					this._Branch = value;
-					this.SendPropertyChanged("Branch");
-					this.OnBranchChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
-		public string Address
-		{
-			get
-			{
-				return this._Address;
-			}
-			set
-			{
-				if ((this._Address != value))
-				{
-					this.OnAddressChanging(value);
-					this.SendPropertyChanging();
-					this._Address = value;
-					this.SendPropertyChanged("Address");
-					this.OnAddressChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNumber", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string ContactNumber
-		{
-			get
-			{
-				return this._ContactNumber;
-			}
-			set
-			{
-				if ((this._ContactNumber != value))
-				{
-					this.OnContactNumberChanging(value);
-					this.SendPropertyChanging();
-					this._ContactNumber = value;
-					this.SendPropertyChanged("ContactNumber");
-					this.OnContactNumberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstBranch", Storage="_mstCompany", ThisKey="CompanyId", OtherKey="Id", IsForeignKey=true)]
-		public mstCompany mstCompany
-		{
-			get
-			{
-				return this._mstCompany.Entity;
-			}
-			set
-			{
-				mstCompany previousValue = this._mstCompany.Entity;
-				if (((previousValue != value) 
-							|| (this._mstCompany.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstCompany.Entity = null;
-						previousValue.mstBranches.Remove(this);
-					}
-					this._mstCompany.Entity = value;
-					if ((value != null))
-					{
-						value.mstBranches.Add(this);
-						this._CompanyId = value.Id;
-					}
-					else
-					{
-						this._CompanyId = default(int);
-					}
-					this.SendPropertyChanged("mstCompany");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.mstCompany")]
 	public partial class mstCompany : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -5397,8 +5187,6 @@ namespace Lending.Data
 		private int _UpdatedByUserId;
 		
 		private System.DateTime _UpdatedDateTime;
-		
-		private EntitySet<mstBranch> _mstBranches;
 		
 		private EntitySet<mstUser> _mstUsers;
 		
@@ -5432,7 +5220,6 @@ namespace Lending.Data
 		
 		public mstCompany()
 		{
-			this._mstBranches = new EntitySet<mstBranch>(new Action<mstBranch>(this.attach_mstBranches), new Action<mstBranch>(this.detach_mstBranches));
 			this._mstUsers = new EntitySet<mstUser>(new Action<mstUser>(this.attach_mstUsers), new Action<mstUser>(this.detach_mstUsers));
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
@@ -5627,19 +5414,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstBranch", Storage="_mstBranches", ThisKey="Id", OtherKey="CompanyId")]
-		public EntitySet<mstBranch> mstBranches
-		{
-			get
-			{
-				return this._mstBranches;
-			}
-			set
-			{
-				this._mstBranches.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstCompany_mstUser", Storage="_mstUsers", ThisKey="Id", OtherKey="CompanyId")]
 		public EntitySet<mstUser> mstUsers
 		{
@@ -5739,18 +5513,6 @@ namespace Lending.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
-		}
-		
-		private void attach_mstBranches(mstBranch entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstCompany = this;
-		}
-		
-		private void detach_mstBranches(mstBranch entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstCompany = null;
 		}
 		
 		private void attach_mstUsers(mstUser entity)

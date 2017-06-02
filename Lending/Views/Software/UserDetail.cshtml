@@ -132,14 +132,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                Branches
-                            </div>
-                            <div class="panel-body">
-                                <div id="branchFlexGrid"></div>
-                            </div>
-                        </div>
                     </div>
                     <div id="userRights" class="tab-pane fade">
                         <div class="panel panel-default">
@@ -162,6 +154,25 @@
                             </div>
                             <div class="panel-body">
                                 <div id="userFormFlexgrid"></div>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                        </button>
+                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -248,7 +259,6 @@
         var cboCompanyName;
         var isLocked = false;
         var branchCollectionView;
-        var branchFlexGrid;
         var userFormCollectionView;
         var userFormFlexgrid;
         var cboForm;
@@ -321,24 +331,13 @@
                         isEditable: false,
                         required: true,
                         displayMemberPath: "Company",
-                        selectedValuePath: "Company",
-                        onSelectedIndexChanged: function () {
-                            document.getElementById("companyAddress").value = this.selectedItem["Address"];
-                            document.getElementById("companyContactNumber").value = this.selectedItem["ContactNumber"];
-
-                            branchCollectionView = new wijmo.collections.CollectionView(getBranchesByCompanyId());
-
-                            // Flex Grid
-                            branchFlexGrid.itemsSource = branchCollectionView;
-                            branchFlexGrid.trackChanges = true;
-                        }
+                        selectedValuePath: "Company"
                     });
 
                     document.getElementById("companyAddress").value = cboCompanyName.selectedItem["Address"];
                     document.getElementById("companyContactNumber").value = cboCompanyName.selectedItem["ContactNumber"];
 
                     getUserDetail();
-                    createBranchFlexgrid();
                 }
             });
         }
@@ -412,15 +411,8 @@
 
         // company detail tab
         $('#companyDetailTab').click(function () {
-            NProgress.start();
             $("#companyDetail").show();
             $("#userRights").hide();
-
-            branchCollectionView = new wijmo.collections.CollectionView(getBranchesByCompanyId());
-
-            // Flex Grid
-            branchFlexGrid.itemsSource = branchCollectionView;
-            branchFlexGrid.trackChanges = true;
         });
 
         // user forms
@@ -459,9 +451,23 @@
             return userFormArray;
         }
 
+        function updateNavigateButtons() {
+            if (userFormCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGrid').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGrid').style.display = 'block';
+            btnCurrentPageGrid.innerHTML = (userFormCollectionView.pageIndex + 1) + ' / ' + userFormCollectionView.pageCount;
+        }
+
         // create flexgrid for user form list
         function createUserFormFlexGrid() {
             userFormCollectionView = new wijmo.collections.CollectionView(getUserForms());
+            userFormCollectionView.pageSize = 15;
+
+            userFormCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
 
             // Flex Grid
             userFormFlexgrid = new wijmo.grid.FlexGrid('#userFormFlexgrid');
@@ -505,6 +511,31 @@
             });
 
             userFormFlexgrid.trackChanges = true;
+
+            btnFirstPageGrid = document.getElementById('btnMoveToFirstPageGrid');
+            btnPreviousPageGrid = document.getElementById('btnMoveToPreviousPageGrid');
+            btnNextPageGrid = document.getElementById('btnMoveToNextPageGrid');
+            btnLastPageGrid = document.getElementById('btnMoveToLastPageGrid');
+            btnCurrentPageGrid = document.getElementById('btnCurrentPageGrid');
+
+            updateNavigateButtons();
+
+            btnFirstPageGrid.addEventListener('click', function () {
+                userFormCollectionView.moveToFirstPage();
+                updateNavigateButtons();
+            });
+            btnPreviousPageGrid.addEventListener('click', function () {
+                activeCollectionView.moveToPreviousPage();
+                userFormCollectionView();
+            });
+            btnNextPageGrid.addEventListener('click', function () {
+                userFormCollectionView.moveToNextPage();
+                updateNavigateButtons();
+            });
+            btnLastPageGrid.addEventListener('click', function () {
+                userFormCollectionView.moveToLastPage();
+                updateNavigateButtons();
+            });
         }
 
         // user rights tab
@@ -519,6 +550,11 @@
             }
 
             userFormCollectionView = new wijmo.collections.CollectionView(getUserForms());
+            userFormCollectionView.pageSize = 15;
+
+            userFormCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtons();
+            });
 
             // Flex Grid
             userFormFlexgrid.itemsSource = userFormCollectionView;
@@ -709,6 +745,11 @@
                             $("#userFormDetailEditModal").modal("hide");
 
                             userFormCollectionView = new wijmo.collections.CollectionView(getUserForms());
+                            userFormCollectionView.pageSize = 15;
+
+                            userFormCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtons();
+                            });
 
                             // Flex Grid
                             userFormFlexgrid.itemsSource = userFormCollectionView;
@@ -748,6 +789,11 @@
                             $("#userFormDetailEditModal").modal("hide");
 
                             userFormCollectionView = new wijmo.collections.CollectionView(getUserForms());
+                            userFormCollectionView.pageSize = 15;
+
+                            userFormCollectionView.collectionChanged.addHandler(function (sender, args) {
+                                updateNavigateButtons();
+                            });
 
                             // Flex Grid
                             userFormFlexgrid.itemsSource = userFormCollectionView;
@@ -807,6 +853,11 @@
                         $("#deleteConfirmationUserFormDetailModal").modal("hide");
 
                         userFormCollectionView = new wijmo.collections.CollectionView(getUserForms());
+                        userFormCollectionView.pageSize = 15;
+
+                        userFormCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
 
                         // Flex Grid
                         userFormFlexgrid.itemsSource = userFormCollectionView;

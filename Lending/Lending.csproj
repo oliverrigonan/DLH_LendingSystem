@@ -175,7 +175,6 @@
     <Compile Include="ApiControllers\ApiApplicantController.cs" />
     <Compile Include="ApiControllers\ApiApplicantRealPropertiesOwnedController.cs" />
     <Compile Include="ApiControllers\ApiAreaStaffController.cs" />
-    <Compile Include="ApiControllers\ApiBranchController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
     <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
@@ -431,6 +430,10 @@
     <Content Include="Views\Software\ReconstructList.cshtml" />
     <Content Include="Views\Software\RenewList.cshtml" />
     <Content Include="Views\Software\RenewDetail.cshtml" />
+    <Content Include="Views\Software\RemittanceList.cshtml" />
+    <Content Include="Views\Software\RemittanceDetail.cshtml" />
+    <Content Include="Views\Software\VaultList.cshtml" />
+    <Content Include="Views\Software\VaultDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

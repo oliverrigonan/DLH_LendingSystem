@@ -33,7 +33,7 @@
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#dailyCollectibles" onclick="refreshLoanLines()">Active</a></li>
                     <li><a data-toggle="tab" href="#dailyCollectiblesOverdue" onclick="refreshoverduetable()">Overdue</a></li>
-                    <li><a data-toggle="tab" href="#menus">Menu</a></li>
+                    @*<li><a data-toggle="tab" href="#menus">Menu</a></li>*@
                 </ul>
                 <br />
                 <div class="tab-content">
@@ -258,27 +258,39 @@
         var activeFlexgrid;
         var overdueCollectionView;
         var overdueFlexGrid;
+        var isDateOverDueClicked = false;
+        var isDateActiveClicked = false;
 
         function createCboDate() {
             cboDateOverdue.dispose();
             cboDateOverdue = new wijmo.input.InputDate('#cboDateOverdue', {
+                disabled: true,
                 format: 'MM-dd-yyyy',
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    refreshoverduetable();
+                    if (isDateOverDueClicked) {
+                        NProgress.start();
+                        refreshoverduetable();
+                    } else {
+                        isDateOverDueClicked = true;
+                    }
                 }
             });
 
             cboDateActive.dispose();
             cboDateActive = new wijmo.input.InputDate('#cboDateActive', {
+                disabled: true,
                 format: 'MM-dd-yyyy',
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    refreshLoanLines();
+                    if (isDateActiveClicked) {
+                        NProgress.start();
+                        refreshLoanLines();
+                    } else {
+                        isDateActiveClicked = true;
+                    }
                 }
             });
 
@@ -300,7 +312,7 @@
                 });
 
                 activeCollectionView.filter = function (item) {
-                    return !filterText || (item.DayReference.toLowerCase().indexOf(filterText) > -1)
+                    return !filterText || (item.DocNumber.toLowerCase().indexOf(filterText) > -1)
                                        || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
                                        || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1);
                 }
@@ -350,6 +362,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0].Area,
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshLoanLines();
@@ -365,6 +378,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0].Area,
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshoverduetable();
@@ -401,11 +415,10 @@
                             var collectionDueDate = ('0' + (newDueDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDueDate.getDate()).slice(-2) + '-' + newDueDate.getFullYear();
 
                             var loanStatus = "Active";
-                            var transactionType = "btnDetailLoan()";
+                            var transactionType = "btnDetailLoanActive()";
 
                             if (loanApplicationListResult[i]["IsLoanRenew"]) {
                                 loanStatus = "Active Renew";
-                                transactionType = "btnDetailRenew()";
 
                                 var getDueDate = new Date(loanApplicationListResult[i]["MaturityDate"]);
                                 var newDate2 = new Date(cboDateActiveValue);
@@ -633,7 +646,8 @@
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
                                 CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 DueDate: collectionDueDate,
-                                LoanStatus: loanStatus
+                                LoanStatus: loanStatus,
+                                IsLoanRenew: loanApplicationListResult[i]["IsLoanRenew"],
                             });
                         }
                     }
@@ -666,7 +680,7 @@
             });
 
             activeCollectionView.filter = function (item) {
-                return !filterText || (item.DayReference.toLowerCase().indexOf(filterText) > -1)
+                return !filterText || (item.DocNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
                                    || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1);
             }
@@ -759,12 +773,31 @@
             });
         }
 
-        function btnDetailLoan() {
+        function btnDetailLoanActive() {
             activeCollectionView.editItem(activeCollectionView.currentItem);
             var currentItem = activeCollectionView.currentEditItem;
-            window.open("/Software/LoanApplicationDetail?id=" + currentItem.Id, "_blank");
+
+            if (currentItem.IsLoanRenew) {
+                window.open("/Software/RenewDetail?id=" + currentItem.Id, "_blank");
+            } else {
+                window.open("/Software/LoanApplicationDetail?id=" + currentItem.Id, "_blank");
+            }
         }
 
+        function btnDetailLoanOverdue() {
+            overdueCollectionView.editItem(overdueCollectionView.currentItem);
+            var currentItem = overdueCollectionView.currentEditItem;
+
+            if (currentItem.IsLoanRenew) {
+                window.open("/Software/RenewDetail?id=" + currentItem.Id, "_blank");
+            } else {
+                if (currentItem.IsLoanReconstruct) {
+                    window.open("/Software/ReconstructDetail?id=" + currentItem.Id, "_blank");
+                } else {
+                    window.open("/Software/LoanApplicationDetail?id=" + currentItem.Id, "_blank");
+                }
+            }
+        }
 
         function btnDetailReconstruct() {
             overdueCollectionView.editItem(overdueCollectionView.currentItem);
@@ -791,16 +824,14 @@
                         for (i = 0; i < loanApplicationListResult.length; i++) {
                             var newDate = new Date(loanApplicationListResult[i]["LoanDate"]);
 
-                            var transactionType = "btnDetailLoan()";
+                            var transactionType = "btnDetailLoanOverdue()";
 
                             var docNumber = "LN-" + loanApplicationListResult[i]["LoanNumber"];
                             if (loanApplicationListResult[i]["IsLoanRenew"]) {
                                 docNumber = "RN-" + loanApplicationListResult[i]["LoanNumber"];
-                                transactionType = "btnDetailRenew()";
                             } else {
                                 if (loanApplicationListResult[i]["IsLoanReconstruct"]) {
                                     docNumber = "RC-" + loanApplicationListResult[i]["LoanNumber"];
-                                    transactionType = "btnDetailReconstruct()";
                                 }
                             }
 
@@ -812,7 +843,9 @@
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
                                 CollectibleAmount: loanApplicationListResult[i]["CollectibleAmount"],
                                 Year: newDate.getFullYear().toString(),
-                                Particulars: loanApplicationListResult[i]["Particulars"]
+                                Particulars: loanApplicationListResult[i]["Particulars"],
+                                IsLoanRenew: loanApplicationListResult[i]["IsLoanRenew"],
+                                IsLoanReconstruct: loanApplicationListResult[i]["IsLoanReconstruct"],
                             });
                         }
                     }
@@ -858,9 +891,8 @@
                 });
 
                 overdueCollectionView.filter = function (item) {
-                    return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                    return !filterText || (item.DocNumber.toLowerCase().indexOf(filterText) > -1)
                                        || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                       || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
                                        || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
                 }
 
@@ -885,9 +917,8 @@
             });
 
             overdueCollectionView.filter = function (item) {
-                return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                return !filterText || (item.DocNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 

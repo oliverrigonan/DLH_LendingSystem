@@ -683,8 +683,6 @@
         var cboEndExpensesReport;
         var cboEndExpensesReportIsClicked = false;
 
-
-
         function createcboStartExpensesReport() {
             cboStartExpensesReport.dispose();
             cboStartExpensesReport = new wijmo.input.InputDate('#cboStartExpensesReport', {
@@ -718,15 +716,6 @@
                 }
             });
         }
-
-
-
-
-
-
-
-
-
 
         function createcboStartDateCollectionReportActiveReport() {
             cboStartDateCollectionReportActiveReport.dispose();
@@ -878,6 +867,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue:  areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshDailyReleaseMonitoring();
@@ -896,6 +886,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshLoanSummaryReportFlexGrid();
@@ -911,6 +902,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshRenewSummaryReportFlexGrid();
@@ -926,6 +918,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshReconstructSummaryReportFlexGrid();
@@ -941,6 +934,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshActiveCollectionFlexgrid();
@@ -956,6 +950,7 @@
                         required: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshOverdueCollectionFlexgrid();
@@ -1457,7 +1452,6 @@
                                 TotalBalanceAmount: loanApplicationListResult[i]["TotalBalanceAmount"],
                                 IsLoanReconstruct: loanApplicationListResult[i]["IsLoanReconstruct"],
                                 IsLoanRenew: loanApplicationListResult[i]["IsLoanRenew"],
-                                LoanStatus: loanStatus,
                                 IsLocked: loanApplicationListResult[i]["IsLocked"],
                                 CreatedByUserId: loanApplicationListResult[i]["CreatedByUserId"],
                                 CreatedByUser: loanApplicationListResult[i]["CreatedByUser"],
@@ -1506,7 +1500,6 @@
             loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
@@ -1542,7 +1535,6 @@
             loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
@@ -1585,12 +1577,6 @@
                                 "binding": "Area",
                                 "allowSorting": true,
                                 "width": 200,
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "LoanStatus",
-                                "allowSorting": true,
-                                "width": 170,
                             },
                             {
                                 "header": "Particulars",
@@ -1713,9 +1699,7 @@
             loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1741,9 +1725,7 @@
             loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.RenewedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1785,12 +1767,6 @@
                                 "binding": "Area",
                                 "allowSorting": true,
                                 "width": 200,
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "LoanStatus",
-                                "allowSorting": true,
-                                "width": 170,
                             },
                             {
                                 "header": "Particulars",
@@ -1916,9 +1892,7 @@
             loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1947,15 +1921,13 @@
             var filterText = '';
             $('#reconstructSummaryReportSearchInput').keyup(function () {
                 filterText = this.value.toLowerCase();
-                loanReconstructReconstructSummaryReportCollectionView.refresh();
+                loanRenewReconstructSummaryReportCollectionView.refresh();
             });
 
             loanRenewReconstructSummaryReportCollectionView.filter = function (item) {
                 return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
                                    || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.LoanStatus.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.ReconstructedDocNumber.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             loanRenewReconstructSummaryReportCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -1997,12 +1969,6 @@
                                 "binding": "Area",
                                 "allowSorting": true,
                                 "width": 200,
-                            },
-                            {
-                                "header": "Status",
-                                "binding": "LoanStatus",
-                                "allowSorting": true,
-                                "width": 170,
                             },
                             {
                                 "header": "Particulars",
@@ -2208,8 +2174,7 @@
 
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2321,8 +2286,7 @@
 
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2389,8 +2353,7 @@
 
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2502,8 +2465,7 @@
 
             collectionCollectionView.filter = function (item) {
                 return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                                   || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2810,7 +2772,9 @@
             });
 
             expensesCollectionView.filter = function (item) {
-                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.ExpenseNumber.toLowerCase().indexOf(filterText) > -1)
+                || (item.AssignedStaff.toLowerCase().indexOf(filterText) > -1)
+                || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -2834,7 +2798,9 @@
             });
 
             expensesCollectionView.filter = function (item) {
-                return !filterText || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.ExpenseNumber.toLowerCase().indexOf(filterText) > -1)
+                || (item.AssignedStaff.toLowerCase().indexOf(filterText) > -1)
+                || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
