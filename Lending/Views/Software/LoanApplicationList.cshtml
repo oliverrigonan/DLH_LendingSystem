@@ -137,7 +137,7 @@
                     <h4 class="modal-title">Delete Loan Application</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Loan Application?
+                    Delete?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteLoanApplication" onclick="btnConfirmDeleteLoanApplicationOnclick()">Delete</button>
@@ -325,7 +325,7 @@
 
             $.ajax({
                 type: "POST",
-                url: '/api/loan/add/renew',
+                url: '/api/loan/add/loan',
                 contentType: "application/json; charset=utf-8",
                 success: function (id) {
                     if (id > 0) {

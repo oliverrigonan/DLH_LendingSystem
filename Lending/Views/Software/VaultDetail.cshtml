@@ -50,8 +50,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-header">Options</li>
-                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Vault</a></li>
-                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                                <li><a href="#" onclick="btnAddVaultOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Vault</a></li>
+                                <li><a href="#" onclick="btnDeleteVaultOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
                             </ul>
                         </div>
                     </div>
@@ -147,6 +147,26 @@
         </div>
     </div>
 
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationVaultModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Vault</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteVault" onclick="btnConfirmDeleteVaultOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteVaultModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -159,6 +179,7 @@
 
         var newDate = new Date();
         var vaultDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+        var isLocked = false;
 
         function createVaultDate() {
             cboVaultDateValue.dispose();
@@ -406,6 +427,81 @@
                 $('#btnClose').prop('disabled', false);
                 getUserRightsMessageError();
             }
+        }
+
+        // add new vault
+        function btnAddVaultOnclick() {
+            $("#btnLock").prop("disabled", true);
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+
+            $.ajax({
+                type: "POST",
+                url: '/api/vault/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/VaultDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+
+        // delete loan application
+        function btnDeleteVaultOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationVaultModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteVault").innerHTML = "Delete";
+                $("#btnConfirmDeleteVault").prop("disabled", false);
+                $("#btnCloseDeleteVaultModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteVaultOnclick() {
+            document.getElementById("btnConfirmDeleteVault").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteVault").prop("disabled", true);
+            $("#btnCloseDeleteVaultModal").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/vault/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/VaultList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $('#deleteConfirmationVaultModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteVault").innerHTML = "Delete";
+                        $("#btnConfirmDeleteVault").prop("disabled", false);
+                        $("#btnCloseDeleteVaultModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+                        document.getElementById("btnConfirmDeleteVault").innerHTML = "Delete";
+                        $("#btnConfirmDeleteVault").prop("disabled", false);
+                        $("#btnCloseDeleteVaultModal").prop("disabled", false);
+                    }
+                }
+            });
         }
     </script>
 </body>

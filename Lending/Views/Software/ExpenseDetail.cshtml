@@ -52,8 +52,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-header">Options</li>
-                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Expense</a></li>
-                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                                <li><a href="#" onclick="btnAddExpensesOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Expense</a></li>
+                                <li><a href="#" onclick="btnDeleteExpensesOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
                             </ul>
                         </div>
                     </div>
@@ -143,6 +143,26 @@
         </div>
     </div>
 
+    <!-- delete confirmation expenses modal -->
+    <div class="modal fade" id="deleteConfirmationExpensesModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Expense</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteExpenses" onclick="btnConfirmDeleteExpensesOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteExpensesModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -153,6 +173,8 @@
         var cboExpensesPreparedBy;
         var cboExpenseType;
         var cboExpenseTransactionType;
+
+        var isLocked = false;
 
         // create expenses Date
         function createExpensesDate() {
@@ -411,6 +433,83 @@
                 getUserRightsMessageError();
             }
         }
+
+        // add new expenses
+        function btnAddExpensesOnclick() {
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnLock").prop("disabled", true);
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnPrint").prop("disabled", true);
+            $("#btnClose").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/expenses/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/ExpenseDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // delete expenses
+        function btnDeleteExpensesOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationExpensesModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteExpenses").innerHTML = "Delete";
+                $("#btnConfirmDeleteExpenses").prop("disabled", false);
+                $("#btnCloseDeleteExpensesModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteExpensesOnclick() {
+            document.getElementById("btnConfirmDeleteExpenses").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteExpenses").prop("disabled", true);
+            $("#btnCloseDeleteExpensesModal").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/expenses/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/ExpensesList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error("Not Found");
+                        $('#deleteConfirmationExpensesModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteExpenses").innerHTML = "Yes";
+                        $("#btnConfirmDeleteExpenses").prop("disabled", false);
+                        $("#btnCloseDeleteExpensesModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationExpensesModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteExpenses").innerHTML = "Yes";
+                        $("#btnConfirmDeleteExpenses").prop("disabled", false);
+                        $("#btnCloseDeleteExpensesModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

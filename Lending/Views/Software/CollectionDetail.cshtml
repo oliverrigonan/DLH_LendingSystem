@@ -50,8 +50,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-header">Options</li>
-                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Collection</a></li>
-                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                                <li><a href="#" onclick="btnAddCollectionOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Collection</a></li>
+                                <li><a href="#" onclick="btnDeleteCollectionOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
                             </ul>
                         </div>
                     </div>
@@ -367,7 +367,7 @@
                     <h4 class="modal-title">Delete Collection Line</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Collection Line?
+                    Delete?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteCollectionLine" onclick="btnConfirmDeleteCollectionLineOnclick()">Delete</button>
@@ -482,6 +482,26 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationCollectionModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Collection</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteCollection" onclick="btnConfirmDeleteCollectionOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteCollectionModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -1789,6 +1809,85 @@
             cboCollectionStatus = new wijmo.input.ComboBox('#cboCollectionStatus');
             getCollectionStatus();
         }
+
+
+        // add new collection
+        function btnAddCollectionOnclick() {
+            $("#btnLock").prop("disabled", true);
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+            $("#btnClose").prop("disabled", true);
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+
+            $.ajax({
+                type: "POST",
+                url: '/api/collection/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/CollectionDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+
+        // delete loan application
+        function btnDeleteCollectionOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationCollectionModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
+                $("#btnConfirmDeleteCollection").prop("disabled", false);
+                $("#btnCloseDeleteCollectionModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteCollectionOnclick() {
+            document.getElementById("btnConfirmDeleteCollection").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteCollection").prop("disabled", true);
+            $("#btnCloseDeleteCollectionModal").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/collection/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/CollectionList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $('#deleteConfirmationCollectionModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
+                        $("#btnConfirmDeleteCollection").prop("disabled", false);
+                        $("#btnCloseDeleteCollectionModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+                        document.getElementById("btnConfirmDeleteCollection").innerHTML = "Delete";
+                        $("#btnConfirmDeleteCollection").prop("disabled", false);
+                        $("#btnCloseDeleteCollectionModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+
     </script>
 </body>
 </html>

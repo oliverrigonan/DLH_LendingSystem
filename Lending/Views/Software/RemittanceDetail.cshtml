@@ -50,8 +50,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-header">Options</li>
-                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Remittance</a></li>
-                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                                <li><a href="#" onclick="btnAddRemittanceOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Remittance</a></li>
+                                <li><a href="#" onclick="btnDeleteRemittanceOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
                             </ul>
                         </div>
                     </div>
@@ -153,6 +153,26 @@
         </div>
     </div>
 
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationRemittanceModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Remittance</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteRemittance" onclick="btnConfirmDeleteRemittanceOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteRemittanceModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -166,6 +186,8 @@
 
         var newDate = new Date();
         var remittanceDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+
+        var isLocked = false;
 
         function createRemittanceDate() {
             cboRemittanceDateValue.dispose();
@@ -455,6 +477,81 @@
                 getUserRightsMessageError();
             }
         }
+
+        // add new remittance
+        function btnAddRemittanceOnclick() {
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnLock").prop("disabled", true);
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/remittance/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/RemittanceDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // delete loan application
+        function btnDeleteRemittanceOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationRemittanceModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteRemittance").innerHTML = "Delete";
+                $("#btnConfirmDeleteRemittance").prop("disabled", false);
+                $("#btnCloseDeleteRemittanceModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteRemittanceOnclick() {
+            document.getElementById("btnConfirmDeleteRemittance").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteRemittance").prop("disabled", true);
+            $("#btnCloseDeleteRemittanceModal").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/remittance/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/RemittanceList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $('#deleteConfirmationRemittanceModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteRemittance").innerHTML = "Delete";
+                        $("#btnConfirmDeleteRemittance").prop("disabled", false);
+                        $("#btnCloseDeleteRemittanceModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+                        document.getElementById("btnConfirmDeleteRemittance").innerHTML = "Delete";
+                        $("#btnConfirmDeleteRemittance").prop("disabled", false);
+                        $("#btnCloseDeleteRemittanceModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
     </script>
 </body>
 </html>

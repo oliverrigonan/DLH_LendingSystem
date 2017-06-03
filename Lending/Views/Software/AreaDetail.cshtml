@@ -50,8 +50,8 @@
                             </button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li class="dropdown-header">Options</li>
-                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Area</a></li>
-                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                                <li><a href="#" onclick="btnAddAreaOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Area</a></li>
+                                <li><a href="#" onclick="deleteAreaOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
                             </ul>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                     <h4 class="modal-title">Delete Area Staff</h4>
                 </div>
                 <div class="modal-body">
-                    Are you sure that you want to delete this Area Staff?
+                    Delete?
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-danger" id="btnConfirmDeleteAreaStaff" onclick="btnConfirmDeleteAreaStaffOnclick()">Delete</button>
@@ -205,6 +205,25 @@
         </div>
     </div>
 
+    <!-- delete confirmation area modal -->
+    <div class="modal fade" id="deleteConfirmationAreaModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Area</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteArea" onclick="btnConfirmDeleteAreaOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteAreaModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
@@ -774,6 +793,81 @@
                         document.getElementById("btnConfirmDeleteAreaStaff").innerHTML = "Delete";
                         $("#btnConfirmDeleteAreaStaff").prop("disabled", false);
                         $("#btnCloseDeleteAreaStaff").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // add new area
+        function btnAddAreaOnclick() {
+            $("#btnLockArea").prop("disabled", true);
+            $("#btnUnlockArea").prop("disabled", true);
+            $("#btnClose").prop("disabled", true);
+            $("#btnAddBranch").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+
+            $.ajax({
+                type: "POST",
+                url: '/api/area/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/AreaDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Internal Server Error");
+                    }
+                }
+            });
+        }
+
+        // delete area
+        function deleteAreaOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationAreaModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteArea").innerHTML = "Delete";
+                $("#btnConfirmDeleteArea").prop("disabled", false);
+                $("#btnCloseDeleteAreaModal").prop("disabled", false);
+            }
+        }
+
+        function btnConfirmDeleteAreaOnclick() {
+            document.getElementById("btnConfirmDeleteArea").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteArea").prop("disabled", true);
+            $("#btnCloseDeleteAreaModal").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/area/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/AreaList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error("Delete Not Found");
+                        $('#deleteConfirmationAreaModal').modal('hide');
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationAreaModal').modal('hide');
+                        $("#btnConfirmDeleteArea").prop("disabled", false);
+                        $("#btnCloseDeleteAreaModal").prop("disabled", false);
                     }
                 }
             });
