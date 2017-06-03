@@ -240,3 +240,14 @@ textarea.form-control {
     color: #000;
     opacity: 10;
 }
+
+.dropdown-menu > li > a {
+    display: block;
+    clear: both;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #333;
+    white-space: nowrap;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}

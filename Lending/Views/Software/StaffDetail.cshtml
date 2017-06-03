@@ -42,12 +42,22 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading" align="right">
-                        <button class="btn btn-primary" id="btnLockStaff" onclick="btnLockStaffOnclick()">
-                            <i class="fa fa-lock fa-fw"></i> Lock
-                        </button>
-                        <button class="btn btn-primary" id="btnUnlockStaff" onclick="btnUnlockStaffOnclick()">
-                            <i class="fa fa-unlock fa-fw"></i> Unlock
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-primary" id="btnLockStaff" onclick="btnLockStaffOnclick()">
+                                <i class="fa fa-lock fa-fw"></i> Lock
+                            </button>
+                            <button class="btn btn-primary" id="btnUnlockStaff" onclick="btnUnlockStaffOnclick()">
+                                <i class="fa fa-unlock fa-fw"></i> Unlock
+                            </button>
+                            <button class="btn btn-primary" type="button" id="btnOptions" data-toggle="dropdown">
+                                <i class="fa fa-bars fa-fw"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">Options</li>
+                                <li><a href="#" onclick="btnAddStaffOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Staff </a></li>
+                                <li><a href="#" onclick="deleteStaffOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -109,6 +119,26 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation staff modal -->
+    <div class="modal fade" id="deleteConfirmationStaffModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Staff</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Staff?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteStaff" onclick="btnConfirmDeleteStaffOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteStaffModal" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>
@@ -189,6 +219,7 @@
                 $("#btnLockStaff").prop("disabled", true);
                 $("#btnUnlockStaff").prop("disabled", true);
                 $("#btnCloseStaff").prop("disabled", true);
+                $("#btnOptions").prop("disabled", true);
 
                 var staffDetailObject = new Object();
                 staffDetailObject.Staff = document.getElementById('staffName').value;
@@ -238,6 +269,7 @@
             $("#btnUnlockStaff").prop("disabled", true);
             $("#btnLockStaff").prop("disabled", true);
             $("#btnCloseStaff").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",
@@ -266,6 +298,85 @@
 
                         $("#btnUnlockStaff").prop("disabled", true);
                         $("#btnCloseStaff").prop("disabled", true);
+                    }
+                }
+            });
+        }
+
+        function deleteStaffOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationStaffModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteStaff").innerHTML = "Delete";
+                $("#btnConfirmDeleteStaff").prop("disabled", false);
+                $("#btnCloseDeleteStaffModal").prop("disabled", false);
+            }
+        }
+
+        function btnConfirmDeleteStaffOnclick() {
+            document.getElementById("btnConfirmDeleteStaff").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteStaff").prop("disabled", true);
+            $("#btnCloseDeleteStaffModal").prop("disabled", true);
+
+            $("#btnLockStaff").prop("disabled", true);
+            $("#btnUnlockStaff").prop("disabled", true);
+            $("#btnCloseStaff").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/staff/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/StaffList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error("Delete Not Found");
+                        $('#deleteConfirmationStaffModal').modal('hide');
+                        $("#btnConfirmDeleteStaff").prop("disabled", false);
+                        $("#btnCloseDeleteStaffModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#deleteConfirmationStaffModal').modal('hide');
+                        $("#btnConfirmDeleteStaff").prop("disabled", false);
+                        $("#btnCloseDeleteStaffModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+
+        // add new staff
+        function btnAddStaffOnclick() {
+            $("#btnLockStaff").prop("disabled", true);
+            $("#btnUnlockStaff").prop("disabled", true);
+            $("#btnCloseStaff").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+
+            $.ajax({
+                type: "POST",
+                url: '/api/staff/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/StaffDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Internal Server Error");
                     }
                 }
             });

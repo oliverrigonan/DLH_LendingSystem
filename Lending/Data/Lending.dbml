@@ -7,26 +7,24 @@
       <Association Name="AspNetRole_AspNetUserRole" Member="AspNetUserRoles" ThisKey="Id" OtherKey="RoleId" Type="AspNetUserRole" />
     </Type>
   </Table>
-  <Table Name="dbo.trnRemittance" Member="trnRemittances">
-    <Type Name="trnRemittance">
+  <Table Name="dbo.trnVault" Member="trnVaults">
+    <Type Name="trnVault">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="RemittanceNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="RemittanceDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="AreaId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VaultNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="VaultDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RemitAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="mstArea_trnRemittance" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" />
-      <Association Name="mstStaff_trnRemittance" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
-      <Association Name="mstUser_trnRemittance" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-      <Association Name="mstUser_trnRemittance1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
-      <Association Name="mstUser_trnRemittance2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstStaff_trnVault" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
+      <Association Name="mstUser_trnVault" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnVault1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnVault2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.AspNetUserClaims" Member="AspNetUserClaims">
@@ -192,9 +190,9 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="mstArea_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="AreaId" Type="trnRemittance" />
       <Association Name="mstArea_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="AreaId" Type="mstApplicant" />
       <Association Name="mstArea_mstAreaStaff" Member="mstAreaStaffs" ThisKey="Id" OtherKey="AreaId" Type="mstAreaStaff" />
+      <Association Name="mstArea_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="AreaId" Type="trnRemittance" />
       <Association Name="mstStaff_mstArea" Member="mstStaff" ThisKey="SupervisorStaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
       <Association Name="mstUser_mstArea" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstArea1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
@@ -282,11 +280,12 @@
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="mstStaff_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="StaffId" Type="trnRemittance" />
+      <Association Name="mstStaff_trnVault" Member="trnVaults" ThisKey="Id" OtherKey="StaffId" Type="trnVault" />
       <Association Name="mstStaff_mstArea" Member="mstAreas" ThisKey="Id" OtherKey="SupervisorStaffId" Type="mstArea" />
       <Association Name="mstStaff_mstAreaStaff" Member="mstAreaStaffs" ThisKey="Id" OtherKey="StaffId" Type="mstAreaStaff" />
       <Association Name="mstStaff_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="CollectorStaffId" Type="trnCollection" />
       <Association Name="mstStaff_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="AssignedStaffId" Type="trnExpense" />
+      <Association Name="mstStaff_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="StaffId" Type="trnRemittance" />
       <Association Name="mstUser_mstStaff" Member="mstUser" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_mstStaff1" Member="mstUser1" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
@@ -318,9 +317,9 @@
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="mstUser_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnRemittance" />
-      <Association Name="mstUser_trnRemittance1" Member="trnRemittances1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnRemittance" />
-      <Association Name="mstUser_trnRemittance2" Member="trnRemittances2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnRemittance" />
+      <Association Name="mstUser_trnVault" Member="trnVaults" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnVault" />
+      <Association Name="mstUser_trnVault1" Member="trnVaults1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnVault" />
+      <Association Name="mstUser_trnVault2" Member="trnVaults2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnVault" />
       <Association Name="mstUser_mstApplicant" Member="mstApplicants" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstApplicant" />
       <Association Name="mstUser_mstApplicant1" Member="mstApplicants1" ThisKey="Id" OtherKey="UpdatedByUserId" Type="mstApplicant" />
       <Association Name="mstUser_mstArea" Member="mstAreas" ThisKey="Id" OtherKey="CreatedByUserId" Type="mstArea" />
@@ -347,6 +346,9 @@
       <Association Name="mstUser_trnLoan" Member="trnLoans" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnLoan" />
       <Association Name="mstUser_trnLoan1" Member="trnLoans1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnLoan" />
       <Association Name="mstUser_trnLoan2" Member="trnLoans2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnLoan" />
+      <Association Name="mstUser_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="PreparedByUserId" Type="trnRemittance" />
+      <Association Name="mstUser_trnRemittance1" Member="trnRemittances1" ThisKey="Id" OtherKey="CreatedByUserId" Type="trnRemittance" />
+      <Association Name="mstUser_trnRemittance2" Member="trnRemittances2" ThisKey="Id" OtherKey="UpdatedByUserId" Type="trnRemittance" />
       <Association Name="AspNetUser_mstUser" Member="AspNetUser" ThisKey="AspUserId" OtherKey="Id" Type="AspNetUser" IsForeignKey="true" />
       <Association Name="mstCompany_mstUser" Member="mstCompany" ThisKey="CompanyId" OtherKey="Id" Type="mstCompany" IsForeignKey="true" />
     </Type>
@@ -512,6 +514,28 @@
       <Column Name="DeductionAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Association Name="mstDeduction_trnLoanDeduction" Member="mstDeduction" ThisKey="DeductionId" OtherKey="Id" Type="mstDeduction" IsForeignKey="true" />
       <Association Name="trnLoan_trnLoanDeduction" Member="trnLoan" ThisKey="LoanId" OtherKey="Id" Type="trnLoan" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.trnRemittance" Member="trnRemittances">
+    <Type Name="trnRemittance">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RemittanceNumber" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="RemittanceDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="AreaId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RemitAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
+      <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="mstArea_trnRemittance" Member="mstArea" ThisKey="AreaId" OtherKey="Id" Type="mstArea" IsForeignKey="true" />
+      <Association Name="mstStaff_trnRemittance" Member="mstStaff" ThisKey="StaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
+      <Association Name="mstUser_trnRemittance" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnRemittance1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
+      <Association Name="mstUser_trnRemittance2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

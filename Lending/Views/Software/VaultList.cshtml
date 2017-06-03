@@ -1,7 +1,921 @@
-﻿
-@{
-    ViewBag.Title = "VaultList";
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<h2>VaultList</h2>
+    <!-- Title -->
+    <title>Vault List</title>
 
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-money fa-fw"></i> Vault <small>List of Vaults</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                Vault
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                        <input type="text" id="searchVault" class="form-control" placeholder="Search" />
+                                    </div>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td align="right">
+                                    <button class="btn btn-primary" id="btnAddVault" onclick="btnAddVaultOnclick()">
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-heading">
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Start Vault Date</span>
+                                        <div id="cboVaultDate"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> End Vault Date</span>
+                                        <div id="cboVaultEndDate"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        <div id="VaultListFlexGrid" class=""></div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGridVault">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridVault">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridVault">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridVault"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridVault">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridVault">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        User security stamp
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Created by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedByVault">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDateVault">mm/dd/yyyy</span></small>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-md-6">
+                                <p>Updated by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedByVault">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDateVault">mm/dd/yyyy</span></small>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationVaultModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Vault</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete this Vault?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteVault" onclick="btnConfirmDeleteVaultOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteVaultModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vaults Detail Modal -->
+    <div class="modal fade" id="VaultsEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> Vault Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Vault No.</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredVaults" id="vaultNo" placeholder="Vault No." />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Vault Date</label>
+                            <div class="col-sm-8">
+                                <div id="cboVaultDateValue" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Area</label>
+                            <div class="col-sm-8">
+                                <div id="cboVaultArea" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Remiited By</label>
+                            <div class="col-sm-8">
+                                <div id="cboVaultStaff" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Particulars</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredVaults" rows="5" id="vaultParticulars" placeholder="Particulars"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Amount</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredVaults" id="vaultAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveVaults" onclick="saveVaultsOnclick()"><i class="fa fa-save fa-fw"></i> Save / <i class="fa fa-lock fa-fw"></i> Lock</button>
+                    <button class="btn btn-primary" id="btnUnlockVaults" onclick="unlockVaultsOnclick()"><i class="fa fa-unlock fa-fw"></i> Unlock</button>
+                    <button class="btn btn-danger" id="btnCloseVaults" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var date = new Date();
+        var y = date.getFullYear();
+        var fm = date.getMonth() - 1;
+        var m = date.getMonth();
+        var firstDay = new Date(y, fm, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        // global variables
+        var cboVaultDate;
+        var cboVaultEndDate;
+        var vaultCollectionView;
+        var vaultFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
+        var isVaultDateClicked = false;
+        var isVaultEndDateClicked = false;
+        var cboVaultChangeCollector;
+
+        // create cbo date for vault date
+        function createCboVaultDate() {
+            cboVaultDate.dispose();
+            cboVaultDate = new wijmo.input.InputDate('#cboVaultDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(firstDay),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    NProgress.start();
+                    vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+                    vaultCollectionView.canFilter = true;
+                    vaultCollectionView.pageSize = 15;
+
+                    var filterText = '';
+                    $('#searchVault').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        vaultCollectionView.refresh();
+                    });
+
+                    vaultCollectionView.filter = function (item) {
+                        return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                    }
+
+                    vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsVault();
+                    });
+
+                    vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurityVault();
+                    });
+
+                    // Flex Grid
+                    vaultFlexGrid.itemsSource = vaultCollectionView;
+                    vaultFlexGrid.trackChanges = true;
+                }
+            });
+        }
+
+        // create cbo date for vault date
+        function createCboVaultEndDate() {
+            cboVaultEndDate.dispose();
+            cboVaultEndDate = new wijmo.input.InputDate('#cboVaultEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(lastDay),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    NProgress.start();
+                    vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+                    vaultCollectionView.canFilter = true;
+                    vaultCollectionView.pageSize = 15;
+
+                    var filterText = '';
+                    $('#searchVault').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        vaultCollectionView.refresh();
+                    });
+
+                    vaultCollectionView.filter = function (item) {
+                        return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                    }
+
+                    vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsVault();
+                    });
+
+                    vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurityVault();
+                    });
+
+                    // Flex Grid
+                    vaultFlexGrid.itemsSource = vaultCollectionView;
+                    vaultFlexGrid.trackChanges = true;
+                }
+            });
+        }
+
+        // get colllection list by vault date and area id
+        function getVaultByVaultDateList() {
+            var vaultListArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboVaultDate.value.getMonth() + 1, cboVaultDate.value.getDate(), cboVaultDate.value.getFullYear()].join('-');
+            var endDate = [cboVaultEndDate.value.getMonth() + 1, cboVaultEndDate.value.getDate(), cboVaultEndDate.value.getFullYear()].join('-');
+            $.ajax({
+                url: '/api/vault/list/' + startDate + '/' + endDate,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (vaultListResult) {
+                    if (vaultListResult.length > 0) {
+                        for (i = 0; i < vaultListResult.length; i++) {
+                            var isLocked = false;
+                            if (vaultListResult[i]["IsLocked"]) {
+                                isLocked = true;
+                            }
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
+                            var newDate = new Date(vaultListResult[i]["VaultDate"]);
+                            var vaultDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            vaultListArray.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditVaultOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteVaultOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: vaultListResult[i]["Id"],
+                                VaultNumber: "VT-" + vaultListResult[i]["VaultNumber"],
+                                VaultDate: vaultDateValue,
+                                StaffId: vaultListResult[i]["StaffId"],
+                                Staff: vaultListResult[i]["Staff"],
+                                Particulars: vaultListResult[i]["Particulars"],
+                                PreparedByUserId: vaultListResult[i]["PreparedByUserId"],
+                                PreparedByUser: vaultListResult[i]["PreparedByUser"],
+                                Amount: vaultListResult[i]["Amount"],
+                                IsLocked: vaultListResult[i]["IsLocked"],
+                                CreatedByUserId: vaultListResult[i]["CreatedByUserId"],
+                                CreatedByUser: vaultListResult[i]["CreatedByUser"],
+                                CreatedDateTime: vaultListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: vaultListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: vaultListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: vaultListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return vaultListArray;
+        }
+
+        // delete loan application
+        function btnDeleteVaultOnclick(isLocked) {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationVaultModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteVault").innerHTML = "Delete";
+                $("#btnConfirmDeleteVault").prop("disabled", false);
+                $("#btnCloseDeleteVaultModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteVaultOnclick() {
+            document.getElementById("btnConfirmDeleteVault").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteVault").prop("disabled", true);
+            $("#btnCloseDeleteVaultModal").prop("disabled", true);
+
+            vaultCollectionView.editItem(vaultCollectionView.currentItem);
+            var id = vaultCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/vault/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationVaultModal').modal('hide');
+                        vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+                        vaultCollectionView.canFilter = true;
+                        vaultCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchVault').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            vaultCollectionView.refresh();
+                        });
+
+                        vaultCollectionView.filter = function (item) {
+                            return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsVault();
+                        });
+
+                        vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurityVault();
+                        });
+
+                        // Flex Grid
+                        vaultFlexGrid.itemsSource = vaultCollectionView;
+                        vaultFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $('#deleteConfirmationVaultModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteVault").innerHTML = "Delete";
+                        $("#btnConfirmDeleteVault").prop("disabled", false);
+                        $("#btnCloseDeleteVaultModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+                        document.getElementById("btnConfirmDeleteVault").innerHTML = "Delete";
+                        $("#btnConfirmDeleteVault").prop("disabled", false);
+                        $("#btnCloseDeleteVaultModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // stamp security
+        function updateStampSecurityVault() {
+            var item = vaultCollectionView.currentItem;
+            document.getElementById('stampCreatedByVault').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDateVault').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedByVault').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDateVault').innerHTML = item.UpdatedDateTime;
+        }
+
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsVault() {
+            if (vaultCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridVault').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridVault').style.display = 'block';
+            btnCurrentPageGridVault.innerHTML = (vaultCollectionView.pageIndex + 1) + ' / ' + vaultCollectionView.pageCount;
+        }
+
+        // create vault flexgrid
+        function createVaultFlexGrid() {
+            vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+            vaultCollectionView.canFilter = true;
+            vaultCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchVault').keyup(function () {
+                filterText = this.value.toLowerCase();
+                vaultCollectionView.refresh();
+            });
+
+            vaultCollectionView.filter = function (item) {
+                return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsVault();
+            });
+
+            vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateStampSecurityVault();
+            });
+
+            // Flex Grid
+            vaultFlexGrid = new wijmo.grid.FlexGrid('#VaultListFlexGrid');
+            vaultFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "width": 35,
+                                "align": "center",
+                                "allowSorting": true,
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "VaultDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Vault No.",
+                                "binding": "VaultNumber",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Staff",
+                                "binding": "Staff",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Amount",
+                                "binding": "Amount",
+                                "allowSorting": true,
+                                "width": 130
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: vaultCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            vaultFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridVault = document.getElementById('btnMoveToFirstPageGridVault');
+            btnPreviousPageGridVault = document.getElementById('btnMoveToPreviousPageGridVault');
+            btnNextPageGridVault = document.getElementById('btnMoveToNextPageGridVault');
+            btnLastPageGridVault = document.getElementById('btnMoveToLastPageGridVault');
+            btnCurrentPageGridVault = document.getElementById('btnCurrentPageGridVault');
+
+            updateNavigateButtonsVault();
+
+            btnFirstPageGridVault.addEventListener('click', function () {
+                vaultCollectionView.moveToFirstPage();
+                updateNavigateButtonsVault();
+            });
+            btnPreviousPageGridVault.addEventListener('click', function () {
+                vaultCollectionView.moveToPreviousPage();
+                updateNavigateButtonsVault();
+            });
+            btnNextPageGridVault.addEventListener('click', function () {
+                vaultCollectionView.moveToNextPage();
+                updateNavigateButtonsVault();
+            });
+            btnLastPageGridVault.addEventListener('click', function () {
+                vaultCollectionView.moveToLastPage();
+                updateNavigateButtonsVault();
+            });
+        }
+
+        function vaultListOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+                vaultCollectionView.canFilter = true;
+                vaultCollectionView.pageSize = 15;
+
+                var filterText = '';
+                $('#searchVault').keyup(function () {
+                    filterText = this.value.toLowerCase();
+                    vaultCollectionView.refresh();
+                });
+
+                vaultCollectionView.filter = function (item) {
+                    return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                }
+
+                vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                    updateNavigateButtonsVault();
+                });
+
+                vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                    updateStampSecurityVault();
+                });
+
+                // Flex Grid
+                vaultFlexGrid.itemsSource = vaultCollectionView;
+                vaultFlexGrid.trackChanges = true;
+            }, 300);
+        }
+
+        var vaultId;
+        var cboVaultDateValue;
+        var cboVaultArea;
+        var cboVaultStaff;
+
+        var newDate = new Date();
+        var vaultDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+
+        function createVaultDate() {
+            cboVaultDateValue.dispose();
+            cboVaultDateValue = new wijmo.input.InputDate('#cboVaultDateValue', {
+                format: 'MM-dd-yyyy',
+                value: new Date(vaultDateValue),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    vaultDateValue = thisDateValue;
+                }
+            });
+        }
+
+        function createCboAreaForVault() {
+            var areaArray = new Array();
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (areaResults) {
+                    var disabled = true;
+                    if (areaResults.length > 0) {
+                        for (i = 0; i < areaResults.length; i++) {
+                            areaArray.push({
+                                Id: areaResults[i]["Id"],
+                                Area: areaResults[i]["Area"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboVaultArea.dispose();
+                    cboVaultArea = new wijmo.input.ComboBox('#cboVaultArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area"
+                    });
+                }
+            });
+        }
+
+        function createCboStaffForVault() {
+            var staffArray = new Array();
+            $.ajax({
+                url: '/api/staff/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (staffResults) {
+                    var disabled = true;
+                    if (staffResults.length > 0) {
+                        for (i = 0; i < staffResults.length; i++) {
+                            staffArray.push({
+                                Id: staffResults[i]["Id"],
+                                Staff: staffResults[i]["Staff"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboVaultStaff.dispose();
+                    cboVaultStaff = new wijmo.input.ComboBox('#cboVaultStaff', {
+                        disabled: disabled,
+                        itemsSource: staffArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Staff",
+                        selectedValuePath: "Staff"
+                    });
+                }
+            });
+        }
+
+        // add new vault
+        function btnAddVaultOnclick() {
+            document.getElementById("btnAddVault").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnAddVault").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/vault/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/VaultDetail?id=' + id;
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // edit vault
+        function btnEditVaultOnclick() {
+            vaultCollectionView.editItem(vaultCollectionView.currentItem);
+            var currentItem = vaultCollectionView.currentEditItem;
+            vaultId = currentItem.Id;
+
+            window.location = "/Software/VaultDetail?id=" + vaultId;
+        }
+
+        // form input validation
+        function inputValidationForRemiitance() {
+            var isValid = true;
+            $('.requiredVaults').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        function saveVaultsOnclick() {
+            var vaultObject = {
+                VaultDate: cboVaultDateValue.value,
+                AreaId: cboVaultArea.selectedItem["Id"],
+                StaffId: cboVaultStaff.selectedItem["Id"],
+                Particulars: document.getElementById("vaultParticulars").value,
+                Amount: document.getElementById("vaultAmount").value
+            }
+
+            var vaultData = JSON.stringify(vaultObject);
+            if (inputValidationForRemiitance()) {
+                document.getElementById("btnSaveVaults").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Saving and Locking";
+                $("#btnSaveVaults").prop("disabled", true);
+                $("#btnUnlockVaults").prop("disabled", true);
+                $("#btnCloseVaults").prop("disabled", true);
+
+                if (vaultId == 0) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/api/vault/save/lock',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: vaultData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Save Successful");
+                                $("#VaultsEditDetailModal").modal("hide");
+                                vaultListOnclick();
+                            },
+                            404: function (message) {
+                                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                                document.getElementById("btnSaveVaults").innerHTML = "<i class='fa fa-save fa-fw'></i> Save / <i class='fa fa-lock fa-fw'></i> Lock";
+                                document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                                $("#btnSaveVaults").prop("disabled", false);
+                                $("#btnCloseVaults").prop("disabled", false);
+                            },
+                            400: function (message) {
+                                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                                document.getElementById("btnSaveVaults").innerHTML = "<i class='fa fa-save fa-fw'></i> Save / <i class='fa fa-lock fa-fw'></i> Lock";
+                                document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                                $("#btnSaveVaults").prop("disabled", false);
+                                $("#btnCloseVaults").prop("disabled", false);
+                            }
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        type: "PUT",
+                        url: '/api/vault/lock/' + vaultId,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        data: vaultData,
+                        statusCode: {
+                            200: function () {
+                                toastr.success("Lock Successful");
+                                $("#VaultsEditDetailModal").modal("hide");
+                                vaultListOnclick();
+                            },
+                            404: function (message) {
+                                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                                document.getElementById("btnSaveVaults").innerHTML = "<i class='fa fa-save fa-fw'></i> Save / <i class='fa fa-lock fa-fw'></i> Lock";
+                                document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                                $("#btnSaveVaults").prop("disabled", false);
+                                $("#btnCloseVaults").prop("disabled", false);
+                            },
+                            400: function (message) {
+                                toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                                document.getElementById("btnSaveVaults").innerHTML = "<i class='fa fa-save fa-fw'></i> Save / <i class='fa fa-lock fa-fw'></i> Lock";
+                                document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                                $("#btnSaveVaults").prop("disabled", false);
+                                $("#btnCloseVaults").prop("disabled", false);
+                            }
+                        }
+                    });
+                }
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        function unlockVaultsOnclick() {
+            document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
+            $("#btnUnlockVaults").prop("disabled", true);
+            $("#btnCloseVaults").prop("disabled", true);
+
+            if (vaultId != 0) {
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/vault/unlock/' + vaultId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Unlock Successful");
+                            vaultListOnclick();
+
+                            document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                            $("#btnUnlockVaults").prop("disabled", true);
+                            $("#btnSaveVaults").prop("disabled", false);
+                            $("#btnCloseVaults").prop("disabled", false);
+
+                            document.getElementById("vaultParticulars").disabled = false;
+                            document.getElementById("vaultAmount").disabled = false;
+                            cboVaultDateValue.disabled = false;
+                            cboVaultArea.disabled = false;
+                            cboVaultStaff.disabled = false;
+                        },
+                        404: function (message) {
+                            toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                            document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                            $("#btnUnlockVaults").prop("disabled", false);
+                            $("#btnCloseVaults").prop("disabled", false);
+                        },
+                        400: function (message) {
+                            toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                            document.getElementById("btnUnlockVaults").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                            $("#btnUnlockVaults").prop("disabled", false);
+                            $("#btnCloseVaults").prop("disabled", false);
+                        }
+                    }
+                });
+            }
+        }
+
+        // on load page
+        window.onload = function () {
+            NProgress.start();
+            toastrModification();
+
+            cboVaultDate = new wijmo.input.InputDate('#cboVaultDate');
+            createCboVaultDate();
+            cboVaultEndDate = new wijmo.input.InputDate('#cboVaultEndDate');
+            createCboVaultEndDate();
+            createVaultFlexGrid();
+
+            doubleModal();
+            $(function () { $("[data-toggle='tooltip']").tooltip(); });
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+                getUserRightsMessageError();
+            }
+        }
+    </script>
+</body>
+</html>

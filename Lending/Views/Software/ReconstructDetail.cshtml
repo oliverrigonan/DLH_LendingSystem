@@ -39,18 +39,26 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading" align="right">
-                        <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
-                            <i class="fa fa-lock fa-fw"></i> Lock
-                        </button>
-                        <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
-                            <i class="fa fa-unlock fa-fw"></i> Unlock
-                        </button>
-                        <button class="btn btn-primary" id="btnCashVoucher" onclick="btnCashVoucherOnClick()">
-                            <i class="fa fa-print fa-fw"></i> Cash Voucher
-                        </button>
-                        <button class="btn btn-primary" id="btnApplicantCollectibles" onclick="btnCollectiblesOnClick()">
-                            <i class="fa fa-print fa-fw"></i> Index / Posting
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
+                                <i class="fa fa-lock fa-fw"></i> Lock
+                            </button>
+                            <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
+                                <i class="fa fa-unlock fa-fw"></i> Unlock
+                            </button>
+                            <button class="btn btn-primary" type="button" id="btnOptions" data-toggle="dropdown">
+                                <i class="fa fa-bars fa-fw"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">Options</li>
+                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Reconstruct</a></li>
+                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                                <li class="divider"></li>
+                                <li class="dropdown-header">Print</li>
+                                <li><a href="#" onclick="btnCashVoucherOnClick()"><i class="fa fa-print fa-fw"></i> &nbsp; Cash Voucher</a></li>
+                                <li><a href="#" onclick="btnCollectiblesOnClick()"><i class="fa fa-print fa-fw"></i> &nbsp; Index / Posting</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -854,6 +862,7 @@
                     $("#btnLock").prop("disabled", true);
                     document.getElementById("btnLock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
                     $("#btnClose").prop("disabled", true);
+                    $("#btnOptions").prop("disabled", true);
 
                     var loanApplicationObject = new Object();
                     loanApplicationObject.LoanDate = loanApplicationLoanDate.value;
@@ -917,6 +926,7 @@
             $("#btnUnlock").prop("disabled", true);
             $("#btnPrint").prop("disabled", true);
             $("#btnClose").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
             document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
 
             $("#processingModal").modal({

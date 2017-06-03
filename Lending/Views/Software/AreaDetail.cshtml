@@ -38,12 +38,22 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading" align="right">
-                        <button class="btn btn-primary" id="btnLockArea" onclick="btnLockAreaOnclick()">
-                            <i class="fa fa-lock fa-fw"></i> Lock
-                        </button>
-                        <button class="btn btn-primary" id="btnUnlockArea" onclick="btnUnlockAreaOnclick()">
-                            <i class="fa fa-unlock fa-fw"></i> Unlock
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-primary" id="btnLockArea" onclick="btnLockAreaOnclick()">
+                                <i class="fa fa-lock fa-fw"></i> Lock
+                            </button>
+                            <button class="btn btn-primary" id="btnUnlockArea" onclick="btnUnlockAreaOnclick()">
+                                <i class="fa fa-unlock fa-fw"></i> Unlock
+                            </button>
+                            <button class="btn btn-primary" type="button" id="btnOptions" data-toggle="dropdown">
+                                <i class="fa fa-bars fa-fw"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">Options</li>
+                                <li><a href="#"><i class="fa fa-plus fa-fw"></i> &nbsp; New Area</a></li>
+                                <li><a href="#"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">
@@ -321,6 +331,7 @@
                 $("#btnUnlockArea").prop("disabled", true);
                 $("#btnClose").prop("disabled", true);
                 $("#btnAddBranch").prop("disabled", true);
+                $("#btnOptions").prop("disabled", true);
 
                 var areaDetailObject = new Object();
                 areaDetailObject.Area = document.getElementById('areaName').value;
@@ -371,6 +382,7 @@
             $("#btnLockArea").prop("disabled", true);
             $("#btnClose").prop("disabled", true);
             $("#btnAddBranch").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
 
             $.ajax({
                 type: "PUT",
