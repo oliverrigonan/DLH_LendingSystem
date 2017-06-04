@@ -601,15 +601,25 @@
                                                     <div id="applicantCollections" class="tab-pane fade">
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
-                                                                <div class="input-group">
-                                                                    <span class="input-group-addon"> Transaction No.</span>
-                                                                    <div id="cboLoan" style="width: 100%;"></div>
-                                                                </div>
+                                                                <table border="0" style="width: 100%;">
+                                                                    <tr>
+                                                                        <td style="width: 90%">
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-addon"> Transaction No.</span>
+                                                                                <div id="cboLoan" style="width: 100%;"></div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td style="width: 1%"></td>
+                                                                        <td style="width: 9%">
+                                                                            <button class="btn btn-primary btn-block" onclick="btnPrintPosting()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
                                                             </div>
                                                             <div class="panel-body">
                                                                 <ul class="nav nav-tabs">
-                                                                    <li class="active"><a data-toggle="tab" href="#summaryCollection">Summary</a></li>
-                                                                    <li><a data-toggle="tab" href="#detailCollection">Detail</a></li>
+                                                                    <li class="active"><a data-toggle="tab" href="#summaryCollection" id="summaryCollectionTab">Summary</a></li>
+                                                                    <li><a data-toggle="tab" href="#detailCollection" id="detailCollectionTab">Detail</a></li>
                                                                 </ul>
                                                                 <br />
                                                                 <div class="tab-content">
@@ -646,7 +656,36 @@
                                                                         </div>
                                                                     </div>
                                                                     <div id="detailCollection" class="tab-pane fade">
-
+                                                                        <div class="panel panel-default">
+                                                                            <div class="panel-heading">
+                                                                                <div class="input-group">
+                                                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                                                    <input type="text" id="applicantCollectionLinesSearchInput" class="form-control" placeholder="Search" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div id="applicantCollectionLinesFlexgrid"></div>
+                                                                            </div>
+                                                                            <div class="panel-footer">
+                                                                                <div class="row">
+                                                                                    <div class="btn-group col-md-7" id="naviagtionPageGridCollectionLines">
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollectionLines">
+                                                                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollectionLines">
+                                                                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollectionLines"></button>
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollectionLines">
+                                                                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollectionLines">
+                                                                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -3820,7 +3859,7 @@
                 mask: '99-99-9999'
             });
         }
-        
+
         // loan app
         function btnLoanNumberOnclick() {
             loanHistoryCollectionView.editItem(loanHistoryCollectionView.currentItem);
@@ -4287,6 +4326,7 @@
                             NProgress.start();
                             setTimeout(function () {
                                 refreshApplicantCollectionsGrid();
+                                refreshApplicantCollectionLinesGrid();
                             }, 200);
                         }
                     });
@@ -4320,7 +4360,7 @@
                             collectionListArray.push({
                                 HoverButton: "<button class='btn btn-primary btn-xs btn-block' onclick='onClickCollectionDetail()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
                                 Id: collectionListResult[i]["Id"],
-                                CollectionNumber: collectionListResult[i]["CollectionNumber"],
+                                CollectionNumber: "CL-" + collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
                                 Applicant: collectionListResult[i]["Applicant"],
                                 LoanId: collectionListResult[i]["LoanId"],
@@ -4375,9 +4415,8 @@
             });
 
             collectionCollectionView.filter = function (item) {
-                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -4476,9 +4515,8 @@
             });
 
             collectionCollectionView.filter = function (item) {
-                return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+                return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
             }
 
             collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
@@ -4611,6 +4649,277 @@
                     }
                 }
             });
+        }
+
+        // applicant collections
+        function getApplicantCollectionLines() {
+            var collectionLinesArray = new wijmo.collections.ObservableArray;
+            $.ajax({
+                url: '/api/collectionLines/listByLoanId/' + cboLoan.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (collectionLinesResults) {
+                    if (collectionLinesResults.length > 0) {
+                        for (i = 0; i < collectionLinesResults.length; i++) {
+
+                            var thisDate = new Date(collectionLinesResults[i]["PayDate"]);
+
+                            var weekday = new Array(7);
+                            var day = "";
+
+                            if (thisDate.getDay() == 0) {
+                                day = "Sunday";
+                            } else {
+                                if (thisDate.getDay() == 1) {
+                                    day = "Monday";
+                                } else {
+                                    if (thisDate.getDay() == 2) {
+                                        day = "Tuesday";
+                                    } else {
+                                        if (thisDate.getDay() == 3) {
+                                            day = "Wednesday";
+                                        } else {
+                                            if (thisDate.getDay() == 4) {
+                                                day = "Thursday";
+                                            } else {
+                                                if (thisDate.getDay() == 5) {
+                                                    day = "Friday";
+                                                } else {
+                                                    if (thisDate.getDay() == 6) {
+                                                        day = "Saturday";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            var thisDateValue = [thisDate.getMonth() + 1, thisDate.getDate(), thisDate.getFullYear()].join('-') + " " + day;
+                            collectionLinesArray.push({
+                                HoverButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnCollectionLinesDetail()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                Id: collectionLinesResults[i]["Id"],
+                                CollectionId: collectionLinesResults[i]["CollectionId"],
+                                CollectionNumber: "CL-" + collectionLinesResults[i]["CollectionNumber"],
+                                PayDate: thisDateValue,
+                                PayDateValue: [thisDate.getMonth() + 1, thisDate.getDate(), thisDate.getFullYear()].join('-'),
+                                Particulars: collectionLinesResults[i]["Particulars"],
+                                Status: collectionLinesResults[i]["Status"],
+                                PenaltyAmount: collectionLinesResults[i]["PenaltyAmount"],
+                                PaidAmount: collectionLinesResults[i]["PaidAmount"]
+                            });
+
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return collectionLinesArray;
+        }
+
+        var collectionLinesCollectionView;
+        var collectionLinesFlexGrid;
+
+        function btnCollectionLinesDetail() {
+            collectionLinesCollectionView.editItem(collectionLinesCollectionView.currentItem);
+            var currentItem = collectionLinesCollectionView.currentEditItem;
+            window.open("/Software/CollectionDetail?id=" + currentItem.CollectionId, "_blank");
+        }
+
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsCollectionLines() {
+            if (collectionLinesCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridCollectionLines').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridCollectionLines').style.display = 'block';
+            btnCurrentPageGridCollectionLines.innerHTML = (collectionLinesCollectionView.pageIndex + 1) + ' / ' + collectionLinesCollectionView.pageCount;
+        }
+
+        // create collection flexgrid
+        function createCollectionLinesFlexGrid() {
+            collectionLinesCollectionView = new wijmo.collections.CollectionView(getApplicantCollectionLines());
+            collectionLinesCollectionView.canFilter = true;
+            collectionLinesCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#applicantCollectionLinesSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectionLinesCollectionView.refresh();
+            });
+
+            collectionLinesCollectionView.filter = function (item) {
+                return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionLines();
+            });
+
+            // Flex Grid
+            collectionLinesFlexGrid = new wijmo.grid.FlexGrid('#applicantCollectionLinesFlexgrid');
+            collectionLinesFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "HoverButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Collection No.",
+                                "binding": "CollectionNumber",
+                                "allowSorting": true,
+                                "width": 170,
+                            },
+                            {
+                                "header": "Pay Date",
+                                "binding": "PayDate",
+                                "allowSorting": true,
+                                "width": 210,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "Status",
+                                "allowSorting": true,
+                                "width": 200,
+                            },
+                            {
+                                "header": "Paid",
+                                "binding": "PaidAmount",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Penalty",
+                                "binding": "PenaltyAmount",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                ],
+                autoGenerateColumns: false,
+                itemsSource: collectionLinesCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            collectionLinesFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridCollectionLines = document.getElementById('btnMoveToFirstPageGridCollectionLines');
+            btnPreviousPageGridCollectionLines = document.getElementById('btnMoveToPreviousPageGridCollectionLines');
+            btnNextPageGridCollectionLines = document.getElementById('btnMoveToNextPageGridCollectionLines');
+            btnLastPageGridCollectionLines = document.getElementById('btnMoveToLastPageGridCollectionLines');
+            btnCurrentPageGridCollectionLines = document.getElementById('btnCurrentPageGridCollectionLines');
+
+            updateNavigateButtonsCollectionLines();
+
+            btnFirstPageGridCollectionLines.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToFirstPage();
+                updateNavigateButtonsCollectionLines();
+            });
+            btnPreviousPageGridCollectionLines.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToPreviousPage();
+                updateNavigateButtonsCollectionLines();
+            });
+            btnNextPageGridCollectionLines.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToNextPage();
+                updateNavigateButtonsCollectionLines();
+            });
+            btnLastPageGridCollectionLines.addEventListener('click', function () {
+                collectionLinesCollectionView.moveToLastPage();
+                updateNavigateButtonsCollectionLines();
+            });
+        }
+
+        function refreshApplicantCollectionLinesGrid() {
+            collectionLinesCollectionView = new wijmo.collections.CollectionView(getApplicantCollectionLines());
+            collectionLinesCollectionView.canFilter = true;
+            collectionLinesCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#applicantCollectionLinesSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                collectionLinesCollectionView.refresh();
+            });
+
+            collectionLinesCollectionView.filter = function (item) {
+                return !filterText || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Status.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            collectionLinesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsCollectionLines();
+            });
+
+            // Flex Grid
+            collectionLinesFlexGrid.itemsSource = collectionLinesCollectionView;
+            collectionLinesFlexGrid.trackChanges = true;
+        }
+
+        $('#detailCollectionTab').click(function () {
+            NProgress.start();
+            $("#summaryCollection").hide();
+            $("#detailCollection").show();
+
+            createCollectionLinesFlexGrid();
+            window.createCollectionLinesFlexGrid = function () {
+                return true;
+            }
+
+            setTimeout(function () {
+                if (cboLoan.itemsSource.length > 0) {
+                    refreshApplicantCollectionLinesGrid();
+                } else {
+                    NProgress.done();
+                    document.getElementById('btnCurrentPageGridCollectionLines').innerHTML = '0 / 0';
+                }
+            }, 200);
+        });
+
+        $('#summaryCollectionTab').click(function () {
+            NProgress.start();
+            $("#summaryCollection").show();
+            $("#detailCollection").hide();
+
+            setTimeout(function () {
+                if (cboLoan.itemsSource.length > 0) {
+                    setTimeout(function () {
+                        refreshApplicantCollectionsGrid();
+                    }, 100);
+                } else {
+                    NProgress.done();
+                    document.getElementById('btnCurrentPageGridCollections').innerHTML = '0 / 0';
+                }
+            }, 200);
+        });
+
+        // print collectibles
+        function btnPrintPosting() {
+            if (isLocked) {
+                if (cboLoan.itemsSource.length > 0) {
+                    window.open("/RepCollectiblesPDF/Collectibles?loanId=" + cboLoan.selectedItem["Id"], "_blank");
+                } else {
+                    toastr.error("No Loan Transaction");
+                }
+            } else {
+                toastr.error("Not Locked");
+            }
         }
     </script>
 </body>
