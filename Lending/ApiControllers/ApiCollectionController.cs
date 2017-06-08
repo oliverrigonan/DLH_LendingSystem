@@ -32,6 +32,8 @@ namespace Lending.ApiControllers
                                   Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                   LoanId = d.LoanId,
                                   LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                  CollectionStatusId = d.StatusId,
+                                  CollectionStatus = d.sysCollectionStatus.Status,
                                   Particulars = d.Particulars,
                                   TotalPaidAmount = d.TotalPaidAmount,
                                   TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -71,6 +73,8 @@ namespace Lending.ApiControllers
                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                  LoanId = d.LoanId,
                                  LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                 CollectionStatusId = d.StatusId,
+                                 CollectionStatus = d.sysCollectionStatus.Status,
                                  Particulars = d.Particulars,
                                  TotalPaidAmount = d.TotalPaidAmount,
                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -159,24 +163,35 @@ namespace Lending.ApiControllers
                             var staffs = from d in db.mstStaffs.OrderByDescending(d => d.Id) select d;
                             if (staffs.Any())
                             {
-                                Data.trnCollection newCollection = new Data.trnCollection();
-                                newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
-                                newCollection.CollectionDate = DateTime.Today;
-                                newCollection.LoanId = loan.FirstOrDefault().Id;
-                                newCollection.Particulars = "NA";
-                                newCollection.CollectorStaffId = staffs.FirstOrDefault().Id;
-                                newCollection.PreparedByUserId = userId;
-                                newCollection.TotalPaidAmount = 0;
-                                newCollection.TotalPenaltyAmount = 0;
-                                newCollection.IsLocked = false;
-                                newCollection.CreatedByUserId = userId;
-                                newCollection.CreatedDateTime = DateTime.Now;
-                                newCollection.UpdatedByUserId = userId;
-                                newCollection.UpdatedDateTime = DateTime.Now;
-                                db.trnCollections.InsertOnSubmit(newCollection);
-                                db.SubmitChanges();
+                                var collectionStatus = from d in db.sysCollectionStatus
+                                                       select d;
 
-                                return newCollection.Id;
+                                if (collectionStatus.Any())
+                                {
+                                    Data.trnCollection newCollection = new Data.trnCollection();
+                                    newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
+                                    newCollection.CollectionDate = DateTime.Today;
+                                    newCollection.LoanId = loan.FirstOrDefault().Id;
+                                    newCollection.StatusId = collectionStatus.FirstOrDefault().Id;
+                                    newCollection.Particulars = "NA";
+                                    newCollection.CollectorStaffId = staffs.FirstOrDefault().Id;
+                                    newCollection.PreparedByUserId = userId;
+                                    newCollection.TotalPaidAmount = 0;
+                                    newCollection.TotalPenaltyAmount = 0;
+                                    newCollection.IsLocked = false;
+                                    newCollection.CreatedByUserId = userId;
+                                    newCollection.CreatedDateTime = DateTime.Now;
+                                    newCollection.UpdatedByUserId = userId;
+                                    newCollection.UpdatedDateTime = DateTime.Now;
+                                    db.trnCollections.InsertOnSubmit(newCollection);
+                                    db.SubmitChanges();
+
+                                    return newCollection.Id;
+                                }
+                                else
+                                {
+                                    return 0;
+                                }
                             }
                             else
                             {
@@ -282,26 +297,15 @@ namespace Lending.ApiControllers
                                 {
                                     if (loan.FirstOrDefault().IsLocked)
                                     {
-                                        var collectionLines = from d in db.trnCollectionLines
-                                                              where d.CollectionId == Convert.ToInt32(id)
-                                                              select d;
-
-                                        Decimal totalPaidAmount = 0;
-                                        Decimal totalPenaltyAmount = 0;
-                                        if (collectionLines.Any())
-                                        {
-                                            totalPaidAmount = collectionLines.Sum(d => d.PaidAmount);
-                                            totalPenaltyAmount = collectionLines.Sum(d => d.PenaltyAmount);
-                                        }
-
                                         var lockCollection = collections.FirstOrDefault();
                                         lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
                                         lockCollection.LoanId = collection.LoanId;
+                                        lockCollection.StatusId = collection.CollectionStatusId;
                                         lockCollection.Particulars = collection.Particulars;
                                         lockCollection.CollectorStaffId = collection.CollectorStaffId;
                                         lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                                        lockCollection.TotalPaidAmount = totalPaidAmount;
-                                        lockCollection.TotalPenaltyAmount = totalPenaltyAmount;
+                                        lockCollection.TotalPaidAmount = collection.TotalPaidAmount;
+                                        lockCollection.TotalPenaltyAmount = collection.TotalPenaltyAmount;
                                         lockCollection.IsLocked = true;
                                         lockCollection.UpdatedByUserId = userId;
                                         lockCollection.UpdatedDateTime = DateTime.Now;
@@ -506,7 +510,7 @@ namespace Lending.ApiControllers
         [Authorize]
         [HttpGet]
         [Route("api/collections/list/ByApplicantId/{applicantId}/{loanId}")]
-        public List<Models.TrnCollection> listCollectionByApplicantId(String applicantId, String loanId)
+        public List<Models.TrnCollection> listCollectionByApplicantIdAndLoanId(String applicantId, String loanId)
         {
             var collections = from d in db.trnCollections
                               where d.trnLoan.ApplicantId == Convert.ToInt32(applicantId)
@@ -521,6 +525,7 @@ namespace Lending.ApiControllers
                                   Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                   LoanId = d.LoanId,
                                   LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                  CollectionStatus = d.sysCollectionStatus.Status,
                                   Particulars = d.Particulars,
                                   TotalPaidAmount = d.TotalPaidAmount,
                                   TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -560,6 +565,8 @@ namespace Lending.ApiControllers
                                       Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                       LoanId = d.LoanId,
                                       LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      CollectionStatusId = d.StatusId,
+                                      CollectionStatus = d.sysCollectionStatus.Status,
                                       Particulars = d.Particulars,
                                       TotalPaidAmount = d.TotalPaidAmount,
                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -594,6 +601,8 @@ namespace Lending.ApiControllers
                                       Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                       LoanId = d.LoanId,
                                       LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      CollectionStatusId = d.StatusId,
+                                      CollectionStatus = d.sysCollectionStatus.Status,
                                       Particulars = d.Particulars,
                                       TotalPaidAmount = d.TotalPaidAmount,
                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -635,6 +644,8 @@ namespace Lending.ApiControllers
                                       Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                       LoanId = d.LoanId,
                                       LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      CollectionStatusId = d.StatusId,
+                                      CollectionStatus = d.sysCollectionStatus.Status,
                                       Particulars = d.Particulars,
                                       TotalPaidAmount = d.TotalPaidAmount,
                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -669,6 +680,8 @@ namespace Lending.ApiControllers
                                       Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
                                       LoanId = d.LoanId,
                                       LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                      CollectionStatusId = d.StatusId,
+                                      CollectionStatus = d.sysCollectionStatus.Status,
                                       Particulars = d.Particulars,
                                       TotalPaidAmount = d.TotalPaidAmount,
                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -764,5 +777,42 @@ namespace Lending.ApiControllers
 
             return collectionsGroupByArea.OrderBy(d => d.Area).ToList();
         }
+
+        // collection list
+        [Authorize]
+        [HttpGet]
+        [Route("api/collections/list/ByLoanId/{loanId}")]
+        public List<Models.TrnCollection> listCollectionByLoanId(String loanId)
+        {
+            var collections = from d in db.trnCollections.OrderByDescending(d => d.Id)
+                              where d.LoanId == Convert.ToInt32(loanId)
+                              && d.IsLocked == true
+                              select new Models.TrnCollection
+                              {
+                                  Id = d.Id,
+                                  CollectionNumber = d.CollectionNumber,
+                                  CollectionDate = d.CollectionDate.ToShortDateString(),
+                                  ApplicantId = d.trnLoan.ApplicantId,
+                                  Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                  LoanId = d.LoanId,
+                                  LoanNumberDetail = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : " ",
+                                  CollectionStatus = d.sysCollectionStatus.Status,
+                                  Particulars = d.Particulars,
+                                  TotalPaidAmount = d.TotalPaidAmount,
+                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                  PreparedByUserId = d.PreparedByUserId,
+                                  PreparedByUser = d.mstUser.FullName,
+                                  IsLocked = d.IsLocked,
+                                  CreatedByUserId = d.CreatedByUserId,
+                                  CreatedByUser = d.mstUser.FullName,
+                                  CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                  UpdatedByUserId = d.UpdatedByUserId,
+                                  UpdatedByUser = d.mstUser1.FullName,
+                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                              };
+
+            return collections.ToList();
+        }
+
     }
 }

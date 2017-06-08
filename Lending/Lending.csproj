@@ -177,7 +177,6 @@
     <Compile Include="ApiControllers\ApiAreaStaffController.cs" />
     <Compile Include="ApiControllers\ApiCivilStatusController.cs" />
     <Compile Include="ApiControllers\ApiCollectionController.cs" />
-    <Compile Include="ApiControllers\ApiCollectionLinesController.cs" />
     <Compile Include="ApiControllers\ApiCollectionStatusController.cs" />
     <Compile Include="ApiControllers\ApiDeductionsController.cs" />
     <Compile Include="ApiControllers\ApiLoanDeductionsController.cs" />
@@ -198,6 +197,7 @@
     <Compile Include="ApiControllers\ApiLoanController.cs" />
     <Compile Include="ApiControllers\ApiUserFormsController.cs" />
     <Compile Include="ApiControllers\ApiVaultController.cs" />
+    <Compile Include="ApiControllers\ApiReturnReleaseController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -243,13 +243,13 @@
     <Compile Include="Models\MstUser.cs" />
     <Compile Include="Models\SysTransactionType.cs" />
     <Compile Include="Models\TrnCollection.cs" />
-    <Compile Include="Models\TrnCollectionLines.cs" />
     <Compile Include="Models\TrnExpenses.cs" />
     <Compile Include="Models\TrnLoan.cs" />
     <Compile Include="Models\TrnLoanCollateral.cs" />
     <Compile Include="Models\TrnLoanDeductions.cs" />
     <Compile Include="Models\TrnLoanHistory.cs" />
     <Compile Include="Models\TrnRemittance.cs" />
+    <Compile Include="Models\TrnReturnRelease.cs" />
     <Compile Include="Models\TrnVault.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reports\RepActiveOverdueCollectionPDFController.cs" />
@@ -436,6 +436,8 @@
     <Content Include="Views\Software\RemittanceDetail.cshtml" />
     <Content Include="Views\Software\VaultList.cshtml" />
     <Content Include="Views\Software\VaultDetail.cshtml" />
+    <Content Include="Views\Software\ReturnReleaseList.cshtml" />
+    <Content Include="Views\Software\ReturnReleaseDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

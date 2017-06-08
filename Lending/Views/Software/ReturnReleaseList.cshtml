@@ -1,0 +1,791 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>Return Release List</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-money fa-fw"></i> Return Release <small>List of Return Releases</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li class="active">
+                                ReturnRelease
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                        <input type="text" id="searchReturnRelease" class="form-control" placeholder="Search" />
+                                    </div>
+                                </td>
+                                <td>&nbsp;&nbsp;&nbsp;</td>
+                                <td align="right">
+                                    <button class="btn btn-primary" id="btnAddReturnRelease" onclick="btnAddReturnReleaseOnclick()">
+                                        <i class="fa fa-plus fa-fw"></i>&nbsp; Add
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-heading">
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> Start Return Release Date</span>
+                                        <div id="cboReturnReleaseDate"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i> End Return Release Date</span>
+                                        <div id="cboReturnReleaseEndDate"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        <div id="ReturnReleaseListFlexGrid" class=""></div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGridReturnRelease">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridReturnRelease">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridReturnRelease">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridReturnRelease"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridReturnRelease">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridReturnRelease">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        User security stamp
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>Created by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedByReturnRelease">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDateReturnRelease">mm/dd/yyyy</span></small>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-md-6">
+                                <p>Updated by:</p>
+                                <div style="padding-left: 10px;">
+                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedByReturnRelease">NA</label>
+                                    <br />
+                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDateReturnRelease">mm/dd/yyyy</span></small>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationReturnReleaseModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete Return Release</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteReturnRelease" onclick="btnConfirmDeleteReturnReleaseOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteReturnReleaseModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ReturnReleases Detail Modal -->
+    <div class="modal fade" id="ReturnReleasesEditDetailModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"> ReturnRelease Detail</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">ReturnRelease No.</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control requiredReturnReleases" id="returnReleaseNo" placeholder="ReturnRelease No." />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">ReturnRelease Date</label>
+                            <div class="col-sm-8">
+                                <div id="cboReturnReleaseDateValue" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Area</label>
+                            <div class="col-sm-8">
+                                <div id="cboReturnReleaseArea" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Remiited By</label>
+                            <div class="col-sm-8">
+                                <div id="cboReturnReleaseStaff" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Particulars</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control requiredReturnReleases" rows="5" id="returnReleaseParticulars" placeholder="Particulars"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Amount</label>
+                            <div class="col-sm-8">
+                                <div class="input-group numberField">
+                                    <span class="input-group-addon">&#8369;</span>
+                                    <input type="text" class="form-control numberField requiredReturnReleases" id="returnReleaseAmount" placeholder="0.00" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="btnSaveReturnReleases" onclick="saveReturnReleasesOnclick()"><i class="fa fa-save fa-fw"></i> Save / <i class="fa fa-lock fa-fw"></i> Lock</button>
+                    <button class="btn btn-primary" id="btnUnlockReturnReleases" onclick="unlockReturnReleasesOnclick()"><i class="fa fa-unlock fa-fw"></i> Unlock</button>
+                    <button class="btn btn-danger" id="btnCloseReturnReleases" data-dismiss="modal"><i class="fa fa-close fa-fw"></i> Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+        // global variables
+        var date = new Date();
+        var y = date.getFullYear();
+        var fm = date.getMonth() - 1;
+        var m = date.getMonth();
+        var firstDay = new Date(y, fm, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        // global variables
+        var cboReturnReleaseDate;
+        var cboReturnReleaseEndDate;
+        var returnReleaseCollectionView;
+        var returnReleaseFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
+        var isReturnReleaseDateClicked = false;
+        var isReturnReleaseEndDateClicked = false;
+        var cboReturnReleaseChangeCollector;
+
+        // create cbo date for returnRelease date
+        function createCboReturnReleaseDate() {
+            cboReturnReleaseDate.dispose();
+            cboReturnReleaseDate = new wijmo.input.InputDate('#cboReturnReleaseDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(firstDay),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    NProgress.start();
+                    returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                    returnReleaseCollectionView.canFilter = true;
+                    returnReleaseCollectionView.pageSize = 15;
+
+                    var filterText = '';
+                    $('#searchReturnRelease').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        returnReleaseCollectionView.refresh();
+                    });
+
+                    returnReleaseCollectionView.filter = function (item) {
+                        return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                    }
+
+                    returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsReturnRelease();
+                    });
+
+                    returnReleaseCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurityReturnRelease();
+                    });
+
+                    // Flex Grid
+                    returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                    returnReleaseFlexGrid.trackChanges = true;
+                }
+            });
+        }
+
+        // create cbo date for returnRelease date
+        function createCboReturnReleaseEndDate() {
+            cboReturnReleaseEndDate.dispose();
+            cboReturnReleaseEndDate = new wijmo.input.InputDate('#cboReturnReleaseEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(lastDay),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    NProgress.start();
+                    returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                    returnReleaseCollectionView.canFilter = true;
+                    returnReleaseCollectionView.pageSize = 15;
+
+                    var filterText = '';
+                    $('#searchReturnRelease').keyup(function () {
+                        filterText = this.value.toLowerCase();
+                        returnReleaseCollectionView.refresh();
+                    });
+
+                    returnReleaseCollectionView.filter = function (item) {
+                        return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                    }
+
+                    returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                        updateNavigateButtonsReturnRelease();
+                    });
+
+                    returnReleaseCollectionView.currentChanged.addHandler(function (sender, args) {
+                        updateStampSecurityReturnRelease();
+                    });
+
+                    // Flex Grid
+                    returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                    returnReleaseFlexGrid.trackChanges = true;
+                }
+            });
+        }
+
+        // get colllection list by returnRelease date and area id
+        function getReturnReleaseByReturnReleaseDateList() {
+            var returnReleaseListArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboReturnReleaseDate.value.getMonth() + 1, cboReturnReleaseDate.value.getDate(), cboReturnReleaseDate.value.getFullYear()].join('-');
+            var endDate = [cboReturnReleaseEndDate.value.getMonth() + 1, cboReturnReleaseEndDate.value.getDate(), cboReturnReleaseEndDate.value.getFullYear()].join('-');
+            $.ajax({
+                url: '/api/returnRelease/list/' + startDate + '/' + endDate,
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (returnReleaseListResult) {
+                    if (returnReleaseListResult.length > 0) {
+                        for (i = 0; i < returnReleaseListResult.length; i++) {
+                            var isLocked = false;
+                            if (returnReleaseListResult[i]["IsLocked"]) {
+                                isLocked = true;
+                            }
+
+                            var disabledButton = "disabled";
+                            var canPerformActions = "@ViewData["CanPerformActions"]";
+                            if (canPerformActions == 1) {
+                                disabledButton = "";
+                            }
+
+                            var newDate = new Date(returnReleaseListResult[i]["ReturnReleaseDate"]);
+                            var returnReleaseDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            returnReleaseListArray.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditReturnReleaseOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteReturnReleaseOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: returnReleaseListResult[i]["Id"],
+                                ReturnReleaseNumber: "RL-" + returnReleaseListResult[i]["ReturnReleaseNumber"],
+                                ReturnReleaseDate: returnReleaseDateValue,
+                                LoanNumber: returnReleaseListResult[i]["LoanNumber"],
+                                LoanId: returnReleaseListResult[i]["LoanId"],
+                                Applicant: returnReleaseListResult[i]["Applicant"],
+                                Particulars: returnReleaseListResult[i]["Particulars"],
+                                PreparedByUserId: returnReleaseListResult[i]["PreparedByUserId"],
+                                PreparedByUser: returnReleaseListResult[i]["PreparedByUser"],
+                                CollectorStaffId: returnReleaseListResult[i]["CollectorStaffId"],
+                                CollectorStaff: returnReleaseListResult[i]["CollectorStaff"],
+                                ReturnAmount: returnReleaseListResult[i]["ReturnAmount"],
+                                IsLocked: returnReleaseListResult[i]["IsLocked"],
+                                CreatedByUserId: returnReleaseListResult[i]["CreatedByUserId"],
+                                CreatedByUser: returnReleaseListResult[i]["CreatedByUser"],
+                                CreatedDateTime: returnReleaseListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: returnReleaseListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: returnReleaseListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: returnReleaseListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return returnReleaseListArray;
+        }
+
+        // delete loan application
+        function btnDeleteReturnReleaseOnclick(isLocked) {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationReturnReleaseModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "Delete";
+                $("#btnConfirmDeleteReturnRelease").prop("disabled", false);
+                $("#btnCloseDeleteReturnReleaseModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteReturnReleaseOnclick() {
+            document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteReturnRelease").prop("disabled", true);
+            $("#btnCloseDeleteReturnReleaseModal").prop("disabled", true);
+
+            returnReleaseCollectionView.editItem(returnReleaseCollectionView.currentItem);
+            var id = returnReleaseCollectionView.currentEditItem.Id;
+            $.ajax({
+                url: '/api/returnRelease/delete/' + id,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+
+                        $('#deleteConfirmationReturnReleaseModal').modal('hide');
+                        returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                        returnReleaseCollectionView.canFilter = true;
+                        returnReleaseCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchReturnRelease').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            returnReleaseCollectionView.refresh();
+                        });
+
+                        returnReleaseCollectionView.filter = function (item) {
+                            return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsReturnRelease();
+                        });
+
+                        returnReleaseCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurityReturnRelease();
+                        });
+
+                        // Flex Grid
+                        returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                        returnReleaseFlexGrid.trackChanges = true;
+                    },
+                    404: function () {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $('#deleteConfirmationReturnReleaseModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "Delete";
+                        $("#btnConfirmDeleteReturnRelease").prop("disabled", false);
+                        $("#btnCloseDeleteReturnReleaseModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+                        document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "Delete";
+                        $("#btnConfirmDeleteReturnRelease").prop("disabled", false);
+                        $("#btnCloseDeleteReturnReleaseModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // stamp security
+        function updateStampSecurityReturnRelease() {
+            var item = returnReleaseCollectionView.currentItem;
+            document.getElementById('stampCreatedByReturnRelease').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDateReturnRelease').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedByReturnRelease').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDateReturnRelease').innerHTML = item.UpdatedDateTime;
+        }
+
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsReturnRelease() {
+            if (returnReleaseCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridReturnRelease').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridReturnRelease').style.display = 'block';
+            btnCurrentPageGridReturnRelease.innerHTML = (returnReleaseCollectionView.pageIndex + 1) + ' / ' + returnReleaseCollectionView.pageCount;
+        }
+
+        // create returnRelease flexgrid
+        function createReturnReleaseFlexGrid() {
+            returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+            returnReleaseCollectionView.canFilter = true;
+            returnReleaseCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchReturnRelease').keyup(function () {
+                filterText = this.value.toLowerCase();
+                returnReleaseCollectionView.refresh();
+            });
+
+            returnReleaseCollectionView.filter = function (item) {
+                return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsReturnRelease();
+            });
+
+            returnReleaseCollectionView.currentChanged.addHandler(function (sender, args) {
+                updateStampSecurityReturnRelease();
+            });
+
+            // Flex Grid
+            returnReleaseFlexGrid = new wijmo.grid.FlexGrid('#ReturnReleaseListFlexGrid');
+            returnReleaseFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Edit",
+                                "binding": "EditButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Delete",
+                                "binding": "DeleteButton",
+                                "width": 80,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "width": 35,
+                                "align": "center",
+                                "allowSorting": true,
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "ReturnReleaseDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Return Release No.",
+                                "binding": "ReturnReleaseNumber",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Loan No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Amount",
+                                "binding": "ReturnAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: returnReleaseCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            returnReleaseFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridReturnRelease = document.getElementById('btnMoveToFirstPageGridReturnRelease');
+            btnPreviousPageGridReturnRelease = document.getElementById('btnMoveToPreviousPageGridReturnRelease');
+            btnNextPageGridReturnRelease = document.getElementById('btnMoveToNextPageGridReturnRelease');
+            btnLastPageGridReturnRelease = document.getElementById('btnMoveToLastPageGridReturnRelease');
+            btnCurrentPageGridReturnRelease = document.getElementById('btnCurrentPageGridReturnRelease');
+
+            updateNavigateButtonsReturnRelease();
+
+            btnFirstPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToFirstPage();
+                updateNavigateButtonsReturnRelease();
+            });
+            btnPreviousPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToPreviousPage();
+                updateNavigateButtonsReturnRelease();
+            });
+            btnNextPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToNextPage();
+                updateNavigateButtonsReturnRelease();
+            });
+            btnLastPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToLastPage();
+                updateNavigateButtonsReturnRelease();
+            });
+        }
+
+        function returnReleaseListOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                returnReleaseCollectionView.canFilter = true;
+                returnReleaseCollectionView.pageSize = 15;
+
+                var filterText = '';
+                $('#searchReturnRelease').keyup(function () {
+                    filterText = this.value.toLowerCase();
+                    returnReleaseCollectionView.refresh();
+                });
+
+                returnReleaseCollectionView.filter = function (item) {
+                    return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                }
+
+                returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                    updateNavigateButtonsReturnRelease();
+                });
+
+                returnReleaseCollectionView.currentChanged.addHandler(function (sender, args) {
+                    updateStampSecurityReturnRelease();
+                });
+
+                // Flex Grid
+                returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                returnReleaseFlexGrid.trackChanges = true;
+            }, 300);
+        }
+
+        var returnReleaseId;
+        var cboReturnReleaseDateValue;
+        var cboReturnReleaseArea;
+        var cboReturnReleaseStaff;
+
+        var newDate = new Date();
+        var returnReleaseDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+
+        function createReturnReleaseDate() {
+            cboReturnReleaseDateValue.dispose();
+            cboReturnReleaseDateValue = new wijmo.input.InputDate('#cboReturnReleaseDateValue', {
+                format: 'MM-dd-yyyy',
+                value: new Date(returnReleaseDateValue),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    returnReleaseDateValue = thisDateValue;
+                }
+            });
+        }
+
+        function createCboAreaForReturnRelease() {
+            var areaArray = new Array();
+            $.ajax({
+                url: '/api/area/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (areaResults) {
+                    var disabled = true;
+                    if (areaResults.length > 0) {
+                        for (i = 0; i < areaResults.length; i++) {
+                            areaArray.push({
+                                Id: areaResults[i]["Id"],
+                                Area: areaResults[i]["Area"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboReturnReleaseArea.dispose();
+                    cboReturnReleaseArea = new wijmo.input.ComboBox('#cboReturnReleaseArea', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area"
+                    });
+                }
+            });
+        }
+
+        // add new returnRelease
+        function btnAddReturnReleaseOnclick() {
+            document.getElementById("btnAddReturnRelease").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnAddReturnRelease").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/returnRelease/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        window.location = '/Software/ReturnReleaseDetail?id=' + id;
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // edit returnRelease
+        function btnEditReturnReleaseOnclick() {
+            returnReleaseCollectionView.editItem(returnReleaseCollectionView.currentItem);
+            var currentItem = returnReleaseCollectionView.currentEditItem;
+            returnReleaseId = currentItem.Id;
+
+            window.location = "/Software/ReturnReleaseDetail?id=" + returnReleaseId;
+        }
+
+        function unlockReturnReleasesOnclick() {
+            document.getElementById("btnUnlockReturnReleases").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
+            $("#btnUnlockReturnReleases").prop("disabled", true);
+            $("#btnCloseReturnReleases").prop("disabled", true);
+
+            if (returnReleaseId != 0) {
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/returnRelease/unlock/' + returnReleaseId,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Unlock Successful");
+                            returnReleaseListOnclick();
+
+                            document.getElementById("btnUnlockReturnReleases").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                            $("#btnUnlockReturnReleases").prop("disabled", true);
+                            $("#btnSaveReturnReleases").prop("disabled", false);
+                            $("#btnCloseReturnReleases").prop("disabled", false);
+
+                            document.getElementById("returnReleaseParticulars").disabled = false;
+                            document.getElementById("returnReleaseAmount").disabled = false;
+                            cboReturnReleaseDateValue.disabled = false;
+                            cboReturnReleaseArea.disabled = false;
+                            cboReturnReleaseStaff.disabled = false;
+                        },
+                        404: function (message) {
+                            toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                            document.getElementById("btnUnlockReturnReleases").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                            $("#btnUnlockReturnReleases").prop("disabled", false);
+                            $("#btnCloseReturnReleases").prop("disabled", false);
+                        },
+                        400: function (message) {
+                            toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                            document.getElementById("btnUnlockReturnReleases").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                            $("#btnUnlockReturnReleases").prop("disabled", false);
+                            $("#btnCloseReturnReleases").prop("disabled", false);
+                        }
+                    }
+                });
+            }
+        }
+
+        // on load page
+        window.onload = function () {
+            NProgress.start();
+            toastrModification();
+
+            cboReturnReleaseDate = new wijmo.input.InputDate('#cboReturnReleaseDate');
+            createCboReturnReleaseDate();
+            cboReturnReleaseEndDate = new wijmo.input.InputDate('#cboReturnReleaseEndDate');
+            createCboReturnReleaseEndDate();
+            createReturnReleaseFlexGrid();
+
+            doubleModal();
+            $(function () { $("[data-toggle='tooltip']").tooltip(); });
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+                getUserRightsMessageError();
+            }
+        }
+    </script>
+</body>
+</html>

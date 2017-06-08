@@ -616,45 +616,27 @@
                                                                     </tr>
                                                                 </table>
                                                             </div>
+                                                            <div class="panel-heading">
+                                                                <div class="input-group">
+                                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                                    <input type="text" id="applicantCollectionsSearchInput" class="form-control" placeholder="Search" />
+                                                                </div>
+                                                            </div>
                                                             <div class="panel-body">
-                                                                <ul class="nav nav-tabs">
+                                                                <div id="applicantCollectionsFlexgrid"></div>
+                                                                @*<div class="panel panel-default">
+                                                                    <div class="panel-body">
+                                                                    </div>
+                                                                </div>*@
+                                                                @*<ul class="nav nav-tabs">
                                                                     <li class="active"><a data-toggle="tab" href="#summaryCollection" id="summaryCollectionTab">Summary</a></li>
                                                                     <li><a data-toggle="tab" href="#detailCollection" id="detailCollectionTab">Detail</a></li>
                                                                 </ul>
-                                                                <br />
+                                                                <br />*@
                                                                 <div class="tab-content">
-                                                                    <div id="summaryCollection" class="tab-pane fade in active">
-                                                                        <div class="panel panel-default">
-                                                                            <div class="panel-heading">
-                                                                                <div class="input-group">
-                                                                                    <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
-                                                                                    <input type="text" id="applicantCollectionsSearchInput" class="form-control" placeholder="Search" />
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="panel-body">
-                                                                                <div id="applicantCollectionsFlexgrid"></div>
-                                                                            </div>
-                                                                            <div class="panel-footer">
-                                                                                <div class="row">
-                                                                                    <div class="btn-group col-md-7" id="naviagtionPageGridCollections">
-                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollections">
-                                                                                            <span class="glyphicon glyphicon-fast-backward"></span> First
-                                                                                        </button>
-                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollections">
-                                                                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                                                                        </button>
-                                                                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollections"></button>
-                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollections">
-                                                                                            <span class="glyphicon glyphicon-step-forward"></span> Next
-                                                                                        </button>
-                                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollections">
-                                                                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                                                                        </button>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                                    @*<div id="summaryCollection" class="tab-pane fade in active">
+
+                                                                    </div>*@
                                                                     <div id="detailCollection" class="tab-pane fade">
                                                                         <div class="panel panel-default">
                                                                             <div class="panel-heading">
@@ -686,6 +668,25 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="panel-footer">
+                                                                <div class="row">
+                                                                    <div class="btn-group col-md-7" id="naviagtionPageGridCollections">
+                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridCollections">
+                                                                            <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridCollections">
+                                                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridCollections"></button>
+                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridCollections">
+                                                                            <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridCollections">
+                                                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                                        </button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1451,17 +1452,15 @@
                             $("#btnApplicantChangePhoto").prop("disabled", true);
                             $("#btnApplicantDeletePhoto").prop("disabled", true);
 
+                            $("#btnAddApplicantRealPropertiesOwned").prop("disabled", true);
+                            $("#btnAddApplicantApplianceOwned").prop("disabled", true);
+                            $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", true);
+                            $("#btnAddApplicantRequirements").prop("disabled", true);
+
                             document.getElementById("applicantLastName").disabled = true;
                             document.getElementById("applicantFirstName").disabled = true;
                             document.getElementById("applicantMiddleName").disabled = true;
                             document.getElementById("isCoMaker").disabled = true;
-
-                            cboBirthDate.disabled = true;
-                            cboCivilStatus.disabled = true;
-                            cboApplicantArea.disabled = true;
-                            cboResidenceType.disabled = true;
-                            cboLandResidenceType.disabled = true;
-
                             document.getElementById("applicantCityAddress").disabled = true;
                             document.getElementById("applicantProvinceAddress").disabled = true;
                             document.getElementById("applicantContactNumber").disabled = true;
@@ -1494,10 +1493,12 @@
                             document.getElementById("applicantSpouseNumberOfStudying").disabled = true;
                             document.getElementById("applicantSpouseChildrenSchools").disabled = true;
 
-                            $("#btnAddApplicantRealPropertiesOwned").prop("disabled", true);
-                            $("#btnAddApplicantApplianceOwned").prop("disabled", true);
-                            $("#btnAddApplicantDetailCoMakersStatement").prop("disabled", true);
-                            $("#btnAddApplicantRequirements").prop("disabled", true);
+                            cboBirthDate.disabled = true;
+                            cboCivilStatus.disabled = true;
+                            cboApplicantArea.disabled = true;
+                            cboResidenceType.disabled = true;
+                            cboLandResidenceType.disabled = true;
+
                             isLocked = true;
                         } else {
                             $("#btnUnlockApplicant").prop("disabled", true);
@@ -3894,7 +3895,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (loanHistorysResults) {
                     if (loanHistorysResults.length > 0) {
-                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Loan App</button>";
+                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Detail</button>";
 
                         for (i = 0; i < loanHistorysResults.length; i++) {
                             var newDate = new Date(loanHistorysResults[i]["LoanDate"]);
@@ -4368,6 +4369,7 @@
                                 LoanId: collectionListResult[i]["LoanId"],
                                 LoanNumber: collectionListResult[i]["LoanNumber"],
                                 Particulars: collectionListResult[i]["Particulars"],
+                                CollectionStatus: collectionListResult[i]["CollectionStatus"],
                                 TotalPaidAmount: collectionListResult[i]["TotalPaidAmount"],
                                 TotalPenaltyAmount: collectionListResult[i]["TotalPenaltyAmount"],
                                 PreparedByUserId: collectionListResult[i]["PreparedByUserId"],
@@ -4430,8 +4432,17 @@
                             {
                                 "header": "Detail",
                                 "binding": "HoverButton",
-                                "width": "1*",
+                                "width": 100,
                                 "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "L",
+                                "binding": "IsLocked",
+                                "width": 35,
+                                "align": "center",
+                                "allowSorting": true,
                                 "allowResizing": false,
                                 "isContentHtml": true
                             },
@@ -4439,31 +4450,37 @@
                                 "header": "Date",
                                 "binding": "CollectionDate",
                                 "allowSorting": true,
-                                "width": "1.5*",
+                                "width": 100,
                             },
                             {
                                 "header": "Collection No.",
                                 "binding": "CollectionNumber",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 150,
+                            },
+                            {
+                                "header": "Status",
+                                "binding": "CollectionStatus",
+                                "allowSorting": true,
+                                "width": 200,
                             },
                             {
                                 "header": "Particulars",
                                 "binding": "Particulars",
                                 "allowSorting": true,
-                                "width": "2.5*",
+                                "width": 300,
                             },
                             {
                                 "header": "Paid",
                                 "binding": "TotalPaidAmount",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 130
                             },
                             {
                                 "header": "Penalty",
                                 "binding": "TotalPenaltyAmount",
                                 "allowSorting": true,
-                                "width": "2*",
+                                "width": 130
                             }
                 ],
                 autoGenerateColumns: false,
@@ -4877,13 +4894,13 @@
             $("#summaryCollection").hide();
             $("#detailCollection").show();
 
-            createCollectionLinesFlexGrid();
-            window.createCollectionLinesFlexGrid = function () {
-                return true;
-            }
-
             setTimeout(function () {
                 if (cboLoan.itemsSource.length > 0) {
+                    createCollectionLinesFlexGrid();
+                    window.createCollectionLinesFlexGrid = function () {
+                        return true;
+                    }
+
                     refreshApplicantCollectionLinesGrid();
                 } else {
                     NProgress.done();

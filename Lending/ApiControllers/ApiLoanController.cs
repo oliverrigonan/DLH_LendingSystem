@@ -75,7 +75,57 @@ namespace Lending.ApiControllers
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
                                        CollectibleAmount = d.CollectibleAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
+                                       NetAmount = d.NetAmount
+                                   };
+
+            return loanApplications.ToList();
+        }
+
+
+        // loan applicants
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/list/loanApplicants/ForReturnRelease")]
+        public List<Models.TrnLoan> listLoanApplicantsForReturnRelease()
+        {
+            var loanApplicants = from d in db.trnLoans.OrderBy(d => d.mstApplicant.ApplicantLastName)
+                                 where d.IsLoanReconstruct == false
+                                 group d by new
+                                 {
+                                     ApplicantId = d.ApplicantId,
+                                     Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " ")
+                                 } into g
+                                 select new Models.TrnLoan
+                                 {
+                                     ApplicantId = g.Key.ApplicantId,
+                                     Applicant = g.Key.Applicant
+                                 };
+
+            return loanApplicants.OrderBy(d => d.Applicant).ToList();
+        }
+
+
+        // loan list by applicantId
+        [Authorize]
+        [HttpGet]
+        [Route("api/loan/list/byApplicantId/ForReturnRelease/{applicantId}")]
+        public List<Models.TrnLoan> listLoanByApplicantIdForReturnRelease(String applicantId)
+        {
+            var loanApplications = from d in db.trnLoans.OrderByDescending(d => d.Id)
+                                   where d.ApplicantId == Convert.ToInt32(applicantId)
+                                   && d.IsLoanReconstruct == false
+                                   select new Models.TrnLoan
+                                   {
+                                       Id = d.Id,
+                                       LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
+                                       CollectibleAmount = d.CollectibleAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       NetAmount = d.NetAmount
                                    };
 
             return loanApplications.ToList();
@@ -182,6 +232,7 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
+                                       IsReturnRelease = d.IsReturnRelease,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -235,6 +286,7 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
+                                       IsReturnRelease = d.IsReturnRelease,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -288,6 +340,7 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
+                                       IsReturnRelease = d.IsReturnRelease,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -342,6 +395,7 @@ namespace Lending.ApiControllers
                                IsLoanApplication = d.IsLoanApplication,
                                IsLoanReconstruct = d.IsLoanReconstruct,
                                IsLoanRenew = d.IsLoanRenew,
+                               IsReturnRelease = d.IsReturnRelease,
                                IsLocked = d.IsLocked,
                                CreatedByUserId = d.CreatedByUserId,
                                CreatedByUser = d.mstUser1.FullName,
@@ -391,6 +445,7 @@ namespace Lending.ApiControllers
                                    IsLoanApplication = d.IsLoanApplication,
                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                    IsLoanRenew = d.IsLoanRenew,
+                                   IsReturnRelease = d.IsReturnRelease,
                                    IsLocked = d.IsLocked,
                                    CreatedByUserId = d.CreatedByUserId,
                                    CreatedByUser = d.mstUser1.FullName,
@@ -440,6 +495,7 @@ namespace Lending.ApiControllers
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                        IsLoanRenew = d.IsLoanRenew,
+                                       IsReturnRelease = d.IsReturnRelease,
                                        IsLocked = d.IsLocked,
                                        CreatedByUserId = d.CreatedByUserId,
                                        CreatedByUser = d.mstUser1.FullName,
@@ -558,6 +614,7 @@ namespace Lending.ApiControllers
                                         newLoan.IsLoanApplication = true;
                                         newLoan.IsLoanReconstruct = false;
                                         newLoan.IsLoanRenew = false;
+                                        newLoan.IsReturnRelease = false;
                                         newLoan.IsLocked = false;
                                         newLoan.CreatedByUserId = userId;
                                         newLoan.CreatedDateTime = DateTime.Now;
@@ -603,6 +660,7 @@ namespace Lending.ApiControllers
                                             newLoan.IsLoanApplication = false;
                                             newLoan.IsLoanReconstruct = false;
                                             newLoan.IsLoanRenew = true;
+                                            newLoan.IsReturnRelease = false;
                                             newLoan.IsLocked = false;
                                             newLoan.CreatedByUserId = userId;
                                             newLoan.CreatedDateTime = DateTime.Now;
@@ -648,6 +706,7 @@ namespace Lending.ApiControllers
                                                 newLoan.IsLoanApplication = false;
                                                 newLoan.IsLoanReconstruct = true;
                                                 newLoan.IsLoanRenew = false;
+                                                newLoan.IsReturnRelease = false;
                                                 newLoan.IsLocked = false;
                                                 newLoan.CreatedByUserId = userId;
                                                 newLoan.CreatedDateTime = DateTime.Now;
@@ -1041,7 +1100,8 @@ namespace Lending.ApiControllers
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsLoanReconstruct = d.IsLoanReconstruct
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsReturnRelease = d.IsReturnRelease
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -1056,12 +1116,14 @@ namespace Lending.ApiControllers
                                                 TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
                                                 CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
-                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
+                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease,
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
                                           && d.IsLoanReconstruct == false
+                                          && d.IsReturnRelease == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1072,7 +1134,8 @@ namespace Lending.ApiControllers
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
-                                              IsLoanReconstruct = d.IsLoanReconstruct
+                                              IsLoanReconstruct = d.IsLoanReconstruct,
+                                              IsReturnRelease = d.IsReturnRelease
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -1093,7 +1156,8 @@ namespace Lending.ApiControllers
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsLoanReconstruct = d.IsLoanReconstruct
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsReturnRelease = d.IsReturnRelease
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -1108,12 +1172,14 @@ namespace Lending.ApiControllers
                                                 TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
                                                 CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
-                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
+                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
                                           && d.IsLoanReconstruct == false
+                                          && d.IsReturnRelease == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1123,7 +1189,8 @@ namespace Lending.ApiControllers
                                               MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
-                                              IsLoanRenew = d.IsLoanRenew
+                                              IsLoanRenew = d.IsLoanRenew,
+                                              IsReturnRelease = d.IsReturnRelease
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -1302,6 +1369,7 @@ namespace Lending.ApiControllers
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
+                                           IsReturnRelease = d.IsReturnRelease,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -1351,6 +1419,7 @@ namespace Lending.ApiControllers
                                            IsLoanApplication = d.IsLoanApplication,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLoanRenew = d.IsLoanRenew,
+                                           IsReturnRelease = d.IsReturnRelease,
                                            IsLocked = d.IsLocked,
                                            CreatedByUserId = d.CreatedByUserId,
                                            CreatedByUser = d.mstUser1.FullName,
@@ -1409,6 +1478,7 @@ namespace Lending.ApiControllers
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
+                                               IsReturnRelease = d.IsReturnRelease,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -1458,6 +1528,7 @@ namespace Lending.ApiControllers
                                                IsLoanApplication = d.IsLoanApplication,
                                                IsLoanReconstruct = d.IsLoanReconstruct,
                                                IsLoanRenew = d.IsLoanRenew,
+                                               IsReturnRelease = d.IsReturnRelease,
                                                IsLocked = d.IsLocked,
                                                CreatedByUserId = d.CreatedByUserId,
                                                CreatedByUser = d.mstUser1.FullName,
@@ -1511,6 +1582,7 @@ namespace Lending.ApiControllers
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
+                                                   IsReturnRelease = d.IsReturnRelease,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -1560,6 +1632,7 @@ namespace Lending.ApiControllers
                                                    IsLoanApplication = d.IsLoanApplication,
                                                    IsLoanReconstruct = d.IsLoanReconstruct,
                                                    IsLoanRenew = d.IsLoanRenew,
+                                                   IsReturnRelease = d.IsReturnRelease,
                                                    IsLocked = d.IsLocked,
                                                    CreatedByUserId = d.CreatedByUserId,
                                                    CreatedByUser = d.mstUser1.FullName,
@@ -1613,6 +1686,7 @@ namespace Lending.ApiControllers
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
+                                                       IsReturnRelease = d.IsReturnRelease,
                                                        IsLocked = d.IsLocked,
                                                        CreatedByUserId = d.CreatedByUserId,
                                                        CreatedByUser = d.mstUser1.FullName,
@@ -1662,6 +1736,7 @@ namespace Lending.ApiControllers
                                                        IsLoanApplication = d.IsLoanApplication,
                                                        IsLoanReconstruct = d.IsLoanReconstruct,
                                                        IsLoanRenew = d.IsLoanRenew,
+                                                       IsReturnRelease = d.IsReturnRelease,
                                                        IsLocked = d.IsLocked,
                                                        CreatedByUserId = d.CreatedByUserId,
                                                        CreatedByUser = d.mstUser1.FullName,

@@ -47,5 +47,6 @@ namespace Lending.Models
         public String ReconstructedDocNumber { get; set; }
         public String RenewedDocNumber { get; set; }
         public Boolean IsLocked { get; set; }
+        public Boolean IsReturnRelease { get; set; }
     }
 }

@@ -41,5 +41,7 @@ namespace Lending.Models
         public Decimal Overdue { get; set; }
         public Decimal TotalCollection { get; set; }
         public Decimal TotalGrossCollection { get; set; }
+        public Int32 CollectionStatusId { get; set; }
+        public String CollectionStatus { get; set; }
     }
 }

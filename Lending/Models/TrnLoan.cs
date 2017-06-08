@@ -43,6 +43,7 @@ namespace Lending.Models
         public Boolean IsLoanRenew { get; set; }
         public Boolean IsReconstructed { get; set; }
         public Boolean IsRenewed { get; set; }
+        public Boolean IsReturnRelease { get; set; }
         public Boolean IsFullyPaid { get; set; }
         public String ReconstructedDocNumber { get; set; }
         public String RenewedDocNumber { get; set; }

@@ -172,13 +172,28 @@ namespace Lending.Reports
 
                     collectionData.AddCell(new PdfPCell(new Phrase("ADD MONEY FROM VAULT", fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(addMoneyAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                    collectionData.AddCell(new PdfPCell(new Phrase("Remarks / Particulars", fontArial11Bold)) { Rowspan = 4, Colspan = 3, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
-                    
+                    collectionData.AddCell(new PdfPCell(new Phrase("Remarks / Particulars", fontArial11Bold)) { Rowspan = 5, Colspan = 3, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+
+                    var returnRelease = from d in db.trnReturnReleases
+                                        where d.ReturnReleaseDate >= Convert.ToDateTime(startCollectionDate)
+                                        && d.ReturnReleaseDate <= Convert.ToDateTime(startCollectionDate)
+                                        && d.IsLocked == true
+                                        select d;
+
+                    Decimal totalReturnRelease = 0;
+                    if (returnRelease.Any())
+                    {
+                        totalReturnRelease = returnRelease.Sum(d => d.ReturnAmount);
+                    }
+
+                    collectionData.AddCell(new PdfPCell(new Phrase("RETURN RELEASE", fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                    collectionData.AddCell(new PdfPCell(new Phrase(totalReturnRelease.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+
                     var expenses = from d in db.trnExpenses
-                                 where d.ExpenseDate >= Convert.ToDateTime(startCollectionDate)
-                                 && d.ExpenseDate <= Convert.ToDateTime(startCollectionDate)
-                                 && d.IsLocked == true
-                                 select d;
+                                   where d.ExpenseDate >= Convert.ToDateTime(startCollectionDate)
+                                   && d.ExpenseDate <= Convert.ToDateTime(startCollectionDate)
+                                   && d.IsLocked == true
+                                   select d;
 
                     Decimal totalExpenses = 0;
                     if (expenses.Any())
@@ -205,7 +220,7 @@ namespace Lending.Reports
                     collectionData.AddCell(new PdfPCell(new Phrase("TOTAL RELEASE", fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(totalRelease.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                    Decimal collectionBalance = (totalGross + addMoneyAmount) - (totalRelease + totalExpenses);
+                    Decimal collectionBalance = (totalGross + addMoneyAmount + totalReturnRelease) - (totalRelease + totalExpenses);
                     collectionData.AddCell(new PdfPCell(new Phrase("COLLECTION BALANCE", fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     collectionData.AddCell(new PdfPCell(new Phrase(collectionBalance.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 

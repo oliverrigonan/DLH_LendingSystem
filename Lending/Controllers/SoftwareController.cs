@@ -498,5 +498,39 @@ namespace Lending.Controllers
                 return RedirectToAction("Forbidden", "Software");
             }
         }
+
+
+        [Authorize]
+        public ActionResult ReturnReleaseList()
+        {
+            if (pageAccess("ReturnReleaseList").Equals("ReturnReleaseList"))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
+
+        [Authorize]
+        public ActionResult ReturnReleaseDetail(Int32? id)
+        {
+            if (pageAccess("ReturnReleaseDetail").Equals("ReturnReleaseDetail"))
+            {
+                if (id == null)
+                {
+                    return RedirectToAction("NotFound", "Software");
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Forbidden", "Software");
+            }
+        }
     }
 }

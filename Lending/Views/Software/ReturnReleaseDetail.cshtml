@@ -1,0 +1,627 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Title -->
+    <title>Return Release Detail</title>
+
+    <!-- Styles -->
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div id="wrapper">
+        <!-- Header -->
+        @Html.Partial("SoftwareHeader")
+
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="">
+                            <i class="fa fa-money fa-fw"></i> Return Release Detail <small>Edit detail page</small>
+                        </h3>
+                        <ol class="breadcrumb">
+                            <li>
+                                <a href="/Software">Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="/Software/ReturnReleaseList">Return Release List</a>
+                            </li>
+                            <li class="active">
+                                Return Release Detail
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" align="right">
+                        <div class="dropdown">
+                            <button class="btn btn-primary" id="btnLock" onclick="btnLockOnClick()">
+                                <i class="fa fa-lock fa-fw"></i> Lock
+                            </button>
+                            <button class="btn btn-primary" id="btnUnlock" onclick="btnUnlockOnClick()">
+                                <i class="fa fa-unlock fa-fw"></i> Unlock
+                            </button>
+                            <button class="btn btn-primary" type="button" id="btnOptions" data-toggle="dropdown">
+                                <i class="fa fa-bars fa-fw"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li class="dropdown-header">Options</li>
+                                <li><a href="#" onclick="btnAddReturnReleaseOnclick()"><i class="fa fa-plus fa-fw"></i> &nbsp; New Return Release</a></li>
+                                <li><a href="#" onclick="btnDeleteReturnReleaseOnclick()"><i class="fa fa-trash fa-fw"></i> &nbsp; Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Detail
+                                    </div>
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">ReturnRelease No.</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control requiredReturnReleases" id="returnReleaseNo" placeholder="ReturnRelease No." />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">ReturnRelease Date</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboReturnReleaseDateValue" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Applicant</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboCollectionApplicant" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Loan Number</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboCollectionApplicantLoanNumber" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Particulars</label>
+                                                <div class="col-sm-8">
+                                                    <textarea class="form-control requiredReturnReleases" rows="5" id="returnReleaseParticulars" placeholder="Particulars"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Collector</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboReturnReleaseCollectorStaff" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Prepared By</label>
+                                                <div class="col-sm-8">
+                                                    <div id="cboReturnReleasePreparedBy" style="width: 100%;"></div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        Enter Amount
+                                    </div>
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Amount</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" class="form-control numberField requiredReturnReleases" id="returnReleaseAmount" placeholder="0.00" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p>Created by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampCreatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampCreatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>Updated by:</p>
+                                                <div style="padding-left: 10px;">
+                                                    <i class="fa fa-key fa-fw"></i> <label id="stampUpdatedBy">NA</label>
+                                                    <br />
+                                                    <small><i class="fa fa-calendar fa-fw"></i> &nbsp;<span id="stampUpdatedDate">mm/dd/yyyy</span></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- delete confirmation collection modal -->
+    <div class="modal fade" id="deleteConfirmationReturnReleaseModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete ReturnRelease</h4>
+                </div>
+                <div class="modal-body">
+                    Delete?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="btnConfirmDeleteReturnRelease" onclick="btnConfirmDeleteReturnReleaseOnclick()">Delete</button>
+                    <button class="btn btn-default" id="btnCloseDeleteReturnReleaseModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript">
+
+        var returnReleaseId;
+        var cboReturnReleaseDateValue;
+        var cboReturnReleaseArea;
+        var cboReturnReleaseStaff;
+        var cboReturnReleasePreparedBy;
+
+        var newDate = new Date();
+        var returnReleaseDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+
+        var isLocked = false;
+
+        function createReturnReleaseDate() {
+            cboReturnReleaseDateValue.dispose();
+            cboReturnReleaseDateValue = new wijmo.input.InputDate('#cboReturnReleaseDateValue', {
+                format: 'MM-dd-yyyy',
+                value: new Date(returnReleaseDateValue),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    returnReleaseDateValue = thisDateValue;
+                }
+            });
+
+            getApplicant();
+        }
+
+        // get applicant
+        function getApplicant() {
+            var applicantArray = new Array();
+            $.ajax({
+                url: '/api/loan/list/loanApplicants/ForReturnRelease',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantResults) {
+                    var disabled = true;
+                    if (applicantResults.length > 0) {
+                        for (i = 0; i < applicantResults.length; i++) {
+                            applicantArray.push({
+                                ApplicantId: applicantResults[i]["ApplicantId"],
+                                Applicant: applicantResults[i]["Applicant"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    cboCollectionApplicant.dispose();
+                    cboCollectionApplicant = new wijmo.input.ComboBox('#cboCollectionApplicant', {
+                        disabled: disabled,
+                        itemsSource: applicantArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Applicant",
+                        selectedValuePath: "Applicant",
+                        onSelectedIndexChanged: function () {
+                            getApplicantLoanNumber();
+                        }
+                    });
+
+                    getApplicantLoanNumber();
+
+                    getStaff();
+                }
+            });
+        }
+
+        // get applicant
+        function getApplicantLoanNumber() {
+            var applicantLoanNumberArray = new Array();
+            $.ajax({
+                url: '/api/loan/list/byApplicantId/ForReturnRelease/' + cboCollectionApplicant.selectedItem["ApplicantId"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (applicantLoanNumberResults) {
+                    var disabled = true;
+                    if (applicantLoanNumberResults.length > 0) {
+                        for (i = 0; i < applicantLoanNumberResults.length; i++) {
+                            applicantLoanNumberArray.push({
+                                Id: applicantLoanNumberResults[i]["Id"],
+                                LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
+                                CollectibleAmount: applicantLoanNumberResults[i]["CollectibleAmount"],
+                                TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"],
+                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
+                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"],
+                                IsReconstructed: applicantLoanNumberResults[i]["IsReconstructed"],
+                                IsRenewed: applicantLoanNumberResults[i]["IsRenewed"],
+                                NetAmount: applicantLoanNumberResults[i]["NetAmount"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    var disabledLoanNumber = false;
+                    if (isLocked) {
+                        disabledLoanNumber = true;
+                    }
+
+                    cboCollectionApplicantLoanNumber.dispose();
+                    cboCollectionApplicantLoanNumber = new wijmo.input.ComboBox('#cboCollectionApplicantLoanNumber', {
+                        disabled: disabledLoanNumber,
+                        itemsSource: applicantLoanNumberArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "LoanNumberDetail",
+                        selectedValuePath: "LoanNumberDetail",
+                        //selectedValue: applicantloanunmberselectedvalue.toString(),
+                        onSelectedIndexChanged: function () {
+                            document.getElementById("returnReleaseAmount").value = this.selectedItem["NetAmount"].toLocaleString();
+                        }
+                    });
+
+                    document.getElementById("returnReleaseAmount").value = cboCollectionApplicantLoanNumber.selectedItem["NetAmount"].toLocaleString();
+                }
+            });
+        }
+
+
+        // get users
+        function getStaff() {
+            var staffArray = new Array();
+            $.ajax({
+                url: '/api/staff/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (staffResults) {
+                    var disabled = true;
+                    if (staffResults.length > 0) {
+                        for (i = 0; i < staffResults.length; i++) {
+                            staffArray.push({
+                                Id: staffResults[i]["Id"],
+                                Staff: staffResults[i]["Staff"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    getUser();
+
+                    cboReturnReleaseCollectorStaff.dispose();
+                    cboReturnReleaseCollectorStaff = new wijmo.input.ComboBox('#cboReturnReleaseCollectorStaff', {
+                        disabled: disabled,
+                        itemsSource: staffArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "Staff",
+                        selectedValuePath: "Staff"
+                    });
+                }
+            });
+        }
+
+
+        // get users
+        function getUser() {
+            var userArray = new Array();
+            $.ajax({
+                url: '/api/user/list',
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (userrResults) {
+                    var disabled = true;
+                    if (userrResults.length > 0) {
+                        for (i = 0; i < userrResults.length; i++) {
+                            userArray.push({
+                                Id: userrResults[i]["Id"],
+                                FullName: userrResults[i]["FullName"],
+                            });
+                        }
+
+                        disabled = false;
+                    }
+
+                    getReturnReleaseById();
+
+                    cboReturnReleasePreparedBy.dispose();
+                    cboReturnReleasePreparedBy = new wijmo.input.ComboBox('#cboReturnReleasePreparedBy', {
+                        disabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: userArray,
+                        isEditable: false,
+                        required: true,
+                        displayMemberPath: "FullName",
+                        selectedValuePath: "FullName"
+                    });
+                }
+            });
+        }
+
+        // get loan application by id
+        function getReturnReleaseById() {
+            $.ajax({
+                url: '/api/returnRelease/get/' + getUrlParameter("id"),
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                data: {},
+                success: function (returnReleaseResult) {
+                    if (returnReleaseResult != null) {
+                        document.getElementById("returnReleaseNo").disabled = true;
+                        cboReturnReleasePreparedBy.disabled = true;
+                        document.getElementById("returnReleaseNo").value = "RL-" + returnReleaseResult.ReturnReleaseNumber;
+                        cboReturnReleaseDateValue.value = new Date(returnReleaseResult.ReturnReleaseDate);
+                        cboCollectionApplicant.selectedValue = returnReleaseResult.Applicant;
+                        cboCollectionApplicantLoanNumber.selectedValue = returnReleaseResult.LoanNumber;
+                        cboReturnReleaseCollectorStaff.selectedValue = returnReleaseResult.CollectorStaff;
+                        cboReturnReleasePreparedBy.selectedValue = returnReleaseResult.PreparedByUser;
+                        document.getElementById("returnReleaseParticulars").value = returnReleaseResult.Particulars;
+                        document.getElementById("returnReleaseAmount").value = returnReleaseResult.ReturnAmount.toLocaleString();
+                        document.getElementById('stampCreatedBy').innerHTML = returnReleaseResult.CreatedByUser;
+                        document.getElementById('stampCreatedDate').innerHTML = returnReleaseResult.CreatedDateTime;
+                        document.getElementById('stampUpdatedBy').innerHTML = returnReleaseResult.UpdatedByUser;
+                        document.getElementById('stampUpdatedDate').innerHTML = returnReleaseResult.UpdatedDateTime;
+                        if (returnReleaseResult.IsLocked == true) {
+                            $("#btnLock").prop("disabled", true);
+
+                            cboReturnReleaseDateValue.disabled = true;
+                            cboCollectionApplicant.disabled = true;
+                            cboCollectionApplicantLoanNumber.disabled = true;
+                            cboReturnReleaseCollectorStaff.disabled = true;
+                            document.getElementById("returnReleaseParticulars").disabled = true;
+                            document.getElementById('returnReleaseAmount').disabled = true;
+                            isLocked = true;
+                        } else {
+                            $("#btnUnlock").prop("disabled", true);
+                        }
+                    } else {
+                        alert("The record you'd requested has no data");
+                        window.history.back();
+                    }
+                }
+            });
+        }
+
+        function btnUnlockOnClick() {
+            document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unlocking";
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+
+            $.ajax({
+                type: "PUT",
+                url: '/api/returnRelease/unlock/' + getUrlParameter("id"),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Unlock Successful");
+                        window.setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    },
+                    404: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                        document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                        $("#btnUnlock").prop("disabled", false);
+                    },
+                    400: function (message) {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                        document.getElementById("btnUnlock").innerHTML = "<i class='fa fa-unlock fa-fw'></i> Unlock";
+                        $("#btnUnlock").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        // form input validation
+        function inputValidationForRemiitance() {
+            var isValid = true;
+            $('.requiredReturnReleases').each(function () {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red"
+                    });
+                } else {
+                    $(this).css({
+                        "border": "",
+                    });
+                }
+            });
+
+            return isValid;
+        }
+
+        function btnLockOnClick() {
+            var returnReleaseObject = {
+                ReturnReleaseDate: cboReturnReleaseDateValue.value,
+                LoanId: cboCollectionApplicantLoanNumber.selectedItem["Id"],
+                Particulars: document.getElementById("returnReleaseParticulars").value,
+                ReturnAmount: document.getElementById("returnReleaseAmount").value,
+                CollectorStaffId: cboReturnReleaseCollectorStaff.selectedItem["Id"]
+            }
+
+            var returnReleaseData = JSON.stringify(returnReleaseObject);
+            if (inputValidationForRemiitance()) {
+                document.getElementById("btnLock").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Locking";
+                $("#btnLock").prop("disabled", true);
+                $("#btnOptions").prop("disabled", true);
+
+                $.ajax({
+                    type: "PUT",
+                    url: '/api/returnRelease/lock/' + getUrlParameter("id"),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: returnReleaseData,
+                    statusCode: {
+                        200: function () {
+                            toastr.success("Lock Successful");
+
+                            window.setTimeout(function () {
+                                location.reload();
+                            }, 1500);
+                        },
+                        404: function (message) {
+                            toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+
+                            document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
+                            $("#btnLock").prop("disabled", false);
+                        },
+                        400: function (message) {
+                            toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+
+                            document.getElementById("btnLock").innerHTML = "<i class='fa fa-lock fa-fw'></i> Lock";
+                            $("#btnLock").prop("disabled", false);
+                        }
+                    }
+                });
+            } else {
+                toastr.error("Invalid Entry");
+            }
+        }
+
+        window.onload = function () {
+            //cboReturnReleaseArea = new wijmo.input.ComboBox('#cboReturnReleaseArea');
+            //cboReturnReleaseStaff = new wijmo.input.ComboBox('#cboReturnReleaseStaff');
+
+            cboReturnReleaseDateValue = new wijmo.input.InputDate('#cboReturnReleaseDateValue');
+            cboCollectionApplicant = new wijmo.input.ComboBox('#cboCollectionApplicant');
+            cboCollectionApplicantLoanNumber = new wijmo.input.ComboBox('#cboCollectionApplicantLoanNumber');
+            cboReturnReleaseCollectorStaff = new wijmo.input.ComboBox('#cboReturnReleaseCollectorStaff');
+            cboReturnReleasePreparedBy = new wijmo.input.ComboBox('#cboReturnReleasePreparedBy');
+            createReturnReleaseDate();
+
+            var canPerformActions = "@ViewData["CanPerformActions"]";
+            if (canPerformActions == 1) {
+                $('#btnClose').prop('disabled', false);
+            } else {
+                $(':button').prop('disabled', true);
+                $('#btnClose').prop('disabled', false);
+                getUserRightsMessageError();
+            }
+        }
+
+        // add new returnRelease
+        function btnAddReturnReleaseOnclick() {
+            document.getElementById("btnOptions").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Adding";
+            $("#btnLock").prop("disabled", true);
+            $("#btnUnlock").prop("disabled", true);
+            $("#btnOptions").prop("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: '/api/returnRelease/add',
+                contentType: "application/json; charset=utf-8",
+                success: function (id) {
+                    if (id > 0) {
+                        toastr.success("Adding Successful");
+                        window.setTimeout(function () {
+                            window.location = '/Software/ReturnReleaseDetail?id=' + id;
+                        }, 1500);
+                    } else {
+                        toastr.error("Bad Request");
+                    }
+                }
+            });
+        }
+
+        // delete loan application
+        function btnDeleteReturnReleaseOnclick() {
+            if (isLocked) {
+                toastr.info("Record Locked");
+            } else {
+                $("#deleteConfirmationReturnReleaseModal").modal({
+                    "show": true,
+                    "backdrop": "static"
+                });
+
+                document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "Delete";
+                $("#btnConfirmDeleteReturnRelease").prop("disabled", false);
+                $("#btnCloseDeleteReturnReleaseModal").prop("disabled", false);
+            }
+        }
+        function btnConfirmDeleteReturnReleaseOnclick() {
+            document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Deleting";
+            $("#btnConfirmDeleteReturnRelease").prop("disabled", true);
+            $("#btnCloseDeleteReturnReleaseModal").prop("disabled", true);
+
+            $.ajax({
+                url: '/api/returnRelease/delete/' + getUrlParameter("id"),
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+                        toastr.success("Delete Successful");
+                        window.setTimeout(function () {
+                            window.location = "/Software/ReturnReleaseList";
+                        }, 1500);
+                    },
+                    404: function () {
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Not Found");
+                        $('#deleteConfirmationReturnReleaseModal').modal('hide');
+                        document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "Delete";
+                        $("#btnConfirmDeleteReturnRelease").prop("disabled", false);
+                        $("#btnCloseDeleteReturnReleaseModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        toastr.error(message.responseText.replace(/^"(.*)"$/, '$1'), "Bad Request");
+                        document.getElementById("btnConfirmDeleteReturnRelease").innerHTML = "Delete";
+                        $("#btnConfirmDeleteReturnRelease").prop("disabled", false);
+                        $("#btnCloseDeleteReturnReleaseModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>

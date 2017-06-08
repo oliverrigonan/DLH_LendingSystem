@@ -51,7 +51,8 @@ namespace Lending.ApiControllers
                                     IsLoanApplication = d.IsLoanApplication,
                                     IsLoanReconstruct = d.IsLoanReconstruct,
                                     IsLoanRenew = d.IsLoanRenew,
-                                    IsLocked = d.IsLocked
+                                    IsLocked = d.IsLocked,
+                                    IsReturnRelease = d.IsReturnRelease
                                 };
 
             return loanHistories.ToList();
