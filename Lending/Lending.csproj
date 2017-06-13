@@ -288,6 +288,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\buildingPlaceHolder.png" />
+    <Content Include="Images\dlhicon.ico" />
     <Content Include="Images\dlhicon.jpg" />
     <Content Include="Images\landing-page\me.jpg" />
     <Content Include="Images\landing-page\banner-bg.jpg" />
