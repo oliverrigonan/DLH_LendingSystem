@@ -285,7 +285,7 @@
                             collectionListArray.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditCollectionOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteCollectionOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
-                                LoanDetailButton: "<button class='btn btn-default btn-xs btn-block'  onclick='btnLoanDetailOnclick()'" + disabledButton + "><i class='fa fa-file-text-o fa-fw'></i> Loan Detail</button>",
+                                LoanDetailButton: "<button class='btn btn-default btn-xs btn-block'  onclick='btnLoanDetailOnclick()'" + disabledButton + "> " + collectionListResult[i]["LoanNumberDetail"] + "</button>",
                                 Id: collectionListResult[i]["Id"],
                                 CollectionNumber: "CL-" + collectionListResult[i]["CollectionNumber"],
                                 CollectionDate: collectionDateValue,
@@ -541,20 +541,6 @@
                                 "width": 220,
                             },
                             {
-                                "header": "Detail",
-                                "binding": "LoanDetailButton",
-                                "width": 120,
-                                "align": "center",
-                                "allowResizing": false,
-                                "isContentHtml": true
-                            },
-                            {
-                                "header": "Loan Doc No.",
-                                "binding": "LoanNumberDetail",
-                                "allowSorting": true,
-                                "width": 165,
-                            },
-                            {
                                 "header": "Status",
                                 "binding": "CollectionStatus",
                                 "allowSorting": true,
@@ -565,6 +551,14 @@
                                 "binding": "Particulars",
                                 "allowSorting": true,
                                 "width": 300,
+                            },
+                            {
+                                "header": "Trn. No.",
+                                "binding": "LoanDetailButton",
+                                "width": 150,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
                             },
                             {
                                 "header": "Paid",

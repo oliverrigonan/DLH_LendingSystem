@@ -78,7 +78,10 @@ namespace Lending.ApiControllers
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       NetAmount = d.NetAmount
+                                       NetAmount = d.NetAmount,
+                                       IsLoanApplication = d.IsLoanApplication,
+                                       IsLoanRenew = d.IsLoanRenew,
+                                       IsLoanReconstruct = d.IsLoanReconstruct
                                    };
 
             return loanApplications.ToList();
@@ -125,7 +128,10 @@ namespace Lending.ApiControllers
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
                                        TotalBalanceAmount = d.TotalBalanceAmount,
-                                       NetAmount = d.NetAmount
+                                       NetAmount = d.NetAmount,
+                                       IsLoanApplication = d.IsLoanApplication,
+                                       IsLoanRenew = d.IsLoanRenew,
+                                       IsLoanReconstruct = d.IsLoanReconstruct
                                    };
 
             return loanApplications.ToList();
@@ -568,7 +574,7 @@ namespace Lending.ApiControllers
                     if (canPerformActions)
                     {
                         String loanNumber = "0000000001";
-                        
+
                         var applicant = from d in db.mstApplicants.OrderByDescending(d => d.Id)
                                         where d.IsCoMaker != true
                                         select d;
@@ -1090,6 +1096,7 @@ namespace Lending.ApiControllers
                 var loanApplications = from d in db.trnLoans
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -1121,9 +1128,7 @@ namespace Lending.ApiControllers
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
-                                          && d.IsLoanReconstruct == false
-                                          && d.IsReturnRelease == false
+                                          where d.IsLoanReconstruct == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1146,6 +1151,7 @@ namespace Lending.ApiControllers
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
                                        && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -1177,9 +1183,7 @@ namespace Lending.ApiControllers
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
-                                          && d.IsLoanReconstruct == false
-                                          && d.IsReturnRelease == false
+                                          where d.IsLoanReconstruct == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1208,6 +1212,7 @@ namespace Lending.ApiControllers
                 var loanApplications = from d in db.trnLoans
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -1243,8 +1248,7 @@ namespace Lending.ApiControllers
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate < Convert.ToDateTime(date)
-                                          || d.IsLoanReconstruct == true
+                                          where d.IsLoanReconstruct == true
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1269,6 +1273,7 @@ namespace Lending.ApiControllers
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
                                        && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -1304,8 +1309,7 @@ namespace Lending.ApiControllers
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate < Convert.ToDateTime(date)
-                                          || d.IsLoanReconstruct == true
+                                          where d.IsLoanReconstruct == true
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,

@@ -63,15 +63,15 @@
                                         Detail
                                     </div>
                                     <div class="panel-body">
-                                        <form class="form-horizontal">
+                                        <div class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">ReturnRelease No.</label>
+                                                <label class="control-label col-sm-4">Return Release No.</label>
                                                 <div class="col-sm-8">
                                                     <input type="text" class="form-control requiredReturnReleases" id="returnReleaseNo" placeholder="ReturnRelease No." />
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">ReturnRelease Date</label>
+                                                <label class="control-label col-sm-4">Return Release Date</label>
                                                 <div class="col-sm-8">
                                                     <div id="cboReturnReleaseDateValue" style="width: 100%;"></div>
                                                 </div>
@@ -79,13 +79,27 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Applicant</label>
                                                 <div class="col-sm-8">
-                                                    <div id="cboCollectionApplicant" style="width: 100%;"></div>
+                                                    <div class="input-group">
+                                                        <div id="cboCollectionApplicant" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnApplicantDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Loan Number</label>
                                                 <div class="col-sm-8">
-                                                    <div id="cboCollectionApplicantLoanNumber" style="width: 100%;"></div>
+                                                    <div class="input-group">
+                                                        <div id="cboCollectionApplicantLoanNumber" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnLoanNumberDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -97,7 +111,14 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Collector</label>
                                                 <div class="col-sm-8">
-                                                    <div id="cboReturnReleaseCollectorStaff" style="width: 100%;"></div>
+                                                    <div class="input-group">
+                                                        <div id="cboReturnReleaseCollectorStaff" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnStaffDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -106,7 +127,7 @@
                                                     <div id="cboReturnReleasePreparedBy" style="width: 100%;"></div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -272,9 +293,10 @@
                                 TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"],
                                 TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
                                 TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"],
-                                IsReconstructed: applicantLoanNumberResults[i]["IsReconstructed"],
-                                IsRenewed: applicantLoanNumberResults[i]["IsRenewed"],
                                 NetAmount: applicantLoanNumberResults[i]["NetAmount"],
+                                IsLoanApplication: applicantLoanNumberResults[i]["IsLoanApplication"],
+                                IsLoanRenew: applicantLoanNumberResults[i]["IsLoanRenew"],
+                                IsLoanReconstruct: applicantLoanNumberResults[i]["IsLoanReconstruct"],
                             });
                         }
 
@@ -620,6 +642,33 @@
                     }
                 }
             });
+        }
+
+        function btnApplicantDetailOnClick() {
+            var link = '/Software/ApplicantDetail?id=' + cboCollectionApplicant.selectedItem["ApplicantId"];
+            window.open(link, "_blank");
+        }
+
+        function btnLoanNumberDetailOnClick() {
+            if (cboCollectionApplicantLoanNumber.selectedItem["IsLoanApplication"]) {
+                var link = '/Software/LoanApplicationDetail?id=' + cboCollectionApplicantLoanNumber.selectedItem["Id"];
+                window.open(link, "_blank");
+            } else {
+                if (cboCollectionApplicantLoanNumber.selectedItem["IsLoanRenew"]) {
+                    var link = '/Software/RenewDetail?id=' + cboCollectionApplicantLoanNumber.selectedItem["Id"];
+                    window.open(link, "_blank");
+                } else {
+                    if (cboCollectionApplicantLoanNumber.selectedItem["IsLoanReconstruct"]) {
+                        var link = '/Software/ReconstructDetail?id=' + cboCollectionApplicantLoanNumber.selectedItem["Id"];
+                        window.open(link, "_blank");
+                    }
+                }
+            }
+        }
+
+        function btnStaffDetailOnClick() {
+            var link = '/Software/StaffDetail?id=' + cboReturnReleaseCollectorStaff.selectedItem["Id"];
+            window.open(link, "_blank");
         }
 
     </script>

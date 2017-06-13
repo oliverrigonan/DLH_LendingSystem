@@ -63,7 +63,7 @@
                                         Detail
                                     </div>
                                     <div class="panel-body">
-                                        <form class="form-horizontal">
+                                        <div class="form-horizontal">
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Vault No.</label>
                                                 <div class="col-sm-8">
@@ -77,15 +77,22 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-sm-4">Remiited By</label>
-                                                <div class="col-sm-8">
-                                                    <div id="cboVaultStaff" style="width: 100%;"></div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="control-label col-sm-4">Particulars</label>
                                                 <div class="col-sm-8">
                                                     <textarea class="form-control requiredVaults" rows="5" id="vaultParticulars" placeholder="Particulars"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Assigned Staff</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group">
+                                                        <div id="cboVaultStaff" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnStaffDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -94,7 +101,7 @@
                                                     <div id="cboVaultPreparedBy" style="width: 100%;"></div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -503,6 +510,12 @@
                 }
             });
         }
+
+        function btnStaffDetailOnClick() {
+            var link = '/Software/StaffDetail?id=' + cboVaultStaff.selectedItem["Id"];
+            window.open(link, "_blank");
+        }
+
     </script>
 </body>
 </html>

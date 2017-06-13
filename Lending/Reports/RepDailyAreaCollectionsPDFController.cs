@@ -21,6 +21,7 @@ namespace Lending.Reports
                 var loanApplications = from d in db.trnLoans
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -31,7 +32,8 @@ namespace Lending.Reports
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsLoanReconstruct = d.IsLoanReconstruct
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsReturnRelease = d.IsReturnRelease
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -46,23 +48,25 @@ namespace Lending.Reports
                                                 TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
                                                 CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
-                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
+                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease,
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
-                                          && d.IsLoanReconstruct == false
+                                          where d.IsLoanReconstruct == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
                                               Id = d.Id,
                                               Applicant = d.Applicant,
                                               LoanNumber = d.LoanNumber,
-                                              DateTImeMaturityDate = d.DateTImeMaturityDate,
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
-                                              IsLoanReconstruct = d.IsLoanReconstruct
+                                              IsLoanReconstruct = d.IsLoanReconstruct,
+                                              IsReturnRelease = d.IsReturnRelease,
+                                              DateTImeMaturityDate = d.DateTImeMaturityDate
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -73,6 +77,7 @@ namespace Lending.Reports
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
                                        && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -83,7 +88,8 @@ namespace Lending.Reports
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsLoanReconstruct = d.IsLoanReconstruct
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsReturnRelease = d.IsReturnRelease
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -98,22 +104,24 @@ namespace Lending.Reports
                                                 TotalBalanceAmount = g.FirstOrDefault().TotalBalanceAmount,
                                                 CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
-                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct
+                                                IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
+                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate >= Convert.ToDateTime(date)
-                                          && d.IsLoanReconstruct == false
+                                          where d.IsLoanReconstruct == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
                                               Id = d.Id,
                                               Applicant = d.Applicant,
                                               LoanNumber = d.LoanNumber,
-                                              DateTImeMaturityDate = d.DateTImeMaturityDate,
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
-                                              IsLoanRenew = d.IsLoanRenew
+                                              IsLoanRenew = d.IsLoanRenew,
+                                              IsReturnRelease = d.IsReturnRelease,
+                                              DateTImeMaturityDate = d.DateTImeMaturityDate
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -135,7 +143,9 @@ namespace Lending.Reports
                                            TotalBalanceAmount = d.TotalBalanceAmount,
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
-                                           IsLoanReconstruct = d.IsLoanReconstruct
+                                           IsLoanReconstruct = d.IsLoanReconstruct,
+                                           IsReturnRelease = d.IsReturnRelease,
+                                           DateTImeMaturityDate = d.DateTImeMaturityDate
                                        };
 
                 if (loanApplications.Any())
@@ -226,20 +236,19 @@ namespace Lending.Reports
                     document.Add(titleHeader);
 
                     PdfPTable loanlData = new PdfPTable(6);
-                    float[] loanlDataWithCells = new float[] { 30f, 15f, 10f, 15f, 15f, 25f };
+                    float[] loanlDataWithCells = new float[] { 15f, 15f, 15f, 30f, 10f, 25f };
                     loanlData.SetWidths(loanlDataWithCells);
                     loanlData.WidthPercentage = 100;
-                    loanlData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Doc No.", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
-                    loanlData.AddCell(new PdfPCell(new Phrase("Due Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Balance", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Collectible", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Applicant", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Due Date", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     loanlData.AddCell(new PdfPCell(new Phrase("Paid Amount", fontArial12Bold)) { HorizontalAlignment = 1, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f, BackgroundColor = BaseColor.LIGHT_GRAY });
                     Decimal totalCollectibles = 0;
                     foreach (var loanApplication in loanApplications)
                     {
                         totalCollectibles += loanApplication.CollectibleAmount;
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
 
                         if (loanApplication.IsLoanRenew)
                         {
@@ -250,14 +259,16 @@ namespace Lending.Reports
                             loanlData.AddCell(new PdfPCell(new Phrase("LN-" + loanApplication.LoanNumber, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         }
 
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.MaturityDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.DateTImeMaturityDate.ToShortDateString(), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                     }
 
-                    loanlData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { HorizontalAlignment = 2, Colspan = 4, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase("TOTAL", fontArial11Bold)) { HorizontalAlignment = 2, Colspan = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(totalCollectibles.ToString("#,##0.00"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 2, Colspan = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 6f, PaddingBottom = 9f, PaddingLeft = 5f, PaddingRight = 5f });
 
                     var areaStaff = from d in db.mstAreaStaffs.OrderByDescending(d => d.Id)
@@ -273,15 +284,15 @@ namespace Lending.Reports
                     loanlData.AddCell(new PdfPCell(new Phrase("Collector:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(collector, fontArial11)) { HorizontalAlignment = 0, Colspan = 6, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                    loanlData.AddCell(new PdfPCell(new Phrase("Total Collection for Active:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Total Active:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, Colspan = 2, PaddingTop = 2f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                     loanlData.AddCell(new PdfPCell(new Phrase("Remarks:", fontArial11Bold)) { Rowspan = 3, Colspan = 4, HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                    loanlData.AddCell(new PdfPCell(new Phrase("Total Collection for Overdue:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Total Overdue:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, Colspan = 2, PaddingTop = 2f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                    loanlData.AddCell(new PdfPCell(new Phrase("Overall Total Collection:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Overall:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, Colspan = 2, PaddingTop = 2f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                     document.Add(loanlData);

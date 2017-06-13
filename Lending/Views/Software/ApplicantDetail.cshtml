@@ -113,7 +113,7 @@
                                                         </div>
                                                         <div class="panel panel-default">
                                                             <div class="panel-body">
-                                                                <form class="form-horizontal">
+                                                                <div class="form-horizontal">
                                                                     <div class="form-group">
                                                                         <label class="control-label col-sm-4">Applicant Number</label>
                                                                         <div class="col-sm-8">
@@ -123,10 +123,17 @@
                                                                     <div class="form-group">
                                                                         <label class="control-label col-sm-4">Area</label>
                                                                         <div class="col-sm-8">
-                                                                            <div id="applicantArea" style="width: 100%;"></div>
+                                                                            <div class="input-group">
+                                                                                <div id="applicantArea" style="width: 100%;"></div>
+                                                                                <div class="input-group-btn">
+                                                                                    <button class="btn btn-primary" onclick="btnAreaDetailOnClick()">
+                                                                                        <i class="fa fa-edit fa-fw"></i>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="panel panel-default">
@@ -1448,6 +1455,12 @@
                         document.getElementById('stampUpdatedDate').innerHTML = applicantDetailResult.UpdatedDateTime;
 
                         if (applicantDetailResult.IsLocked) {
+                            cboBirthDate.disabled = true;
+                            cboCivilStatus.disabled = true;
+                            cboApplicantArea.disabled = true;
+                            cboResidenceType.disabled = true;
+                            cboLandResidenceType.disabled = true;
+
                             $("#btnLockApplicant").prop("disabled", true);
                             $("#btnApplicantChangePhoto").prop("disabled", true);
                             $("#btnApplicantDeletePhoto").prop("disabled", true);
@@ -1493,12 +1506,8 @@
                             document.getElementById("applicantSpouseNumberOfStudying").disabled = true;
                             document.getElementById("applicantSpouseChildrenSchools").disabled = true;
 
-                            cboBirthDate.disabled = true;
-                            cboCivilStatus.disabled = true;
-                            cboApplicantArea.disabled = true;
-                            cboResidenceType.disabled = true;
-                            cboLandResidenceType.disabled = true;
-
+                            $("#btnApplicantChangePhotoSignature").prop("disabled", true);
+                            $("#btnApplicantDeletePhotoSignature").prop("disabled", true);
                             isLocked = true;
                         } else {
                             $("#btnUnlockApplicant").prop("disabled", true);
@@ -3895,7 +3904,7 @@
                 contentType: 'application/json; charset=utf-8',
                 success: function (loanHistorysResults) {
                     if (loanHistorysResults.length > 0) {
-                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-file-text-o fa-fw'></i> Detail</button>";
+                        var btnLoanNumber = "<button class='btn btn-primary btn-xs btn-block' onclick='btnLoanNumberOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>";
 
                         for (i = 0; i < loanHistorysResults.length; i++) {
                             var newDate = new Date(loanHistorysResults[i]["LoanDate"]);
@@ -4004,16 +4013,10 @@
                             {
                                 "header": "Detail",
                                 "binding": "BtnLoanNumber",
-                                "width": "1*",
+                                "width": 100,
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
-                            },
-                            {
-                                "header": "L",
-                                "binding": "IsLocked",
-                                "allowSorting": true,
-                                "width": 50,
                             },
                             {
                                 "header": "Date",
@@ -4028,7 +4031,7 @@
                                 "width": 100,
                             },
                             {
-                                "header": "Doc No.",
+                                "header": "Trn. No.",
                                 "binding": "LoanNumber",
                                 "allowSorting": true,
                                 "width": 150,
@@ -4937,6 +4940,12 @@
             } else {
                 toastr.error("Not Locked");
             }
+        }
+
+
+        function btnAreaDetailOnClick() {
+            var link = '/Software/AreaDetail?id=' + cboApplicantArea.selectedItem["Id"];
+            window.open(link, "_blank");
         }
     </script>
 </body>

@@ -22,6 +22,7 @@ namespace Lending.Reports
                 var loanApplications = from d in db.trnLoans
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -53,26 +54,26 @@ namespace Lending.Reports
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                                Particulars = g.FirstOrDefault().Particulars,
+                                                Particulars = g.FirstOrDefault().Particulars
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate < Convert.ToDateTime(date)
-                                          || d.IsLoanReconstruct == true
+                                          where d.IsLoanReconstruct == true
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
                                               Id = d.Id,
                                               Applicant = d.Applicant,
                                               LoanNumber = d.LoanNumber,
-                                              DateTImeLoanDate = d.DateTImeLoanDate,
-                                              DateTImeMaturityDate = d.DateTImeMaturityDate,
+                                              LoanDate = d.DateTImeLoanDate.ToLongDateString(),
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsLocked = d.IsLoanRenew,
                                               Particulars = d.Particulars,
+                                              DateTImeLoanDate = d.DateTImeLoanDate
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -83,6 +84,7 @@ namespace Lending.Reports
                                        where d.IsLocked == true
                                        && d.TotalBalanceAmount > 0
                                        && d.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                       && d.IsReturnRelease == false
                                        select new Models.TrnLoan
                                        {
                                            ApplicantId = d.ApplicantId,
@@ -114,26 +116,26 @@ namespace Lending.Reports
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                                Particulars = g.FirstOrDefault().Particulars,
+                                                Particulars = g.FirstOrDefault().Particulars
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
-                                          where d.DateTImeMaturityDate < Convert.ToDateTime(date)
-                                          || d.IsLoanReconstruct == true
+                                          where d.IsLoanReconstruct == true
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
                                               Id = d.Id,
                                               Applicant = d.Applicant,
                                               LoanNumber = d.LoanNumber,
-                                              DateTImeLoanDate = d.DateTImeLoanDate,
-                                              DateTImeMaturityDate = d.DateTImeMaturityDate,
+                                              LoanDate = d.DateTImeLoanDate.ToLongDateString(),
+                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsLocked = d.IsLoanRenew,
                                               Particulars = d.Particulars,
+                                              DateTImeLoanDate = d.DateTImeLoanDate
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();

@@ -65,7 +65,7 @@
                                         Detail
                                     </div>
                                     <div class="panel-body">
-                                        <form class="form-horizontal">
+                                        <div class="form-horizontal">
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Collection Number</label>
                                                 <div class="col-sm-8">
@@ -81,13 +81,27 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Applicant</label>
                                                 <div class="col-sm-8">
-                                                    <div id="cboCollectionApplicant" style="width: 100%;"></div>
+                                                    <div class="input-group">
+                                                        <div id="cboCollectionApplicant" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnApplicantDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Loan Number</label>
                                                 <div class="col-sm-8">
-                                                    <div id="cboCollectionApplicantLoanNumber" style="width: 100%;"></div>
+                                                    <div class="input-group">
+                                                        <div id="cboCollectionApplicantLoanNumber" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnLoanNumberDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -99,7 +113,14 @@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Collector</label>
                                                 <div class="col-sm-8">
-                                                    <div id="cboCollectionCollectorStaff" style="width: 100%;"></div>
+                                                    <div class="input-group">
+                                                        <div id="cboCollectionCollectorStaff" style="width: 100%;"></div>
+                                                        <div class="input-group-btn">
+                                                            <button class="btn btn-primary" onclick="btnStaffDetailOnClick()">
+                                                                <i class="fa fa-edit fa-fw"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -108,7 +129,7 @@
                                                     <div id="cboCollectionPreparedBy" style="width: 100%;"></div>
                                                 </div>
                                             </div>
-                                        </form>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="panel panel-default">
@@ -708,8 +729,9 @@
                                 TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"],
                                 TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
                                 TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"],
-                                IsReconstructed: applicantLoanNumberResults[i]["IsReconstructed"],
-                                IsRenewed: applicantLoanNumberResults[i]["IsRenewed"],
+                                IsLoanApplication: applicantLoanNumberResults[i]["IsLoanApplication"],
+                                IsLoanRenew: applicantLoanNumberResults[i]["IsLoanRenew"],
+                                IsLoanReconstruct: applicantLoanNumberResults[i]["IsLoanReconstruct"],
                             });
                         }
 
@@ -1691,7 +1713,7 @@
                     var totalPaidAmount = 0;
                     if (collectionListResult.length > 0) {
                         for (i = 0; i < collectionListResult.length; i++) {
-                            var btnRecentCollection = "<button class='btn btn-default btn-xs btn-block' onclick='btnViewRecentCollectionOnclick()'>" + "CL-" + collectionListResult[i]["CollectionNumber"] + "</button>";
+                            var btnRecentCollection = "<button class='btn btn-primary btn-xs btn-block' onclick='btnViewRecentCollectionOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>";
 
                             var thisDate = new Date(collectionListResult[i]["LoanLinesCollectibleDate"]);
                             var thisDateValue = [thisDate.getMonth() + 1, thisDate.getDate(), thisDate.getFullYear()].join('-');
@@ -1793,7 +1815,7 @@
                             {
                                 "header": "Detail",
                                 "binding": "RecentCollectionButton",
-                                "width": 130,
+                                "width": 100,
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
@@ -1968,6 +1990,32 @@
             });
         }
 
+        function btnApplicantDetailOnClick() {
+            var link = '/Software/ApplicantDetail?id=' + cboCollectionApplicant.selectedItem["ApplicantId"];
+            window.open(link, "_blank");
+        }
+
+        function btnLoanNumberDetailOnClick() {
+            if (cboCollectionApplicantLoanNumber.selectedItem["IsLoanApplication"]) {
+                var link = '/Software/LoanApplicationDetail?id=' + cboCollectionApplicantLoanNumber.selectedItem["Id"];
+                window.open(link, "_blank");
+            } else {
+                if (cboCollectionApplicantLoanNumber.selectedItem["IsLoanRenew"]) {
+                    var link = '/Software/RenewDetail?id=' + cboCollectionApplicantLoanNumber.selectedItem["Id"];
+                    window.open(link, "_blank");
+                } else {
+                    if (cboCollectionApplicantLoanNumber.selectedItem["IsLoanReconstruct"]) {
+                        var link = '/Software/ReconstructDetail?id=' + cboCollectionApplicantLoanNumber.selectedItem["Id"];
+                        window.open(link, "_blank");
+                    }
+                }
+            }
+        }
+
+        function btnStaffDetailOnClick() {
+            var link = '/Software/StaffDetail?id=' + cboCollectionCollectorStaff.selectedItem["Id"];
+            window.open(link, "_blank");
+        }
 
     </script>
 </body>
