@@ -118,6 +118,7 @@
       <Column Name="NumberOfChildren" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Studying" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Schools" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="IsBlocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
@@ -283,7 +284,6 @@
       <Association Name="mstStaff_trnVault" Member="trnVaults" ThisKey="Id" OtherKey="StaffId" Type="trnVault" />
       <Association Name="mstStaff_mstArea" Member="mstAreas" ThisKey="Id" OtherKey="SupervisorStaffId" Type="mstArea" />
       <Association Name="mstStaff_mstAreaStaff" Member="mstAreaStaffs" ThisKey="Id" OtherKey="StaffId" Type="mstAreaStaff" />
-      <Association Name="mstStaff_trnCollection" Member="trnCollections" ThisKey="Id" OtherKey="CollectorStaffId" Type="trnCollection" />
       <Association Name="mstStaff_trnExpense" Member="trnExpenses" ThisKey="Id" OtherKey="AssignedStaffId" Type="trnExpense" />
       <Association Name="mstStaff_trnRemittance" Member="trnRemittances" ThisKey="Id" OtherKey="StaffId" Type="trnRemittance" />
       <Association Name="mstStaff_trnReturnRelease" Member="trnReturnReleases" ThisKey="Id" OtherKey="CollectorStaffId" Type="trnReturnRelease" />
@@ -409,14 +409,12 @@
       <Column Name="Particulars" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="TotalPaidAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
       <Column Name="TotalPenaltyAmount" Type="System.Decimal" DbType="Decimal(18,5) NOT NULL" CanBeNull="false" />
-      <Column Name="CollectorStaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="PreparedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="IsLocked" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="CreatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="CreatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedByUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="UpdatedDateTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Association Name="mstStaff_trnCollection" Member="mstStaff" ThisKey="CollectorStaffId" OtherKey="Id" Type="mstStaff" IsForeignKey="true" />
       <Association Name="mstUser_trnCollection" Member="mstUser" ThisKey="PreparedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnCollection1" Member="mstUser1" ThisKey="CreatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />
       <Association Name="mstUser_trnCollection2" Member="mstUser2" ThisKey="UpdatedByUserId" OtherKey="Id" Type="mstUser" IsForeignKey="true" />

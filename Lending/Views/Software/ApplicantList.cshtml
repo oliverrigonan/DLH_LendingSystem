@@ -136,6 +136,46 @@
         </div>
     </div>
 
+    <!-- block confirmation applicant modal -->
+    <div class="modal fade" id="blockConfirmationApplicantModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Block Applicant</h4>
+                </div>
+                <div class="modal-body">
+                    Block?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning" id="btnConfirmBlockApplicant" onclick="btnConfirmBlockApplicantOnclick()">Block</button>
+                    <button class="btn btn-default" id="btnCloseBlockApplicantModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- unblock confirmation applicant modal -->
+    <div class="modal fade" id="unblockConfirmationApplicantModal" role="dialog">
+        <div class="modal-dialog modal-sm">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Unblock Applicant</h4>
+                </div>
+                <div class="modal-body">
+                    Unblock?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" id="btnConfirmUnblockApplicant" onclick="btnConfirmUnblockApplicantOnclick()">Unblock</button>
+                    <button class="btn btn-default" id="btnCloseUnblockApplicantModal" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
@@ -148,12 +188,12 @@
         var btnNextPageGrid;
         var btnLastPageGrid;
         var btnCurrentPageGrid;
-        var applicantTypes = ["Applicant", "Co-Maker"];
+        var applicantTypes = ["Applicant", "Co-Maker", "Blocked Applicant", "Blocked Co-Maker"];
         var applicantType = new wijmo.input.ComboBox('#applicantType', {
             placeholder: "Select",
             itemsSource: applicantTypes,
             isEditable: false,
-            required: true,
+            isRequired: true,
             onSelectedIndexChanged: function () {
                 NProgress.start();
                 refreshGrid();
@@ -187,9 +227,15 @@
                                 applicantNumber = "CM-" + applicantListResult[i]["ApplicantNumber"];
                             }
 
+                            var blockUnblockButton = "<button class='btn btn-warning btn-xs btn-block' onclick='blockApplicant()'" + disabledButton + "><i class='fa fa-ban fa-fw'></i> Block</button>"
+                            if (applicantListResult[i]["IsBlocked"]) {
+                                var blockUnblockButton = "<button class='btn btn-success btn-xs btn-block' onclick='unblockApplicant()'" + disabledButton + "><i class='fa fa-check fa-fw'></i> Unblock</button>"
+                            }
+
                             applicants.push({
                                 EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='editApplicantOnclick()'" + disabledButton + "><i class='fa fa-edit fa-fw'></i> Edit</button>",
                                 DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='deleteApplicantOnclick(" + isLocked + ")'" + disabledButton + "><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                BlockUnblockButton: blockUnblockButton,
                                 Id: applicantListResult[i]["Id"],
                                 ApplicantNumber: applicantNumber,
                                 ApplicantFullName: applicantListResult[i]["ApplicantLastName"] + ", " + applicantListResult[i]["ApplicantFirstName"] + " " + applicantListResult[i]["ApplicantMiddleName"],
@@ -202,7 +248,8 @@
                                 CreatedDateTime: applicantListResult[i]["CreatedDateTime"],
                                 UpdatedByUserId: applicantListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: applicantListResult[i]["UpdatedByUser"],
-                                UpdatedDateTime: applicantListResult[i]["UpdatedDateTime"]
+                                UpdatedDateTime: applicantListResult[i]["UpdatedDateTime"],
+                                IsBlocked: applicantListResult[i]["IsBlocked"]
                             });
                         }
                     }
@@ -293,6 +340,158 @@
                 }
             });
         }
+
+        function blockApplicant() {
+            $("#blockConfirmationApplicantModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmBlockApplicant").innerHTML = "Block";
+            $("#btnConfirmBlockApplicant").prop("disabled", false);
+            $("#btnCloseBlockApplicantModal").prop("disabled", false);
+        }
+
+        function btnConfirmBlockApplicantOnclick() {
+            document.getElementById("btnConfirmBlockApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Blocking";
+            $("#btnConfirmBlockApplicant").prop("disabled", true);
+            $("#btnCloseBlockApplicantModal").prop("disabled", true);
+
+            applicantCollectionView.editItem(applicantCollectionView.currentItem);
+            var id = applicantCollectionView.currentEditItem.Id;
+
+            var apiUrl = "/api/applicant/block/" + id;
+            $.ajax({
+                url: apiUrl,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+
+                        toastr.success("Block Successful");
+
+                        applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
+                        applicantCollectionView.canFilter = true;
+                        applicantCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchApplicant').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            applicantCollectionView.refresh();
+                        });
+
+                        applicantCollectionView.filter = function (item) {
+                            return !filterText || (item.ApplicantNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        applicantCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsApplicant();
+                        });
+
+                        // Flex Grid
+                        applicantFlexGrid.itemsSource = applicantCollectionView;
+                        applicantFlexGrid.trackChanges = true;
+
+                        $('#blockConfirmationApplicantModal').modal('hide');
+                    },
+                    404: function () {
+                        toastr.error("Block Not Found");
+                        $('#blockConfirmationApplicantModal').modal('hide');
+                        document.getElementById("btnConfirmBlockApplicant").innerHTML = "Block";
+                        $("#btnConfirmBlockApplicant").prop("disabled", false);
+                        $("#btnCloseBlockApplicantModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+
+                        $('#blockConfirmationApplicantModal').modal('hide');
+                        document.getElementById("btnConfirmBlockApplicant").innerHTML = "Block";
+                        $("#btnConfirmBlockApplicant").prop("disabled", false);
+                        $("#btnCloseBlockApplicantModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
+        function unblockApplicant() {
+            $("#unblockConfirmationApplicantModal").modal({
+                "show": true,
+                "backdrop": "static"
+            });
+
+            document.getElementById("btnConfirmUnblockApplicant").innerHTML = "Unblock";
+            $("#btnConfirmUnblockApplicant").prop("disabled", false);
+            $("#btnCloseUnblockApplicantModal").prop("disabled", false);
+        }
+
+        function btnConfirmUnblockApplicantOnclick() {
+
+            document.getElementById("btnConfirmUnblockApplicant").innerHTML = "<i class='fa fa-spinner fa-spin fa-fw'></i> Unblocking";
+            $("#btnConfirmUnblockApplicant").prop("disabled", true);
+            $("#btnCloseUnblockApplicantModal").prop("disabled", true);
+
+            applicantCollectionView.editItem(applicantCollectionView.currentItem);
+            var id = applicantCollectionView.currentEditItem.Id;
+
+            var apiUrl = "/api/applicant/unblock/" + id;
+           
+            $.ajax({
+                url: apiUrl,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                statusCode: {
+                    200: function () {
+
+                        toastr.success("Unblock Successful");
+
+                        applicantCollectionView = new wijmo.collections.CollectionView(getApplicantList());
+                        applicantCollectionView.canFilter = true;
+                        applicantCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchApplicant').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            applicantCollectionView.refresh();
+                        });
+
+                        applicantCollectionView.filter = function (item) {
+                            return !filterText || (item.ApplicantNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.ApplicantFullName.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Area.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        applicantCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsApplicant();
+                        });
+
+                        // Flex Grid
+                        applicantFlexGrid.itemsSource = applicantCollectionView;
+                        applicantFlexGrid.trackChanges = true;
+
+                        $('#unblockConfirmationApplicantModal').modal('hide');
+                    },
+                    404: function () {
+                        toastr.error("Block Not Found");
+                        $('#unblockConfirmationApplicantModal').modal('hide');
+                        document.getElementById("btnConfirmUnblockApplicant").innerHTML = "Unblock";
+                        $("#btnConfirmUnblockApplicant").prop("disabled", false);
+                        $("#btnCloseUnblockApplicantModal").prop("disabled", false);
+                    },
+                    400: function () {
+                        toastr.error("Bad Request");
+                        $('#unblockConfirmationApplicantModal').modal('hide');
+                        document.getElementById("btnConfirmUnblockApplicant").innerHTML = "Unblock";
+                        $("#btnConfirmUnblockApplicant").prop("disabled", false);
+                        $("#btnCloseUnblockApplicantModal").prop("disabled", false);
+                    }
+                }
+            });
+        }
+
 
         // add new applicant
         function btnAddApplicantOnclick() {
@@ -418,34 +617,42 @@
                                 "isContentHtml": true
                             },
                             {
+                                "header": "Block",
+                                "binding": "BlockUnblockButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
                                 "header": "L",
                                 "binding": "IsLocked",
                                 "allowSorting": true,
-                                "width": "0.5*"
+                                "width": 50
                             },
                             {
                                 "header": "Applicant Number",
                                 "binding": "ApplicantNumber",
                                 "allowSorting": true,
-                                "width": "1.5*"
+                                "width": 150
                             },
                             {
                                 "header": "Applicant",
                                 "binding": "ApplicantFullName",
                                 "allowSorting": true,
-                                "width": "2.5*"
+                                "width": 300
                             },
                             {
                                 "header": "Contact Number",
                                 "binding": "ContactNumber",
                                 "allowSorting": true,
-                                "width": "1.5*"
+                                "width": 200
                             },
                             {
                                 "header": "Area",
                                 "binding": "Area",
                                 "allowSorting": true,
-                                "width": "2*"
+                                "width": 250
                             }
                 ],
                 autoGenerateColumns: false,

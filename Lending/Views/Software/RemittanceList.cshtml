@@ -683,11 +683,11 @@
 
                     cboRemittanceArea.dispose();
                     cboRemittanceArea = new wijmo.input.ComboBox('#cboRemittanceArea', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: areaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area"
                     });
@@ -718,10 +718,10 @@
 
                     cboRemittanceStaff.dispose();
                     cboRemittanceStaff = new wijmo.input.ComboBox('#cboRemittanceStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: staffArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff"
                     });

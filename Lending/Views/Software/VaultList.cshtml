@@ -672,11 +672,11 @@
 
                     cboVaultArea.dispose();
                     cboVaultArea = new wijmo.input.ComboBox('#cboVaultArea', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: areaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area"
                     });
@@ -707,10 +707,10 @@
 
                     cboVaultStaff.dispose();
                     cboVaultStaff = new wijmo.input.ComboBox('#cboVaultStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: staffArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff"
                     });

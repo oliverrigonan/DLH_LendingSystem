@@ -266,7 +266,7 @@
         function createCboDate() {
             cboDateOverdue.dispose();
             cboDateOverdue = new wijmo.input.InputDate('#cboDateOverdue', {
-                disabled: true,
+                isDisabled: true,
                 format: 'MM-dd-yyyy',
                 value: new Date(),
                 mask: '99-99-9999',
@@ -282,7 +282,7 @@
 
             cboDateActive.dispose();
             cboDateActive = new wijmo.input.InputDate('#cboDateActive', {
-                disabled: true,
+                isDisabled: true,
                 format: 'MM-dd-yyyy',
                 value: new Date(),
                 mask: '99-99-9999',
@@ -357,11 +357,11 @@
 
                     cboAreaActive.dispose();
                     cboAreaActive = new wijmo.input.ComboBox('#cboAreaActive', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: areaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
                         selectedValue: areaResults[0].Area,
@@ -373,11 +373,11 @@
 
                     cboAreaOverdue.dispose();
                     cboAreaOverdue = new wijmo.input.ComboBox('#cboAreaOverdue', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: areaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
                         selectedValue: areaResults[0].Area,

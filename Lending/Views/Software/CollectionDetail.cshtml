@@ -112,19 +112,19 @@
                                                     <textarea class="form-control requiredCollection" rows="5" id="collectionParticulars" placeholder="Particulars"></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Collector</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group">
-                                                        <div id="cboCollectionCollectorStaff" style="width: 100%;"></div>
-                                                        <div class="input-group-btn">
-                                                            <button class="btn btn-primary" onclick="btnStaffDetailOnClick()">
-                                                                <i class="fa fa-edit fa-fw"></i>
-                                                            </button>
+                                            @*<div class="form-group">
+                                                    <label class="control-label col-sm-4">Collector</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group">
+                                                            <div id="cboCollectionCollectorStaff" style="width: 100%;"></div>
+                                                            <div class="input-group-btn">
+                                                                <button class="btn btn-primary" onclick="btnStaffDetailOnClick()">
+                                                                    <i class="fa fa-edit fa-fw"></i>
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </div>*@
                                             <div class="form-group">
                                                 <label class="control-label col-sm-4">Prepared by</label>
                                                 <div class="col-sm-8">
@@ -159,50 +159,50 @@
                             </div>
                             <div class="col-md-6">
                                 @*<div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        Loan Balance (Calculate upon locking)
-                                    </div>
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Collectible</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="payCollectible" placeholder="0.00" disabled />
+                                        <div class="panel-heading">
+                                            Loan Balance (Calculate upon locking)
+                                        </div>
+                                        <div class="panel-body">
+                                            <form class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Collectible</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group numberField">
+                                                            <span class="input-group-addon">&#8369;</span>
+                                                            <input type="text" class="form-control numberField" id="payCollectible" placeholder="0.00" disabled />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Paid</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="payTotalPaid" placeholder="0.00" disabled />
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Total Paid</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group numberField">
+                                                            <span class="input-group-addon">&#8369;</span>
+                                                            <input type="text" class="form-control numberField" id="payTotalPaid" placeholder="0.00" disabled />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Penalty</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="payTotalPenalty" placeholder="0.00" disabled />
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Total Penalty</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group numberField">
+                                                            <span class="input-group-addon">&#8369;</span>
+                                                            <input type="text" class="form-control numberField" id="payTotalPenalty" placeholder="0.00" disabled />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Total Balance</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" class="form-control numberField" id="payBalance" placeholder="0.00" disabled />
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4">Total Balance</label>
+                                                    <div class="col-sm-8">
+                                                        <div class="input-group numberField">
+                                                            <span class="input-group-addon">&#8369;</span>
+                                                            <input type="text" class="form-control numberField" id="payBalance" placeholder="0.00" disabled />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>*@
+                                            </form>
+                                        </div>
+                                    </div>*@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         Amount
@@ -241,46 +241,46 @@
                     </div>
                 </div>
                 @*<div class="panel panel-default">
-                    <div class="panel-heading">
-                        <table style="width: 100%">
-                            <tr>
-                                <td>
-                                    Collections
-                                </td>
-                                <td align="right">
-                                     <button class="btn btn-primary " id="btnFullPayment" onclick="btnFullPaymentOnclick()">
-                                        <i class="fa fa-money fa-fw"></i> Add All
-                                    </button> 
-                                    <button class="btn btn-primary " id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
-                                        <i class="fa fa-plus fa-fw"></i> Add
+                        <div class="panel-heading">
+                            <table style="width: 100%">
+                                <tr>
+                                    <td>
+                                        Collections
+                                    </td>
+                                    <td align="right">
+                                         <button class="btn btn-primary " id="btnFullPayment" onclick="btnFullPaymentOnclick()">
+                                            <i class="fa fa-money fa-fw"></i> Add All
+                                        </button>
+                                        <button class="btn btn-primary " id="btnAddCollectionLines" onclick="btnAddCollectionLinesOnclick()">
+                                            <i class="fa fa-plus fa-fw"></i> Add
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="panel-body">
+                            <div id="collectionLinesFlexgrid" class="grid"></div>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                        <span class="glyphicon glyphicon-fast-backward"></span> First
                                     </button>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="panel-body">
-                        <div id="collectionLinesFlexgrid" class="grid"></div>
-                    </div>
-                    <div class="panel-footer">
-                        <div class="row">
-                            <div class="btn-group col-md-7" id="naviagtionPageGrid">
-                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                    <span class="glyphicon glyphicon-fast-backward"></span> First
-                                </button>
-                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                </button>
-                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                    <span class="glyphicon glyphicon-step-forward"></span> Next
-                                </button>
-                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                </button>
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                        <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                    </button>
+                                    <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                        <span class="glyphicon glyphicon-step-forward"></span> Next
+                                    </button>
+                                    <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                        <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>*@
+                    </div>*@
             </div>
         </div>
     </div>
@@ -298,17 +298,17 @@
                     <div id="recentCollectionLinesFlexgrid" style="height: 400px;"></div>
 
                     @*<ul id="myTab" class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#currentCollections" data-toggle="tab" id="currentCollectionsTab">
-                                Current Collections
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#recentCollections" data-toggle="tab" id="recentCollectionsTab">
-                                Recent Collections
-                            </a>
-                        </li>
-                    </ul>*@
+                            <li class="active">
+                                <a href="#currentCollections" data-toggle="tab" id="currentCollectionsTab">
+                                    Current Collections
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#recentCollections" data-toggle="tab" id="recentCollectionsTab">
+                                    Recent Collections
+                                </a>
+                            </li>
+                        </ul>*@
                     <br />
                     <div id="myTabContent" class="tab-content">
                         <div class="tab-pane fade in" id="currentCollections">
@@ -358,11 +358,11 @@
                                                             </div>
                                                         </div>
                                                         @*<div class="form-group">
-                                                            <label class="control-label col-sm-4">Status</label>
-                                                            <div class="col-sm-8">
-                                                                <div id="cboCollectionStatus"></div>
-                                                            </div>
-                                                        </div>*@
+                                                                <label class="control-label col-sm-4">Status</label>
+                                                                <div class="col-sm-8">
+                                                                    <div id="cboCollectionStatus"></div>
+                                                                </div>
+                                                            </div>*@
                                                         <div class="form-group">
                                                             <label class="control-label col-sm-4">Paid</label>
                                                             <div class="col-sm-8">
@@ -681,20 +681,45 @@
                             applicantArray.push({
                                 ApplicantId: applicantResults[i]["ApplicantId"],
                                 Applicant: applicantResults[i]["Applicant"],
+                                ApplicantNumber: "AP-" + applicantResults[i]["ApplicantNumber"],
+                                Area: applicantResults[i]["Area"],
                             });
                         }
 
                         disabled = false;
                     }
 
+                    var template = '<table style="table-layout:fixed; width:650px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Applicant No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Area </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantNumber}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Applicant}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Area}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
                     cboCollectionApplicant.dispose();
                     cboCollectionApplicant = new wijmo.input.ComboBox('#cboCollectionApplicant', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Applicant",
                         selectedValuePath: "Applicant",
+                        headerPath: 'Applicant',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                         onSelectedIndexChanged: function () {
                             getApplicantLoanNumber();
                         }
@@ -702,7 +727,7 @@
 
                     cboCollectionApplicantLoanNumber = new wijmo.input.ComboBox('#cboCollectionApplicantLoanNumber');
                     getApplicantLoanNumber();
-                     
+
                     //;
                     //getCollectionStatus();
                     cboCollectionStatus = new wijmo.input.ComboBox('#cboCollectionStatus');
@@ -727,13 +752,15 @@
                             applicantLoanNumberArray.push({
                                 Id: applicantLoanNumberResults[i]["Id"],
                                 LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
-                                CollectibleAmount: applicantLoanNumberResults[i]["CollectibleAmount"],
-                                TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"],
-                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
-                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"],
+                                MaturityDate: applicantLoanNumberResults[i]["MaturityDate"],
+                                CollectibleAmount: applicantLoanNumberResults[i]["CollectibleAmount"].toLocaleString(),
+                                TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"].toLocaleString(),
+                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"].toLocaleString(),
+                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"].toLocaleString(),
                                 IsLoanApplication: applicantLoanNumberResults[i]["IsLoanApplication"],
                                 IsLoanRenew: applicantLoanNumberResults[i]["IsLoanRenew"],
                                 IsLoanReconstruct: applicantLoanNumberResults[i]["IsLoanReconstruct"],
+                                Particulars: applicantLoanNumberResults[i]["Particulars"]
                             });
                         }
 
@@ -742,17 +769,50 @@
 
                     var disabledLoanNumber = false;
                     if (isLocked) {
-                        disabledLoanNumber = true;
+                        disabledLoanNumber = true;;
                     }
+
+                    var template = '<table style="table-layout:fixed; width:850px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 100px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<col style="width: 10px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<col style="width: 10px;"/>' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Loan No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Due Date </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Particulars </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 30px;" valign="top" colspan="2"> Collectible </th>' +
+                                            '<th style="word-wrap:break-word;" valign="top" colspan="2"> Balance </th>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{LoanNumberDetail}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{MaturityDate}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Particulars}</td>' +
+                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
+                                                '<td style="text-align: right; word-wrap:break-word; padding-right: 30px;" valign="top"> {CollectibleAmount}</td>' +
+                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
+                                                '<td style="text-align: right; word-wrap:break-word;" valign="top"> {TotalBalanceAmount}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
 
                     cboCollectionApplicantLoanNumber.dispose();
                     cboCollectionApplicantLoanNumber = new wijmo.input.ComboBox('#cboCollectionApplicantLoanNumber', {
-                        disabled: disabledLoanNumber,
+                        isDisabled: disabledLoanNumber,
                         itemsSource: applicantLoanNumberArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
+                        headerPath: 'LoanNumberDetail',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                         selectedValue: applicantloanunmberselectedvalue.toString(),
                         onSelectedIndexChanged: function () {
                             //recentCollectionLinesCollectionView = new wijmo.collections.CollectionView(getRecentCollectionLinesByLoanId());
@@ -774,6 +834,7 @@
                             //}
                         }
                     });
+
 
                     //document.getElementById("payBalance").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
                     //document.getElementById("payBalance2").value = cboCollectionApplicantLoanNumber.selectedItem["TotalBalanceAmount"].toLocaleString();
@@ -822,15 +883,15 @@
                     }
 
 
-                    cboCollectionCollectorStaff = new wijmo.input.ComboBox('#cboCollectionCollectorStaff');
-                    getStaff();
+                    cboCollectionPreparedBy = new wijmo.input.ComboBox('#cboCollectionPreparedBy');
+                    getUser();
 
                     cboCollectionStatus.dispose();
                     cboCollectionStatus = new wijmo.input.ComboBox('#cboCollectionStatus', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: collectionStatusArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Status",
                         selectedValuePath: "Status",
                         onSelectedIndexChanged: function () {
@@ -856,6 +917,7 @@
                         for (i = 0; i < staffResults.length; i++) {
                             staffArray.push({
                                 Id: staffResults[i]["Id"],
+                                StaffNumber: "ST-" + staffResults[i]["StaffNumber"],
                                 Staff: staffResults[i]["Staff"],
                             });
                         }
@@ -863,17 +925,32 @@
                         disabled = false;
                     }
 
-                    cboCollectionPreparedBy = new wijmo.input.ComboBox('#cboCollectionPreparedBy');
-                    getUser();
+
+                    var template = '<table border="0">' +
+                                       //'<thead>' +
+                                       //     '<th style="width: 150px;"> Staff No. </td>' +
+                                       //     '<th style="width: 300px;"> Staff </td>' +
+                                       //'</thead>' +
+                                       '<tr>' +
+                                           '<td style="width: 150px;">{StaffNumber}</td>' +
+                                           '<td style="width: 300px;">{Staff}</td>' +
+                                       '</tr>' +
+                                   '</table>';
+
 
                     cboCollectionCollectorStaff.dispose();
                     cboCollectionCollectorStaff = new wijmo.input.ComboBox('#cboCollectionCollectorStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: staffArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
-                        selectedValuePath: "Staff"
+                        selectedValuePath: "Staff",
+                        headerPath: 'Staff',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                     });
                 }
             });
@@ -903,10 +980,10 @@
 
                     cboCollectionPreparedBy.dispose();
                     cboCollectionPreparedBy = new wijmo.input.ComboBox('#cboCollectionPreparedBy', {
-                        disabled: disabled,
+                        isDisabled: true,
                         itemsSource: userArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });
@@ -934,7 +1011,7 @@
                         applicantloanunmberselectedvalue = collectionResult.LoanNumberDetail;
                         cboCollectionApplicant.selectedValue = collectionResult.Applicant;
                         cboCollectionApplicantLoanNumber.selectedValue = collectionResult.LoanNumberDetail;
-                        cboCollectionCollectorStaff.selectedValue = collectionResult.CollectorStaff;
+                        //cboCollectionCollectorStaff.selectedValue = collectionResult.CollectorStaff;
                         cboCollectionStatus.selectedValue = collectionResult.CollectionStatus;
                         document.getElementById("collectionParticulars").value = collectionResult.Particulars;
                         cboCollectionPreparedBy.selectedValue = collectionResult.PreparedByUser;
@@ -948,12 +1025,12 @@
                         if (collectionResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
 
-                            cboCollectionDate.disabled = true;
-                            cboCollectionApplicant.disabled = true;
-                            cboCollectionApplicantLoanNumber.disabled = true;
+                            cboCollectionDate.isDisabled = true;
+                            cboCollectionApplicant.isDisabled = true;
+                            cboCollectionApplicantLoanNumber.isDisabled = true;
                             document.getElementById("collectionParticulars").disabled = true;
-                            cboCollectionCollectorStaff.disabled = true;
-                            cboCollectionStatus.disabled = true;
+                            //cboCollectionCollectorStaff.isDisabled = true;
+                            cboCollectionStatus.isDisabled = true;
 
                             document.getElementById("collectionTotalPaidAmount").disabled = true;
                             document.getElementById("collectionTotalPenaltyAmount").disabled = true;
@@ -1007,7 +1084,7 @@
                 collectionObject.LoanId = cboCollectionApplicantLoanNumber.selectedItem["Id"];
                 collectionObject.CollectionStatusId = cboCollectionStatus.selectedItem["Id"];
                 collectionObject.Particulars = document.getElementById("collectionParticulars").value;
-                collectionObject.CollectorStaffId = cboCollectionCollectorStaff.selectedItem["Id"];
+                //collectionObject.CollectorStaffId = cboCollectionCollectorStaff.selectedItem["Id"];
                 collectionObject.PreparedByUserId = cboCollectionPreparedBy.selectedItem["Id"];
                 collectionObject.TotalPaidAmount = document.getElementById("collectionTotalPaidAmount").value;
                 collectionObject.TotalPenaltyAmount = document.getElementById("collectionTotalPenaltyAmount").value;
@@ -1885,7 +1962,7 @@
             $("#recentCollections").show();
 
         });
-        
+
         function btnRecentCollections() {
             $("#collectionLineDetailModal").modal({
                 "show": true,

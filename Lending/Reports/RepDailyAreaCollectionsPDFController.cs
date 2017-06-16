@@ -33,7 +33,8 @@ namespace Lending.Reports
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
-                                           IsReturnRelease = d.IsReturnRelease
+                                           IsReturnRelease = d.IsReturnRelease,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -50,10 +51,12 @@ namespace Lending.Reports
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsReturnRelease = g.FirstOrDefault().IsReturnRelease,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked,
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == false
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -66,7 +69,7 @@ namespace Lending.Reports
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsReturnRelease = d.IsReturnRelease,
-                                              DateTImeMaturityDate = d.DateTImeMaturityDate
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -89,7 +92,8 @@ namespace Lending.Reports
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
-                                           IsReturnRelease = d.IsReturnRelease
+                                           IsReturnRelease = d.IsReturnRelease,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -105,11 +109,13 @@ namespace Lending.Reports
                                                 CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
-                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease
+                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == false
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -121,7 +127,7 @@ namespace Lending.Reports
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsReturnRelease = d.IsReturnRelease,
-                                              DateTImeMaturityDate = d.DateTImeMaturityDate
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();

@@ -322,10 +322,10 @@
 
                     cboApplicant.dispose();
                     cboApplicant = new wijmo.input.ComboBox('#cboApplicant', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Applicant",
                         selectedValuePath: "Applicant",
                         onSelectedIndexChanged: function () {
@@ -363,10 +363,10 @@
 
                     cboOverApplicant.dispose();
                     cboOverApplicant = new wijmo.input.ComboBox('#cboOverApplicant', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName"
                     });
@@ -400,10 +400,10 @@
 
                     cboLoanNumber.dispose();
                     cboLoanNumber = new wijmo.input.ComboBox('#cboLoanNumber', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantLoanNumberArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
                         onSelectedIndexChanged: function () {

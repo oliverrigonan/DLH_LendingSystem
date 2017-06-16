@@ -37,8 +37,6 @@ namespace Lending.ApiControllers
                                   Particulars = d.Particulars,
                                   TotalPaidAmount = d.TotalPaidAmount,
                                   TotalPenaltyAmount = d.TotalPenaltyAmount,
-                                  CollectorStaffId = d.CollectorStaffId,
-                                  CollectorStaff = d.mstStaff.Staff,
                                   PreparedByUserId = d.PreparedByUserId,
                                   PreparedByUser = d.mstUser.FullName,
                                   IsLoanApplication = d.trnLoan.IsLoanApplication,
@@ -78,8 +76,6 @@ namespace Lending.ApiControllers
                                  Particulars = d.Particulars,
                                  TotalPaidAmount = d.TotalPaidAmount,
                                  TotalPenaltyAmount = d.TotalPenaltyAmount,
-                                 CollectorStaffId = d.CollectorStaffId,
-                                 CollectorStaff = d.mstStaff.Staff,
                                  PreparedByUserId = d.PreparedByUserId,
                                  PreparedByUser = d.mstUser.FullName,
                                  IsLocked = d.IsLocked,
@@ -160,38 +156,29 @@ namespace Lending.ApiControllers
 
                         if (loan.Any())
                         {
-                            var staffs = from d in db.mstStaffs.OrderByDescending(d => d.Id) select d;
-                            if (staffs.Any())
+                            var collectionStatus = from d in db.sysCollectionStatus
+                                                   select d;
+
+                            if (collectionStatus.Any())
                             {
-                                var collectionStatus = from d in db.sysCollectionStatus
-                                                       select d;
+                                Data.trnCollection newCollection = new Data.trnCollection();
+                                newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
+                                newCollection.CollectionDate = DateTime.Today;
+                                newCollection.LoanId = loan.FirstOrDefault().Id;
+                                newCollection.StatusId = collectionStatus.FirstOrDefault().Id;
+                                newCollection.Particulars = "NA";
+                                newCollection.PreparedByUserId = userId;
+                                newCollection.TotalPaidAmount = 0;
+                                newCollection.TotalPenaltyAmount = 0;
+                                newCollection.IsLocked = false;
+                                newCollection.CreatedByUserId = userId;
+                                newCollection.CreatedDateTime = DateTime.Now;
+                                newCollection.UpdatedByUserId = userId;
+                                newCollection.UpdatedDateTime = DateTime.Now;
+                                db.trnCollections.InsertOnSubmit(newCollection);
+                                db.SubmitChanges();
 
-                                if (collectionStatus.Any())
-                                {
-                                    Data.trnCollection newCollection = new Data.trnCollection();
-                                    newCollection.CollectionNumber = zeroFill(Convert.ToInt32(collectionNumber), 10);
-                                    newCollection.CollectionDate = DateTime.Today;
-                                    newCollection.LoanId = loan.FirstOrDefault().Id;
-                                    newCollection.StatusId = collectionStatus.FirstOrDefault().Id;
-                                    newCollection.Particulars = "NA";
-                                    newCollection.CollectorStaffId = staffs.FirstOrDefault().Id;
-                                    newCollection.PreparedByUserId = userId;
-                                    newCollection.TotalPaidAmount = 0;
-                                    newCollection.TotalPenaltyAmount = 0;
-                                    newCollection.IsLocked = false;
-                                    newCollection.CreatedByUserId = userId;
-                                    newCollection.CreatedDateTime = DateTime.Now;
-                                    newCollection.UpdatedByUserId = userId;
-                                    newCollection.UpdatedDateTime = DateTime.Now;
-                                    db.trnCollections.InsertOnSubmit(newCollection);
-                                    db.SubmitChanges();
-
-                                    return newCollection.Id;
-                                }
-                                else
-                                {
-                                    return 0;
-                                }
+                                return newCollection.Id;
                             }
                             else
                             {
@@ -297,22 +284,28 @@ namespace Lending.ApiControllers
                                 {
                                     if (loan.FirstOrDefault().IsLocked)
                                     {
-                                        var lockCollection = collections.FirstOrDefault();
-                                        lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
-                                        lockCollection.LoanId = collection.LoanId;
-                                        lockCollection.StatusId = collection.CollectionStatusId;
-                                        lockCollection.Particulars = collection.Particulars;
-                                        lockCollection.CollectorStaffId = collection.CollectorStaffId;
-                                        lockCollection.PreparedByUserId = collection.PreparedByUserId;
-                                        lockCollection.TotalPaidAmount = collection.TotalPaidAmount;
-                                        lockCollection.TotalPenaltyAmount = collection.TotalPenaltyAmount;
-                                        lockCollection.IsLocked = true;
-                                        lockCollection.UpdatedByUserId = userId;
-                                        lockCollection.UpdatedDateTime = DateTime.Now;
-                                        db.SubmitChanges();
-                                        this.updateLoan(Convert.ToInt32(collection.LoanId));
+                                        if (!loan.FirstOrDefault().mstApplicant.IsBlocked)
+                                        {
+                                            var lockCollection = collections.FirstOrDefault();
+                                            lockCollection.CollectionDate = Convert.ToDateTime(collection.CollectionDate);
+                                            lockCollection.LoanId = collection.LoanId;
+                                            lockCollection.StatusId = collection.CollectionStatusId;
+                                            lockCollection.Particulars = collection.Particulars;
+                                            lockCollection.PreparedByUserId = collection.PreparedByUserId;
+                                            lockCollection.TotalPaidAmount = collection.TotalPaidAmount;
+                                            lockCollection.TotalPenaltyAmount = collection.TotalPenaltyAmount;
+                                            lockCollection.IsLocked = true;
+                                            lockCollection.UpdatedByUserId = userId;
+                                            lockCollection.UpdatedDateTime = DateTime.Now;
+                                            db.SubmitChanges();
+                                            this.updateLoan(Convert.ToInt32(collection.LoanId));
 
-                                        return Request.CreateResponse(HttpStatusCode.OK);
+                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot transact blocked applicant.");
+                                        }
                                     }
                                     else
                                     {
@@ -321,7 +314,7 @@ namespace Lending.ApiControllers
                                 }
                                 else
                                 {
-                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Invalid loan lecord.");
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Loan record not found.");
                                 }
                             }
                             else
@@ -393,14 +386,21 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var unlockCollection = collections.FirstOrDefault();
-                                unlockCollection.IsLocked = false;
-                                unlockCollection.UpdatedByUserId = userId;
-                                unlockCollection.UpdatedDateTime = DateTime.Now;
-                                db.SubmitChanges();
-                                this.updateLoan(Convert.ToInt32(collections.FirstOrDefault().LoanId));
+                                if (!collections.FirstOrDefault().trnLoan.mstApplicant.IsBlocked)
+                                {
+                                    var unlockCollection = collections.FirstOrDefault();
+                                    unlockCollection.IsLocked = false;
+                                    unlockCollection.UpdatedByUserId = userId;
+                                    unlockCollection.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
+                                    this.updateLoan(Convert.ToInt32(collections.FirstOrDefault().LoanId));
 
-                                return Request.CreateResponse(HttpStatusCode.OK);
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Sorry. Cannot transact blocked applicant.");
+                                }
                             }
                             else
                             {

@@ -327,11 +327,11 @@
 
                     cboCompanyName.dispose();
                     cboCompanyName = new wijmo.input.ComboBox('#cboCompanyName', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: companyArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Company",
                         selectedValuePath: "Company"
                     });
@@ -587,11 +587,11 @@
 
                     cboForm.dispose();
                     cboForm = new wijmo.input.ComboBox('#cboForm', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: formArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FormDescription",
                         selectedValuePath: "FormDescription"
                     });
@@ -925,11 +925,11 @@
 
                     cboUserCopyRights.dispose();
                     cboUserCopyRights = new wijmo.input.ComboBox('#cboUserCopyRights', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });

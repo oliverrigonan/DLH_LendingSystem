@@ -345,10 +345,10 @@
 
                     cboLoanRenewApplicant.dispose();
                     cboLoanRenewApplicant = new wijmo.input.ComboBox('#cboLoanRenewApplicant', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName"
                     });
@@ -381,10 +381,10 @@
 
                     cboApplicant.dispose();
                     cboApplicant = new wijmo.input.ComboBox('#cboApplicant', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Applicant",
                         selectedValuePath: "Applicant",
                         onSelectedIndexChanged: function () {
@@ -423,10 +423,10 @@
 
                     cboLoanNumber.dispose();
                     cboLoanNumber = new wijmo.input.ComboBox('#cboLoanNumber', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantLoanNumberArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
                         onSelectedIndexChanged: function () {
@@ -578,6 +578,7 @@
                                 UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
                                 UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                                IsReturnRelease: loanApplicationListResult[i]["IsReturnRelease"],
                             });
                         }
                     }
@@ -899,6 +900,12 @@
                                 "binding": "IsLocked",
                                 "allowSorting": true,
                                 "width": 50,
+                            },
+                            {
+                                "header": "Is RL",
+                                "binding": "IsReturnRelease",
+                                "allowSorting": true,
+                                "width": 60,
                             },
                             {
                                 "header": "Renew Date",

@@ -272,7 +272,7 @@
                         if (areaDetailResult.IsLocked) {
                             document.getElementById("areaName").disabled = true;
                             document.getElementById("areaDescription").disabled = true;
-                            cboAreaSuperVisor.disabled = true;
+                            cboAreaSuperVisor.isDisabled = true;
 
                             $("#btnLockArea").prop("disabled", true);
                             $("#btnAddAreaStaff").prop("disabled", true);
@@ -308,6 +308,7 @@
                             staffSupervisorArray.push({
                                 Id: staffSupervisorResults[i]["Id"],
                                 Staff: staffSupervisorResults[i]["Staff"],
+                                StaffNumber: "ST-" + staffSupervisorResults[i]["StaffNumber"],
                             });
                         }
                         disabled = false;
@@ -316,15 +317,35 @@
 
                     }
 
+                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Staff No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{StaffNumber}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Staff}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
                     cboAreaSuperVisor.dispose();
                     cboAreaSuperVisor = new wijmo.input.ComboBox('#cboAreaSuperVisor', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: staffSupervisorArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
-                        selectedValuePath: "Staff"
+                        selectedValuePath: "Staff",
+                        headerPath: 'Staff',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                     });
 
                     getAreaDetailData();
@@ -590,21 +611,44 @@
                             staffArray.push({
                                 Id: staffResults[i]["Id"],
                                 Staff: staffResults[i]["Staff"],
+                                StaffNumber: "ST-" + staffResults[i]["StaffNumber"],
                             });
                         }
 
                         disabled = false;
                     }
 
+
+                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Staff No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{StaffNumber}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Staff}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
+
                     cboStaff.dispose();
                     cboStaff = new wijmo.input.ComboBox('#cboStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: staffArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
-                        selectedValuePath: "Staff"
+                        selectedValuePath: "Staff",
+                        headerPath: 'Staff',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                     });
                 }
             });

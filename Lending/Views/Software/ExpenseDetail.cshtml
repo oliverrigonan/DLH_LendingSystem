@@ -227,11 +227,11 @@
 
                     cboStaff.dispose();
                     cboStaff = new wijmo.input.ComboBox('#cboStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: staffByAreaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff"
                     });
@@ -263,11 +263,11 @@
 
                     cboExpensesPreparedBy.dispose();
                     cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });

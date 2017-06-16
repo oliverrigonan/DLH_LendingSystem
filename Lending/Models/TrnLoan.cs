@@ -56,5 +56,7 @@ namespace Lending.Models
         public String UpdatedDateTime { get; set; }
         public DateTime DateTImeMaturityDate { get; set; }
         public DateTime DateTImeLoanDate { get; set; }
+        public String ApplicantNumber { get; set; }
+        public Boolean IsBlocked { get; set; }
     }
 }

@@ -679,11 +679,11 @@
 
                     cboReturnReleaseArea.dispose();
                     cboReturnReleaseArea = new wijmo.input.ComboBox('#cboReturnReleaseArea', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: areaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area"
                     });

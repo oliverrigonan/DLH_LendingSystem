@@ -51,12 +51,16 @@ namespace Lending.ApiControllers
                                  group d by new
                                  {
                                      ApplicantId = d.ApplicantId,
-                                     Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " ")
+                                     Applicant = d.mstApplicant.ApplicantLastName + ", " + d.mstApplicant.ApplicantFirstName + " " + (d.mstApplicant.ApplicantMiddleName != null ? d.mstApplicant.ApplicantMiddleName : " "),
+                                     ApplicantNo = d.mstApplicant.ApplicantNumber,
+                                     Area = d.mstApplicant.mstArea.Area,
                                  } into g
                                  select new Models.TrnLoan
                                  {
                                      ApplicantId = g.Key.ApplicantId,
-                                     Applicant = g.Key.Applicant
+                                     Applicant = g.Key.Applicant,
+                                     ApplicantNumber = g.Key.ApplicantNo,
+                                     Area = g.Key.Area
                                  };
 
             return loanApplicants.OrderBy(d => d.Applicant).ToList();
@@ -74,6 +78,7 @@ namespace Lending.ApiControllers
                                    {
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
                                        CollectibleAmount = d.CollectibleAmount,
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -81,7 +86,8 @@ namespace Lending.ApiControllers
                                        NetAmount = d.NetAmount,
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanRenew = d.IsLoanRenew,
-                                       IsLoanReconstruct = d.IsLoanReconstruct
+                                       IsLoanReconstruct = d.IsLoanReconstruct,
+                                       Particulars = d.Particulars
                                    };
 
             return loanApplications.ToList();
@@ -191,7 +197,17 @@ namespace Lending.ApiControllers
                                    {
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
-                                       LoanDate = d.LoanDate.ToShortDateString()
+                                       LoanDate = d.LoanDate.ToShortDateString(),
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
+                                       CollectibleAmount = d.CollectibleAmount,
+                                       TotalPaidAmount = d.TotalPaidAmount,
+                                       TotalPenaltyAmount = d.TotalPenaltyAmount,
+                                       TotalBalanceAmount = d.TotalBalanceAmount,
+                                       NetAmount = d.NetAmount,
+                                       IsLoanApplication = d.IsLoanApplication,
+                                       IsLoanRenew = d.IsLoanRenew,
+                                       IsLoanReconstruct = d.IsLoanReconstruct,
+                                       Particulars = d.Particulars
                                    };
 
             return loanApplications.ToList();
@@ -818,51 +834,69 @@ namespace Lending.ApiControllers
                             {
                                 if (loan.NetCollectionAmount != 0)
                                 {
-                                    var loanDeduction = from d in db.trnLoanDeductions
-                                                        where d.LoanId == Convert.ToInt32(id)
-                                                        select d;
+                                    var applicant = from d in db.mstApplicants
+                                                    where d.Id == loan.ApplicantId
+                                                    select d;
 
-                                    Decimal deductionAmount = 0;
-                                    if (loanDeduction.Any())
+                                    if (applicant.Any())
                                     {
-                                        deductionAmount = loanDeduction.Sum(d => d.DeductionAmount);
+                                        if (!applicant.FirstOrDefault().IsBlocked)
+                                        {
+                                            var loanDeduction = from d in db.trnLoanDeductions
+                                                                where d.LoanId == Convert.ToInt32(id)
+                                                                select d;
+
+                                            Decimal deductionAmount = 0;
+                                            if (loanDeduction.Any())
+                                            {
+                                                deductionAmount = loanDeduction.Sum(d => d.DeductionAmount);
+                                            }
+
+                                            var lockLoan = loans.FirstOrDefault();
+                                            lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
+                                            lockLoan.ApplicantId = loan.ApplicantId;
+                                            lockLoan.Particulars = loan.Particulars;
+                                            lockLoan.PreparedByUserId = loan.PreparedByUserId;
+                                            lockLoan.TermId = loan.TermId;
+                                            lockLoan.TermNoOfDays = loan.TermNoOfDays;
+                                            lockLoan.MaturityDate = DateTime.Today;
+                                            lockLoan.PrincipalAmount = loan.PrincipalAmount;
+                                            lockLoan.InterestId = loan.InterestId;
+                                            lockLoan.InterestRate = loan.InterestRate;
+                                            lockLoan.InterestAmount = loan.InterestAmount;
+                                            lockLoan.PreviousBalanceAmount = loan.PreviousBalanceAmount;
+                                            lockLoan.DeductionAmount = deductionAmount;
+                                            lockLoan.NetAmount = loan.NetAmount;
+                                            lockLoan.NetCollectionAmount = loan.NetCollectionAmount;
+                                            lockLoan.IsLocked = true;
+                                            lockLoan.UpdatedByUserId = userId;
+                                            lockLoan.UpdatedDateTime = DateTime.Now;
+                                            db.SubmitChanges();
+
+                                            if (loan.TermNoOfDays > 0)
+                                            {
+                                                Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
+                                                Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
+
+                                                lockLoan.MaturityDate = Convert.ToDateTime(loan.LoanDate).AddDays(Convert.ToDouble(loan.TermNoOfDays));
+                                                lockLoan.CollectibleAmount = ceilCollectibleAmount;
+                                                lockLoan.TotalBalanceAmount = (loans.FirstOrDefault().NetCollectionAmount - loans.FirstOrDefault().TotalPaidAmount) + loan.TotalPenaltyAmount;
+                                                db.SubmitChanges();
+                                            }
+
+                                            updateLoan(Convert.ToInt32(id));
+
+                                            return Request.CreateResponse(HttpStatusCode.OK);
+                                        }
+                                        else
+                                        {
+                                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                        }
                                     }
-
-                                    var lockLoan = loans.FirstOrDefault();
-                                    lockLoan.LoanDate = Convert.ToDateTime(loan.LoanDate);
-                                    lockLoan.ApplicantId = loan.ApplicantId;
-                                    lockLoan.Particulars = loan.Particulars;
-                                    lockLoan.PreparedByUserId = loan.PreparedByUserId;
-                                    lockLoan.TermId = loan.TermId;
-                                    lockLoan.TermNoOfDays = loan.TermNoOfDays;
-                                    lockLoan.MaturityDate = DateTime.Today;
-                                    lockLoan.PrincipalAmount = loan.PrincipalAmount;
-                                    lockLoan.InterestId = loan.InterestId;
-                                    lockLoan.InterestRate = loan.InterestRate;
-                                    lockLoan.InterestAmount = loan.InterestAmount;
-                                    lockLoan.PreviousBalanceAmount = loan.PreviousBalanceAmount;
-                                    lockLoan.DeductionAmount = deductionAmount;
-                                    lockLoan.NetAmount = loan.NetAmount;
-                                    lockLoan.NetCollectionAmount = loan.NetCollectionAmount;
-                                    lockLoan.IsLocked = true;
-                                    lockLoan.UpdatedByUserId = userId;
-                                    lockLoan.UpdatedDateTime = DateTime.Now;
-                                    db.SubmitChanges();
-
-                                    if (loan.TermNoOfDays > 0)
+                                    else
                                     {
-                                        Decimal collectibleAmount = loan.NetCollectionAmount / loan.TermNoOfDays;
-                                        Decimal ceilCollectibleAmount = Math.Ceiling(collectibleAmount / 5) * 5;
-
-                                        lockLoan.MaturityDate = Convert.ToDateTime(loan.LoanDate).AddDays(Convert.ToDouble(loan.TermNoOfDays));
-                                        lockLoan.CollectibleAmount = ceilCollectibleAmount;
-                                        lockLoan.TotalBalanceAmount = (loans.FirstOrDefault().NetCollectionAmount - loans.FirstOrDefault().TotalPaidAmount) + loan.TotalPenaltyAmount;
-                                        db.SubmitChanges();
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
                                     }
-
-                                    updateLoan(Convert.ToInt32(id));
-
-                                    return Request.CreateResponse(HttpStatusCode.OK);
                                 }
                                 else
                                 {
@@ -950,15 +984,22 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var unlockLoan = loans.FirstOrDefault();
-                                unlockLoan.IsLocked = false;
-                                unlockLoan.UpdatedByUserId = userId;
-                                unlockLoan.UpdatedDateTime = DateTime.Now;
-                                db.SubmitChanges();
+                                if (!loans.FirstOrDefault().mstApplicant.IsBlocked)
+                                {
+                                    var unlockLoan = loans.FirstOrDefault();
+                                    unlockLoan.IsLocked = false;
+                                    unlockLoan.UpdatedByUserId = userId;
+                                    unlockLoan.UpdatedDateTime = DateTime.Now;
+                                    db.SubmitChanges();
 
-                                updateLoan(Convert.ToInt32(id));
+                                    updateLoan(Convert.ToInt32(id));
 
-                                return Request.CreateResponse(HttpStatusCode.OK);
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest, "Cannot Transact a Blocked Applicant.");
+                                }
                             }
                             else
                             {
@@ -1108,7 +1149,8 @@ namespace Lending.ApiControllers
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
-                                           IsReturnRelease = d.IsReturnRelease
+                                           IsReturnRelease = d.IsReturnRelease,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -1125,10 +1167,12 @@ namespace Lending.ApiControllers
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsReturnRelease = g.FirstOrDefault().IsReturnRelease,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked,
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == false
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1140,7 +1184,8 @@ namespace Lending.ApiControllers
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsLoanReconstruct = d.IsLoanReconstruct,
-                                              IsReturnRelease = d.IsReturnRelease
+                                              IsReturnRelease = d.IsReturnRelease,
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -1163,7 +1208,8 @@ namespace Lending.ApiControllers
                                            CollectibleAmount = d.CollectibleAmount,
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
-                                           IsReturnRelease = d.IsReturnRelease
+                                           IsReturnRelease = d.IsReturnRelease,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -1179,11 +1225,13 @@ namespace Lending.ApiControllers
                                                 CollectibleAmount = g.FirstOrDefault().CollectibleAmount,
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
-                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease
+                                                IsReturnRelease = g.FirstOrDefault().IsReturnRelease,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == false
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1194,7 +1242,8 @@ namespace Lending.ApiControllers
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
-                                              IsReturnRelease = d.IsReturnRelease
+                                              IsReturnRelease = d.IsReturnRelease,
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -1226,7 +1275,8 @@ namespace Lending.ApiControllers
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLocked = d.IsLocked,
-                                           Particulars = d.Particulars
+                                           Particulars = d.Particulars,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -1244,11 +1294,13 @@ namespace Lending.ApiControllers
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                                Particulars = g.FirstOrDefault().Particulars
+                                                Particulars = g.FirstOrDefault().Particulars,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == true
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1262,7 +1314,8 @@ namespace Lending.ApiControllers
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsLocked = d.IsLoanRenew,
-                                              Particulars = d.Particulars
+                                              Particulars = d.Particulars,
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -1287,7 +1340,8 @@ namespace Lending.ApiControllers
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLocked = d.IsLocked,
-                                           Particulars = d.Particulars
+                                           Particulars = d.Particulars,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -1305,11 +1359,13 @@ namespace Lending.ApiControllers
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                                Particulars = g.FirstOrDefault().Particulars
+                                                Particulars = g.FirstOrDefault().Particulars,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == true
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -1323,7 +1379,8 @@ namespace Lending.ApiControllers
                                               IsLoanRenew = d.IsLoanRenew,
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsLocked = d.IsLoanRenew,
-                                              Particulars = d.Particulars
+                                              Particulars = d.Particulars,
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();

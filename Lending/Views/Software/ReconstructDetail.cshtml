@@ -674,7 +674,7 @@
         function createloanApplicationMaturityDate() {
             loanApplicationMaturityDate.dispose();
             loanApplicationMaturityDate = new wijmo.input.InputDate('#loanApplicationMaturityDate', {
-                disabled: true,
+                isDisabled: true,
                 format: 'MM-dd-yyyy',
                 value: new Date(loanApplicationMaturityDateValue),
                 mask: '99-99-9999',
@@ -705,7 +705,7 @@
         function getApplicant() {
             var applicantArray = new Array();
             $.ajax({
-                url: '/api/applicant/list/Applicant',
+                url: '/api/applicant/list/loanApplicant',
                 cache: false,
                 type: 'GET',
                 contentType: 'application/json; charset=utf-8',
@@ -733,11 +733,11 @@
 
                     cboloanApplicationApplicant.dispose();
                     cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant', {
-                        //disabled: true,
+                        //isDisabled: true,
                         placeholder: "Select",
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName",
                         onSelectedIndexChanged: function () {
@@ -787,11 +787,11 @@
 
                     cboloanApplicationPreparedBy.dispose();
                     cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });
@@ -1418,11 +1418,11 @@
 
                     cboTerm.dispose();
                     cboTerm = new wijmo.input.ComboBox('#cboTerm', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: termResults,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Term",
                         selectedValuePath: "Term",
                         onSelectedIndexChanged: function () {
@@ -1464,11 +1464,11 @@
 
                     cboInterest.dispose();
                     cboInterest = new wijmo.input.ComboBox('#cboInterest', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: interestArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Interest",
                         selectedValuePath: "Interest",
                         onSelectedIndexChanged: function () {
@@ -1877,11 +1877,11 @@
 
                     cboDeduction.dispose();
                     cboDeduction = new wijmo.input.ComboBox('#cboDeduction', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: deductionArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Deduction",
                         selectedValuePath: "Deduction",
                         onSelectedIndexChanged: function () {

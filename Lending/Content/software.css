@@ -212,10 +212,10 @@ textarea {
     resize: initial;
 }
 
-textarea.form-control {
-    color: #000;
-    resize: initial;
-}
+    textarea.form-control {
+        color: #000;
+        resize: initial;
+    }
 
 .wj-dropdown {
     color: #000;
@@ -250,4 +250,8 @@ textarea.form-control {
     white-space: nowrap;
     padding-top: 7px;
     padding-bottom: 7px;
+}
+
+.wj-listbox {
+    max-height: 330px !important;
 }

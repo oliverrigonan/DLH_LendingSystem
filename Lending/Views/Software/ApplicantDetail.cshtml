@@ -634,18 +634,18 @@
                                                             <div class="panel-body">
                                                                 <div id="applicantCollectionsFlexgrid"></div>
                                                                 @*<div class="panel panel-default">
-                                                                    <div class="panel-body">
-                                                                    </div>
-                                                                </div>*@
+                                                                        <div class="panel-body">
+                                                                        </div>
+                                                                    </div>*@
                                                                 @*<ul class="nav nav-tabs">
-                                                                    <li class="active"><a data-toggle="tab" href="#summaryCollection" id="summaryCollectionTab">Summary</a></li>
-                                                                    <li><a data-toggle="tab" href="#detailCollection" id="detailCollectionTab">Detail</a></li>
-                                                                </ul>
-                                                                <br />*@
+                                                                        <li class="active"><a data-toggle="tab" href="#summaryCollection" id="summaryCollectionTab">Summary</a></li>
+                                                                        <li><a data-toggle="tab" href="#detailCollection" id="detailCollectionTab">Detail</a></li>
+                                                                    </ul>
+                                                                    <br />*@
                                                                 <div class="tab-content">
                                                                     @*<div id="summaryCollection" class="tab-pane fade in active">
 
-                                                                    </div>*@
+                                                                        </div>*@
                                                                     <div id="detailCollection" class="tab-pane fade">
                                                                         <div class="panel panel-default">
                                                                             <div class="panel-heading">
@@ -1217,22 +1217,47 @@
                             coMakerArray.push({
                                 Id: coMakerResults[i]["Id"],
                                 ApplicantFullName: coMakerResults[i]["ApplicantFullName"],
+                                ApplicantNumber: "CM-" + coMakerResults[i]["ApplicantNumber"],
+                                Area: coMakerResults[i]["Area"],
                             });
                         }
 
                         disabled = false;
                     }
 
+                    var template = '<table style="table-layout:fixed; width:650px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Co-Maker No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Area </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantNumber}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantFullName}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Area}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
                     // applicant
                     cboCoMaker.dispose();
                     cboCoMaker = new wijmo.input.ComboBox('#cboCoMaker', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: coMakerArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "ApplicantFullName",
-                        selectedValuePath: "Id"
+                        selectedValuePath: "Id",
+                        headerPath: 'ApplicantFullName',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                     });
                 }
             });
@@ -1265,6 +1290,7 @@
                         for (i = 0; i < areaResults.length; i++) {
                             areaArray.push({
                                 Id: areaResults[i]["Id"],
+                                AreaNumber: "AR-" + areaResults[i]["AreaNumber"],
                                 Area: areaResults[i]["Area"],
                             });
                         }
@@ -1272,16 +1298,36 @@
                         disabled = false;
                     }
 
+                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Area No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{AreaNumber}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Area}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
                     // applicant
                     cboApplicantArea.dispose();
                     cboApplicantArea = new wijmo.input.ComboBox('#applicantArea', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: areaArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Area",
-                        selectedValuePath: "Area"
+                        selectedValuePath: "Area",
+                        headerPath: 'Area',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                     });
                 }
             });
@@ -1313,11 +1359,11 @@
                     // applicant
                     cboCivilStatus.dispose();
                     cboCivilStatus = new wijmo.input.ComboBox('#applicantCivilStatus', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: civilStatusArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "CivilStatus",
                         selectedValuePath: "CivilStatus"
                     });
@@ -1351,22 +1397,22 @@
                     // applicant
                     cboResidenceType.dispose();
                     cboResidenceType = new wijmo.input.ComboBox('#applicantResidenceType', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: residenceTypeArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "ResidenceType",
                         selectedValuePath: "ResidenceType"
                     });
 
                     cboLandResidenceType.dispose();
                     cboLandResidenceType = new wijmo.input.ComboBox('#applicantLandResidenceType', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: residenceTypeArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "ResidenceType",
                         selectedValuePath: "ResidenceType"
                     });
@@ -1457,11 +1503,11 @@
                         document.getElementById('stampUpdatedDate').innerHTML = applicantDetailResult.UpdatedDateTime;
 
                         if (applicantDetailResult.IsLocked) {
-                            cboBirthDate.disabled = true;
-                            cboCivilStatus.disabled = true;
-                            cboApplicantArea.disabled = true;
-                            cboResidenceType.disabled = true;
-                            cboLandResidenceType.disabled = true;
+                            cboBirthDate.isDisabled = true;
+                            cboCivilStatus.isDisabled = true;
+                            cboApplicantArea.isDisabled = true;
+                            cboResidenceType.isDisabled = true;
+                            cboLandResidenceType.isDisabled = true;
 
                             $("#btnLockApplicant").prop("disabled", true);
                             $("#btnApplicantChangePhoto").prop("disabled", true);
@@ -3619,21 +3665,44 @@
                             requirementArray.push({
                                 Id: requirementResults[i]["Id"],
                                 Requirement: requirementResults[i]["Requirement"],
+                                Description: requirementResults[i]["Description"],
                             });
                         }
 
                         disabled = false;
                     }
 
+
+                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Requirement </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Description </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Requirement}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Description}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
+
                     cboRequirement.dispose();
                     cboRequirement = new wijmo.input.ComboBox('#cboRequirement', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: requirementArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Requirement",
-                        selectedValuePath: "Requirement"
+                        selectedValuePath: "Requirement",
+                        headerPath: 'Requirement',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                     });
                 }
             });
@@ -3937,7 +4006,8 @@
                                 IsLocked: loanHistorysResults[i]["IsLocked"],
                                 IsLoanApplication: loanHistorysResults[i]["IsLoanApplication"],
                                 IsLoanReconstruct: loanHistorysResults[i]["IsLoanReconstruct"],
-                                IsLoanRenew: loanHistorysResults[i]["IsLoanRenew"]
+                                IsLoanRenew: loanHistorysResults[i]["IsLoanRenew"],
+                                IsReturnRelease: loanHistorysResults[i]["IsReturnRelease"],
                             });
                         }
                     }
@@ -4019,6 +4089,12 @@
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
+                            },
+                            {
+                                "header": "Is RL",
+                                "binding": "IsReturnRelease",
+                                "allowSorting": true,
+                                "width": 60,
                             },
                             {
                                 "header": "Date",
@@ -4312,22 +4388,68 @@
 
                             loanNumbers.push({
                                 Id: loanNumbersResults[i]["Id"],
-                                LoanNumberDetail: loanNumbersResults[i]["LoanNumberDetail"] + " - (" + loanDateValue + ")"
+                                LoanNumberDetail: loanNumbersResults[i]["LoanNumberDetail"],
+                                LoanDate: loanNumbersResults[i]["LoanDate"],
+                                MaturityDate: loanNumbersResults[i]["MaturityDate"],
+                                CollectibleAmount: loanNumbersResults[i]["CollectibleAmount"].toLocaleString(),
+                                TotalPaidAmount: loanNumbersResults[i]["TotalPaidAmount"].toLocaleString(),
+                                TotalBalanceAmount: loanNumbersResults[i]["TotalBalanceAmount"].toLocaleString(),
+                                TotalPenaltyAmount: loanNumbersResults[i]["TotalPenaltyAmount"].toLocaleString(),
+                                IsLoanApplication: loanNumbersResults[i]["IsLoanApplication"],
+                                IsLoanRenew: loanNumbersResults[i]["IsLoanRenew"],
+                                IsLoanReconstruct: loanNumbersResults[i]["IsLoanReconstruct"],
+                                Particulars: loanNumbersResults[i]["Particulars"]
                             });
                         }
 
                         disabled = false;
                     }
 
+                    var template = '<table style="table-layout:fixed; width:900px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 100px;"/>' +
+                                        '<col style="width: 10px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<col style="width: 10px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<col style="width: 10px;"/>' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Loan No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Loan Date </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 30px;" valign="top" colspan="2"> Paid </th>' +
+                                            '<th style="word-wrap:break-word; padding-right: 30px;" valign="top" colspan="2"> Penalty </th>' +
+                                            '<th style="word-wrap:break-word;" valign="top" colspan="2"> Balance </th>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{LoanNumberDetail}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{LoanDate}</td>' +
+                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
+                                                '<td style="text-align: right; word-wrap:break-word; padding-right: 30px;" valign="top"> {TotalPaidAmount}</td>' +
+                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
+                                                '<td style="text-align: right; word-wrap:break-word; padding-right: 30px;" valign="top"> {TotalPenaltyAmount}</td>' +
+                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
+                                                '<td style="text-align: right; word-wrap:break-word;" valign="top"> {TotalBalanceAmount}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
+
                     cboLoan.dispose();
                     cboLoan = new wijmo.input.ComboBox('#cboLoan', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: loanNumbers,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
+                        headerPath: 'LoanNumberDetail',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             setTimeout(function () {

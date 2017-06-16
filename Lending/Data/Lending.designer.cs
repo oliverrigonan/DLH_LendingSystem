@@ -2067,6 +2067,8 @@ namespace Lending.Data
 		
 		private string _Schools;
 		
+		private bool _IsBlocked;
+		
 		private bool _IsLocked;
 		
 		private int _CreatedByUserId;
@@ -2193,6 +2195,8 @@ namespace Lending.Data
     partial void OnStudyingChanged();
     partial void OnSchoolsChanging(string value);
     partial void OnSchoolsChanged();
+    partial void OnIsBlockedChanging(bool value);
+    partial void OnIsBlockedChanged();
     partial void OnIsLockedChanging(bool value);
     partial void OnIsLockedChanged();
     partial void OnCreatedByUserIdChanging(int value);
@@ -3096,6 +3100,26 @@ namespace Lending.Data
 					this._Schools = value;
 					this.SendPropertyChanged("Schools");
 					this.OnSchoolsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsBlocked", DbType="Bit NOT NULL")]
+		public bool IsBlocked
+		{
+			get
+			{
+				return this._IsBlocked;
+			}
+			set
+			{
+				if ((this._IsBlocked != value))
+				{
+					this.OnIsBlockedChanging(value);
+					this.SendPropertyChanging();
+					this._IsBlocked = value;
+					this.SendPropertyChanged("IsBlocked");
+					this.OnIsBlockedChanged();
 				}
 			}
 		}
@@ -6526,8 +6550,6 @@ namespace Lending.Data
 		
 		private EntitySet<mstAreaStaff> _mstAreaStaffs;
 		
-		private EntitySet<trnCollection> _trnCollections;
-		
 		private EntitySet<trnExpense> _trnExpenses;
 		
 		private EntitySet<trnRemittance> _trnRemittances;
@@ -6569,7 +6591,6 @@ namespace Lending.Data
 			this._trnVaults = new EntitySet<trnVault>(new Action<trnVault>(this.attach_trnVaults), new Action<trnVault>(this.detach_trnVaults));
 			this._mstAreas = new EntitySet<mstArea>(new Action<mstArea>(this.attach_mstAreas), new Action<mstArea>(this.detach_mstAreas));
 			this._mstAreaStaffs = new EntitySet<mstAreaStaff>(new Action<mstAreaStaff>(this.attach_mstAreaStaffs), new Action<mstAreaStaff>(this.detach_mstAreaStaffs));
-			this._trnCollections = new EntitySet<trnCollection>(new Action<trnCollection>(this.attach_trnCollections), new Action<trnCollection>(this.detach_trnCollections));
 			this._trnExpenses = new EntitySet<trnExpense>(new Action<trnExpense>(this.attach_trnExpenses), new Action<trnExpense>(this.detach_trnExpenses));
 			this._trnRemittances = new EntitySet<trnRemittance>(new Action<trnRemittance>(this.attach_trnRemittances), new Action<trnRemittance>(this.detach_trnRemittances));
 			this._trnReturnReleases = new EntitySet<trnReturnRelease>(new Action<trnReturnRelease>(this.attach_trnReturnReleases), new Action<trnReturnRelease>(this.detach_trnReturnReleases));
@@ -6825,19 +6846,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_trnCollection", Storage="_trnCollections", ThisKey="Id", OtherKey="CollectorStaffId")]
-		public EntitySet<trnCollection> trnCollections
-		{
-			get
-			{
-				return this._trnCollections;
-			}
-			set
-			{
-				this._trnCollections.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_trnExpense", Storage="_trnExpenses", ThisKey="Id", OtherKey="AssignedStaffId")]
 		public EntitySet<trnExpense> trnExpenses
 		{
@@ -6996,18 +7004,6 @@ namespace Lending.Data
 		}
 		
 		private void detach_mstAreaStaffs(mstAreaStaff entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstStaff = null;
-		}
-		
-		private void attach_trnCollections(trnCollection entity)
-		{
-			this.SendPropertyChanging();
-			entity.mstStaff = this;
-		}
-		
-		private void detach_trnCollections(trnCollection entity)
 		{
 			this.SendPropertyChanging();
 			entity.mstStaff = null;
@@ -9549,8 +9545,6 @@ namespace Lending.Data
 		
 		private decimal _TotalPenaltyAmount;
 		
-		private int _CollectorStaffId;
-		
 		private int _PreparedByUserId;
 		
 		private bool _IsLocked;
@@ -9562,8 +9556,6 @@ namespace Lending.Data
 		private int _UpdatedByUserId;
 		
 		private System.DateTime _UpdatedDateTime;
-		
-		private EntityRef<mstStaff> _mstStaff;
 		
 		private EntityRef<mstUser> _mstUser;
 		
@@ -9595,8 +9587,6 @@ namespace Lending.Data
     partial void OnTotalPaidAmountChanged();
     partial void OnTotalPenaltyAmountChanging(decimal value);
     partial void OnTotalPenaltyAmountChanged();
-    partial void OnCollectorStaffIdChanging(int value);
-    partial void OnCollectorStaffIdChanged();
     partial void OnPreparedByUserIdChanging(int value);
     partial void OnPreparedByUserIdChanged();
     partial void OnIsLockedChanging(bool value);
@@ -9613,7 +9603,6 @@ namespace Lending.Data
 		
 		public trnCollection()
 		{
-			this._mstStaff = default(EntityRef<mstStaff>);
 			this._mstUser = default(EntityRef<mstUser>);
 			this._mstUser1 = default(EntityRef<mstUser>);
 			this._mstUser2 = default(EntityRef<mstUser>);
@@ -9790,30 +9779,6 @@ namespace Lending.Data
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectorStaffId", DbType="Int NOT NULL")]
-		public int CollectorStaffId
-		{
-			get
-			{
-				return this._CollectorStaffId;
-			}
-			set
-			{
-				if ((this._CollectorStaffId != value))
-				{
-					if (this._mstStaff.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnCollectorStaffIdChanging(value);
-					this.SendPropertyChanging();
-					this._CollectorStaffId = value;
-					this.SendPropertyChanged("CollectorStaffId");
-					this.OnCollectorStaffIdChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreparedByUserId", DbType="Int NOT NULL")]
 		public int PreparedByUserId
 		{
@@ -9942,40 +9907,6 @@ namespace Lending.Data
 					this._UpdatedDateTime = value;
 					this.SendPropertyChanged("UpdatedDateTime");
 					this.OnUpdatedDateTimeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="mstStaff_trnCollection", Storage="_mstStaff", ThisKey="CollectorStaffId", OtherKey="Id", IsForeignKey=true)]
-		public mstStaff mstStaff
-		{
-			get
-			{
-				return this._mstStaff.Entity;
-			}
-			set
-			{
-				mstStaff previousValue = this._mstStaff.Entity;
-				if (((previousValue != value) 
-							|| (this._mstStaff.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._mstStaff.Entity = null;
-						previousValue.trnCollections.Remove(this);
-					}
-					this._mstStaff.Entity = value;
-					if ((value != null))
-					{
-						value.trnCollections.Add(this);
-						this._CollectorStaffId = value.Id;
-					}
-					else
-					{
-						this._CollectorStaffId = default(int);
-					}
-					this.SendPropertyChanged("mstStaff");
 				}
 			}
 		}

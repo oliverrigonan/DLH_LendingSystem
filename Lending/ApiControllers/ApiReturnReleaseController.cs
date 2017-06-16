@@ -241,30 +241,48 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var lockReturnRelease = returnReleases.FirstOrDefault();
-                                lockReturnRelease.ReturnReleaseDate = Convert.ToDateTime(returnRelease.ReturnReleaseDate);
-                                lockReturnRelease.LoanId = returnRelease.LoanId;
-                                lockReturnRelease.Particulars = returnRelease.Particulars;
-                                lockReturnRelease.CollectorStaffId = returnRelease.CollectorStaffId;
-                                lockReturnRelease.ReturnAmount = returnRelease.ReturnAmount;
-                                lockReturnRelease.IsLocked = true;
-                                lockReturnRelease.UpdatedByUserId = userId;
-                                lockReturnRelease.UpdatedDateTime = DateTime.Now;
+                                var loan = from d in db.trnLoans
+                                           where d.Id == returnRelease.LoanId
+                                           select d;
 
-                                db.SubmitChanges();
-
-                                var loans = from d in db.trnLoans
-                                            where d.Id == returnRelease.LoanId
-                                            select d;
-
-                                if (loans.Any())
+                                if (loan.Any())
                                 {
-                                    var updateIsReturnRelease = loans.FirstOrDefault();
-                                    updateIsReturnRelease.IsReturnRelease = true;
-                                    db.SubmitChanges();
-                                }
+                                    if (!loan.FirstOrDefault().mstApplicant.IsBlocked)
+                                    {
+                                        var lockReturnRelease = returnReleases.FirstOrDefault();
+                                        lockReturnRelease.ReturnReleaseDate = Convert.ToDateTime(returnRelease.ReturnReleaseDate);
+                                        lockReturnRelease.LoanId = returnRelease.LoanId;
+                                        lockReturnRelease.Particulars = returnRelease.Particulars;
+                                        lockReturnRelease.CollectorStaffId = returnRelease.CollectorStaffId;
+                                        lockReturnRelease.ReturnAmount = returnRelease.ReturnAmount;
+                                        lockReturnRelease.IsLocked = true;
+                                        lockReturnRelease.UpdatedByUserId = userId;
+                                        lockReturnRelease.UpdatedDateTime = DateTime.Now;
 
-                                return Request.CreateResponse(HttpStatusCode.OK);
+                                        db.SubmitChanges();
+
+                                        var loans = from d in db.trnLoans
+                                                    where d.Id == returnRelease.LoanId
+                                                    select d;
+
+                                        if (loans.Any())
+                                        {
+                                            var updateIsReturnRelease = loans.FirstOrDefault();
+                                            updateIsReturnRelease.IsReturnRelease = true;
+                                            db.SubmitChanges();
+                                        }
+
+                                        return Request.CreateResponse(HttpStatusCode.OK);
+                                    }
+                                    else
+                                    {
+                                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                    }
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
                             }
                             else
                             {
@@ -335,24 +353,31 @@ namespace Lending.ApiControllers
 
                             if (canPerformActions)
                             {
-                                var unlockReturnRelease = returnReleases.FirstOrDefault();
-                                unlockReturnRelease.IsLocked = false;
-                                unlockReturnRelease.UpdatedByUserId = userId;
-                                unlockReturnRelease.UpdatedDateTime = DateTime.Now;
-                                db.SubmitChanges();
-
-                                var loans = from d in db.trnLoans
-                                            where d.Id == returnReleases.FirstOrDefault().LoanId
-                                            select d;
-
-                                if (loans.Any())
+                                if (!returnReleases.FirstOrDefault().trnLoan.mstApplicant.IsBlocked)
                                 {
-                                    var updateIsReturnRelease = loans.FirstOrDefault();
-                                    updateIsReturnRelease.IsReturnRelease = false;
+                                    var unlockReturnRelease = returnReleases.FirstOrDefault();
+                                    unlockReturnRelease.IsLocked = false;
+                                    unlockReturnRelease.UpdatedByUserId = userId;
+                                    unlockReturnRelease.UpdatedDateTime = DateTime.Now;
                                     db.SubmitChanges();
-                                }
 
-                                return Request.CreateResponse(HttpStatusCode.OK);
+                                    var loans = from d in db.trnLoans
+                                                where d.Id == returnReleases.FirstOrDefault().LoanId
+                                                select d;
+
+                                    if (loans.Any())
+                                    {
+                                        var updateIsReturnRelease = loans.FirstOrDefault();
+                                        updateIsReturnRelease.IsReturnRelease = false;
+                                        db.SubmitChanges();
+                                    }
+
+                                    return Request.CreateResponse(HttpStatusCode.OK);
+                                }
+                                else
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                                }
                             }
                             else
                             {

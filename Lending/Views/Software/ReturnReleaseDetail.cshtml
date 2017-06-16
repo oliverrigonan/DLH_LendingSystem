@@ -257,10 +257,10 @@
 
                     cboCollectionApplicant.dispose();
                     cboCollectionApplicant = new wijmo.input.ComboBox('#cboCollectionApplicant', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: applicantArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Applicant",
                         selectedValuePath: "Applicant",
                         onSelectedIndexChanged: function () {
@@ -312,10 +312,10 @@
 
                     cboCollectionApplicantLoanNumber.dispose();
                     cboCollectionApplicantLoanNumber = new wijmo.input.ComboBox('#cboCollectionApplicantLoanNumber', {
-                        disabled: disabledLoanNumber,
+                        isDisabled: disabledLoanNumber,
                         itemsSource: applicantLoanNumberArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
                         //selectedValue: applicantloanunmberselectedvalue.toString(),
@@ -356,10 +356,10 @@
 
                     cboReturnReleaseCollectorStaff.dispose();
                     cboReturnReleaseCollectorStaff = new wijmo.input.ComboBox('#cboReturnReleaseCollectorStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: staffArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff"
                     });
@@ -394,11 +394,11 @@
 
                     cboReturnReleasePreparedBy.dispose();
                     cboReturnReleasePreparedBy = new wijmo.input.ComboBox('#cboReturnReleasePreparedBy', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });

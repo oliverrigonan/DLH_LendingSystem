@@ -28,6 +28,7 @@ namespace Lending.ApiControllers
             {
                 var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
                                  where d.IsCoMaker == false
+                                 && d.IsBlocked == false
                                  select new Models.MstApplicant
                                  {
                                      Id = d.Id,
@@ -77,6 +78,7 @@ namespace Lending.ApiControllers
                                      NumberOfChildren = d.NumberOfChildren,
                                      Studying = d.Studying,
                                      Schools = d.Schools,
+                                     IsBlocked = d.IsBlocked,
                                      IsLocked = d.IsLocked,
                                      CreatedByUserId = d.CreatedByUserId,
                                      CreatedByUser = d.mstUser.FullName,
@@ -94,6 +96,7 @@ namespace Lending.ApiControllers
                 {
                     var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
                                      where d.IsCoMaker == true
+                                     && d.IsBlocked == false
                                      select new Models.MstApplicant
                                      {
                                          Id = d.Id,
@@ -143,6 +146,7 @@ namespace Lending.ApiControllers
                                          NumberOfChildren = d.NumberOfChildren,
                                          Studying = d.Studying,
                                          Schools = d.Schools,
+                                         IsBlocked = d.IsBlocked,
                                          IsLocked = d.IsLocked,
                                          CreatedByUserId = d.CreatedByUserId,
                                          CreatedByUser = d.mstUser.FullName,
@@ -156,7 +160,213 @@ namespace Lending.ApiControllers
                 }
                 else
                 {
-                    return null;
+                    if (applicantType.Equals("Blocked Applicant"))
+                    {
+                        var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
+                                         where d.IsCoMaker == false
+                                         && d.IsBlocked == true
+                                         select new Models.MstApplicant
+                                         {
+                                             Id = d.Id,
+                                             ApplicantNumber = d.ApplicantNumber,
+                                             IsCoMaker = d.IsCoMaker,
+                                             AreaId = d.AreaId,
+                                             Area = d.mstArea.Area,
+                                             ApplicantFullName = d.ApplicantLastName + ", " + d.ApplicantFirstName + " " + (d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " "),
+                                             ApplicantLastName = d.ApplicantLastName,
+                                             ApplicantFirstName = d.ApplicantFirstName,
+                                             ApplicantMiddleName = d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " ",
+                                             BirthDate = d.BirthDate.ToShortDateString(),
+                                             CivilStatusId = d.CivilStatusId,
+                                             CivilStatus = d.sysCivilStatus.CivilStatus,
+                                             CityAddress = d.CityAddress,
+                                             ProvinceAddress = d.ProvinceAddress,
+                                             ContactNumber = d.ContactNumber,
+                                             ResidenceTypeId = d.ResidenceTypeId,
+                                             ResidenceType = d.sysResidenceType.ResidenceType,
+                                             ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
+                                             LandResidenceTypeId = d.LandResidenceTypeId,
+                                             LandResidenceType = d.sysResidenceType1.ResidenceType,
+                                             LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
+                                             LengthOfStay = d.LengthOfStay,
+                                             BusinessAddress = d.BusinessAddress,
+                                             BusinessKaratulaName = d.BusinessKaratulaName,
+                                             BusinessTelephoneNumber = d.BusinessTelephoneNumber,
+                                             BusinessYear = d.BusinessYear,
+                                             BusinessMerchandise = d.BusinessMerchandise,
+                                             BusinessStockValues = d.BusinessStockValues,
+                                             BusinessBeginningCapital = d.BusinessBeginningCapital,
+                                             BusinessLowSalesPeriod = d.BusinessLowSalesPeriod,
+                                             BusinessLowestDailySales = d.BusinessLowestDailySales,
+                                             BusinessAverageDailySales = d.BusinessAverageDailySales,
+                                             EmployedCompany = d.EmployedCompany,
+                                             EmployedCompanyAddress = d.EmployedCompanyAddress,
+                                             EmployedPositionOccupied = d.EmployedPositionOccupied,
+                                             EmployedServiceLength = d.EmployedServiceLength,
+                                             EmployedTelephoneNumber = d.EmployedTelephoneNumber,
+                                             SpouseFullName = d.SpouseFullName,
+                                             SpouseEmployerBusiness = d.SpouseEmployerBusiness,
+                                             SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
+                                             SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
+                                             SpousePositionOccupied = d.SpousePositionOccupied,
+                                             SpouseMonthlySalary = d.SpouseMonthlySalary,
+                                             SpouseLengthOfService = d.SpouseLengthOfService,
+                                             NumberOfChildren = d.NumberOfChildren,
+                                             Studying = d.Studying,
+                                             Schools = d.Schools,
+                                             IsBlocked = d.IsBlocked,
+                                             IsLocked = d.IsLocked,
+                                             CreatedByUserId = d.CreatedByUserId,
+                                             CreatedByUser = d.mstUser.FullName,
+                                             CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                             UpdatedByUserId = d.UpdatedByUserId,
+                                             UpdatedByUser = d.mstUser1.FullName,
+                                             UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                         };
+
+                        return applicants.ToList();
+                    }
+                    else
+                    {
+                        if (applicantType.Equals("Blocked Co-Maker"))
+                        {
+                            var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
+                                             where d.IsCoMaker == true
+                                             && d.IsBlocked == true
+                                             select new Models.MstApplicant
+                                             {
+                                                 Id = d.Id,
+                                                 ApplicantNumber = d.ApplicantNumber,
+                                                 IsCoMaker = d.IsCoMaker,
+                                                 AreaId = d.AreaId,
+                                                 Area = d.mstArea.Area,
+                                                 ApplicantFullName = d.ApplicantLastName + ", " + d.ApplicantFirstName + " " + (d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " "),
+                                                 ApplicantLastName = d.ApplicantLastName,
+                                                 ApplicantFirstName = d.ApplicantFirstName,
+                                                 ApplicantMiddleName = d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " ",
+                                                 BirthDate = d.BirthDate.ToShortDateString(),
+                                                 CivilStatusId = d.CivilStatusId,
+                                                 CivilStatus = d.sysCivilStatus.CivilStatus,
+                                                 CityAddress = d.CityAddress,
+                                                 ProvinceAddress = d.ProvinceAddress,
+                                                 ContactNumber = d.ContactNumber,
+                                                 ResidenceTypeId = d.ResidenceTypeId,
+                                                 ResidenceType = d.sysResidenceType.ResidenceType,
+                                                 ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
+                                                 LandResidenceTypeId = d.LandResidenceTypeId,
+                                                 LandResidenceType = d.sysResidenceType1.ResidenceType,
+                                                 LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
+                                                 LengthOfStay = d.LengthOfStay,
+                                                 BusinessAddress = d.BusinessAddress,
+                                                 BusinessKaratulaName = d.BusinessKaratulaName,
+                                                 BusinessTelephoneNumber = d.BusinessTelephoneNumber,
+                                                 BusinessYear = d.BusinessYear,
+                                                 BusinessMerchandise = d.BusinessMerchandise,
+                                                 BusinessStockValues = d.BusinessStockValues,
+                                                 BusinessBeginningCapital = d.BusinessBeginningCapital,
+                                                 BusinessLowSalesPeriod = d.BusinessLowSalesPeriod,
+                                                 BusinessLowestDailySales = d.BusinessLowestDailySales,
+                                                 BusinessAverageDailySales = d.BusinessAverageDailySales,
+                                                 EmployedCompany = d.EmployedCompany,
+                                                 EmployedCompanyAddress = d.EmployedCompanyAddress,
+                                                 EmployedPositionOccupied = d.EmployedPositionOccupied,
+                                                 EmployedServiceLength = d.EmployedServiceLength,
+                                                 EmployedTelephoneNumber = d.EmployedTelephoneNumber,
+                                                 SpouseFullName = d.SpouseFullName,
+                                                 SpouseEmployerBusiness = d.SpouseEmployerBusiness,
+                                                 SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
+                                                 SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
+                                                 SpousePositionOccupied = d.SpousePositionOccupied,
+                                                 SpouseMonthlySalary = d.SpouseMonthlySalary,
+                                                 SpouseLengthOfService = d.SpouseLengthOfService,
+                                                 NumberOfChildren = d.NumberOfChildren,
+                                                 Studying = d.Studying,
+                                                 Schools = d.Schools,
+                                                 IsBlocked = d.IsBlocked,
+                                                 IsLocked = d.IsLocked,
+                                                 CreatedByUserId = d.CreatedByUserId,
+                                                 CreatedByUser = d.mstUser.FullName,
+                                                 CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                                 UpdatedByUserId = d.UpdatedByUserId,
+                                                 UpdatedByUser = d.mstUser1.FullName,
+                                                 UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                             };
+
+                            return applicants.ToList();
+                        }
+                        else
+                        {
+                            if (applicantType.Equals("loanApplicant"))
+                            {
+                                var applicants = from d in db.mstApplicants.OrderByDescending(d => d.Id)
+                                                 where d.IsCoMaker == false
+                                                 select new Models.MstApplicant
+                                                 {
+                                                     Id = d.Id,
+                                                     ApplicantNumber = d.ApplicantNumber,
+                                                     IsCoMaker = d.IsCoMaker,
+                                                     AreaId = d.AreaId,
+                                                     Area = d.mstArea.Area,
+                                                     ApplicantFullName = d.ApplicantLastName + ", " + d.ApplicantFirstName + " " + (d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " "),
+                                                     ApplicantLastName = d.ApplicantLastName,
+                                                     ApplicantFirstName = d.ApplicantFirstName,
+                                                     ApplicantMiddleName = d.ApplicantMiddleName != null ? d.ApplicantMiddleName : " ",
+                                                     BirthDate = d.BirthDate.ToShortDateString(),
+                                                     CivilStatusId = d.CivilStatusId,
+                                                     CivilStatus = d.sysCivilStatus.CivilStatus,
+                                                     CityAddress = d.CityAddress,
+                                                     ProvinceAddress = d.ProvinceAddress,
+                                                     ContactNumber = d.ContactNumber,
+                                                     ResidenceTypeId = d.ResidenceTypeId,
+                                                     ResidenceType = d.sysResidenceType.ResidenceType,
+                                                     ResidenceMonthlyRentAmount = d.ResidenceMonthlyRentAmount,
+                                                     LandResidenceTypeId = d.LandResidenceTypeId,
+                                                     LandResidenceType = d.sysResidenceType1.ResidenceType,
+                                                     LandResidenceMonthlyRentAmount = d.LandResidenceMonthlyRentAmount,
+                                                     LengthOfStay = d.LengthOfStay,
+                                                     BusinessAddress = d.BusinessAddress,
+                                                     BusinessKaratulaName = d.BusinessKaratulaName,
+                                                     BusinessTelephoneNumber = d.BusinessTelephoneNumber,
+                                                     BusinessYear = d.BusinessYear,
+                                                     BusinessMerchandise = d.BusinessMerchandise,
+                                                     BusinessStockValues = d.BusinessStockValues,
+                                                     BusinessBeginningCapital = d.BusinessBeginningCapital,
+                                                     BusinessLowSalesPeriod = d.BusinessLowSalesPeriod,
+                                                     BusinessLowestDailySales = d.BusinessLowestDailySales,
+                                                     BusinessAverageDailySales = d.BusinessAverageDailySales,
+                                                     EmployedCompany = d.EmployedCompany,
+                                                     EmployedCompanyAddress = d.EmployedCompanyAddress,
+                                                     EmployedPositionOccupied = d.EmployedPositionOccupied,
+                                                     EmployedServiceLength = d.EmployedServiceLength,
+                                                     EmployedTelephoneNumber = d.EmployedTelephoneNumber,
+                                                     SpouseFullName = d.SpouseFullName,
+                                                     SpouseEmployerBusiness = d.SpouseEmployerBusiness,
+                                                     SpouseEmployerBusinessAddress = d.SpouseEmployerBusinessAddress,
+                                                     SpouseBusinessTelephoneNumber = d.SpouseBusinessTelephoneNumber,
+                                                     SpousePositionOccupied = d.SpousePositionOccupied,
+                                                     SpouseMonthlySalary = d.SpouseMonthlySalary,
+                                                     SpouseLengthOfService = d.SpouseLengthOfService,
+                                                     NumberOfChildren = d.NumberOfChildren,
+                                                     Studying = d.Studying,
+                                                     Schools = d.Schools,
+                                                     IsBlocked = d.IsBlocked,
+                                                     IsLocked = d.IsLocked,
+                                                     CreatedByUserId = d.CreatedByUserId,
+                                                     CreatedByUser = d.mstUser.FullName,
+                                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                                     UpdatedByUserId = d.UpdatedByUserId,
+                                                     UpdatedByUser = d.mstUser1.FullName,
+                                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                                 };
+
+                                return applicants.ToList();
+                            }
+                            else
+                            {
+                                return null;
+                            };
+                        }
+                    }
                 }
             }
         }
@@ -219,6 +429,7 @@ namespace Lending.ApiControllers
                                  NumberOfChildren = d.NumberOfChildren,
                                  Studying = d.Studying,
                                  Schools = d.Schools,
+                                 IsBlocked = d.IsBlocked,
                                  IsLocked = d.IsLocked,
                                  CreatedByUserId = d.CreatedByUserId,
                                  CreatedByUser = d.mstUser.FullName,
@@ -349,6 +560,7 @@ namespace Lending.ApiControllers
                         newApplicant.NumberOfChildren = "NA";
                         newApplicant.Studying = "NA";
                         newApplicant.Schools = "NA";
+                        newApplicant.IsBlocked = false;
                         newApplicant.IsLocked = false;
                         newApplicant.CreatedByUserId = userId;
                         newApplicant.CreatedDateTime = DateTime.Now;
@@ -795,6 +1007,146 @@ namespace Lending.ApiControllers
                 else
                 {
                     return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // block applicant
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/block/{id}")]
+        public HttpResponseMessage blockApplicant(String id)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
+
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "ApplicantList";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            var updateApplicant = applicants.FirstOrDefault();
+                            updateApplicant.IsBlocked = true;
+                            updateApplicant.UpdatedByUserId = userId;
+                            updateApplicant.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound);
+                }
+            }
+            catch
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+        }
+
+        // unblock applicant
+        [Authorize]
+        [HttpPut]
+        [Route("api/applicant/unblock/{id}")]
+        public HttpResponseMessage unblockApplicant(String id)
+        {
+            try
+            {
+                var applicants = from d in db.mstApplicants where d.Id == Convert.ToInt32(id) select d;
+                if (applicants.Any())
+                {
+                    var userId = (from d in db.mstUsers where d.AspUserId == User.Identity.GetUserId() select d.Id).SingleOrDefault();
+                    var mstUserForms = from d in db.mstUserForms
+                                       where d.UserId == userId
+                                       select new Models.MstUserForm
+                                       {
+                                           Id = d.Id,
+                                           Form = d.sysForm.Form,
+                                           CanPerformActions = d.CanPerformActions
+                                       };
+
+                    if (mstUserForms.Any())
+                    {
+                        String matchPageString = "ApplicantList";
+                        Boolean canPerformActions = false;
+
+                        foreach (var mstUserForm in mstUserForms)
+                        {
+                            if (mstUserForm.Form.Equals(matchPageString))
+                            {
+                                if (mstUserForm.CanPerformActions)
+                                {
+                                    canPerformActions = true;
+                                }
+
+                                break;
+                            }
+                        }
+
+                        if (canPerformActions)
+                        {
+                            var updateApplicant = applicants.FirstOrDefault();
+                            updateApplicant.IsBlocked = false;
+                            updateApplicant.UpdatedByUserId = userId;
+                            updateApplicant.UpdatedDateTime = DateTime.Now;
+                            db.SubmitChanges();
+
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
+                        else
+                        {
+                            return Request.CreateResponse(HttpStatusCode.BadRequest);
+                        }
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
             }
             catch

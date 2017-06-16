@@ -230,10 +230,10 @@
 
                     cboVaultStaff.dispose();
                     cboVaultStaff = new wijmo.input.ComboBox('#cboVaultStaff', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         itemsSource: staffArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff"
                     });
@@ -267,11 +267,11 @@
 
                     cboVaultPreparedBy.dispose();
                     cboVaultPreparedBy = new wijmo.input.ComboBox('#cboVaultPreparedBy', {
-                        disabled: disabled,
+                        isDisabled: disabled,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
-                        required: true,
+                        isRequired: true,
                         displayMemberPath: "FullName",
                         selectedValuePath: "FullName"
                     });

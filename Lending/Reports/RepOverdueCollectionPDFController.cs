@@ -36,7 +36,8 @@ namespace Lending.Reports
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLocked = d.IsLocked,
-                                           Particulars = d.Particulars
+                                           Particulars = d.Particulars,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -54,11 +55,13 @@ namespace Lending.Reports
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                                Particulars = g.FirstOrDefault().Particulars
+                                                Particulars = g.FirstOrDefault().Particulars,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == true
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -73,7 +76,7 @@ namespace Lending.Reports
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsLocked = d.IsLoanRenew,
                                               Particulars = d.Particulars,
-                                              DateTImeLoanDate = d.DateTImeLoanDate
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();
@@ -98,7 +101,8 @@ namespace Lending.Reports
                                            IsLoanRenew = d.IsLoanRenew,
                                            IsLoanReconstruct = d.IsLoanReconstruct,
                                            IsLocked = d.IsLocked,
-                                           Particulars = d.Particulars
+                                           Particulars = d.Particulars,
+                                           IsBlocked = d.mstApplicant.IsBlocked
                                        };
 
                 var grouploanApplications = from d in loanApplications.OrderByDescending(d => d.Id)
@@ -116,11 +120,13 @@ namespace Lending.Reports
                                                 IsLoanRenew = g.FirstOrDefault().IsLoanRenew,
                                                 IsLoanReconstruct = g.FirstOrDefault().IsLoanReconstruct,
                                                 IsLocked = g.FirstOrDefault().IsLoanRenew,
-                                                Particulars = g.FirstOrDefault().Particulars
+                                                Particulars = g.FirstOrDefault().Particulars,
+                                                IsBlocked = g.FirstOrDefault().IsBlocked
                                             };
 
                 var loanApplicationList = from d in grouploanApplications.OrderByDescending(d => d.Id)
                                           where d.IsLoanReconstruct == true
+                                          && d.IsBlocked == false
                                           select new Models.TrnLoan
                                           {
                                               ApplicantId = d.ApplicantId,
@@ -135,7 +141,7 @@ namespace Lending.Reports
                                               IsLoanReconstruct = d.IsLoanReconstruct,
                                               IsLocked = d.IsLoanRenew,
                                               Particulars = d.Particulars,
-                                              DateTImeLoanDate = d.DateTImeLoanDate
+                                              IsBlocked = d.IsBlocked
                                           };
 
                 return loanApplicationList.OrderBy(d => d.Applicant).ToList();

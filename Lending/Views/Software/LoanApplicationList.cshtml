@@ -310,6 +310,7 @@
                                 UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
                                 UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                                IsReturnRelease: loanApplicationListResult[i]["IsReturnRelease"],
                             });
                         }
                     }
@@ -495,6 +496,12 @@
                                 "binding": "IsLocked",
                                 "allowSorting": true,
                                 "width": 50,
+                            },
+                            {
+                                "header": "Is RL",
+                                "binding": "IsReturnRelease",
+                                "allowSorting": true,
+                                "width": 60,
                             },
                             {
                                 "header": "Date",
