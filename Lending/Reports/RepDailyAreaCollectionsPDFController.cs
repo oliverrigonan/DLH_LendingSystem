@@ -156,6 +156,8 @@ namespace Lending.Reports
 
                 if (loanApplications.Any())
                 {
+                    var noOfCusomters = loanApplications.Count();
+
                     MemoryStream workStream = new MemoryStream();
                     Rectangle rectangle = new Rectangle(612f, 936f);
                     Document document = new Document(rectangle, 72, 72, 72, 72);
@@ -293,13 +295,16 @@ namespace Lending.Reports
                     loanlData.AddCell(new PdfPCell(new Phrase("Total Active:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, Colspan = 2, PaddingTop = 2f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
-                    loanlData.AddCell(new PdfPCell(new Phrase("Remarks:", fontArial11Bold)) { Rowspan = 3, Colspan = 4, HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase("Remarks:", fontArial11Bold)) { Rowspan = 4, Colspan = 4, HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                     loanlData.AddCell(new PdfPCell(new Phrase("Total Overdue:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, Colspan = 2, PaddingTop = 2f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                     loanlData.AddCell(new PdfPCell(new Phrase("Overall:", fontArial11Bold)) { HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
                     loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial11)) { HorizontalAlignment = 0, Colspan = 2, PaddingTop = 2f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+
+                    loanlData.AddCell(new PdfPCell(new Phrase("Total Active Applicants:", fontArial11Bold)) { Colspan = 2, HorizontalAlignment = 0, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
+                    loanlData.AddCell(new PdfPCell(new Phrase(noOfCusomters.ToString("#,##0"), fontArial11Bold)) { HorizontalAlignment = 2, PaddingTop = 4f, PaddingBottom = 6f, PaddingLeft = 5f, PaddingRight = 5f });
 
                     document.Add(loanlData);
 

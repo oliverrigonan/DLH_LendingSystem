@@ -317,17 +317,17 @@
 
                     }
 
-                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                    var template = '<table style="table-layout:fixed; width:550px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
                                         '<col style="width: 120px;"/>' +
                                         '<col style="width: 200px;"/>' +
                                         '<thead>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Staff No. </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                            '<th style="word-wrap:break-word; valign="top"> Staff </td>' +
                                         '</thead>' +
                                          '<tbody>' +
                                             '<tr>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{StaffNumber}</td>' +
-                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Staff}</td>' +
+                                                '<td style="word-wrap:break-word; valign="top">{Staff}</td>' +
                                             '</tr>' +
                                         '</tbody>' +
                                    '</table>';
@@ -341,11 +341,6 @@
                         isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff",
-                        headerPath: 'Staff',
-                        formatItem: function (s, e) {
-                            var html = wijmo.format(template, e.data);
-                            e.item.innerHTML = html;
-                        },
                     });
 
                     getAreaDetailData();
@@ -618,22 +613,20 @@
                         disabled = false;
                     }
 
-
-                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                    var template = '<table style="table-layout:fixed; width:550px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
                                         '<col style="width: 120px;"/>' +
                                         '<col style="width: 200px;"/>' +
                                         '<thead>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Staff No. </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                            '<th style="word-wrap:break-word; valign="top"> Staff </td>' +
                                         '</thead>' +
                                          '<tbody>' +
                                             '<tr>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{StaffNumber}</td>' +
-                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Staff}</td>' +
+                                                '<td style="word-wrap:break-word; valign="top">{Staff}</td>' +
                                             '</tr>' +
                                         '</tbody>' +
                                    '</table>';
-
 
                     cboStaff.dispose();
                     cboStaff = new wijmo.input.ComboBox('#cboStaff', {
@@ -644,11 +637,6 @@
                         isRequired: true,
                         displayMemberPath: "Staff",
                         selectedValuePath: "Staff",
-                        headerPath: 'Staff',
-                        formatItem: function (s, e) {
-                            var html = wijmo.format(template, e.data);
-                            e.item.innerHTML = html;
-                        },
                     });
                 }
             });

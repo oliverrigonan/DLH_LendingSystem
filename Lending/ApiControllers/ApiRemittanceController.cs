@@ -45,6 +45,75 @@ namespace Lending.ApiControllers
             return remmitance.ToList();
         }
 
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/remmittance/list/report/{startDate}/{endDate}/{areaId}")]
+        public List<Models.TrnRemittance> listRemmittance(String startDate, String endDate, String areaId)
+        {
+            if (areaId.Equals("0"))
+            {
+                var remmitance = from d in db.trnRemittances.OrderByDescending(d => d.Id)
+                                 where d.RemittanceDate >= Convert.ToDateTime(startDate)
+                                 && d.RemittanceDate <= Convert.ToDateTime(endDate)
+                                 && d.IsLocked == true
+                                 select new Models.TrnRemittance
+                                 {
+                                     Id = d.Id,
+                                     RemittanceNumber = d.RemittanceNumber,
+                                     RemittanceDate = d.RemittanceDate.ToShortDateString(),
+                                     AreaId = d.AreaId,
+                                     Area = d.mstArea.Area,
+                                     StaffId = d.StaffId,
+                                     Staff = d.mstStaff.Staff,
+                                     Particulars = d.Particulars,
+                                     PreparedByUserId = d.PreparedByUserId,
+                                     PreparedByUser = d.mstUser.FullName,
+                                     RemitAmount = d.RemitAmount,
+                                     IsLocked = d.IsLocked,
+                                     CreatedByUserId = d.CreatedByUserId,
+                                     CreatedByUser = d.mstUser1.FullName,
+                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                     UpdatedByUserId = d.UpdatedByUserId,
+                                     UpdatedByUser = d.mstUser2.FullName,
+                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                 };
+
+                return remmitance.ToList();
+            }
+            else
+            {
+                var remmitance = from d in db.trnRemittances.OrderByDescending(d => d.Id)
+                                 where d.RemittanceDate >= Convert.ToDateTime(startDate)
+                                 && d.RemittanceDate <= Convert.ToDateTime(endDate)
+                                 && d.IsLocked == true
+                                 && d.AreaId == Convert.ToInt32(areaId)
+                                 select new Models.TrnRemittance
+                                 {
+                                     Id = d.Id,
+                                     RemittanceNumber = d.RemittanceNumber,
+                                     RemittanceDate = d.RemittanceDate.ToShortDateString(),
+                                     AreaId = d.AreaId,
+                                     Area = d.mstArea.Area,
+                                     StaffId = d.StaffId,
+                                     Staff = d.mstStaff.Staff,
+                                     Particulars = d.Particulars,
+                                     PreparedByUserId = d.PreparedByUserId,
+                                     PreparedByUser = d.mstUser.FullName,
+                                     RemitAmount = d.RemitAmount,
+                                     IsLocked = d.IsLocked,
+                                     CreatedByUserId = d.CreatedByUserId,
+                                     CreatedByUser = d.mstUser1.FullName,
+                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                     UpdatedByUserId = d.UpdatedByUserId,
+                                     UpdatedByUser = d.mstUser2.FullName,
+                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                 };
+
+                return remmitance.ToList();
+            }
+        }
+
         [Authorize]
         [HttpGet]
         [Route("api/remmittance/get/{id}")]
@@ -246,7 +315,7 @@ namespace Lending.ApiControllers
                                 lockRemittance.IsLocked = true;
                                 lockRemittance.UpdatedByUserId = userId;
                                 lockRemittance.UpdatedDateTime = DateTime.Now;
-                                
+
                                 db.SubmitChanges();
 
                                 return Request.CreateResponse(HttpStatusCode.OK);

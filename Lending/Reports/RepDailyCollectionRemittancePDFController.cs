@@ -65,8 +65,8 @@ namespace Lending.Reports
                     Font fontArial12Bold = FontFactory.GetFont("Arial", 9, Font.BOLD);
                     Font fontArial13Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
                     Font fontArial12 = FontFactory.GetFont("Arial", 9);
-                    Font fontArial11Bold = FontFactory.GetFont("Arial", 8, Font.BOLD);
-                    Font fontArial11 = FontFactory.GetFont("Arial", 8);
+                    Font fontArial11Bold = FontFactory.GetFont("Arial", 10, Font.BOLD);
+                    Font fontArial11 = FontFactory.GetFont("Arial", 10);
                     Font fontArial11ITALIC = FontFactory.GetFont("Arial", 9, Font.ITALIC);
                     Font fontArial10Bold = FontFactory.GetFont("Arial", 7, Font.BOLD);
                     Font fontArial10 = FontFactory.GetFont("Arial", 7);
@@ -128,7 +128,7 @@ namespace Lending.Reports
                         totalGross += dailyCollectionRemittanceList.GrossCollection;
                         totalRemitted += dailyCollectionRemittanceList.NetRemitted;
 
-                        collectionData.AddCell(new PdfPCell(new Phrase(dailyCollectionRemittanceList.Area, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        collectionData.AddCell(new PdfPCell(new Phrase(dailyCollectionRemittanceList.Area, fontArial11Bold)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionData.AddCell(new PdfPCell(new Phrase(dailyCollectionRemittanceList.GrossCollection.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         collectionData.AddCell(new PdfPCell(new Phrase(dailyCollectionRemittanceList.NetRemitted.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
 

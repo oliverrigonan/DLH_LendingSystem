@@ -242,7 +242,7 @@
             cboReturnReleaseDate.dispose();
             cboReturnReleaseDate = new wijmo.input.InputDate('#cboReturnReleaseDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -282,7 +282,7 @@
             cboReturnReleaseEndDate.dispose();
             cboReturnReleaseEndDate = new wijmo.input.InputDate('#cboReturnReleaseEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();

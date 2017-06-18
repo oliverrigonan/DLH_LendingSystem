@@ -282,7 +282,7 @@
                         cboCompanyName.selectedValue = userDetailResult.Company;
 
                         if (userDetailResult.IsLocked) {
-                            cboCompanyName.disabled = true;
+                            cboCompanyName.isDisabled = true;
                             $("#btnLockUser").prop("disabled", true);
                             $("#btnAddUserForm").prop("disabled", true);
                             $("#btnCopyRightsUserForm").prop("disabled", true);

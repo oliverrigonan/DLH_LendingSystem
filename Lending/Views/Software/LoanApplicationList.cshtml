@@ -178,7 +178,7 @@
             cboLoanDate.dispose();
             cboLoanDate = new wijmo.input.InputDate('#cboLoanDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -218,7 +218,7 @@
             cboEndLoanDate.dispose();
             cboEndLoanDate = new wijmo.input.InputDate('#cboEndLoanDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();

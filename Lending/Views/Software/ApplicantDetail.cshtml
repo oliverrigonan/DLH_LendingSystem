@@ -614,7 +614,7 @@
                                                                     <tr>
                                                                         <td style="width: 90%">
                                                                             <div class="input-group">
-                                                                                <span class="input-group-addon"> Transaction No.</span>
+                                                                                <span class="input-group-addon"> Transaction No. </span>
                                                                                 <div id="cboLoan" style="width: 100%;"></div>
                                                                             </div>
                                                                         </td>
@@ -1232,13 +1232,13 @@
                                         '<thead>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Co-Maker No. </td>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Area </td>' +
+                                            '<th style="word-wrap:break-word; valign="top"> Area </td>' +
                                         '</thead>' +
                                          '<tbody>' +
                                             '<tr>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantNumber}</td>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantFullName}</td>' +
-                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Area}</td>' +
+                                                '<td style="word-wrap:break-word; valign="top">{Area}</td>' +
                                             '</tr>' +
                                         '</tbody>' +
                                    '</table>';
@@ -1253,11 +1253,6 @@
                         isRequired: true,
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "Id",
-                        headerPath: 'ApplicantFullName',
-                        formatItem: function (s, e) {
-                            var html = wijmo.format(template, e.data);
-                            e.item.innerHTML = html;
-                        },
                     });
                 }
             });
@@ -1298,17 +1293,17 @@
                         disabled = false;
                     }
 
-                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                    var template = '<table style="table-layout:fixed; width:550px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
                                         '<col style="width: 120px;"/>' +
                                         '<col style="width: 200px;"/>' +
                                         '<thead>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Area No. </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                            '<th style="word-wrap:break-word; valign="top"> Area </td>' +
                                         '</thead>' +
                                          '<tbody>' +
                                             '<tr>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{AreaNumber}</td>' +
-                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Area}</td>' +
+                                                '<td style="word-wrap:break-word; valign="top">{Area}</td>' +
                                             '</tr>' +
                                         '</tbody>' +
                                    '</table>';
@@ -1323,11 +1318,6 @@
                         isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
-                        headerPath: 'Area',
-                        formatItem: function (s, e) {
-                            var html = wijmo.format(template, e.data);
-                            e.item.innerHTML = html;
-                        },
                     });
                 }
             });
@@ -3672,22 +3662,20 @@
                         disabled = false;
                     }
 
-
-                    var template = '<table style="table-layout:fixed; width:450px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
-                                        '<col style="width: 150px;"/>' +
+                    var template = '<table style="table-layout:fixed; width:550px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
                                         '<col style="width: 200px;"/>' +
                                         '<thead>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Requirement </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Description </td>' +
+                                            '<th style="word-wrap:break-word; valign="top"> Description </td>' +
                                         '</thead>' +
                                          '<tbody>' +
                                             '<tr>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Requirement}</td>' +
-                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Description}</td>' +
+                                                '<td style="word-wrap:break-word; valign="top">{Description}</td>' +
                                             '</tr>' +
                                         '</tbody>' +
                                    '</table>';
-
 
                     cboRequirement.dispose();
                     cboRequirement = new wijmo.input.ComboBox('#cboRequirement', {
@@ -3698,11 +3686,6 @@
                         isRequired: true,
                         displayMemberPath: "Requirement",
                         selectedValuePath: "Requirement",
-                        headerPath: 'Requirement',
-                        formatItem: function (s, e) {
-                            var html = wijmo.format(template, e.data);
-                            e.item.innerHTML = html;
-                        },
                     });
                 }
             });
@@ -4405,10 +4388,9 @@
                         disabled = false;
                     }
 
-                    var template = '<table style="table-layout:fixed; width:900px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                    var template = '<table style="table-layout:fixed; width:850px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
                                         '<col style="width: 120px;"/>' +
                                         '<col style="width: 100px;"/>' +
-                                        '<col style="width: 10px;"/>' +
                                         '<col style="width: 150px;"/>' +
                                         '<col style="width: 10px;"/>' +
                                         '<col style="width: 150px;"/>' +
@@ -4416,25 +4398,23 @@
                                         '<col style="width: 120px;"/>' +
                                         '<thead>' +
                                             '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Loan No. </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Loan Date </td>' +
-                                            '<th style="word-wrap:break-word; padding-right: 30px;" valign="top" colspan="2"> Paid </th>' +
-                                            '<th style="word-wrap:break-word; padding-right: 30px;" valign="top" colspan="2"> Penalty </th>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Due Date </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Particulars </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 30px;" valign="top" colspan="2"> Collectible </th>' +
                                             '<th style="word-wrap:break-word;" valign="top" colspan="2"> Balance </th>' +
                                         '</thead>' +
                                          '<tbody>' +
                                             '<tr>' +
                                                 '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{LoanNumberDetail}</td>' +
-                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{LoanDate}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{MaturityDate}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Particulars}</td>' +
                                                 '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
-                                                '<td style="text-align: right; word-wrap:break-word; padding-right: 30px;" valign="top"> {TotalPaidAmount}</td>' +
-                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
-                                                '<td style="text-align: right; word-wrap:break-word; padding-right: 30px;" valign="top"> {TotalPenaltyAmount}</td>' +
+                                                '<td style="text-align: right; word-wrap:break-word; padding-right: 30px;" valign="top"> {CollectibleAmount}</td>' +
                                                 '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
                                                 '<td style="text-align: right; word-wrap:break-word;" valign="top"> {TotalBalanceAmount}</td>' +
                                             '</tr>' +
                                         '</tbody>' +
                                    '</table>';
-
 
                     cboLoan.dispose();
                     cboLoan = new wijmo.input.ComboBox('#cboLoan', {

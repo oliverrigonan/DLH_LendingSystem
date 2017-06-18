@@ -813,7 +813,7 @@
 
                     cboloanApplicationPreparedBy.dispose();
                     cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#loanApplicationPreparedBy', {
-                        isDisabled: disabled,
+                        isDisabled: true,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
@@ -872,16 +872,16 @@
                             $("#btnLock").prop("disabled", true);
 
                             setTimeout(function () {
-                                loanApplicationLoanDate.disabled = true;
-                                loanApplicationMaturityDate.disabled = true;
+                                loanApplicationLoanDate.isDisabled = true;
+                                loanApplicationMaturityDate.isDisabled = true;
                             }, 100);
 
-                            cboloanApplicationApplicant.disabled = true;
-                            cboTerm.disabled = true;
+                            cboloanApplicationApplicant.isDisabled = true;
+                            cboTerm.isDisabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
                             document.getElementById('previousBalanceAmount').disabled = true;
-                            cboInterest.disabled = true;
+                            cboInterest.isDisabled = true;
                             $("#btnAddLoanApplicationCollateral").prop("disabled", true);
                             $("#btnAddLoanApplicationDeduction").prop("disabled", true);
                             isLocked = true;

@@ -319,7 +319,7 @@
 
                     cboRemittancePreparedBy.dispose();
                     cboRemittancePreparedBy = new wijmo.input.ComboBox('#cboRemittancePreparedBy', {
-                        isDisabled: disabled,
+                        isDisabled: true,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
@@ -358,9 +358,9 @@
                         if (remmittanceResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
 
-                            cboRemittanceDateValue.disabled = true;
-                            cboRemittanceArea.disabled = true;
-                            cboRemittanceStaff.disabled = true;
+                            cboRemittanceDateValue.isDisabled = true;
+                            cboRemittanceArea.isDisabled = true;
+                            cboRemittanceStaff.isDisabled = true;
 
                             document.getElementById("remittanceParticulars").disabled = true;
                             document.getElementById('remittanceAmount').disabled = true;

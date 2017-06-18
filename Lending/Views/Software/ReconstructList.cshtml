@@ -428,7 +428,7 @@
             cboReconstructDate.dispose();
             cboReconstructDate = new wijmo.input.InputDate('#cboReconstructDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -470,7 +470,7 @@
             cboReconstructEndDate.dispose();
             cboReconstructEndDate = new wijmo.input.InputDate('#cboReconstructEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();

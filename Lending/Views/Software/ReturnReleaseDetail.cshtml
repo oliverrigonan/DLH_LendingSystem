@@ -291,14 +291,16 @@
                             applicantLoanNumberArray.push({
                                 Id: applicantLoanNumberResults[i]["Id"],
                                 LoanNumberDetail: applicantLoanNumberResults[i]["LoanNumberDetail"],
-                                CollectibleAmount: applicantLoanNumberResults[i]["CollectibleAmount"],
-                                TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"],
-                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"],
-                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"],
-                                NetAmount: applicantLoanNumberResults[i]["NetAmount"],
+                                MaturityDate: applicantLoanNumberResults[i]["MaturityDate"],
+                                CollectibleAmount: applicantLoanNumberResults[i]["CollectibleAmount"].toLocaleString(),
+                                TotalPaidAmount: applicantLoanNumberResults[i]["TotalPaidAmount"].toLocaleString(),
+                                TotalBalanceAmount: applicantLoanNumberResults[i]["TotalBalanceAmount"].toLocaleString(),
+                                TotalPenaltyAmount: applicantLoanNumberResults[i]["TotalPenaltyAmount"].toLocaleString(),
                                 IsLoanApplication: applicantLoanNumberResults[i]["IsLoanApplication"],
                                 IsLoanRenew: applicantLoanNumberResults[i]["IsLoanRenew"],
                                 IsLoanReconstruct: applicantLoanNumberResults[i]["IsLoanReconstruct"],
+                                Particulars: applicantLoanNumberResults[i]["Particulars"],
+                                NetAmount: applicantLoanNumberResults[i]["NetAmount"].toLocaleString(),
                             });
                         }
 
@@ -310,6 +312,30 @@
                         disabledLoanNumber = true;
                     }
 
+                    var template = '<table style="table-layout:fixed; width:750px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 100px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<col style="width: 10px;"/>' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Loan No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Due Date </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Particulars </td>' +
+                                            '<th style="word-wrap:break-word;" valign="top" colspan="2"> Net Amount </th>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{LoanNumberDetail}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{MaturityDate}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Particulars}</td>' +
+                                                '<td style="padding: 0px; margin: 0px;" valign="top"> &#8369 </td>' +
+                                                '<td style="text-align: right; word-wrap:break-word;" valign="top"> {NetAmount}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
+
                     cboCollectionApplicantLoanNumber.dispose();
                     cboCollectionApplicantLoanNumber = new wijmo.input.ComboBox('#cboCollectionApplicantLoanNumber', {
                         isDisabled: disabledLoanNumber,
@@ -319,6 +345,11 @@
                         displayMemberPath: "LoanNumberDetail",
                         selectedValuePath: "LoanNumberDetail",
                         //selectedValue: applicantloanunmberselectedvalue.toString(),
+                        headerPath: 'LoanNumberDetail',
+                        formatItem: function (s, e) {
+                            var html = wijmo.format(template, e.data);
+                            e.item.innerHTML = html;
+                        },
                         onSelectedIndexChanged: function () {
                             document.getElementById("returnReleaseAmount").value = this.selectedItem["NetAmount"].toLocaleString();
                         }
@@ -394,7 +425,7 @@
 
                     cboReturnReleasePreparedBy.dispose();
                     cboReturnReleasePreparedBy = new wijmo.input.ComboBox('#cboReturnReleasePreparedBy', {
-                        isDisabled: disabled,
+                        isDisabled: true,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
@@ -433,10 +464,10 @@
                         if (returnReleaseResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
 
-                            cboReturnReleaseDateValue.disabled = true;
-                            cboCollectionApplicant.disabled = true;
-                            cboCollectionApplicantLoanNumber.disabled = true;
-                            cboReturnReleaseCollectorStaff.disabled = true;
+                            cboReturnReleaseDateValue.isDisabled = true;
+                            cboCollectionApplicant.isDisabled = true;
+                            cboCollectionApplicantLoanNumber.isDisabled = true;
+                            cboReturnReleaseCollectorStaff.isDisabled = true;
                             document.getElementById("returnReleaseParticulars").disabled = true;
                             document.getElementById('returnReleaseAmount').disabled = true;
                             isLocked = true;

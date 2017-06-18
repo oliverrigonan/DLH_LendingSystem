@@ -261,6 +261,8 @@
     <Compile Include="Reports\RepExpensesPDFController.cs" />
     <Compile Include="Reports\RepLoanRenewReconstructSummaryPDFController.cs" />
     <Compile Include="Reports\RepOverdueCollectionPDFController.cs" />
+    <Compile Include="Reports\RepRemittancePDFController.cs" />
+    <Compile Include="Reports\RepReturnReleasePDFController.cs" />
     <Compile Include="Reports\RepTotalCollectionPDFController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

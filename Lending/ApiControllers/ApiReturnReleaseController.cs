@@ -17,7 +17,7 @@ namespace Lending.ApiControllers
         [Route("api/returnRelease/list/{startDate}/{endDate}")]
         public List<Models.TrnReturnRelease> listReturnRelease(String startDate, String endDate)
         {
-            var remmitance = from d in db.trnReturnReleases.OrderByDescending(d => d.Id)
+            var returnRelease = from d in db.trnReturnReleases.OrderByDescending(d => d.Id)
                              where d.ReturnReleaseDate >= Convert.ToDateTime(startDate)
                              && d.ReturnReleaseDate <= Convert.ToDateTime(endDate)
                              select new Models.TrnReturnRelease
@@ -43,7 +43,77 @@ namespace Lending.ApiControllers
                                  UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
                              };
 
-            return remmitance.ToList();
+            return returnRelease.ToList();
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route("api/returnRelease/list/report/{startDate}/{endDate}/{areaId}")]
+        public List<Models.TrnReturnRelease> listReturnRelease(String startDate, String endDate, String areaId)
+        {
+            if (areaId.Equals("0"))
+            {
+                var returnRelease = from d in db.trnReturnReleases.OrderByDescending(d => d.Id)
+                                 where d.ReturnReleaseDate >= Convert.ToDateTime(startDate)
+                                 && d.ReturnReleaseDate <= Convert.ToDateTime(endDate)
+                                 && d.IsLocked == true
+                                 select new Models.TrnReturnRelease
+                                 {
+                                     Id = d.Id,
+                                     ReturnReleaseNumber = d.ReturnReleaseNumber,
+                                     ReturnReleaseDate = d.ReturnReleaseDate.ToShortDateString(),
+                                     Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                     LoanId = d.LoanId,
+                                     LoanNumber = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : " ",
+                                     Particulars = d.Particulars,
+                                     CollectorStaffId = d.CollectorStaffId,
+                                     CollectorStaff = d.mstStaff.Staff,
+                                     PreparedByUserId = d.PreparedByUserId,
+                                     PreparedByUser = d.mstUser.FullName,
+                                     ReturnAmount = d.ReturnAmount,
+                                     IsLocked = d.IsLocked,
+                                     CreatedByUserId = d.CreatedByUserId,
+                                     CreatedByUser = d.mstUser1.FullName,
+                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                     UpdatedByUserId = d.UpdatedByUserId,
+                                     UpdatedByUser = d.mstUser2.FullName,
+                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                 };
+
+                return returnRelease.ToList();
+            }
+            else
+            {
+                var returnRelease = from d in db.trnReturnReleases.OrderByDescending(d => d.Id)
+                                 where d.ReturnReleaseDate >= Convert.ToDateTime(startDate)
+                                 && d.ReturnReleaseDate <= Convert.ToDateTime(endDate)
+                                 && d.trnLoan.mstApplicant.AreaId == Convert.ToInt32(areaId)
+                                 && d.IsLocked == true
+                                 select new Models.TrnReturnRelease
+                                 {
+                                     Id = d.Id,
+                                     ReturnReleaseNumber = d.ReturnReleaseNumber,
+                                     ReturnReleaseDate = d.ReturnReleaseDate.ToShortDateString(),
+                                     Applicant = d.trnLoan.mstApplicant.ApplicantLastName + ", " + d.trnLoan.mstApplicant.ApplicantFirstName + " " + (d.trnLoan.mstApplicant.ApplicantMiddleName != null ? d.trnLoan.mstApplicant.ApplicantMiddleName : " "),
+                                     LoanId = d.LoanId,
+                                     LoanNumber = d.trnLoan.IsLoanApplication == true ? "LN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanRenew == true ? "RN-" + d.trnLoan.LoanNumber : d.trnLoan.IsLoanReconstruct == true ? "RC-" + d.trnLoan.LoanNumber : " ",
+                                     Particulars = d.Particulars,
+                                     CollectorStaffId = d.CollectorStaffId,
+                                     CollectorStaff = d.mstStaff.Staff,
+                                     PreparedByUserId = d.PreparedByUserId,
+                                     PreparedByUser = d.mstUser.FullName,
+                                     ReturnAmount = d.ReturnAmount,
+                                     IsLocked = d.IsLocked,
+                                     CreatedByUserId = d.CreatedByUserId,
+                                     CreatedByUser = d.mstUser1.FullName,
+                                     CreatedDateTime = d.CreatedDateTime.ToShortDateString(),
+                                     UpdatedByUserId = d.UpdatedByUserId,
+                                     UpdatedByUser = d.mstUser2.FullName,
+                                     UpdatedDateTime = d.UpdatedDateTime.ToShortDateString()
+                                 };
+
+                return returnRelease.ToList();
+            }
         }
 
         [Authorize]

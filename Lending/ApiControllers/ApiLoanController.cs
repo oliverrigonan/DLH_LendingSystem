@@ -130,6 +130,7 @@ namespace Lending.ApiControllers
                                    {
                                        Id = d.Id,
                                        LoanNumberDetail = d.IsLoanApplication == true ? "LN-" + d.LoanNumber : d.IsLoanReconstruct == true ? "RC-" + d.LoanNumber : d.IsLoanRenew == true ? "RN-" + d.LoanNumber : " ",
+                                       MaturityDate = d.MaturityDate.ToShortDateString(),
                                        CollectibleAmount = d.CollectibleAmount,
                                        TotalPaidAmount = d.TotalPaidAmount,
                                        TotalPenaltyAmount = d.TotalPenaltyAmount,
@@ -137,7 +138,8 @@ namespace Lending.ApiControllers
                                        NetAmount = d.NetAmount,
                                        IsLoanApplication = d.IsLoanApplication,
                                        IsLoanRenew = d.IsLoanRenew,
-                                       IsLoanReconstruct = d.IsLoanReconstruct
+                                       IsLoanReconstruct = d.IsLoanReconstruct,
+                                       Particulars = d.Particulars
                                    };
 
             return loanApplications.ToList();

@@ -267,7 +267,7 @@
 
                     cboVaultPreparedBy.dispose();
                     cboVaultPreparedBy = new wijmo.input.ComboBox('#cboVaultPreparedBy', {
-                        isDisabled: disabled,
+                        isDisabled: true,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
@@ -305,8 +305,8 @@
                         if (vaultResult.IsLocked == true) {
                             $("#btnLock").prop("disabled", true);
 
-                            cboVaultDateValue.disabled = true;
-                            cboVaultStaff.disabled = true;
+                            cboVaultDateValue.isDisabled = true;
+                            cboVaultStaff.isDisabled = true;
 
                             document.getElementById("vaultParticulars").disabled = true;
                             document.getElementById('vaultAmount').disabled = true;

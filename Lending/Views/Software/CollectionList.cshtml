@@ -184,7 +184,7 @@
             cboCollectionDate.dispose();
             cboCollectionDate = new wijmo.input.InputDate('#cboCollectionDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -223,7 +223,7 @@
             cboCollectionEndDate.dispose();
             cboCollectionEndDate = new wijmo.input.InputDate('#cboCollectionEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();

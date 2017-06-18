@@ -744,6 +744,7 @@
                         for (i = 0; i < applicantResults.length; i++) {
                             applicantArray.push({
                                 Id: applicantResults[i]["Id"],
+                                ApplicantNumber: "AP-" + applicantResults[i]["ApplicantNumber"],
                                 ApplicantFullName: applicantResults[i]["ApplicantFullName"],
                                 AreaId: applicantResults[i]["AreaId"],
                                 Area: applicantResults[i]["Area"],
@@ -759,6 +760,24 @@
                         getTerm();
                     }
 
+                    var template = '<table style="table-layout:fixed; width:650px; margin-top: 10px; margin-bottom: 10px;" border="0"> ' +
+                                        '<col style="width: 120px;"/>' +
+                                        '<col style="width: 200px;"/>' +
+                                        '<col style="width: 150px;"/>' +
+                                        '<thead>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Applicant No. </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Name </td>' +
+                                            '<th style="word-wrap:break-word; padding-right: 50px;" valign="top"> Area </td>' +
+                                        '</thead>' +
+                                         '<tbody>' +
+                                            '<tr>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantNumber}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{ApplicantFullName}</td>' +
+                                                '<td style="word-wrap:break-word; padding-right: 50px;" valign="top">{Area}</td>' +
+                                            '</tr>' +
+                                        '</tbody>' +
+                                   '</table>';
+
                     cboloanApplicationApplicant.dispose();
                     cboloanApplicationApplicant = new wijmo.input.ComboBox('#loanApplicationApplicant', {
                         isDisabled: disabled,
@@ -768,6 +787,7 @@
                         isRequired: true,
                         displayMemberPath: "ApplicantFullName",
                         selectedValuePath: "ApplicantFullName",
+                        headerPath: 'ApplicantFullName',
                         onSelectedIndexChanged: function () {
                             createFlexGridForLoanHistory();
                             window.createFlexGridForLoanHistory = function () {
@@ -850,7 +870,7 @@
 
                     cboloanApplicationPreparedBy.dispose();
                     cboloanApplicationPreparedBy = new wijmo.input.ComboBox('#cboloanApplicationPreparedBy', {
-                        isDisabled: disabled,
+                        isDisabled: true,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
@@ -909,15 +929,15 @@
                             $("#btnLock").prop("disabled", true);
 
                             setTimeout(function () {
-                                loanApplicationLoanDate.disabled = true;
-                                loanApplicationMaturityDate.disabled = true;
+                                loanApplicationLoanDate.isDisabled = true;
+                                loanApplicationMaturityDate.isDisabled = true;
                             }, 100);
 
-                            cboloanApplicationApplicant.disabled = true;
-                            cboTerm.disabled = true;
+                            cboloanApplicationApplicant.isDisabled = true;
+                            cboTerm.isDisabled = true;
                             document.getElementById("loanApplicationParticulars").disabled = true;
                             document.getElementById('loanApplicationPrincipalAmount').disabled = true;
-                            cboInterest.disabled = true;
+                            cboInterest.isDisabled = true;
                             $("#btnAddLoanApplicationCollateral").prop("disabled", true);
                             $("#btnAddLoanApplicationDeduction").prop("disabled", true);
                             isLocked = true;
@@ -1469,6 +1489,7 @@
                             termArray.push({
                                 Id: termResults[i]["Id"],
                                 Term: termResults[i]["Term"],
+                                Description: termResults[i]["Description"],
                                 NoOfDays: termResults[i]["NoOfDays"]
                             });
                         }
@@ -1515,7 +1536,8 @@
                             interestArray.push({
                                 Id: interestResults[i]["Id"],
                                 Interest: interestResults[i]["Interest"],
-                                Rate: interestResults[i]["Rate"],
+                                Description: interestResults[i]["Description"],
+                                Rate: interestResults[i]["Rate"]
                             });
                         }
 

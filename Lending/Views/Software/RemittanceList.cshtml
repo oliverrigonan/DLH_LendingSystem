@@ -242,7 +242,7 @@
             cboRemittanceDate.dispose();
             cboRemittanceDate = new wijmo.input.InputDate('#cboRemittanceDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -283,7 +283,7 @@
             cboRemittanceEndDate.dispose();
             cboRemittanceEndDate = new wijmo.input.InputDate('#cboRemittanceEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();

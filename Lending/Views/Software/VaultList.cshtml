@@ -242,7 +242,7 @@
             cboVaultDate.dispose();
             cboVaultDate = new wijmo.input.InputDate('#cboVaultDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -283,7 +283,7 @@
             cboVaultEndDate.dispose();
             cboVaultEndDate = new wijmo.input.InputDate('#cboVaultEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();

@@ -37,8 +37,8 @@
                     </div>
                 </div>
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#loanReport">Loan / Renew / Reconstruct Reports</a></li>
-                    <li><a data-toggle="tab" href="#collectionReport" onclick="collectionReportOnClick()">Collection / Remittance Report</a></li>
+                    <li class="active"><a data-toggle="tab" href="#loanReport">Loan Reports</a></li>
+                    <li><a data-toggle="tab" href="#collectionReport" onclick="collectionReportOnClick()">Collection Report</a></li>
                     <li><a data-toggle="tab" href="#expensesReport" onclick="expensesReportOnClick()">Expenses Report</a></li>
                 </ul>
                 <br />
@@ -46,9 +46,10 @@
                     <div id="loanReport" class="tab-pane fade in active">
                         <ul class="nav nav-pills" style="background-color: #f7f7f7">
                             <li class="active"><a data-toggle="pill" href="#dailyReleaseMonitoringReport" onclick="dailyReleaseMonitoringReportTabPillsOnclick()">Daily Release Monitoring</a></li>
-                            <li><a data-toggle="pill" href="#loanSummaryReport" onclick="loanSummaryReportTabPillsOnclick()">Loan Summary Report</a></li>
-                            <li><a data-toggle="pill" href="#renewSummaryReport" onclick="renewSummaryReportTabPillsOnclick()">Renew Summary Report</a></li>
-                            <li><a data-toggle="pill" href="#reconstructSummaryReport" onclick="reconstructSummaryReportTabPillsOnclick()">Reconstruct / Overdue Summary Report</a></li>
+                            <li><a data-toggle="pill" href="#loanSummaryReport" onclick="loanSummaryReportTabPillsOnclick()">Loan Report</a></li>
+                            <li><a data-toggle="pill" href="#renewSummaryReport" onclick="renewSummaryReportTabPillsOnclick()">Renew Report</a></li>
+                            <li><a data-toggle="pill" href="#reconstructSummaryReport" onclick="reconstructSummaryReportTabPillsOnclick()">Reconstruct (Overdue) Report</a></li>
+                            <li><a data-toggle="pill" href="#returnReleaseReport" onclick="returnReleaseTabPillsOnclick()">Return Release Report</a></li>
                         </ul>
                         <br />
                         <div class="tab-content">
@@ -332,6 +333,76 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="returnReleaseReport" class="tab-pane fade">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 61%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="searchReturnRelease" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 38%;"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Start Date</span>
+                                                        <div id="cboReturnReleaseDate" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> End Date</span>
+                                                        <div id="cboReturnReleaseEndDate" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 28%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Area</span>
+                                                        <div id="cboReturnReleaseArea" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 9%;" align="right">
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintReturnReleaseReporPrint()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="ReturnReleaseListFlexGrid" class=""></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridReturnRelease">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridReturnRelease">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridReturnRelease">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridReturnRelease"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridReturnRelease">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridReturnRelease">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div id="collectionReport" class="tab-pane fade">
@@ -339,6 +410,7 @@
                             <li class="active"><a data-toggle="pill" href="#collectionReportActive" onclick="collectionReportActiveOnClick()">Active Collection</a></li>
                             <li><a data-toggle="pill" href="#collectionReportOverdue" onclick="collectionReportOverdueOnClick()">Overdue Collection</a></li>
                             <li><a data-toggle="pill" href="#totalCollectionReport" onclick="totalCollectionReportOnClick()">Total Collection</a></li>
+                            <li><a data-toggle="pill" href="#totalRemittanceReport" onclick="totalRemittanceReportOnClick()">Total Remittance</a></li>
                             <li><a data-toggle="pill" href="#dailyCollectionAndRemittanceReport" onclick="dailyCollectionAndRemittanceReportOnClick()">Daily Collection and Remittance</a></li>
                         </ul>
                         <br />
@@ -532,6 +604,76 @@
                                                     <span class="glyphicon glyphicon-step-forward"></span> Next
                                                 </button>
                                                 <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridTotalCollectionReport">
+                                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="totalRemittanceReport" class="tab-pane fade">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 59%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><i class="fa fa-search fa-fw"></i> </span>
+                                                        <input type="text" id="totalRemittanceReportSearchInput" class="form-control" placeholder="Search" />
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 40%;"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-heading" align="right">
+                                        <table border="0" style="width: 100%;">
+                                            <tr>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Start Date</span>
+                                                        <div id="cboStartDateTotalRemittanceReportReport" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 30%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> End Date</span>
+                                                        <div id="cboEndDateTotalRemittanceReportReport" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 28%;">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"> Area</span>
+                                                        <div id="cboEndDateTotalRemittanceArea" style="width: 100%;"></div>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 1%;"></td>
+                                                <td style="width: 9%;" align="right">
+                                                    <button class="btn btn-primary btn-block" onclick="btnPrintRemittanceReport()"><i class="fa fa-print fa-fw"></i> Print</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="totalRemittanceReportFlexGrid"></div>
+                                    </div>
+                                    <div class="panel-footer">
+                                        <div class="row">
+                                            <div class="btn-group col-md-7" id="naviagtionPageGridTotalRemittanceReport">
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGridTotalRemittanceReport">
+                                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGridTotalRemittanceReport">
+                                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGridTotalRemittanceReport"></button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGridTotalRemittanceReport">
+                                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                                </button>
+                                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGridTotalRemittanceReport">
                                                     <span class="glyphicon glyphicon-fast-forward"></span> Last
                                                 </button>
                                             </div>
@@ -869,7 +1011,7 @@
                         isRequired: true,
                         displayMemberPath: "Area",
                         selectedValuePath: "Area",
-                        selectedValue:  areaResults[0]["Area"],
+                        selectedValue: areaResults[0]["Area"],
                         onSelectedIndexChanged: function () {
                             NProgress.start();
                             refreshDailyReleaseMonitoring();
@@ -958,6 +1100,40 @@
                             refreshOverdueCollectionFlexgrid();
                         }
                     });
+
+                    cboReturnReleaseArea.dispose();
+                    cboReturnReleaseArea = new wijmo.input.ComboBox('#cboReturnReleaseArea', {
+                        isDisabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        isRequired: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshReturnReleaseFlexGrid();
+                        }
+                    });
+
+                    cboEndDateTotalRemittanceArea.dispose();
+                    cboEndDateTotalRemittanceArea = new wijmo.input.ComboBox('#cboEndDateTotalRemittanceArea', {
+                        isDisabled: disabled,
+                        placeholder: "Select",
+                        itemsSource: areaArray,
+                        isEditable: false,
+                        isRequired: true,
+                        displayMemberPath: "Area",
+                        selectedValuePath: "Area",
+                        selectedValue: areaResults[0]["Area"],
+                        onSelectedIndexChanged: function () {
+                            NProgress.start();
+                            refreshRemittanceReport();
+                        }
+                    });
+
+
                 }
             });
         }
@@ -1461,6 +1637,7 @@
                                 UpdatedByUserId: loanApplicationListResult[i]["UpdatedByUserId"],
                                 UpdatedByUser: loanApplicationListResult[i]["UpdatedByUser"],
                                 UpdatedDateTime: loanApplicationListResult[i]["UpdatedDateTime"],
+                                IsReturnRelease: loanApplicationListResult[i]["IsReturnRelease"],
                                 RenewedDocNumber: loanApplicationListResult[i]["RenewedDocNumber"],
                                 ReconstructedDocNumber: loanApplicationListResult[i]["ReconstructedDocNumber"],
                             });
@@ -1555,6 +1732,12 @@
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
+                            },
+                            {
+                                "header": "Is RL",
+                                "binding": "IsReturnRelease",
+                                "allowSorting": true,
+                                "width": 60,
                             },
                             {
                                 "header": "Date",
@@ -1745,6 +1928,12 @@
                                 "align": "center",
                                 "allowResizing": false,
                                 "isContentHtml": true
+                            },
+                            {
+                                "header": "Is RL",
+                                "binding": "IsReturnRelease",
+                                "allowSorting": true,
+                                "width": 60,
                             },
                             {
                                 "header": "Date",
@@ -2921,6 +3110,24 @@
             window.open("/RepLoanRenewReconstructSummaryPDF/loanRenewReconstructSummaryReport?loanType=reconstruct&areaId=" + cboReconstructSummaryReportArea.selectedItem["Id"] + "&startLoanDate=" + startDate + "&endLoanDate=" + endDate, "_blank");
         }
 
+        function btnPrintReturnReleaseReporPrint() {
+            var newStartDate = new Date(cboReturnReleaseDate.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboReturnReleaseEndDate.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepReturnReleasePDF/returnRelease?areaId=" + cboReturnReleaseArea.selectedItem["Id"] + "&startReturnReleaseDate=" + startDate + "&endReturnReleaseDate=" + endDate, "_blank");
+        }
+
+
+        function btnPrintRemittanceReport() {
+            var newStartDate = new Date(cboStartDateTotalRemittanceReportReport.value);
+            var startDate = ('0' + (newStartDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newStartDate.getDate()).slice(-2) + '-' + newStartDate.getFullYear();
+            var newEndDate = new Date(cboEndDateTotalRemittanceReportReport.value);
+            var endDate = ('0' + (newEndDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newEndDate.getDate()).slice(-2) + '-' + newEndDate.getFullYear();
+            window.open("/RepRemittancePDF/remittance?areaId=" + cboEndDateTotalRemittanceArea.selectedItem["Id"] + "&startRemittanceDate=" + startDate + "&endRemittanceDate=" + endDate, "_blank");
+        }
+
+
         var cboStartDateTotalCollectionReportReport;
         var cboEndDateTotalCollectionReportReport;
         var cboStartDateTotalCollectionReportReportIsClicked = false;
@@ -3149,6 +3356,681 @@
             window.open("/RepExpensesPDF/expensesPDF?startExpenseDate=" + startDate + "&endExpensesDate=" + endDate, "_blank");
         }
 
+        var isReturnReleaseLoad = false;
+        function returnReleaseTabPillsOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                createReturnReleaseFlexGrid();
+                window.createReturnReleaseFlexGrid = function () {
+                    return true;
+                }
+
+                if (isReturnReleaseLoad) {
+                    refreshReturnReleaseFlexGrid();
+                } else {
+                    isReturnReleaseLoad = true;
+                }
+            }, 200);
+        }
+
+        // global variables
+        var cboReturnReleaseDate;
+        var cboReturnReleaseEndDate;
+        var returnReleaseCollectionView;
+        var returnReleaseFlexGrid;
+        var btnFirstPageGrid;
+        var btnPreviousPageGrid;
+        var btnNextPageGrid;
+        var btnLastPageGrid;
+        var btnCurrentPageGrid;
+        var isReturnReleaseDateClicked = false;
+        var isReturnReleaseEndDateClicked = false;
+        var cboReturnReleaseChangeCollector;
+
+        function refreshReturnReleaseFlexGrid() {
+            returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+            returnReleaseCollectionView.canFilter = true;
+            returnReleaseCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchReturnRelease').keyup(function () {
+                filterText = this.value.toLowerCase();
+                returnReleaseCollectionView.refresh();
+            });
+
+            returnReleaseCollectionView.filter = function (item) {
+                return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsReturnRelease();
+            });
+
+            // Flex Grid
+            returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+            returnReleaseFlexGrid.trackChanges = true;
+        }
+
+        var returnReleaseStartDateIsClicked = false;
+
+        // create cbo date for returnRelease date
+        function createCboReturnReleaseDate() {
+            cboReturnReleaseDate.dispose();
+            cboReturnReleaseDate = new wijmo.input.InputDate('#cboReturnReleaseDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (returnReleaseStartDateIsClicked) {
+                        NProgress.start();
+                        returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                        returnReleaseCollectionView.canFilter = true;
+                        returnReleaseCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchReturnRelease').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            returnReleaseCollectionView.refresh();
+                        });
+
+                        returnReleaseCollectionView.filter = function (item) {
+                            return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsReturnRelease();
+                        });
+
+                        // Flex Grid
+                        returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                        returnReleaseFlexGrid.trackChanges = true;
+                    } else {
+                        returnReleaseStartDateIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var returnReleaseDateIsClicked = false;
+
+        // create cbo date for returnRelease date
+        function createCboReturnReleaseEndDate() {
+            cboReturnReleaseEndDate.dispose();
+            cboReturnReleaseEndDate = new wijmo.input.InputDate('#cboReturnReleaseEndDate', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (returnReleaseDateIsClicked) {
+                        NProgress.start();
+                        returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                        returnReleaseCollectionView.canFilter = true;
+                        returnReleaseCollectionView.pageSize = 15;
+
+                        var filterText = '';
+                        $('#searchReturnRelease').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            returnReleaseCollectionView.refresh();
+                        });
+
+                        returnReleaseCollectionView.filter = function (item) {
+                            return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsReturnRelease();
+                        });
+
+                        // Flex Grid
+                        returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                        returnReleaseFlexGrid.trackChanges = true;
+                    } else {
+                        returnReleaseDateIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        // get colllection list by returnRelease date and area id
+        function getReturnReleaseByReturnReleaseDateList() {
+            var returnReleaseListArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboReturnReleaseDate.value.getMonth() + 1, cboReturnReleaseDate.value.getDate(), cboReturnReleaseDate.value.getFullYear()].join('-');
+            var endDate = [cboReturnReleaseEndDate.value.getMonth() + 1, cboReturnReleaseEndDate.value.getDate(), cboReturnReleaseEndDate.value.getFullYear()].join('-');
+            $.ajax({
+                url: '/api/returnRelease/list/report/' + startDate + '/' + endDate + '/' + cboReturnReleaseArea.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (returnReleaseListResult) {
+                    if (returnReleaseListResult.length > 0) {
+                        for (i = 0; i < returnReleaseListResult.length; i++) {
+                            var isLocked = false;
+                            if (returnReleaseListResult[i]["IsLocked"]) {
+                                isLocked = true;
+                            }
+
+                            var newDate = new Date(returnReleaseListResult[i]["ReturnReleaseDate"]);
+                            var returnReleaseDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            returnReleaseListArray.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditReturnReleaseOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteReturnReleaseOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: returnReleaseListResult[i]["Id"],
+                                ReturnReleaseNumber: "RL-" + returnReleaseListResult[i]["ReturnReleaseNumber"],
+                                ReturnReleaseDate: returnReleaseDateValue,
+                                LoanNumber: returnReleaseListResult[i]["LoanNumber"],
+                                LoanId: returnReleaseListResult[i]["LoanId"],
+                                Applicant: returnReleaseListResult[i]["Applicant"],
+                                Particulars: returnReleaseListResult[i]["Particulars"],
+                                PreparedByUserId: returnReleaseListResult[i]["PreparedByUserId"],
+                                PreparedByUser: returnReleaseListResult[i]["PreparedByUser"],
+                                CollectorStaffId: returnReleaseListResult[i]["CollectorStaffId"],
+                                CollectorStaff: returnReleaseListResult[i]["CollectorStaff"],
+                                ReturnAmount: returnReleaseListResult[i]["ReturnAmount"],
+                                IsLocked: returnReleaseListResult[i]["IsLocked"],
+                                CreatedByUserId: returnReleaseListResult[i]["CreatedByUserId"],
+                                CreatedByUser: returnReleaseListResult[i]["CreatedByUser"],
+                                CreatedDateTime: returnReleaseListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: returnReleaseListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: returnReleaseListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: returnReleaseListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return returnReleaseListArray;
+        }
+
+        // stamp security
+        function updateStampSecurityReturnRelease() {
+            var item = returnReleaseCollectionView.currentItem;
+            document.getElementById('stampCreatedByReturnRelease').innerHTML = item.CreatedByUser;
+            document.getElementById('stampCreatedDateReturnRelease').innerHTML = item.CreatedDateTime;
+            document.getElementById('stampUpdatedByReturnRelease').innerHTML = item.UpdatedByUser;
+            document.getElementById('stampUpdatedDateReturnRelease').innerHTML = item.UpdatedDateTime;
+        }
+
+        // Navigation Buttons for loan application
+        function updateNavigateButtonsReturnRelease() {
+            if (returnReleaseCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridReturnRelease').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridReturnRelease').style.display = 'block';
+            btnCurrentPageGridReturnRelease.innerHTML = (returnReleaseCollectionView.pageIndex + 1) + ' / ' + returnReleaseCollectionView.pageCount;
+        }
+
+        // create returnRelease flexgrid
+        function createReturnReleaseFlexGrid() {
+            returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+            returnReleaseCollectionView.canFilter = true;
+            returnReleaseCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#searchReturnRelease').keyup(function () {
+                filterText = this.value.toLowerCase();
+                returnReleaseCollectionView.refresh();
+            });
+
+            returnReleaseCollectionView.filter = function (item) {
+                return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsReturnRelease();
+            });
+
+            // Flex Grid
+            returnReleaseFlexGrid = new wijmo.grid.FlexGrid('#ReturnReleaseListFlexGrid');
+            returnReleaseFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "EditButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "ReturnReleaseDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Return Release No.",
+                                "binding": "ReturnReleaseNumber",
+                                "allowSorting": true,
+                                "width": 150,
+                            },
+                            {
+                                "header": "Applicant",
+                                "binding": "Applicant",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Loan No.",
+                                "binding": "LoanNumber",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Amount",
+                                "binding": "ReturnAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: returnReleaseCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            returnReleaseFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnFirstPageGridReturnRelease = document.getElementById('btnMoveToFirstPageGridReturnRelease');
+            btnPreviousPageGridReturnRelease = document.getElementById('btnMoveToPreviousPageGridReturnRelease');
+            btnNextPageGridReturnRelease = document.getElementById('btnMoveToNextPageGridReturnRelease');
+            btnLastPageGridReturnRelease = document.getElementById('btnMoveToLastPageGridReturnRelease');
+            btnCurrentPageGridReturnRelease = document.getElementById('btnCurrentPageGridReturnRelease');
+
+            updateNavigateButtonsReturnRelease();
+
+            btnFirstPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToFirstPage();
+                updateNavigateButtonsReturnRelease();
+            });
+            btnPreviousPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToPreviousPage();
+                updateNavigateButtonsReturnRelease();
+            });
+            btnNextPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToNextPage();
+                updateNavigateButtonsReturnRelease();
+            });
+            btnLastPageGridReturnRelease.addEventListener('click', function () {
+                returnReleaseCollectionView.moveToLastPage();
+                updateNavigateButtonsReturnRelease();
+            });
+        }
+
+        function returnReleaseListOnclick() {
+            NProgress.start();
+            setTimeout(function () {
+                returnReleaseCollectionView = new wijmo.collections.CollectionView(getReturnReleaseByReturnReleaseDateList());
+                returnReleaseCollectionView.canFilter = true;
+                returnReleaseCollectionView.pageSize = 15;
+
+                var filterText = '';
+                $('#searchReturnRelease').keyup(function () {
+                    filterText = this.value.toLowerCase();
+                    returnReleaseCollectionView.refresh();
+                });
+
+                returnReleaseCollectionView.filter = function (item) {
+                    return !filterText || (item.ReturnReleaseNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                }
+
+                returnReleaseCollectionView.collectionChanged.addHandler(function (sender, args) {
+                    updateNavigateButtonsReturnRelease();
+                });
+
+                // Flex Grid
+                returnReleaseFlexGrid.itemsSource = returnReleaseCollectionView;
+                returnReleaseFlexGrid.trackChanges = true;
+            }, 300);
+        }
+
+        var returnReleaseId;
+        var cboReturnReleaseDateValue;
+        var cboReturnReleaseArea;
+        var cboReturnReleaseStaff;
+
+        var newDate = new Date();
+        var returnReleaseDateValue = [newDate.getMonth() + 1, newDate.getDate(), newDate.getFullYear()].join('-');
+
+        function createReturnReleaseDate() {
+            cboReturnReleaseDateValue.dispose();
+            cboReturnReleaseDateValue = new wijmo.input.InputDate('#cboReturnReleaseDateValue', {
+                format: 'MM-dd-yyyy',
+                value: new Date(returnReleaseDateValue),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    var thisDateValue = [this.value.getMonth() + 1, this.value.getDate(), this.value.getFullYear()].join('-');
+                    returnReleaseDateValue = thisDateValue;
+                }
+            });
+        }
+
+        // edit returnRelease
+        function btnEditReturnReleaseOnclick() {
+            returnReleaseCollectionView.editItem(returnReleaseCollectionView.currentItem);
+            var currentItem = returnReleaseCollectionView.currentEditItem;
+            returnReleaseId = currentItem.Id;
+            window.open("/Software/ReturnReleaseDetail?id=" + returnReleaseId, "_blank");
+        }
+
+        var isTotalRemittanceDataLoad = false;
+        function totalRemittanceReportOnClick() {
+            NProgress.start();
+            setTimeout(function () {
+                createTotalRemittanceFlexGrid();
+                window.createTotalRemittanceFlexGrid = function () {
+                    return true;
+                }
+
+                if (isTotalRemittanceDataLoad) {
+                    refreshTotalRemittanceFlexGrid();
+                } else {
+                    isTotalRemittanceDataLoad = true;
+                }
+            }, 200);
+        }
+
+        var cboStartDateTotalRemittanceReportReport;
+        var cboEndDateTotalRemittanceReportReport;
+        var cboStartDateTotalRemittanceReportReportIsClicked = false;
+        var cboEndDateTotalRemittanceReportReportIsClicked = false;
+
+        function createcboStartDateTotalRemittanceReportReport() {
+            cboStartDateTotalRemittanceReportReport.dispose();
+            cboStartDateTotalRemittanceReportReport = new wijmo.input.InputDate('#cboStartDateTotalRemittanceReportReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboStartDateTotalRemittanceReportReportIsClicked) {
+                        NProgress.start();
+                        refreshTotalRemittanceFlexGrid();
+                    } else {
+                        cboStartDateTotalRemittanceReportReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        function createcboEndDateTotalRemittanceReportReport() {
+            cboEndDateTotalRemittanceReportReport.dispose();
+            cboEndDateTotalRemittanceReportReport = new wijmo.input.InputDate('#cboEndDateTotalRemittanceReportReport', {
+                format: 'MM-dd-yyyy',
+                value: new Date(),
+                mask: '99-99-9999',
+                onValueChanged: function () {
+                    if (cboEndDateTotalRemittanceReportReportIsClicked) {
+                        NProgress.start();
+                        refreshTotalRemittanceFlexGrid();
+                    } else {
+                        cboEndDateTotalRemittanceReportReportIsClicked = true;
+                    }
+                }
+            });
+        }
+
+        var totalRemittanceReportCollectionView;
+        var totalRemittanceReportFlexGrid;
+
+        function getTotalRemittances() {
+            var totalRemittanceObservableArray = new wijmo.collections.ObservableArray;
+            var startDate = [cboStartDateTotalRemittanceReportReport.value.getMonth() + 1, cboStartDateTotalRemittanceReportReport.value.getDate(), cboStartDateTotalRemittanceReportReport.value.getFullYear()].join('-');
+            var endDate = [cboEndDateTotalRemittanceReportReport.value.getMonth() + 1, cboEndDateTotalRemittanceReportReport.value.getDate(), cboEndDateTotalRemittanceReportReport.value.getFullYear()].join('-');
+
+            $.ajax({
+                url: '/api/remmittance/list/report/' + startDate + '/' + endDate + '/' + cboEndDateTotalRemittanceArea.selectedItem["Id"],
+                cache: false,
+                type: 'GET',
+                contentType: 'application/json; charset=utf-8',
+                success: function (remittanceListResult) {
+                    if (remittanceListResult.length > 0) {
+                        for (i = 0; i < remittanceListResult.length; i++) {
+                            var isLocked = false;
+                            if (remittanceListResult[i]["IsLocked"]) {
+                                isLocked = true;
+                            }
+
+                            var newDate = new Date(remittanceListResult[i]["RemittanceDate"]);
+                            var remittanceDateValue = ('0' + (newDate.getMonth() + 1)).slice(-2) + '-' + ('0' + newDate.getDate()).slice(-2) + '-' + newDate.getFullYear();
+
+                            totalRemittanceObservableArray.push({
+                                EditButton: "<button class='btn btn-primary btn-xs btn-block' onclick='btnEditRemittanceOnclick()'><i class='fa fa-edit fa-fw'></i> Detail</button>",
+                                DeleteButton: "<button class='btn btn-danger btn-xs btn-block'  onclick='btnDeleteRemittanceOnclick(" + isLocked + ")'><i class='fa fa-trash fa-fw'></i> Delete</button>",
+                                Id: remittanceListResult[i]["Id"],
+                                RemittanceNumber: "RM-" + remittanceListResult[i]["RemittanceNumber"],
+                                RemittanceDate: remittanceDateValue,
+                                AreaId: remittanceListResult[i]["AreaId"],
+                                Area: remittanceListResult[i]["Area"],
+                                StaffId: remittanceListResult[i]["StaffId"],
+                                Staff: remittanceListResult[i]["Staff"],
+                                Particulars: remittanceListResult[i]["Particulars"],
+                                PreparedByUserId: remittanceListResult[i]["PreparedByUserId"],
+                                PreparedByUser: remittanceListResult[i]["PreparedByUser"],
+                                RemitAmount: remittanceListResult[i]["RemitAmount"],
+                                IsLocked: remittanceListResult[i]["IsLocked"],
+                                CreatedByUserId: remittanceListResult[i]["CreatedByUserId"],
+                                CreatedByUser: remittanceListResult[i]["CreatedByUser"],
+                                CreatedDateTime: remittanceListResult[i]["CreatedDateTime"],
+                                UpdatedByUserId: remittanceListResult[i]["UpdatedByUserId"],
+                                UpdatedByUser: remittanceListResult[i]["UpdatedByUser"],
+                                UpdatedDateTime: remittanceListResult[i]["UpdatedDateTime"]
+                            });
+                        }
+                    }
+
+                    NProgress.done();
+                }
+            });
+            return totalRemittanceObservableArray;
+        }
+
+        function updateNavigateButtonsTotalRemittanceReport() {
+            if (totalRemittanceReportCollectionView.pageSize <= 0) {
+                document.getElementById('naviagtionPageGridTotalRemittanceReport').style.display = 'none';
+                return;
+            }
+            document.getElementById('naviagtionPageGridTotalRemittanceReport').style.display = 'block';
+            btnCurrentPageGridTotalRemittanceReport.innerHTML = (totalRemittanceReportCollectionView.pageIndex + 1) + ' / ' + totalRemittanceReportCollectionView.pageCount;
+        }
+
+        function refreshTotalRemittanceFlexGrid() {
+            totalRemittanceReportCollectionView = new wijmo.collections.CollectionView(getTotalRemittances());
+            totalRemittanceReportCollectionView.canFilter = true;
+            totalRemittanceReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#totalRemittanceReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                totalRemittanceReportCollectionView.refresh();
+            });
+
+            totalRemittanceReportCollectionView.filter = function (item) {
+                return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            totalRemittanceReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+
+            // Flex Grid
+            totalRemittanceReportFlexGrid.itemsSource = totalRemittanceReportCollectionView;
+            totalRemittanceReportFlexGrid.trackChanges = true;
+        }
+
+        function createTotalRemittanceFlexGrid() {
+            totalRemittanceReportCollectionView = new wijmo.collections.CollectionView(getTotalRemittances());
+            totalRemittanceReportCollectionView.canFilter = true;
+            totalRemittanceReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#totalRemittanceReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                totalRemittanceReportCollectionView.refresh();
+            });
+
+            totalRemittanceReportCollectionView.filter = function (item) {
+                return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            totalRemittanceReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+
+            // Flex Grid
+            totalRemittanceReportFlexGrid = new wijmo.grid.FlexGrid('#totalRemittanceReportFlexGrid');
+            totalRemittanceReportFlexGrid.initialize({
+                columns: [
+                            {
+                                "header": "Detail",
+                                "binding": "EditButton",
+                                "width": 100,
+                                "align": "center",
+                                "allowResizing": false,
+                                "isContentHtml": true
+                            },
+                            {
+                                "header": "Date",
+                                "binding": "RemittanceDate",
+                                "allowSorting": true,
+                                "width": 100,
+                            },
+                            {
+                                "header": "Remittance No.",
+                                "binding": "RemittanceNumber",
+                                "allowSorting": true,
+                                "width": 120,
+                            },
+                            {
+                                "header": "Area",
+                                "binding": "Area",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Staff",
+                                "binding": "Staff",
+                                "allowSorting": true,
+                                "width": 220,
+                            },
+                            {
+                                "header": "Particulars",
+                                "binding": "Particulars",
+                                "allowSorting": true,
+                                "width": 300,
+                            },
+                            {
+                                "header": "Amount",
+                                "binding": "RemitAmount",
+                                "allowSorting": true,
+                                "width": 130
+                            }
+                ],
+                autoGenerateColumns: false,
+                itemsSource: totalRemittanceReportCollectionView,
+                isReadOnly: true,
+                autoSizeMode: wijmo.grid.AutoSizeMode.Both,
+                allowDragging: wijmo.grid.AllowDragging.None,
+                selectionMode: wijmo.grid.SelectionMode.Row
+            });
+
+            totalRemittanceReportFlexGrid.trackChanges = true;
+
+            //Navigation button
+            btnMoveToFirstPageGridTotalRemittanceReport = document.getElementById('btnMoveToFirstPageGridTotalRemittanceReport');
+            btnMoveToPreviousPageGridTotalRemittanceReport = document.getElementById('btnMoveToPreviousPageGridTotalRemittanceReport');
+            btnMoveToNextPageGridTotalRemittanceReport = document.getElementById('btnMoveToNextPageGridTotalRemittanceReport');
+            btnMoveToLastPageGridTotalRemittanceReport = document.getElementById('btnMoveToLastPageGridTotalRemittanceReport');
+            btnCurrentPageGridTotalRemittanceReport = document.getElementById('btnCurrentPageGridTotalRemittanceReport');
+
+            updateNavigateButtonsTotalRemittanceReport();
+
+            btnMoveToFirstPageGridTotalRemittanceReport.addEventListener('click', function () {
+                totalRemittanceReportCollectionView.moveToFirstPage();
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+            btnMoveToPreviousPageGridTotalRemittanceReport.addEventListener('click', function () {
+                totalRemittanceReportCollectionView.moveToPreviousPage();
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+            btnMoveToNextPageGridTotalRemittanceReport.addEventListener('click', function () {
+                totalRemittanceReportCollectionView.moveToNextPage();
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+            btnMoveToLastPageGridTotalRemittanceReport.addEventListener('click', function () {
+                totalRemittanceReportCollectionView.moveToLastPage();
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+        }
+
+        function refreshRemittanceReport() {
+            totalRemittanceReportCollectionView = new wijmo.collections.CollectionView(getTotalRemittances());
+            totalRemittanceReportCollectionView.canFilter = true;
+            totalRemittanceReportCollectionView.pageSize = 15;
+
+            var filterText = '';
+            $('#totalRemittanceReportSearchInput').keyup(function () {
+                filterText = this.value.toLowerCase();
+                totalRemittanceReportCollectionView.refresh();
+            });
+
+            totalRemittanceReportCollectionView.filter = function (item) {
+                return !filterText || (item.RemittanceNumber.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1)
+                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+            }
+
+            totalRemittanceReportCollectionView.collectionChanged.addHandler(function (sender, args) {
+                updateNavigateButtonsTotalRemittanceReport();
+            });
+
+            // Flex Grid
+            totalRemittanceReportFlexGrid.itemsSource = totalRemittanceReportCollectionView;
+            totalRemittanceReportFlexGrid.trackChanges = true;
+        }
+
+        // edit remittance
+        function btnEditRemittanceOnclick() {
+            remittanceCollectionView.editItem(remittanceCollectionView.currentItem);
+            var currentItem = remittanceCollectionView.currentEditItem;
+            remittanceId = currentItem.Id;
+
+            window.open("/Software/RemittanceDetail?id=" + remittanceId, "_blank");
+        }
+
         window.onload = function () {
             cboStartDateTotalCollectionReportReport = new wijmo.input.InputDate('#cboStartDateTotalCollectionReportReport');
             cboEndDateTotalCollectionReportReport = new wijmo.input.InputDate('#cboEndDateTotalCollectionReportReport');
@@ -3158,6 +4040,8 @@
             cboLoanSummaryReportArea = new wijmo.input.ComboBox('#cboLoanSummaryReportArea');
             cboRenewSummaryReportArea = new wijmo.input.ComboBox('#cboRenewSummaryReportArea');
             cboReconstructSummaryReportArea = new wijmo.input.ComboBox('#cboReconstructSummaryReportArea');
+            cboReturnReleaseArea = new wijmo.input.ComboBox('#cboReturnReleaseArea');
+            cboEndDateTotalRemittanceArea = new wijmo.input.ComboBox('#cboEndDateTotalRemittanceArea');
             createCboArea();
             cboStartDateLoanSummaryReport = new wijmo.input.InputDate('#cboStartDateLoanSummaryReport');
             createCboStartDateLoanSummaryReport();
@@ -3189,6 +4073,14 @@
             createcboStartExpensesReport();
             cboEndExpensesReport = new wijmo.input.InputDate('#cboEndExpensesReport');
             createcboEndExpensesReport();
+            cboReturnReleaseDate = new wijmo.input.InputDate('#cboReturnReleaseDate');
+            createCboReturnReleaseDate();
+            cboReturnReleaseEndDate = new wijmo.input.InputDate('#cboReturnReleaseEndDate');
+            createCboReturnReleaseEndDate();
+            cboStartDateTotalRemittanceReportReport = new wijmo.input.InputDate('#cboStartDateTotalRemittanceReportReport');
+            cboEndDateTotalRemittanceReportReport = new wijmo.input.InputDate('#cboEndDateTotalRemittanceReportReport');
+            createcboStartDateTotalRemittanceReportReport();
+            createcboEndDateTotalRemittanceReportReport();
         }
     </script>
 </body>

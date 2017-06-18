@@ -263,7 +263,7 @@
 
                     cboExpensesPreparedBy.dispose();
                     cboExpensesPreparedBy = new wijmo.input.ComboBox('#expensesPreparedBy', {
-                        isDisabled: disabled,
+                        isDisabled: true,
                         placeholder: "Select",
                         itemsSource: userArray,
                         isEditable: false,
@@ -302,8 +302,8 @@
 
                         if (expensesResult.IsLocked) {
                             $("#btnLock").prop("disabled", true);
-                            cboExpensesDate.disabled = true;
-                            cboStaff.disabled = true;
+                            cboExpensesDate.isDisabled = true;
+                            cboStaff.isDisabled = true;
                             document.getElementById("expensesParticulars").disabled = true;
                             document.getElementById("expensesAmount").disabled = true;
 

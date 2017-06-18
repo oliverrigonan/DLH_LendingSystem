@@ -444,7 +444,7 @@
             cboRenewDate.dispose();
             cboRenewDate = new wijmo.input.InputDate('#cboRenewDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(firstDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
@@ -485,7 +485,7 @@
             cboRenewEndDate.dispose();
             cboRenewEndDate = new wijmo.input.InputDate('#cboRenewEndDate', {
                 format: 'MM-dd-yyyy',
-                value: new Date(lastDay),
+                value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
                     NProgress.start();
