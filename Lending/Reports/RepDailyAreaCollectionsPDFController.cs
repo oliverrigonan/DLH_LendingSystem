@@ -63,7 +63,7 @@ namespace Lending.Reports
                                               Id = d.Id,
                                               Applicant = d.Applicant,
                                               LoanNumber = d.LoanNumber,
-                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
+                                              DateTImeMaturityDate = d.DateTImeMaturityDate,
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
@@ -122,7 +122,7 @@ namespace Lending.Reports
                                               Id = d.Id,
                                               Applicant = d.Applicant,
                                               LoanNumber = d.LoanNumber,
-                                              MaturityDate = d.DateTImeMaturityDate.ToShortDateString(),
+                                              DateTImeMaturityDate = d.DateTImeMaturityDate,
                                               TotalBalanceAmount = d.TotalBalanceAmount,
                                               CollectibleAmount = d.CollectibleAmount,
                                               IsLoanRenew = d.IsLoanRenew,
@@ -270,7 +270,7 @@ namespace Lending.Reports
                         loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.TotalBalanceAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.CollectibleAmount.ToString("#,##0.00"), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.Applicant, fontArial11)) { PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
-                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.DateTImeMaturityDate.ToShortDateString(), fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
+                        loanlData.AddCell(new PdfPCell(new Phrase(loanApplication.MaturityDate, fontArial11)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                         loanlData.AddCell(new PdfPCell(new Phrase(" ", fontArial12Bold)) { HorizontalAlignment = 2, PaddingTop = 1f, PaddingBottom = 3f, PaddingLeft = 5f, PaddingRight = 5f });
                     }
 
