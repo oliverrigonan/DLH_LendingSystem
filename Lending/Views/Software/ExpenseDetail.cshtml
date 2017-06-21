@@ -15,17 +15,21 @@
 </head>
 <body>
 
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-credit-card fa-fw"></i>  Expense Detail <small> Edit Expense</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-credit-card fa-fw"></i>  Expenses Detail <small>Edit detail page</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
@@ -105,6 +109,23 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="control-label col-sm-4">Amount</label>
+                                                <div class="col-sm-8">
+                                                    <div class="input-group numberField">
+                                                        <span class="input-group-addon">&#8369;</span>
+                                                        <input type="text" id="expensesAmount" class="form-control numberField requiredExpenses" placeholder="0.00">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div class="row">
@@ -125,23 +146,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="control-label col-sm-4">Amount</label>
-                                                <div class="col-sm-8">
-                                                    <div class="input-group numberField">
-                                                        <span class="input-group-addon">&#8369;</span>
-                                                        <input type="text" id="expensesAmount" class="form-control numberField requiredExpenses" placeholder="0.00">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>

@@ -35,7 +35,7 @@ namespace Lending
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.min.css",
-                      "~/Content/bootstrap-theme.min.css",
+                      //"~/Content/bootstrap-theme.min.css",
                       "~/Content/landing-page.css",
                       "~/fonts/font-awesome-4.6.3/css/font-awesome.min.css",
                       //"~/wijmo/styles/wijmo.min.css",

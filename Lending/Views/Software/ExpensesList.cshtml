@@ -15,17 +15,21 @@
 </head>
 <body>
 
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-credit-card fa-fw"></i>  Expense <small> Expense List</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-credit-card fa-fw"></i>  Expenses <small>List of Expenses</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
@@ -173,6 +177,7 @@
         var firstDay = new Date(y, fm, 1);
         var lastDay = new Date(y, m + 1, 0);
 
+        var iscboExpensesDateClicked = false;
         // create cbo date for expenses date
         function createCboExpensesDate() {
             cboExpensesDate.dispose();
@@ -181,37 +186,42 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
-                    expensesCollectionView.canFilter = true;
-                    expensesCollectionView.pageSize = 15;
+                    if (iscboExpensesDateClicked) {
+                        NProgress.start();
+                        expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
+                        expensesCollectionView.canFilter = true;
+                        expensesCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchExpenses').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        expensesCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchExpenses').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            expensesCollectionView.refresh();
+                        });
 
-                    expensesCollectionView.filter = function (item) {
-                        return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Payee.toLowerCase().indexOf(filterText) > -1);
+                        expensesCollectionView.filter = function (item) {
+                            return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Payee.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        expensesCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        expensesFlexGrid.itemsSource = expensesCollectionView;
+                        expensesFlexGrid.trackChanges = true;
+                    } else {
+                        iscboExpensesDateClicked = true;
                     }
-
-                    expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtons();
-                    });
-
-                    expensesCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurity();
-                    });
-
-                    // Flex Grid
-                    expensesFlexGrid.itemsSource = expensesCollectionView;
-                    expensesFlexGrid.trackChanges = true;
                 }
             });
         }
 
+        var iscboExpensesEndDateClicked = false;
         function createCboExpensesEndDate() {
             cboExpensesEndDate.dispose();
             cboExpensesEndDate = new wijmo.input.InputDate('#cboExpensesEndDate', {
@@ -219,33 +229,37 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
-                    expensesCollectionView.canFilter = true;
-                    expensesCollectionView.pageSize = 15;
+                    if (iscboExpensesEndDateClicked) {
+                        NProgress.start();
+                        expensesCollectionView = new wijmo.collections.CollectionView(getExpensesList());
+                        expensesCollectionView.canFilter = true;
+                        expensesCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchExpenses').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        expensesCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchExpenses').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            expensesCollectionView.refresh();
+                        });
 
-                    expensesCollectionView.filter = function (item) {
-                        return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Payee.toLowerCase().indexOf(filterText) > -1);
+                        expensesCollectionView.filter = function (item) {
+                            return !filterText || (item.ExpensesNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Payee.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        expensesCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        expensesFlexGrid.itemsSource = expensesCollectionView;
+                        expensesFlexGrid.trackChanges = true;
+                    } else {
+                        iscboExpensesEndDateClicked = true;
                     }
-
-                    expensesCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtons();
-                    });
-
-                    expensesCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurity();
-                    });
-
-                    // Flex Grid
-                    expensesFlexGrid.itemsSource = expensesCollectionView;
-                    expensesFlexGrid.trackChanges = true;
                 }
             });
         }

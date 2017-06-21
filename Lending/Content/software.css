@@ -145,10 +145,8 @@ body {
         }
 
 .navbar-inverse {
-    background: #004d4d;
-    ;
+    background: #004d4d;;
     border-bottom: none;
-    box-shadow: -1px 1px 10px 1px;
 }
 
     /* title */
@@ -254,4 +252,12 @@ textarea {
 
 .wj-listbox {
     /*max-height: 330px !important;*/
+}
+
+.title {
+    background-color: #001b27;
+    width: 100%;
+    margin-bottom: 15px;
+    color: #fff;
+    padding-bottom: 10px;
 }

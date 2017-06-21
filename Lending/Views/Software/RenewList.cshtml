@@ -14,23 +14,27 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-file-text-o fa-fw"></i> Renew <small>Renew List</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-file-text-o fa-fw"></i> Renew <small>List of Renew Loans</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
                             </li>
                             <li class="active">
-                                Renew
+                                Renews
                             </li>
                         </ol>
                     </div>
@@ -439,6 +443,7 @@
             });
         }
 
+        var isLoanDateClicked = false;
         // create cbo date for loan date
         function createCboLoanDate() {
             cboRenewDate.dispose();
@@ -447,39 +452,44 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
+                    if (isLoanDateClicked) {
+                        NProgress.start();
 
-                    loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
-                    loanApplicationCollectionView.canFilter = true;
-                    loanApplicationCollectionView.pageSize = 15;
+                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                        loanApplicationCollectionView.canFilter = true;
+                        loanApplicationCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchLoanApplication').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        loanApplicationCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchLoanApplication').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            loanApplicationCollectionView.refresh();
+                        });
 
-                    loanApplicationCollectionView.filter = function (item) {
-                        return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        loanApplicationCollectionView.filter = function (item) {
+                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        renewFlexGrid.itemsSource = loanApplicationCollectionView;
+                        renewFlexGrid.trackChanges = true;
+                    } else {
+                        isLoanDateClicked = true;
                     }
-
-                    loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtons();
-                    });
-
-                    loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurity();
-                    });
-
-                    // Flex Grid
-                    renewFlexGrid.itemsSource = loanApplicationCollectionView;
-                    renewFlexGrid.trackChanges = true;
                 }
             });
         }
 
+        var isEndLoanDateClicked = false;
         // create cbo date for loan date
         function createCboLoanEndDate() {
             cboRenewEndDate.dispose();
@@ -488,36 +498,40 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
+                    if (isEndLoanDateClicked) {
+                        NProgress.start();
 
-                    loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
-                    loanApplicationCollectionView.canFilter = true;
-                    loanApplicationCollectionView.pageSize = 15;
+                        loanApplicationCollectionView = new wijmo.collections.CollectionView(getLoanApplicationList());
+                        loanApplicationCollectionView.canFilter = true;
+                        loanApplicationCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchLoanApplication').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        loanApplicationCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchLoanApplication').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            loanApplicationCollectionView.refresh();
+                        });
 
-                    loanApplicationCollectionView.filter = function (item) {
-                        return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        loanApplicationCollectionView.filter = function (item) {
+                            return !filterText || (item.LoanNumber.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.Particulars.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+
+                        // Flex Grid
+                        renewFlexGrid.itemsSource = loanApplicationCollectionView;
+                        renewFlexGrid.trackChanges = true;
+                    } else {
+                        isEndLoanDateClicked = true;
                     }
-
-                    loanApplicationCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtons();
-                    });
-
-                    loanApplicationCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurity();
-                    });
-
-
-                    // Flex Grid
-                    renewFlexGrid.itemsSource = loanApplicationCollectionView;
-                    renewFlexGrid.trackChanges = true;
                 }
             });
         }

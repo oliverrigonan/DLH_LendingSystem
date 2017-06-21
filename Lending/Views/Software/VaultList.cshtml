@@ -14,23 +14,27 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-money fa-fw"></i> Vault <small>Vault List</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-money fa-fw"></i> Vault <small>List of Vaults</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
                             </li>
                             <li class="active">
-                                Vault
+                                Vaults
                             </li>
                         </ol>
                     </div>
@@ -237,6 +241,7 @@
         var isVaultEndDateClicked = false;
         var cboVaultChangeCollector;
 
+        var iscboVaultDateCLicked = false;
         // create cbo date for vault date
         function createCboVaultDate() {
             cboVaultDate.dispose();
@@ -245,39 +250,44 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
-                    vaultCollectionView.canFilter = true;
-                    vaultCollectionView.pageSize = 15;
+                    if (iscboVaultDateCLicked) {
+                        NProgress.start();
+                        vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+                        vaultCollectionView.canFilter = true;
+                        vaultCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchVault').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        vaultCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchVault').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            vaultCollectionView.refresh();
+                        });
 
-                    vaultCollectionView.filter = function (item) {
-                        return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                        vaultCollectionView.filter = function (item) {
+                            return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsVault();
+                        });
+
+                        vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurityVault();
+                        });
+
+                        // Flex Grid
+                        vaultFlexGrid.itemsSource = vaultCollectionView;
+                        vaultFlexGrid.trackChanges = true;
+                    } else {
+                        iscboVaultDateCLicked = true;
                     }
-
-                    vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtonsVault();
-                    });
-
-                    vaultCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurityVault();
-                    });
-
-                    // Flex Grid
-                    vaultFlexGrid.itemsSource = vaultCollectionView;
-                    vaultFlexGrid.trackChanges = true;
                 }
             });
         }
 
+        var iscboVaultEndDateClicked = false;
         // create cbo date for vault date
         function createCboVaultEndDate() {
             cboVaultEndDate.dispose();
@@ -286,35 +296,39 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
-                    vaultCollectionView.canFilter = true;
-                    vaultCollectionView.pageSize = 15;
+                    if (iscboVaultEndDateClicked) {
+                        NProgress.start();
+                        vaultCollectionView = new wijmo.collections.CollectionView(getVaultByVaultDateList());
+                        vaultCollectionView.canFilter = true;
+                        vaultCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchVault').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        vaultCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchVault').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            vaultCollectionView.refresh();
+                        });
 
-                    vaultCollectionView.filter = function (item) {
-                        return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Area.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
-                                   || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                        vaultCollectionView.filter = function (item) {
+                            return !filterText || (item.VaultNumber.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Area.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Particulars.toLowerCase().indexOf(filterText) > -1)
+                                       || (item.Staff.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtonsVault();
+                        });
+
+                        vaultCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurityVault();
+                        });
+
+                        // Flex Grid
+                        vaultFlexGrid.itemsSource = vaultCollectionView;
+                        vaultFlexGrid.trackChanges = true;
+                    } else {
+                        iscboVaultEndDateClicked = true;
                     }
-
-                    vaultCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtonsVault();
-                    });
-
-                    vaultCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurityVault();
-                    });
-
-                    // Flex Grid
-                    vaultFlexGrid.itemsSource = vaultCollectionView;
-                    vaultFlexGrid.trackChanges = true;
                 }
             });
         }

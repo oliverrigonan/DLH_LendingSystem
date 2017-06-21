@@ -14,17 +14,21 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-map-marker fa-fw"></i>  Area Detail <small>Edit Area</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-map-marker fa-fw"></i>  Area Detail <small>Edit detail page</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
@@ -123,42 +127,43 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <table style="width: 100%">
-                                    <tr>
-                                        <td>
-                                            Area Collector / Staff
-                                        </td>
-                                        <td align="right">
-                                            <button class="btn btn-primary " id="btnAddAreaStaff" onclick="btnAddAreaStaffOnclick()">
-                                                <i class="fa fa-plus fa-fw"></i> Add
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="panel-body">
-                                <div id="areaStaffFlexgrid" class="grid"></div>
-                            </div>
-                            <div class="panel-footer">
-                                <div class="row">
-                                    <div class="btn-group col-md-7" id="naviagtionPageGrid">
-                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
-                                            <span class="glyphicon glyphicon-fast-backward"></span> First
-                                        </button>
-                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
-                                            <span class="glyphicon glyphicon-step-backward"></span> Previous
-                                        </button>
-                                        <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
-                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
-                                            <span class="glyphicon glyphicon-step-forward"></span> Next
-                                        </button>
-                                        <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
-                                            <span class="glyphicon glyphicon-fast-forward"></span> Last
-                                        </button>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    Area Staffs
+                                </td>
+                                <td align="right">
+                                    <button class="btn btn-primary " id="btnAddAreaStaff" onclick="btnAddAreaStaffOnclick()">
+                                        <i class="fa fa-plus fa-fw"></i> Add
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        <div id="areaStaffFlexgrid" class="grid"></div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="btn-group col-md-7" id="naviagtionPageGrid">
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToFirstPageGrid">
+                                    <span class="glyphicon glyphicon-fast-backward"></span> First
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToPreviousPageGrid">
+                                    <span class="glyphicon glyphicon-step-backward"></span> Previous
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" disabled style="width: 100px" id="btnCurrentPageGrid"></button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToNextPageGrid">
+                                    <span class="glyphicon glyphicon-step-forward"></span> Next
+                                </button>
+                                <button type="button" class="btn btn-default border-custom" id="btnMoveToLastPageGrid">
+                                    <span class="glyphicon glyphicon-fast-forward"></span> Last
+                                </button>
                             </div>
                         </div>
                     </div>

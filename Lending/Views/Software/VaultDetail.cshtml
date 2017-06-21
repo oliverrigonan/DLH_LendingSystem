@@ -14,23 +14,27 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-money fa-fw"></i> Vault Detail <small>Edit Vault</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-money fa-fw"></i> Vault Detail <small>Edit detail page</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
                             </li>
                             <li>
-                                <a href="/Software/VaultList">Vault List</a>
+                                <a href="/Software/VaultList">Vaults</a>
                             </li>
                             <li class="active">
                                 Vault Detail

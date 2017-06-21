@@ -14,23 +14,27 @@
     @Styles.Render("~/Content/css")
 </head>
 <body>
-    <div id="wrapper">
+    <div id="">
         <!-- Header -->
         @Html.Partial("SoftwareHeader")
 
-        <div id="page-wrapper">
-            <div class="container-fluid">
+        <div id="">
+            <div class="title">
+                <div class="container">
+                    <h3 class="">
+                        <i class="fa fa-money fa-fw"></i> Collection <small>Collection List</small>
+                    </h3>
+                </div>
+            </div>
+            <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h3 class="">
-                            <i class="fa fa-money fa-fw"></i> Collection <small>List of Collections</small>
-                        </h3>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="/Software">Dashboard</a>
                             </li>
                             <li class="active">
-                                Collection
+                                Collections
                             </li>
                         </ol>
                     </div>
@@ -179,6 +183,7 @@
         var firstDay = new Date(y, fm, 1);
         var lastDay = new Date(y, m + 1, 0);
 
+        var iscboCollectionDateClicked = false;
         // create cbo date for collection date
         function createCboCollectionDate() {
             cboCollectionDate.dispose();
@@ -187,37 +192,42 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
-                    collectionCollectionView.canFilter = true;
-                    collectionCollectionView.pageSize = 15;
+                    if (iscboCollectionDateClicked) {
+                        NProgress.start();
+                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
+                        collectionCollectionView.canFilter = true;
+                        collectionCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchCollection').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        collectionCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchCollection').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            collectionCollectionView.refresh();
+                        });
 
-                    collectionCollectionView.filter = function (item) {
-                        return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
+                        collectionCollectionView.filter = function (item) {
+                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        collectionFlexGrid.itemsSource = collectionCollectionView;
+                        collectionFlexGrid.trackChanges = true;
+                    } else {
+                        iscboCollectionDateClicked = true;
                     }
-
-                    collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtons();
-                    });
-
-                    collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurity();
-                    });
-
-                    // Flex Grid
-                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                    collectionFlexGrid.trackChanges = true;
                 }
             });
         }
 
+        var isEndcboCollectionDateClicked = false;
         // create cbo date for collection date
         function createCboCollectionEndDate() {
             cboCollectionEndDate.dispose();
@@ -226,33 +236,37 @@
                 value: new Date(),
                 mask: '99-99-9999',
                 onValueChanged: function () {
-                    NProgress.start();
-                    collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
-                    collectionCollectionView.canFilter = true;
-                    collectionCollectionView.pageSize = 15;
+                    if (isEndcboCollectionDateClicked) {
+                        NProgress.start();
+                        collectionCollectionView = new wijmo.collections.CollectionView(getCollectionByCollectionDateList());
+                        collectionCollectionView.canFilter = true;
+                        collectionCollectionView.pageSize = 15;
 
-                    var filterText = '';
-                    $('#searchCollection').keyup(function () {
-                        filterText = this.value.toLowerCase();
-                        collectionCollectionView.refresh();
-                    });
+                        var filterText = '';
+                        $('#searchCollection').keyup(function () {
+                            filterText = this.value.toLowerCase();
+                            collectionCollectionView.refresh();
+                        });
 
-                    collectionCollectionView.filter = function (item) {
-                        return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
-                                           || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
+                        collectionCollectionView.filter = function (item) {
+                            return !filterText || (item.Applicant.toLowerCase().indexOf(filterText) > -1)
+                                               || (item.CollectionNumber.toLowerCase().indexOf(filterText) > -1);
+                        }
+
+                        collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
+                            updateNavigateButtons();
+                        });
+
+                        collectionCollectionView.currentChanged.addHandler(function (sender, args) {
+                            updateStampSecurity();
+                        });
+
+                        // Flex Grid
+                        collectionFlexGrid.itemsSource = collectionCollectionView;
+                        collectionFlexGrid.trackChanges = true;
+                    } else {
+                        isEndcboCollectionDateClicked = true;
                     }
-
-                    collectionCollectionView.collectionChanged.addHandler(function (sender, args) {
-                        updateNavigateButtons();
-                    });
-
-                    collectionCollectionView.currentChanged.addHandler(function (sender, args) {
-                        updateStampSecurity();
-                    });
-
-                    // Flex Grid
-                    collectionFlexGrid.itemsSource = collectionCollectionView;
-                    collectionFlexGrid.trackChanges = true;
                 }
             });
         }
